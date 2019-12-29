@@ -1,5 +1,5 @@
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
 import {
@@ -16,12 +16,10 @@ type Options = [
 ];
 
 const functionScopeBoundaries = [
-  'ArrowFunctionExpression',
-  'FunctionDeclaration',
-  'FunctionExpression',
-  'GetAccessor',
-  'MethodDefinition',
-  'SetAccessor',
+  AST_NODE_TYPES.ArrowFunctionExpression,
+  AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.FunctionExpression,
+  AST_NODE_TYPES.MethodDefinition,
 ].join(', ');
 
 export default util.createRule<Options, MessageIds>({
@@ -162,7 +160,9 @@ export default util.createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (ts.isParameterPropertyDeclaration(violatingNode)) {
+      if (
+        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
+      ) {
         return {
           esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
           nameNode: parserServices.tsNodeToESTreeNodeMap.get(
@@ -219,7 +219,13 @@ export default util.createRule<Options, MessageIds>({
           );
         }
       },
-      [functionScopeBoundaries](node: TSESTree.Node): void {
+      [functionScopeBoundaries](
+        node:
+          | TSESTree.ArrowFunctionExpression
+          | TSESTree.FunctionDeclaration
+          | TSESTree.FunctionExpression
+          | TSESTree.MethodDefinition,
+      ): void {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
             parserServices.esTreeNodeToTSNodeMap.get<ts.ConstructorDeclaration>(
@@ -230,7 +236,13 @@ export default util.createRule<Options, MessageIds>({
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
         }
       },
-      [`${functionScopeBoundaries}:exit`](node: TSESTree.Node): void {
+      [`${functionScopeBoundaries}:exit`](
+        node:
+          | TSESTree.ArrowFunctionExpression
+          | TSESTree.FunctionDeclaration
+          | TSESTree.FunctionExpression
+          | TSESTree.MethodDefinition,
+      ): void {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].exitConstructor();
         } else if (isFunctionScopeBoundaryInStack(node)) {

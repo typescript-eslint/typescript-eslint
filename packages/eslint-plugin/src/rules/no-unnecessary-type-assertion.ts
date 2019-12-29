@@ -10,7 +10,7 @@ import {
   isTypeFlagSet,
   isVariableDeclaration,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [
@@ -216,10 +216,17 @@ export default util.createRule<Options, MessageIds>({
               contextualType,
               ts.TypeFlags.Null,
             );
-            if (
-              (typeIncludesUndefined && contextualTypeIncludesUndefined) ||
-              (typeIncludesNull && contextualTypeIncludesNull)
-            ) {
+
+            // make sure that the parent accepts the same types
+            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
+            const isValidUndefined = typeIncludesUndefined
+              ? contextualTypeIncludesUndefined
+              : true;
+            const isValidNull = typeIncludesNull
+              ? contextualTypeIncludesNull
+              : true;
+
+            if (isValidUndefined && isValidNull) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
@@ -238,9 +245,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ): void {
         if (
-          options &&
-          options.typesToIgnore &&
-          options.typesToIgnore.includes(
+          options?.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
           )
         ) {

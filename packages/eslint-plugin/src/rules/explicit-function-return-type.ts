@@ -162,18 +162,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if a node is a type cast
-     * `(() => {}) as Foo`
-     * `<Foo>(() => {})`
-     */
-    function isTypeCast(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.TSAsExpression ||
-        node.type === AST_NODE_TYPES.TSTypeAssertion
-      );
-    }
-
-    /**
      * Checks if a node belongs to:
      * `const x: Foo = { prop: () => {} }`
      * `const x = { prop: () => {} } as Foo`
@@ -199,7 +187,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return (
-        isTypeCast(parent) ||
+        util.isTypeAssertion(parent) ||
         isClassPropertyWithTypeAnnotation(parent) ||
         isVariableDeclaratorWithTypeAnnotation(parent) ||
         isFunctionArgument(parent)
@@ -259,7 +247,8 @@ export default util.createRule<Options, MessageIds>({
       callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): boolean {
       return (
-        parent.type === AST_NODE_TYPES.CallExpression &&
+        (parent.type === AST_NODE_TYPES.CallExpression ||
+          parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
         // make sure this isn't an IIFE
         parent.callee !== callee
       );
@@ -273,7 +262,7 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ArrowFunctionExpression,
     ): boolean {
       const { body } = node;
-      if (body.type === AST_NODE_TYPES.TSAsExpression) {
+      if (util.isTypeAssertion(body)) {
         const { typeAnnotation } = body;
         if (typeAnnotation.type === AST_NODE_TYPES.TSTypeReference) {
           const { typeName } = typeAnnotation;
@@ -330,7 +319,7 @@ export default util.createRule<Options, MessageIds>({
       /* istanbul ignore else */ if (node.parent) {
         if (options.allowTypedFunctionExpressions) {
           if (
-            isTypeCast(node.parent) ||
+            util.isTypeAssertion(node.parent) ||
             isVariableDeclaratorWithTypeAnnotation(node.parent) ||
             isClassPropertyWithTypeAnnotation(node.parent) ||
             isPropertyOfObjectWithType(node.parent) ||

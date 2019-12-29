@@ -1,4 +1,4 @@
-import jsxKnownIssues from '@typescript-eslint/shared-fixtures/jsx-known-issues';
+import jsxKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -57,9 +57,9 @@ class FixturesTester {
       }
     }
 
-    const ignore = config.ignore || [];
-    const fileType = config.fileType || 'js';
-    const ignoreSourceType = config.ignoreSourceType || [];
+    const ignore = config.ignore ?? [];
+    const fileType = config.fileType ?? 'js';
+    const ignoreSourceType = config.ignoreSourceType ?? [];
     const jsx = isJSXFileType(fileType);
 
     /**
@@ -240,6 +240,7 @@ tester.addFixturePatternConfig('javascript/forIn', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * SyntaxError: Invalid left-hand side in for-loop
+     * TODO: Error 2405: `The left-hand side of a 'for...in' statement must be of type 'string' or 'any'."`
      */
     'for-in-with-bare-assigment',
   ],
@@ -253,12 +254,12 @@ tester.addFixturePatternConfig('javascript/importMeta');
 tester.addFixturePatternConfig('javascript/labels');
 
 tester.addFixturePatternConfig('javascript/modules', {
-  ignore: [
-    /**
-     * Expected babel parse errors - ts-estree is not currently throwing
-     */
-    'invalid-export-named-default', // babel parse errors
-
+  ignoreSourceType: [
+    'error-function',
+    'error-strict',
+    'error-delete',
+    'invalid-await',
+    'invalid-export-named-default',
     // babel does not recognise these as modules
     'export-named-as-default',
     'export-named-as-specifier',
@@ -266,12 +267,6 @@ tester.addFixturePatternConfig('javascript/modules', {
     'export-named-specifier',
     'export-named-specifiers-comma',
     'export-named-specifiers',
-  ],
-  ignoreSourceType: [
-    'error-function',
-    'error-strict',
-    'error-delete',
-    'invalid-await',
   ],
 });
 
@@ -348,39 +343,19 @@ tester.addFixturePatternConfig('typescript/basics', {
   fileType: 'ts',
   ignore: [
     /**
-     * babel error: https://github.com/babel/babel/issues/9305
-     * TypeScript does not report any diagnostics for this file, but Babel throws:
-     * [SyntaxError: Unexpected token, expected "{" (2:8)
-      1 | class Foo {
-    > 2 |   foo?();
-        |         ^
-      3 |   bar?(): string;
-      4 |   private baz?(): string;
-      5 | }]
+     * Babel and ts-estree reports optional field on different nodes
+     * TODO: investigate
      */
-    'class-with-optional-methods', // babel parse errors
-    /**
-     * There are number of things that can be reported in this file, so it's not great
-     * for comparison purposes.
-     *
-     * Nevertheless, Babel appears to throw on syntax that TypeScript doesn't report on directly.
-     *
-     * TODO: Investigate in more depth, potentially split up different parts of the interface
-     */
-    'interface-with-all-property-types', // babel parse errors
+    'class-with-optional-methods',
+    'abstract-class-with-abstract-method',
+    'abstract-class-with-optional-method',
+    'declare-class-with-optional-method',
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
      */
     'interface-with-extends-member-expression',
-    /**
-     * Babel bug for optional or abstract methods
-     * https://github.com/babel/babel/issues/9305
-     */
-    'abstract-class-with-abstract-method', // babel parse errors
-    'abstract-class-with-optional-method', // babel parse errors
-    'declare-class-with-optional-method', // babel parse errors
     /**
      * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
      * But not fixed in Babel 7.3
@@ -395,26 +370,40 @@ tester.addFixturePatternConfig('typescript/basics', {
     'directive-in-module',
     'directive-in-namespace',
     /**
-     * Babel parses this incorrectly
-     * https://github.com/babel/babel/issues/9324
-     */
-    'type-assertion-arrow-function',
-    /**
-     * PR for optional parameters in arrow function has been merged into Babel: https://github.com/babel/babel/pull/9463
-     * TODO: remove me in next babel > 7.3.2
-     */
-    'arrow-function-with-optional-parameter',
-    /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * TODO: validate error code TS2451 Cannot redeclare block-scoped variable '{0}'.
      */
     'const-assertions',
-    'readonly-arrays',
-    'readonly-tuples',
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
      * SyntaxError: 'abstract' modifier can only appear on a class, method, or property declaration.
      */
     'abstract-class-with-abstract-constructor',
+    // babel hard fails on computed string enum members, but TS doesn't
+    'export-named-enum-computed-string',
+    /**
+     * Babel: TSTypePredicate includes `:` statement in range
+     * ts-estree: TSTypePredicate does not include `:` statement in range
+     * TODO: report this to babel
+     */
+    'type-assertion-in-arrow-function',
+    'type-assertion-in-function',
+    'type-assertion-in-interface',
+    'type-assertion-in-method',
+    'type-assertion-with-guard-in-arrow-function',
+    'type-assertion-with-guard-in-function',
+    'type-assertion-with-guard-in-interface',
+    'type-assertion-with-guard-in-method',
+    'type-guard-in-arrow-function',
+    'type-guard-in-function',
+    'type-guard-in-interface',
+    /**
+     * TS 3.7: declare class properties
+     * Babel: declare is not allowed with accessibility modifiers
+     * TODO: report this to babel
+     */
+    'abstract-class-with-declare-properties',
+    'class-with-declare-properties',
   ],
   ignoreSourceType: [
     /**
@@ -465,6 +454,11 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
   fileType: 'ts',
   ignore: [
     /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * TODO: enable error code TS1019: An index signature parameter cannot have a question mark.
+     */
+    'interface-with-optional-index-signature',
+    /**
      * Expected error on empty type arguments and type parameters
      * TypeScript report diagnostics correctly but babel not
      * https://github.com/babel/babel/issues/9462
@@ -480,7 +474,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
     'empty-type-parameters-in-method-signature',
     /**
      * Babel correctly errors on this
-     * TODO: enable error code TS1024
+     * TODO: enable error code TS1024: 'readonly' modifier can only appear on a property declaration or index signature.
      */
     'interface-method-readonly',
   ],
@@ -488,16 +482,6 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
 
 tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * AST difference
-     */
-    'literal-number-negative',
-    /**
-     * Babel parse error: https://github.com/babel/babel/pull/9431
-     */
-    'function-with-array-destruction',
-  ],
 });
 
 tester.addFixturePatternConfig('typescript/declare', {

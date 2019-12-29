@@ -48,6 +48,8 @@ class Foo {
   readonly B = 2;
   public static readonly C = 1;
   static readonly D = 1;
+  readonly E = -1;
+  readonly F = +1;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: true }],
@@ -184,6 +186,8 @@ class Foo {
   readonly B = 2;
   public static readonly C = 1;
   static readonly D = 1;
+  readonly E = -1;
+  readonly F = +1;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: false }],
@@ -207,6 +211,16 @@ class Foo {
           messageId: 'noMagic',
           line: 6,
           column: 23,
+        },
+        {
+          messageId: 'noMagic',
+          line: 7,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          line: 8,
+          column: 16,
         },
       ],
     },

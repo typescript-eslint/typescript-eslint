@@ -105,7 +105,15 @@ if (value) {}
     `
 const fn: (arg: () => Promise<void> | void) => void = () => {};
 fn(() => Promise.resolve());
-`,
+    `,
+    `
+declare const returnsPromise : (() => Promise<void>) | null;
+if (returnsPromise?.()) {}
+    `,
+    `
+declare const returnsPromise : { call: (() => Promise<void>) } | null;
+if (returnsPromise?.call()) {}
+    `,
   ],
 
   invalid: [
@@ -260,6 +268,42 @@ fnWithCallback('val', (err, res) => Promise.resolve(res));
     {
       code: `
 const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
+  cb(null, arg);
+};
+
+fnWithCallback('val', (err, res) => {
+  if (err) {
+    return 'abc';
+  } else {
+    return Promise.resolve(res);
+  }
+});
+`,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturn',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback: ((arg: string, cb: (err: any, res: string) => void) => void) | null = (arg, cb) => {
+  cb(null, arg);
+};
+
+fnWithCallback?.('val', (err, res) => Promise.resolve(res));
+`,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturn',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback: ((arg: string, cb: (err: any, res: string) => void) => void) | null = (arg, cb) => {
   cb(null, arg);
 };
 

@@ -14,7 +14,7 @@ With `{ "path": "never", "types": "never", "lib": "never" }` options set, the fo
 /// <reference lib="baz" />
 ```
 
-Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** stlyes are used for the **same** module:
+Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** styles are used for the **same** module:
 
 ```ts
 /// <reference types="foo" />

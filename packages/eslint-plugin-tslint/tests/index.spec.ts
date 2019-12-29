@@ -86,7 +86,7 @@ ruleTester.run('tslint/config', rule, {
     {
       code: 'var foo = true // semicolon',
       options: tslintRulesConfig,
-      output: 'var foo = true // semicolon',
+      output: 'var foo = true; // semicolon',
       filename: './tests/fixture-project/4.ts',
       errors: [
         {

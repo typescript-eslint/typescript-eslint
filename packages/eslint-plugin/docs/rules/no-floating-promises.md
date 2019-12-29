@@ -31,7 +31,10 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
-returnsPromise().then(() => {}, () => {});
+returnsPromise().then(
+  () => {},
+  () => {},
+);
 
 Promise.reject('value').catch(() => {});
 ```
@@ -51,7 +54,7 @@ const defaults = {
 };
 ```
 
-### ignoreVoid
+### `ignoreVoid`
 
 This allows to easily suppress false-positives with void operator.
 
@@ -73,4 +76,4 @@ remain unhandled.
 
 ## Related to
 
-- Tslint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
+- TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)

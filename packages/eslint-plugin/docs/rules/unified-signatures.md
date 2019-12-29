@@ -4,7 +4,7 @@ Warns for any two overloads that could be unified into one by using a union or a
 
 ## Rule Details
 
-This rule aims to keep the source code as maintanable as posible by reducing the amount of overloads.
+This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
 
 Examples of **incorrect** code for this rule:
 

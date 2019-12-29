@@ -14,10 +14,20 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
+    `f<>();`,
+    `f<string>();`,
+    `class Foo extends Bar<> {}`,
+    `class Foo extends Bar<string> {}`,
+    `class Foo implements Bar<> {}`,
+    `class Foo implements Bar<string> {}`,
     `function f<T = number>() { }
       f();`,
     `function f<T = number>() { }
       f<string>();`,
+    `declare const f: (<T = number>() => void) | null;
+      f?.();`,
+    `declare const f: (<T = number>() => void) | null;
+      f?.<string>();`,
     `declare const f: any;
       f();`,
     `declare const f: any;
@@ -53,6 +63,17 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
     `declare const C: unknown;
       class D<TD = number> extends C { }`,
     `let a: A<number>`,
+    `class Foo<T> {}
+      const foo = new Foo<number>();`,
+    `type Foo<T> = import('foo').Foo<T>;`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<T> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<T> {}`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<string> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<string> {}`,
   ],
   invalid: [
     {
@@ -122,6 +143,39 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       ],
       output: `interface I<T = number> { }
         class Impl implements I { }`,
+    },
+    {
+      code: `class Foo<T = number> {}
+        const foo = new Foo<number>();`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `class Foo<T = number> {}
+        const foo = new Foo();`,
+    },
+    {
+      code: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar {}`,
+    },
+    {
+      code: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar {}`,
     },
   ],
 });

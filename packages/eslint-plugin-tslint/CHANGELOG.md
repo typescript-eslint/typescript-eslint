@@ -3,6 +3,105 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.12.0...v2.13.0) (2019-12-23)
+
+
+### Features
+
+* **eslint-plugin-tslint:** add fixer for config rule ([#1342](https://github.com/typescript-eslint/typescript-eslint/issues/1342)) ([c52c5c9](https://github.com/typescript-eslint/typescript-eslint/commit/c52c5c9))
+
+
+
+
+
+# [2.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.11.0...v2.12.0) (2019-12-16)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.10.0...v2.11.0) (2019-12-09)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.9.0...v2.10.0) (2019-12-02)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.8.0...v2.9.0) (2019-11-25)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.7.0...v2.8.0) (2019-11-18)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.6.1...v2.7.0) (2019-11-11)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+## [2.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v2.6.0...v2.6.1) (2019-11-04)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.5.0...v2.6.0) (2019-10-28)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.4.0...v2.5.0) (2019-10-21)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.3.3...v2.4.0) (2019-10-14)
+
+
+### Bug Fixes
+
+* support long running "watch" lint sessions ([#973](https://github.com/typescript-eslint/typescript-eslint/issues/973)) ([854620e](https://github.com/typescript-eslint/typescript-eslint/commit/854620e))
+
+
+### Features
+
+* **typescript-estree:** support for parsing 3.7 features ([#1045](https://github.com/typescript-eslint/typescript-eslint/issues/1045)) ([623febf](https://github.com/typescript-eslint/typescript-eslint/commit/623febf))
+
+
+
+
+
 ## [2.3.3](https://github.com/typescript-eslint/typescript-eslint/compare/v2.3.2...v2.3.3) (2019-10-07)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint

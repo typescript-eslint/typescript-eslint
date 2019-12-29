@@ -1,4 +1,4 @@
-import eslintVisitorKeys from 'eslint-visitor-keys';
+import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 export const visitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.
@@ -43,6 +43,8 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   BigIntLiteral: [],
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
+  OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],
+  OptionalMemberExpression: eslintVisitorKeys.KEYS.MemberExpression,
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],

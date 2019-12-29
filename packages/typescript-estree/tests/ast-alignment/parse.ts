@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ParserPlugin } from '@babel/parser';
-import codeFrame from 'babel-code-frame';
+import { codeFrameColumns } from '@babel/code-frame';
 import * as parser from '../../src/parser';
 import * as parseUtils from './utils';
 
@@ -31,6 +31,8 @@ function parseWithBabelParser(text: string, jsx = true): any {
     'estree',
     'bigInt',
     'importMeta',
+    'optionalChaining',
+    'nullishCoalescingOperator',
   ];
   if (jsx) {
     plugins.push('jsx');
@@ -107,9 +109,18 @@ export function parse(
   } catch (error) {
     const loc = error.loc;
     if (loc) {
-      error.codeFrame = codeFrame(text, loc.line, loc.column + 1, {
-        highlightCode: true,
-      });
+      error.codeFrame = codeFrameColumns(
+        text,
+        {
+          start: {
+            line: loc.line,
+            column: loc.column + 1,
+          },
+        },
+        {
+          highlightCode: true,
+        },
+      );
       error.message += `\n${error.codeFrame}`;
     }
     result.parseError = error;

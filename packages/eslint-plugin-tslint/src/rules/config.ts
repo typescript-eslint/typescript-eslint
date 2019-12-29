@@ -47,8 +47,8 @@ const tslintConfig = memoize(
       return Configuration.loadConfigurationFromPath(lintFile);
     }
     return Configuration.parseConfigFile({
-      rules: tslintRules || {},
-      rulesDirectory: tslintRulesDirectory || [],
+      rules: tslintRules ?? {},
+      rulesDirectory: tslintRulesDirectory ?? [],
     });
   },
   (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
@@ -67,6 +67,7 @@ export default createRule<Options, MessageIds>({
       category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       recommended: false,
     },
+    fixable: 'code',
     type: 'problem',
     messages: {
       failure: '{{message}} (tslint:{{ruleName}})',
@@ -164,6 +165,23 @@ export default createRule<Options, MessageIds>({
               line: end.line + 1,
               column: end.character,
             },
+          },
+          fix: fixer => {
+            const replacements = failure.getFix();
+
+            return Array.isArray(replacements)
+              ? replacements.map(replacement =>
+                  fixer.replaceTextRange(
+                    [replacement.start, replacement.end],
+                    replacement.text,
+                  ),
+                )
+              : replacements !== undefined
+              ? fixer.replaceTextRange(
+                  [replacements.start, replacements.end],
+                  replacements.text,
+                )
+              : [];
           },
         });
       });

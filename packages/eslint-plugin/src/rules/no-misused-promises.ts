@@ -1,6 +1,6 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -71,6 +71,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
 
     const voidReturnChecks: TSESLint.RuleListener = {
       CallExpression: checkArguments,
+      OptionalCallExpression: checkArguments,
       NewExpression: checkArguments,
     };
 
@@ -93,7 +94,10 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     }
 
     function checkArguments(
-      node: TSESTree.CallExpression | TSESTree.NewExpression,
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.OptionalCallExpression
+        | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
         ts.CallExpression | ts.NewExpression

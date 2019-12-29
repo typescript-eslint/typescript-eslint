@@ -32,6 +32,14 @@ declare interface SourceCode {
 
   getNodeByRangeIndex(index: number): TSESTree.Node | null;
 
+  isSpaceBetween(
+    first: TSESTree.Token | TSESTree.Node,
+    second: TSESTree.Token | TSESTree.Node,
+  ): boolean;
+
+  /**
+   * @deprecated in favor of isSpaceBetween()
+   */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
 
   getLocFromIndex(index: number): TSESTree.LineAndColumnData;
