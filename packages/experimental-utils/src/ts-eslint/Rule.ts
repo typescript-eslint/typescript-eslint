@@ -229,7 +229,7 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
-// This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
+// This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 

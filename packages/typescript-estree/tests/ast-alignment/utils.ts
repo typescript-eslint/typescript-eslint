@@ -1,4 +1,4 @@
-// bablyon types are something we don't really care about
+// babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AST_NODE_TYPES } from '../../src/ts-estree';
 import isPlainObject from 'lodash.isplainobject';

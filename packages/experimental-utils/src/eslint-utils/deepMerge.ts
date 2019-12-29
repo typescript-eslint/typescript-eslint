@@ -1,7 +1,7 @@
 type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
- * Check if the variable contains an object stricly rejecting arrays
+ * Check if the variable contains an object strictly rejecting arrays
  * @param obj an object
  * @returns `true` if obj is an object
  */

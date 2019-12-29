@@ -394,7 +394,7 @@ a && b || c ?? d;
       ],
     })),
 
-    // should not false postivie for functions inside conditional tests
+    // should not false positive for functions inside conditional tests
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};

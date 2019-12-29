@@ -228,7 +228,7 @@ export default util.createRule({
     }
 
     /**
-     * Gets a normalised representation of the given MemberExpression
+     * Gets a normalized representation of the given MemberExpression
      */
     function getMemberExpressionText(
       node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
