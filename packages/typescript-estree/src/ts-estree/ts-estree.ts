@@ -624,7 +624,7 @@ interface FunctionSignatureBase extends BaseNode {
 
 interface LiteralBase extends BaseNode {
   raw: string;
-  value: boolean | number | RegExp | string | null;
+  value: string | boolean | null | number | RegExp | bigint;
   regex?: {
     pattern: string;
     flags: string;
@@ -778,7 +778,9 @@ export interface AwaitExpression extends BaseNode {
 }
 
 export interface BigIntLiteral extends LiteralBase {
-  type: AST_NODE_TYPES.BigIntLiteral;
+  type: AST_NODE_TYPES.Literal;
+  value: bigint | null;
+  bigint: string;
 }
 
 export interface BinaryExpression extends BinaryExpressionBase {

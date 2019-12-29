@@ -5,7 +5,6 @@ export enum AST_NODE_TYPES {
   AssignmentExpression = 'AssignmentExpression',
   AssignmentPattern = 'AssignmentPattern',
   AwaitExpression = 'AwaitExpression',
-  BigIntLiteral = 'BigIntLiteral',
   BinaryExpression = 'BinaryExpression',
   BlockStatement = 'BlockStatement',
   BreakStatement = 'BreakStatement',

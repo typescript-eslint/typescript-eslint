@@ -40,7 +40,6 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  BigIntLiteral: [],
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
   OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],

@@ -1889,14 +1889,17 @@ export class Converter {
       }
 
       case SyntaxKind.BigIntLiteral: {
-        const result = this.createNode<TSESTree.BigIntLiteral>(node, {
-          type: AST_NODE_TYPES.BigIntLiteral,
-          raw: '',
-          value: '',
+        const range = getRange(node, this.ast);
+        const rawValue = this.ast.text.slice(range[0], range[1]);
+        let bigint = rawValue.slice(0, -1); // remove suffix `n`
+        const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
+        return this.createNode<TSESTree.BigIntLiteral>(node, {
+          type: AST_NODE_TYPES.Literal,
+          raw: rawValue,
+          value: value,
+          bigint: value === null ? bigint : String(value),
+          range,
         });
-        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        result.value = result.raw.slice(0, -1); // remove suffix `n`
-        return result;
       }
 
       case SyntaxKind.RegularExpressionLiteral: {
