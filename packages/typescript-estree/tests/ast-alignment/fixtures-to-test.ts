@@ -37,8 +37,8 @@ class FixturesTester {
    * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
    * including the capability to ignore specific nested patterns.
    *
-   * @param {string} fixturesSubPath the sub-path within the fixtures/ directory
-   * @param {CreateFixturePatternConfig?} config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
+   * @param fixturesSubPath the sub-path within the fixtures/ directory
+   * @param config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
    */
   public addFixturePatternConfig(
     fixturesSubPath: string,

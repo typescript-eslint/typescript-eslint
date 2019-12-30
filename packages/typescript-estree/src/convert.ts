@@ -1891,7 +1891,7 @@ export class Converter {
       case SyntaxKind.BigIntLiteral: {
         const range = getRange(node, this.ast);
         const rawValue = this.ast.text.slice(range[0], range[1]);
-        let bigint = rawValue.slice(0, -1); // remove suffix `n`
+        const bigint = rawValue.slice(0, -1); // remove suffix `n`
         const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
         return this.createNode<TSESTree.BigIntLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
