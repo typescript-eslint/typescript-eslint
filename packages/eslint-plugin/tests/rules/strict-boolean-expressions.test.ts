@@ -966,10 +966,16 @@ ruleTester.run('strict-boolean-expressions', rule, {
           line: 3,
           column: 37,
         },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 41,
+        },
       ],
       code: `
         const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
         const f2 = (x?: boolean) => x ? 1 : 0;
+        const f3 = (x: boolean | {}) => x ? 1 : 0;
       `,
     },
     {
