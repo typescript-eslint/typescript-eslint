@@ -480,10 +480,7 @@ export default util.createRule<Options, MessageIds>({
         handleMember(validators.property, node, modifiers);
       },
 
-      [[
-        'ClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
-        'TSAbstractClassProperty[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]',
-      ].join(', ')](
+      ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
         node:
           | TSESTree.ClassPropertyNonComputedName
           | TSESTree.TSAbstractClassPropertyNonComputedName,
@@ -522,14 +519,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       [[
-        'ClassProperty[computed = false][value.type = "ArrowFunctionExpression"]',
-        'ClassProperty[computed = false][value.type = "FunctionExpression"]',
-        'ClassProperty[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
-        'TSAbstractClassProperty[computed = false][value.type = "ArrowFunctionExpression"]',
-        'TSAbstractClassProperty[computed = false][value.type = "FunctionExpression"]',
-        'TSAbstractClassProperty[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
-        'MethodDefinition[computed = false][kind = "method"]',
-        'TSAbstractMethodDefinition[computed = false][kind = "method"]',
+        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "ArrowFunctionExpression"]',
+        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "FunctionExpression"]',
+        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
+        ':matches(MethodDefinition, TSAbstractMethodDefinition)[computed = false][kind = "method"]',
       ].join(', ')](
         node:
           | TSESTree.ClassPropertyNonComputedName
@@ -545,18 +538,16 @@ export default util.createRule<Options, MessageIds>({
 
       // #region accessor
 
-      [[
-        'Property[computed = false][kind = "get"]',
-        'Property[computed = false][kind = "set"]',
-      ].join(', ')](node: TSESTree.PropertyNonComputedName): void {
+      'Property[computed = false]:matches([kind = "get"], [kind = "set"])'(
+        node: TSESTree.PropertyNonComputedName,
+      ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
         handleMember(validators.accessor, node, modifiers);
       },
 
-      [[
-        'MethodDefinition[computed = false][kind = "get"]',
-        'MethodDefinition[computed = false][kind = "set"]',
-      ].join(', ')](node: TSESTree.MethodDefinitionNonComputedName): void {
+      'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])'(
+        node: TSESTree.MethodDefinitionNonComputedName,
+      ): void {
         const modifiers = getMemberModifiers(node);
         handleMember(validators.accessor, node, modifiers);
       },
