@@ -1,4 +1,4 @@
-// anys are required to work around manipulating the AST in weird ways
+// any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {

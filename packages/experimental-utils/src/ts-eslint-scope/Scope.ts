@@ -98,7 +98,7 @@ interface Scope {
   /**
    * returns this scope has materialized arguments
    * @method Scope#isArgumentsMaterialized
-   * @returns {boolean} arguemnts materialized
+   * @returns {boolean} arguments materialized
    */
   isArgumentsMaterialized(): boolean;
 

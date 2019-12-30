@@ -248,7 +248,7 @@ export default util.createRule<Options, MessageIds>({
         const variable = reference.resolved;
 
         // Skips when the reference is:
-        // - initialization's.
+        // - initializations.
         // - referring to an undefined variable.
         // - referring to a global environment variable (there're no identifiers).
         // - located preceded by the variable (except in initializers).
