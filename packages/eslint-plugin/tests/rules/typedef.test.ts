@@ -604,5 +604,30 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `
+      class Foo {
+        foo: 'bar'
+      }
+      const a = new Foo()
+      `,
+      output: `
+      class Foo {
+        foo: 'bar'
+      }
+      const a: Foo = new Foo()
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
   ],
 });

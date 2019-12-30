@@ -2,6 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+
 import * as util from '../util';
 
 const enum OptionKeys {
@@ -26,6 +27,7 @@ export default util.createRule<[Options], MessageIds>({
       category: 'Stylistic Issues',
       recommended: false,
     },
+    fixable: 'code',
     messages: {
       expectedTypedef: 'expected a type annotation',
       expectedTypedefNamed: 'expected {{name}} to have a type annotation',
@@ -55,6 +57,9 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+
     function report(location: TSESTree.Node, name?: string): void {
       context.report({
         node: location,
@@ -161,6 +166,7 @@ export default util.createRule<[Options], MessageIds>({
         }
 
         let current: TSESTree.Node | undefined = node.parent;
+
         while (current) {
           switch (current.type) {
             case AST_NODE_TYPES.VariableDeclaration:
@@ -178,7 +184,23 @@ export default util.createRule<[Options], MessageIds>({
           }
         }
 
-        report(node, getNodeName(node.id));
+        if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const type = checker.getTypeAtLocation(tsNode);
+          const typeName = checker.typeToString(type);
+          const name = getNodeName(node.id);
+
+          context.report({
+            node,
+            messageId: name ? 'expectedTypedefNamed' : 'expectedTypedef',
+            data: { name },
+            fix: fixer => {
+              return fixer.insertTextAfterRange(node.id.range, `: ${typeName}`);
+            },
+          });
+        } else {
+          report(node, getNodeName(node.id));
+        }
       },
     };
   },
