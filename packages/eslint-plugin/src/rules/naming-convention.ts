@@ -274,7 +274,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
 
 // #endregion Schema Config
 
-// This essentially mirrors eslint's camelcase rule
+// This essentially mirrors ESLint's `camelcase` rule
 // note that that rule ignores leading and trailing underscores and only checks those in the middle of a variable name
 const defaultCamelCaseAllTheThingsConfig: Options = [
   {
@@ -305,7 +305,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforces naming conventions for everything across a codebase',
       recommended: false,
-      // technically only requires type checkin if the user uses "type" modifiers
+      // technically only requires type checking if the user uses "type" modifiers
       requiresTypeChecking: true,
     },
     type: 'suggestion',
@@ -813,7 +813,7 @@ function createValidator(
     }
   };
 
-  // centralises the logic for formatting the report data
+  // centralizes the logic for formatting the report data
   function formatReportData({
     affixes,
     formats,
@@ -972,7 +972,7 @@ function createValidator(
 // #region Predefined Format Functions
 
 /*
-These format functions are taken from tslint-consistent-codestyle/naming-convention:
+These format functions are taken from `tslint-consistent-codestyle/naming-convention`:
 https://github.com/ajafff/tslint-consistent-codestyle/blob/ab156cc8881bcc401236d999f4ce034b59039e81/rules/namingConventionRule.ts#L603-L645
 
 The licence for the code can be viewed here:
