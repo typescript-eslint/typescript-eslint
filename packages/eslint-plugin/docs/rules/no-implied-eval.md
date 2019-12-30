@@ -2,26 +2,26 @@
 
 It's considered a good practice to avoid using `eval()`. There are security and performance implications involved with doing so, which is why many linters recommend disallowing `eval()`. However, there are some other ways to pass a string and have it interpreted as JavaScript code that have similar concerns.
 
-The first is using `setTimeout()`, `setInterval()`, `setImmediate` or `execScript()` (Internet Explorer only), all of which can accept a string of code as their first argument. For example:
+The first is using `setTimeout()`, `setInterval()`, `setImmediate` or `execScript()` (Internet Explorer only), all of which can accept a string of code as their first argument
 
 ```ts
 setTimeout('alert(`Hi!`);', 100);
 ```
 
-This is considered an implied `eval()` because a string of code is
-passed in to be interpreted. The same can be done with `setInterval()`, `setImmediate()` and `execScript()`. All interpret the JavaScript code in the global scope. For `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()`, the first argument can also be a function, and that is considered safer and is more performant:
+or using `new Function()`
 
 ```ts
-setTimeout(function() {
-  alert('Hi!');
-}, 100);
+const fn = new Function('a', 'b', 'return a + b');
 ```
 
-The best practice is to always use a function for the first argument of `setTimeout()`, `setInterval()` and `setImmediate()` (and avoid `execScript()`).
+This is considered an implied `eval()` because a string of code is
+passed in to be interpreted. The same can be done with `setInterval()`, `setImmediate()` and `execScript()`. All interpret the JavaScript code in the global scope.
+
+The best practice is to avoid using `new Function()` or `execScript()` and always use a function for the first argument of `setTimeout()`, `setInterval()` and `setImmediate()`.
 
 ## Rule Details
 
-This rule aims to eliminate implied `eval()` through the use of `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`. As such, it will warn when either function is used with a string as the first argument.
+This rule aims to eliminate implied `eval()` through the use of `new Function()`, `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`.
 
 Examples of **incorrect** code for this rule:
 
@@ -47,6 +47,8 @@ const fn = () => {
   return 'x = 10';
 };
 setTimeout(fn(), 100);
+
+const fn = new Function('a', 'b', 'return a + b');
 ```
 
 Examples of **correct** code for this rule:
@@ -88,6 +90,6 @@ setTimeout(Foo.fn, 100);
 
 ## When Not To Use It
 
-If you want to allow `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
+If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)</sup>

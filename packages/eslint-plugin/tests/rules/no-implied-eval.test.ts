@@ -18,6 +18,7 @@ ruleTester.run('no-implied-eval', rule, {
     `foo.execScript(null);`,
     `foo.setTimeout(null);`,
     `foo()`,
+    `(function(){ })()`,
 
     `setTimeout(() => {}, 0);`,
     `window.setTimeout(() => {}, 0);`,
@@ -690,6 +691,66 @@ window['execScript'](\`\`);
           messageId: 'noImpliedEvalError',
           line: 12,
           column: 22,
+        },
+      ],
+    },
+    {
+      code: `const fn = Function()`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `const fn = new Function('a', 'b', 'return a + b');`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `const fn = window.Function();`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `const fn = new window.Function();`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `const fn = window['Function']();`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `const fn = new window['Function']();`,
+      errors: [
+        {
+          messageId: 'noFunctionConstructor',
+          line: 1,
+          column: 12,
         },
       ],
     },

@@ -5,6 +5,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+const FUNCTION_CONSTRUCTOR = 'Function';
 const EVAL_LIKE_METHODS = new Set([
   'setImmediate',
   'setInterval',
@@ -23,6 +24,8 @@ export default util.createRule({
     },
     messages: {
       noImpliedEvalError: 'Implied eval. Consider passing a function.',
+      noFunctionConstructor:
+        'Implied eval. Do not use the Function constructor to create functions.',
     },
     schema: [],
     type: 'suggestion',
@@ -32,31 +35,31 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function isEvalLikeMethod(node: TSESTree.CallExpression): boolean {
-      const callee = node.callee;
-
-      if (callee.type === AST_NODE_TYPES.Identifier) {
-        return EVAL_LIKE_METHODS.has(callee.name);
+    function getCalleeName(
+      node: TSESTree.LeftHandSideExpression,
+    ): string | null {
+      if (node.type === AST_NODE_TYPES.Identifier) {
+        return node.name;
       }
 
       if (
-        callee.type === AST_NODE_TYPES.MemberExpression &&
-        callee.object.type === AST_NODE_TYPES.Identifier &&
-        callee.object.name === 'window'
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        node.object.type === AST_NODE_TYPES.Identifier &&
+        node.object.name === 'window'
       ) {
-        if (callee.property.type === AST_NODE_TYPES.Identifier) {
-          return EVAL_LIKE_METHODS.has(callee.property.name);
+        if (node.property.type === AST_NODE_TYPES.Identifier) {
+          return node.property.name;
         }
 
         if (
-          callee.property.type === AST_NODE_TYPES.Literal &&
-          typeof callee.property.value === 'string'
+          node.property.type === AST_NODE_TYPES.Literal &&
+          typeof node.property.value === 'string'
         ) {
-          return EVAL_LIKE_METHODS.has(callee.property.value);
+          return node.property.value;
         }
       }
 
-      return false;
+      return null;
     }
 
     function isFunctionType(node: TSESTree.Node): boolean {
@@ -107,17 +110,32 @@ export default util.createRule({
       }
     }
 
-    return {
-      CallExpression(node): void {
-        if (node.arguments.length === 0) {
-          return;
-        }
+    function checkImpliedEval(
+      node: TSESTree.NewExpression | TSESTree.CallExpression,
+    ): void {
+      const calleeName = getCalleeName(node.callee);
+      if (calleeName === null) {
+        return;
+      }
 
-        const [handler] = node.arguments;
-        if (isEvalLikeMethod(node) && !isFunction(handler)) {
-          context.report({ node: handler, messageId: 'noImpliedEvalError' });
-        }
-      },
+      if (calleeName === FUNCTION_CONSTRUCTOR) {
+        context.report({ node, messageId: 'noFunctionConstructor' });
+        return;
+      }
+
+      if (node.arguments.length === 0) {
+        return;
+      }
+
+      const [handler] = node.arguments;
+      if (EVAL_LIKE_METHODS.has(calleeName) && !isFunction(handler)) {
+        context.report({ node: handler, messageId: 'noImpliedEvalError' });
+      }
+    }
+
+    return {
+      NewExpression: checkImpliedEval,
+      CallExpression: checkImpliedEval,
     };
   },
 });
