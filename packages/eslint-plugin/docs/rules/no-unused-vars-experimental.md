@@ -79,7 +79,7 @@ Examples of valid code based on the unchangeable compiler settings
 import _UnusedDefault, { _UnusedNamed } from 'foo';
 export function foo(_unusedProp: string) {}
 export class Foo<_UnusedGeneric> {}
-const { prop: _unusedDesctructure } = foo;
+const { prop: _unusedDestructure } = foo;
 ```
 
 ## `ignoreArgsIfArgsAfterAreUsed`

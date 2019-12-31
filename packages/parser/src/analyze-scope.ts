@@ -377,7 +377,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     const upperScope = this.currentScope();
     const { id, typeParameters, params, returnType } = node;
 
-    // Ignore this if other overloadings have already existed.
+    // Ignore this if other overload have already existed.
     if (id) {
       const variable = upperScope.set.get(id.name);
       const defs = variable?.defs;

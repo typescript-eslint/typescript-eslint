@@ -48,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
       'ArrowFunctionExpression[async = true]'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
-        // If body type is not BlockStatment, we need to check the return type here
+        // If body type is not BlockStatement, we need to check the return type here
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           const expression = parserServices.esTreeNodeToTSNodeMap.get(
             node.body,

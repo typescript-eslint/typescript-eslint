@@ -157,7 +157,7 @@ function logsSize(size): void {
   console.log(size);
 }
 
-const doublesSize = function(size): numeber {
+const doublesSize = function(size): number {
   return size * 2;
 };
 
@@ -185,7 +185,7 @@ function logsSize(size: number): void {
   console.log(size);
 }
 
-const doublesSize = function(size: number): numeber {
+const doublesSize = function(size: number): number {
   return size * 2;
 };
 
