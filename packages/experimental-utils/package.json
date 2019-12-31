@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/experimental-utils",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.3",
-    "@typescript-eslint/typescript-estree": "2.13.0",
+    "@typescript-eslint/typescript-estree": "2.14.0",
     "eslint-scope": "^5.0.0"
   },
   "peerDependencies": {
