@@ -1,22 +1,6 @@
 import * as parser from '../src/parser';
 import { TSESTreeOptions } from '../src/parser-options';
 
-/**
- * Returns a raw copy of the given AST
- * @param  {Object} ast the AST object
- * @returns {Object}     copy of the AST object
- */
-export function getRaw(ast: parser.TSESTree.Program): parser.TSESTree.Program {
-  return JSON.parse(
-    JSON.stringify(ast, (key, value) => {
-      if ((key === 'start' || key === 'end') && typeof value === 'number') {
-        return undefined;
-      }
-      return value;
-    }),
-  );
-}
-
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
@@ -27,24 +11,24 @@ export function parseCodeAndGenerateServices(
 /**
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
- * @param {string} code The source code to parse
- * @param {TSESTreeOptions} config the parser configuration
- * @param {boolean} generateServices Flag determining whether to generate ast maps and program or not
- * @returns {jest.ProvidesCallback} callback for Jest it() block
+ * @param code The source code to parse
+ * @param config the parser configuration
+ * @param generateServices Flag determining whether to generate ast maps and program or not
+ * @returns callback for Jest it() block
  */
 export function createSnapshotTestBlock(
   code: string,
   config: TSESTreeOptions,
   generateServices?: true,
-): () => void {
+): jest.ProvidesCallback {
   /**
-   * @returns {Object} the AST object
+   * @returns the AST object
    */
   function parse(): parser.TSESTree.Program {
     const ast = generateServices
       ? parser.parseAndGenerateServices(code, config).ast
       : parser.parse(code, config);
-    return getRaw(ast);
+    return omitDeep(ast);
   }
 
   return (): void => {
@@ -83,4 +67,68 @@ export function isJSXFileType(fileType: string): boolean {
     fileType = fileType.slice(1);
   }
   return fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+}
+
+/**
+ * Removes the given keys from the given AST object recursively
+ * @param root A JavaScript object to remove keys from
+ * @param keysToOmit Names and predicate functions use to determine what keys to omit from the final object
+ * @param nodes advance ast modifications
+ * @returns formatted object
+ */
+export function omitDeep<T = Record<string, unknown>>(
+  root: T,
+  keysToOmit: { key: string; predicate: (value: unknown) => boolean }[] = [],
+  nodes: Record<string, (node: T, parent: T | null) => void> = {},
+): T {
+  function isObjectLike(value: unknown | null): value is T {
+    return (
+      typeof value === 'object' && !(value instanceof RegExp) && value !== null
+    );
+  }
+
+  function shouldOmit(keyName: string, val: unknown): boolean {
+    if (keysToOmit?.length) {
+      return keysToOmit.some(
+        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
+      );
+    }
+    return false;
+  }
+
+  function visit(oNode: T, parent: T | null): T {
+    if (!Array.isArray(oNode) && !isObjectLike(oNode)) {
+      return oNode;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const node: any = Array.isArray(oNode) ? [...oNode] : { ...oNode };
+
+    for (const prop in node) {
+      if (Object.prototype.hasOwnProperty.call(node, prop)) {
+        if (shouldOmit(prop, node[prop]) || typeof node[prop] === 'undefined') {
+          delete node[prop];
+          continue;
+        }
+
+        const child = node[prop];
+
+        if (Array.isArray(child)) {
+          node[prop] = [];
+          for (const el of child) {
+            node[prop].push(visit(el, node));
+          }
+        } else if (isObjectLike(child)) {
+          node[prop] = visit(child, node);
+        }
+      }
+    }
+
+    if (typeof node.type === 'string' && node.type in nodes) {
+      nodes[node.type](node, parent);
+    }
+
+    return node;
+  }
+
+  return visit(root, null);
 }

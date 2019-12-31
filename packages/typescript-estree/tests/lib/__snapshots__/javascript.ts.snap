@@ -132662,7 +132662,7 @@ Object {
               "pattern": "foo.",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo\\./,
           },
           "loc": Object {
             "end": Object {
@@ -132859,7 +132859,7 @@ Object {
               "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /\\[\\\\u\\{0000000000000061\\}-\\\\u\\{7A\\}\\]/u,
           },
           "loc": Object {
             "end": Object {
@@ -133253,7 +133253,7 @@ Object {
               "pattern": "foo",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo/u,
           },
           "loc": Object {
             "end": Object {
@@ -133450,7 +133450,7 @@ Object {
               "pattern": "foo",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo/y,
           },
           "loc": Object {
             "end": Object {

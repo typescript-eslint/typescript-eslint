@@ -3,7 +3,6 @@
 import { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
 import * as parser from '../../src/parser';
-import * as parseUtils from './utils';
 
 function createError(
   message: string,
@@ -92,14 +91,10 @@ export function parse(
   try {
     switch (opts.parser) {
       case '@typescript-eslint/typescript-estree':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithTypeScriptESTree(text, opts.jsx),
-        );
+        result.ast = parseWithTypeScriptESTree(text, opts.jsx);
         break;
       case '@babel/parser':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabelParser(text, opts.jsx),
-        );
+        result.ast = parseWithBabelParser(text, opts.jsx);
         break;
       default:
         throw new Error(
