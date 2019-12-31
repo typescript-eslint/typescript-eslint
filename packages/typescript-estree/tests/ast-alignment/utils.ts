@@ -18,7 +18,7 @@ const ifNumber = (val: unknown): boolean => typeof val === 'number';
  * @param ast raw babylon AST
  * @returns processed babylon AST
  */
-export function preprocessBabylonAST(ast: BabelTypes.File): BabelTypes.File {
+export function preprocessBabylonAST(ast: BabelTypes.File): any {
   return omitDeep<any>(
     ast.program,
     [
