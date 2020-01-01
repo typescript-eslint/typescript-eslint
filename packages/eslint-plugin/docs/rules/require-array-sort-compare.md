@@ -1,4 +1,4 @@
-# Enforce giving `compare` argument to `Array#sort` (require-array-sort-compare)
+# Enforce giving `compare` argument to `Array#sort` (`require-array-sort-compare`)
 
 This rule prevents to invoke `Array#sort()` method without `compare` argument.
 

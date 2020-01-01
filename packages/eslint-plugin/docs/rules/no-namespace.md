@@ -1,4 +1,4 @@
-# Disallow the use of custom TypeScript modules and namespaces (no-namespace)
+# Disallow the use of custom TypeScript modules and namespaces (`no-namespace`)
 
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
 ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).

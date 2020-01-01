@@ -10,7 +10,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer RegExp#exec() over String#match() if no global flag is provided',
+        'Enforce that a `RegExp#exec` is used instead of `String#match` if no global flag is provided',
       category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,

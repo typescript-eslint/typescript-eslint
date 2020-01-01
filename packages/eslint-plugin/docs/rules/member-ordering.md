@@ -1,4 +1,4 @@
-# Require a consistent member declaration order (member-ordering)
+# Require a consistent member declaration order (`member-ordering`)
 
 A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class
 expressions easier to read, navigate and edit.

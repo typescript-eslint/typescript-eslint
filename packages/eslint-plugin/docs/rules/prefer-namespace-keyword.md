@@ -1,4 +1,4 @@
-# Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules. (prefer-namespace-keyword)
+# Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules (`prefer-namespace-keyword`)
 
 In an effort to prevent further confusion between custom TypeScript modules and the new ES2015 modules, starting
 with TypeScript `v1.5` the keyword `namespace` is now the preferred way to declare custom TypeScript modules.

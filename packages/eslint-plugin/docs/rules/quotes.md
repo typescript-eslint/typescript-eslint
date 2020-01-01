@@ -1,4 +1,4 @@
-# Enforce the consistent use of either backticks, double, or single quotes
+# Enforce the consistent use of either backticks, double, or single quotes (`quotes`)
 
 ## Rule Details
 

@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow unused variables and arguments.',
+      description: 'Disallow unused variables and arguments',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
