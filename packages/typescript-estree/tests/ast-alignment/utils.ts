@@ -1,7 +1,7 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
-import { omitDeep } from '../../tools/test-utils';
+import { deeplyCopy, omitDeep } from '../../tools/test-utils';
 import * as BabelTypes from '@babel/types';
 
 /**
@@ -131,7 +131,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
        * We want this node to be different
        * @see https://github.com/JamesHenry/typescript-estree/issues/109
        */
-      TSTypeParameter(node) {
+      TSTypeParameter(node: any) {
         if (node.name) {
           node.name = {
             loc: {
@@ -168,7 +168,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.declare = false;
         }
       },
-      TSExpressionWithTypeArguments(node, parent) {
+      TSExpressionWithTypeArguments(node, parent: any) {
         if (parent.type === 'TSInterfaceDeclaration') {
           node.type = 'TSInterfaceHeritage';
         } else if (
@@ -179,7 +179,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       // https://github.com/prettier/prettier/issues/5817
-      FunctionExpression(node, parent) {
+      FunctionExpression(node: any, parent: any) {
         if (parent.typeParameters && parent.type === 'Property') {
           node.typeParameters = parent.typeParameters;
           delete parent.typeParameters;
@@ -259,5 +259,5 @@ export function removeLocationDataAndSourceTypeFromProgramNode(
  * @returns copy of the AST object
  */
 export function preprocessTypescriptAST<T = TSESTree.Program>(ast: T): T {
-  return omitDeep<T>(ast);
+  return deeplyCopy<T>(ast);
 }
