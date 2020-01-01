@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - master
-  pull_request
+  pull_request:
+    branches:
+      - *
 
 jobs:
   primary_code_validation_and_tests:
