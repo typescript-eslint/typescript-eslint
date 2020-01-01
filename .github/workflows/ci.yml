@@ -1,6 +1,10 @@
 name: Node CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request
 
 jobs:
   primary_code_validation_and_tests:
