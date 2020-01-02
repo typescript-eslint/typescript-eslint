@@ -366,7 +366,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   )!;
 
   /**
-   * Determine whatever or not two-way maps of converted AST nodes should be preserved
+   * Determine if two-way maps of converted AST nodes should be preserved
    * during the conversion process
    */
   const shouldPreserveNodeMaps =
