@@ -10,8 +10,7 @@ export default util.createRule({
   name: 'return-await',
   meta: {
     docs: {
-      description:
-        'Enforces consistent returning of awaited values in specific contexts',
+      description: 'Enforces consistent returning of awaited values',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,

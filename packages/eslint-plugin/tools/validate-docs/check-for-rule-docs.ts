@@ -3,8 +3,16 @@ import fs from 'fs';
 import path from 'path';
 import { logRule } from '../log';
 import chalk from 'chalk';
+import marked from 'marked';
 
-function checkForRuleDocs(
+function isHeading(
+  token: marked.Token,
+  depth: number = 1,
+): token is marked.Tokens.Heading {
+  return token && token.type === 'heading' && token.depth === depth;
+}
+
+export function checkForRuleDocs(
   rules: Record<string, Readonly<TSESLint.RuleModule<string, unknown[]>>>,
 ): boolean {
   const docsRoot = path.resolve(__dirname, '../../docs/rules');
@@ -22,14 +30,23 @@ function checkForRuleDocs(
         path.join(docsRoot, `${ruleName}.md`),
         'utf-8',
       );
-      const match = /^\s*#[^\r\n]*/.exec(file) ?? [];
-      const expectedDescription = `# ${rule.docs.description} (\`${ruleName}\`)`;
-      if (!match[0] || match[0] !== expectedDescription) {
-        errors.push(
-          'Header of file does not match the rule metadata.',
-          `    Expected: ${chalk.underline(expectedDescription)}`,
-          `    Received: ${chalk.underline(match[0])}`,
-        );
+
+      const tokens = marked.lexer(file, {
+        gfm: true,
+        silent: false,
+      });
+
+      if (isHeading(tokens[0])) {
+        const expectedDescription = `${rule.docs.description} (\`${ruleName}\`)`;
+        if (tokens[0].text !== expectedDescription) {
+          errors.push(
+            'Rule title does not match the rule metadata.',
+            `    Expected: ${chalk.underline(expectedDescription)}`,
+            `    Received: ${chalk.underline(tokens[0].text)}`,
+          );
+        }
+      } else {
+        errors.push('Rule title not found.');
       }
     }
 
@@ -48,5 +65,3 @@ function checkForRuleDocs(
 
   return hasErrors;
 }
-
-export { checkForRuleDocs };
