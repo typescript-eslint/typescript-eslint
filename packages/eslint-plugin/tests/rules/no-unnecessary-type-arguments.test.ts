@@ -6,6 +6,7 @@ const rootDir = path.join(process.cwd(), 'tests/fixtures');
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
+    sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
@@ -74,6 +75,9 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       class Foo<T = number> extends Bar<string> {}`,
     `interface Bar<T = number> {}
       class Foo<T = number> implements Bar<string> {}`,
+    `import { F } from './missing';
+      function bar<T = F>() {}
+      bar<F<number>>()`,
   ],
   invalid: [
     {
@@ -176,6 +180,21 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       ],
       output: `class Bar<T = string> {}
         class Foo<T = number> extends Bar {}`,
+    },
+    {
+      code: `import { F } from './missing';
+        function bar<T = F<string>>() {}
+        bar<F<string>>()`,
+      errors: [
+        {
+          line: 3,
+          column: 13,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `import { F } from './missing';
+        function bar<T = F<string>>() {}
+        bar()`,
     },
   ],
 });
