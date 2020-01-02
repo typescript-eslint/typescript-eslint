@@ -1,4 +1,4 @@
-# Disallow async functions which have no await expression (require-await)
+# Disallow async functions which have no `await` expression (`require-await`)
 
 Asynchronous functions that don’t use `await` might not need to be asynchronous functions and could be the unintentional result of refactoring.
 

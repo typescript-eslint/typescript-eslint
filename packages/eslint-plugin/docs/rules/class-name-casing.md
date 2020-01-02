@@ -1,4 +1,4 @@
-# Require PascalCase class and interface names (class-name-casing)
+# Require PascalCased class and interface names (`class-name-casing`)
 
 This rule enforces PascalCase names for classes and interfaces.
 

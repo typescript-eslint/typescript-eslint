@@ -12,7 +12,7 @@ console.log(chalk.underline('Checking for rule docs'));
 hasErrors = hasErrors || checkForRuleDocs(rules);
 
 console.log();
-console.log(chalk.underline('Valdiating README.md'));
+console.log(chalk.underline('Validating README.md'));
 const rulesTable = parseReadme();
 
 console.log();

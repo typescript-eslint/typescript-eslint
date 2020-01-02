@@ -17,7 +17,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     docs: {
       description:
-        'Warns if an explicitly specified type argument is the default for that type parameter',
+        'Enforces that type arguments will not be used if not required',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,

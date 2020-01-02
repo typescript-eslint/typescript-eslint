@@ -1,4 +1,4 @@
-# Disallow extra non-null assertion
+# Disallow extra non-null assertion (`no-extra-non-null-assertion`)
 
 ## Rule Details
 

@@ -1,4 +1,4 @@
-# Disallow untyped public methods (no-untyped-public-signature)
+# Disallow untyped public methods (`no-untyped-public-signature`)
 
 public methods are meant to be used by code outside of your class. By typing both the parameters and the return type of public methods they will be more readable and easy to use.
 
