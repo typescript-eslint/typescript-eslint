@@ -1,4 +1,4 @@
-# Require explicit return types on functions and class methods (explicit-function-return-type)
+# Require explicit return types on functions and class methods (`explicit-function-return-type`)
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case

@@ -1,4 +1,4 @@
-# Disallow Unused Expressions (no-unused-expressions)
+# Disallow unused expressions (`no-unused-expressions`)
 
 This rule aims to eliminate unused expressions which have no effect on the state of the program.
 

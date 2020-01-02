@@ -1,4 +1,4 @@
-# Enforce consistent brace style for blocks
+# Enforce consistent brace style for blocks (`brace-style`)
 
 ## Rule Details
 

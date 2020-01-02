@@ -1,4 +1,4 @@
-# Enforces consistent usage of type assertions. (consistent-type-assertions)
+# Enforces consistent usage of type assertions (`consistent-type-assertions`)
 
 ## Rule Details
 

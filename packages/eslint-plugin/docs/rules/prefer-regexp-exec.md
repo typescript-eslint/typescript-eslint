@@ -1,4 +1,4 @@
-# Enforce to use `RegExp#exec` over `String#match` (prefer-regexp-exec)
+# Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided (`prefer-regexp-exec`)
 
 `RegExp#exec` is faster than `String#match` and both work the same when not using the `/g` flag.
 

@@ -1,4 +1,4 @@
-# Bans specific types from being used (ban-types)
+# Bans specific types from being used (`ban-types`)
 
 This rule bans specific types and can suggest alternatives. It does not ban the
 corresponding runtime objects from being used.
