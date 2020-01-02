@@ -7,7 +7,7 @@ import marked from 'marked';
 
 function isHeading(
   token: marked.Token,
-  depth: number = 1,
+  depth = 1,
 ): token is marked.Tokens.Heading {
   return token && token.type === 'heading' && token.depth === depth;
 }
