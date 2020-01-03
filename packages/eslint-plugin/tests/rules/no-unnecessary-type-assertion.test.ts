@@ -30,6 +30,8 @@ const foo = ({ hello: "hello" }) as PossibleTuple;`,
     `
 type PossibleTuple = { 0: "hello", 5: "hello" };
 const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
+    `let bar: number | undefined = x;
+      let foo: number = bar!;`,
     {
       code: `
 type Foo = number;
