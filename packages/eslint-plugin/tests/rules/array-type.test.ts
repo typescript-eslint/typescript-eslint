@@ -313,6 +313,25 @@ ruleTester.run('array-type', rule, {
       ],
     },
     {
+      code: 'let a: Array<>[] = []',
+      output: 'let a: any[][] = []',
+      options: [{ default: 'array-simple' }],
+      errors: [
+        {
+          messageId: 'errorStringGenericSimple',
+          data: { type: 'T' },
+          line: 1,
+          column: 8,
+        },
+        {
+          messageId: 'errorStringArraySimple',
+          data: { type: 'any' },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
       code: `let x: Array<undefined> = [undefined] as undefined[];`,
       output: `let x: undefined[] = [undefined] as undefined[];`,
       options: [{ default: 'array-simple' }],
