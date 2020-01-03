@@ -196,6 +196,21 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }
       },
+      // https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+      TemplateLiteral(node: any) {
+        for (let j = 0; j < node.quasis.length; j++) {
+          const q = node.quasis[j];
+          q.range[0] -= 1;
+          q.loc.start.column -= 1;
+          if (q.tail) {
+            q.range[1] += 1;
+            q.loc.end.column += 1;
+          } else {
+            q.range[1] += 2;
+            q.loc.end.column += 2;
+          }
+        }
+      },
       /**
        * TS 3.7: optional chaining
        * babel: sets optional property as true/undefined
