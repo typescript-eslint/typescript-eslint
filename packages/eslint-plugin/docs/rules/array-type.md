@@ -1,4 +1,4 @@
-# Requires using either `T[]` or `Array<T>` for arrays (array-type)
+# Requires using either `T[]` or `Array<T>` for arrays (`array-type`)
 
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 

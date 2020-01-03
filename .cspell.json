@@ -9,7 +9,7 @@
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/ROADMAP.md",
-    "**/*.json",
+    "**/*.{json,snap}",
     ".cspell.json"
   ],
   "dictionaries": [

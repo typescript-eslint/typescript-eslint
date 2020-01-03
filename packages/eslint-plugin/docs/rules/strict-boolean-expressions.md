@@ -1,4 +1,4 @@
-# Boolean expressions are limited to booleans (strict-boolean-expressions)
+# Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
 
 Requires that any boolean expression is limited to true booleans rather than
 casting another primitive to a boolean at runtime.

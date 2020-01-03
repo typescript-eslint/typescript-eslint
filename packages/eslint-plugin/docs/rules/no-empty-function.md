@@ -1,4 +1,4 @@
-# Disallow Empty Functions (no-empty-function)
+# Disallow empty functions (`no-empty-function`)
 
 Empty functions can reduce readability because readers need to guess whether it’s intentional or not. So writing a clear comment for empty functions is a good practice.
 

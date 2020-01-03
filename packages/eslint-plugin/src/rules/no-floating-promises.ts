@@ -13,7 +13,7 @@ export default util.createRule<Options, 'floating'>({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description: 'Requires Promise-like values to be handled appropriately.',
+      description: 'Requires Promise-like values to be handled appropriately',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,

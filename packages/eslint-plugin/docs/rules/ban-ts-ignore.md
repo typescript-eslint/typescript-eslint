@@ -1,4 +1,4 @@
-# Bans “// @ts-ignore” comments from being used (ban-ts-ignore)
+# Bans “// @ts-ignore” comments from being used (`ban-ts-ignore`)
 
 Suppressing TypeScript Compiler Errors can be hard to discover.
 
