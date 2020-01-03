@@ -3225,5 +3225,29 @@ type Foo<T> = {
         },
       ],
     },
+    {
+      // unique symbol is not allowed in this context
+      code: 'type Foo = keyof [string] | unique symbol;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Unhandled',
+          },
+          line: 1,
+          column: 29,
+        },
+      ],
+    },
   ],
 });
