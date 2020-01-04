@@ -14,40 +14,22 @@ declare abstract class C {
     get new ();
     bar();
 }
-        `,
-    `
-class C {
-    constructor();
-}
-        `,
-    `
-class C {
-    constructor() {}
-}
-        `,
+    `,
+    `class C { constructor(); }`,
+    `const foo = class { constructor(); }`,
+    `const foo = class { new(): X }`,
     // OK if there's a body
-    `
-class C {
-    new() {}
-}
-        `,
+    `class C { new() {} }`,
+    `class C { constructor() {} }`,
+    `const foo = class { new() {} }`,
+    `const foo = class { constructor() {} }`,
     // OK if return type is not the interface.
-    `
-interface I {
-    new(): {};
-}
-        `,
+    `interface I { new(): {}; }`,
     // 'new' OK in type literal (we don't know the type name)
-    `
-type T = {
-    new(): T;
-}
-        `,
-    `
-export default class {
-    constructor();
-}
-        `,
+    `type T = { new(): T; }`,
+    `export default class { constructor(); }`,
+    `interface foo { new<T>(): bar<T>; }`,
+    `interface foo { new<T>(): 'x'; }`,
   ],
   invalid: [
     {
@@ -123,6 +105,20 @@ declare abstract class C {
       errors: [
         {
           messageId: 'errorMessageClass',
+          line: 3,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+interface I {
+    constructor(): '';
+}
+`,
+      errors: [
+        {
+          messageId: 'errorMessageInterface',
           line: 3,
           column: 5,
         },
