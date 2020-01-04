@@ -30,8 +30,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "check:docs": "../../node_modules/.bin/ts-node --files --transpile-only ./tools/validate-docs/index.ts",
-    "check:configs": "../../node_modules/.bin/ts-node --files --transpile-only ./tools/validate-configs/index.ts",
+    "check:docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
+    "check:configs": "jest ests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:configs": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-configs.ts",
