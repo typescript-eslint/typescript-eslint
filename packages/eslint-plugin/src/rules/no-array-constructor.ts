@@ -15,7 +15,7 @@ export default util.createRule({
     },
     fixable: 'code',
     messages: {
-      useLiteral: 'The array literal notation [] is preferrable.',
+      useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
   },
