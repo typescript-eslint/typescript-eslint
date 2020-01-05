@@ -44,7 +44,7 @@ function createProjectProgram(
     const extraFileExtensions = extra.extraFileExtensions || [];
 
     extraFileExtensions.forEach(extraExtension => {
-      if (extraExtension.startsWith('.')) {
+      if (!extraExtension.startsWith('.')) {
         errorLines.push(
           `Found unexpected extension "${extraExtension}" specified with the "extraFileExtensions" option. Did you mean ".${extraExtension}"?`,
         );
