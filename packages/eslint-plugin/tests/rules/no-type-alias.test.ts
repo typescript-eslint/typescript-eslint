@@ -358,7 +358,8 @@ type Foo<T> = {
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
     {
-      code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
+      code:
+        'export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;',
       options: [
         {
           allowAliases: 'in-unions-and-intersections',
@@ -2974,7 +2975,7 @@ type Foo<T> = {
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/270
-      code: `export type ButtonProps = JSX.IntrinsicElements['button'];`,
+      code: "export type ButtonProps = JSX.IntrinsicElements['button'];",
       errors: [
         {
           messageId: 'noTypeAlias',

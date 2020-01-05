@@ -300,12 +300,12 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `class Test { x = 2 }`,
+      code: 'class Test { x = 2 }',
       options: [{ overrides: { properties: 'off' } }],
     },
     {
       filename: 'test.ts',
-      code: `class Test { private x = 2 }`,
+      code: 'class Test { private x = 2 }',
       options: [{ overrides: { properties: 'explicit' } }],
     },
     {
@@ -317,7 +317,7 @@ class Test {
       options: [{ overrides: { properties: 'no-public' } }],
     },
     {
-      code: `class Test { constructor(private { x }: any[]) { }}`,
+      code: 'class Test { constructor(private { x }: any[]) { }}',
       options: [{ accessibility: 'no-public' }],
     },
   ],
@@ -660,7 +660,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: `class Test { x = 2 }`,
+      code: 'class Test { x = 2 }',
       options: [
         {
           accessibility: 'off',
@@ -696,7 +696,7 @@ class Test {
       ],
     },
     {
-      code: `class Test { constructor(public ...x: any[]) { }}`,
+      code: 'class Test { constructor(public ...x: any[]) { }}',
       options: [{ accessibility: 'explicit' }],
       errors: [
         {

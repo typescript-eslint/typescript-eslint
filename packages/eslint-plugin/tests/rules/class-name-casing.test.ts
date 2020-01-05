@@ -172,7 +172,7 @@ ruleTester.run('class-name-casing', rule, {
       ],
     },
     {
-      code: `class æInvalidClassNameWithUnicode {}`,
+      code: 'class æInvalidClassNameWithUnicode {}',
       errors: [
         {
           messageId: 'notPascalCased',

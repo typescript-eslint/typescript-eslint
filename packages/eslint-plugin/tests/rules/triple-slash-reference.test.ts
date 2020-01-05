@@ -55,35 +55,35 @@ ruleTester.run('triple-slash-reference', rule, {
       options: [{ path: 'always', types: 'always', lib: 'always' }],
     },
     {
-      code: `import * as foo from "foo"`,
+      code: 'import * as foo from "foo"',
       options: [{ path: 'never' }],
     },
     {
-      code: `import foo = require("foo");`,
+      code: 'import foo = require("foo");',
       options: [{ path: 'never' }],
     },
     {
-      code: `import * as foo from "foo"`,
+      code: 'import * as foo from "foo"',
       options: [{ types: 'never' }],
     },
     {
-      code: `import foo = require("foo");`,
+      code: 'import foo = require("foo");',
       options: [{ types: 'never' }],
     },
     {
-      code: `import * as foo from "foo"`,
+      code: 'import * as foo from "foo"',
       options: [{ lib: 'never' }],
     },
     {
-      code: `import foo = require("foo");`,
+      code: 'import foo = require("foo");',
       options: [{ lib: 'never' }],
     },
     {
-      code: `import * as foo from "foo"`,
+      code: 'import * as foo from "foo"',
       options: [{ types: 'prefer-import' }],
     },
     {
-      code: `import foo = require("foo");`,
+      code: 'import foo = require("foo");',
       options: [{ types: 'prefer-import' }],
     },
     {
@@ -133,7 +133,7 @@ import foo = require("foo");
       ],
     },
     {
-      code: `/// <reference path="foo" />`,
+      code: '/// <reference path="foo" />',
       options: [{ path: 'never' }],
       errors: [
         {
@@ -144,7 +144,7 @@ import foo = require("foo");
       ],
     },
     {
-      code: `/// <reference types="foo" />`,
+      code: '/// <reference types="foo" />',
       options: [{ types: 'never' }],
       errors: [
         {
@@ -155,7 +155,7 @@ import foo = require("foo");
       ],
     },
     {
-      code: `/// <reference lib="foo" />`,
+      code: '/// <reference lib="foo" />',
       options: [{ lib: 'never' }],
       errors: [
         {
