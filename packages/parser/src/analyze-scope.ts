@@ -7,7 +7,7 @@ import { getKeys as fallback } from 'eslint-visitor-keys';
 
 import { ParserOptions } from './parser-options';
 import { ScopeManager } from './scope/scope-manager';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
@@ -345,6 +345,29 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   }
 
   /**
+   * Visit optional member expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalMemberExpression(node: TSESTree.OptionalMemberExpression): void {
+    this.visit(node.object);
+    if (node.computed) {
+      this.visit(node.property);
+    }
+  }
+
+  /**
+   * Visit optional call expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalCallExpression(node: TSESTree.OptionalCallExpression): void {
+    this.visitTypeParameters(node);
+
+    this.visit(node.callee);
+
+    node.arguments.forEach(this.visit, this);
+  }
+
+  /**
    * Define the variable of this function declaration only once.
    * Because to avoid confusion of `no-redeclare` rule by overloading.
    * @param node The TSDeclareFunction node to visit.
@@ -354,11 +377,11 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     const upperScope = this.currentScope();
     const { id, typeParameters, params, returnType } = node;
 
-    // Ignore this if other overloadings have already existed.
+    // Ignore this if other overload have already existed.
     if (id) {
       const variable = upperScope.set.get(id.name);
-      const defs = variable && variable.defs;
-      const existed = defs && defs.some(d => d.type === 'FunctionName');
+      const defs = variable?.defs;
+      const existed = defs?.some((d): boolean => d.type === 'FunctionName');
       if (!existed) {
         upperScope.__define(
           id,
@@ -856,7 +879,7 @@ export function analyzeScope(
         parserOptions.ecmaFeatures.globalReturn) === true,
     impliedStrict: false,
     sourceType: parserOptions.sourceType,
-    ecmaVersion: parserOptions.ecmaVersion || 2018,
+    ecmaVersion: parserOptions.ecmaVersion ?? 2018,
     childVisitorKeys,
     fallback,
   };

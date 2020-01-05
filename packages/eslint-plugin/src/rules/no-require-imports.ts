@@ -18,7 +18,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      'CallExpression > Identifier[name="require"]'(
+      ':matches(CallExpression, OptionalCallExpression) > Identifier[name="require"]'(
         node: TSESTree.Identifier,
       ): void {
         context.report({

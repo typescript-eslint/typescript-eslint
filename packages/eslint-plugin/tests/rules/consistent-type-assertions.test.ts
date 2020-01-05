@@ -29,11 +29,17 @@ const OBJECT_LITERAL_ARGUMENT_AS_CASTS = `
 print({ bar: 5 } as Foo)
 new print({ bar: 5 } as Foo)
 function foo() { throw { bar: 5 } as Foo }
+function b(x = {} as Foo.Bar) {}
+function c(x = {} as Foo) {}
+print?.({ bar: 5 } as Foo)
+print?.call({ bar: 5 } as Foo)
 `;
 const OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS = `
 print(<Foo>{ bar: 5 })
 new print(<Foo>{ bar: 5 })
 function foo() { throw <Foo>{ bar: 5 } }
+print?.(<Foo>{ bar: 5 })
+print?.call(<Foo>{ bar: 5 })
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
@@ -269,6 +275,22 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
         },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 6,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 7,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 8,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 9,
+        },
       ],
     }),
     ...batchedSingleLineTests({
@@ -295,6 +317,14 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 6,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 7,
         },
       ],
     }),

@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallows magic numbers',
+      description: 'Disallow magic numbers',
       category: 'Best Practices',
       recommended: false,
     },
@@ -33,6 +33,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreEnums: {
             type: 'boolean',
           },
+          ignoreReadonlyClassProperties: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -46,6 +49,7 @@ export default util.createRule<Options, MessageIds>({
       detectObjects: false,
       ignoreNumericLiteralTypes: false,
       ignoreEnums: false,
+      ignoreReadonlyClassProperties: false,
     },
   ],
   create(context, [options]) {
@@ -75,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Checks if the node grandparent is a Typescript union type and its parent is a type alias declaration
      * @param node the node to be validated.
-     * @returns true if the node grandparent is a Typescript untion type and its parent is a type alias declaration
+     * @returns true if the node grandparent is a Typescript union type and its parent is a type alias declaration
      * @private
      */
     function isGrandparentTSUnionType(node: TSESTree.Node): boolean {
@@ -149,6 +153,32 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    /**
+     * Checks if the node parent is a readonly class property
+     * @param node the node to be validated.
+     * @returns true if the node parent is a readonly class property
+     * @private
+     */
+    function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
+      if (
+        node.parent &&
+        node.parent.type === AST_NODE_TYPES.UnaryExpression &&
+        ['-', '+'].includes(node.parent.operator)
+      ) {
+        node = node.parent;
+      }
+
+      if (
+        node.parent &&
+        node.parent.type === AST_NODE_TYPES.ClassProperty &&
+        node.parent.readonly
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
     return {
       Literal(node): void {
         // Check if the node is a TypeScript enum declaration
@@ -162,6 +192,34 @@ export default util.createRule<Options, MessageIds>({
           isNumber(node) &&
           isTSNumericLiteralType(node)
         ) {
+          return;
+        }
+
+        // Check if the node is a readonly class property
+        if (isNumber(node) && isParentTSReadonlyClassProperty(node)) {
+          if (options.ignoreReadonlyClassProperties) {
+            return;
+          }
+
+          let fullNumberNode:
+            | TSESTree.Literal
+            | TSESTree.UnaryExpression = node;
+          let raw = node.raw;
+
+          if (
+            node.parent &&
+            node.parent.type === AST_NODE_TYPES.UnaryExpression
+          ) {
+            fullNumberNode = node.parent;
+            raw = `${node.parent.operator}${node.raw}`;
+          }
+
+          context.report({
+            messageId: 'noMagic',
+            node: fullNumberNode,
+            data: { raw },
+          });
+
           return;
         }
 

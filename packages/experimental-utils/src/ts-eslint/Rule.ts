@@ -19,10 +19,6 @@ interface RuleMetaDataDocs {
    */
   description: string;
   /**
-   * Extra information linking the rule to a tslint rule
-   */
-  extraDescription?: string[];
-  /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended config.
    * Set to false to not include it as a recommendation
@@ -109,6 +105,9 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
+type ReportSuggestionArray<TMessageIds extends string> = ReportDescriptorBase<
+  TMessageIds
+>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -123,7 +122,19 @@ interface ReportDescriptorBase<TMessageIds extends string> {
    * The messageId which is being reported.
    */
   messageId: TMessageIds;
+  // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
+  // message?: string;
+  // suggestions instead have this property that works the same, but again it's much better to use messageIds
+  // desc?: string;
 }
+interface ReportDescriptorWithSuggestion<TMessageIds extends string>
+  extends ReportDescriptorBase<TMessageIds> {
+  /**
+   * 6.7's Suggestions API
+   */
+  suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
+}
+
 interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
@@ -140,9 +151,9 @@ interface ReportDescriptorLocOnly {
    */
   loc: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
 }
-type ReportDescriptor<TMessageIds extends string> = ReportDescriptorBase<
-  TMessageIds
-> &
+type ReportDescriptor<
+  TMessageIds extends string
+> = ReportDescriptorWithSuggestion<TMessageIds> &
   (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
 
 interface RuleContext<
@@ -218,7 +229,7 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
-// This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
+// This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 
@@ -230,6 +241,8 @@ interface RuleListener {
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
+  BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
+  BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
   CallExpression?: RuleFunction<TSESTree.CallExpression>;
@@ -253,6 +266,8 @@ interface RuleListener {
   ForInStatement?: RuleFunction<TSESTree.ForInStatement>;
   ForOfStatement?: RuleFunction<TSESTree.ForOfStatement>;
   ForStatement?: RuleFunction<TSESTree.ForStatement>;
+  FunctionDeclaration?: RuleFunction<TSESTree.FunctionDeclaration>;
+  FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
   Import?: RuleFunction<TSESTree.Import>;
@@ -283,6 +298,8 @@ interface RuleListener {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+  OptionalCallExpression?: RuleFunction<TSESTree.OptionalCallExpression>;
+  OptionalMemberExpression?: RuleFunction<TSESTree.OptionalMemberExpression>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   RestElement?: RuleFunction<TSESTree.RestElement>;
@@ -299,6 +316,7 @@ interface RuleListener {
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
+  TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<
     TSESTree.TSAbstractMethodDefinition
@@ -312,17 +330,23 @@ interface RuleListener {
   TSCallSignatureDeclaration?: RuleFunction<
     TSESTree.TSCallSignatureDeclaration
   >;
+  TSClassImplements?: RuleFunction<TSESTree.TSClassImplements>;
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
+  TSConstructorType?: RuleFunction<TSESTree.TSConstructorType>;
   TSConstructSignatureDeclaration?: RuleFunction<
     TSESTree.TSConstructSignatureDeclaration
   >;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
+  TSEmptyBodyFunctionExpression?: RuleFunction<
+    TSESTree.TSEmptyBodyFunctionExpression
+  >;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
   TSExportKeyword?: RuleFunction<TSESTree.TSExportKeyword>;
   TSExternalModuleReference?: RuleFunction<TSESTree.TSExternalModuleReference>;
+  TSFunctionType?: RuleFunction<TSESTree.TSFunctionType>;
   TSImportEqualsDeclaration?: RuleFunction<TSESTree.TSImportEqualsDeclaration>;
   TSImportType?: RuleFunction<TSESTree.TSImportType>;
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
@@ -330,6 +354,7 @@ interface RuleListener {
   TSInferType?: RuleFunction<TSESTree.TSInferType>;
   TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
   TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
+  TSInterfaceHeritage?: RuleFunction<TSESTree.TSInterfaceHeritage>;
   TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
   TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
   TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
@@ -408,6 +433,7 @@ interface RuleModule<
 export {
   ReportDescriptor,
   ReportFixFunction,
+  ReportSuggestionArray,
   RuleContext,
   RuleFix,
   RuleFixer,

@@ -266,6 +266,22 @@ foo(() => '')
     {
       filename: 'test.ts',
       code: `
+declare function foo(arg: () => void): void
+foo?.(() => 1)
+foo?.bar(() => {})
+foo?.bar?.(() => null)
+foo.bar?.(() => true)
+foo?.(() => '')
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 class Accumulator {
   private count: number = 0;
 
@@ -319,6 +335,18 @@ const func = (value: number) => x as const;
       options: [
         {
           allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+new Promise(resolve => {});
+new Foo(1, () => {});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
         },
       ],
     },

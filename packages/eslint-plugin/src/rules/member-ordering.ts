@@ -24,8 +24,8 @@ const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
       all.push(`${accessibility}-${type}`); // e.g. `public-field`
 
       if (type !== 'constructor') {
-        // There is no `static-constructor` or `instance-constructor
-        ['static', 'instance'].forEach(scope => {
+        // There is no `static-constructor` or `instance-constructor or `abstract-constructor`
+        ['static', 'instance', 'abstract'].forEach(scope => {
           if (!all.includes(`${scope}-${type}`)) {
             all.push(`${scope}-${type}`);
           }
@@ -39,6 +39,7 @@ const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
   },
   [],
 );
+allMemberTypes.unshift('signature');
 
 export default util.createRule<Options, MessageIds>({
   name: 'member-ordering',
@@ -104,7 +105,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -117,7 +118,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -130,6 +131,8 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       default: [
+        'signature',
+
         'public-static-field',
         'protected-static-field',
         'private-static-field',
@@ -138,12 +141,17 @@ export default util.createRule<Options, MessageIds>({
         'protected-instance-field',
         'private-instance-field',
 
+        'public-abstract-field',
+        'protected-abstract-field',
+        'private-abstract-field',
+
         'public-field',
         'protected-field',
         'private-field',
 
         'static-field',
         'instance-field',
+        'abstract-field',
 
         'field',
 
@@ -157,12 +165,17 @@ export default util.createRule<Options, MessageIds>({
         'protected-instance-method',
         'private-instance-method',
 
+        'public-abstract-method',
+        'protected-abstract-method',
+        'private-abstract-method',
+
         'public-method',
         'protected-method',
         'private-method',
 
         'static-method',
         'instance-method',
+        'abstract-method',
 
         'method',
       ],
@@ -184,22 +197,23 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
-      // TODO: add missing TSIndexSignature
-      // TODO: add missing TSAbstractClassProperty
-      // TODO: add missing TSAbstractMethodDefinition
       switch (node.type) {
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind;
         case AST_NODE_TYPES.TSMethodSignature:
           return 'method';
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'constructor';
+        case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
           return node.value && functionExpressions.includes(node.value.type)
             ? 'method'
             : 'field';
         case AST_NODE_TYPES.TSPropertySignature:
           return 'field';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return 'signature';
         default:
           return null;
       }
@@ -215,14 +229,18 @@ export default util.createRule<Options, MessageIds>({
       switch (node.type) {
         case AST_NODE_TYPES.TSPropertySignature:
         case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
-          return util.getNameFromPropertyName(node.key);
+          return util.getNameFromMember(node, sourceCode);
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromClassMember(node, sourceCode);
+            : util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return util.getNameFromIndexSignature(node);
         default:
           return null;
       }
@@ -268,7 +286,16 @@ export default util.createRule<Options, MessageIds>({
         return order.length - 1;
       }
 
-      const scope = 'static' in node && node.static ? 'static' : 'instance';
+      const abstract =
+        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
+
+      const scope =
+        'static' in node && node.static
+          ? 'static'
+          : abstract
+          ? 'abstract'
+          : 'instance';
       const accessibility =
         'accessibility' in node && node.accessibility
           ? node.accessibility
@@ -367,28 +394,28 @@ export default util.createRule<Options, MessageIds>({
       ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
-          options.classes || options.default!,
+          options.classes ?? options.default!,
           true,
         );
       },
       ClassExpression(node): void {
         validateMembersOrder(
           node.body.body,
-          options.classExpressions || options.default!,
+          options.classExpressions ?? options.default!,
           true,
         );
       },
       TSInterfaceDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
-          options.interfaces || options.default!,
+          options.interfaces ?? options.default!,
           false,
         );
       },
       TSTypeLiteral(node): void {
         validateMembersOrder(
           node.members,
-          options.typeLiterals || options.default!,
+          options.typeLiterals ?? options.default!,
           false,
         );
       },

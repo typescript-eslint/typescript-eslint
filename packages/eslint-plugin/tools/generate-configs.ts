@@ -29,13 +29,16 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'no-array-constructor',
   'no-empty-function',
   'no-extra-parens',
+  'no-extra-semi',
   'no-magic-numbers',
   'quotes',
+  'no-unused-expressions',
   'no-unused-vars',
   'no-use-before-define',
   'no-useless-constructor',
   'require-await',
   'semi',
+  'space-before-function-paren',
 ]);
 // list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
@@ -53,6 +56,7 @@ const ruleEntries = Object.entries(rules).sort((a, b) =>
  * Helper function reduces records to key - value pairs.
  * @param config
  * @param entry
+ * @param settings
  */
 function reducer<TMessageIds extends string>(
   config: LinterConfigRules,

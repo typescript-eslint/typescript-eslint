@@ -258,6 +258,66 @@ class Test {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public static getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  get getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  getX () {
+    return this.x
+  }
+}
+      `,
+      options: [
+        {
+          ignoredMethodNames: ['getX'],
+        },
+      ],
+    },
   ],
   invalid: [
     {

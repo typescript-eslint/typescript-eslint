@@ -72,6 +72,22 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       }
     `,
+    // optional chain
+    `
+      function f(a: any[]) {
+        a?.sort((a, b) => a - b)
+      }
+    `,
+    `
+      namespace UserDefined {
+        interface Array {
+          sort(): void
+        }
+        function f(a: Array) {
+          a?.sort()
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -119,6 +135,15 @@ ruleTester.run('require-array-sort-compare', rule, {
       code: `
         function f<T, U extends T[]>(a: U) {
           a.sort()
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    // optional chain
+    {
+      code: `
+        function f(a: string[]) {
+          a?.sort()
         }
       `,
       errors: [{ messageId: 'requireCompare' }],

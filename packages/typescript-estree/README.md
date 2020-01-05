@@ -24,7 +24,7 @@ In fact, it is already used within these hyper-popular open-source projects to p
 ## Installation
 
 ```sh
-npm install @typescript-eslint/typescript-estree --save-dev
+yarn add -D @typescript-eslint/typescript-estree
 ```
 
 ## API
@@ -47,7 +47,17 @@ Parses the given string of code with the options provided and returns an ESTree-
   // create a top-level comments array containing all comments
   comment: false,
 
-  // enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+  /*
+   * enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+   *
+   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * TypeScript compiler has its own internal handling for known file extensions.
+   *
+   * Exact behaviour:
+   * - .js, .jsx, .tsx files are parsed as if this is true
+   * - .ts files are parsed as if this is false
+   * - unknown extensions (.md, .vue) will respect this setting
+   */
   jsx: false,
 
   /*
@@ -95,7 +105,7 @@ const ast = parser.parse(code, {
 
 ### version
 
-Exposes the current version of typescript-estree as specified in package.json.
+Exposes the current version of `typescript-estree` as specified in `package.json`.
 
 Example usage:
 
@@ -104,7 +114,7 @@ const parser = require('@typescript-eslint/typescript-estree');
 const version = parser.version;
 ```
 
-### AST_NODE_TYPES
+### `AST_NODE_TYPES`
 
 Exposes an object that contains the AST node types produced by the parser.
 
@@ -136,7 +146,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 A couple of years after work on this parser began, the TypeScript Team at Microsoft began [officially supporting TypeScript parsing via Babel](https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/).
 
-I work closely with TypeScript Team and we are gradually aliging the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see the code for more details.
+I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see the code for more details.
 
 ## Build/Test Commands
 
@@ -144,6 +154,15 @@ I work closely with TypeScript Team and we are gradually aliging the AST of this
 - `npm run unit-tests` - run only unit tests
 - `npm run ast-alignment-tests` - run only Babylon AST alignment tests
 
+## Debugging
+
+If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
+I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
+
 ## License
 
 TypeScript ESTree inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

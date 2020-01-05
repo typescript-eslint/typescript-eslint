@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -98,14 +101,19 @@ export default util.createRule<Options, MessageIds>({
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (
-        !util.containsTypeByName(returnType, allowAny!, allAllowedPromiseNames)
+        !util.containsAllTypesByName(
+          returnType,
+          allowAny!,
+          allAllowedPromiseNames,
+        )
       ) {
         return;
       }
 
       if (
         node.parent &&
-        node.parent.type === 'Property' &&
+        (node.parent.type === AST_NODE_TYPES.Property ||
+          node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
         return;

@@ -1,4 +1,4 @@
-# Disallow usage of the `any` type (no-explicit-any)
+# Disallow usage of the `any` type (`no-explicit-any`)
 
 Using the `any` type defeats the purpose of using TypeScript.
 When `any` is used, all compiler type checks around that value are ignored.
@@ -105,7 +105,7 @@ const defaults = {
 };
 ```
 
-### ignoreRestArgs
+### `ignoreRestArgs`
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
 
