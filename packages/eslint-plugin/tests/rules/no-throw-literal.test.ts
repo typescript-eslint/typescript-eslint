@@ -4,6 +4,7 @@ import { RuleTester, getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
+    sourceType: 'module',
     tsconfigRootDir: getFixturesRootDir(),
     project: './tsconfig.json',
   },
@@ -12,113 +13,68 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-throw-literal', rule, {
   valid: [
-    {
-      code: `throw new Error();`,
-    },
-    {
-      code: `throw new Error('error');`,
-    },
-    {
-      code: `throw Error('error');`,
-    },
-    {
-      code: `
+    `throw new Error();`,
+    `throw new Error('error');`,
+    `throw Error('error');`,
+    `
 const e = new Error();
 throw e;
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 try {
   throw new Error();
 } catch (e) {
   throw e;
 }
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 function foo() {
   return new Error();
 }
-
 throw foo();
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   bar: new Error()
 }
-
 throw foo.bar;
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   bar: new Error()
 }
 
 throw foo['bar'];
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   bar: new Error()
 }
 
 const bar = 'bar';
 throw foo[bar];
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 class CustomError extends Error {};
 throw new CustomError();
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 class CustomError1 extends Error {}
 class CustomError2 extends CustomError1 {}
 throw new CustomError();
-      `,
-    },
-    {
-      code: `throw foo = new Error();`,
-    },
-    {
-      code: `throw 1, 2, new Error();`,
-    },
-    {
-      code: `throw 'literal' && new Error();`,
-    },
-    {
-      code: `throw new Error() || 'literal'`,
-    },
-    {
-      code: `throw foo ? new Error() : 'literal';`,
-    },
-    {
-      code: `throw foo ? 'literal' : new Error();`,
-    },
-    {
-      code: `
-function* foo() {
-  let index = 0;
-  throw yield index++;
-}
-      `,
-    },
-    {
-      code: `
-async function foo() {
-  throw await bar;
-}
-      `,
-    },
+    `,
+    `throw foo = new Error();`,
+    `throw 1, 2, new Error();`,
+    `throw 'literal' && new Error();`,
+    `throw new Error() || 'literal'`,
+    `throw foo ? new Error() : 'literal';`,
+    `throw foo ? 'literal' : new Error();`,
+    `function* foo() { let index = 0; throw yield index++; }`,
+    `async function foo() { throw await bar; }`,
+    `
+import { Error } from './missing';
+throw Error;
+    `,
   ],
   invalid: [
     {
@@ -316,6 +272,19 @@ throw Error;
       errors: [
         {
           messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+import { Error } from './class';
+throw new Error();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+          line: 3,
+          column: 7,
         },
       ],
     },
