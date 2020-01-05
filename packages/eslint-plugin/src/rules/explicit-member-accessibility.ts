@@ -183,7 +183,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks that the parameter property has the desired accessibility modifiers set.
-     * @param {TSESTree.TSParameterProperty} node The node representing a Parameter Property
+     * @param node The node representing a Parameter Property
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,
