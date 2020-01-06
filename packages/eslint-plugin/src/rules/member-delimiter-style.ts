@@ -43,7 +43,7 @@ const definition = {
     singleline: {
       type: 'object',
       properties: {
-        // note can't have "none" for single line delimiter as it's invlaid syntax
+        // note can't have "none" for single line delimiter as it's invalid syntax
         delimiter: { enum: ['semi', 'comma'] },
         requireLast: { type: 'boolean' },
       },

@@ -1,4 +1,4 @@
-# Disallow unused variables and arguments (no-unused-vars-experimental)
+# Disallow unused variables and arguments (`no-unused-vars-experimental`)
 
 Variables that are declared and not used anywhere in the code are most likely an error due to incomplete refactoring. Such variables take up space in the code and can lead to confusion by readers.
 
@@ -79,7 +79,7 @@ Examples of valid code based on the unchangeable compiler settings
 import _UnusedDefault, { _UnusedNamed } from 'foo';
 export function foo(_unusedProp: string) {}
 export class Foo<_UnusedGeneric> {}
-const { prop: _unusedDesctructure } = foo;
+const { prop: _unusedDestructure } = foo;
 ```
 
 ## `ignoreArgsIfArgsAfterAreUsed`

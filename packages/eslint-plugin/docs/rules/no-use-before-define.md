@@ -1,4 +1,4 @@
-# Disallow the use of variables before they are defined (no-use-before-define)
+# Disallow the use of variables before they are defined (`no-use-before-define`)
 
 In JavaScript, prior to ES6, variable and function declarations are hoisted to the top of a scope, so it's possible to use identifiers before their formal declarations in code. This can be confusing and some believe it is best to always declare variables and functions before using them.
 

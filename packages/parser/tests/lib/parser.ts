@@ -56,7 +56,7 @@ describe('parser', () => {
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
-      extraFileExtensions: ['foo'],
+      extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledWith(code, {

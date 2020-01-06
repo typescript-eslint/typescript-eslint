@@ -72,7 +72,7 @@ export type MessageId =
   | 'never'
   | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
-  name: 'no-unnecessary-conditionals',
+  name: 'no-unnecessary-condition',
   meta: {
     type: 'suggestion',
     docs: {

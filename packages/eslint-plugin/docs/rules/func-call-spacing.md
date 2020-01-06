@@ -1,4 +1,4 @@
-# require or disallow spacing between function identifiers and their invocations (`func-call-spacing`)
+# Require or disallow spacing between function identifiers and their invocations (`func-call-spacing`)
 
 When calling a function, developers may insert optional whitespace between the function’s name and the parentheses that invoke it.
 This rule requires or disallows spaces between the function name and the opening parenthesis that calls it.

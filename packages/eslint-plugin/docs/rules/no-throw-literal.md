@@ -1,4 +1,4 @@
-# Restrict what can be thrown as an exception (`@typescript-eslint/no-throw-literal`)
+# Disallow throwing literals as exceptions (`no-throw-literal`)
 
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
 The fundamental benefit of `Error` objects is that they automatically keep track of where they were built and originated.
@@ -81,4 +81,4 @@ throw new CustomError();
 
 ---
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/camelcase.md)</sup>
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-throw-literal.md)</sup>

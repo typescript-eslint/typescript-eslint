@@ -1,4 +1,4 @@
-# Prefer using concise optional chain expressions instead of chained logical ands (prefer-optional-chain)
+# Prefer using concise optional chain expressions instead of chained logical ands (`prefer-optional-chain`)
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
