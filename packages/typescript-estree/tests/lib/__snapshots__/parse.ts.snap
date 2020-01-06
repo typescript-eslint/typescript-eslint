@@ -311,10 +311,30 @@ Object {
 }
 `;
 
+exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is empty the extension does not match 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/other/unknownFileType.unknown.
+The extension for the file (.unknown) is non-standard. You should add \\"parserOptions.extraFileExtensions\\" to your config."
+`;
+
+exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty invalid extension 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/other/unknownFileType.unknown.
+Found unexpected extension \\"unknown\\" specified with the \\"extraFileExtensions\\" option. Did you mean \\".unknown\\"?
+The extension for the file (.unknown) is non-standard. It should be added to your existing \\"parserOptions.extraFileExtensions\\"."
+`;
+
 exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension does not match 1`] = `
 "\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
 The file does not match your project config: tests/fixtures/invalidFileErrors/other/unknownFileType.unknown.
 The extension for the file (.unknown) is non-standard. It should be added to your existing \\"parserOptions.extraFileExtensions\\"."
+`;
+
+exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches duplicate extension 1`] = `
+"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+The file does not match your project config: tests/fixtures/invalidFileErrors/ts/notIncluded.ts.
+You unnecessarily included the extension \\".ts\\" with the \\"extraFileExtensions\\" option. This extension is already handled by the parser by default.
+The file must be included in at least one of the projects provided."
 `;
 
 exports[`parse() invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
