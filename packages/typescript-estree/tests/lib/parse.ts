@@ -258,12 +258,17 @@ describe('parse()', () => {
       jsxSetting,
       shouldThrow = false,
     }: {
-      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue';
+      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
       jsxContent: boolean;
       jsxSetting: boolean;
       shouldThrow?: boolean;
     }): void => {
-      const code = jsxContent ? 'const x = <div />;' : 'const x = 1';
+      const code =
+        ext === '.json'
+          ? '{ "x": 1 }'
+          : jsxContent
+          ? 'const x = <div />;'
+          : 'const x = 1';
       it(`should parse ${ext} file - ${
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
@@ -393,6 +398,11 @@ describe('parse()', () => {
       ext: '.vue',
       jsxContent: true,
       jsxSetting: true,
+    });
+    testParse({
+      ext: '.json',
+      jsxContent: false,
+      jsxSetting: false,
     });
   });
 
