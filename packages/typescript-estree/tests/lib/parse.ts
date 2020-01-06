@@ -406,13 +406,24 @@ describe('parse()', () => {
       loc: true,
       tsconfigRootDir: PROJECT_DIR,
       project: './tsconfig.json',
-      extraFileExtensions: ['.vue'],
     };
-    const testParse = (filePath: string) => (): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        filePath: join(PROJECT_DIR, filePath),
-      });
+    const testParse = (
+      filePath: string,
+      extraFileExtensions: string[] = ['.vue'],
+    ) => (): void => {
+      try {
+        parser.parseAndGenerateServices(code, {
+          ...config,
+          extraFileExtensions,
+          filePath: join(PROJECT_DIR, filePath),
+        });
+      } catch (error) {
+        /**
+         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+         */
+        error.message = error.message.replace(/\\(?!["])/gm, '/');
+        throw error;
+      }
     };
 
     describe('project includes', () => {
@@ -431,6 +442,18 @@ describe('parse()', () => {
       });
     });
 
+    describe('"parserOptions.extraFileExtensions" is empty', () => {
+      it('should not error', () => {
+        expect(testParse('ts/included.ts', [])).not.toThrow();
+      });
+
+      it('the extension does not match', () => {
+        expect(
+          testParse('other/unknownFileType.unknown', []),
+        ).toThrowErrorMatchingSnapshot();
+      });
+    });
+
     describe('"parserOptions.extraFileExtensions" is non-empty', () => {
       describe('the extension matches', () => {
         it('the file is included', () => {
@@ -442,6 +465,18 @@ describe('parse()', () => {
             testParse('other/notIncluded.vue'),
           ).toThrowErrorMatchingSnapshot();
         });
+
+        it('duplicate extension', () => {
+          expect(
+            testParse('ts/notIncluded.ts', ['.ts']),
+          ).toThrowErrorMatchingSnapshot();
+        });
+      });
+
+      it('invalid extension', () => {
+        expect(
+          testParse('other/unknownFileType.unknown', ['unknown']),
+        ).toThrowErrorMatchingSnapshot();
       });
 
       it('the extension does not match', () => {
