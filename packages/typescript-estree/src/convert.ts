@@ -21,8 +21,13 @@ import {
   unescapeStringLiteralText,
   TSError,
 } from './node-utils';
-import { AST_NODE_TYPES, TSESTree, TSNode } from './ts-estree';
-import { ParserWeakMap } from './parser-options';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+  TSNode,
+  TSESTreeToTSNode,
+} from './ts-estree';
+import { ParserWeakMap, ParserWeakMapEstree } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -46,7 +51,7 @@ export function convertError(error: any): TSError {
 }
 
 export interface ASTMaps {
-  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode>;
+  esTreeNodeToTSNodeMap: ParserWeakMapEstree;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 
@@ -125,12 +130,20 @@ export class Converter {
 
   /**
    * Fixes the exports of the given ts.Node
-   * @param node   the ts.Node
+   * @param node the ts.Node
    * @param result result
    * @returns the ESTreeNode with fixed exports
    */
   private fixExports<T extends TSESTree.ExportDeclaration>(
-    node: ts.Node,
+    node:
+      | ts.FunctionDeclaration
+      | ts.VariableStatement
+      | ts.ClassDeclaration
+      | ts.ClassExpression
+      | ts.TypeAliasDeclaration
+      | ts.InterfaceDeclaration
+      | ts.EnumDeclaration
+      | ts.ModuleDeclaration,
     result: T,
   ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
     // check for exports
@@ -216,8 +229,8 @@ export class Converter {
     return this.converter(child, parent, true, false);
   }
 
-  private createNode<T extends TSESTree.BaseNode = TSESTree.BaseNode>(
-    node: ts.Node,
+  private createNode<T extends TSESTree.Node = TSESTree.Node>(
+    node: TSESTreeToTSNode<T>,
     data: TSESTree.OptionalRangeAndLoc<T>,
   ): T {
     const result = data;
@@ -306,7 +319,7 @@ export class Converter {
    */
   private convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<ts.TypeNode>,
-    node: ts.Node,
+    node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
 
@@ -829,9 +842,12 @@ export class Converter {
         });
 
       case SyntaxKind.ThisKeyword:
-        return this.createNode<TSESTree.ThisExpression>(node, {
-          type: AST_NODE_TYPES.ThisExpression,
-        });
+        return this.createNode<TSESTree.ThisExpression>(
+          node as ts.ThisExpression,
+          {
+            type: AST_NODE_TYPES.ThisExpression,
+          },
+        );
 
       case SyntaxKind.ArrayLiteralExpression: {
         // TypeScript uses ArrayLiteralExpression in destructuring assignment, too
@@ -1821,10 +1837,13 @@ export class Converter {
       case SyntaxKind.MetaProperty: {
         return this.createNode<TSESTree.MetaProperty>(node, {
           type: AST_NODE_TYPES.MetaProperty,
-          meta: this.createNode<TSESTree.Identifier>(node.getFirstToken()!, {
-            type: AST_NODE_TYPES.Identifier,
-            name: getTextForTokenKind(node.keywordToken),
-          }),
+          meta: this.createNode<TSESTree.Identifier>(
+            node.getFirstToken()! as any,
+            {
+              type: AST_NODE_TYPES.Identifier,
+              name: getTextForTokenKind(node.keywordToken),
+            },
+          ),
           property: this.convertChild(node.name),
         });
       }
@@ -1910,11 +1929,14 @@ export class Converter {
 
       case SyntaxKind.NullKeyword: {
         if (this.inTypeMode) {
-          return this.createNode<TSESTree.TSNullKeyword>(node, {
-            type: AST_NODE_TYPES.TSNullKeyword,
-          });
+          return this.createNode<TSESTree.TSNullKeyword>(
+            node as ts.NullLiteral,
+            {
+              type: AST_NODE_TYPES.TSNullKeyword,
+            },
+          );
         } else {
-          return this.createNode<TSESTree.Literal>(node, {
+          return this.createNode<TSESTree.Literal>(node as ts.NullLiteral, {
             type: AST_NODE_TYPES.Literal,
             value: null,
             raw: 'null',

@@ -5,6 +5,7 @@ import { typeIsOrHasBaseType } from '../util';
 import {
   TSESTree,
   AST_NODE_TYPES,
+  TSESTreeToTSNode,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
@@ -14,6 +15,8 @@ type Options = [
     onlyInlineLambdas?: boolean;
   },
 ];
+
+type ConstructorTSType = TSESTreeToTSNode<TSESTree.MethodDefinition>;
 
 const functionScopeBoundaries = [
   AST_NODE_TYPES.ArrowFunctionExpression,
@@ -135,7 +138,9 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function isConstructor(node: TSESTree.Node): boolean {
+    function isConstructor(
+      node: TSESTree.Node,
+    ): node is TSESTree.MethodDefinition {
       return (
         node.type === AST_NODE_TYPES.MethodDefinition &&
         node.kind === 'constructor'
@@ -212,10 +217,10 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       MemberExpression(node): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.PropertyAccessExpression
-        >(node);
         if (classScopeStack.length !== 0 && !node.computed) {
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+            node,
+          ) as ts.PropertyAccessExpression;
           handlePropertyAccessExpression(
             tsNode,
             tsNode.parent,
@@ -232,9 +237,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
-            parserServices.esTreeNodeToTSNodeMap.get<ts.ConstructorDeclaration>(
-              node,
-            ),
+            parserServices.esTreeNodeToTSNodeMap.get(node),
           );
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
@@ -343,7 +346,7 @@ class ClassScope {
     ).add(node.name.text);
   }
 
-  public enterConstructor(node: ts.ConstructorDeclaration): void {
+  public enterConstructor(node: ConstructorTSType): void {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {

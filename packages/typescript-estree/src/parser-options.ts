@@ -1,5 +1,5 @@
 import { Program } from 'typescript';
-import { TSESTree, TSNode } from './ts-estree';
+import { TSESTree, TSNode, TSESTreeToTSNode } from './ts-estree';
 
 export interface Extra {
   code: string;
@@ -47,18 +47,15 @@ export interface ParserWeakMap<TKey, TValueBase> {
   has(key: unknown): boolean;
 }
 
-export type ParserServicesNodeTypes = Exclude<
-  TSESTree.Node,
-  // TSESTree nodes that can't be converted to typescript nodes
-  TSESTree.TSTypeAnnotation | TSESTree.TSTypeParameterDeclaration
->;
+export interface ParserWeakMapEstree<
+  TKey extends TSESTree.Node = TSESTree.Node
+> {
+  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  has(key: unknown): boolean;
+}
 
 export interface ParserServices {
   program: Program | undefined;
-  esTreeNodeToTSNodeMap:
-    | ParserWeakMap<ParserServicesNodeTypes, TSNode>
-    | undefined;
-  tsNodeToESTreeNodeMap:
-    | ParserWeakMap<TSNode, ParserServicesNodeTypes>
-    | undefined;
+  esTreeNodeToTSNodeMap: ParserWeakMapEstree | undefined;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
 }

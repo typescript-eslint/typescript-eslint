@@ -67,9 +67,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
      * Determines if the node is safe for boolean type
      */
     function isValidBooleanNode(node: TSESTree.Expression): boolean {
-      const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
-        node,
-      );
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
 
       if (tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)) {

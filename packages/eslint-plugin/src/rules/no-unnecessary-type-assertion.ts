@@ -168,9 +168,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSNonNullExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.NonNullExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
@@ -252,9 +250,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AssertionExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const castType = checker.getTypeAtLocation(originalNode);
 
         if (
