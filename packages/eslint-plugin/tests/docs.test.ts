@@ -23,8 +23,8 @@ function parseReadme(): marked.Tokens.Table {
 
   // find the table
   const rulesTable = readme.find(
-    token => token.type === 'table',
-  ) as marked.Tokens.Table;
+    (token): token is marked.Tokens.Table => token.type === 'table',
+  );
   if (!rulesTable) {
     throw Error('Could not find the rules table in README.md');
   }
