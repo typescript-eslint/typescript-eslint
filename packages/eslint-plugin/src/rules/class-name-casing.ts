@@ -67,7 +67,13 @@ export default util.createRule<Options, MessageIds>({
      * @param decl The declaration
      * @param id The name of the declaration
      */
-    function report(decl: TSESTree.Node, id: TSESTree.Identifier): void {
+    function report(
+      decl:
+        | TSESTree.ClassDeclaration
+        | TSESTree.TSInterfaceDeclaration
+        | TSESTree.ClassExpression,
+      id: TSESTree.Identifier,
+    ): void {
       let friendlyName;
 
       switch (decl.type) {
@@ -78,8 +84,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSInterfaceDeclaration:
           friendlyName = 'Interface';
           break;
-        default:
-          friendlyName = decl.type;
       }
 
       context.report({

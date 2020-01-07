@@ -1,5 +1,5 @@
 import path from 'path';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 
 interface ASTAndProgram {
@@ -32,7 +32,7 @@ const correctPathCasing = useCaseSensitiveFileNames
 
 function getCanonicalFileName(filePath: string): CanonicalPath {
   let normalized = path.normalize(filePath);
-  if (normalized.endsWith('/')) {
+  if (normalized.endsWith(path.sep)) {
     normalized = normalized.substr(0, normalized.length - 1);
   }
   return correctPathCasing(normalized) as CanonicalPath;

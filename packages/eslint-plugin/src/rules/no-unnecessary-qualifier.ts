@@ -1,5 +1,8 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 
@@ -146,12 +149,12 @@ export default util.createRule({
     function isPropertyAccessExpression(
       node: TSESTree.Node,
     ): node is TSESTree.MemberExpression {
-      return node.type === 'MemberExpression' && !node.computed;
+      return node.type === AST_NODE_TYPES.MemberExpression && !node.computed;
     }
 
     function isEntityNameExpression(node: TSESTree.Node): boolean {
       return (
-        node.type === 'Identifier' ||
+        node.type === AST_NODE_TYPES.Identifier ||
         (isPropertyAccessExpression(node) &&
           isEntityNameExpression(node.object))
       );

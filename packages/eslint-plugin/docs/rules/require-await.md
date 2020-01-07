@@ -1,4 +1,4 @@
-# Disallow async functions which have no await expression (@typescript-eslint/require-await)
+# Disallow async functions which have no `await` expression (`require-await`)
 
 Asynchronous functions that don’t use `await` might not need to be asynchronous functions and could be the unintentional result of refactoring.
 
@@ -32,7 +32,7 @@ One way to resolve these errors is to remove the `async` keyword. However doing 
 
 Another way to resolve these errors is to add an `await` keyword to the return statements. However doing so can cause a conflict with the [`no-return-await`](https://eslint.org/docs/rules/no-return-await) rule (if enabled), which warns against using `return await` since the return value of an `async` function is always wrapped in `Promise.resolve` anyway.
 
-With the additional typing information available in Typescript code, this extension to the `require-await` rule is able to look at the _actual_ return types of an `async` function (before being implicitly wrapped in `Promise.resolve`), and avoid the need for an `await` expression when the return value is already a promise.
+With the additional typing information available in TypeScript code, this extension to the `require-await` rule is able to look at the _actual_ return types of an `async` function (before being implicitly wrapped in `Promise.resolve`), and avoid the need for an `await` expression when the return value is already a promise.
 
 See the [ESLint documentation](https://eslint.org/docs/rules/require-await) for more details on the `require-await` rule.
 

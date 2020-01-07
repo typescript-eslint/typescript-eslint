@@ -188,7 +188,7 @@ describe('persistent parse', () => {
 
   /*
   If the includes ends in a slash, typescript will ask for watchers ending in a slash.
-  These tests ensure the normalisation code works as expected in this case.
+  These tests ensure the normalization of code works as expected in this case.
   */
   describe('includes ending in a slash', () => {
     const tsConfigExcludeBar = {

@@ -11,8 +11,7 @@ export default util.createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description:
-        'Bans usage of the delete operator with computed key expressions',
+      description: 'Disallow the delete operator with computed key expressions',
       recommended: false,
     },
     fixable: 'code',

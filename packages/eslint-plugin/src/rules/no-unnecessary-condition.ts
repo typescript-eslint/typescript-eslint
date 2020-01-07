@@ -1,8 +1,9 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts, { TypeFlags } from 'typescript';
+import * as ts from 'typescript';
 import {
   isTypeFlagSet,
   unionTypeParts,
@@ -15,6 +16,9 @@ import {
   createRule,
   getParserServices,
   getConstrainedTypeAtLocation,
+  isNullableType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 // Truthiness utilities
@@ -31,6 +35,17 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
+
+// Nullish utilities
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const isNullishType = (type: ts.Type): boolean =>
+  isTypeFlagSet(type, nullishFlag);
+
+const isPossiblyNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).some(isNullishType);
+
+const isAlwaysNullish = (type: ts.Type): boolean =>
+  unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
@@ -74,10 +89,13 @@ export type MessageId =
   | 'alwaysFalsy'
   | 'alwaysTruthyFunc'
   | 'alwaysFalsyFunc'
+  | 'neverNullish'
+  | 'alwaysNullish'
   | 'literalBooleanExpression'
-  | 'never';
+  | 'never'
+  | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
-  name: 'no-unnecessary-conditionals',
+  name: 'no-unnecessary-condition',
   meta: {
     type: 'suggestion',
     docs: {
@@ -104,6 +122,7 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
       },
     ],
+    fixable: 'code',
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
@@ -111,9 +130,14 @@ export default createRule<Options, MessageId>({
         'This callback should return a conditional, but return is always truthy',
       alwaysFalsyFunc:
         'This callback should return a conditional, but return is always falsy',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
       never: 'Unnecessary conditional, value is `never`',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
     },
   },
   defaultOptions: [
@@ -129,6 +153,7 @@ export default createRule<Options, MessageId>({
   ) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -152,18 +177,43 @@ export default createRule<Options, MessageId>({
         unionTypeParts(type).some(part =>
           isTypeFlagSet(
             part,
-            TypeFlags.Any | TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+            ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown |
+              ts.TypeFlags.TypeParameter,
           ),
         )
       ) {
         return;
       }
-      if (isTypeFlagSet(type, TypeFlags.Never)) {
-        context.report({ node, messageId: 'never' });
-      } else if (!isPossiblyTruthy(type)) {
-        context.report({ node, messageId: 'alwaysFalsy' });
-      } else if (!isPossiblyFalsy(type)) {
-        context.report({ node, messageId: 'alwaysTruthy' });
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyTruthy(type)
+        ? 'alwaysFalsy'
+        : !isPossiblyFalsy(type)
+        ? 'alwaysTruthy'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
+      }
+    }
+
+    function checkNodeForNullish(node: TSESTree.Node): void {
+      const type = getNodeType(node);
+      // Conditional is always necessary if it involves `any` or `unknown`
+      if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+        return;
+      }
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
+        ? 'never'
+        : !isPossiblyNullish(type)
+        ? 'neverNullish'
+        : isAlwaysNullish(type)
+        ? 'alwaysNullish'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
       }
     }
 
@@ -216,6 +266,10 @@ export default createRule<Options, MessageId>({
     function checkLogicalExpressionForUnnecessaryConditionals(
       node: TSESTree.LogicalExpression,
     ): void {
+      if (node.operator === '??') {
+        checkNodeForNullish(node.left);
+        return;
+      }
       checkNode(node.left);
       if (!ignoreRhs) {
         checkNode(node.right);
@@ -325,6 +379,57 @@ export default createRule<Options, MessageId>({
       }
     }
 
+    function checkOptionalChain(
+      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+      beforeOperator: TSESTree.Node,
+      fix: '' | '.',
+    ): void {
+      // We only care if this step in the chain is optional. If just descend
+      // from an optional chain, then that's fine.
+      if (!node.optional) {
+        return;
+      }
+
+      const type = getNodeType(node);
+      if (
+        isTypeFlagSet(type, ts.TypeFlags.Any) ||
+        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
+        isNullableType(type, { allowUndefined: true })
+      ) {
+        return;
+      }
+
+      const questionDotOperator = nullThrows(
+        sourceCode.getTokenAfter(
+          beforeOperator,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',
+        ),
+        NullThrowsReasons.MissingToken('operator', node.type),
+      );
+
+      context.report({
+        node,
+        loc: questionDotOperator.loc,
+        messageId: 'neverOptionalChain',
+        fix(fixer) {
+          return fixer.replaceText(questionDotOperator, fix);
+        },
+      });
+    }
+
+    function checkOptionalMemberExpression(
+      node: TSESTree.OptionalMemberExpression,
+    ): void {
+      checkOptionalChain(node, node.object, '.');
+    }
+
+    function checkOptionalCallExpression(
+      node: TSESTree.OptionalCallExpression,
+    ): void {
+      checkOptionalChain(node, node.callee, '');
+    }
+
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
@@ -334,6 +439,8 @@ export default createRule<Options, MessageId>({
       IfStatement: checkIfTestExpressionIsNecessaryConditional,
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
+      OptionalMemberExpression: checkOptionalMemberExpression,
+      OptionalCallExpression: checkOptionalCallExpression,
     };
   },
 });

@@ -4,13 +4,14 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    forceSuggestionFixer?: boolean;
   },
 ];
 export type MessageIds = 'preferNullish';
@@ -41,6 +42,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
+          forceSuggestionFixer: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -50,9 +54,19 @@ export default util.createRule<Options, MessageIds>({
     {
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: true,
+      forceSuggestionFixer: false,
     },
   ],
-  create(context, [{ ignoreConditionalTests, ignoreMixedLogicalExpressions }]) {
+  create(
+    context,
+    [
+      {
+        ignoreConditionalTests,
+        ignoreMixedLogicalExpressions,
+        forceSuggestionFixer,
+      },
+    ],
+  ) {
     const parserServices = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
     const checker = parserServices.program.getTypeChecker();
@@ -79,30 +93,46 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const barBarOperator = sourceCode.getTokenAfter(
-          node.left,
-          token =>
-            token.type === AST_TOKEN_TYPES.Punctuator &&
-            token.value === node.operator,
-        )!; // there _must_ be an operator
+        const barBarOperator = util.nullThrows(
+          sourceCode.getTokenAfter(
+            node.left,
+            token =>
+              token.type === AST_TOKEN_TYPES.Punctuator &&
+              token.value === node.operator,
+          ),
+          util.NullThrowsReasons.MissingToken('operator', node.type),
+        );
 
-        const fixer = isMixedLogical
-          ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
-            ({
-              suggest: [
-                {
-                  messageId: 'preferNullish',
-                  fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                    return fixer.replaceText(barBarOperator, '??');
+        function* fix(
+          fixer: TSESLint.RuleFixer,
+        ): IterableIterator<TSESLint.RuleFix> {
+          if (node.parent && util.isLogicalOrOperator(node.parent)) {
+            // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
+            if (
+              node.left.type === AST_NODE_TYPES.LogicalExpression &&
+              !util.isLogicalOrOperator(node.left.left)
+            ) {
+              yield fixer.insertTextBefore(node.left.right, '(');
+            } else {
+              yield fixer.insertTextBefore(node.left, '(');
+            }
+            yield fixer.insertTextAfter(node.right, ')');
+          }
+          yield fixer.replaceText(barBarOperator, '??');
+        }
+
+        const fixer =
+          isMixedLogical || forceSuggestionFixer
+            ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
+              ({
+                suggest: [
+                  {
+                    messageId: 'preferNullish',
+                    fix,
                   },
-                },
-              ],
-            } as const)
-          : {
-              fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                return fixer.replaceText(barBarOperator, '??');
-              },
-            };
+                ],
+              } as const)
+            : { fix };
 
         context.report({
           node: barBarOperator,

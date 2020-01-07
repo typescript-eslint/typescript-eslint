@@ -126,6 +126,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)',
     'result && this.options.shouldPreserveNodeMaps',
     'foo && fooBar.baz',
+    'match && match$1 !== undefined',
     'foo !== null && foo !== undefined',
     'x["y"] !== undefined && x["y"] !== null',
     // currently do not handle complex computed properties

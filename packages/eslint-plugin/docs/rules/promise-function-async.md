@@ -1,4 +1,4 @@
-# Functions that return promises must be async (promise-function-async)
+# Requires any function or method that returns a Promise to be marked async (`promise-function-async`)
 
 Requires any function or method that returns a Promise to be marked async.
 Ensures that each function is only capable of:

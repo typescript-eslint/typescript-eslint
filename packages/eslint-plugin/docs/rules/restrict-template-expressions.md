@@ -1,4 +1,4 @@
-# Enforce template literal expressions to be of string type. (restrict-template-expressions)
+# Enforce template literal expressions to be of string type (`restrict-template-expressions`)
 
 Examples of **correct** code:
 
@@ -39,7 +39,7 @@ const defaults = {
 };
 ```
 
-### allowNumber
+### `allowNumber`
 
 Examples of additional **correct** code for this rule with `{ allowNumber: true }`:
 
@@ -49,7 +49,7 @@ const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'zero'}`;
 ```
 
-### allowBoolean
+### `allowBoolean`
 
 Examples of additional **correct** code for this rule with `{ allowBoolean: true }`:
 
@@ -59,7 +59,7 @@ const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'not truthy'}`;
 ```
 
-### allowNullable
+### `allowNullable`
 
 Examples of additional **correct** code for this rule with `{ allowNullable: true }`:
 

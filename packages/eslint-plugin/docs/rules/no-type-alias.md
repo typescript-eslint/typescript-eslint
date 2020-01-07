@@ -1,4 +1,4 @@
-# Disallow the use of type aliases (no-type-alias)
+# Disallow the use of type aliases (`no-type-alias`)
 
 In TypeScript, type aliases serve three purposes:
 
@@ -90,7 +90,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
 
-### allowAliases
+### `allowAliases`
 
 This applies to primitive types and reference types.
 
@@ -228,7 +228,7 @@ type Foo = Bar | Baz;
 type Foo = Bar & Baz;
 ```
 
-### allowCallbacks
+### `allowCallbacks`
 
 This applies to function types.
 
@@ -250,7 +250,7 @@ type Foo = (name: string, age: number) => string | Person;
 type Foo = (name: string, age: number) => string & Person;
 ```
 
-### allowConditionalTypes
+### `allowConditionalTypes`
 
 This applies to conditional types.
 
@@ -260,7 +260,7 @@ Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` opt
 type Foo<T> = T extends number ? number : null;
 ```
 
-### allowConstructors
+### `allowConstructors`
 
 This applies to constructor types.
 
@@ -274,7 +274,7 @@ Examples of **correct** code for the `{ "allowConstructors": "always" }` option:
 type Foo = new () => void;
 ```
 
-### allowLiterals
+### `allowLiterals`
 
 This applies to literal types (`type Foo = { ... }`).
 
@@ -381,7 +381,7 @@ type Foo = { name: string } | { age: number };
 type Foo = { name: string } & { age: number };
 ```
 
-### allowMappedTypes
+### `allowMappedTypes`
 
 This applies to literal types.
 
@@ -480,7 +480,7 @@ type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
 
-### allowTupleTypes
+### `allowTupleTypes`
 
 This applies to tuple types (`type Foo = [number]`).
 

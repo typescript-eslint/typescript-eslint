@@ -1,12 +1,15 @@
-# Roadmap
+# TSLint Migration Guide
+
+This document serves as a guid to help you migrate from TSLint.
+It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
+
+## TSLint rules
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
 🔌 = in another plugin<br>
 🌓 = implementations differ or ESLint version is missing functionality<br>
 🛑 = unimplemented<br>
-
-## TSLint rules
 
 ### TypeScript-specific
 
@@ -76,7 +79,7 @@
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                        |
-| [`no-string-throw`]                  | 🌟  | [`no-throw-literal`][no-throw-literal]                                |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                               |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                  |
@@ -102,7 +105,7 @@
 | [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 
 ### Maintainability
 
@@ -142,7 +145,7 @@
 | [`class-name`]                      | ✅  | [`@typescript-eslint/class-name-casing`]                                            |
 | [`comment-format`]                  | 🌟  | [`capitalized-comments`][capitalized-comments] & [`spaced-comment`][spaced-comment] |
 | [`comment-type`]                    | 🛑  | N/A                                                                                 |
-| [`completed-docs`]                  | 🔌  | [`eslint-plugin-jsdoc`][plugin:jsdoc]                                               |
+| [`completed-docs`]                  | 🔌  | [`jsdoc/require-jsdoc`]                                                             |
 | [`encoding`]                        | 🛑  | N/A                                                                                 |
 | [`file-header`]                     | 🔌  | [`eslint-plugin-header`][plugin:header] or [`-file-header`][plugin:file-header]     |
 | [`file-name-casing`]                | 🔌  | [`unicorn/filename-case`]                                                           |
@@ -160,7 +163,7 @@
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
 | [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/no-parameter-properties`]                                      |
-| [`no-redundant-jsdoc`]              | 🛑  | N/A ([open issue](https://github.com/gajus/eslint-plugin-jsdoc/issues/134))         |
+| [`no-redundant-jsdoc`]              | 🔌  | [`jsdoc/no-types`]                                                                  |
 | [`no-reference-import`]             | 🛑  | N/A                                                                                 |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
@@ -507,7 +510,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-shadow]: https://eslint.org/docs/rules/no-shadow
 [no-sparse-arrays]: https://eslint.org/docs/rules/no-sparse-arrays
 [dot-notation]: https://eslint.org/docs/rules/dot-notation
-[no-throw-literal]: https://eslint.org/docs/rules/no-throw-literal
 [no-fallthrough]: https://eslint.org/docs/rules/no-fallthrough
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
@@ -600,6 +602,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
 [`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
 [`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
+[`@typescript-eslint/no-throw-literal`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-throw-literal.md
 [`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
 [`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
 [`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
@@ -664,11 +667,16 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`security/detect-non-literal-require`]: https://github.com/nodesecurity/eslint-plugin-security#detect-non-literal-require
 [`security/detect-possible-timing-attacks`]: https://github.com/nodesecurity/eslint-plugin-security#detect-possible-timing-attacks
 
+<!-- eslint-plugin-jsdoc -->
+
+[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
+[`jsdoc/require-jsdoc`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
+[`jsdoc/no-types`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-no-types
+
 <!-- Miscellaneous plugins -->
 
 [`prefer-arrow/prefer-arrow-functions`]: https://github.com/TristonJ/eslint-plugin-prefer-arrow
 [plugin:promise]: https://github.com/xjamundx/eslint-plugin-promise
-[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
 [plugin:header]: https://github.com/Stuk/eslint-plugin-header
 [plugin:file-header]: https://github.com/Sekhmet/eslint-plugin-file-header
 [plugin:compat]: https://github.com/amilajack/eslint-plugin-compat

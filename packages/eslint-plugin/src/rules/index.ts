@@ -24,9 +24,11 @@ import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
+import noExtraSemi from './no-extra-semi';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
+import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
@@ -36,6 +38,7 @@ import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
+import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
@@ -100,10 +103,12 @@ export default {
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
+  'no-extra-semi': noExtraSemi,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-inferrable-types': noInferrableTypes,
+  'no-implied-eval': noImpliedEval,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
@@ -113,6 +118,7 @@ export default {
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
+  'no-throw-literal': noThrowLiteral,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,

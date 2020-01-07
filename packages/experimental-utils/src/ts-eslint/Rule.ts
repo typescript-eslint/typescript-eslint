@@ -105,9 +105,9 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
-type ReportSuggestionArray<TMessageIds extends string> = Readonly<
-  ReportDescriptorBase<TMessageIds>[]
->;
+type ReportSuggestionArray<TMessageIds extends string> = ReportDescriptorBase<
+  TMessageIds
+>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -132,7 +132,7 @@ interface ReportDescriptorWithSuggestion<TMessageIds extends string>
   /**
    * 6.7's Suggestions API
    */
-  suggest?: ReportSuggestionArray<TMessageIds> | null;
+  suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
@@ -229,7 +229,7 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
-// This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
+// This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 

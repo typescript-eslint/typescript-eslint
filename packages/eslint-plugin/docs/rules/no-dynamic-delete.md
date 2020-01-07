@@ -1,4 +1,4 @@
-# Disallow the delete operator with computed key expressions (no-dynamic-delete)
+# Disallow the delete operator with computed key expressions (`no-dynamic-delete`)
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 
@@ -8,7 +8,7 @@ Using the `delete` operator on keys that aren't runtime constants could be a sig
 Using `Object`s with added and removed keys can cause occasional edge case bugs, such as if a key is named `"hasOwnProperty"`.
 Consider using a `Map` or `Set` if you’re storing collections of objects.
 
-Examples of **correct** code wth this rule:
+Examples of **correct** code with this rule:
 
 ```ts
 const container: { [i: string]: number } = {

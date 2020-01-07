@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallows magic numbers',
+      description: 'Disallow magic numbers',
       category: 'Best Practices',
       recommended: false,
     },
@@ -79,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Checks if the node grandparent is a Typescript union type and its parent is a type alias declaration
      * @param node the node to be validated.
-     * @returns true if the node grandparent is a Typescript untion type and its parent is a type alias declaration
+     * @returns true if the node grandparent is a Typescript union type and its parent is a type alias declaration
      * @private
      */
     function isGrandparentTSUnionType(node: TSESTree.Node): boolean {

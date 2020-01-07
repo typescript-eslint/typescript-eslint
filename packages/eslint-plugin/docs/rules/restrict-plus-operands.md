@@ -1,4 +1,4 @@
-# When adding two variables, operands must both be of type number or of type string. (restrict-plus-operands)
+# When adding two variables, operands must both be of type number or of type string (`restrict-plus-operands`)
 
 Examples of **correct** code:
 
@@ -21,7 +21,7 @@ This rule has an object option:
 - `"checkCompoundAssignments": false`: (default) does not check compound assignments (`+=`)
 - `"checkCompoundAssignments": true`
 
-### checkCompoundAssignments
+### `checkCompoundAssignments`
 
 Examples of **incorrect** code for the `{ "checkCompoundAssignments": true }` option:
 

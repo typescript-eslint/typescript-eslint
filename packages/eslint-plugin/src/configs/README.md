@@ -2,13 +2,9 @@
 
 These configs exist for your convenience. They contain configuration intended to save you time and effort when configuring your project by disabling rules known to conflict with this repository, or cause issues in TypeScript codebases.
 
-## All
+## `eslint-recommended`
 
-TODO when all config is added.
-
-## eslint-recommended
-
-The `eslint-recommended` ruleset is meant to be used after extending `eslint:recommended`. It disables rules that are already checked by the Typescript compiler and enables rules that promote using more the more modern constructs Typescript allows for.
+The `eslint-recommended` ruleset is meant to be used after extending `eslint:recommended`. It disables rules that are already checked by the TypeScript compiler and enables rules that promote using the more modern constructs TypeScript allows for.
 
 ```cjson
 {
@@ -19,7 +15,7 @@ The `eslint-recommended` ruleset is meant to be used after extending `eslint:rec
 }
 ```
 
-## Recommended
+## `recommended`
 
 The recommended set is an **_opinionated_** set of rules that we think you should use because:
 

@@ -1,10 +1,10 @@
-# Require or disallow a space before function parenthesis (space-before-function-paren)
+# Enforces consistent spacing before function parenthesis (`space-before-function-paren`)
 
-When formatting a function, whitespace is allowed between the function name or `function` keyword and the opening paren. Named functions also require a space between the `function` keyword and the function name, but anonymous functions require no whitespace. For example:
+When formatting a function, whitespace is allowed between the function name or `function` keyword and the opening parenthesis. Named functions also require a space between the `function` keyword and the function name, but anonymous functions require no whitespace. For example:
 
 <!-- prettier-ignore -->
 ```ts
-function withoutSpace (x) {
+function withoutSpace(x) {
   // ...
 }
 
@@ -12,7 +12,7 @@ function withSpace (x) {
   // ...
 }
 
-var anonymousWithoutSpace = function () {};
+var anonymousWithoutSpace = function() {};
 
 var anonymousWithSpace = function () {};
 ```
@@ -21,7 +21,7 @@ Style guides may require a space after the `function` keyword for anonymous func
 
 ## Rule Details
 
-This rule extends the base [eslint/func-call-spacing](https://eslint.org/docs/rules/space-before-function-paren) rule.
+This rule extends the base [`eslint/space-before-function-paren`](https://eslint.org/docs/rules/space-before-function-paren) rule.
 It supports all options and features of the base rule.
 This version adds support for generic type parameters on function calls.
 
@@ -37,6 +37,6 @@ This version adds support for generic type parameters on function calls.
 
 ## Options
 
-See [eslint/space-before-function-paren options](https://eslint.org/docs/rules/space-before-function-paren#options).
+See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules/space-before-function-paren#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)</sup>

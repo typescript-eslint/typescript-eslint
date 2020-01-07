@@ -1,4 +1,4 @@
-# Require explicit accessibility modifiers on class properties and methods (explicit-member-accessibility)
+# Require explicit accessibility modifiers on class properties and methods (`explicit-member-accessibility`)
 
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
@@ -313,7 +313,7 @@ class Animal {
 
 ### Except specific methods
 
-If you want to ignore some specific methods, you can do it by specifing method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
+If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 
 ```ts

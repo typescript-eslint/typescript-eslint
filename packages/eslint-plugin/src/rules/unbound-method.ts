@@ -3,7 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,9 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      MemberExpression(node): void {
+      'MemberExpression, OptionalMemberExpression'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      ): void {
         if (isSafeUse(node)) {
           return;
         }
@@ -103,12 +105,14 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.OptionalMemberExpression:
     case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;
 
     case AST_NODE_TYPES.CallExpression:
+    case AST_NODE_TYPES.OptionalCallExpression:
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:

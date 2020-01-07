@@ -95,7 +95,7 @@ export default util.createRule({
             `^${
               // escape regex characters
               leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            }[^a-zA-Z0-9_]`,
+            }[^a-zA-Z0-9_$]`,
           );
           if (
             !matchRegex.test(rightText) &&
@@ -228,7 +228,7 @@ export default util.createRule({
     }
 
     /**
-     * Gets a normalised representation of the given MemberExpression
+     * Gets a normalized representation of the given MemberExpression
      */
     function getMemberExpressionText(
       node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,

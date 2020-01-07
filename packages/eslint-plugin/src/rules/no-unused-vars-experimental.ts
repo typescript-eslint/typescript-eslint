@@ -1,7 +1,7 @@
 /* eslint-disable no-fallthrough */
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [
@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow unused variables and arguments.',
+      description: 'Disallow unused variables and arguments',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
@@ -244,7 +244,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function handleDestructure(parent: ts.BindingPattern): void {
-      // the entire desctructure is unused
+      // the entire destructure is unused
       // note that this case only ever triggers for simple, single-level destructured objects
       // i.e. these will not trigger it:
       // - const {a:_a, b, c: {d}} = z;

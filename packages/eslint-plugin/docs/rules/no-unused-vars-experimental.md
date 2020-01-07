@@ -1,4 +1,4 @@
-# Disallow unused variables and arguments (no-unused-vars-experimental)
+# Disallow unused variables and arguments (`no-unused-vars-experimental`)
 
 Variables that are declared and not used anywhere in the code are most likely an error due to incomplete refactoring. Such variables take up space in the code and can lead to confusion by readers.
 
@@ -6,11 +6,11 @@ Variables that are declared and not used anywhere in the code are most likely an
 
 This rule leverages the TypeScript compiler's unused variable checks to report. This means that with all rule options set to `false`, it should report the same errors as if you used both the `noUnusedLocals` and `noUnusedParameters` compiler options.
 
-This rule is vastly different to, and maintains no compatability with the base eslint version of the rule.
+This rule is vastly different to, and maintains no compatibility with the base ESLint version of the rule.
 
 ### Limitations
 
-There are two limitations to this rule when compared with eslint's `no-unused-vars` rule, which are imposed by the fact that it directly uses TypeScript's implementation.
+There are two limitations to this rule when compared with ESLint's `no-unused-vars` rule, which are imposed by the fact that it directly uses TypeScript's implementation.
 
 1. This rule only works on files that TypeScript deems is a module (i.e. it has an `import` or an `export` statement).
 2. The rule is significantly less configurable, as it cannot deviate too far from the base implementation.
@@ -46,7 +46,7 @@ const defaultOptions: Options = {
 };
 ```
 
-### ignoredNamesRegex
+### `ignoredNamesRegex`
 
 This option accepts a regex string to match names against.
 Any matched names will be ignored and have no errors reported.
@@ -73,16 +73,16 @@ type _UnusedType = {};
 **_NOTE:_** The TypeScript compiler automatically ignores imports, function arguments, type parameter declarations, and object destructuring variables prefixed with an underscore.
 As this is hard-coded into the compiler, we cannot change this.
 
-Examples of valid code based on the unchangable compiler settings
+Examples of valid code based on the unchangeable compiler settings
 
 ```ts
 import _UnusedDefault, { _UnusedNamed } from 'foo';
 export function foo(_unusedProp: string) {}
 export class Foo<_UnusedGeneric> {}
-const { prop: _unusedDesctructure } = foo;
+const { prop: _unusedDestructure } = foo;
 ```
 
-## ignoreArgsIfArgsAfterAreUsed
+## `ignoreArgsIfArgsAfterAreUsed`
 
 When true, this option will ignore unused function arguments if the arguments proceeding arguments are used.
 

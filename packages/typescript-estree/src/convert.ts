@@ -1,6 +1,6 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import {
   canContainDirective,
   createError,
@@ -111,7 +111,10 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(node as TSNode, parent ?? node.parent);
+    const result = this.convertNode(
+      node as TSNode,
+      (parent ?? node.parent) as TSNode,
+    );
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -260,7 +263,7 @@ export class Converter {
   }
 
   /**
-   * Coverts body Nodes and add directive field to StringLiterals
+   * Coverts body Nodes and add a directive field to StringLiterals
    * @param nodes of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
@@ -268,7 +271,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): any[] {
+  ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
@@ -283,12 +286,12 @@ export class Converter {
             ) {
               const raw = child.expression.raw;
               child.directive = raw.slice(1, -1);
-              return child; // child can be null but it's filtered below
+              return child; // child can be null, but it's filtered below
             } else {
               allowDirectives = false;
             }
           }
-          return child; // child can be null but it's filtered below
+          return child; // child can be null, but it's filtered below
         })
         // filter out unknown nodes for now
         .filter(statement => statement)
@@ -297,20 +300,21 @@ export class Converter {
 
   /**
    * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
-   * @param typeArguments ts.Node typeArguments
+   * @param typeArguments ts.NodeArray typeArguments
+   * @param node parent used to create this node
    * @returns TypeParameterInstantiation node
    */
   private convertTypeArgumentsToTypeParameters(
     typeArguments: ts.NodeArray<ts.TypeNode>,
+    node: ts.Node,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
 
-    return {
+    return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
       range: [typeArguments.pos - 1, greaterThanToken.end],
-      loc: getLocFor(typeArguments.pos - 1, greaterThanToken.end, this.ast),
       params: typeArguments.map(typeArgument => this.convertType(typeArgument)),
-    };
+    });
   }
 
   /**
@@ -361,7 +365,7 @@ export class Converter {
    * ESTree mostly as-is. The only difference is the addition of a type
    * property instead of a kind property. Recursively copies all children.
    */
-  private deeplyCopy(node: ts.Node): any {
+  private deeplyCopy(node: TSNode): any {
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,
@@ -374,51 +378,45 @@ export class Converter {
       type: customType,
     });
 
-    Object.keys(node)
+    if ('type' in node) {
+      result.typeAnnotation =
+        node.type && 'kind' in node.type && ts.isTypeNode(node.type)
+          ? this.convertTypeAnnotation(node.type, node)
+          : null;
+    }
+    if ('typeArguments' in node) {
+      result.typeParameters =
+        node.typeArguments && 'pos' in node.typeArguments
+          ? this.convertTypeArgumentsToTypeParameters(node.typeArguments, node)
+          : null;
+    }
+    if ('typeParameters' in node) {
+      result.typeParameters =
+        node.typeParameters && 'pos' in node.typeParameters
+          ? this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            )
+          : null;
+    }
+    if ('decorators' in node && node.decorators && node.decorators.length) {
+      result.decorators = node.decorators.map(el => this.convertChild(el));
+    }
+
+    Object.entries<any>(node)
       .filter(
-        key =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc)$/.test(
+        ([key]) =>
+          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators)$/.test(
             key,
           ),
       )
-      .forEach(key => {
-        if (key === 'type') {
-          result.typeAnnotation = (node as any).type
-            ? this.convertTypeAnnotation((node as any).type, node)
-            : null;
-        } else if (key === 'typeArguments') {
-          result.typeParameters = (node as any).typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
-                (node as any).typeArguments,
-              )
-            : null;
-        } else if (key === 'typeParameters') {
-          result.typeParameters = (node as any).typeParameters
-            ? this.convertTSTypeParametersToTypeParametersDeclaration(
-                (node as any).typeParameters,
-              )
-            : null;
-        } else if (key === 'decorators') {
-          if (node.decorators && node.decorators.length) {
-            result.decorators = node.decorators.map((el: any) =>
-              this.convertChild(el),
-            );
-          }
+      .forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          result[key] = value.map(el => this.convertChild(el));
+        } else if (value && typeof value === 'object' && value.kind) {
+          // need to check node[key].kind to ensure we don't try to convert a symbol
+          result[key] = this.convertChild(value);
         } else {
-          if (Array.isArray((node as any)[key])) {
-            result[key] = (node as any)[key].map((el: any) =>
-              this.convertChild(el),
-            );
-          } else if (
-            (node as any)[key] &&
-            typeof (node as any)[key] === 'object' &&
-            (node as any)[key].kind
-          ) {
-            // need to check node[key].kind to ensure we don't try to convert a symbol
-            result[key] = this.convertChild((node as any)[key]);
-          } else {
-            result[key] = (node as any)[key];
-          }
+          result[key] = value;
         }
       });
     return result;
@@ -549,7 +547,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertNode(node: TSNode, parent: ts.Node): TSESTree.Node | null {
+  private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
@@ -1299,7 +1297,10 @@ export class Converter {
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
           tag: this.convertChild(node.tag),
           quasi: this.convertChild(node.template),
@@ -1340,7 +1341,7 @@ export class Converter {
       }
 
       case SyntaxKind.Parameter: {
-        let parameter: any;
+        let parameter: TSESTree.RestElement | TSESTree.BindingName;
         let result: TSESTree.RestElement | TSESTree.AssignmentPattern;
 
         if (node.dotDotDotToken) {
@@ -1349,7 +1350,7 @@ export class Converter {
             argument: this.convertChild(node.name),
           });
         } else if (node.initializer) {
-          parameter = this.convertChild(node.name);
+          parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
             left: parameter,
@@ -1443,6 +1444,7 @@ export class Converter {
           if (superClass.types[0] && superClass.types[0].typeArguments) {
             result.superTypeParameters = this.convertTypeArgumentsToTypeParameters(
               superClass.types[0].typeArguments,
+              superClass.types[0],
             );
           }
         }
@@ -1584,11 +1586,11 @@ export class Converter {
 
       case SyntaxKind.PrefixUnaryExpression:
       case SyntaxKind.PostfixUnaryExpression: {
-        const operator = (getTextForTokenKind(node.operator) ?? '') as any;
+        const operator = getTextForTokenKind(node.operator);
         /**
          * ESTree uses UpdateExpression for ++/--
          */
-        if (/^(?:\+\+|--)$/.test(operator)) {
+        if (operator === '++' || operator === '--') {
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
@@ -1632,7 +1634,7 @@ export class Converter {
       case SyntaxKind.TypeOperator:
         return this.createNode<TSESTree.TSTypeOperator>(node, {
           type: AST_NODE_TYPES.TSTypeOperator,
-          operator: getTextForTokenKind(node.operator) as any,
+          operator: getTextForTokenKind(node.operator),
           typeAnnotation: this.convertChild(node.type),
         });
 
@@ -1676,7 +1678,7 @@ export class Converter {
             | TSESTree.BinaryExpression
           >(node, {
             type,
-            operator: getTextForTokenKind(node.operatorToken.kind)!,
+            operator: getTextForTokenKind(node.operatorToken.kind),
             left: this.converter(
               node.left,
               node,
@@ -1694,7 +1696,7 @@ export class Converter {
         const computed = false;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1726,7 +1728,7 @@ export class Converter {
         const computed = true;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
             object.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1758,7 +1760,7 @@ export class Converter {
         let result;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propogate up the member expression tree
+        // the optional expression should propagate up the member expression tree
         const isChildOptional =
           (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
             callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -1784,6 +1786,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -1801,6 +1804,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -1819,7 +1823,7 @@ export class Converter {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(node.getFirstToken()!, {
             type: AST_NODE_TYPES.Identifier,
-            name: getTextForTokenKind(node.keywordToken)!,
+            name: getTextForTokenKind(node.keywordToken),
           }),
           property: this.convertChild(node.name),
         });
@@ -1841,7 +1845,7 @@ export class Converter {
           value: '',
         });
         result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        if ((parent as any).name && (parent as any).name === node) {
+        if ('name' in parent && parent.name === node) {
           result.value = node.text;
         } else {
           result.value = unescapeStringLiteralText(node.text);
@@ -1961,7 +1965,10 @@ export class Converter {
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
             typeParameters: node.typeArguments
-              ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+              ? this.convertTypeArgumentsToTypeParameters(
+                  node.typeArguments,
+                  node,
+                )
               : undefined,
             selfClosing: true,
             name: this.convertJSXTagName(node.tagName, node),
@@ -1979,7 +1986,10 @@ export class Converter {
         return this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
           selfClosing: false,
           name: this.convertJSXTagName(node.tagName, node),
@@ -2084,7 +2094,10 @@ export class Converter {
           type: AST_NODE_TYPES.TSTypeReference,
           typeName: this.convertType(node.typeName),
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : undefined,
         });
       }
@@ -2173,9 +2186,7 @@ export class Converter {
           if (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword) {
             result.readonly = true;
           } else {
-            result.readonly = getTextForTokenKind(node.readonlyToken.kind) as
-              | '+'
-              | '-';
+            result.readonly = getTextForTokenKind(node.readonlyToken.kind);
           }
         }
 
@@ -2183,9 +2194,7 @@ export class Converter {
           if (node.questionToken.kind === SyntaxKind.QuestionToken) {
             result.optional = true;
           } else {
-            result.optional = getTextForTokenKind(node.questionToken.kind) as
-              | '+'
-              | '-';
+            result.optional = getTextForTokenKind(node.questionToken.kind);
           }
         }
 
@@ -2369,6 +2378,7 @@ export class Converter {
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
             node.typeArguments,
+            node,
           );
         }
         return result;
@@ -2393,15 +2403,15 @@ export class Converter {
         }
 
         if (interfaceHeritageClauses.length > 0) {
-          const interfaceExtends = [];
-          const interfaceImplements = [];
+          const interfaceExtends: TSESTree.ExpressionWithTypeArguments[] = [];
+          const interfaceImplements: TSESTree.ExpressionWithTypeArguments[] = [];
 
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
               for (const n of heritageClause.types) {
                 interfaceExtends.push(this.convertChild(n, node));
               }
-            } else if (heritageClause.token === SyntaxKind.ImplementsKeyword) {
+            } else {
               for (const n of heritageClause.types) {
                 interfaceImplements.push(this.convertChild(n, node));
               }
@@ -2461,7 +2471,10 @@ export class Converter {
           parameter: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(node.typeArguments)
+            ? this.convertTypeArgumentsToTypeParameters(
+                node.typeArguments,
+                node,
+              )
             : null,
         });
 
@@ -2492,6 +2505,9 @@ export class Converter {
         });
         if (node.initializer) {
           result.initializer = this.convertChild(node.initializer);
+        }
+        if (node.name.kind === ts.SyntaxKind.ComputedPropertyName) {
+          result.computed = true;
         }
         return result;
       }

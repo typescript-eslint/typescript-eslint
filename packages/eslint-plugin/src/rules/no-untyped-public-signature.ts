@@ -9,11 +9,10 @@ type MessageIds = 'noReturnType' | 'untypedParameter';
 type Options = [{ ignoredMethods: string[] }];
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-unused-public-signature',
+  name: 'no-untyped-public-signature',
   meta: {
     docs: {
-      description:
-        'Requires that all public method arguments and return type will be explicitly typed',
+      description: 'Disallow untyped public methods',
       category: 'Best Practices',
       recommended: false,
     },
@@ -63,7 +62,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         return ignoredMethods.has(node.key.quasis[0].value.raw);
       }
-      if (node.key.type === AST_NODE_TYPES.Identifier && !node.computed) {
+      if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
         return ignoredMethods.has(node.key.name);
       }
 

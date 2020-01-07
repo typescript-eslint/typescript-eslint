@@ -34,6 +34,14 @@ ruleTester.run('class-name-casing', rule, {
     'class ClassNameWithUnicodeÈ {}',
     'class ÈClassNameWithUnicode {}',
     'class ClassNameWithæUnicode {}',
+    // Following test cases are valid, but no one is going to write code like this
+    'var { bar } = class { static bar() { return 2 } }',
+    `var [ bar ] = class {
+      static [Symbol.iterator]() {
+        return { next: () => ({ value: 1, done: false}) }
+      }
+    }
+    `,
   ],
 
   invalid: [
@@ -164,7 +172,7 @@ ruleTester.run('class-name-casing', rule, {
       ],
     },
     {
-      code: `class æInvalidClassNameWithUnicode {}`,
+      code: 'class æInvalidClassNameWithUnicode {}',
       errors: [
         {
           messageId: 'notPascalCased',

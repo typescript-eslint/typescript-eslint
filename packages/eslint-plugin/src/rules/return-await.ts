@@ -3,14 +3,14 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts, { SyntaxKind } from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
   name: 'return-await',
   meta: {
     docs: {
-      description: 'Rules for awaiting returned promises',
+      description: 'Enforces consistent returning of awaited values',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
@@ -59,7 +59,7 @@ export default util.createRule({
     ): void {
       let child: ts.Node;
 
-      const isAwait = expression.kind === SyntaxKind.AwaitExpression;
+      const isAwait = expression.kind === ts.SyntaxKind.AwaitExpression;
 
       if (isAwait) {
         child = expression.getChildAt(1);
@@ -68,11 +68,7 @@ export default util.createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-
-      const isThenable =
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
-        tsutils.isThenableType(checker, expression, type);
+      const isThenable = tsutils.isThenableType(checker, expression, type);
 
       if (!isAwait && !isThenable) {
         return;

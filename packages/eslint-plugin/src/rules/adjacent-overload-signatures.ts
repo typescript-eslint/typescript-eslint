@@ -55,13 +55,13 @@ export default util.createRule({
         case AST_NODE_TYPES.FunctionDeclaration:
           return member.id && member.id.name;
         case AST_NODE_TYPES.TSMethodSignature:
-          return util.getNameFromPropertyName(member.key);
+          return util.getNameFromMember(member, sourceCode);
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return 'call';
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         case AST_NODE_TYPES.MethodDefinition:
-          return util.getNameFromClassMember(member, sourceCode);
+          return util.getNameFromMember(member, sourceCode);
       }
 
       return null;

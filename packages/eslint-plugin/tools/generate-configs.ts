@@ -29,6 +29,7 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
   'no-array-constructor',
   'no-empty-function',
   'no-extra-parens',
+  'no-extra-semi',
   'no-magic-numbers',
   'quotes',
   'no-unused-expressions',
@@ -55,6 +56,7 @@ const ruleEntries = Object.entries(rules).sort((a, b) =>
  * Helper function reduces records to key - value pairs.
  * @param config
  * @param entry
+ * @param settings
  */
 function reducer<TMessageIds extends string>(
   config: LinterConfigRules,

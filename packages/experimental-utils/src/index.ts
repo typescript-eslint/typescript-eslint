@@ -8,7 +8,7 @@ export { ESLintUtils, JSONSchema, TSESLint, TSESLintScope };
 // for convenience's sake - export the types directly from here so consumers
 // don't need to reference/install both packages in their code
 
-// NOTE - this uses hard links inside ts-estree to avoid initing the entire package
+// NOTE - this uses hard links inside ts-estree to avoid initialization of entire package
 //        via its main file (which imports typescript at runtime).
 //        Not every eslint-plugin written in typescript requires typescript at runtime.
 export {

@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
@@ -23,8 +23,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description:
-        'enforce consistent spacing before `function` definition opening parenthesis',
+      description: 'Enforces consistent spacing before function parenthesis',
       category: 'Stylistic Issues',
       recommended: false,
     },
@@ -85,8 +84,8 @@ export default util.createRule<Options, MessageIds>({
       const parent = node.parent!;
 
       return (
-        parent.type === 'MethodDefinition' ||
-        (parent.type === 'Property' &&
+        parent.type === AST_NODE_TYPES.MethodDefinition ||
+        (parent.type === AST_NODE_TYPES.Property &&
           (parent.kind === 'get' || parent.kind === 'set' || parent.method))
       );
     }
