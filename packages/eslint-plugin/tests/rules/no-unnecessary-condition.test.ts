@@ -350,12 +350,17 @@ function nothing(x: string[]) {
 function nothing2(x: readonly string[]) {
   return x.filter(() => false);
 }
+// with tuple
+function nothing3(x: [string, string]) {
+  return x.filter(() => false);
+}
 `,
       errors: [
         ruleError(2, 22, 'alwaysTruthy'),
         ruleError(3, 29, 'alwaysFalsy'),
         ruleError(7, 25, 'alwaysFalsy'),
         ruleError(11, 25, 'alwaysFalsy'),
+        ruleError(15, 25, 'alwaysFalsy'),
       ],
     },
     {

@@ -57,25 +57,6 @@ const isLiteral = (type: ts.Type): boolean =>
   isLiteralType(type);
 // #endregion
 
-// Array type utilities
-// #region
-function isTypeReference(type: ts.Type): type is ts.TypeReference {
-  return !!(
-    type.getFlags() & ts.TypeFlags.Object &&
-    (type as ts.ObjectType).objectFlags & ts.ObjectFlags.Reference
-  );
-}
-
-// There's a built-in checker.isArrayType, but it's marked as internal.
-function isArrayType(type: ts.Type): boolean {
-  return (
-    isTypeReference(type) &&
-    (type.target.symbol.name === 'Array' ||
-      type.target.symbol.name === 'ReadonlyArray')
-  );
-}
-// #endregion
-
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
@@ -161,7 +142,8 @@ export default createRule<Options, MessageId>({
     }
 
     function nodeIsArrayType(node: TSESTree.Node): boolean {
-      return isArrayType(getNodeType(node));
+      const nodeType = getNodeType(node);
+      return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
     }
 
     /**
