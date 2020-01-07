@@ -33,7 +33,7 @@ function parseReadme(): marked.Tokens.Table {
 }
 
 describe('Validating rule docs', () => {
-  it(`check if all files are present`, () => {
+  it('All rules must have a corresponding rule doc', () => {
     const files = fs.readdirSync(docsRoot);
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
@@ -66,7 +66,7 @@ describe('Validating rule docs', () => {
 describe('Validating rule metadata', () => {
   for (const [ruleName, rule] of rulesData) {
     describe(`${ruleName}`, () => {
-      it(`name field in rule must be correct`, () => {
+      it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url
         expect(
@@ -74,7 +74,7 @@ describe('Validating rule metadata', () => {
         ).toBeTruthy();
       });
 
-      it('Expects type checking to be set for rule', () => {
+      it('`requiresTypeChecking` should be set if the rule uses type information', () => {
         // quick-and-dirty check to see if it uses parserServices
         // not perfect but should be good enough
         const ruleFileContents = fs.readFileSync(
@@ -95,7 +95,7 @@ describe('Validating README.md', () => {
     ([, rule]) => rule.meta.deprecated !== true,
   );
 
-  it('Checking table structure...', () => {
+  it('All non-deprecated rules should have a row in the table, and the table should be ordered alphabetically', () => {
     const ruleNames = notDeprecated
       .map(([ruleName]) => ruleName)
       .sort()
@@ -109,27 +109,27 @@ describe('Validating README.md', () => {
       const ruleRow =
         rulesTable.find(row => row[0].includes(`/${ruleName}.md`)) ?? [];
 
-      it(`Link column should be set correctly`, () => {
+      it('Link column should be correct', () => {
         expect(ruleRow[0]).toEqual(createRuleLink(ruleName));
       });
 
-      it(`Description column should be set correctly`, () => {
+      it('Description column should be correct', () => {
         expect(ruleRow[1]).toEqual(rule.meta.docs.description);
       });
 
-      it(`Recommended column should be set correctly`, () => {
+      it('Recommended column should be correct', () => {
         expect(ruleRow[2]).toEqual(
           rule.meta.docs.recommended ? ':heavy_check_mark:' : '',
         );
       });
 
-      it(`Fixable column should be set correctly`, () => {
+      it('Fixable column should be correct', () => {
         expect(ruleRow[3]).toEqual(
           rule.meta.fixable !== undefined ? ':wrench:' : '',
         );
       });
 
-      it(`Requiring type information column should be set correctly`, () => {
+      it('Requiring type information column should be correct', () => {
         expect(ruleRow[4]).toEqual(
           rule.meta.docs.requiresTypeChecking === true
             ? ':thought_balloon:'

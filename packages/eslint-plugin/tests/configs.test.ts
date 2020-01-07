@@ -27,7 +27,7 @@ describe('all.json config', () => {
     'error',
   ]);
 
-  it('contains all @typescript-eslint/eslint-plugin rule modules, except the deprecated ones', () => {
+  it('contains all of the rules, excluding the deprecated ones', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 });
@@ -45,7 +45,7 @@ describe('recommended.json config', () => {
       rule.meta.docs.recommended || 'off',
     ]);
 
-  it('contains all @typescript-eslint/eslint-plugin rule modules, except the deprecated ones', () => {
+  it("contains all recommended rules that don't require typechecking, excluding the deprecated ones", () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 });
@@ -65,7 +65,7 @@ describe('recommended-requiring-type-checking.json config', () => {
       rule.meta.docs.recommended || 'off',
     ]);
 
-  it('contains all @typescript-eslint/eslint-plugin rule modules, except the deprecated ones', () => {
+  it('contains all recommended rules that require type checking, excluding the deprecated ones', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 });
