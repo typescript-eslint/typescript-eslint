@@ -7,9 +7,12 @@ import { ASTAndProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 
+const DEFAULT_EXTRA_FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
+
 /**
  * @param code The code of the file being linted
- * @param options The config object
+ * @param createDefaultProgram True if the default program should be created
+ * @param extra The config object
  * @returns If found, returns the source file corresponding to the code and the containing program
  */
 function createProjectProgram(
@@ -38,11 +41,26 @@ function createProjectProgram(
     ];
     let hasMatchedAnError = false;
 
+    const extraFileExtensions = extra.extraFileExtensions || [];
+
+    extraFileExtensions.forEach(extraExtension => {
+      if (!extraExtension.startsWith('.')) {
+        errorLines.push(
+          `Found unexpected extension "${extraExtension}" specified with the "extraFileExtensions" option. Did you mean ".${extraExtension}"?`,
+        );
+      }
+      if (DEFAULT_EXTRA_FILE_EXTENSIONS.includes(extraExtension)) {
+        errorLines.push(
+          `You unnecessarily included the extension "${extraExtension}" with the "extraFileExtensions" option. This extension is already handled by the parser by default.`,
+        );
+      }
+    });
+
     const fileExtension = path.extname(extra.filePath);
-    if (!['.ts', '.tsx', '.js', '.jsx'].includes(fileExtension)) {
+    if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {
       const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
-      if (extra.extraFileExtensions && extra.extraFileExtensions.length > 0) {
-        if (!extra.extraFileExtensions.includes(fileExtension)) {
+      if (extraFileExtensions.length > 0) {
+        if (!extraFileExtensions.includes(fileExtension)) {
           errorLines.push(
             `${nonStandardExt}. It should be added to your existing "parserOptions.extraFileExtensions".`,
           );

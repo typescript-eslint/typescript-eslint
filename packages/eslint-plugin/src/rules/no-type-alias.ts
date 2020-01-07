@@ -218,8 +218,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Validates the node looking for aliases, callbacks and literals.
-     * @param node the node to be validated.
-     * @param compositionType the type of composition this alias is part of (null if not
+     * @param type the type of composition this alias is part of (null if not
      *                                  part of a composition)
      * @param isTopLevel a flag indicating this is the top level node.
      */

@@ -30,6 +30,8 @@ const foo = ({ hello: "hello" }) as PossibleTuple;`,
     `
 type PossibleTuple = { 0: "hello", 5: "hello" };
 const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
+    `let bar: number | undefined = x;
+      let foo: number = bar!;`,
     {
       code: `
 type Foo = number;
@@ -37,15 +39,15 @@ const foo = (3 + 5) as Foo;`,
       options: [{ typesToIgnore: ['Foo'] }],
     },
     {
-      code: `const foo = (3 + 5) as any;`,
+      code: 'const foo = (3 + 5) as any;',
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `((Syntax as any).ArrayExpression = 'foo')`,
+      code: "((Syntax as any).ArrayExpression = 'foo')",
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `const foo = (3 + 5) as string;`,
+      code: 'const foo = (3 + 5) as string;',
       options: [{ typesToIgnore: ['string'] }],
     },
     {

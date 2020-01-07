@@ -74,6 +74,19 @@ for (; true; ) {}
 do {} while (true);
 ```
 
+- `checkArrayPredicates` (default: `false`) - if set checks that the return value from certain array method callbacks (`filter`, `find`, `some`, `every`) is necessarily conditional.
+
+```ts
+// Valid: numbers can be truthy or falsy.
+[0, 1, 2, 3].filter(t => t);
+
+// Invalid: arrays are always falsy.
+[
+  [1, 2],
+  [3, 4],
+].filter(t => t);
+```
+
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.

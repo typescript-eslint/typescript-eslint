@@ -102,6 +102,12 @@ for(let x = 0; x < arr.length(); x++) {}
 for(let x = 0; x < arr.length; x+=11) {}
 `,
     `
+for(let x = arr.length; x > 1; x-=1) {}
+`,
+    `
+for(let x = 0; x < arr.length; x*=2) {}
+`,
+    `
 for(let x = 0; x < arr.length; x=x+11) {}
 `,
     `
