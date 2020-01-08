@@ -1,11 +1,25 @@
 import { Program } from 'typescript';
 import { TSESTree, TSNode } from './ts-estree';
 
+type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
+/**
+ * For convenience:
+ * - true === ['typescript-eslint']
+ * - false === []
+ *
+ * An array of modules to turn explicit debugging on for.
+ * - 'typescript-eslint' is the same as setting the env var `DEBUG=typescript-eslint:*`
+ * - 'eslint' is the same as setting the env var `DEBUG=eslint:*`
+ * - 'typescript' is the same as setting `extendedDiagnostics: true` in your tsconfig compilerOptions
+ */
+export type DebugLevel = boolean | DebugModule[];
+
 export interface Extra {
   code: string;
   comment: boolean;
   comments: TSESTree.Comment[];
   createDefaultProgram: boolean;
+  debugLevel: Set<DebugModule>;
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   errorOnUnknownASTType: boolean;
   extraFileExtensions: string[];
@@ -25,6 +39,7 @@ export interface Extra {
 export interface TSESTreeOptions {
   comment?: boolean;
   createDefaultProgram?: boolean;
+  debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
   extraFileExtensions?: string[];

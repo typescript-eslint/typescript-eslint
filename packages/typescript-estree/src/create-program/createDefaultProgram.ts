@@ -3,9 +3,9 @@ import path from 'path';
 import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import {
-  getTsconfigPath,
-  DEFAULT_COMPILER_OPTIONS,
   ASTAndProgram,
+  getTsconfigPath,
+  createDefaultCompilerOptionsFromExtra,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
@@ -31,7 +31,7 @@ function createDefaultProgram(
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
-    DEFAULT_COMPILER_OPTIONS,
+    createDefaultCompilerOptionsFromExtra(extra),
     { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
   );
 

@@ -6,9 +6,9 @@ import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import {
   canonicalDirname,
   CanonicalPath,
-  getTsconfigPath,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
+  getTsconfigPath,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -233,7 +233,7 @@ function createWatchProgram(
   // create compiler host
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
-    DEFAULT_COMPILER_OPTIONS,
+    createDefaultCompilerOptionsFromExtra(extra),
     ts.sys,
     ts.createSemanticDiagnosticsBuilderProgram,
     diagnosticReporter,
