@@ -282,7 +282,6 @@ function warnAboutTSVersion(): void {
 //------------------------------------------------------------------------------
 
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
@@ -444,7 +443,7 @@ export {
   ParseAndGenerateServicesResult,
   version,
 };
-export { DebugLevel, ParserServices, TSESTreeOptions } from './parser-options';
+export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export { visitorKeys } from './visitor-keys';
 export * from './ts-estree';
