@@ -32,16 +32,8 @@ jobs:
         displayName: 'Run linting'
 
       - script: |
-          yarn check:docs
-        displayName: 'Validate documentation'
-
-      - script: |
           yarn check:spelling
         displayName: 'Validate documentation spelling'
-
-      - script: |
-          yarn check:configs
-        displayName: 'Validate plugin configs'
 
       - script: |
           yarn test

@@ -59,8 +59,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `accessibility`
 
-This rule in it's default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
-A possible configuration could be:
+This rule in its default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 
 ```ts
 {
@@ -74,6 +73,8 @@ A possible configuration could be:
   }
 }
 ```
+
+Note the above is an example of a possible configuration you could use - it is not the default configuration.
 
 The following patterns are considered incorrect code if no options are provided:
 
