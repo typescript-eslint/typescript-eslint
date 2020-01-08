@@ -1,4 +1,4 @@
-# Avoid type predicates that are always true or false (strict-type-predicates)
+# Disallow always true (or false) type predicates (`strict-type-predicates`)
 
 Warns for type predicates that are always true or always false. Works for
 `typeof` comparisons to constants (e.g. `typeof foo === 'string'`), and equality

@@ -31,6 +31,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow always true (or false) type predicates',
       category: 'Best Practices',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       expressionAlwaysFalse: 'Expression is always false.',
