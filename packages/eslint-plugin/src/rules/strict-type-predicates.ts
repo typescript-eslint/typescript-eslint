@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 import {
   isIdentifier,
@@ -196,7 +196,7 @@ export default util.createRule<Options, MessageIds>({
 
     return isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')
       ? {
-          BinaryExpression(node: TSESTree.BinaryExpression) {
+          BinaryExpression(node: TSESTree.BinaryExpression): void {
             const equals = getEqualsKind(node.operator);
             if (equals !== undefined) {
               const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
@@ -209,7 +209,7 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isEmptyType(checker: ts.TypeChecker, type: ts.Type) {
+function isEmptyType(checker: ts.TypeChecker, type: ts.Type): boolean {
   return checker.typeToString(type) === '{}';
 }
 
@@ -258,12 +258,12 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
   }
 }
 
-function unionParts(type: ts.Type) {
+function unionParts(type: ts.Type): ts.Type[] {
   return isUnionType(type) ? type.types : [type];
 }
 
 function flagPredicate(testedFlag: ts.TypeFlags): Predicate {
-  return type => isTypeFlagSet(type, testedFlag);
+  return (type): boolean => isTypeFlagSet(type, testedFlag);
 }
 
 function getTypePredicateForKind(kind: string): Predicate | undefined {
@@ -289,7 +289,8 @@ function getTypePredicateForKind(kind: string): Predicate | undefined {
         ts.TypeFlags.NumberLike |
         ts.TypeFlags.StringLike |
         ts.TypeFlags.ESSymbol;
-      return type => !isTypeFlagSet(type, allFlags) && !isFunction(type);
+      return (type): boolean =>
+        !isTypeFlagSet(type, allFlags) && !isFunction(type);
     }
     default:
       return undefined;
