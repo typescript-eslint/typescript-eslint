@@ -34,11 +34,14 @@ ruleTester.run('no-magic-numbers', rule, {
       options: [{ ignoreNumericLiteralTypes: true }],
     },
     {
-      code: 'enum foo { SECOND = 1000 }',
-      options: [{ ignoreEnums: true }],
-    },
-    {
-      code: 'enum foo { SECOND = 1000, NUM = "0123456789" }',
+      code: `
+        enum foo {
+          SECOND = 1000,
+          NUM = "0123456789",
+          NEG = -1,
+          POS = +1,
+        }
+      `,
       options: [{ ignoreEnums: true }],
     },
     {
@@ -152,7 +155,14 @@ class Foo {
       ],
     },
     {
-      code: 'enum foo { SECOND = 1000 }',
+      code: `
+enum foo {
+  SECOND = 1000,
+  NUM = "0123456789",
+  NEG = -1,
+  POS = +1,
+}
+      `,
       options: [{ ignoreEnums: false }],
       errors: [
         {
@@ -160,22 +170,24 @@ class Foo {
           data: {
             raw: '1000',
           },
-          line: 1,
-          column: 21,
+          line: 3,
+          column: 12,
         },
-      ],
-    },
-    {
-      code: 'enum foo { SECOND = 1000, NUM = "0123456789" }',
-      options: [{ ignoreEnums: false }],
-      errors: [
         {
           messageId: 'noMagic',
           data: {
-            raw: '1000',
+            raw: '-1',
           },
-          line: 1,
-          column: 21,
+          line: 5,
+          column: 9,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 6,
+          column: 10,
         },
       ],
     },
@@ -184,43 +196,61 @@ class Foo {
 class Foo {
   readonly A = 1;
   readonly B = 2;
-  public static readonly C = 1;
-  static readonly D = 1;
-  readonly E = -1;
-  readonly F = +1;
+  public static readonly C = 3;
+  static readonly D = 4;
+  readonly E = -5;
+  readonly F = +6;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: false }],
       errors: [
         {
           messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
           line: 3,
           column: 16,
         },
         {
           messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
           line: 4,
           column: 16,
         },
         {
           messageId: 'noMagic',
+          data: {
+            raw: '3',
+          },
           line: 5,
           column: 30,
         },
         {
           messageId: 'noMagic',
+          data: {
+            raw: '4',
+          },
           line: 6,
           column: 23,
         },
         {
           messageId: 'noMagic',
+          data: {
+            raw: '-5',
+          },
           line: 7,
           column: 16,
         },
         {
           messageId: 'noMagic',
+          data: {
+            raw: '6',
+          },
           line: 8,
-          column: 16,
+          column: 17,
         },
       ],
     },
