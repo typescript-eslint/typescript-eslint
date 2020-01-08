@@ -396,7 +396,8 @@ function maybeInvalidateProgram(
     if (folderWatchCallbacks) {
       folderWatchCallbacks.forEach(cb => {
         cb(currentDir, ts.FileWatcherEventKind.Changed);
-        cb(current!, ts.FileWatcherEventKind.Changed);
+        // Temp: disable fix to validate test o
+        // cb(current!, ts.FileWatcherEventKind.Changed);
       });
       hasCallback = true;
       break;

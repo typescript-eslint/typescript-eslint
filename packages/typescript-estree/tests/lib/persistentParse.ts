@@ -7,7 +7,7 @@ const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
   'baz/bar': 'console.log("baz bar")',
-  'ui/components/file': 'console.log("ui/components")',
+  'bat/baz/bar': 'console.log("bat/baz/bar")',
 };
 
 const tmpDirs = new Set<tmp.DirResult>();
@@ -22,15 +22,6 @@ afterEach(() => {
 
 function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
   fs.writeFileSync(path.join(dirName, 'tsconfig.json'), JSON.stringify(config));
-}
-function writeTSConfigExtend(
-  dirName: string,
-  config: Record<string, unknown>,
-): void {
-  fs.writeFileSync(
-    path.join(dirName, 'tsconfig.extend.json'),
-    JSON.stringify(config),
-  );
 }
 function writeFile(dirName: string, file: keyof typeof CONTENTS): void {
   fs.writeFileSync(path.join(dirName, 'src', `${file}.ts`), CONTENTS[file]);
@@ -119,6 +110,24 @@ function baseTests(
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
+  });
+
+  it('allows parsing of deeply nested new files in new folder', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll);
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+
+    // Create deep folder structure after first parse (this is important step)
+    // context: https://github.com/typescript-eslint/typescript-eslint/issues/1394
+    fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat'));
+    fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat', 'baz'));
+
+    const bazSlashBar = path.join('bat', 'baz', 'bar') as 'bat/baz/bar';
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, bazSlashBar);
+
     expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
   });
 
@@ -239,37 +248,5 @@ describe('persistent parse', () => {
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
-  });
-
-  describe('tsconfig with extends and nested folders', () => {
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1394
-    it('parses both files successfully', () => {
-      const tsConfigExcludeBar = {
-        include: ['src'],
-      };
-      const tsConfigIncludeAll = {
-        extends: './tsconfig.extend.json',
-        include: ['./**/*'],
-      };
-
-      const PROJECT_DIR = setup(tsConfigIncludeAll, false);
-      writeTSConfigExtend(PROJECT_DIR, tsConfigExcludeBar);
-
-      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-
-      fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui'));
-      fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui', 'components'));
-
-      const bazSlashBar = path.join(
-        'ui',
-        'components',
-        'file',
-      ) as 'ui/components/file';
-
-      // write a new file and attempt to parse it
-      writeFile(PROJECT_DIR, bazSlashBar);
-
-      expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
-    });
   });
 });
