@@ -143,11 +143,7 @@ export default util.createRule<Options, MessageIds>({
       'FunctionExpression[async = false]'(
         node: TSESTree.FunctionExpression,
       ): void {
-        if (
-          node.parent &&
-          'kind' in node.parent &&
-          node.parent.kind === 'method'
-        ) {
+        if ('kind' in node.parent && node.parent.kind === 'method') {
           if (checkMethodDeclarations) {
             validateNode(node.parent);
           }

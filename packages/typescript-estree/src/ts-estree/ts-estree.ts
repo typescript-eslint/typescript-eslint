@@ -33,10 +33,6 @@ export interface BaseNode {
    * The first is the start position of the node, the second is the end position of the node.
    */
   range: Range;
-  /**
-   * The parent node of the current node
-   */
-  parent?: Node;
 
   // every node *will* have a type, but let the nodes define their own exact string
   // type: string;

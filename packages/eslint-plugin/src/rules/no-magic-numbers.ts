@@ -206,10 +206,7 @@ export default util.createRule<Options, MessageIds>({
             | TSESTree.UnaryExpression = node;
           let raw = node.raw;
 
-          if (
-            node.parent &&
-            node.parent.type === AST_NODE_TYPES.UnaryExpression
-          ) {
+          if (node.parent.type === AST_NODE_TYPES.UnaryExpression) {
             fullNumberNode = node.parent;
             raw = `${node.parent.operator}${node.raw}`;
           }

@@ -194,7 +194,6 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const isReadonly =
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
           node.parent.operator === 'readonly';
 
@@ -215,10 +214,10 @@ export default util.createRule<Options, MessageIds>({
           defaultOption === 'generic'
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
-        const typeOpNode = isReadonly ? node.parent! : null;
+        const typeOpNode = isReadonly ? node.parent : null;
 
         context.report({
-          node: isReadonly ? node.parent! : node,
+          node: isReadonly ? node.parent : node,
           messageId,
           data: {
             type: getMessageType(node.elementType),

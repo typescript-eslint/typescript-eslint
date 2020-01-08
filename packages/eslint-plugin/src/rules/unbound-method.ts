@@ -99,7 +99,7 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
-  const parent = node.parent!;
+  const parent = node.parent;
 
   switch (parent.type) {
     case AST_NODE_TYPES.IfStatement:

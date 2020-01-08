@@ -43,7 +43,7 @@ export default util.createRule({
             ts.isSourceFile(typeDecl.parent) &&
             typeDecl.name.escapedText === 'Array'
           ) {
-            context.report({ node: node.parent!, messageId: 'requireCompare' });
+            context.report({ node: node.parent, messageId: 'requireCompare' });
             return;
           }
         }

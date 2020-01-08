@@ -931,18 +931,14 @@ export default createRule<Options, MessageIds>({
       ) {
         let blockIndentLevel;
 
-        if (node.parent && isOuterIIFE(node.parent)) {
+        if (isOuterIIFE(node.parent)) {
           blockIndentLevel = options.outerIIFEBody;
         } else if (
-          node.parent &&
-          (node.parent.type === AST_NODE_TYPES.FunctionExpression ||
-            node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression)
+          node.parent.type === AST_NODE_TYPES.FunctionExpression ||
+          node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
           blockIndentLevel = options.FunctionExpression.body;
-        } else if (
-          node.parent &&
-          node.parent.type === AST_NODE_TYPES.FunctionDeclaration
-        ) {
+        } else if (node.parent.type === AST_NODE_TYPES.FunctionDeclaration) {
           blockIndentLevel = options.FunctionDeclaration.body;
         } else {
           blockIndentLevel = 1;

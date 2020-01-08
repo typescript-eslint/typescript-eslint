@@ -99,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
       const parent = node.parent;
       if (
         isBodyEmpty(node) &&
-        parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        parent.type === AST_NODE_TYPES.MethodDefinition &&
         parent.kind === 'constructor'
       ) {
         const { accessibility } = parent;

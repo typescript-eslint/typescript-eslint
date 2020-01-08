@@ -343,7 +343,7 @@ export default createRule({
       ].join(', ')](
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        let parentNode = node.parent!;
+        let parentNode = node.parent;
         let indexNode: TSESTree.Node | null = null;
         if (
           parentNode.type === AST_NODE_TYPES.CallExpression ||
@@ -352,7 +352,7 @@ export default createRule({
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }
-          parentNode = parentNode.parent!;
+          parentNode = parentNode.parent;
         } else {
           indexNode = node.property;
         }
@@ -398,7 +398,7 @@ export default createRule({
         const callNode = node.parent as
           | TSESTree.CallExpression
           | TSESTree.OptionalCallExpression;
-        const parentNode = callNode.parent!;
+        const parentNode = callNode.parent;
 
         if (
           callNode.arguments.length !== 1 ||
@@ -430,10 +430,10 @@ export default createRule({
       'BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="lastIndexOf"][computed=false]'(
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent! as
+        const callNode = node.parent as
           | TSESTree.CallExpression
           | TSESTree.OptionalCallExpression;
-        const parentNode = callNode.parent!;
+        const parentNode = callNode.parent;
 
         if (
           callNode.arguments.length !== 1 ||
@@ -523,10 +523,10 @@ export default createRule({
       ].join(', ')](
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent! as
+        const callNode = node.parent as
           | TSESTree.CallExpression
           | TSESTree.OptionalCallExpression;
-        const parentNode = callNode.parent!;
+        const parentNode = callNode.parent;
         if (
           !isEqualityComparison(parentNode) ||
           parentNode.left !== callNode ||

@@ -315,30 +315,27 @@ export default util.createRule<Options, MessageIds>({
     function checkFunctionExpressionReturnType(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
-      // Should always have a parent; checking just in case
-      /* istanbul ignore else */ if (node.parent) {
-        if (options.allowTypedFunctionExpressions) {
-          if (
-            util.isTypeAssertion(node.parent) ||
-            isVariableDeclaratorWithTypeAnnotation(node.parent) ||
-            isClassPropertyWithTypeAnnotation(node.parent) ||
-            isPropertyOfObjectWithType(node.parent) ||
-            isFunctionArgument(node.parent, node) ||
-            isConstructorArgument(node.parent)
-          ) {
-            return;
-          }
-        }
-
+      if (options.allowTypedFunctionExpressions) {
         if (
-          options.allowExpressions &&
-          node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-          node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
-          node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-          node.parent.type !== AST_NODE_TYPES.ClassProperty
+          util.isTypeAssertion(node.parent) ||
+          isVariableDeclaratorWithTypeAnnotation(node.parent) ||
+          isClassPropertyWithTypeAnnotation(node.parent) ||
+          isPropertyOfObjectWithType(node.parent) ||
+          isFunctionArgument(node.parent, node) ||
+          isConstructorArgument(node.parent)
         ) {
           return;
         }
+      }
+
+      if (
+        options.allowExpressions &&
+        node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+        node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
+        node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+        node.parent.type !== AST_NODE_TYPES.ClassProperty
+      ) {
+        return;
       }
 
       // https://github.com/typescript-eslint/typescript-eslint/issues/653

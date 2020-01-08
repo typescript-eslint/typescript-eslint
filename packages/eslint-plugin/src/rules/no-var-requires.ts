@@ -31,7 +31,6 @@ export default util.createRule<Options, MessageIds>({
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&
-          node.parent &&
           (node.parent.type === AST_NODE_TYPES.VariableDeclarator ||
             node.parent.type === AST_NODE_TYPES.CallExpression ||
             node.parent.type === AST_NODE_TYPES.OptionalCallExpression)

@@ -100,9 +100,6 @@ export default util.createRule<Options, MessageIds>({
       node: ts.Expression,
     ): ts.Type | undefined {
       const parent = node.parent;
-      if (!parent) {
-        return;
-      }
 
       if (isCallExpression(parent) || isNewExpression(parent)) {
         if (node === parent.expression) {

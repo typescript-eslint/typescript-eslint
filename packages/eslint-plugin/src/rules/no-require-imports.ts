@@ -22,7 +22,7 @@ export default util.createRule({
         node: TSESTree.Identifier,
       ): void {
         context.report({
-          node: node.parent!,
+          node: node.parent,
           messageId: 'noRequireImports',
         });
       },

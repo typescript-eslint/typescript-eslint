@@ -58,59 +58,57 @@ export default util.createRule<[], MessageIds>({
           };
         }
 
-        if (node.parent) {
-          if (
-            (node.parent.type === AST_NODE_TYPES.MemberExpression ||
-              node.parent.type === AST_NODE_TYPES.OptionalMemberExpression) &&
-            node.parent.object === node
-          ) {
-            if (!node.parent.optional) {
-              if (node.parent.computed) {
-                // it is x![y]?.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: convertTokenToOptional('?.'),
-                });
-              } else {
-                // it is x!.y?.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: convertTokenToOptional('?'),
-                });
-              }
-            } else {
-              if (node.parent.computed) {
-                // it is x!?.[y].z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: removeToken(),
-                });
-              } else {
-                // it is x!?.y.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: removeToken(),
-                });
-              }
-            }
-          } else if (
-            (node.parent.type === AST_NODE_TYPES.CallExpression ||
-              node.parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
-            node.parent.callee === node
-          ) {
-            if (!node.parent.optional) {
-              // it is x.y?.z!()
+        if (
+          (node.parent.type === AST_NODE_TYPES.MemberExpression ||
+            node.parent.type === AST_NODE_TYPES.OptionalMemberExpression) &&
+          node.parent.object === node
+        ) {
+          if (!node.parent.optional) {
+            if (node.parent.computed) {
+              // it is x![y]?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
                 fix: convertTokenToOptional('?.'),
               });
             } else {
-              // it is x.y.z!?.()
+              // it is x!.y?.z
+              suggest.push({
+                messageId: 'suggestOptionalChain',
+                fix: convertTokenToOptional('?'),
+              });
+            }
+          } else {
+            if (node.parent.computed) {
+              // it is x!?.[y].z
+              suggest.push({
+                messageId: 'suggestOptionalChain',
+                fix: removeToken(),
+              });
+            } else {
+              // it is x!?.y.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
                 fix: removeToken(),
               });
             }
+          }
+        } else if (
+          (node.parent.type === AST_NODE_TYPES.CallExpression ||
+            node.parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
+          node.parent.callee === node
+        ) {
+          if (!node.parent.optional) {
+            // it is x.y?.z!()
+            suggest.push({
+              messageId: 'suggestOptionalChain',
+              fix: convertTokenToOptional('?.'),
+            });
+          } else {
+            // it is x.y.z!?.()
+            suggest.push({
+              messageId: 'suggestOptionalChain',
+              fix: removeToken(),
+            });
           }
         }
 

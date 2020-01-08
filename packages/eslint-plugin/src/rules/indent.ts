@@ -213,6 +213,7 @@ export default util.createRule<Options, MessageIds>({
             operator: 'extends',
             left: node.checkType as any,
             right: node.extendsType as any,
+            parent: node,
 
             // location data
             range: [node.checkType.range[0], node.extendsType.range[1]],

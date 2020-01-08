@@ -125,7 +125,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Check TypeScript specific nodes
         const parent = node.parent;
-        if (parent && isTSPropertyType(parent)) {
+        if (isTSPropertyType(parent)) {
           if (properties === 'always' && isUnderscored(name)) {
             report(node);
           }
