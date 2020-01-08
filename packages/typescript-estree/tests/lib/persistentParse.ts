@@ -7,6 +7,7 @@ const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
   'baz/bar': 'console.log("baz bar")',
+  'ui/components/file': 'console.log("ui/components")',
 };
 
 const tmpDirs = new Set<tmp.DirResult>();
@@ -22,7 +23,10 @@ afterEach(() => {
 function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
   fs.writeFileSync(path.join(dirName, 'tsconfig.json'), JSON.stringify(config));
 }
-function writeFile(dirName: string, file: 'foo' | 'bar' | 'baz/bar'): void {
+function writeTSConfigExtend(dirName: string, config: Record<string, unknown>): void {
+  fs.writeFileSync(path.join(dirName, 'tsconfig.extend.json'), JSON.stringify(config));
+}
+function writeFile(dirName: string, file: keyof typeof CONTENTS): void {
   fs.writeFileSync(path.join(dirName, 'src', `${file}.ts`), CONTENTS[file]);
 }
 function renameFile(dirName: string, src: 'bar', dest: 'baz/bar'): void {
@@ -53,7 +57,7 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   return tmpDir.name;
 }
 
-function parseFile(filename: 'foo' | 'bar' | 'baz/bar', tmpDir: string): void {
+function parseFile(filename: keyof typeof CONTENTS, tmpDir: string): void {
   parseAndGenerateServices(CONTENTS.foo, {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
@@ -229,5 +233,34 @@ describe('persistent parse', () => {
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
+
+  describe('ui/components/file', () => {
+    it(`failed`, () => {
+      const tsConfigExcludeBar = {
+        include: ['src/'],
+        exclude: ['src/electron'],
+      };
+      const tsConfigIncludeAll = {
+        extends: './tsconfig.extend.json',
+        include: ['./**/*', './.storybook/**/*'],
+        exclude: ['assets', 'build', 'build-resources', 'node_modules', 'tmp'],
+      };
+
+      const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+      writeTSConfigExtend(PROJECT_DIR, tsConfigExcludeBar);
+
+      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+
+      fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui'));
+      fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui', 'components'));
+
+      const bazSlashBar = path.join( 'ui', 'components', 'file') as 'ui/components/file';
+
+      // write a new file and attempt to parse it
+      writeFile(PROJECT_DIR, bazSlashBar);
+
+      expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
+    })
   });
 });
