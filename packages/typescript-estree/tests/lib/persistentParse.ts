@@ -23,8 +23,14 @@ afterEach(() => {
 function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
   fs.writeFileSync(path.join(dirName, 'tsconfig.json'), JSON.stringify(config));
 }
-function writeTSConfigExtend(dirName: string, config: Record<string, unknown>): void {
-  fs.writeFileSync(path.join(dirName, 'tsconfig.extend.json'), JSON.stringify(config));
+function writeTSConfigExtend(
+  dirName: string,
+  config: Record<string, unknown>,
+): void {
+  fs.writeFileSync(
+    path.join(dirName, 'tsconfig.extend.json'),
+    JSON.stringify(config),
+  );
 }
 function writeFile(dirName: string, file: keyof typeof CONTENTS): void {
   fs.writeFileSync(path.join(dirName, 'src', `${file}.ts`), CONTENTS[file]);
@@ -255,12 +261,16 @@ describe('persistent parse', () => {
       fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui'));
       fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'ui', 'components'));
 
-      const bazSlashBar = path.join( 'ui', 'components', 'file') as 'ui/components/file';
+      const bazSlashBar = path.join(
+        'ui',
+        'components',
+        'file',
+      ) as 'ui/components/file';
 
       // write a new file and attempt to parse it
       writeFile(PROJECT_DIR, bazSlashBar);
 
       expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
-    })
+    });
   });
 });
