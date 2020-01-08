@@ -195,8 +195,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * When passed with `project`, this allows the parser to create a catch-all, default program.
    * This means that if the parser encounters a file not included in any of the provided `project`s,
    * it will not error, but will instead parse the file and its dependencies in a new program.
-   *
-   * This
    */
   createDefaultProgram?: boolean;
 }
