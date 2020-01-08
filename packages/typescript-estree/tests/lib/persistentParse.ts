@@ -241,16 +241,15 @@ describe('persistent parse', () => {
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
   });
 
-  describe('ui/components/file', () => {
-    it(`failed`, () => {
+  describe('tsconfig with extends and nested folders', () => {
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1394
+    it('parses both files successfully', () => {
       const tsConfigExcludeBar = {
-        include: ['src/'],
-        exclude: ['src/electron'],
+        include: ['src'],
       };
       const tsConfigIncludeAll = {
         extends: './tsconfig.extend.json',
-        include: ['./**/*', './.storybook/**/*'],
-        exclude: ['assets', 'build', 'build-resources', 'node_modules', 'tmp'],
+        include: ['./**/*'],
       };
 
       const PROJECT_DIR = setup(tsConfigIncludeAll, false);
