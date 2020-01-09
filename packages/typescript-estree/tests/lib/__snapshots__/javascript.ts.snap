@@ -80427,44 +80427,6 @@ Object {
             },
           },
           "object": Object {
-            "arguments": Array [
-              Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 7,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  7,
-                  12,
-                ],
-                "raw": "'foo'",
-                "type": "Literal",
-                "value": "foo",
-              },
-            ],
-            "callee": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 6,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 0,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                0,
-                6,
-              ],
-              "type": "Import",
-            },
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -80475,12 +80437,30 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               0,
               13,
             ],
-            "type": "CallExpression",
+            "source": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                7,
+                12,
+              ],
+              "raw": "'foo'",
+              "type": "Literal",
+              "value": "foo",
+            },
+            "type": "ImportExpression",
           },
           "optional": false,
           "property": Object {
@@ -80741,6 +80721,8 @@ Object {
   "type": "Program",
 }
 `;
+
+exports[`javascript fixtures/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `"Dynamic import must have one specifier as an argument."`;
 
 exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {

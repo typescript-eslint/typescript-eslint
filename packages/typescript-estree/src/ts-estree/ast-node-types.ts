@@ -35,6 +35,7 @@ export enum AST_NODE_TYPES {
   Import = 'Import',
   ImportDeclaration = 'ImportDeclaration',
   ImportDefaultSpecifier = 'ImportDefaultSpecifier',
+  ImportExpression = 'ImportExpression',
   ImportNamespaceSpecifier = 'ImportNamespaceSpecifier',
   ImportSpecifier = 'ImportSpecifier',
   JSXAttribute = 'JSXAttribute',

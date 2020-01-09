@@ -1778,6 +1778,20 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
+        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+          if (node.arguments.length !== 1) {
+            throw createError(
+              this.ast,
+              node.arguments.pos,
+              'Dynamic import must have one specifier as an argument.',
+            );
+          }
+          return this.createNode<TSESTree.ImportExpression>(node, {
+            type: AST_NODE_TYPES.ImportExpression,
+            source: this.convertChild(node.arguments[0]),
+          });
+        }
+
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;

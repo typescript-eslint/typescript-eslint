@@ -174,6 +174,7 @@ export type Node =
   | Import
   | ImportDeclaration
   | ImportDefaultSpecifier
+  | ImportExpression
   | ImportNamespaceSpecifier
   | ImportSpecifier
   | JSXAttribute
@@ -956,6 +957,11 @@ export interface ImportDeclaration extends BaseNode {
 export interface ImportDefaultSpecifier extends BaseNode {
   type: AST_NODE_TYPES.ImportDefaultSpecifier;
   local: Identifier;
+}
+
+export interface ImportExpression extends BaseNode {
+  type: AST_NODE_TYPES.ImportExpression;
+  source: Expression;
 }
 
 export interface ImportNamespaceSpecifier extends BaseNode {
