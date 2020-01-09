@@ -44,9 +44,7 @@ export default util.createRule<Options, 'floating'>({
 
     return {
       ExpressionStatement(node): void {
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ExpressionStatement
-        >(node);
+        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         if (isUnhandledPromise(checker, expression)) {
           context.report({

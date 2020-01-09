@@ -66,9 +66,7 @@ export default util.createRule<Options, MessageIds>({
       ForOfStatement: rules.ForOfStatement,
 
       ReturnStatement(node): void {
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ReturnStatement
-        >(node);
+        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
         if (expression && isThenableType(expression)) {
           // tell the base rule to mark the scope as having an await so it ignores it
           rules.AwaitExpression();

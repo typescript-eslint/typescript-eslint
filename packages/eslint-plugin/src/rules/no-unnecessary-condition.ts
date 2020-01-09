@@ -136,12 +136,12 @@ export default createRule<Options, MessageId>({
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    function getNodeType(node: TSESTree.Node): ts.Type {
+    function getNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
     }
 
-    function nodeIsArrayType(node: TSESTree.Node): boolean {
+    function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
       return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
     }
@@ -150,7 +150,7 @@ export default createRule<Options, MessageId>({
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
-    function checkNode(node: TSESTree.Node): void {
+    function checkNode(node: TSESTree.Expression): void {
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
@@ -180,7 +180,7 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkNodeForNullish(node: TSESTree.Node): void {
+    function checkNodeForNullish(node: TSESTree.Expression): void {
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
