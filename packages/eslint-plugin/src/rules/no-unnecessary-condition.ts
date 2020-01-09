@@ -141,7 +141,7 @@ export default createRule<Options, MessageId>({
       return getConstrainedTypeAtLocation(checker, tsNode);
     }
 
-    function nodeIsArrayType(node: TSESTree.Node): boolean {
+    function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
       return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
     }
