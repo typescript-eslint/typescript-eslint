@@ -2136,49 +2136,20 @@ export class Converter {
         });
 
       case SyntaxKind.AnyKeyword:
-        return this.createNode<TSESTree.TSAnyKeyword>(node, {
-          type: AST_NODE_TYPES.TSAnyKeyword,
-        });
       case SyntaxKind.BigIntKeyword:
-        return this.createNode<TSESTree.TSBigIntKeyword>(node, {
-          type: AST_NODE_TYPES.TSBigIntKeyword,
-        });
       case SyntaxKind.BooleanKeyword:
-        return this.createNode<TSESTree.TSBooleanKeyword>(node, {
-          type: AST_NODE_TYPES.TSBooleanKeyword,
-        });
       case SyntaxKind.NeverKeyword:
-        return this.createNode<TSESTree.TSNeverKeyword>(node, {
-          type: AST_NODE_TYPES.TSNeverKeyword,
-        });
       case SyntaxKind.NumberKeyword:
-        return this.createNode<TSESTree.TSNumberKeyword>(node, {
-          type: AST_NODE_TYPES.TSNumberKeyword,
-        });
       case SyntaxKind.ObjectKeyword:
-        return this.createNode<TSESTree.TSObjectKeyword>(node, {
-          type: AST_NODE_TYPES.TSObjectKeyword,
-        });
       case SyntaxKind.StringKeyword:
-        return this.createNode<TSESTree.TSStringKeyword>(node, {
-          type: AST_NODE_TYPES.TSStringKeyword,
-        });
       case SyntaxKind.SymbolKeyword:
-        return this.createNode<TSESTree.TSSymbolKeyword>(node, {
-          type: AST_NODE_TYPES.TSSymbolKeyword,
-        });
       case SyntaxKind.UnknownKeyword:
-        return this.createNode<TSESTree.TSUnknownKeyword>(node, {
-          type: AST_NODE_TYPES.TSUnknownKeyword,
-        });
       case SyntaxKind.VoidKeyword:
-        return this.createNode<TSESTree.TSVoidKeyword>(node, {
-          type: AST_NODE_TYPES.TSVoidKeyword,
+      case SyntaxKind.UndefinedKeyword: {
+        return this.createNode<any>(node, {
+          type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES],
         });
-      case SyntaxKind.UndefinedKeyword:
-        return this.createNode<TSESTree.TSUndefinedKeyword>(node, {
-          type: AST_NODE_TYPES.TSUndefinedKeyword,
-        });
+      }
 
       case SyntaxKind.NonNullExpression: {
         return this.createNode<TSESTree.TSNonNullExpression>(node, {
