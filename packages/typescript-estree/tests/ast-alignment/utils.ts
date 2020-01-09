@@ -196,7 +196,11 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }
       },
-      // https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+      /**
+       * Template strings seem to also be affected by the difference in opinion between different parsers in
+       * @see https://github.com/babel/babel/issues/6681
+       * @see https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+       */
       TemplateLiteral(node: any) {
         for (let j = 0; j < node.quasis.length; j++) {
           const q = node.quasis[j];
