@@ -11,6 +11,7 @@ type MessageIds =
   | 'unexpectedUnderscore'
   | 'missingUnderscore'
   | 'missingAffix'
+  | 'satisfyCustom'
   | 'doesNotMatchFormat';
 
 // #region Options Type Config
@@ -54,6 +55,7 @@ enum Selectors {
   typeParameter = 1 << 12,
 }
 type SelectorsString = keyof typeof Selectors;
+const SELECTOR_COUNT = util.getEnumNames(Selectors).length;
 
 enum MetaSelectors {
   default = -1,
@@ -99,6 +101,10 @@ type TypeModifiersString = keyof typeof TypeModifiers;
 interface Selector {
   // format options
   format: PredefinedFormatsString[];
+  custom?: {
+    regex: string;
+    match: boolean;
+  };
   leadingUnderscore?: UnderscoreOptionsString;
   trailingUnderscore?: UnderscoreOptionsString;
   prefix?: string[];
@@ -111,11 +117,15 @@ interface Selector {
 }
 interface NormalizedSelector {
   // format options
+  format: PredefinedFormats[];
+  custom: {
+    regex: RegExp;
+    match: boolean;
+  } | null;
   leadingUnderscore: UnderscoreOptions | null;
   trailingUnderscore: UnderscoreOptions | null;
   prefix: string[] | null;
   suffix: string[] | null;
-  format: PredefinedFormats[];
   // selector options
   selector: Selectors | MetaSelectors;
   modifiers: Modifiers[] | null;
@@ -149,10 +159,6 @@ const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
 };
 type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
-  leadingUnderscore: UNDERSCORE_SCHEMA,
-  trailingUnderscore: UNDERSCORE_SCHEMA,
-  prefix: PREFIX_SUFFIX_SCHEMA,
-  suffix: PREFIX_SUFFIX_SCHEMA,
   format: {
     type: 'array',
     items: {
@@ -162,6 +168,22 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
     minItems: 1,
     additionalItems: false,
   },
+  custom: {
+    type: 'object',
+    properties: {
+      regex: {
+        type: 'string',
+      },
+      match: {
+        type: 'boolean',
+      },
+    },
+    required: ['regex', 'match'],
+  },
+  leadingUnderscore: UNDERSCORE_SCHEMA,
+  trailingUnderscore: UNDERSCORE_SCHEMA,
+  prefix: PREFIX_SUFFIX_SCHEMA,
+  suffix: PREFIX_SUFFIX_SCHEMA,
 };
 function selectorSchema(
   selectorString: IndividualAndMetaSelectorsString,
@@ -316,6 +338,8 @@ export default util.createRule<Options, MessageIds>({
         '{{type}} name {{name}} must have a {{position}} underscore',
       missingAffix:
         '{{type}} name {{name}} must have one of the following {{position}}es: {{affixes}}',
+      satisfyCustom:
+        '{{type}} name {{name}} must {{regexMatch}} the RegExp: {{regex}}',
       doesNotMatchFormat:
         '{{type}} name {{name}} must match one of the following formats: {{formats}}',
     },
@@ -737,11 +761,24 @@ function createValidator(
       if (a.selector === b.selector) {
         // in the event of the same selector, order by modifier weight
         // sort ascending - the type modifiers are "more important"
-        return b.modifierWeight - a.modifierWeight;
+        return a.modifierWeight - b.modifierWeight;
       }
 
+      /*
+      meta selectors will always be larger numbers than the normal selectors they contain, as they are the sum of all
+      of the selectors that they contain.
+      to give normal selectors a higher priority, shift them all SELECTOR_COUNT bits to the left before comparison, so
+      they are instead always guaranteed to be larger than the meta selectors.
+      */
+      const aSelector = isMetaSelector(a.selector)
+        ? a.selector
+        : a.selector << SELECTOR_COUNT;
+      const bSelector = isMetaSelector(b.selector)
+        ? b.selector
+        : b.selector << SELECTOR_COUNT;
+
       // sort descending - the meta selectors are "least important"
-      return a.selector - b.selector;
+      return bSelector - aSelector;
     });
 
   return (
@@ -795,7 +832,13 @@ function createValidator(
         return;
       }
 
+      if (!validateCustom(config, name, node, originalName)) {
+        // fail
+        return;
+      }
+
       if (!validatePredefinedFormat(config, name, node, originalName)) {
+        // fail
         return;
       }
 
@@ -810,11 +853,13 @@ function createValidator(
     formats,
     originalName,
     position,
+    custom,
   }: {
     affixes?: string[];
     formats?: PredefinedFormats[];
     originalName: string;
     position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
+    custom?: NonNullable<NormalizedSelector['custom']>;
   }): Record<string, unknown> {
     return {
       type: selectorTypeToMessageString(type),
@@ -822,6 +867,13 @@ function createValidator(
       position,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
+      regex: custom?.regex?.toString(),
+      regexMatch:
+        custom?.match === true
+          ? 'match'
+          : custom?.match === false
+          ? 'not match'
+          : null,
     };
   }
 
@@ -925,6 +977,39 @@ function createValidator(
       }),
     });
     return null;
+  }
+
+  /**
+   * @returns true if the name is valid according to the `regex` option, false otherwise
+   */
+  function validateCustom(
+    config: NormalizedSelector,
+    name: string,
+    node: TSESTree.Identifier | TSESTree.Literal,
+    originalName: string,
+  ): boolean {
+    const custom = config.custom;
+    if (!custom) {
+      return true;
+    }
+
+    const result = custom.regex.test(name);
+    if (custom.match && result) {
+      return true;
+    }
+    if (!custom.match && !result) {
+      return true;
+    }
+
+    context.report({
+      node,
+      messageId: 'satisfyCustom',
+      data: formatReportData({
+        originalName,
+        custom,
+      }),
+    });
+    return false;
   }
 
   /**
@@ -1082,7 +1167,7 @@ function selectorTypeToMessageString(selectorType: SelectorsString): string {
 }
 
 function isMetaSelector(
-  selector: IndividualAndMetaSelectorsString,
+  selector: IndividualAndMetaSelectorsString | Selectors | MetaSelectors,
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
@@ -1102,6 +1187,13 @@ function normalizeOption(option: Selector): NormalizedSelector {
 
   return {
     // format options
+    format: option.format.map(f => PredefinedFormats[f]),
+    custom: option.custom
+      ? {
+          regex: new RegExp(option.custom.regex),
+          match: option.custom.match,
+        }
+      : null,
     leadingUnderscore:
       option.leadingUnderscore !== undefined
         ? UnderscoreOptions[option.leadingUnderscore]
@@ -1112,7 +1204,6 @@ function normalizeOption(option: Selector): NormalizedSelector {
         : null,
     prefix: option.prefix ?? null,
     suffix: option.suffix ?? null,
-    format: option.format.map(f => PredefinedFormats[f]),
     // selector options
     selector: isMetaSelector(option.selector)
       ? MetaSelectors[option.selector]

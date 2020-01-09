@@ -647,6 +647,43 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface Foo {}
+        class Bar {}
+        function foo_function_bar() {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          custom: {
+            regex: /^unused_\w/.source,
+            match: false,
+          },
+          leadingUnderscore: 'allow',
+        },
+        {
+          selector: 'typeLike',
+          format: ['PascalCase'],
+          custom: {
+            regex: /^I[A-Z]/.source,
+            match: false,
+          },
+        },
+        {
+          selector: 'function',
+          format: ['snake_case'],
+          custom: {
+            regex: /_function_/.source,
+            match: true,
+          },
+          leadingUnderscore: 'allow',
+        },
+      ],
+    },
   ],
   invalid: [
     ...createInvalidTestCases(cases),
@@ -734,6 +771,95 @@ ruleTester.run('naming-convention', rule, {
       ],
       parserOptions,
       errors: Array(8).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        let unused_foo = 'a';
+        const _unused_foo = 1;
+        interface IFoo {}
+        class IBar {}
+        function fooBar() {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['snake_case'],
+          custom: {
+            regex: /^unused_\w/.source,
+            match: false,
+          },
+          leadingUnderscore: 'allow',
+        },
+        {
+          selector: 'typeLike',
+          format: ['PascalCase'],
+          custom: {
+            regex: /^I[A-Z]/.source,
+            match: false,
+          },
+        },
+        {
+          selector: 'function',
+          format: ['camelCase'],
+          custom: {
+            regex: /function/.source,
+            match: true,
+          },
+          leadingUnderscore: 'allow',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'satisfyCustom',
+          line: 2,
+          data: {
+            type: 'Variable',
+            name: 'unused_foo',
+            regex: '/^unused_\\w/',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 3,
+          data: {
+            type: 'Variable',
+            name: '_unused_foo',
+            regex: '/^unused_\\w/',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 4,
+          data: {
+            type: 'Interface',
+            name: 'IFoo',
+            regex: '/^I[A-Z]/',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 5,
+          data: {
+            type: 'Class',
+            name: 'IBar',
+            regex: '/^I[A-Z]/',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 6,
+          data: {
+            type: 'Function',
+            name: 'fooBar',
+            regex: '/function/',
+            regexMatch: 'match',
+          },
+        },
+      ],
     },
   ],
 });

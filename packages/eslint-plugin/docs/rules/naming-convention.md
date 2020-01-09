@@ -27,6 +27,10 @@ type Options = {
     | 'snake_case'
     | 'UPPER_CASE'
   )[];
+  custom?: {
+    regex: string;
+    match: boolean;
+  };
   leadingUnderscore?: 'forbid' | 'allow' | 'require';
   trailingUnderscore?: 'forbid' | 'allow' | 'require';
   prefix?: string[];
@@ -72,6 +76,7 @@ When the format of an identifier is checked, it is checked in the following orde
 1. validate trailing underscore
 1. validate prefix
 1. validate suffix
+1. validate custom
 1. validate format
 
 At each step, if the identifier matches the option, the matching part will be removed.
@@ -98,6 +103,14 @@ The `format` option defines the allowed formats for the identifier. This option 
 - `StrictPascalCase` - same as `strictCamelCase`, except the first character must be upper-case.
 - `snake_case` - standard snake_case format - all characters must be lower-case, and underscores are allowed.
 - `UPPER_CASE` - same as `snake_case`, except all characters must be upper-case.
+
+### `custom`
+
+The `custom` option defines a custom regex that the identifier must (or must not) match. This option allows you to have a bit more finer-grained control over identifiers, letting you ban (or force) certain patterns and substrings.
+Accepts an object with the following properties:
+
+- `regex` - accepts a regular expression (anything accepted into `new RegExp(filter)`).
+- `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
 
 #### `leadingUnderscore` / `trailingUnderscore`
 
