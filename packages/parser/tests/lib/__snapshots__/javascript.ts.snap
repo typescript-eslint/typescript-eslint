@@ -35993,6 +35993,8 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `"Dynamic import must have one specifier as an argument."`;
+
 exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
   "$id": 6,

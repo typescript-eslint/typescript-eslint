@@ -3,6 +3,8 @@ import * as eslintVisitorKeys from 'eslint-visitor-keys';
 export const visitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.
   Import: [],
+  // ES2020
+  ImportExpression: ['source'],
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
