@@ -130,6 +130,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       /**
        * We want this node to be different
        * @see https://github.com/JamesHenry/typescript-estree/issues/109
+       * @see https://github.com/prettier/prettier/pull/5728
        */
       TSTypeParameter(node: any) {
         if (node.name) {
@@ -178,7 +179,9 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.type = 'TSClassImplements';
         }
       },
-      // https://github.com/prettier/prettier/issues/5817
+      /**
+       * @see https://github.com/prettier/prettier/issues/5817
+       */
       FunctionExpression(node: any, parent: any) {
         if (parent.typeParameters && parent.type === 'Property') {
           node.typeParameters = parent.typeParameters;
