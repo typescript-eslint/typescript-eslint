@@ -1,5 +1,7 @@
 import * as ts from 'typescript';
 
+export type TSToken = ts.Token<ts.SyntaxKind>;
+
 export type TSNode = ts.Node &
   (
     | ts.Modifier

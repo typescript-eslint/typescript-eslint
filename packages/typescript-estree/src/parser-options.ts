@@ -1,5 +1,5 @@
 import { Program } from 'typescript';
-import { TSESTree, TSNode, TSESTreeToTSNode } from './ts-estree';
+import { TSESTree, TSNode, TSESTreeToTSNode, TSToken } from './ts-estree';
 
 export interface Extra {
   code: string;
@@ -57,5 +57,7 @@ export interface ParserWeakMapESTreeToTSNode<
 export interface ParserServices {
   program: Program | undefined;
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
+  tsNodeToESTreeNodeMap:
+    | ParserWeakMap<TSNode | TSToken, TSESTree.Node>
+    | undefined;
 }
