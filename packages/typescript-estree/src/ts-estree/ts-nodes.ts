@@ -30,7 +30,7 @@ export type TSNode = ts.Node &
     | ts.GetAccessorDeclaration
     | ts.SetAccessorDeclaration
     | ts.IndexSignatureDeclaration
-    | ts.KeywordTypeNode
+    | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
     | ts.ImportTypeNode
     | ts.ThisTypeNode
     // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
