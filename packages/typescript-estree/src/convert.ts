@@ -27,7 +27,7 @@ import {
   TSNode,
   TSESTreeToTSNode,
 } from './ts-estree';
-import { ParserWeakMap, ParserWeakMapEstree } from './parser-options';
+import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -51,7 +51,7 @@ export function convertError(error: any): TSError {
 }
 
 export interface ASTMaps {
-  esTreeNodeToTSNodeMap: ParserWeakMapEstree;
+  esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 

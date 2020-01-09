@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from './ast-node-types';
 import { Node } from './ts-estree';
 import * as ts from 'typescript';
 
-export interface ESTREE_TO_TS_NODE_TYPES {
+export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ArrayExpression]: ts.SyntaxKind.ArrayLiteralExpression;
   [AST_NODE_TYPES.ArrayPattern]:
     | ts.SyntaxKind.ArrayLiteralExpression
@@ -270,6 +270,6 @@ export interface ESTREE_TO_TS_NODE_TYPES {
 export type TSESTreeToTSNode<T extends Node = Node> = Extract<
   TSNode,
   {
-    kind: ESTREE_TO_TS_NODE_TYPES[T['type']];
+    kind: EstreeToTsNodeTypes[T['type']];
   }
 >;

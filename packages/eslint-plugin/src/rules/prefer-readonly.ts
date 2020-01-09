@@ -5,7 +5,6 @@ import { typeIsOrHasBaseType } from '../util';
 import {
   TSESTree,
   AST_NODE_TYPES,
-  TSESTreeToTSNode,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
@@ -15,8 +14,6 @@ type Options = [
     onlyInlineLambdas?: boolean;
   },
 ];
-
-type ConstructorTSType = TSESTreeToTSNode<TSESTree.MethodDefinition>;
 
 const functionScopeBoundaries = [
   AST_NODE_TYPES.ArrowFunctionExpression,
@@ -346,7 +343,13 @@ class ClassScope {
     ).add(node.name.text);
   }
 
-  public enterConstructor(node: ConstructorTSType): void {
+  public enterConstructor(
+    node:
+      | ts.GetAccessorDeclaration
+      | ts.SetAccessorDeclaration
+      | ts.MethodDeclaration
+      | ts.ConstructorDeclaration,
+  ): void {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {
