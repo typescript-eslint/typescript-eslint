@@ -445,7 +445,7 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
   fileType: 'ts',
   ignore: [
     /**
-     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * TODO: enable error code TS1019: An index signature parameter cannot have a question mark.
      */
     'interface-with-optional-index-signature',
