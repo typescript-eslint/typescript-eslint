@@ -5,10 +5,14 @@ import * as util from '../util';
 import { findFirstResult } from '../util';
 
 type ParameterCapableTSNode =
+  | ts.TaggedTemplateExpression
+  | ts.ImportTypeNode
   | ts.CallExpression
   | ts.NewExpression
   | ts.TypeReferenceNode
-  | ts.ExpressionWithTypeArguments;
+  | ts.ExpressionWithTypeArguments
+  | ts.JsxOpeningElement
+  | ts.JsxSelfClosingElement;
 
 type MessageIds = 'unnecessaryTypeParameter';
 
@@ -67,9 +71,7 @@ export default util.createRule<[], MessageIds>({
 
     return {
       TSTypeParameterInstantiation(node): void {
-        const expression = parserServices.esTreeNodeToTSNodeMap.get<
-          ParameterCapableTSNode
-        >(node);
+        const expression = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const typeParameters = getTypeParametersFromNode(expression, checker);
         if (typeParameters) {

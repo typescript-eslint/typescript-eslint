@@ -135,9 +135,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ReturnStatement
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const { expression } = originalNode;
 
