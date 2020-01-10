@@ -99,9 +99,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
         | TSESTree.OptionalCallExpression
         | TSESTree.NewExpression,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
-        ts.CallExpression | ts.NewExpression
-      >(node);
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const voidParams = voidFunctionParams(checker, tsNode);
       if (voidParams.size === 0) {
         return;

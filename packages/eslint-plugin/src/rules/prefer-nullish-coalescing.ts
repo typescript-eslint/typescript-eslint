@@ -4,7 +4,6 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [
@@ -75,9 +74,7 @@ export default util.createRule<Options, MessageIds>({
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.BinaryExpression
-        >(node);
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
         const isNullish = util.isNullableType(type, { allowUndefined: true });
         if (!isNullish) {

@@ -130,6 +130,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       /**
        * We want this node to be different
        * @see https://github.com/JamesHenry/typescript-estree/issues/109
+       * @see https://github.com/prettier/prettier/pull/5728
        */
       TSTypeParameter(node: any) {
         if (node.name) {
@@ -178,7 +179,9 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.type = 'TSClassImplements';
         }
       },
-      // https://github.com/prettier/prettier/issues/5817
+      /**
+       * @see https://github.com/prettier/prettier/issues/5817
+       */
       FunctionExpression(node: any, parent: any) {
         if (parent.typeParameters && parent.type === 'Property') {
           node.typeParameters = parent.typeParameters;
@@ -194,6 +197,25 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         ) {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
+        }
+      },
+      /**
+       * Template strings seem to also be affected by the difference in opinion between different parsers in
+       * @see https://github.com/babel/babel/issues/6681
+       * @see https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+       */
+      TemplateLiteral(node: any) {
+        for (let j = 0; j < node.quasis.length; j++) {
+          const q = node.quasis[j];
+          q.range[0] -= 1;
+          q.loc.start.column -= 1;
+          if (q.tail) {
+            q.range[1] += 1;
+            q.loc.end.column += 1;
+          } else {
+            q.range[1] += 2;
+            q.loc.end.column += 2;
+          }
         }
       },
       /**

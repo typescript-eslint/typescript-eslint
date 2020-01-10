@@ -7,6 +7,7 @@ const CONTENTS = {
   foo: 'console.log("foo")',
   bar: 'console.log("bar")',
   'baz/bar': 'console.log("baz bar")',
+  'bat/baz/bar': 'console.log("bat/baz/bar")',
 };
 
 const tmpDirs = new Set<tmp.DirResult>();
@@ -22,7 +23,7 @@ afterEach(() => {
 function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
   fs.writeFileSync(path.join(dirName, 'tsconfig.json'), JSON.stringify(config));
 }
-function writeFile(dirName: string, file: 'foo' | 'bar' | 'baz/bar'): void {
+function writeFile(dirName: string, file: keyof typeof CONTENTS): void {
   fs.writeFileSync(path.join(dirName, 'src', `${file}.ts`), CONTENTS[file]);
 }
 function renameFile(dirName: string, src: 'bar', dest: 'baz/bar'): void {
@@ -53,7 +54,7 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   return tmpDir.name;
 }
 
-function parseFile(filename: 'foo' | 'bar' | 'baz/bar', tmpDir: string): void {
+function parseFile(filename: keyof typeof CONTENTS, tmpDir: string): void {
   parseAndGenerateServices(CONTENTS.foo, {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
@@ -109,6 +110,24 @@ function baseTests(
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+    expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
+  });
+
+  it('allows parsing of deeply nested new files in new folder', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll);
+
+    expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+
+    // Create deep folder structure after first parse (this is important step)
+    // context: https://github.com/typescript-eslint/typescript-eslint/issues/1394
+    fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat'));
+    fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat', 'baz'));
+
+    const bazSlashBar = path.join('bat', 'baz', 'bar') as 'bat/baz/bar';
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, bazSlashBar);
+
     expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
   });
 
