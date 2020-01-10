@@ -83,10 +83,10 @@ function getScriptKind(
 
 export {
   ASTAndProgram,
-  ensureAbsolutePath,
   canonicalDirname,
   CanonicalPath,
   DEFAULT_COMPILER_OPTIONS,
+  ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
   getTsconfigPath,

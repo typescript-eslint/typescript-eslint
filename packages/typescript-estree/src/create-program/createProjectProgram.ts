@@ -3,7 +3,7 @@ import path from 'path';
 import { getProgramsForProjects } from './createWatchProgram';
 import { firstDefined } from '../node-utils';
 import { Extra } from '../parser-options';
-import { ASTAndProgram, ensureAbsolutePath } from './shared';
+import { ASTAndProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 
@@ -21,7 +21,6 @@ function createProjectProgram(
   extra: Extra,
 ): ASTAndProgram | undefined {
   log('Creating project program for: %s', extra.filePath);
-  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   const astAndProgram = firstDefined(
     getProgramsForProjects(code, extra.filePath, extra),

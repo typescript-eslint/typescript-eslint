@@ -72,7 +72,10 @@ function parseFile(
   });
 }
 
-function existsSync(filename: keyof typeof CONTENTS, tmpDir: string = '') {
+function existsSync(
+  filename: keyof typeof CONTENTS,
+  tmpDir: string = '',
+): boolean {
   return fs.existsSync(path.join(tmpDir, 'src', `${filename}.ts`));
 }
 
