@@ -2,7 +2,7 @@ import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
-import banTsNocheck from './ban-ts-nocheck';
+import banTsComment from './ban-ts-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
@@ -86,7 +86,7 @@ export default {
   'array-type': arrayType,
   'await-thenable': awaitThenable,
   'ban-ts-ignore': banTsIgnore,
-  'ban-ts-nocheck': banTsNocheck,
+  'ban-ts-comment': banTsComment,
   'ban-types': banTypes,
   'brace-style': braceStyle,
   camelcase: camelcase,

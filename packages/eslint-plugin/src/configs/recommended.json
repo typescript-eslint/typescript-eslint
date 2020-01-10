@@ -2,7 +2,7 @@
   "extends": "./configs/base.json",
   "rules": {
     "@typescript-eslint/adjacent-overload-signatures": "error",
-    "@typescript-eslint/ban-ts-ignore": "error",
+    "@typescript-eslint/ban-ts-comment": ["error", { "ts-nocheck": false }],
     "@typescript-eslint/ban-types": "error",
     "camelcase": "off",
     "@typescript-eslint/camelcase": "error",

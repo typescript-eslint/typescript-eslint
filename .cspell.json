@@ -61,6 +61,7 @@
     "estree",
     "linebreaks",
     "necroing",
+    "nocheck",
     "nullish",
     "parameterised",
     "performant",
