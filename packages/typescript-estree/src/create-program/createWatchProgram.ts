@@ -395,11 +395,12 @@ function maybeInvalidateProgram(
     const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
     if (folderWatchCallbacks) {
       folderWatchCallbacks.forEach(cb => {
-        cb(currentDir, ts.FileWatcherEventKind.Changed);
+        if (currentDir !== current) {
+          cb(currentDir, ts.FileWatcherEventKind.Changed);
+        }
         cb(current!, ts.FileWatcherEventKind.Changed);
       });
       hasCallback = true;
-      break;
     }
 
     next = canonicalDirname(current);
