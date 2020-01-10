@@ -178,7 +178,6 @@ function baseTests(
 
   it('should work with relative paths', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, false);
-    console.log(process.cwd());
     process.chdir(PROJECT_DIR);
 
     // parse once to: assert the config as correct, and to make sure the program is setup
