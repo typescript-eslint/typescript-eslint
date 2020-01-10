@@ -29,7 +29,11 @@ export default util.createRule({
 
     function isErrorLike(type: ts.Type): boolean {
       const symbol = type.getSymbol();
-      if (symbol?.getName() === 'Error') {
+      if (!symbol) {
+        return false;
+      }
+
+      if (symbol.getName() === 'Error') {
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
           const sourceFile = declaration.getSourceFile();
@@ -39,7 +43,7 @@ export default util.createRule({
         }
       }
 
-      const baseTypes = type.getBaseTypes() ?? [];
+      const baseTypes = checker.getBaseTypes(type as ts.InterfaceType);
       for (const baseType of baseTypes) {
         if (isErrorLike(baseType)) {
           return true;
