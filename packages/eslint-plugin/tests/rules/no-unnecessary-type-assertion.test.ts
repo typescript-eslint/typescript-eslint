@@ -135,7 +135,7 @@ function Test(props: {
   return <div key={props.id!} />;
 };
       `,
-      filename: 'react.tsx',
+      filename: path.join(rootDir, 'react.tsx'),
     },
   ],
 
@@ -373,7 +373,7 @@ function Test(props: {
           line: 7,
         },
       ],
-      filename: 'react.tsx',
+      filename: path.join(rootDir, 'react.tsx'),
     },
   ],
 });
