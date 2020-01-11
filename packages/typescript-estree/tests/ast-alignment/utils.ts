@@ -198,6 +198,14 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }
+
+        /**
+         * babel: sets body property as Object/undefined
+         * ts-estree: sets body property as Object/null
+         */
+        if (!node.body) {
+          node.body = null;
+        }
       },
       /**
        * Template strings seem to also be affected by the difference in opinion between different parsers in
