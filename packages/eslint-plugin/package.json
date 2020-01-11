@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "2.3.3",
+  "version": "2.15.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -30,28 +30,28 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "check:docs": "../../node_modules/.bin/ts-node --files ./tools/validate-docs/index.ts",
-    "check:configs": "../../node_modules/.bin/ts-node --files ./tools/validate-configs/index.ts",
+    "check:docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
+    "check:configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "generate:configs": "../../node_modules/.bin/ts-node --files tools/generate-configs.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "generate:configs": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-configs.ts",
+    "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "2.3.3",
-    "eslint-utils": "^1.4.2",
+    "@typescript-eslint/experimental-utils": "2.15.0",
+    "eslint-utils": "^1.4.3",
     "functional-red-black-tree": "^1.0.1",
-    "regexpp": "^2.0.1",
+    "regexpp": "^3.0.0",
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.3",
-    "@types/marked": "^0.6.5",
+    "@types/marked": "^0.7.1",
     "@types/prettier": "^1.18.2",
     "@types/react": "^16.9.2",
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "marked": "^0.7.0",
     "prettier": "*",
     "typescript": "*"
@@ -59,5 +59,10 @@
   "peerDependencies": {
     "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^5.0.0 || ^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }

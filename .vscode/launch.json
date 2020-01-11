@@ -12,6 +12,23 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
           "args": [
               "--runInBand",
+              "--no-coverage",
+              // needs the '' around it so that the () are properly handled
+              "'tests/(.+/)?${fileBasenameNoExtension}'"
+          ],
+          "sourceMaps": true,
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "neverOpen"
+      },
+      {
+          "type": "node",
+          "request": "launch",
+          "name": "Jest Test Current eslint-plugin-internal Rule",
+          "cwd": "${workspaceFolder}/packages/eslint-plugin-internal/",
+          "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+          "args": [
+              "--runInBand",
+              "--no-coverage",
               // needs the '' around it so that the () are properly handled
               "'tests/(.+/)?${fileBasenameNoExtension}'"
           ],
@@ -27,6 +44,24 @@
         "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
         "args": [
             "--runInBand",
+            "--no-cache",
+            "--no-coverage",
+            "${relativeFile}"
+        ],
+        "sourceMaps": true,
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Run currently opened parser test",
+        "cwd": "${workspaceFolder}/packages/parser/",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+        "args": [
+            "--runInBand",
+            "--no-cache",
+            "--no-coverage",
             "${relativeFile}"
         ],
         "sourceMaps": true,

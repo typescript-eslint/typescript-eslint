@@ -11,7 +11,7 @@ import {
   isTypeFlagSet,
   isVariableDeclaration,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [
@@ -159,7 +159,7 @@ export default util.createRule<Options, MessageIds>({
         const type = util.getConstrainedTypeAtLocation(checker, node);
         if (declarationType === type) {
           // possibly used before assigned, so just skip it
-          // better to false negative and skip it, than false postiive and fix to compile erroring code
+          // better to false negative and skip it, than false positive and fix to compile erroring code
           //
           // no better way to figure this out right now
           // https://github.com/Microsoft/TypeScript/issues/31124
@@ -171,9 +171,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSNonNullExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.NonNullExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
@@ -248,18 +246,14 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ): void {
         if (
-          options &&
-          options.typesToIgnore &&
-          options.typesToIgnore.includes(
+          options.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
           )
         ) {
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AssertionExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const castType = checker.getTypeAtLocation(originalNode);
 
         if (

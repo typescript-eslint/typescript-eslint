@@ -1,4 +1,4 @@
-# Require type annotations to exist (typedef)
+# Requires type annotations to exist (`typedef`)
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
@@ -59,7 +59,7 @@ For example, with the following configuration:
 - Type annotations on variables are required
 - Options otherwise adhere to the defaults
 
-### arrayDestructuring
+### `arrayDestructuring`
 
 Whether to enforce type annotations on variables declared using array destructuring.
 
@@ -78,7 +78,7 @@ const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
 ```
 
-### arrowParameter
+### `arrowParameter`
 
 Whether to enforce type annotations for parameters of arrow functions.
 
@@ -106,7 +106,7 @@ const mapper = {
 };
 ```
 
-### memberVariableDeclaration
+### `memberVariableDeclaration`
 
 Whether to enforce type annotations on member variables of classes.
 
@@ -128,7 +128,7 @@ class ContainsText {
 }
 ```
 
-### objectDestructuring
+### `objectDestructuring`
 
 Whether to enforce type annotations on variables declared using object destructuring.
 
@@ -146,7 +146,7 @@ const { length }: { length: number } = 'text';
 const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
 ```
 
-### parameter
+### `parameter`
 
 Whether to enforce type annotations for parameters of functions and methods.
 
@@ -157,7 +157,7 @@ function logsSize(size): void {
   console.log(size);
 }
 
-const doublesSize = function(size): numeber {
+const doublesSize = function(size): number {
   return size * 2;
 };
 
@@ -185,7 +185,7 @@ function logsSize(size: number): void {
   console.log(size);
 }
 
-const doublesSize = function(size: number): numeber {
+const doublesSize = function(size: number): number {
   return size * 2;
 };
 
@@ -206,7 +206,7 @@ class Logger {
 }
 ```
 
-### propertyDeclaration
+### `propertyDeclaration`
 
 Whether to enforce type annotations for properties of interfaces and types.
 
@@ -228,7 +228,7 @@ type Members = {
 };
 ```
 
-### variableDeclaration
+### `variableDeclaration`
 
 Whether to enforce type annotations for variable declarations, excluding array and object destructuring.
 
@@ -261,4 +261,4 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 ## Compatibility
 
-- TSLint: [typedef](https://palantir.github.io/tslint/rules/typedef)
+- TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)

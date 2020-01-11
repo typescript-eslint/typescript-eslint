@@ -1,4 +1,4 @@
-# Disallow the use of custom TypeScript modules and namespaces (no-namespace)
+# Disallow the use of custom TypeScript modules and namespaces (`no-namespace`)
 
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
 ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
@@ -7,7 +7,7 @@ This rule still allows the use of TypeScript module declarations to describe ext
 
 ## Rule Details
 
-This rule aims to standardise the way modules are declared.
+This rule aims to standardize the way modules are declared.
 
 ## Options
 
@@ -36,7 +36,7 @@ Examples of **correct** code for the default `{ "allowDeclarations": false, "all
 declare module 'foo' {}
 ```
 
-### allowDeclarations
+### `allowDeclarations`
 
 Examples of **incorrect** code for the `{ "allowDeclarations": true }` option:
 
@@ -68,7 +68,7 @@ Examples of **correct** code for the `{ "allowDeclarations": false }` option:
 declare module 'foo' {}
 ```
 
-### allowDefinitionFiles
+### `allowDefinitionFiles`
 
 Examples of **incorrect** code for the `{ "allowDefinitionFiles": true }` option:
 

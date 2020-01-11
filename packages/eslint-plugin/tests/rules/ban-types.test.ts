@@ -27,6 +27,8 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
 ruleTester.run('ban-types', rule, {
   valid: [
     'let f = Object();', // Should not fail if there is no options set
+    'let f: {} = {};',
+    'let f: { x: number, y: number } = { x: 1, y: 1 };',
     {
       code: 'let f = Object();',
       options,
@@ -294,6 +296,121 @@ let b: Foo<NS.Good>;
         },
       ],
       options,
+    },
+    {
+      code: `let foo: {} = {};`,
+      output: `let foo: object = {};`,
+      options: [
+        {
+          types: {
+            '{}': {
+              message: 'Use object instead.',
+              fixWith: 'object',
+            },
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: {} = {};
+let bar: {     } = {};
+      `,
+      output: `
+let foo: object = {};
+let bar: object = {};
+      `,
+      options: [
+        {
+          types: {
+            '{   }': {
+              message: 'Use object instead.',
+              fixWith: 'object',
+            },
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 2,
+          column: 10,
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 3,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: 'let a: NS.Bad;',
+      output: 'let a: NS.Good;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'NS.Bad',
+            customMessage: ' Use NS.Good instead.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '  NS.Bad  ': {
+              message: 'Use NS.Good instead.',
+              fixWith: 'NS.Good',
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: Foo<   F   >;',
+      output: 'let a: Foo<   T   >;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'F',
+            customMessage: ' Use T instead.',
+          },
+          line: 1,
+          column: 15,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '       F      ': {
+              message: 'Use T instead.',
+              fixWith: 'T',
+            },
+          },
+        },
+      ],
     },
   ],
 });

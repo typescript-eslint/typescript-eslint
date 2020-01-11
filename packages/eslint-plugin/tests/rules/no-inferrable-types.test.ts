@@ -15,11 +15,18 @@ function flatten<T>(arr: T[][]): T[] {
 const testCases = [
   {
     type: 'bigint',
-    code: ['10n', '-10n', 'BigInt(10)', '-BigInt(10)'],
+    code: [
+      '10n',
+      '-10n',
+      'BigInt(10)',
+      '-BigInt(10)',
+      'BigInt?.(10)',
+      '-BigInt?.(10)',
+    ],
   },
   {
     type: 'boolean',
-    code: ['false', 'true', 'Boolean(null)', '!0'],
+    code: ['false', 'true', 'Boolean(null)', 'Boolean?.(null)', '!0'],
   },
   {
     type: 'number',
@@ -30,6 +37,9 @@ const testCases = [
       'Number("1")',
       '+Number("1")',
       '-Number("1")',
+      'Number?.("1")',
+      '+Number?.("1")',
+      '-Number?.("1")',
       'Infinity',
       '+Infinity',
       '-Infinity',
@@ -44,15 +54,15 @@ const testCases = [
   },
   {
     type: 'RegExp',
-    code: ['/a/', 'RegExp("a")', 'new RegExp("a")'],
+    code: ['/a/', 'RegExp("a")', 'RegExp?.("a")', 'new RegExp("a")'],
   },
   {
     type: 'string',
-    code: ['"str"', "'str'", '`str`', 'String(1)'],
+    code: ['"str"', "'str'", '`str`', 'String(1)', 'String?.(1)'],
   },
   {
     type: 'symbol',
-    code: ['Symbol("a")'],
+    code: ['Symbol("a")', 'Symbol?.("a")'],
   },
   {
     type: 'undefined',

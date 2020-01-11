@@ -15,7 +15,7 @@ export default util.createRule({
     },
     fixable: 'code',
     messages: {
-      useLiteral: 'The array literal notation [] is preferrable.',
+      useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
   },
@@ -26,13 +26,17 @@ export default util.createRule({
      * @param node node to evaluate
      */
     function check(
-      node: TSESTree.CallExpression | TSESTree.NewExpression,
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.OptionalCallExpression
+        | TSESTree.NewExpression,
     ): void {
       if (
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeParameters
+        !node.typeParameters &&
+        !util.isOptionalOptionalChain(node)
       ) {
         context.report({
           node,
@@ -55,6 +59,7 @@ export default util.createRule({
 
     return {
       CallExpression: check,
+      OptionalCallExpression: check,
       NewExpression: check,
     };
   },

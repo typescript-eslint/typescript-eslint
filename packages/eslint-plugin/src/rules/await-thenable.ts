@@ -1,5 +1,5 @@
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -26,9 +26,7 @@ export default util.createRule({
 
     return {
       AwaitExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AwaitExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (

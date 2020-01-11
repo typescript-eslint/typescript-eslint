@@ -1,5 +1,5 @@
 import unescape from 'lodash.unescape';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -20,73 +20,79 @@ const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
   SyntaxKind.CaretEqualsToken,
 ];
 
-const LOGICAL_OPERATORS: ts.LogicalOperator[] = [
+const LOGICAL_OPERATORS: (
+  | ts.LogicalOperator
+  | ts.SyntaxKind.QuestionQuestionToken
+)[] = [
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.QuestionQuestionToken,
 ];
 
-const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
-  [SyntaxKind.OpenBraceToken]: '{',
-  [SyntaxKind.CloseBraceToken]: '}',
-  [SyntaxKind.OpenParenToken]: '(',
-  [SyntaxKind.CloseParenToken]: ')',
-  [SyntaxKind.OpenBracketToken]: '[',
-  [SyntaxKind.CloseBracketToken]: ']',
-  [SyntaxKind.DotToken]: '.',
-  [SyntaxKind.DotDotDotToken]: '...',
-  [SyntaxKind.SemicolonToken]: ',',
-  [SyntaxKind.CommaToken]: ',',
-  [SyntaxKind.LessThanToken]: '<',
-  [SyntaxKind.GreaterThanToken]: '>',
-  [SyntaxKind.LessThanEqualsToken]: '<=',
-  [SyntaxKind.GreaterThanEqualsToken]: '>=',
-  [SyntaxKind.EqualsEqualsToken]: '==',
-  [SyntaxKind.ExclamationEqualsToken]: '!=',
-  [SyntaxKind.EqualsEqualsEqualsToken]: '===',
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof',
-  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==',
-  [SyntaxKind.EqualsGreaterThanToken]: '=>',
-  [SyntaxKind.PlusToken]: '+',
-  [SyntaxKind.MinusToken]: '-',
-  [SyntaxKind.AsteriskToken]: '*',
-  [SyntaxKind.AsteriskAsteriskToken]: '**',
-  [SyntaxKind.SlashToken]: '/',
-  [SyntaxKind.PercentToken]: '%',
-  [SyntaxKind.PlusPlusToken]: '++',
-  [SyntaxKind.MinusMinusToken]: '--',
-  [SyntaxKind.LessThanLessThanToken]: '<<',
-  [SyntaxKind.LessThanSlashToken]: '</',
-  [SyntaxKind.GreaterThanGreaterThanToken]: '>>',
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>',
-  [SyntaxKind.AmpersandToken]: '&',
-  [SyntaxKind.BarToken]: '|',
-  [SyntaxKind.CaretToken]: '^',
-  [SyntaxKind.ExclamationToken]: '!',
-  [SyntaxKind.TildeToken]: '~',
-  [SyntaxKind.AmpersandAmpersandToken]: '&&',
-  [SyntaxKind.BarBarToken]: '||',
-  [SyntaxKind.QuestionToken]: '?',
-  [SyntaxKind.ColonToken]: ':',
-  [SyntaxKind.EqualsToken]: '=',
-  [SyntaxKind.PlusEqualsToken]: '+=',
-  [SyntaxKind.MinusEqualsToken]: '-=',
-  [SyntaxKind.AsteriskEqualsToken]: '*=',
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=',
-  [SyntaxKind.SlashEqualsToken]: '/=',
-  [SyntaxKind.PercentEqualsToken]: '%=',
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=',
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=',
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=',
-  [SyntaxKind.AmpersandEqualsToken]: '&=',
-  [SyntaxKind.BarEqualsToken]: '|=',
-  [SyntaxKind.CaretEqualsToken]: '^=',
-  [SyntaxKind.AtToken]: '@',
-  [SyntaxKind.InKeyword]: 'in',
-  [SyntaxKind.UniqueKeyword]: 'unique',
-  [SyntaxKind.KeyOfKeyword]: 'keyof',
-  [SyntaxKind.NewKeyword]: 'new',
-  [SyntaxKind.ImportKeyword]: 'import',
-  [SyntaxKind.ReadonlyKeyword]: 'readonly',
+const TOKEN_TO_TEXT = {
+  [SyntaxKind.OpenBraceToken]: '{' as '{',
+  [SyntaxKind.CloseBraceToken]: '}' as '}',
+  [SyntaxKind.OpenParenToken]: '(' as '(',
+  [SyntaxKind.CloseParenToken]: ')' as ')',
+  [SyntaxKind.OpenBracketToken]: '[' as '[',
+  [SyntaxKind.CloseBracketToken]: ']' as ']',
+  [SyntaxKind.DotToken]: '.' as '.',
+  [SyntaxKind.DotDotDotToken]: '...' as '...',
+  [SyntaxKind.SemicolonToken]: ';' as ';',
+  [SyntaxKind.CommaToken]: ',' as ',',
+  [SyntaxKind.LessThanToken]: '<' as '<',
+  [SyntaxKind.GreaterThanToken]: '>' as '>',
+  [SyntaxKind.LessThanEqualsToken]: '<=' as '<=',
+  [SyntaxKind.GreaterThanEqualsToken]: '>=' as '>=',
+  [SyntaxKind.EqualsEqualsToken]: '==' as '==',
+  [SyntaxKind.ExclamationEqualsToken]: '!=' as '!=',
+  [SyntaxKind.EqualsEqualsEqualsToken]: '===' as '===',
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof' as 'instanceof',
+  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==' as '!==',
+  [SyntaxKind.EqualsGreaterThanToken]: '=>' as '=>',
+  [SyntaxKind.PlusToken]: '+' as '+',
+  [SyntaxKind.MinusToken]: '-' as '-',
+  [SyntaxKind.AsteriskToken]: '*' as '*',
+  [SyntaxKind.AsteriskAsteriskToken]: '**' as '**',
+  [SyntaxKind.SlashToken]: '/' as '/',
+  [SyntaxKind.PercentToken]: '%' as '%',
+  [SyntaxKind.PlusPlusToken]: '++' as '++',
+  [SyntaxKind.MinusMinusToken]: '--' as '--',
+  [SyntaxKind.LessThanLessThanToken]: '<<' as '<<',
+  [SyntaxKind.LessThanSlashToken]: '</' as '</',
+  [SyntaxKind.GreaterThanGreaterThanToken]: '>>' as '>>',
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>' as '>>>',
+  [SyntaxKind.AmpersandToken]: '&' as '&',
+  [SyntaxKind.BarToken]: '|' as '|',
+  [SyntaxKind.CaretToken]: '^' as '^',
+  [SyntaxKind.ExclamationToken]: '!' as '!',
+  [SyntaxKind.TildeToken]: '~' as '~',
+  [SyntaxKind.AmpersandAmpersandToken]: '&&' as '&&',
+  [SyntaxKind.BarBarToken]: '||' as '||',
+  [SyntaxKind.QuestionToken]: '?' as '?',
+  [SyntaxKind.ColonToken]: ':' as ':',
+  [SyntaxKind.EqualsToken]: '=' as '=',
+  [SyntaxKind.PlusEqualsToken]: '+=' as '+=',
+  [SyntaxKind.MinusEqualsToken]: '-=' as '-=',
+  [SyntaxKind.AsteriskEqualsToken]: '*=' as '*=',
+  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=' as '**=',
+  [SyntaxKind.SlashEqualsToken]: '/=' as '/=',
+  [SyntaxKind.PercentEqualsToken]: '%=' as '%=',
+  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=' as '<<=',
+  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=' as '>>=',
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=' as '>>>=',
+  [SyntaxKind.AmpersandEqualsToken]: '&=' as '&=',
+  [SyntaxKind.BarEqualsToken]: '|=' as '|=',
+  [SyntaxKind.CaretEqualsToken]: '^=' as '^=',
+  [SyntaxKind.AtToken]: '@' as '@',
+  [SyntaxKind.InKeyword]: 'in' as 'in',
+  [SyntaxKind.UniqueKeyword]: 'unique' as 'unique',
+  [SyntaxKind.KeyOfKeyword]: 'keyof' as 'keyof',
+  [SyntaxKind.NewKeyword]: 'new' as 'new',
+  [SyntaxKind.ImportKeyword]: 'import' as 'import',
+  [SyntaxKind.ReadonlyKeyword]: 'readonly' as 'readonly',
+  [SyntaxKind.QuestionQuestionToken]: '??' as '??',
+  [SyntaxKind.QuestionDotToken]: '?.' as '?.',
 };
 
 /**
@@ -94,10 +100,10 @@ const TOKEN_TO_TEXT: { readonly [P in ts.SyntaxKind]?: string } = {
  * @param operator the operator token
  * @returns is assignment
  */
-export function isAssignmentOperator(
-  operator: ts.Token<ts.AssignmentOperator>,
+export function isAssignmentOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return ASSIGNMENT_OPERATORS.includes(operator.kind);
+  return (ASSIGNMENT_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -105,10 +111,10 @@ export function isAssignmentOperator(
  * @param operator the operator token
  * @returns is a logical operator
  */
-export function isLogicalOperator(
-  operator: ts.Token<ts.LogicalOperator>,
+export function isLogicalOperator<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ): boolean {
-  return LOGICAL_OPERATORS.includes(operator.kind);
+  return (LOGICAL_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
 }
 
 /**
@@ -116,8 +122,11 @@ export function isLogicalOperator(
  * @param kind the token's SyntaxKind
  * @returns the token applicable token as a string
  */
-export function getTextForTokenKind(kind: ts.SyntaxKind): string | undefined {
-  return TOKEN_TO_TEXT[kind];
+export function getTextForTokenKind<T extends ts.SyntaxKind>(
+  kind: T,
+): T extends keyof typeof TOKEN_TO_TEXT ? typeof TOKEN_TO_TEXT[T] : undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return kind in TOKEN_TO_TEXT ? (TOKEN_TO_TEXT as any)[kind] : undefined;
 }
 
 /**
@@ -195,10 +204,8 @@ export function isJSDocComment(node: ts.Node): boolean {
  * @param operator the operator token
  * @returns the binary expression type
  */
-export function getBinaryExpressionType(
-  // can be any operator
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  operator: ts.Token<any>,
+export function getBinaryExpressionType<T extends ts.SyntaxKind>(
+  operator: ts.Token<T>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
   | AST_NODE_TYPES.LogicalExpression
@@ -446,11 +453,11 @@ export function isOptional(node: {
  * @param token the ts.Token
  * @returns the token type
  */
-// ts.Node types are ugly
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getTokenType(token: any): AST_TOKEN_TYPES {
+export function getTokenType(
+  token: ts.Identifier | ts.Token<ts.SyntaxKind>,
+): AST_TOKEN_TYPES {
   // Need two checks for keywords since some are also identifiers
-  if (token.originalKeywordKind) {
+  if ('originalKeywordKind' in token && token.originalKeywordKind) {
     switch (token.originalKeywordKind) {
       case SyntaxKind.NullKeyword:
         return AST_TOKEN_TYPES.Null;
@@ -568,7 +575,7 @@ export function convertToken(
     loc: getLocFor(start, end, ast),
   };
 
-  if (newToken.type === 'RegularExpression') {
+  if (newToken.type === AST_TOKEN_TYPES.RegularExpression) {
     newToken.regex = {
       pattern: value.slice(1, value.lastIndexOf('/')),
       flags: value.slice(value.lastIndexOf('/') + 1),
@@ -607,41 +614,6 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   }
   walk(ast);
   return result;
-}
-
-/**
- * Get container token node between range
- * @param ast the AST object
- * @param start The index at which the comment starts.
- * @param end The index at which the comment ends.
- * @returns typescript container token
- * @private
- */
-export function getNodeContainer(
-  ast: ts.SourceFile,
-  start: number,
-  end: number,
-): ts.Node | null {
-  let container: ts.Node | null = null;
-
-  /**
-   * @param node the ts.Node
-   */
-  function walk(node: ts.Node): void {
-    const nodeStart = node.pos;
-    const nodeEnd = node.end;
-
-    if (start >= nodeStart && end <= nodeEnd) {
-      if (isToken(node)) {
-        container = node;
-      } else {
-        node.getChildren().forEach(walk);
-      }
-    }
-  }
-  walk(ast);
-
-  return container;
 }
 
 export interface TSError {

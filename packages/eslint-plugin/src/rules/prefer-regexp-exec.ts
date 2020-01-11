@@ -10,7 +10,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer RegExp#exec() over String#match() if no global flag is provided',
+        'Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided',
       category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
@@ -30,7 +30,7 @@ export default createRule({
      * Check if a given node is a string.
      * @param node The node to check.
      */
-    function isStringType(node: TSESTree.Node): boolean {
+    function isStringType(node: TSESTree.LeftHandSideExpression): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );

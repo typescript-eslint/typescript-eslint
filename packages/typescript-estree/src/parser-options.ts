@@ -1,5 +1,5 @@
 import { Program } from 'typescript';
-import { TSESTree, TSNode } from './ts-estree';
+import { TSESTree, TSNode, TSESTreeToTSNode, TSToken } from './ts-estree';
 
 export interface Extra {
   code: string;
@@ -9,10 +9,10 @@ export interface Extra {
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   errorOnUnknownASTType: boolean;
   extraFileExtensions: string[];
+  filePath: string;
   jsx: boolean;
   loc: boolean;
   log: Function;
-  noWatch?: boolean;
   preserveNodeMaps?: boolean;
   projects: string[];
   range: boolean;
@@ -32,7 +32,6 @@ export interface TSESTreeOptions {
   jsx?: boolean;
   loc?: boolean;
   loggerFn?: Function | false;
-  noWatch?: boolean;
   preserveNodeMaps?: boolean;
   project?: string | string[];
   range?: boolean;
@@ -48,8 +47,17 @@ export interface ParserWeakMap<TKey, TValueBase> {
   has(key: unknown): boolean;
 }
 
+export interface ParserWeakMapESTreeToTSNode<
+  TKey extends TSESTree.Node = TSESTree.Node
+> {
+  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  has(key: unknown): boolean;
+}
+
 export interface ParserServices {
   program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, TSNode> | undefined;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node> | undefined;
+  esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode | undefined;
+  tsNodeToESTreeNodeMap:
+    | ParserWeakMap<TSNode | TSToken, TSESTree.Node>
+    | undefined;
 }

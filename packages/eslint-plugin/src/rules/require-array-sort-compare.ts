@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -25,8 +25,8 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        node: TSESTree.MemberExpression,
+      ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         // Get the symbol of the `sort` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(node);

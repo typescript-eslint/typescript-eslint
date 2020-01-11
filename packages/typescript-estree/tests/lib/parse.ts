@@ -1,4 +1,4 @@
-import { join, resolve, relative } from 'path';
+import { join, resolve } from 'path';
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
@@ -36,6 +36,22 @@ describe('parse()', () => {
     it(
       'output tokens, comments, locs, and ranges when called with those options',
       createSnapshotTestBlock(code, config),
+    );
+
+    it(
+      'output should not contain loc',
+      createSnapshotTestBlock(code, {
+        range: true,
+        loc: false,
+      }),
+    );
+
+    it(
+      'output should not contain range',
+      createSnapshotTestBlock(code, {
+        range: false,
+        loc: true,
+      }),
     );
   });
 
@@ -75,30 +91,16 @@ describe('parse()', () => {
         loc: true,
       });
 
-      expect(spy).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          code: 'let foo = bar;',
-          comment: true,
-          comments: [],
-          createDefaultProgram: false,
-          errorOnTypeScriptSyntacticAndSemanticIssues: false,
-          errorOnUnknownASTType: false,
-          extraFileExtensions: [],
-          jsx: false,
-          loc: true,
-          log: loggerFn,
-          noWatch: false,
-          preserveNodeMaps: false,
-          projects: [],
-          range: true,
-          strict: false,
-          tokens: expect.any(Array),
-          tsconfigRootDir: expect.any(String),
-          useJSXTextNode: false,
-        },
-        false,
-      );
+      expect(spy).toHaveBeenCalled();
+      expect(spy.mock.calls[0][1]).toMatchObject({
+        code: 'let foo = bar;',
+        comment: true,
+        comments: [],
+        loc: true,
+        log: loggerFn,
+        range: true,
+        tokens: expect.any(Array),
+      });
     });
   });
 
@@ -243,6 +245,167 @@ describe('parse()', () => {
     });
   });
 
+  describe('isolated parsing', () => {
+    const config: TSESTreeOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+    };
+    const testParse = ({
+      ext,
+      jsxContent,
+      jsxSetting,
+      shouldThrow = false,
+    }: {
+      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
+      jsxContent: boolean;
+      jsxSetting: boolean;
+      shouldThrow?: boolean;
+    }): void => {
+      const code =
+        ext === '.json'
+          ? '{ "x": 1 }'
+          : jsxContent
+          ? 'const x = <div />;'
+          : 'const x = 1';
+      it(`should parse ${ext} file - ${
+        jsxContent ? 'with' : 'without'
+      } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
+        let result;
+        const exp = expect(() => {
+          result = parser.parseAndGenerateServices(code, {
+            ...config,
+            jsx: jsxSetting,
+            filePath: join(FIXTURES_DIR, `file${ext}`),
+          });
+        });
+        if (!shouldThrow) {
+          exp.not.toThrow();
+        } else {
+          exp.toThrow();
+        }
+
+        if (!shouldThrow) {
+          expect(result).toMatchSnapshot();
+        }
+      });
+    };
+
+    testParse({
+      ext: '.js',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.js',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.jsx',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.jsx',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.ts',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: true,
+      jsxSetting: false,
+      shouldThrow: true, // Typescript does not allow JSX in a .ts file
+    });
+    testParse({
+      ext: '.ts',
+      jsxContent: true,
+      jsxSetting: true,
+      shouldThrow: true,
+    });
+
+    testParse({
+      ext: '.tsx',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: true,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.tsx',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+
+    testParse({
+      ext: '.vue',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: false,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: true,
+      jsxSetting: false,
+      shouldThrow: true, // "Unknown" filetype means we respect the JSX setting
+    });
+    testParse({
+      ext: '.vue',
+      jsxContent: true,
+      jsxSetting: true,
+    });
+    testParse({
+      ext: '.json',
+      jsxContent: false,
+      jsxSetting: false,
+    });
+  });
+
   describe('invalid file error messages', () => {
     const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
     const code = 'var a = true';
@@ -253,13 +416,24 @@ describe('parse()', () => {
       loc: true,
       tsconfigRootDir: PROJECT_DIR,
       project: './tsconfig.json',
-      extraFileExtensions: ['.vue'],
     };
-    const testParse = (filePath: string) => (): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        filePath: relative(process.cwd(), join(PROJECT_DIR, filePath)),
-      });
+    const testParse = (
+      filePath: string,
+      extraFileExtensions: string[] = ['.vue'],
+    ) => (): void => {
+      try {
+        parser.parseAndGenerateServices(code, {
+          ...config,
+          extraFileExtensions,
+          filePath: join(PROJECT_DIR, filePath),
+        });
+      } catch (error) {
+        /**
+         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+         */
+        error.message = error.message.replace(/\\(?!["])/gm, '/');
+        throw error;
+      }
     };
 
     describe('project includes', () => {
@@ -278,6 +452,18 @@ describe('parse()', () => {
       });
     });
 
+    describe('"parserOptions.extraFileExtensions" is empty', () => {
+      it('should not error', () => {
+        expect(testParse('ts/included.ts', [])).not.toThrow();
+      });
+
+      it('the extension does not match', () => {
+        expect(
+          testParse('other/unknownFileType.unknown', []),
+        ).toThrowErrorMatchingSnapshot();
+      });
+    });
+
     describe('"parserOptions.extraFileExtensions" is non-empty', () => {
       describe('the extension matches', () => {
         it('the file is included', () => {
@@ -289,6 +475,18 @@ describe('parse()', () => {
             testParse('other/notIncluded.vue'),
           ).toThrowErrorMatchingSnapshot();
         });
+
+        it('duplicate extension', () => {
+          expect(
+            testParse('ts/notIncluded.ts', ['.ts']),
+          ).toThrowErrorMatchingSnapshot();
+        });
+      });
+
+      it('invalid extension', () => {
+        expect(
+          testParse('other/unknownFileType.unknown', ['unknown']),
+        ).toThrowErrorMatchingSnapshot();
       });
 
       it('the extension does not match', () => {

@@ -1,4 +1,4 @@
-# Enforce giving `compare` argument to `Array#sort` (require-array-sort-compare)
+# Enforce giving `compare` argument to `Array#sort` (`require-array-sort-compare`)
 
 This rule prevents to invoke `Array#sort()` method without `compare` argument.
 
@@ -10,7 +10,7 @@ This rule prevents to invoke `Array#sort()` method without `compare` argument.
 
 The language specification also noted this trap.
 
-> NOTE 2: Method calls performed by the ToString abstract operations in steps 5 and 7 have the potential to cause SortCompare to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
+> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 
 ## Rule Details
 

@@ -1,10 +1,10 @@
-# Requires using either `T[]` or `Array<T>` for arrays (array-type)
+# Requires using either `T[]` or `Array<T>` for arrays (`array-type`)
 
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 
 ## Rule Details
 
-This rule aims to standardise usage of array types within your codebase.
+This rule aims to standardize usage of array types within your codebase.
 
 ## Options
 
@@ -74,7 +74,7 @@ Incorrect code for `"array-simple"`:
 
 ```ts
 const a: (string | number)[] = ['a', 'b'];
-const b: ({ prop: string })[] = [{ prop: 'a' }];
+const b: { prop: string }[] = [{ prop: 'a' }];
 const c: (() => void)[] = [() => {}];
 const d: Array<MyType> = ['a', 'b'];
 const e: Array<string> = ['a', 'b'];

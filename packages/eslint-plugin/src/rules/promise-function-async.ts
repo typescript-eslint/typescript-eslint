@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -87,7 +90,14 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function validateNode(node: TSESTree.Node): void {
+    function validateNode(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition,
+    ): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const signatures = checker
         .getTypeAtLocation(originalNode)
@@ -109,8 +119,8 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         node.parent &&
-        (node.parent.type === 'Property' ||
-          node.parent.type === 'MethodDefinition') &&
+        (node.parent.type === AST_NODE_TYPES.Property ||
+          node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
         return;

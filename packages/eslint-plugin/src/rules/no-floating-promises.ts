@@ -13,7 +13,7 @@ export default util.createRule<Options, 'floating'>({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description: 'Requires Promise-like values to be handled appropriately.',
+      description: 'Requires Promise-like values to be handled appropriately',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
@@ -44,9 +44,7 @@ export default util.createRule<Options, 'floating'>({
 
     return {
       ExpressionStatement(node): void {
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ExpressionStatement
-        >(node);
+        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         if (isUnhandledPromise(checker, expression)) {
           context.report({

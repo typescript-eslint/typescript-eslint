@@ -13,12 +13,12 @@
 ## Installation
 
 ```sh
-npm i @typescript-eslint/eslint-plugin-tslint --save-dev
+yarn add -D @typescript-eslint/eslint-plugin-tslint
 ```
 
 ## Usage
 
-Configure in your eslint config file:
+Configure in your ESLint config file:
 
 ```js
 {
@@ -42,7 +42,7 @@ Configure in your eslint config file:
 }
 ```
 
-**Note:** The ability to automatically fix problems with `--fix` is unavailable for tslint rules loaded with this plugin.
+**Note:** The ability to automatically fix problems with `--fix` is unavailable for TSLint rules loaded with this plugin.
 
 ## Rules
 
@@ -50,7 +50,7 @@ Plugin contains only single rule `@typescript-eslint/tslint/config`.
 
 ## Examples
 
-- [unlight/node-package-starter/.eslintrc.js](https://github.com/unlight/node-package-starter/blob/master/.eslintrc.js)
+- [`unlight/node-package-starter/.eslintrc.js`](https://github.com/unlight/node-package-starter/blob/master/.eslintrc.js)
 
 ### TSLint Plugins
 
@@ -58,3 +58,7 @@ Plugin contains only single rule `@typescript-eslint/tslint/config`.
 - https://github.com/Microsoft/tslint-microsoft-contrib
 - https://github.com/SonarSource/SonarTS
 - https://github.com/ajafff/tslint-consistent-codestyle
+
+## Contributing
+
+[See the contributing guide here](../../CONTRIBUTING.md)

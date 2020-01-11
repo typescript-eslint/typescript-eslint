@@ -1,12 +1,12 @@
-# Disallow Empty Functions (@typescript-eslint/no-empty-function)
+# Disallow empty functions (`no-empty-function`)
 
 Empty functions can reduce readability because readers need to guess whether it’s intentional or not. So writing a clear comment for empty functions is a good practice.
 
 ## Rule Details
 
-The `@typescript-eslint/no-empty-function` rule extends the `no-empty-function` rule from ESLint core, and adds support for handling Typescript specific code that would otherwise trigger the rule.
+The `@typescript-eslint/no-empty-function` rule extends the `no-empty-function` rule from ESLint core, and adds support for handling TypeScript specific code that would otherwise trigger the rule.
 
-One example of valid Typescript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions:
+One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions:
 
 ```typescript
 class Person {
@@ -41,6 +41,39 @@ See the [ESLint documentation](https://eslint.org/docs/rules/no-empty-function) 
     // note you must disable the base rule as it can report incorrect errors
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "error"
+}
+```
+
+## Options
+
+This rule has an object option:
+
+- `allow` (`string[]`)
+  - `"protected-constructors"` - Protected class constructors.
+  - `"private-constructors"` - Private class constructors.
+  - [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md#options)
+
+#### allow: protected-constructors
+
+Examples of **correct** code for the `{ "allow": ["protected-constructors"] }` option:
+
+```ts
+/*eslint @typescript-eslint/no-empty-function: ["error", { "allow": ["protected-constructors"] }]*/
+
+class Foo {
+  protected constructor() {}
+}
+```
+
+#### allow: private-constructors
+
+Examples of **correct** code for the `{ "allow": ["private-constructors"] }` option:
+
+```ts
+/*eslint @typescript-eslint/no-empty-function: ["error", { "allow": ["private-constructors"] }]*/
+
+class Foo {
+  private constructor() {}
 }
 ```
 

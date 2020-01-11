@@ -32,22 +32,32 @@ export default util.createRule<Options, MessageIds>({
   create(context, [option]) {
     const rules = baseRule.create(context);
 
-    const isModuleDeclaration = (node: TSESTree.Literal): boolean => {
-      return (
-        !!node.parent && node.parent.type === AST_NODE_TYPES.TSModuleDeclaration
-      );
-    };
+    function isAllowedAsNonBacktick(node: TSESTree.Literal): boolean {
+      const parent = node.parent;
 
-    const isTypeLiteral = (node: TSESTree.Literal): boolean => {
-      return !!node.parent && node.parent.type === AST_NODE_TYPES.TSLiteralType;
-    };
+      switch (parent?.type) {
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
+        case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.TSPropertySignature:
+        case AST_NODE_TYPES.TSModuleDeclaration:
+        case AST_NODE_TYPES.TSLiteralType:
+          return true;
+
+        case AST_NODE_TYPES.TSEnumMember:
+          return node === parent.id;
+
+        case AST_NODE_TYPES.TSAbstractClassProperty:
+        case AST_NODE_TYPES.ClassProperty:
+          return node === parent.key;
+
+        default:
+          return false;
+      }
+    }
 
     return {
       Literal(node): void {
-        if (
-          option === 'backtick' &&
-          (isModuleDeclaration(node) || isTypeLiteral(node))
-        ) {
+        if (option === 'backtick' && isAllowedAsNonBacktick(node)) {
           return;
         }
 

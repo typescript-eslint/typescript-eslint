@@ -37,6 +37,8 @@ const foo = ({ hello: "hello" }) as PossibleTuple;`,
     `
 type PossibleTuple = { 0: "hello", 5: "hello" };
 const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
+    `let bar: number | undefined = x;
+      let foo: number = bar!;`,
     {
       code: `
 type Foo = number;
@@ -44,15 +46,15 @@ const foo = (3 + 5) as Foo;`,
       options: [{ typesToIgnore: ['Foo'] }],
     },
     {
-      code: `const foo = (3 + 5) as any;`,
+      code: 'const foo = (3 + 5) as any;',
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `((Syntax as any).ArrayExpression = 'foo')`,
+      code: "((Syntax as any).ArrayExpression = 'foo')",
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `const foo = (3 + 5) as string;`,
+      code: 'const foo = (3 + 5) as string;',
       options: [{ typesToIgnore: ['string'] }],
     },
     {
@@ -110,6 +112,17 @@ class Mx {
   @a(b!)
   private prop = 1;
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1199
+    `
+function testFunction(_param: string | undefined): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
+    `,
+    `
+function testFunction(_param: string | null): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/982
     {

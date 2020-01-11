@@ -2838,7 +2838,7 @@ ruleTester.run('indent', rule, {
       options: [2, { SwitchCase: 1 }],
     },
 
-    // Template curlies
+    // Template literals
     {
       code: unIndent`
                 \`foo\${
@@ -7851,7 +7851,7 @@ ruleTester.run('indent', rule, {
       ]),
     },
 
-    // Template curlies
+    // Template literals
     {
       code: unIndent`
                 \`foo\${

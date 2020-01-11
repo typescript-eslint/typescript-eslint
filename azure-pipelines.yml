@@ -32,12 +32,8 @@ jobs:
         displayName: 'Run linting'
 
       - script: |
-          yarn check:docs
-        displayName: 'Validate documentation'
-
-      - script: |
-          yarn check:configs
-        displayName: 'Validate plugin configs'
+          yarn check:spelling
+        displayName: 'Validate documentation spelling'
 
       - script: |
           yarn test
@@ -48,7 +44,7 @@ jobs:
         displayName: 'Run integrations tests'
 
       - script: |
-          npx codecov -t $(CODECOV_TOKEN)
+          bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
         displayName: 'Publish code coverage report'
 
   - job: unit_tests_on_other_node_versions
@@ -80,8 +76,8 @@ jobs:
   - job: publish_canary_version
     displayName: Publish the latest code as a canary version
     dependsOn:
-    - primary_code_validation_and_tests
-    - unit_tests_on_other_node_versions
+      - primary_code_validation_and_tests
+      - unit_tests_on_other_node_versions
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
     pool:
       vmImage: 'Ubuntu-16.04'

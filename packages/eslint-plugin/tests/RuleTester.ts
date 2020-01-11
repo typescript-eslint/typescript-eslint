@@ -8,20 +8,30 @@ type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
   parser: typeof parser;
 };
 class RuleTester extends TSESLint.RuleTester {
-  private filename: string | undefined = undefined;
-
   // as of eslint 6 you have to provide an absolute path to the parser
   // but that's not as clean to type, this saves us trying to manually enforce
   // that contributors require.resolve everything
-  constructor(options: RuleTesterConfig) {
+  constructor(private readonly options: RuleTesterConfig) {
     super({
       ...options,
       parser: require.resolve(options.parser),
     });
+  }
+  private getFilename(options?: TSESLint.ParserOptions): string {
+    if (options) {
+      const filename = `file.ts${
+        options.ecmaFeatures && options.ecmaFeatures.jsx ? 'x' : ''
+      }`;
+      if (options.project) {
+        return path.join(getFixturesRootDir(), filename);
+      }
 
-    if (options.parserOptions && options.parserOptions.project) {
-      this.filename = path.join(getFixturesRootDir(), 'file.ts');
+      return filename;
+    } else if (this.options.parserOptions) {
+      return this.getFilename(this.options.parserOptions);
     }
+
+    return 'file.ts';
   }
 
   // as of eslint 6 you have to provide an absolute path to the parser
@@ -49,18 +59,18 @@ class RuleTester extends TSESLint.RuleTester {
         if (test.parser === parser) {
           throw new Error(errorMessage);
         }
-        test.filename = test.filename
-          ? path.join(getFixturesRootDir(), test.filename)
-          : this.filename;
+        if (!test.filename) {
+          test.filename = this.getFilename(test.parserOptions);
+        }
       }
     });
     tests.invalid.forEach(test => {
       if (test.parser === parser) {
         throw new Error(errorMessage);
       }
-      test.filename = test.filename
-        ? path.join(getFixturesRootDir(), test.filename)
-        : this.filename;
+      if (!test.filename) {
+        test.filename = this.getFilename(test.parserOptions);
+      }
     });
 
     super.run(name, rule, tests);
