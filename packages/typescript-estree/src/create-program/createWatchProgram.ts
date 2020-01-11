@@ -401,7 +401,6 @@ function maybeInvalidateProgram(
         cb(current!, ts.FileWatcherEventKind.Changed);
       });
       hasCallback = true;
-      break;
     }
 
     next = canonicalDirname(current);
