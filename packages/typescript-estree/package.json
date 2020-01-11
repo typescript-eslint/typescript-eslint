@@ -43,7 +43,7 @@
     "eslint-visitor-keys": "^1.1.0",
     "glob": "^7.1.6",
     "is-glob": "^4.0.1",
-    "lodash.unescape": "4.0.1",
+    "lodash": "^4.17.15",
     "semver": "^6.3.0",
     "tsutils": "^3.17.1"
   },
@@ -55,7 +55,7 @@
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.1",
     "@types/is-glob": "^4.0.1",
-    "@types/lodash.unescape": "^4.0.4",
+    "@types/lodash": "^4.14.149",
     "@types/semver": "^6.2.0",
     "@types/tmp": "^0.1.0",
     "@typescript-eslint/shared-fixtures": "2.15.0",
