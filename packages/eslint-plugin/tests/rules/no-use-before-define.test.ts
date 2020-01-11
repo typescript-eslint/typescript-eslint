@@ -6,7 +6,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const parserOptions = { ecmaVersion: 6 as 6 };
+const parserOptions = { ecmaVersion: 6 as const };
 
 ruleTester.run('no-use-before-define', rule, {
   valid: [

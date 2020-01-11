@@ -259,7 +259,7 @@ export default util.createRule<Options, MessageIds>({
 
         return rules.VariableDeclaration({
           type: AST_NODE_TYPES.VariableDeclaration,
-          kind: 'const' as 'const',
+          kind: 'const' as const,
           declarations: [
             {
               type: AST_NODE_TYPES.VariableDeclarator,
@@ -388,7 +388,7 @@ export default util.createRule<Options, MessageIds>({
                   ? node.typeAnnotation.loc.end
                   : squareBracketStart.loc.end,
               },
-              kind: 'init' as 'init',
+              kind: 'init' as const,
               computed: false,
               method: false,
               shorthand: false,
