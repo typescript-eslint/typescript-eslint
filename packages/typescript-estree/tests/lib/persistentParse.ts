@@ -63,7 +63,7 @@ function parseFile(
   tmpDir: string,
   relative?: boolean,
 ): void {
-  parseAndGenerateServices(CONTENTS.foo, {
+  parseAndGenerateServices(CONTENTS[filename], {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
     filePath: relative
