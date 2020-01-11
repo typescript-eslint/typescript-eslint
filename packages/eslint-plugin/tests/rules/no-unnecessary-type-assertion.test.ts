@@ -14,7 +14,7 @@ const ruleTester = new RuleTester({
 });
 
 // make sure each test is completely isolated
-// there was some weird behaviour with the mixed ts/tsx test cases without this
+// there was some weird behavior with the mixed ts/tsx test cases without this
 afterEach(() => {
   clearCaches();
 });
