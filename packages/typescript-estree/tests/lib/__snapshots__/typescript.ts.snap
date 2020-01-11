@@ -3898,7 +3898,6 @@ Object {
                   },
                 },
                 "name": "createSocket",
-                "optional": true,
                 "range": Array [
                   43,
                   55,
@@ -3916,6 +3915,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": true,
               "range": Array [
                 43,
                 76,
@@ -24141,7 +24141,6 @@ Object {
                 },
               },
               "name": "computed1",
-              "optional": true,
               "range": Array [
                 124,
                 133,
@@ -24159,6 +24158,7 @@ Object {
                 "line": 8,
               },
             },
+            "optional": true,
             "range": Array [
               123,
               138,
@@ -24203,7 +24203,6 @@ Object {
                 },
               },
               "name": "computed2",
-              "optional": true,
               "range": Array [
                 142,
                 151,
@@ -24221,6 +24220,7 @@ Object {
                 "line": 9,
               },
             },
+            "optional": true,
             "range": Array [
               141,
               158,
@@ -24300,6 +24300,7 @@ Object {
                 "line": 10,
               },
             },
+            "optional": true,
             "range": Array [
               162,
               169,
@@ -24362,6 +24363,7 @@ Object {
                 "line": 11,
               },
             },
+            "optional": true,
             "range": Array [
               172,
               181,
@@ -24441,6 +24443,7 @@ Object {
                 "line": 12,
               },
             },
+            "optional": true,
             "range": Array [
               185,
               201,
@@ -24503,6 +24506,7 @@ Object {
                 "line": 13,
               },
             },
+            "optional": true,
             "range": Array [
               204,
               222,
@@ -24618,6 +24622,7 @@ Object {
                 "line": 14,
               },
             },
+            "optional": true,
             "range": Array [
               226,
               244,
@@ -24733,6 +24738,7 @@ Object {
                 "line": 15,
               },
             },
+            "optional": true,
             "range": Array [
               248,
               265,
@@ -24763,11 +24769,109 @@ Object {
               "type": "FunctionExpression",
             },
           },
+          Object {
+            "computed": true,
+            "key": Object {
+              "arguments": Array [],
+              "callee": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 4,
+                    "line": 16,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 16,
+                  },
+                },
+                "name": "f",
+                "range": Array [
+                  269,
+                  270,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 6,
+                  "line": 16,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 16,
+                },
+              },
+              "optional": false,
+              "range": Array [
+                269,
+                272,
+              ],
+              "type": "CallExpression",
+            },
+            "kind": "method",
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 16,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 16,
+              },
+            },
+            "optional": true,
+            "range": Array [
+              268,
+              279,
+            ],
+            "static": false,
+            "type": "MethodDefinition",
+            "value": Object {
+              "async": false,
+              "body": Object {
+                "body": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 13,
+                    "line": 16,
+                  },
+                  "start": Object {
+                    "column": 11,
+                    "line": 16,
+                  },
+                },
+                "range": Array [
+                  277,
+                  279,
+                ],
+                "type": "BlockStatement",
+              },
+              "expression": false,
+              "generator": false,
+              "id": null,
+              "loc": Object {
+                "end": Object {
+                  "column": 13,
+                  "line": 16,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 16,
+                },
+              },
+              "params": Array [],
+              "range": Array [
+                274,
+                279,
+              ],
+              "type": "FunctionExpression",
+            },
+          },
         ],
         "loc": Object {
           "end": Object {
             "column": 1,
-            "line": 16,
+            "line": 17,
           },
           "start": Object {
             "column": 8,
@@ -24776,7 +24880,7 @@ Object {
         },
         "range": Array [
           119,
-          267,
+          281,
         ],
         "type": "ClassBody",
       },
@@ -24801,7 +24905,7 @@ Object {
       "loc": Object {
         "end": Object {
           "column": 1,
-          "line": 16,
+          "line": 17,
         },
         "start": Object {
           "column": 0,
@@ -24810,7 +24914,7 @@ Object {
       },
       "range": Array [
         111,
-        267,
+        281,
       ],
       "superClass": null,
       "type": "ClassDeclaration",
@@ -24819,7 +24923,7 @@ Object {
   "loc": Object {
     "end": Object {
       "column": 0,
-      "line": 17,
+      "line": 18,
     },
     "start": Object {
       "column": 0,
@@ -24828,7 +24932,7 @@ Object {
   },
   "range": Array [
     0,
-    268,
+    282,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -26545,17 +26649,197 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 1,
+          "column": 3,
           "line": 16,
         },
         "start": Object {
-          "column": 0,
+          "column": 2,
           "line": 16,
         },
       },
       "range": Array [
-        266,
-        267,
+        268,
+        269,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        269,
+        270,
+      ],
+      "type": "Identifier",
+      "value": "f",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        270,
+        271,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        271,
+        272,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        272,
+        273,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        273,
+        274,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        274,
+        275,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        275,
+        276,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        277,
+        278,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        278,
+        279,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 17,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 17,
+        },
+      },
+      "range": Array [
+        280,
+        281,
       ],
       "type": "Punctuator",
       "value": "}",
@@ -26940,7 +27224,6 @@ Object {
                 },
               },
               "name": "foo",
-              "optional": true,
               "range": Array [
                 14,
                 17,
@@ -26958,6 +27241,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": true,
             "range": Array [
               14,
               21,
@@ -27002,7 +27286,6 @@ Object {
                 },
               },
               "name": "bar",
-              "optional": true,
               "range": Array [
                 24,
                 27,
@@ -27020,6 +27303,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": true,
             "range": Array [
               24,
               39,
@@ -27099,7 +27383,6 @@ Object {
                 },
               },
               "name": "baz",
-              "optional": true,
               "range": Array [
                 50,
                 53,
@@ -27117,6 +27400,7 @@ Object {
                 "line": 4,
               },
             },
+            "optional": true,
             "range": Array [
               42,
               65,
@@ -40959,7 +41243,6 @@ Object {
                 },
               },
               "name": "bar",
-              "optional": true,
               "range": Array [
                 24,
                 27,
@@ -40977,6 +41260,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": true,
             "range": Array [
               24,
               36,

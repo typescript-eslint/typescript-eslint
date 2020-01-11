@@ -1064,11 +1064,8 @@ export class Converter {
           }
         }
 
-        if (
-          result.key.type === AST_NODE_TYPES.Identifier &&
-          node.questionToken
-        ) {
-          result.key.optional = true;
+        if (node.questionToken) {
+          result.optional = true;
         }
 
         if (node.kind === SyntaxKind.GetAccessor) {

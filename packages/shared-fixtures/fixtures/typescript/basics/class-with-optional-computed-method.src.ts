@@ -13,4 +13,5 @@ class X {
   ["literal2"]?() {};
   [obj.member]?() {};
   [obj.member2]?();
+  [f()]?() {}
 }

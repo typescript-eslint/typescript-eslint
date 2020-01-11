@@ -656,6 +656,7 @@ interface MethodDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   kind: 'method' | 'get' | 'set' | 'constructor';
+  optional?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
   typeParameters?: TSTypeParameterDeclaration;
@@ -678,6 +679,7 @@ interface PropertyBase extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
+  optional?: boolean;
   kind: 'init' | 'get' | 'set';
 }
 
@@ -701,26 +703,26 @@ interface TSMethodSignatureBase extends BaseNode {
   key: PropertyName;
   computed: boolean;
   params: Parameter[];
-  optional?: boolean;
   returnType?: TSTypeAnnotation;
-  readonly?: boolean;
   typeParameters?: TSTypeParameterDeclaration;
   accessibility?: Accessibility;
+  readonly?: boolean;
   export?: boolean;
   static?: boolean;
+  optional?: boolean;
 }
 
 interface TSPropertySignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSPropertySignature;
   key: PropertyName;
-  optional?: boolean;
   computed: boolean;
   typeAnnotation?: TSTypeAnnotation;
   initializer?: Expression;
-  readonly?: boolean;
-  static?: boolean;
-  export?: boolean;
   accessibility?: Accessibility;
+  readonly?: boolean;
+  export?: boolean;
+  static?: boolean;
+  optional?: boolean;
 }
 
 interface UnaryExpressionBase extends BaseNode {

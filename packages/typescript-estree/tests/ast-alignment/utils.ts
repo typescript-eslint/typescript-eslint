@@ -151,6 +151,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           };
         }
       },
+      MethodDefinition(node) {
+        /**
+         * Babel: MethodDefinition + abstract: true
+         * ts-estree: TSAbstractClassProperty
+         */
+        if (node.abstract) {
+          node.type = 'TSAbstractMethodDefinition';
+          delete node.abstract;
+        }
+      },
       ClassProperty(node) {
         /**
          * Babel: ClassProperty + abstract: true
