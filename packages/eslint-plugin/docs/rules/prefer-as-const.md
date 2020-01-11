@@ -1,4 +1,4 @@
-# Prefer usage of `as const` over literal type assertions (`prefer-as-const`)
+# Prefer usage of `as const` over literal type (`prefer-as-const`)
 
 This rule recommends usage of `const` assertion when type primitive value is equal to type.
 
