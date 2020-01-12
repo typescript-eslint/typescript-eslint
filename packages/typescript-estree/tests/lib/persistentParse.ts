@@ -62,10 +62,11 @@ function parseFile(
   filename: keyof typeof CONTENTS,
   tmpDir: string,
   relative?: boolean,
+  ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
     project: './tsconfig.json',
-    tsconfigRootDir: tmpDir,
+    tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
       ? path.join('src', `${filename}.ts`)
       : path.join(tmpDir, 'src', `${filename}.ts`),
@@ -195,6 +196,27 @@ function baseTests(
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR, true)).not.toThrow();
+  });
+
+  it('should work with relative paths without tsconfig root', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+    process.chdir(PROJECT_DIR);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR, true, true)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('bar', PROJECT_DIR, true, true)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'bar');
+
+    // make sure that file is correctly created
+    expect(existsSync('bar')).toEqual(true);
+    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR, true, true)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR, true, true)).not.toThrow();
   });
 }
 
