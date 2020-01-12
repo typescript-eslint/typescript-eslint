@@ -1,26 +1,41 @@
-import assert from 'assert';
 import rule, { parseOptions } from '../../src/rules/interface-name-prefix';
 import { RuleTester } from '../RuleTester';
 
 describe('interface-name-prefix', () => {
   it('parseOptions', () => {
-    assert.deepEqual(parseOptions(['never']), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions(['always']), {
-      prefixWithI: 'always',
-      allowUnderscorePrefix: false,
-    });
-    assert.deepEqual(parseOptions([{}]), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'never' }]), {
+    expect(parseOptions(['never'])).toStrictEqual({
       prefixWithI: 'never',
+      allowedPrefixes: [],
     });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'always' }]), {
+    expect(parseOptions(['always'])).toStrictEqual({
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
     });
-    assert.deepEqual(
+    expect(parseOptions([{}])).toStrictEqual({
+      prefixWithI: 'never',
+      allowedPrefixes: [],
+    });
+    expect(parseOptions([{ prefixWithI: 'never' }])).toStrictEqual({
+      prefixWithI: 'never',
+      allowedPrefixes: [],
+    });
+    expect(parseOptions([{ allowedPrefixes: ['IAM'] }])).toStrictEqual({
+      prefixWithI: 'never',
+      allowedPrefixes: ['IAM'],
+    });
+    expect(
+      parseOptions([{ prefixWithI: 'never', allowedPrefixes: [] }]),
+    ).toStrictEqual({
+      prefixWithI: 'never',
+      allowedPrefixes: [],
+    });
+    expect(parseOptions([{ prefixWithI: 'always' }])).toStrictEqual({
+      prefixWithI: 'always',
+      allowUnderscorePrefix: false,
+    });
+    expect(
       parseOptions([{ prefixWithI: 'always', allowUnderscorePrefix: true }]),
-      { prefixWithI: 'always', allowUnderscorePrefix: true },
-    );
+    ).toStrictEqual({ prefixWithI: 'always', allowUnderscorePrefix: true });
   });
 });
 
@@ -83,6 +98,14 @@ interface I18n {
             `,
       options: ['never'],
     },
+    {
+      code: `
+interface IAMUser {
+    name: string;
+}
+            `,
+      options: [{ allowedPrefixes: ['IAM'] }],
+    },
   ],
   invalid: [
     {
@@ -91,6 +114,21 @@ interface IAnimal {
     name: string;
 }
             `,
+      errors: [
+        {
+          messageId: 'noPrefix',
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+interface IAMUser {
+    name: string;
+}
+            `,
+      options: [{ allowedPrefixes: ['IPM'] }],
       errors: [
         {
           messageId: 'noPrefix',

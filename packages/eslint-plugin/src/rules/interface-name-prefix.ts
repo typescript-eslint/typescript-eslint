@@ -3,6 +3,7 @@ import * as util from '../util';
 type ParsedOptions =
   | {
       prefixWithI: 'never';
+      allowedPrefixes: string[];
     }
   | {
       prefixWithI: 'always';
@@ -13,6 +14,7 @@ type Options = [
   | 'always'
   | {
       prefixWithI?: 'never';
+      allowedPrefixes?: string[];
     }
   | {
       prefixWithI: 'always';
@@ -34,7 +36,11 @@ export function parseOptions([options]: Options): ParsedOptions {
       allowUnderscorePrefix: !!options.allowUnderscorePrefix,
     };
   }
-  return { prefixWithI: 'never' };
+  return {
+    prefixWithI: 'never',
+    allowedPrefixes:
+      (typeof options === 'object' && options.allowedPrefixes) || [],
+  };
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -58,7 +64,7 @@ export default util.createRule<Options, MessageIds>({
         oneOf: [
           {
             enum: [
-              // Deprecated, equivalent to: { prefixWithI: 'never' }
+              // Deprecated, equivalent to: { prefixWithI: 'never', allowedPrefixes: [] }
               'never',
               // Deprecated, equivalent to: { prefixWithI: 'always', allowUnderscorePrefix: false }
               'always',
@@ -70,6 +76,12 @@ export default util.createRule<Options, MessageIds>({
               prefixWithI: {
                 type: 'string',
                 enum: ['never'],
+              },
+              allowedPrefixes: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
               },
             },
             additionalProperties: false,
@@ -92,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [{ prefixWithI: 'never' }],
+  defaultOptions: [{ prefixWithI: 'never', allowedPrefixes: [] }],
   create(context, [options]) {
     const parsedOptions = parseOptions([options]);
 
@@ -101,10 +113,6 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^I[A-Z]/.test(name);
     }
 
@@ -113,17 +121,18 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithIOrUnderscoreI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^_?I[A-Z]/.test(name);
     }
 
     return {
       TSInterfaceDeclaration(node): void {
         if (parsedOptions.prefixWithI === 'never') {
-          if (isPrefixedWithIOrUnderscoreI(node.id.name)) {
+          if (
+            isPrefixedWithIOrUnderscoreI(node.id.name) &&
+            !parsedOptions.allowedPrefixes.some(allowedPrefix =>
+              node.id.name.startsWith(allowedPrefix),
+            )
+          ) {
             context.report({
               node: node.id,
               messageId: 'noPrefix',

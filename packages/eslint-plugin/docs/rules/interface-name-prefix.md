@@ -11,18 +11,21 @@ This rule enforces whether or not the `I` prefix is required for interface names
 The `_` prefix is sometimes used to designate a private declaration, so the rule also supports a private interface
 that might be named `_IAnimal` instead of `IAnimal`.
 
+Finally, there are a few rare names that look like an `I` prefix, such as Identity and Access Management, more commonly refereed to as "IAM".
+For these rare names, the rule can be provided an array of names to allow, via the `allowedPrefixes` option.
+
 ## Options
 
 This rule has an object option:
 
-- `{ "prefixWithI": "never" }`: (default) disallows all interfaces being prefixed with `"I"` or `"_I"`
+- `{ "prefixWithI": "never", "allowedPrefixes": [] }`: (default) disallows all interfaces being prefixed with `"I"` or `"_I"`
 - `{ "prefixWithI": "always" }`: requires all interfaces be prefixed with `"I"` (but does not allow `"_I"`)
 - `{ "prefixWithI": "always", "allowUnderscorePrefix": true }`: requires all interfaces be prefixed with
   either `"I"` or `"_I"`
 
 For backwards compatibility, this rule supports a string option instead:
 
-- `"never"`: Equivalent to `{ "prefixWithI": "never" }`
+- `"never"`: Equivalent to `{ "prefixWithI": "never", "allowedPrefixes": [] }`
 - `"always"`: Equivalent to `{ "prefixWithI": "always" }`
 
 ## Examples
@@ -55,6 +58,34 @@ interface Animal {
 }
 
 interface Iguana {
+  name: string;
+}
+```
+
+### never and allowing names
+
+**Configuration:** `{ "prefixWithI": "never", "allowedPrefixes": ["IAM"] }`
+
+The following patterns are considered warnings:
+
+```ts
+interface IAnimal {
+  name: string;
+}
+
+interface IPMUser {
+  name: string;
+}
+```
+
+The following patterns are not warnings:
+
+```ts
+interface Animal {
+  name: string;
+}
+
+interface IAMUser {
   name: string;
 }
 ```
