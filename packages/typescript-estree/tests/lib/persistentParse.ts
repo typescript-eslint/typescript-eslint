@@ -179,7 +179,6 @@ function baseTests(
 
   it('should work with relative paths', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, false);
-    process.chdir(PROJECT_DIR);
 
     // parse once to: assert the config as correct, and to make sure the program is setup
     expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
@@ -190,7 +189,6 @@ function baseTests(
     writeFile(PROJECT_DIR, 'bar');
 
     // make sure that file is correctly created
-    expect(existsSync('bar')).toEqual(true);
     expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
 
     // both files should parse fine now
