@@ -144,7 +144,7 @@ describe('parse()', () => {
       tokens: true,
       range: true,
       loc: true,
-      filePath: 'tests/fixtures/simpleProject/file.ts',
+      filePath: 'file.ts',
     };
     const projectConfig: TSESTreeOptions = {
       ...baseConfig,
