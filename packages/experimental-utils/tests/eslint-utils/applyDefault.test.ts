@@ -11,7 +11,7 @@ describe('applyDefault', () => {
   });
 
   it('returns applies a deepMerge to each element in the array', () => {
-    const defaults = [
+    const defaults: Record<string, string>[] = [
       {
         prop: 'setting1',
         other: 'other',
@@ -19,13 +19,13 @@ describe('applyDefault', () => {
       {
         prop: 'setting2',
       },
-    ] as Record<string, string>[];
-    const user = [
+    ];
+    const user: Record<string, string>[] = [
       {
         prop: 'new',
         other: 'something',
       },
-    ] as Record<string, string>[];
+    ];
     const result = util.applyDefault(defaults, user);
 
     expect(result).toStrictEqual([
