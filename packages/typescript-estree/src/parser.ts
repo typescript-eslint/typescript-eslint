@@ -11,6 +11,7 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
+import { ensureAbsolutePath } from './create-program/shared';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -145,6 +146,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   } else {
     extra.filePath = getFileName(extra);
   }
+  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   /**
    * The JSX AST changed the node type for string literals

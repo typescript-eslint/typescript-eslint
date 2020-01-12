@@ -10,6 +10,7 @@ const CONTENTS = {
   'bat/baz/bar': 'console.log("bat/baz/bar")',
 };
 
+const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
   // stop watching the files and folders
@@ -18,6 +19,9 @@ afterEach(() => {
   // clean up the temporary files and folders
   tmpDirs.forEach(t => t.removeCallback());
   tmpDirs.clear();
+
+  // restore original cwd
+  process.chdir(cwdCopy);
 });
 
 function writeTSConfig(dirName: string, config: Record<string, unknown>): void {
@@ -54,12 +58,22 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   return tmpDir.name;
 }
 
-function parseFile(filename: keyof typeof CONTENTS, tmpDir: string): void {
-  parseAndGenerateServices(CONTENTS.foo, {
+function parseFile(
+  filename: keyof typeof CONTENTS,
+  tmpDir: string,
+  relative?: boolean,
+): void {
+  parseAndGenerateServices(CONTENTS[filename], {
     project: './tsconfig.json',
     tsconfigRootDir: tmpDir,
-    filePath: path.join(tmpDir, 'src', `${filename}.ts`),
+    filePath: relative
+      ? path.join('src', `${filename}.ts`)
+      : path.join(tmpDir, 'src', `${filename}.ts`),
   });
+}
+
+function existsSync(filename: keyof typeof CONTENTS, tmpDir = ''): boolean {
+  return fs.existsSync(path.join(tmpDir, 'src', `${filename}.ts`));
 }
 
 function baseTests(
@@ -160,6 +174,27 @@ function baseTests(
 
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
+  });
+
+  it('should work with relative paths', () => {
+    const PROJECT_DIR = setup(tsConfigIncludeAll, false);
+    process.chdir(PROJECT_DIR);
+
+    // parse once to: assert the config as correct, and to make sure the program is setup
+    expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
+    // bar should throw because it doesn't exist yet
+    expect(() => parseFile('bar', PROJECT_DIR, true)).toThrow();
+
+    // write a new file and attempt to parse it
+    writeFile(PROJECT_DIR, 'bar');
+
+    // make sure that file is correctly created
+    expect(existsSync('bar')).toEqual(true);
+    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+
+    // both files should parse fine now
+    expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
+    expect(() => parseFile('bar', PROJECT_DIR, true)).not.toThrow();
   });
 }
 
