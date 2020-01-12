@@ -5,9 +5,7 @@ import {
 import { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import * as util from '../util';
 
-type MessageIds = 'preferAsConst';
-
-export default util.createRule<[], MessageIds>({
+export default util.createRule({
   name: 'prefer-as-const',
   meta: {
     type: 'suggestion',
