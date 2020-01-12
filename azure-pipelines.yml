@@ -40,10 +40,6 @@ jobs:
         displayName: 'Run unit tests'
 
       - script: |
-          yarn integration-tests
-        displayName: 'Run integrations tests'
-
-      - script: |
           bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
         displayName: 'Publish code coverage report'
 

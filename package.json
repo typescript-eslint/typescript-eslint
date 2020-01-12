@@ -26,8 +26,6 @@
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
-    "integration-tests": "./tests/integration/run-all-tests.sh",
-    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "pre-commit": "yarn lint-staged",

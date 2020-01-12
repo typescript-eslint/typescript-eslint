@@ -17,7 +17,7 @@ parserOptions:
   sourceType: module
   ecmaFeatures:
     jsx: false
-  project: /usr/linked/tsconfig.json
+  project: ./tsconfig.json
 rules:
   '@typescript-eslint/tslint/config':
   - error

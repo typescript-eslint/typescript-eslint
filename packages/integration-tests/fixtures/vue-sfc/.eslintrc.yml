@@ -12,7 +12,7 @@ extends:
 parserOptions:
   # Local version of @typescript-eslint/parser
   parser: '@typescript-eslint/parser'
-  project: /usr/linked/tsconfig.json
+  project: ./tsconfig.json
   sourceType: module
   extraFileExtensions: ['.vue']
 
