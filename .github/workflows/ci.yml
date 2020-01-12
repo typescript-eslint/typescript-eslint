@@ -50,9 +50,13 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+        env:
+          CI: true
 
       - name: Run integrations tests
         run: yarn integration-tests
+        env:
+          CI: true
 
       - name: Publish code coverage report
         uses: codecov/codecov-action@v1
@@ -92,6 +96,8 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+        env:
+          CI: true
 
   publish_canary_version:
     name: Publish the latest code as a canary version
