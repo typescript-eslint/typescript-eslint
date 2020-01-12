@@ -1,19 +1,13 @@
-import assert from 'assert';
-
 import * as util from '../../src/eslint-utils/applyDefault';
 
 describe('applyDefault', () => {
   it('returns a clone of the default if no options given', () => {
-    const defaults = [
-      {
-        prop: 'setting',
-      },
-    ];
+    const defaults = [{ prop: 'setting' }];
     const user = null;
     const result = util.applyDefault(defaults, user);
 
-    assert.deepStrictEqual(result, defaults);
-    assert.notStrictEqual(result, defaults);
+    expect(result).toStrictEqual(result);
+    expect(result).not.toBe(defaults);
   });
 
   it('returns applies a deepMerge to each element in the array', () => {
@@ -34,7 +28,7 @@ describe('applyDefault', () => {
     ] as Record<string, string>[];
     const result = util.applyDefault(defaults, user);
 
-    assert.deepStrictEqual(result, [
+    expect(result).toStrictEqual([
       {
         prop: 'new',
         other: 'something',
@@ -43,8 +37,8 @@ describe('applyDefault', () => {
         prop: 'setting2',
       },
     ]);
-    assert.notStrictEqual(result, defaults);
-    assert.notStrictEqual(result, user);
+    expect(result).not.toBe(defaults);
+    expect(result).not.toBe(user);
   });
 
   it('returns a brand new array', () => {
@@ -52,7 +46,7 @@ describe('applyDefault', () => {
     const user: undefined[] = [];
     const result = util.applyDefault(defaults, user);
 
-    assert.notStrictEqual(result, defaults);
-    assert.notStrictEqual(result, user);
+    expect(result).not.toBe(defaults);
+    expect(result).not.toBe(user);
   });
 });
