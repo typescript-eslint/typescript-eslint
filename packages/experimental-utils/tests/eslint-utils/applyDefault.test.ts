@@ -6,7 +6,7 @@ describe('applyDefault', () => {
     const user = null;
     const result = util.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual(result);
+    expect(result).toStrictEqual(defaults);
     expect(result).not.toBe(defaults);
   });
 
