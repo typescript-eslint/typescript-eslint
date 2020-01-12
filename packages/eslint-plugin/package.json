@@ -35,6 +35,7 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:configs": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-configs.ts",
+    "generate:rules-table": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-rules-table.ts",
     "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"

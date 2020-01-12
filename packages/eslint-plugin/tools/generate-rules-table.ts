@@ -11,15 +11,6 @@ function createRuleLink(ruleName: string): string {
   return `[\`@typescript-eslint/${ruleName}\`](./docs/rules/${ruleName}.md)`;
 }
 
-interface RuleInfo {
-  name: string;
-  link: string;
-  description: string;
-  recommended: boolean;
-  fixable: boolean;
-  requiresTypeChecking: boolean;
-}
-
 const emojiKey = {
   recommended: ':heavy_check_mark:',
   fixable: ':wrench:',
@@ -29,58 +20,33 @@ const emojiKey = {
 const returnEmojiOrSpaces = <TKey extends keyof typeof emojiKey>(
   key: TKey,
   obj: { [K in TKey]?: unknown },
-): string => (!!obj[key] ? emojiKey[key] : ''.padEnd(emojiKey[key].length));
-
-const collectRuleInfos = (): RuleInfo[] => {
-  const notDeprecated = rulesData.filter(
-    ([, rule]) => rule.meta.deprecated !== true,
-  );
-  const ruleInfos: RuleInfo[] = [];
-
-  for (const [ruleName, rule] of notDeprecated) {
-    ruleInfos.push({
-      name: ruleName,
-      link: createRuleLink(ruleName),
-      description: rule.meta.docs.description,
-      recommended: !!rule.meta.docs.recommended,
-      fixable: !!rule.meta.fixable,
-      requiresTypeChecking: !!rule.meta.docs.requiresTypeChecking,
-    });
-  }
-
-  return ruleInfos.sort((a, b) => a.name.localeCompare(b.name));
-};
-
-const ruleInfos = collectRuleInfos();
-
-const firstColumnLength = ruleInfos.reduce(
-  (size, ruleInfo) =>
-    ruleInfo.link.length > size ? ruleInfo.link.length : size,
-  0,
-);
-
-const secondColumnLength = ruleInfos.reduce(
-  (size, ruleInfo) =>
-    ruleInfo.description.length > size ? ruleInfo.description.length : size,
-  0,
-);
+): string => (obj[key] ? emojiKey[key] : ''.padEnd(emojiKey[key].length));
 
 const joinWithPipes = (columns: string[]): string =>
   [' ', ...columns, ' '].join(' | ').trim();
 
-const ruleColumns: string[] = ruleInfos.map(ruleInfo =>
-  joinWithPipes([
-    ruleInfo.link.padEnd(firstColumnLength, ' '),
-    ruleInfo.description.padEnd(secondColumnLength, ' '),
-    returnEmojiOrSpaces('recommended', ruleInfo),
-    returnEmojiOrSpaces('fixable', ruleInfo),
-    returnEmojiOrSpaces('requiresTypeChecking', ruleInfo),
-  ]),
+const ruleColumns = rulesData
+  .filter(([, rule]) => rule.meta.deprecated !== true)
+  .sort(([ruleNameA], [ruleNameB]) => ruleNameA.localeCompare(ruleNameB))
+  .map(([ruleName, rule]) => [
+    createRuleLink(ruleName),
+    rule.meta.docs.description,
+    returnEmojiOrSpaces('recommended', rule.meta.docs),
+    returnEmojiOrSpaces('fixable', rule.meta),
+    returnEmojiOrSpaces('requiresTypeChecking', rule.meta.docs),
+  ]);
+
+const [nameColumnLength, descriptionColumnLength] = ruleColumns.reduce(
+  ([nameColumnSize, descColumnSize], [nameStr, descStr]) => [
+    nameStr.length > nameColumnSize ? nameStr.length : nameColumnSize,
+    descStr.length > descColumnSize ? descStr.length : descColumnSize,
+  ],
+  [0, 0],
 );
 
 const RULES_TABLE_HEADER = joinWithPipes([
-  'Name'.padEnd(firstColumnLength, ' '),
-  'Description'.padEnd(secondColumnLength, ' '),
+  'Name'.padEnd(nameColumnLength, ' '),
+  'Description'.padEnd(descriptionColumnLength, ' '),
   emojiKey.recommended,
   emojiKey.fixable,
   emojiKey.requiresTypeChecking,
@@ -96,8 +62,8 @@ const rulesListKey = [
 ].join(', ');
 const separator = joinWithPipes(
   [
-    firstColumnLength,
-    secondColumnLength,
+    nameColumnLength,
+    descriptionColumnLength,
     emojiKey.recommended.length,
     emojiKey.fixable.length,
     emojiKey.requiresTypeChecking.length,
@@ -112,7 +78,13 @@ const allTogetherNow = [
   markerPrettierIgnore,
   RULES_TABLE_HEADER,
   separator,
-  ...ruleColumns,
+  ...ruleColumns.map(([name, description, ...rest]) =>
+    joinWithPipes([
+      name.padEnd(nameColumnLength, ' '),
+      description.padEnd(descriptionColumnLength, ' '),
+      ...rest,
+    ]),
+  ),
   '',
 ].join('\n');
 
