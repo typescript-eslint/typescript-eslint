@@ -10,7 +10,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'Requires `Array#sort` calls to always provide a `compareFunction` (`require-array-sort-compare`)',
+        'Requires `Array#sort` calls to always provide a `compareFunction`',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
