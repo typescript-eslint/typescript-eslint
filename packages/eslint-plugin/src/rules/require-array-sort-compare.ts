@@ -9,7 +9,8 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce giving `compare` argument to `Array#sort`',
+      description:
+        'Requires `Array#sort` calls to always provide a `compareFunction` (`require-array-sort-compare`)',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
