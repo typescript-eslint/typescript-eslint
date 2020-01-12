@@ -43,6 +43,10 @@ array.sort((a, b) => a.localeCompare(b));
 userDefinedType.sort();
 ```
 
+## Options
+
+None.
+
 ## When Not To Use It
 
 If you understand the language specification enough, you can turn this rule off safely.
