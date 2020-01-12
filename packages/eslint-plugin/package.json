@@ -50,7 +50,6 @@
     "@types/json-schema": "^7.0.3",
     "@types/marked": "^0.7.1",
     "@types/prettier": "^1.18.2",
-    "@types/react": "^16.9.2",
     "chalk": "^3.0.0",
     "marked": "^0.7.0",
     "prettier": "*",

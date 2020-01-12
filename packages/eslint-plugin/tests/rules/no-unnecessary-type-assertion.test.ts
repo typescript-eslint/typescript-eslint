@@ -1,4 +1,3 @@
-import { clearCaches } from '@typescript-eslint/parser';
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
@@ -11,12 +10,6 @@ const ruleTester = new RuleTester({
     project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
-});
-
-// make sure each test is completely isolated
-// there was some weird behavior with the mixed ts/tsx test cases without this
-afterEach(() => {
-  clearCaches();
 });
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
@@ -127,13 +120,13 @@ testFunction(value!)
     // https://github.com/typescript-eslint/typescript-eslint/issues/982
     {
       code: `
-const React = require("react");
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
 
 function Test(props: {
   id?: null | string | number;
 }) {
   return <div key={props.id!} />;
-};
+}
       `,
       filename: path.join(rootDir, 'react.tsx'),
     },
@@ -350,22 +343,22 @@ class Mx {
     // https://github.com/typescript-eslint/typescript-eslint/issues/982
     {
       code: `
-const React = require("react");
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
 
 function Test(props: {
   id?: string | number;
 }) {
   return <div key={props.id!} />;
-};
+}
       `,
       output: `
-const React = require("react");
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
 
 function Test(props: {
   id?: string | number;
 }) {
   return <div key={props.id} />;
-};
+}
       `,
       errors: [
         {
