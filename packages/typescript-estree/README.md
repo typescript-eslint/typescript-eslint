@@ -29,36 +29,78 @@ yarn add -D @typescript-eslint/typescript-estree
 
 ## API
 
-### parse(code, options)
+### Parsing
 
-Parses the given string of code with the options provided and returns an ESTree-compatible AST. The options object has the following properties:
+#### `parse(code, options)`
 
-```js
-{
-  // attach range information to each node
-  range: false,
+Parses the given string of code with the options provided and returns an ESTree-compatible AST.
 
-  // attach line/column location information to each node
-  loc: false,
+```ts
+interface ParseOptions {
+  /**
+   * create a top-level comments array containing all comments
+   */
+  comment?: boolean;
 
-  // create a top-level tokens array containing all tokens
-  tokens: false,
+  /**
+   * An array of modules to turn explicit debugging on for.
+   * - 'typescript-eslint' is the same as setting the env var `DEBUG=typescript-eslint:*`
+   * - 'eslint' is the same as setting the env var `DEBUG=eslint:*`
+   * - 'typescript' is the same as setting `extendedDiagnostics: true` in your tsconfig compilerOptions
+   *
+   * For convenience, also supports a boolean:
+   * - true === ['typescript-eslint']
+   * - false === []
+   */
+  debugLevel?: boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
-  // create a top-level comments array containing all comments
-  comment: false,
+  /**
+   * Cause the parser to error if it encounters an unknown AST node type (useful for testing).
+   * This case only usually occurs when TypeScript releases new features.
+   */
+  errorOnUnknownASTType?: boolean;
 
-  /*
-   * enable parsing JSX. For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
+  /**
+   * The absolute path to the file being parsed.
+   */
+  filePath?: string;
+
+  /**
+   * Enable parsing of JSX.
+   * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
    * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
    * TypeScript compiler has its own internal handling for known file extensions.
    *
-   * Exact behaviour:
-   * - .js, .jsx, .tsx files are parsed as if this is true
-   * - .ts files are parsed as if this is false
-   * - unknown extensions (.md, .vue) will respect this setting
+   * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsecmafeaturesjsx
    */
-  jsx: false,
+  jsx?: boolean;
+
+  /**
+   * Controls whether the `loc` information to each node.
+   * The `loc` property is an object which contains the exact line/column the node starts/ends on.
+   * This is similar to the `range` property, except it is line/column relative.
+   */
+  loc?: boolean;
+
+  /*
+   * Allows overriding of function used for logging.
+   * When value is `false`, no logging will occur.
+   * When value is not provided, `console.log()` will be used.
+   */
+  loggerFn?: Function | false;
+
+  /**
+   * Controls whether the `range` property is included on AST nodes.
+   * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
+   * This is similar to the `loc` property, except this is the absolute index.
+   */
+  range?: boolean;
+
+  /**
+   * Set to true to create a top-level array containing all tokens from the file.
+   */
+  tokens?: boolean;
 
   /*
    * The JSX AST changed the node type for string literals
@@ -66,17 +108,61 @@ Parses the given string of code with the options provided and returns an ESTree-
    * When value is `true`, these nodes will be parsed as type `JSXText`.
    * When value is `false`, these nodes will be parsed as type `Literal`.
    */
-  useJSXTextNode: false,
+  useJSXTextNode?: boolean;
+}
 
-  // Cause the parser to error if it encounters an unknown AST node type (useful for testing)
+const PARSE_DEFAULT_OPTIONS: ParseOptions = {
+  comment: false,
   errorOnUnknownASTType: false,
-
-  /*
-   * Allows overriding of function used for logging.
-   * When value is `false`, no logging will occur.
-   * When value is not provided, `console.log()` will be used.
-   */
+  filePath: 'estree.ts', // or 'estree.tsx', if you pass jsx: true
+  jsx: false,
+  loc: false,
   loggerFn: undefined,
+  range: false,
+  tokens: false,
+  useJSXTextNode: false,
+};
+
+declare function parse(
+  code: string,
+  options: ParseOptions = PARSE_DEFAULT_OPTIONS,
+): TSESTree.Program;
+```
+
+Example usage:
+
+```js
+import { parse } from '@typescript-eslint/typescript-estree';
+
+const code = `const hello: string = 'world';`;
+const ast = parse(code, {
+  loc: true,
+  range: true,
+});
+```
+
+#### `parseAndGenerateServices(code, options)`
+
+Parses the given string of code with the options provided and returns an ESTree-compatible AST. Accepts additional options which can be used to generate type information along with the AST.
+
+```ts
+interface ParseAndGenerateServicesOptions extends ParseOptions {
+  /**
+   * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
+   */
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+
+  /**
+   * When `project` is provided, this controls the non-standard file extensions which will be parsed.
+   * It accepts an array of file extensions, each preceded by a `.`.
+   */
+  extraFileExtensions?: string[];
+
+  /**
+   * The absolute path to the file being parsed.
+   * When `project` is provided, this is required, as it is used to fetch the file from the TypeScript compiler's cache.
+   */
+  filePath?: string;
 
   /**
    * Allows the user to control whether or not two-way AST node maps are preserved
@@ -88,42 +174,67 @@ Parses the given string of code with the options provided and returns an ESTree-
    * NOTE: If `preserveNodeMaps` is explicitly set by the user, it will be respected,
    * regardless of whether or not `project` is in use.
    */
-  preserveNodeMaps: undefined
+  preserveNodeMaps?: boolean;
+
+  /**
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * If this is provided, type information will be returned.
+   */
+  project?: string | string[];
+
+  /**
+   * The absolute path to the root directory for all provided `project`s.
+   */
+  tsconfigRootDir?: string;
+
+  /**
+   ***************************************************************************************
+   * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
+   ***************************************************************************************
+   *
+   * When passed with `project`, this allows the parser to create a catch-all, default program.
+   * This means that if the parser encounters a file not included in any of the provided `project`s,
+   * it will not error, but will instead parse the file and its dependencies in a new program.
+   */
+  createDefaultProgram?: boolean;
 }
+
+const PARSE_AND_GENERATE_SERVICES_DEFAULT_OPTIONS: ParseOptions = {
+  ...PARSE_DEFAULT_OPTIONS,
+  errorOnTypeScriptSyntacticAndSemanticIssues: false,
+  extraFileExtensions: [],
+  preserveNodeMaps: false, // or true, if you do not set this, but pass `project`
+  project: undefined,
+  tsconfigRootDir: process.cwd(),
+};
+
+declare function parseAndGenerateServices(
+  code: string,
+  options: ParseOptions = PARSE_DEFAULT_OPTIONS,
+): TSESTree.Program;
 ```
 
 Example usage:
 
 ```js
-const parser = require('@typescript-eslint/typescript-estree');
+import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
+
 const code = `const hello: string = 'world';`;
-const ast = parser.parse(code, {
-  range: true,
+const ast = parseAndGenerateServices(code, {
+  filePath: '/some/path/to/file/foo.ts',
   loc: true,
+  project: './tsconfig.json',
+  range: true,
 });
 ```
 
-### version
+### `TSESTree`, `AST_NODE_TYPES` and `AST_TOKEN_TYPES`
 
-Exposes the current version of `typescript-estree` as specified in `package.json`.
+Types for the AST produced by the parse functions.
 
-Example usage:
-
-```js
-const parser = require('@typescript-eslint/typescript-estree');
-const version = parser.version;
-```
-
-### `AST_NODE_TYPES`
-
-Exposes an object that contains the AST node types produced by the parser.
-
-Example usage:
-
-```js
-const parser = require('@typescript-eslint/typescript-estree');
-const astNodeTypes = parser.AST_NODE_TYPES;
-```
+- `TSESTree` is a namespace which contains object types representing all of the AST Nodes produced by the parser.
+- `AST_NODE_TYPES` is an enum which provides the values for every single AST node's `type` property.
+- `AST_TOKEN_TYPES` is an enum which provides the values for every single AST token's `type` property.
 
 ## Supported TypeScript Version
 

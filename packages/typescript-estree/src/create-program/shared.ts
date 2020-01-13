@@ -20,6 +20,19 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   noUnusedParameters: true,
 };
 
+function createDefaultCompilerOptionsFromExtra(
+  extra: Extra,
+): ts.CompilerOptions {
+  if (extra.debugLevel.has('typescript')) {
+    return {
+      ...DEFAULT_COMPILER_OPTIONS,
+      extendedDiagnostics: true,
+    };
+  }
+
+  return DEFAULT_COMPILER_OPTIONS;
+}
+
 // This narrows the type so we can be sure we're passing canonical names in the correct places
 type CanonicalPath = string & { __brand: unknown };
 
@@ -85,7 +98,7 @@ export {
   ASTAndProgram,
   canonicalDirname,
   CanonicalPath,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
   ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
