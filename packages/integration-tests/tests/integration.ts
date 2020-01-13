@@ -14,7 +14,7 @@ function unifyPath(value: string): string {
 /**
  * Normalize json output if possible
  */
-function normalizeOutput(value: string): string {
+function normalizeOutput(value: string): unknown {
   try {
     return JSON.parse(value, (key, value) => {
       if (key === 'filePath') {
@@ -30,72 +30,54 @@ function normalizeOutput(value: string): string {
   }
 }
 
-function runEslint(directory: string, paths: string) {
-  return execa.sync(
-    `${command} --format json --config .eslintrc.yml ${paths}`,
-    {
-      cwd: path.join(FIXTURES_DIR, directory),
-    },
-  );
+function runEslint(directory: string, paths: string): unknown {
+  try {
+    const response = execa.sync(
+      `${command} --format json --config .eslintrc.yml ${paths}`,
+      {
+        cwd: path.join(FIXTURES_DIR, directory),
+      },
+    );
+    return normalizeOutput(response.stdout);
+  } catch (error) {
+    return normalizeOutput(error.stdout);
+  }
 }
 
 describe('markdown', () => {
   it('it should produce the expected lint output', () => {
-    try {
-      const response = runEslint('markdown', '*.md');
-      expect(normalizeOutput(response.stdout)).toMatchSnapshot();
-    } catch (e) {
-      expect(normalizeOutput(e.stdout)).toMatchSnapshot();
-    }
+    const response = runEslint('markdown', '*.md');
+    expect(response).toMatchSnapshot();
   });
 });
 
 describe('recommended-does-not-require-program', () => {
   it('it should produce the expected lint output', () => {
-    try {
-      const response = runEslint(
-        'recommended-does-not-require-program',
-        '*.ts',
-      );
-      expect(normalizeOutput(response.stdout)).toMatchSnapshot();
-    } catch (e) {
-      expect(normalizeOutput(e.stdout)).toMatchSnapshot();
-    }
+    const response = runEslint('recommended-does-not-require-program', '*.ts');
+    expect(response).toMatchSnapshot();
   });
 });
 
 describe('typescript-and-tslint-plugins-together', () => {
   it('it should produce the expected lint output', () => {
-    try {
-      const response = runEslint(
-        'typescript-and-tslint-plugins-together',
-        '*.ts',
-      );
-      expect(normalizeOutput(response.stdout)).toMatchSnapshot();
-    } catch (e) {
-      expect(normalizeOutput(e.stdout)).toMatchSnapshot();
-    }
+    const response = runEslint(
+      'typescript-and-tslint-plugins-together',
+      '*.ts',
+    );
+    expect(response).toMatchSnapshot();
   });
 });
 
 describe('vue-jsx', () => {
   it('it should produce the expected lint output', () => {
-    try {
-      const response = runEslint('vue-jsx', '*.vue');
-      expect(normalizeOutput(response.stdout)).toMatchSnapshot();
-    } catch (e) {
-      expect(normalizeOutput(e.stdout)).toMatchSnapshot();
-    }
+    const response = runEslint('vue-jsx', '*.vue');
+    expect(response).toMatchSnapshot();
   });
 });
 
 describe('vue-sfc', () => {
   it('it should produce the expected lint output', () => {
-    try {
-      const response = runEslint('vue-jsx', '*.vue');
-      expect(normalizeOutput(response.stdout)).toMatchSnapshot();
-    } catch (e) {
-      expect(normalizeOutput(e.stdout)).toMatchSnapshot();
-    }
+    const response = runEslint('vue-jsx', '*.vue');
+    expect(response).toMatchSnapshot();
   });
 });
