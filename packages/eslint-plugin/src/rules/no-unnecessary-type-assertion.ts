@@ -1,6 +1,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isCallExpression,
+  isJsxExpression,
   isNewExpression,
   isObjectType,
   isObjectFlagSet,
@@ -117,6 +118,8 @@ export default util.createRule<Options, MessageIds>({
         return parent.type
           ? checker.getTypeFromTypeNode(parent.type)
           : undefined;
+      } else if (isJsxExpression(parent)) {
+        return checker.getContextualType(parent);
       } else if (
         ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
           parent.kind,
