@@ -117,6 +117,19 @@ function testFunction(_param: string | null): void { /* noop */ }
 const value = 'test' as string | null | undefined
 testFunction(value!)
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: null | string | number;
+}) {
+  return <div key={props.id!} />;
+}
+      `,
+      filename: path.join(rootDir, 'react.tsx'),
+    },
   ],
 
   invalid: [
@@ -326,6 +339,34 @@ class Mx {
           line: 5,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id!} />;
+}
+      `,
+      output: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id} />;
+}
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 7,
+        },
+      ],
+      filename: path.join(rootDir, 'react.tsx'),
     },
   ],
 });
