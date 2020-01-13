@@ -2,7 +2,7 @@ import {
   ESLintUtils,
   ParserServices,
 } from '@typescript-eslint/experimental-utils';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
 

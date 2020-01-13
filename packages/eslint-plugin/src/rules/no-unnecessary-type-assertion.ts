@@ -1,6 +1,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isCallExpression,
+  isJsxExpression,
   isNewExpression,
   isObjectType,
   isObjectFlagSet,
@@ -117,6 +118,8 @@ export default util.createRule<Options, MessageIds>({
         return parent.type
           ? checker.getTypeFromTypeNode(parent.type)
           : undefined;
+      } else if (isJsxExpression(parent)) {
+        return checker.getContextualType(parent);
       } else if (
         ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
           parent.kind,
@@ -168,9 +171,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSNonNullExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.NonNullExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
@@ -252,9 +253,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AssertionExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const castType = checker.getTypeAtLocation(originalNode);
 
         if (
