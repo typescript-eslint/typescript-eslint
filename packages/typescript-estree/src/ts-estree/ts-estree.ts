@@ -703,26 +703,26 @@ interface TSMethodSignatureBase extends BaseNode {
   key: PropertyName;
   computed: boolean;
   params: Parameter[];
+  optional?: boolean;
   returnType?: TSTypeAnnotation;
+  readonly?: boolean;
   typeParameters?: TSTypeParameterDeclaration;
   accessibility?: Accessibility;
-  readonly?: boolean;
   export?: boolean;
   static?: boolean;
-  optional?: boolean;
 }
 
 interface TSPropertySignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSPropertySignature;
   key: PropertyName;
+  optional?: boolean;
   computed: boolean;
   typeAnnotation?: TSTypeAnnotation;
   initializer?: Expression;
-  accessibility?: Accessibility;
   readonly?: boolean;
-  export?: boolean;
   static?: boolean;
-  optional?: boolean;
+  export?: boolean;
+  accessibility?: Accessibility;
 }
 
 interface UnaryExpressionBase extends BaseNode {
