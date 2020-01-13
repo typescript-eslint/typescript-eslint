@@ -5,23 +5,16 @@ const FIXTURES_DIR = path.join(__dirname, '../fixtures/');
 const command = path.normalize('../../node_modules/.bin/eslint');
 
 /**
- * Helper function that unifies paths between different OS
- */
-function unifyPath(value: string): string {
-  return value.replace(/\\(?!["])/gm, '/').replace(/\/\//gm, '/');
-}
-
-/**
  * Normalize json output if possible
  */
 function normalizeOutput(value: string): unknown {
   try {
     return JSON.parse(value, (key, value) => {
       if (key === 'filePath') {
-        return unifyPath(value).replace(
-          new RegExp(unifyPath(FIXTURES_DIR), 'gm'),
-          '__ROOT__/',
-        );
+        return path
+          .normalize(value)
+          .replace(FIXTURES_DIR, '__ROOT__/')
+          .replace(/\\/gm, '/');
       }
       return value;
     });
