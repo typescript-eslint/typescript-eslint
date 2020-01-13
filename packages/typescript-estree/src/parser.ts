@@ -173,7 +173,6 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   } else {
     extra.filePath = getFileName(extra);
   }
-  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   /**
    * The JSX AST changed the node type for string literals
@@ -218,6 +217,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
+  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   // Transform glob patterns into paths
   if (extra.projects) {
