@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -12,6 +12,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "2.15.0"
+    "@typescript-eslint/experimental-utils": "2.16.0"
   }
 }
