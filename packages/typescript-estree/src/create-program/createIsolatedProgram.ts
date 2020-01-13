@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import {
   ASTAndProgram,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
   getScriptKind,
 } from './shared';
 
@@ -67,7 +67,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
-      ...DEFAULT_COMPILER_OPTIONS,
+      ...createDefaultCompilerOptionsFromExtra(extra),
     },
     compilerHost,
   );
