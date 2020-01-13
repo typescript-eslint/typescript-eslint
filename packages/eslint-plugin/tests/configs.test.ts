@@ -8,10 +8,6 @@ function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
   }, {});
 }
 
-const notDeprecatedRules = Object.entries(rules).filter(
-  ([, rule]) => !rule.meta.deprecated,
-);
-
 function filterRules(values: Record<string, string>): [string, string][] {
   return Object.entries(values).filter(([name]) =>
     name.startsWith(RULE_NAME_PREFIX),
@@ -22,10 +18,10 @@ const RULE_NAME_PREFIX = '@typescript-eslint/';
 
 describe('all.json config', () => {
   const configRules = filterRules(plugin.configs.all.rules);
-  const ruleConfigs = notDeprecatedRules.map<[string, string]>(([name]) => [
-    `${RULE_NAME_PREFIX}${name}`,
-    'error',
-  ]);
+  // note: exclude deprecated rules, this config is allowed to change between minor versions
+  const ruleConfigs = Object.entries(rules)
+    .filter(([, rule]) => !rule.meta.deprecated)
+    .map<[string, string]>(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'error']);
 
   it('contains all of the rules, excluding the deprecated ones', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
@@ -34,7 +30,8 @@ describe('all.json config', () => {
 
 describe('recommended.json config', () => {
   const configRules = filterRules(plugin.configs.recommended.rules);
-  const ruleConfigs = notDeprecatedRules
+  // note: include deprecated rules so that the config doesn't change between major bumps
+  const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
         rule.meta.docs.recommended !== false &&
@@ -54,7 +51,8 @@ describe('recommended-requiring-type-checking.json config', () => {
   const configRules = filterRules(
     plugin.configs['recommended-requiring-type-checking'].rules,
   );
-  const ruleConfigs = notDeprecatedRules
+  // note: include deprecated rules so that the config doesn't change between major bumps
+  const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
         rule.meta.docs.recommended !== false &&
