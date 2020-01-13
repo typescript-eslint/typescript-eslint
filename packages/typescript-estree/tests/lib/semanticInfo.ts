@@ -16,7 +16,9 @@ import {
 import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
-const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
+const testFiles = glob.sync(`**/*.src.ts`, {
+  cwd: FIXTURES_DIR,
+});
 
 function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
@@ -40,7 +42,7 @@ beforeEach(() => clearCaches());
 describe('semanticInfo', () => {
   // test all AST snapshots
   testFiles.forEach(filename => {
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     it(
       formatSnapshotName(filename, FIXTURES_DIR, extname(filename)),
       createSnapshotTestBlock(
@@ -53,7 +55,7 @@ describe('semanticInfo', () => {
 
   it(`should cache the created ts.program`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -68,7 +70,7 @@ describe('semanticInfo', () => {
 
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -85,7 +87,7 @@ describe('semanticInfo', () => {
 
   it(`should resolve absolute and relative tsconfig paths the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsAbsolutePath = {
       ...options,

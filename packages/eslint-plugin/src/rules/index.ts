@@ -8,6 +8,7 @@ import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
+import defaultParamLast from './default-param-last';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import funcCallSpacing from './func-call-spacing';
@@ -88,6 +89,7 @@ export default {
   'class-name-casing': classNameCasing,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
+  'default-param-last': defaultParamLast,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'func-call-spacing': funcCallSpacing,

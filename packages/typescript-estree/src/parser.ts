@@ -11,6 +11,7 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
+import { ensureAbsolutePath } from './create-program/shared';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -189,6 +190,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
+  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   // Transform glob patterns into paths
   if (extra.projects) {

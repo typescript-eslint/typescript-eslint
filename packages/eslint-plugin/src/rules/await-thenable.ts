@@ -26,9 +26,7 @@ export default util.createRule({
 
     return {
       AwaitExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AwaitExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (

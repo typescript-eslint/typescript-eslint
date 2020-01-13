@@ -38,12 +38,14 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
+function ensureAbsolutePath(p: string, extra: Extra): string {
+  return path.isAbsolute(p)
+    ? p
+    : path.join(extra.tsconfigRootDir || process.cwd(), p);
+}
+
 function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
-  return getCanonicalFileName(
-    path.isAbsolute(tsconfigPath)
-      ? tsconfigPath
-      : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath),
-  );
+  return getCanonicalFileName(ensureAbsolutePath(tsconfigPath, extra));
 }
 
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
@@ -84,6 +86,7 @@ export {
   canonicalDirname,
   CanonicalPath,
   DEFAULT_COMPILER_OPTIONS,
+  ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
   getTsconfigPath,
