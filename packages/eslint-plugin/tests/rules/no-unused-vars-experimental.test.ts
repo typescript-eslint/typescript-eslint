@@ -14,8 +14,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: './tsconfig.json',
-    tsconfigRootDir: rootDir,
   },
   parser: '@typescript-eslint/parser',
 });
