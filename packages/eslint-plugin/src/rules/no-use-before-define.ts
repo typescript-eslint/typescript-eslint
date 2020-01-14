@@ -178,6 +178,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow the use of variables before they are defined',
       category: 'Variables',
       recommended: 'error',
+      extendsBaseRule: true,
     },
     messages: {
       noUseBeforeDefine: "'{{name}}' was used before it was defined.",

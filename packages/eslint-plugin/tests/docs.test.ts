@@ -11,7 +11,10 @@ function createRuleLink(ruleName: string): string {
   return `[\`@typescript-eslint/${ruleName}\`](./docs/rules/${ruleName}.md)`;
 }
 
-function parseReadme(): marked.Tokens.Table {
+function parseReadme(): {
+  base: marked.Tokens.Table;
+  extension: marked.Tokens.Table;
+} {
   const readmeRaw = fs.readFileSync(
     path.resolve(__dirname, '../README.md'),
     'utf8',
@@ -22,14 +25,17 @@ function parseReadme(): marked.Tokens.Table {
   });
 
   // find the table
-  const rulesTable = readme.find(
+  const rulesTables = readme.filter(
     (token): token is marked.Tokens.Table => token.type === 'table',
   );
-  if (!rulesTable) {
-    throw Error('Could not find the rules table in README.md');
+  if (rulesTables.length !== 2) {
+    throw Error('Could not find both rules tables in README.md');
   }
 
-  return rulesTable;
+  return {
+    base: rulesTables[0],
+    extension: rulesTables[1],
+  };
 }
 
 describe('Validating rule docs', () => {
@@ -90,24 +96,49 @@ describe('Validating rule metadata', () => {
 });
 
 describe('Validating README.md', () => {
-  const rulesTable = parseReadme().cells;
+  const rulesTables = parseReadme();
   const notDeprecated = rulesData.filter(
     ([, rule]) => rule.meta.deprecated !== true,
   );
+  const baseRules = notDeprecated.filter(
+    ([, rule]) => rule.meta.docs.extendsBaseRule !== true,
+  );
+  const extensionRules = notDeprecated.filter(
+    ([, rule]) => rule.meta.docs.extendsBaseRule === true,
+  );
 
-  it('All non-deprecated rules should have a row in the table, and the table should be ordered alphabetically', () => {
-    const ruleNames = notDeprecated
+  it('All non-deprecated base rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {
+    const baseRuleNames = baseRules
       .map(([ruleName]) => ruleName)
       .sort()
       .map(createRuleLink);
 
-    expect(rulesTable.map(row => row[0])).toStrictEqual(ruleNames);
+    expect(rulesTables.base.cells.map(row => row[0])).toStrictEqual(
+      baseRuleNames,
+    );
+  });
+  it('All non-deprecated extension rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {
+    const extensionRuleNames = extensionRules
+      .map(([ruleName]) => ruleName)
+      .sort()
+      .map(createRuleLink);
+
+    expect(rulesTables.extension.cells.map(row => row[0])).toStrictEqual(
+      extensionRuleNames,
+    );
   });
 
   for (const [ruleName, rule] of notDeprecated) {
     describe(`Checking rule ${ruleName}`, () => {
-      const ruleRow =
-        rulesTable.find(row => row[0].includes(`/${ruleName}.md`)) ?? [];
+      const ruleRow: string[] | undefined = (rule.meta.docs.extendsBaseRule
+        ? rulesTables.extension.cells
+        : rulesTables.base.cells
+      ).find(row => row[0].includes(`/${ruleName}.md`));
+      if (!ruleRow) {
+        // rule is in the wrong table, the first two tests will catch this, so no point in creating noise;
+        // these tests will ofc fail in that case
+        return;
+      }
 
       it('Link column should be correct', () => {
         expect(ruleRow[0]).toEqual(createRuleLink(ruleName));
