@@ -229,7 +229,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     { "selector": "variableLike", "format": ["camelCase"] }
   ]
@@ -240,7 +240,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "memberLike",
@@ -256,7 +256,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "variable",
@@ -272,7 +272,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "variable",
@@ -286,7 +286,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "typeParameter",
@@ -301,7 +301,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "default",
