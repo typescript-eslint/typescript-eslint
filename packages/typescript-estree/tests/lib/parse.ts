@@ -279,7 +279,8 @@ describe('parse()', () => {
       it(`should parse ${ext} file - ${
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
-        let result: any = {};
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let result: parser.ParseAndGenerateServicesResult<unknown> | undefined;
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
@@ -294,8 +295,10 @@ describe('parse()', () => {
         }
 
         if (!shouldThrow) {
-          expect(result.services.program).toBeDefined();
-          result.services.program = {}; // reduce noise
+          expect(result?.services.program).toBeDefined();
+          if (result) {
+            result.services.program = {}; // reduce noise
+          }
           expect(result).toMatchSnapshot();
         }
       });

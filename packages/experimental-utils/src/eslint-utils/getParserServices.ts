@@ -11,7 +11,7 @@ export function getParserServices<
   TOptions extends readonly unknown[]
 >(
   context: TSESLint.RuleContext<TMessageIds, TOptions>,
-  allowWithoutFullTypeInformation: boolean = false,
+  allowWithoutFullTypeInformation = false,
 ): ParserServices {
   // backwards compatibility check
   // old versions of the parser would not return any parserServices unless parserOptions.project was set
