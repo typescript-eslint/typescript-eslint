@@ -684,6 +684,18 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const match = 'test'.match(/test/);
+        const [, key, value] = match;
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+        },
+      ],
+    },
   ],
   invalid: [
     ...createInvalidTestCases(cases),
