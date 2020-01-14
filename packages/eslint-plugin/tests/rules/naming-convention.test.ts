@@ -603,6 +603,7 @@ const cases: Cases = [
 
 ruleTester.run('naming-convention', rule, {
   valid: [
+    `const x = 1;`, // no options shouldn't crash
     ...createValidTestCases(cases),
     {
       code: `
@@ -693,6 +694,33 @@ ruleTester.run('naming-convention', rule, {
         {
           selector: 'default',
           format: ['camelCase'],
+        },
+      ],
+    },
+    // no format selector
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'variable',
+          format: null,
+        },
+      ],
+    },
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'variable',
+          format: [],
         },
       ],
     },
