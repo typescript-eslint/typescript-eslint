@@ -688,7 +688,9 @@ function getIdentifiersFromPattern(
 
     case AST_NODE_TYPES.ArrayPattern:
       pattern.elements.forEach(element => {
-        getIdentifiersFromPattern(element, identifiers);
+        if (element !== null) {
+          getIdentifiersFromPattern(element, identifiers);
+        }
       });
       break;
 
