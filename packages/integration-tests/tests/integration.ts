@@ -38,38 +38,34 @@ function runEslint(directory: string, paths: string): unknown {
 
 describe('markdown', () => {
   it('it should produce the expected lint output', () => {
-    const response = runEslint('markdown', '*.md');
-    expect(response).toMatchSnapshot();
+    expect(runEslint('markdown', '*.md')).toMatchSnapshot();
   });
 });
 
 describe('recommended-does-not-require-program', () => {
   it('it should produce the expected lint output', () => {
-    const response = runEslint('recommended-does-not-require-program', '*.ts');
-    expect(response).toMatchSnapshot();
+    expect(
+      runEslint('recommended-does-not-require-program', '*.ts'),
+    ).toMatchSnapshot();
   });
 });
 
 describe('typescript-and-tslint-plugins-together', () => {
   it('it should produce the expected lint output', () => {
-    const response = runEslint(
-      'typescript-and-tslint-plugins-together',
-      '*.ts',
-    );
-    expect(response).toMatchSnapshot();
+    expect(
+      runEslint('typescript-and-tslint-plugins-together', '*.ts'),
+    ).toMatchSnapshot();
   });
 });
 
 describe('vue-jsx', () => {
   it('it should produce the expected lint output', () => {
-    const response = runEslint('vue-jsx', '*.vue');
-    expect(response).toMatchSnapshot();
+    expect(runEslint('vue-jsx', '*.vue')).toMatchSnapshot();
   });
 });
 
 describe('vue-sfc', () => {
   it('it should produce the expected lint output', () => {
-    const response = runEslint('vue-jsx', '*.vue');
-    expect(response).toMatchSnapshot();
+    expect(runEslint('vue-sfc', '*.vue')).toMatchSnapshot();
   });
 });

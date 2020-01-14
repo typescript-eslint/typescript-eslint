@@ -469,15 +469,15 @@ exports[`vue-sfc it should produce the expected lint output 1`] = `
 Array [
   Object {
     "errorCount": 1,
-    "filePath": "__ROOT__/vue-jsx/Jsx.vue",
+    "filePath": "__ROOT__/vue-sfc/Hello.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [
       Object {
-        "column": 17,
-        "endColumn": 20,
-        "endLine": 17,
-        "line": 17,
+        "column": 29,
+        "endColumn": 32,
+        "endLine": 31,
+        "line": 31,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
         "nodeType": "TSAnyKeyword",
@@ -488,8 +488,8 @@ Array [
             "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
             "fix": Object {
               "range": Array [
-                390,
-                393,
+                708,
+                711,
               ],
               "text": "unknown",
             },
@@ -499,8 +499,8 @@ Array [
             "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
             "fix": Object {
               "range": Array [
-                390,
-                393,
+                708,
+                711,
               ],
               "text": "never",
             },
@@ -509,43 +509,51 @@ Array [
         ],
       },
     ],
-    "source": "<script lang=\\"tsx\\">
-import Vue from 'vue'
-import { mapMutations } from 'vuex'
-import { Component } from 'vue-property-decorator'
+    "source": "<!-- Hello.vue -->
+<template>
+    <div>
+        <div>
+		    <!-- !!!!! expected error !!!!! -->
+			Hello {{ (name as any) }}{{exclamationMarks}}
+		</div>
+        <button @click=\\"decrement\\">-</button>
+        <button @click=\\"increment\\">+</button>
+    </div>
+</template>
 
-@Component({
-  created () {
-    this.toggleHeader(false)
-  },
-  methods: {
-    ...mapMutations('APP_SCOPE_NAME', ['toggleHeader'])
-  }
-})
-export default class Jsx extends Vue {
-  render (): JSX.Element {
-    // expected error - no-explicit-any
-    const path: any = '/';
-    return (
-      // An error occurred in the next line: \\"Parsing error: '>' expected.eslint\\"
-      <div class=\\"mg-notFound\\">
-        <div class=\\"fixed-center text-center\\">
-          <p>
-            img goes here
-          </p>
-          <p class=\\"text-faded\\">Sorry, nothing here...<strong>(404)</strong></p>
-          <q-btn
-            color=\\"secondary\\"
-            style=\\"width:200px;\\"
-            onClick={() => console.log(path)}
-          >Go back</q-btn>
-        </div>
-      </div>
-    )
-  }
-}
+<script lang=\\"ts\\">
+import Vue from \\"vue\\";
+export default Vue.extend({
+    props: ['name', 'initialEnthusiasm'],
+    data() {
+        return {
+            enthusiasm: this.initialEnthusiasm,
+        }
+    },
+    methods: {
+        increment() { this.enthusiasm++; },
+        decrement() {
+            if (this.enthusiasm > 1) {
+                this.enthusiasm--;
+            }
+        },
+    },
+    computed: {
+        exclamationMarks(): any { // !!!!! expected error !!!!!
+            return Array(this.enthusiasm + 1).join('!');
+        }
+    }
+});
 </script>
 ",
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 0,
+    "filePath": "__ROOT__/vue-sfc/World.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [],
     "warningCount": 0,
   },
 ]
