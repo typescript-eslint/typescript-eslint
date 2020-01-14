@@ -240,10 +240,8 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
    * Allow the user to enable or disable the preservation of the AST node maps
    * during the conversion process.
    */
-  extra.preserveNodeMaps =
-    typeof options.preserveNodeMaps === 'boolean' && options.preserveNodeMaps;
-  if (options.preserveNodeMaps === undefined) {
-    extra.preserveNodeMaps = true;
+  if (typeof options.preserveNodeMaps === 'boolean') {
+    extra.preserveNodeMaps = options.preserveNodeMaps;
   }
 
   extra.createDefaultProgram =
@@ -288,7 +286,6 @@ interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
 // Public
 //------------------------------------------------------------------------------
 
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const version: string = require('../package.json').version;
 
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
