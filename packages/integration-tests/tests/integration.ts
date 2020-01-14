@@ -2,7 +2,7 @@ import * as execa from 'execa';
 import path from 'path';
 
 const FIXTURES_DIR = path.join(__dirname, '../fixtures/');
-const command = path.normalize('../../node_modules/.bin/eslint');
+const command = path.relative(__dirname, '../node_modules/.bin/eslint');
 
 /**
  * Normalize json output if possible
@@ -33,7 +33,7 @@ function runEslint(directory: string, paths: string): unknown {
     );
     return normalizeOutput(response.stdout);
   } catch (error) {
-    return normalizeOutput(error.stdout);
+    return normalizeOutput(error.stdout || error);
   }
 }
 
