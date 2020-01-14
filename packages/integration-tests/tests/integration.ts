@@ -2,7 +2,7 @@ import * as execa from 'execa';
 import path from 'path';
 
 const FIXTURES_DIR = path.join(__dirname, '../fixtures/');
-const command = path.relative(__dirname, '../node_modules/.bin/eslint');
+const command = require.resolve('eslint/bin/eslint.js');
 
 /**
  * Normalize json output if possible
@@ -26,7 +26,7 @@ function normalizeOutput(value: string): unknown {
 function runEslint(directory: string, paths: string): unknown {
   try {
     const response = execa.sync(
-      `${command} --format json --config .eslintrc.yml ${paths}`,
+      `node ${command} --format json --config .eslintrc.yml ${paths}`,
       {
         cwd: path.join(FIXTURES_DIR, directory),
       },
