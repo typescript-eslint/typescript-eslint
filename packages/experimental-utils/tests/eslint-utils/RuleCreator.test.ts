@@ -8,7 +8,6 @@ describe('RuleCreator', () => {
   });
 
   it('should create rule correctly', () => {
-    const create = jest.fn();
     const rule = createRule({
       name: 'test',
       meta: {
@@ -25,10 +24,10 @@ describe('RuleCreator', () => {
         type: 'problem',
       },
       defaultOptions: [],
-      create,
+      create() {
+        return {};
+      },
     });
-    expect(create).toBe(create);
-    expect(create).not.toBeCalled();
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
