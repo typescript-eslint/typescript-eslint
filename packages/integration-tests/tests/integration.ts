@@ -26,7 +26,7 @@ function runEslint(directory: string, paths: string): unknown {
   try {
     const response = execa.sync(
       'npx',
-      ['eslint', paths, '--format', 'json', '--config .eslintrc.yml'],
+      ['eslint', paths, '--format', 'json', '--config', '.eslintrc.yml'],
       {
         cwd: path.join(FIXTURES_DIR, directory),
       },
