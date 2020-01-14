@@ -100,7 +100,7 @@ type TypeModifiersString = keyof typeof TypeModifiers;
 
 interface Selector {
   // format options
-  format: PredefinedFormatsString[];
+  format: PredefinedFormatsString[] | null;
   custom?: {
     regex: string;
     match: boolean;
@@ -117,7 +117,7 @@ interface Selector {
 }
 interface NormalizedSelector {
   // format options
-  format: PredefinedFormats[];
+  format: PredefinedFormats[] | null;
   custom: {
     regex: RegExp;
     match: boolean;
@@ -154,19 +154,24 @@ const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
     type: 'string',
     minLength: 1,
   },
-  minItems: 1,
   additionalItems: false,
 };
 type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
   format: {
-    type: 'array',
-    items: {
-      type: 'string',
-      enum: util.getEnumNames(PredefinedFormats),
-    },
-    minItems: 1,
-    additionalItems: false,
+    oneOf: [
+      {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: util.getEnumNames(PredefinedFormats),
+        },
+        additionalItems: false,
+      },
+      {
+        type: 'null',
+      },
+    ],
   },
   custom: {
     type: 'object',
@@ -235,7 +240,6 @@ function selectorSchema(
 }
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
-  minItems: 1,
   items: {
     oneOf: [
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
@@ -1024,7 +1028,7 @@ function createValidator(
     originalName: string,
   ): boolean {
     const formats = config.format;
-    if (formats.length === 0) {
+    if (formats === null || formats.length === 0) {
       return true;
     }
 
@@ -1189,7 +1193,7 @@ function normalizeOption(option: Selector): NormalizedSelector {
 
   return {
     // format options
-    format: option.format.map(f => PredefinedFormats[f]),
+    format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     custom: option.custom
       ? {
           regex: new RegExp(option.custom.regex),
@@ -1204,8 +1208,8 @@ function normalizeOption(option: Selector): NormalizedSelector {
       option.trailingUnderscore !== undefined
         ? UnderscoreOptions[option.trailingUnderscore]
         : null,
-    prefix: option.prefix ?? null,
-    suffix: option.suffix ?? null,
+    prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
+    suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
     // selector options
     selector: isMetaSelector(option.selector)
       ? MetaSelectors[option.selector]

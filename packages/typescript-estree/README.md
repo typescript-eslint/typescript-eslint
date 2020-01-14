@@ -61,7 +61,7 @@ interface ParseOptions {
   errorOnUnknownASTType?: boolean;
 
   /**
-   * The absolute path to the file being parsed.
+   * Absolute (or relative to `cwd`) path to the file being parsed.
    */
   filePath?: string;
 
@@ -159,7 +159,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   extraFileExtensions?: string[];
 
   /**
-   * The absolute path to the file being parsed.
+   * Absolute (or relative to `tsconfigRootDir`) path to the file being parsed.
    * When `project` is provided, this is required, as it is used to fetch the file from the TypeScript compiler's cache.
    */
   filePath?: string;
