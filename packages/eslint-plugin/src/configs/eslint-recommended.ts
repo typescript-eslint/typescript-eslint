@@ -1,20 +1,13 @@
 /**
- * The goal of this ruleset is to update the eslint:recommended config to better
- * suit Typescript. There are two main reasons to change the configuration:
- * 1. The Typescript compiler natively checks some things that therefore don't
- *    need extra rules anymore.
- * 2. Typescript allows for more modern Javascript code that can thus be
- *    enabled.
+ * This is a compatibility ruleset that disables rules from eslint:recommended
+ * which are already handled by TypeScript.
  */
 export default {
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        /**
-         * 1. Disable things that are checked by Typescript
-         */
-        //Checked by Typescript - ts(2378)
+        // Checked by Typescript - ts(2378)
         'getter-return': 'off',
         // Checked by Typescript - ts(2300)
         'no-dupe-args': 'off',
@@ -36,15 +29,6 @@ export default {
         'no-dupe-class-members': 'off',
         // This is already checked by Typescript.
         'no-redeclare': 'off',
-        /**
-         * 2. Enable more ideomatic code
-         */
-        // Typescript allows const and let instead of var.
-        'no-var': 'error',
-        'prefer-const': 'error',
-        // The spread operator/rest parameters should be prefered in Typescript.
-        'prefer-rest-params': 'error',
-        'prefer-spread': 'error',
       },
     },
   ],

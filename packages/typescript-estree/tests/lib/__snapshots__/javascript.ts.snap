@@ -66,12 +66,14 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               0,
               6,
             ],
             "type": "CallExpression",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -628,6 +630,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           13,
@@ -946,6 +949,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           17,
@@ -11542,6 +11546,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -13162,6 +13167,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -15832,6 +15838,7 @@ Object {
             "line": 5,
           },
         },
+        "optional": false,
         "range": Array [
           35,
           38,
@@ -17972,6 +17979,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           7,
@@ -18177,6 +18185,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           7,
@@ -18453,6 +18462,7 @@ Object {
                                 ],
                                 "type": "ThisExpression",
                               },
+                              "optional": false,
                               "property": Object {
                                 "loc": Object {
                                   "end": Object {
@@ -18487,6 +18497,7 @@ Object {
                                 "line": 3,
                               },
                             },
+                            "optional": false,
                             "range": Array [
                               36,
                               53,
@@ -18556,6 +18567,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     17,
                     62,
@@ -18625,6 +18637,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           70,
@@ -22743,6 +22756,7 @@ Object {
                           "line": 3,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         27,
                         34,
@@ -26347,13 +26361,12 @@ Object {
                   "line": 1,
                 },
               },
+              "name": "constructor",
               "range": Array [
                 9,
                 22,
               ],
-              "raw": "\\"constructor\\"",
-              "type": "Literal",
-              "value": "constructor",
+              "type": "Identifier",
             },
             "kind": "constructor",
             "loc": Object {
@@ -38076,6 +38089,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "optional": false,
               "property": Object {
                 "loc": Object {
                   "end": Object {
@@ -39052,6 +39066,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           10,
@@ -39292,6 +39307,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           10,
@@ -80455,12 +80471,14 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               0,
               13,
             ],
             "type": "CallExpression",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -80495,6 +80513,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           24,
@@ -83776,6 +83795,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -91234,6 +91254,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "optional": false,
             "property": Object {
               "loc": Object {
                 "end": Object {
@@ -91268,6 +91289,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             16,
             33,
@@ -95214,6 +95236,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             25,
             35,
@@ -95965,6 +95988,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             22,
             32,
@@ -97230,6 +97254,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             20,
             30,
@@ -97616,6 +97641,7 @@ Object {
               "line": 2,
             },
           },
+          "optional": false,
           "range": Array [
             22,
             35,
@@ -98892,6 +98918,7 @@ Object {
               "line": 2,
             },
           },
+          "optional": false,
           "range": Array [
             22,
             35,
@@ -99297,6 +99324,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             53,
             63,
@@ -100455,6 +100483,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "range": Array [
                 25,
                 38,
@@ -100876,6 +100905,7 @@ Object {
               "line": 2,
             },
           },
+          "optional": false,
           "range": Array [
             23,
             36,
@@ -101244,6 +101274,7 @@ Object {
               "line": 2,
             },
           },
+          "optional": false,
           "range": Array [
             25,
             38,
@@ -101612,6 +101643,7 @@ Object {
               "line": 2,
             },
           },
+          "optional": false,
           "range": Array [
             23,
             36,
@@ -103779,6 +103811,7 @@ Object {
                                 "line": 3,
                               },
                             },
+                            "optional": false,
                             "range": Array [
                               53,
                               56,
@@ -106001,6 +106034,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -107222,6 +107256,7 @@ Object {
           ],
           "type": "MetaProperty",
         },
+        "optional": false,
         "property": Object {
           "loc": Object {
             "end": Object {
@@ -108921,6 +108956,7 @@ Object {
                   ],
                   "type": "Identifier",
                 },
+                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -108955,6 +108991,7 @@ Object {
                   "line": 4,
                 },
               },
+              "optional": false,
               "range": Array [
                 44,
                 61,
@@ -122446,12 +122483,14 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               0,
               6,
             ],
             "type": "CallExpression",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -132623,7 +132662,7 @@ Object {
               "pattern": "foo.",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo\\./,
           },
           "loc": Object {
             "end": Object {
@@ -132820,7 +132859,7 @@ Object {
               "pattern": "[\\\\u{0000000000000061}-\\\\u{7A}]",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /\\[\\\\u\\{0000000000000061\\}-\\\\u\\{7A\\}\\]/u,
           },
           "loc": Object {
             "end": Object {
@@ -133214,7 +133253,7 @@ Object {
               "pattern": "foo",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo/u,
           },
           "loc": Object {
             "end": Object {
@@ -133411,7 +133450,7 @@ Object {
               "pattern": "foo",
             },
             "type": "Literal",
-            "value": Object {},
+            "value": /foo/y,
           },
           "loc": Object {
             "end": Object {
@@ -139915,6 +139954,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           12,
@@ -140191,6 +140231,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           13,
@@ -140449,6 +140490,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "range": Array [
           0,
           9,
@@ -142773,6 +142815,7 @@ Object {
                   ],
                   "type": "Identifier",
                 },
+                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -142807,6 +142850,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "range": Array [
                 18,
                 40,

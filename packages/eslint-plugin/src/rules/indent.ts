@@ -3,6 +3,7 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
   TSESTree,
@@ -68,7 +69,7 @@ const KNOWN_NODES = new Set([
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
-  AST_NODE_TYPES.TSQuestionToken,
+  'TSQuestionToken',
   AST_NODE_TYPES.TSRestType,
   AST_NODE_TYPES.TSThisType,
   AST_NODE_TYPES.TSTupleType,
@@ -80,6 +81,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSTypeParameterInstantiation,
   AST_NODE_TYPES.TSTypeReference,
   AST_NODE_TYPES.TSUnionType,
+  AST_NODE_TYPES.Decorator,
 ]);
 
 export default util.createRule<Options, MessageIds>({
@@ -89,7 +91,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent indentation',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
@@ -161,6 +164,7 @@ export default util.createRule<Options, MessageIds>({
           type,
           static: false,
           readonly: false,
+          declare: false,
           ...base,
         } as TSESTree.ClassProperty;
       }
@@ -235,7 +239,8 @@ export default util.createRule<Options, MessageIds>({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: (node.members as (
             | TSESTree.TSEnumMember
-            | TSESTree.TypeElement)[]).map(
+            | TSESTree.TypeElement
+          )[]).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),
@@ -290,7 +295,7 @@ export default util.createRule<Options, MessageIds>({
                 range: moduleReference.range,
                 loc: moduleReference.loc,
               },
-            },
+            } as TSESTree.VariableDeclarator,
           ],
 
           // location data
@@ -311,6 +316,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: true,
         });
       },
 
@@ -342,7 +349,7 @@ export default util.createRule<Options, MessageIds>({
         ]({
           type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
-          id: undefined,
+          id: null,
           // TODO: This is invalid, there can be more than one extends in interface
           superClass: node.extends![0].expression as any,
 
@@ -385,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
               computed: false,
               method: false,
               shorthand: false,
-            },
+            } as any,
           ],
 
           // location data
@@ -418,6 +425,8 @@ export default util.createRule<Options, MessageIds>({
           parent: node.parent,
           range: node.range,
           loc: node.loc,
+          optional: false,
+          computed: false,
         });
       },
 
@@ -435,6 +444,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration) {
+        if (!node.params.length) {
+          return;
+        }
+
         const [name, ...attributes] = node.params;
 
         // JSX is about the closest we can get because the angle brackets

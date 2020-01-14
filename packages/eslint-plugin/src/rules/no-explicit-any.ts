@@ -9,9 +9,9 @@ export type Options = [
   {
     fixToUnknown?: boolean;
     ignoreRestArgs?: boolean;
-  }
+  },
 ];
-export type MessageIds = 'unexpectedAny';
+export type MessageIds = 'unexpectedAny' | 'suggestUnknown' | 'suggestNever';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -25,6 +25,10 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      suggestNever:
+        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
     },
     schema: [
       {
@@ -51,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Checks if the node is an arrow function, function declaration or function expression
      * @param node the node to be validated.
-     * @returns true if the node is an arrow function, function declaration or function expression
+     * @returns true if the node is an arrow function, function declaration, function expression, function type, or call signature
      * @private
      */
     function isNodeValidFunction(node: TSESTree.Node): boolean {
@@ -59,6 +63,8 @@ export default util.createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression,
         AST_NODE_TYPES.FunctionDeclaration,
         AST_NODE_TYPES.FunctionExpression,
+        AST_NODE_TYPES.TSFunctionType,
+        AST_NODE_TYPES.TSCallSignatureDeclaration,
       ].includes(node.type);
     }
 
@@ -165,21 +171,41 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSAnyKeyword(node) {
+      TSAnyKeyword(node): void {
         if (ignoreRestArgs && isNodeDescendantOfRestElementInFunction(node)) {
           return;
         }
 
-        let fix: TSESLint.ReportFixFunction | null = null;
+        const fixOrSuggest: {
+          fix: TSESLint.ReportFixFunction | null;
+          suggest: TSESLint.ReportSuggestionArray<MessageIds> | null;
+        } = {
+          fix: null,
+          suggest: [
+            {
+              messageId: 'suggestUnknown',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.replaceText(node, 'unknown');
+              },
+            },
+            {
+              messageId: 'suggestNever',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.replaceText(node, 'never');
+              },
+            },
+          ],
+        };
 
         if (fixToUnknown) {
-          fix = fixer => fixer.replaceText(node, 'unknown');
+          fixOrSuggest.fix = (fixer =>
+            fixer.replaceText(node, 'unknown')) as TSESLint.ReportFixFunction;
         }
 
         context.report({
           node,
           messageId: 'unexpectedAny',
-          fix,
+          ...fixOrSuggest,
         });
       },
     };

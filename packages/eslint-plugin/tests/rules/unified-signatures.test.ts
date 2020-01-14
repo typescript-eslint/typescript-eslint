@@ -105,6 +105,59 @@ interface I {
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
  `,
+    // Same name, different scopes
+    `
+declare function foo(n: number): number;
+
+declare module "hello" {
+  function foo(n: number, s: string): number;
+}
+`,
+    // children of block not checked to match TSLint
+    `
+{
+    function block(): number;
+    function block(n: number): number;
+    function block(n?: number): number {
+      return 3;
+    }
+}
+`,
+    `
+export interface Foo {
+  bar(baz: string): number[];
+  bar(): string[];
+}
+`,
+    `
+declare module "foo" {
+  export default function(foo: number): string[];
+}
+`,
+    `
+export default function(foo: number): string[];
+`,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/740
+    `
+function p(key: string): Promise<string | undefined>
+function p(key: string, defaultValue: string): Promise<string>
+function p(key: string, defaultValue?: string): Promise<string | undefined>
+{
+  const obj: Record<string, string> = { }
+  return obj[key] || defaultValue
+}
+  `,
+    `
+interface I {
+    p<T>(x: T): Promise<T>;
+    p(x: number): Promise<number>;
+}
+  `,
+    `
+function rest(...xs: number[]): Promise<number[]>;
+function rest(xs: number[], y: string): Promise<string>;
+async function rest(...args: any[], y?: string): Promise<number[] | string> { return y || args }
+`,
   ],
   invalid: [
     {
@@ -588,6 +641,68 @@ class Foo {
           },
           line: 4,
           column: 58,
+        },
+      ],
+    },
+    {
+      code: `
+export function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(line: number): number;
+export function foo(line: number, character?: number): number;
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare module "foo" {
+  export default function(foo: number): string[];
+  export default function(foo: number, bar?: string): string[];
+}
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 4,
+          column: 40,
+        },
+      ],
+    },
+    {
+      code: `
+export default function(foo: number): string[];
+export default function(foo: number, bar?: string): string[];
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 3,
+          column: 38,
         },
       ],
     },

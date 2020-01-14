@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
+/* eslint-disable @typescript-eslint/no-namespace */
 
 import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
 import { SourceCode as ESLintSourceCode } from 'eslint';
@@ -32,6 +32,14 @@ declare interface SourceCode {
 
   getNodeByRangeIndex(index: number): TSESTree.Node | null;
 
+  isSpaceBetween(
+    first: TSESTree.Token | TSESTree.Node,
+    second: TSESTree.Token | TSESTree.Node,
+  ): boolean;
+
+  /**
+   * @deprecated in favor of isSpaceBetween()
+   */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
 
   getLocFromIndex(index: number): TSESTree.LineAndColumnData;

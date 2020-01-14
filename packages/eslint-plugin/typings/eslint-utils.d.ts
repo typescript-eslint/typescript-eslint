@@ -19,6 +19,7 @@ declare module 'eslint-utils' {
   export function getPropertyName(
     node:
       | TSESTree.MemberExpression
+      | TSESTree.OptionalMemberExpression
       | TSESTree.Property
       | TSESTree.MethodDefinition,
     initialScope?: TSESLint.Scope.Scope,
@@ -27,7 +28,7 @@ declare module 'eslint-utils' {
   export function getStaticValue(
     node: TSESTree.Node,
     initialScope?: TSESLint.Scope.Scope,
-  ): { value: any } | null;
+  ): { value: unknown } | null;
 
   export function getStringIfConstant(
     node: TSESTree.Node,
@@ -93,6 +94,7 @@ declare module 'eslint-utils' {
     export type CALL = typeof ReferenceTracker.READ;
     export type CONSTRUCT = typeof ReferenceTracker.READ;
     export type ReferenceType = READ | CALL | CONSTRUCT;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
     export interface TraceMapElement<T> {
       [ReferenceTracker.READ]?: T;
@@ -100,6 +102,7 @@ declare module 'eslint-utils' {
       [ReferenceTracker.CONSTRUCT]?: T;
       [key: string]: TraceMapElement<T>;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     export interface FoundReference<T = any> {
       node: TSESTree.Node;
       path: readonly string[];

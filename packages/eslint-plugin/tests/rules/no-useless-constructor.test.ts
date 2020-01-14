@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 });
 
 // the base rule doesn't use a message id...
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const error: any = {
   message: 'Useless constructor.',
   type: 'MethodDefinition',
@@ -50,6 +51,8 @@ ruleTester.run('no-useless-constructor', rule, {
     'class A extends B { private constructor(foo, bar) { super(bar); } }',
     'class A extends B { public constructor(foo){ super(foo); } }',
     'class A extends B { public constructor(foo){} }',
+    // type definition / overload
+    'class A { constructor(foo); }',
   ],
   invalid: [
     {

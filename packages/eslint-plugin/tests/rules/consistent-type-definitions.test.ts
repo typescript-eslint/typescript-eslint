@@ -36,18 +36,6 @@ type Record<T, U> = {
       options: ['interface'],
     },
     {
-      code: `type V = { x: number; } | { y: string; };`,
-      options: ['interface'],
-    },
-    {
-      code: `type T = { x: number; }`,
-      options: ['type'],
-    },
-    {
-      code: `type T = { x: number; }`,
-      options: ['type'],
-    },
-    {
       code: `type T = { x: number; }`,
       options: ['type'],
     },

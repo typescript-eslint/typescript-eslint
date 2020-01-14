@@ -18,13 +18,15 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      'CallExpression > Identifier[name="require"]'(node: TSESTree.Identifier) {
+      ':matches(CallExpression, OptionalCallExpression) > Identifier[name="require"]'(
+        node: TSESTree.Identifier,
+      ): void {
         context.report({
           node: node.parent!,
           messageId: 'noRequireImports',
         });
       },
-      TSExternalModuleReference(node) {
+      TSExternalModuleReference(node): void {
         context.report({
           node,
           messageId: 'noRequireImports',

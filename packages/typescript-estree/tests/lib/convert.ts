@@ -1,5 +1,7 @@
+// deeplyCopy is private internal
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Converter } from '../../src/convert';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 describe('convert', () => {
   function convertCode(code: string): ts.SourceFile {
@@ -98,7 +100,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node) {
+    function checkMaps(child: ts.SourceFile | ts.Node): void {
       child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -107,7 +109,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node),
+              maps.tsNodeToESTreeNodeMap.get(node as any),
             ),
           );
         }
@@ -132,7 +134,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node) {
+    function checkMaps(child: ts.SourceFile | ts.Node): void {
       child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -140,7 +142,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node),
+              maps.tsNodeToESTreeNodeMap.get(node as any),
             ),
           );
         }
@@ -165,7 +167,7 @@ describe('convert', () => {
     const program = instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node) {
+    function checkMaps(child: ts.SourceFile | ts.Node): void {
       child.forEachChild(node => {
         if (node.kind !== ts.SyntaxKind.EndOfFileToken) {
           expect(ast).toBe(
@@ -182,8 +184,45 @@ describe('convert', () => {
 
     expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
-      maps.tsNodeToESTreeNodeMap.get(ast.statements[0]),
+      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as any),
     );
     checkMaps(ast);
+  });
+
+  it('should correctly create node with range and loc set', () => {
+    const ast = convertCode('');
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldPreserveNodeMaps: true,
+    });
+
+    const tsNode = ts.createNode(ts.SyntaxKind.AsKeyword, 0, 10);
+    const convertedNode = (instance as any).createNode(tsNode, {
+      range: [0, 20],
+      loc: {
+        start: {
+          line: 10,
+          column: 20,
+        },
+        end: {
+          line: 15,
+          column: 25,
+        },
+      },
+    });
+    expect(convertedNode).toEqual({
+      loc: {
+        end: {
+          column: 25,
+          line: 15,
+        },
+        start: {
+          column: 20,
+          line: 10,
+        },
+      },
+      range: [0, 20],
+    });
   });
 });

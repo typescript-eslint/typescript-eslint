@@ -24,6 +24,14 @@ async function test() {
   return Promise.resolve("value");
 }
 `,
+    {
+      options: [{ ignoreVoid: true }],
+      code: `
+async function test() {
+  void Promise.resolve("value");
+}
+`,
+    },
     `
 async function test() {
   await Promise.reject(new Error("message"));
@@ -211,6 +219,18 @@ async function test() {
   return promise;
 }
 `,
+
+    // optional chaining
+    `
+async function test() {
+  declare const returnsPromise: () => Promise<void> | null;
+  await returnsPromise?.();
+  returnsPromise()?.then(() => {}, () => {});
+  returnsPromise()?.then(() => {})?.catch(() => {});
+  returnsPromise()?.catch(() => {});
+  return returnsPromise();
+}
+  `,
   ],
 
   invalid: [

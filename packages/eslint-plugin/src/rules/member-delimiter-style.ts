@@ -5,20 +5,23 @@ import {
 import * as util from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
-interface TypeOptions {
+// need type's implicit index sig for deepMerge
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type TypeOptions = {
   delimiter?: Delimiter;
   requireLast?: boolean;
-}
-interface BaseOptions {
+};
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type BaseOptions = {
   multiline?: TypeOptions;
   singleline?: TypeOptions;
-}
-interface Config extends BaseOptions {
+};
+type Config = BaseOptions & {
   overrides?: {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
-}
+};
 type Options = [Config];
 type MessageIds =
   | 'unexpectedComma'
@@ -40,7 +43,7 @@ const definition = {
     singleline: {
       type: 'object',
       properties: {
-        // note can't have "none" for single line delimiter as it's invlaid syntax
+        // note can't have "none" for single line delimiter as it's invalid syntax
         delimiter: { enum: ['semi', 'comma'] },
         requireLast: { type: 'boolean' },
       },
@@ -101,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
 
     // use the base options as the defaults for the cases
     const baseOptions = options;
-    const overrides = baseOptions.overrides || {};
+    const overrides = baseOptions.overrides ?? {};
     const interfaceOptions: BaseOptions = util.deepMerge(
       baseOptions,
       overrides.interface,
@@ -224,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
       const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts || {}, index === members.length - 1);
+        checkLastToken(member, opts ?? {}, index === members.length - 1);
       });
     }
 

@@ -1,4 +1,4 @@
-# Require explicit return types on functions and class methods (explicit-function-return-type)
+# Require explicit return types on functions and class methods (`explicit-function-return-type`)
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case
@@ -73,17 +73,43 @@ type Options = {
 
 const defaults = {
   allowExpressions: false,
-  allowTypedFunctionExpressions: false,
-  allowHigherOrderFunctions: false,
+  allowTypedFunctionExpressions: true,
+  allowHigherOrderFunctions: true,
 };
 ```
 
-### allowExpressions
+### Configuring in a mixed JS/TS codebase
+
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+
+```jsonc
+{
+  "rules": {
+    // disable the rule for all files
+    "@typescript-eslint/explicit-function-return-type": "off"
+  },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": ["error"]
+      }
+    }
+  ]
+}
+```
+
+### `allowExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
 
 ```ts
 function test() {}
+
+const fn = () => {};
+
+export default () => {};
 ```
 
 Examples of **correct** code for this rule with `{ allowExpressions: true }`:
@@ -96,7 +122,7 @@ node.addEventListener('click', function() {});
 const foo = arr.map(i => i * i);
 ```
 
-### allowTypedFunctionExpressions
+### `allowTypedFunctionExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: true }`:
 
@@ -141,31 +167,34 @@ let objectPropCast = <ObjectType>{
 
 declare functionWithArg(arg: () => number);
 functionWithArg(() => 1);
+
+declare functionWithObjectArg(arg: { method: () => number });
+functionWithObjectArg({
+  method() {
+    return 1;
+  },
+});
 ```
 
-### allowHigherOrderFunctions
+### `allowHigherOrderFunctions`
 
 Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var arrowFn = (x: number) => (y: number) => x + y;
+var arrowFn = () => () => {};
 
-function fn(x: number) {
-  return function(y: number) {
-    return x + y;
-  };
+function fn() {
+  return function() {};
 }
 ```
 
 Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-var arrowFn = (x: number) => (y: number): number => x + y;
+var arrowFn = () => (): void => {};
 
-function fn(x: number) {
-  return function(y: number): number {
-    return x + y;
-  };
+function fn() {
+  return function(): void {};
 }
 ```
 

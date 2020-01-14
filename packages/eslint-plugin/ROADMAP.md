@@ -1,12 +1,15 @@
-# Roadmap
+# TSLint Migration Guide
+
+This document serves as a guide to help you migrate from TSLint.
+It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
+
+## TSLint rules
 
 ✅ = done<br>
 🌟 = in ESLint core<br>
 🔌 = in another plugin<br>
 🌓 = implementations differ or ESLint version is missing functionality<br>
 🛑 = unimplemented<br>
-
-## TSLint rules
 
 ### TypeScript-specific
 
@@ -22,18 +25,18 @@
 | [`no-import-side-effect`]         | 🔌  | [`import/no-unassigned-import`]                      |
 | [`no-inferrable-types`]           | ✅  | [`@typescript-eslint/no-inferrable-types`]           |
 | [`no-internal-module`]            | ✅  | [`@typescript-eslint/prefer-namespace-keyword`]      |
-| [`no-magic-numbers`]              | 🌟  | [`no-magic-numbers`][no-magic-numbers]               |
+| [`no-magic-numbers`]              | ✅  | [`@typescript-eslint/no-magic-numbers`]              |
 | [`no-namespace`]                  | ✅  | [`@typescript-eslint/no-namespace`]                  |
 | [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]         |
 | [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]             |
-| [`no-reference`]                  | ✅  | [`@typescript-eslint/no-triple-slash-reference`]     |
+| [`no-reference`]                  | ✅  | [`@typescript-eslint/triple-slash-reference`]        |
 | [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`] |
 | [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
 | [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
 | [`prefer-for-of`]                 | ✅  | [`@typescript-eslint/prefer-for-of`]                 |
 | [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
-| [`typedef`]                       | 🛑  | N/A                                                  |
 | [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
+| [`typedef`]                       | ✅  | [`@typescript-eslint/typedef`]                       |
 | [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]            |
 
 <sup>[1]</sup> The ESLint rule only supports exact string matching, rather than regular expressions<br>
@@ -51,6 +54,7 @@
 | [`import-blacklist`]                 | 🌟  | [`no-restricted-imports`][no-restricted-imports]                      |
 | [`label-position`]                   | 🌟  | [`no-unused-labels`][no-unused-labels] (similar)                      |
 | [`no-arg`]                           | 🌟  | [`no-caller`][no-caller] (also blocks `arguments.caller`)             |
+| [`no-async-without-await`]           | ✅  | [`@typescript-eslint/require-await`]                                  |
 | [`no-bitwise`]                       | 🌟  | [`no-bitwise`][no-bitwise]                                            |
 | [`no-conditional-assignment`]        | 🌟  | [`no-cond-assign`][no-cond-assign]<sup>[1]</sup>                      |
 | [`no-console`]                       | 🌟  | [`no-console`][no-console] (configuration works slightly differently) |
@@ -59,7 +63,7 @@
 | [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                              |
 | [`no-duplicate-switch-case`]         | 🌟  | [`no-duplicate-case`][no-duplicate-case]                              |
 | [`no-duplicate-variable`]            | 🌟  | [`no-redeclare`][no-redeclare]                                        |
-| [`no-dynamic-delete`]                | 🛑  | N/A                                                                   |
+| [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                              |
 | [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                |
 | [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                  |
 | [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                           |
@@ -70,12 +74,12 @@
 | [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                  |
 | [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                 |
 | [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                      |
-| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/no-object-literal-type-assertion`]               |
+| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                     |
 | [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                  |
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                        |
-| [`no-string-throw`]                  | 🌟  | [`no-throw-literal`][no-throw-literal]                                |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                               |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                  |
@@ -98,10 +102,10 @@
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
 | [`typeof-compare`]                   | 🌟  | [`valid-typeof`][valid-typeof]                                        |
 | [`unnecessary-constructor`]          | 🌟  | [`no-useless-constructor`][no-useless-constructor]                    |
-| [`use-default-type-parameter`]       | 🛑  | N/A                                                                   |
+| [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                  |
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                              |
 
-<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parens (`if ((foo = bar)) {}`)<br>
+<sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 
 ### Maintainability
 
@@ -141,25 +145,25 @@
 | [`class-name`]                      | ✅  | [`@typescript-eslint/class-name-casing`]                                            |
 | [`comment-format`]                  | 🌟  | [`capitalized-comments`][capitalized-comments] & [`spaced-comment`][spaced-comment] |
 | [`comment-type`]                    | 🛑  | N/A                                                                                 |
-| [`completed-docs`]                  | 🔌  | [`eslint-plugin-jsdoc`][plugin:jsdoc]                                               |
+| [`completed-docs`]                  | 🔌  | [`jsdoc/require-jsdoc`]                                                             |
 | [`encoding`]                        | 🛑  | N/A                                                                                 |
 | [`file-header`]                     | 🔌  | [`eslint-plugin-header`][plugin:header] or [`-file-header`][plugin:file-header]     |
 | [`file-name-casing`]                | 🔌  | [`unicorn/filename-case`]                                                           |
 | [`import-spacing`]                  | 🔌  | Use [Prettier]                                                                      |
 | [`increment-decrement`]             | 🌟  | [`no-plusplus`][no-plusplus]                                                        |
 | [`interface-name`]                  | ✅  | [`@typescript-eslint/interface-name-prefix`]                                        |
-| [`interface-over-type-literal`]     | ✅  | [`@typescript-eslint/prefer-interface`]                                             |
+| [`interface-over-type-literal`]     | ✅  | [`@typescript-eslint/consistent-type-definitions`]                                  |
 | [`jsdoc-format`]                    | 🌓  | [`valid-jsdoc`][valid-jsdoc] or [`eslint-plugin-jsdoc`][plugin:jsdoc]               |
 | [`match-default-export-name`]       | 🛑  | N/A                                                                                 |
 | [`newline-before-return`]           | 🌟  | [`padding-line-between-statements`][padding-line-between-statements] <sup>[1]</sup> |
 | [`newline-per-chained-call`]        | 🌟  | [`newline-per-chained-call`][newline-per-chained-call]                              |
 | [`new-parens`]                      | 🌟  | [`new-parens`][new-parens]                                                          |
-| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/no-angle-bracket-type-assertion`]                              |
+| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                   |
 | [`no-boolean-literal-compare`]      | 🛑  | N/A                                                                                 |
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
 | [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/no-parameter-properties`]                                      |
-| [`no-redundant-jsdoc`]              | 🛑  | N/A ([open issue](https://github.com/gajus/eslint-plugin-jsdoc/issues/134))         |
+| [`no-redundant-jsdoc`]              | 🔌  | [`jsdoc/no-types`]                                                                  |
 | [`no-reference-import`]             | 🛑  | N/A                                                                                 |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
@@ -168,7 +172,7 @@
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
 | [`object-literal-key-quotes`]       | 🌟  | [`quote-props`][quote-props]                                                        |
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
-| [`one-line`]                        | 🛑  | N/A                                                                                 |
+| [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
@@ -355,6 +359,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`import-blacklist`]: https://palantir.github.io/tslint/rules/import-blacklist
 [`label-position`]: https://palantir.github.io/tslint/rules/label-position
 [`no-arg`]: https://palantir.github.io/tslint/rules/no-arg
+[`no-async-without-await`]: https://palantir.github.io/tslint/rules/no-async-without-await
 [`no-bitwise`]: https://palantir.github.io/tslint/rules/no-bitwise
 [`no-conditional-assignment`]: https://palantir.github.io/tslint/rules/no-conditional-assignment
 [`no-console`]: https://palantir.github.io/tslint/rules/no-console
@@ -505,7 +510,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-shadow]: https://eslint.org/docs/rules/no-shadow
 [no-sparse-arrays]: https://eslint.org/docs/rules/no-sparse-arrays
 [dot-notation]: https://eslint.org/docs/rules/dot-notation
-[no-throw-literal]: https://eslint.org/docs/rules/no-throw-literal
 [no-fallthrough]: https://eslint.org/docs/rules/no-fallthrough
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
@@ -543,6 +547,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-undef-init]: https://eslint.org/docs/rules/no-undef-init
 [quote-props]: https://eslint.org/docs/rules/quote-props
 [object-shorthand]: https://eslint.org/docs/rules/object-shorthand
+[brace-style]: https://eslint.org/docs/rules/brace-style
 [one-var]: https://eslint.org/docs/rules/one-var
 [class-methods-use-this]: https://eslint.org/docs/rules/class-methods-use-this
 [prefer-template]: https://eslint.org/docs/rules/prefer-template
@@ -577,6 +582,8 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
 [`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
 [`@typescript-eslint/ban-ts-ignore`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-ignore.md
+[`@typescript-eslint/consistent-type-assertions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
+[`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
 [`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
 [`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
@@ -586,36 +593,40 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/promise-function-async`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/promise-function-async.md
 [`@typescript-eslint/no-namespace`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-namespace.md
 [`@typescript-eslint/no-non-null-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
-[`@typescript-eslint/no-triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-triple-slash-reference.md
+[`@typescript-eslint/triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/triple-slash-reference.md
 [`@typescript-eslint/unbound-method`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unbound-method.md
 [`@typescript-eslint/no-unnecessary-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md
 [`@typescript-eslint/no-var-requires`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-var-requires.md
 [`@typescript-eslint/type-annotation-spacing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/type-annotation-spacing.md
+[`@typescript-eslint/typedef`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/typedef.md
 [`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
 [`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
-[`@typescript-eslint/no-object-literal-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-object-literal-type-assertion.md
 [`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
+[`@typescript-eslint/no-throw-literal`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-throw-literal.md
 [`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
 [`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
 [`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
 [`@typescript-eslint/restrict-plus-operands`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
+[`@typescript-eslint/strict-boolean-expressions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md
 [`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
 [`@typescript-eslint/no-require-imports`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-require-imports.md
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
 [`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
 [`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/interface-name-prefix.md
-[`@typescript-eslint/no-angle-bracket-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-angle-bracket-type-assertion.md
 [`@typescript-eslint/no-parameter-properties`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-parameter-properties.md
 [`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
 [`@typescript-eslint/prefer-for-of`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-for-of.md
-[`@typescript-eslint/prefer-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-interface.md
 [`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
+[`@typescript-eslint/no-dynamic-delete`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-dynamic-delete.md
 [`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
 [`@typescript-eslint/prefer-readonly`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-readonly.md
+[`@typescript-eslint/require-await`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/require-await.md
 [`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
 [`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
+[`@typescript-eslint/no-unnecessary-type-arguments`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-arguments.md
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 [`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
+[`@typescript-eslint/no-magic-numbers`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-magic-numbers.md
 
 <!-- eslint-plugin-import -->
 
@@ -656,11 +667,16 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`security/detect-non-literal-require`]: https://github.com/nodesecurity/eslint-plugin-security#detect-non-literal-require
 [`security/detect-possible-timing-attacks`]: https://github.com/nodesecurity/eslint-plugin-security#detect-possible-timing-attacks
 
+<!-- eslint-plugin-jsdoc -->
+
+[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
+[`jsdoc/require-jsdoc`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
+[`jsdoc/no-types`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-no-types
+
 <!-- Miscellaneous plugins -->
 
 [`prefer-arrow/prefer-arrow-functions`]: https://github.com/TristonJ/eslint-plugin-prefer-arrow
 [plugin:promise]: https://github.com/xjamundx/eslint-plugin-promise
-[plugin:jsdoc]: https://github.com/gajus/eslint-plugin-jsdoc
 [plugin:header]: https://github.com/Stuk/eslint-plugin-header
 [plugin:file-header]: https://github.com/Sekhmet/eslint-plugin-file-header
 [plugin:compat]: https://github.com/amilajack/eslint-plugin-compat

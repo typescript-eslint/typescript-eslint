@@ -8,7 +8,7 @@ type Options = [
   {
     allowDeclarations?: boolean;
     allowDefinitionFiles?: boolean;
-  }
+  },
 ];
 type MessageIds = 'moduleSyntaxIsPreferred';
 
@@ -53,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(
         node: TSESTree.TSModuleDeclaration,
-      ) {
+      ): void {
         if (
           (node.parent &&
             node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||

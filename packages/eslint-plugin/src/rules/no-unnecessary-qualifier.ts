@@ -1,5 +1,8 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 
@@ -10,6 +13,7 @@ export default util.createRule({
       category: 'Best Practices',
       description: 'Warns when a namespace qualifier is unnecessary',
       recommended: false,
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
@@ -39,7 +43,7 @@ export default util.createRule({
     }
 
     function symbolIsNamespaceInScope(symbol: ts.Symbol): boolean {
-      const symbolDeclarations = symbol.getDeclarations() || [];
+      const symbolDeclarations = symbol.getDeclarations() ?? [];
 
       if (
         symbolDeclarations.some(decl =>
@@ -70,7 +74,7 @@ export default util.createRule({
     }
 
     function qualifierIsUnnecessary(
-      qualifier: TSESTree.Node,
+      qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): boolean {
       const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
@@ -106,7 +110,7 @@ export default util.createRule({
 
     function visitNamespaceAccess(
       node: TSESTree.Node,
-      qualifier: TSESTree.Node,
+      qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): void {
       // Only look for nested qualifier errors if we didn't already fail on the outer qualifier.
@@ -128,11 +132,16 @@ export default util.createRule({
       }
     }
 
-    function enterDeclaration(node: TSESTree.Node): void {
+    function enterDeclaration(
+      node:
+        | TSESTree.TSModuleDeclaration
+        | TSESTree.TSEnumDeclaration
+        | TSESTree.ExportNamedDeclaration,
+    ): void {
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
-    function exitDeclaration() {
+    function exitDeclaration(): void {
       namespacesInScope.pop();
     }
 
@@ -145,12 +154,14 @@ export default util.createRule({
     function isPropertyAccessExpression(
       node: TSESTree.Node,
     ): node is TSESTree.MemberExpression {
-      return node.type === 'MemberExpression' && !node.computed;
+      return node.type === AST_NODE_TYPES.MemberExpression && !node.computed;
     }
 
-    function isEntityNameExpression(node: TSESTree.Node): boolean {
+    function isEntityNameExpression(
+      node: TSESTree.Node,
+    ): node is TSESTree.Identifier | TSESTree.MemberExpression {
       return (
-        node.type === 'Identifier' ||
+        node.type === AST_NODE_TYPES.Identifier ||
         (isPropertyAccessExpression(node) &&
           isEntityNameExpression(node.object))
       );

@@ -15,7 +15,7 @@ type Modifier =
 type Options = [
   {
     allows: Modifier[];
-  }
+  },
 ];
 type MessageIds = 'noParamProp';
 
@@ -27,7 +27,8 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Disallow the use of parameter properties in class constructors',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     messages: {
       noParamProp:
@@ -81,10 +82,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSParameterProperty(node) {
+      TSParameterProperty(node): void {
         const modifiers = getModifiers(node);
 
-        if (allows.indexOf(modifiers) === -1) {
+        if (!allows.includes(modifiers)) {
           // HAS to be an identifier or assignment or TSC will throw
           if (
             node.parameter.type !== AST_NODE_TYPES.Identifier &&

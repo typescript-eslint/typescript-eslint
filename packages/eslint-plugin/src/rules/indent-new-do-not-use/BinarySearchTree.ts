@@ -17,7 +17,7 @@ export interface TreeValue {
  * can easily be swapped out.
  */
 export class BinarySearchTree {
-  private rbTree = createTree<TreeValue, number>();
+  private rbTree = createTree<TreeValue>();
 
   /**
    * Inserts an entry into the tree.

@@ -1,5 +1,5 @@
 import { ESLintUtils } from '@typescript-eslint/experimental-utils';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
 
@@ -15,10 +15,10 @@ export type RawRulesConfig = Record<
   | null
   | undefined
   | boolean
-  | any[]
+  | unknown[]
   | {
       severity?: RuleSeverity | 'warn' | 'none' | 'default';
-      options?: any;
+      options?: unknown;
     }
 >;
 
@@ -28,7 +28,7 @@ export type Options = [
     rules?: RawRulesConfig;
     rulesDirectory?: string[];
     lintFile?: string;
-  }
+  },
 ];
 
 /**
@@ -44,8 +44,8 @@ const tslintConfig = memoize(
       return Configuration.loadConfigurationFromPath(lintFile);
     }
     return Configuration.parseConfigFile({
-      rules: tslintRules || {},
-      rulesDirectory: tslintRulesDirectory || [],
+      rules: tslintRules ?? {},
+      rulesDirectory: tslintRulesDirectory ?? [],
     });
   },
   (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
@@ -60,12 +60,14 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
-      category: 'TSLint' as any,
+      // one off special category for this plugin
+      category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       recommended: false,
     },
+    fixable: 'code',
     type: 'problem',
     messages: {
-      failure: '{{message}} (tslint:{{ruleName}})`',
+      failure: '{{message}} (tslint:{{ruleName}})',
     },
     schema: [
       {
@@ -92,7 +94,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [] as any,
+  defaultOptions: [{}],
   create(context) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
@@ -150,6 +152,23 @@ export default createRule<Options, MessageIds>({
               line: end.line + 1,
               column: end.character,
             },
+          },
+          fix: fixer => {
+            const replacements = failure.getFix();
+
+            return Array.isArray(replacements)
+              ? replacements.map(replacement =>
+                  fixer.replaceTextRange(
+                    [replacement.start, replacement.end],
+                    replacement.text,
+                  ),
+                )
+              : replacements !== undefined
+              ? fixer.replaceTextRange(
+                  [replacements.start, replacements.end],
+                  replacements.text,
+                )
+              : [];
           },
         });
       });

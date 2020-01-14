@@ -1,15 +1,13 @@
-import assert from 'assert';
-
-import * as util from '../../src/eslint-utils/deepMerge';
+import { ESLintUtils } from '../../src';
 
 describe('deepMerge', () => {
   it('creates a brand new object', () => {
     const a = {};
     const b = {};
-    const result = util.deepMerge(a, b);
+    const result = ESLintUtils.deepMerge(a, b);
 
-    assert.notStrictEqual(result, a);
-    assert.notStrictEqual(result, b);
+    expect(result).not.toBe(a);
+    expect(result).not.toBe(b);
   });
 
   it('deeply merges objects', () => {
@@ -40,7 +38,7 @@ describe('deepMerge', () => {
       },
     };
 
-    assert.deepStrictEqual(util.deepMerge(a, b), Object.assign({}, a, b));
+    expect(ESLintUtils.deepMerge(a, b)).toStrictEqual(Object.assign({}, a, b));
   });
 
   it('deeply overwrites properties in the first one with the second', () => {
@@ -55,6 +53,6 @@ describe('deepMerge', () => {
       },
     };
 
-    assert.deepStrictEqual(util.deepMerge(a, b), b);
+    expect(ESLintUtils.deepMerge(a, b)).toStrictEqual(b);
   });
 });

@@ -1,4 +1,4 @@
-# Disallows the use of require statements except in import statements (no-var-requires)
+# Disallows the use of require statements except in import statements (`no-var-requires`)
 
 In other words, the use of forms such as `var foo = require("foo")` are banned. Instead use ES6 style imports or `import foo = require("foo")` imports.
 
@@ -17,6 +17,7 @@ Examples of **correct** code for this rule:
 ```ts
 import foo = require('foo');
 require('foo');
+import foo from 'foo';
 ```
 
 ## When Not To Use It

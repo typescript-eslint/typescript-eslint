@@ -1,4 +1,4 @@
-# Disallow unnecessary constructors (no-useless-constructor)
+# Disallow unnecessary constructors (`no-useless-constructor`)
 
 ES2015 provides a default class constructor if one is not specified. As such, it is unnecessary to provide an empty constructor or one that simply delegates into its parent class, as in the following examples:
 
@@ -68,6 +68,16 @@ class A extends B {
 
 class A extends B {
   protected constructor() {}
+}
+```
+
+## Rule Changes
+
+```cjson
+{
+    // note you must disable the base rule as it can report incorrect errors
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "error",
 }
 ```
 

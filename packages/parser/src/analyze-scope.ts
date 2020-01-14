@@ -7,19 +7,28 @@ import { getKeys as fallback } from 'eslint-visitor-keys';
 
 import { ParserOptions } from './parser-options';
 import { ScopeManager } from './scope/scope-manager';
-import { visitorKeys as childVisitorKeys } from './visitor-keys';
+import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.
  * @param {Function} define The original Scope#__define method.
  * @returns {Function} The override function.
  */
-function overrideDefine(define: any) {
-  return /* @this {Scope} */ function(this: any, node: any, definition: any) {
+function overrideDefine(
+  define: (node: TSESTree.Node, def: TSESLintScope.Definition) => void,
+) {
+  return function(
+    this: TSESLintScope.Scope,
+    node: TSESTree.Node,
+    definition: TSESLintScope.Definition,
+  ): void {
     define.call(this, node, definition);
 
     // Set `variable.eslintUsed` to tell ESLint that the variable is exported.
-    const variable = this.set.get(node.name);
+    const variable =
+      'name' in node &&
+      typeof node.name === 'string' &&
+      this.set.get(node.name);
     if (variable) {
       variable.eslintUsed = true;
     }
@@ -29,7 +38,7 @@ function overrideDefine(define: any) {
 class PatternVisitor extends TSESLintScope.PatternVisitor {
   constructor(
     options: TSESLintScope.PatternVisitorOptions,
-    rootPattern: any,
+    rootPattern: TSESTree.BaseNode,
     callback: TSESLintScope.PatternVisitorCallback,
   ) {
     super(options, rootPattern, callback);
@@ -86,7 +95,10 @@ class PatternVisitor extends TSESLintScope.PatternVisitor {
 class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   protected typeMode: boolean;
 
-  constructor(options: any, scopeManager: ScopeManager) {
+  constructor(
+    options: TSESLintScope.ScopeManagerOptions,
+    scopeManager: ScopeManager,
+  ) {
     super(options, scopeManager);
     this.typeMode = false;
   }
@@ -115,7 +127,6 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     visitor.visit(node);
 
     if (options.processRightHandNodes) {
-      // @ts-ignore
       visitor.rightHandNodes.forEach(this.visit, this);
     }
   }
@@ -136,7 +147,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     const upperScope = this.currentScope();
 
     // Process the name.
-    if (type === 'FunctionDeclaration' && id) {
+    if (type === AST_NODE_TYPES.FunctionDeclaration && id) {
       upperScope.__define(
         id,
         new TSESLintScope.Definition(
@@ -155,15 +166,14 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
         const def = defs[i];
         if (
           def.type === 'FunctionName' &&
-          // @ts-ignore
-          def.node.type === 'TSDeclareFunction'
+          def.node.type === AST_NODE_TYPES.TSDeclareFunction
         ) {
           defs.splice(i, 1);
           identifiers.splice(i, 1);
           break;
         }
       }
-    } else if (type === 'FunctionExpression' && id) {
+    } else if (type === AST_NODE_TYPES.FunctionExpression && id) {
       scopeManager.__nestFunctionExpressionNameScope(node);
     }
 
@@ -203,7 +213,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     this.visit(returnType);
 
     // Process the body.
-    if (body && body.type === 'BlockStatement') {
+    if (body && body.type === AST_NODE_TYPES.BlockStatement) {
       this.visitChildren(body);
     } else {
       this.visit(body);
@@ -335,6 +345,29 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   }
 
   /**
+   * Visit optional member expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalMemberExpression(node: TSESTree.OptionalMemberExpression): void {
+    this.visit(node.object);
+    if (node.computed) {
+      this.visit(node.property);
+    }
+  }
+
+  /**
+   * Visit optional call expression.
+   * @param node The OptionalMemberExpression node to visit.
+   */
+  OptionalCallExpression(node: TSESTree.OptionalCallExpression): void {
+    this.visitTypeParameters(node);
+
+    this.visit(node.callee);
+
+    node.arguments.forEach(this.visit, this);
+  }
+
+  /**
    * Define the variable of this function declaration only once.
    * Because to avoid confusion of `no-redeclare` rule by overloading.
    * @param node The TSDeclareFunction node to visit.
@@ -344,11 +377,11 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     const upperScope = this.currentScope();
     const { id, typeParameters, params, returnType } = node;
 
-    // Ignore this if other overloadings have already existed.
+    // Ignore this if other overload have already existed.
     if (id) {
       const variable = upperScope.set.get(id.name);
-      const defs = variable && variable.defs;
-      const existed = defs && defs.some(d => d.type === 'FunctionName');
+      const defs = variable?.defs;
+      const existed = defs?.some((d): boolean => d.type === 'FunctionName');
       if (!existed) {
         upperScope.__define(
           id,
@@ -722,7 +755,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
       return;
     }
 
-    if (id && id.type === 'Identifier') {
+    if (id && id.type === AST_NODE_TYPES.Identifier) {
       scope.__define(
         id,
         new TSESLintScope.Definition(
@@ -767,7 +800,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
    */
   TSImportEqualsDeclaration(node: TSESTree.TSImportEqualsDeclaration): void {
     const { id, moduleReference } = node;
-    if (id && id.type === 'Identifier') {
+    if (id && id.type === AST_NODE_TYPES.Identifier) {
       this.currentScope().__define(
         id,
         new TSESLintScope.Definition(
@@ -799,7 +832,7 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
     scopeManager.__currentScope = globalScope;
 
     // Skip TSModuleBlock to avoid to create that block scope.
-    if (node.body && node.body.type === 'TSModuleBlock') {
+    if (node.body && node.body.type === AST_NODE_TYPES.TSModuleBlock) {
       node.body.body.forEach(this.visit, this);
     }
 
@@ -832,7 +865,10 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   }
 }
 
-export function analyzeScope(ast: any, parserOptions: ParserOptions) {
+export function analyzeScope(
+  ast: TSESTree.Program,
+  parserOptions: ParserOptions,
+): ScopeManager {
   const options = {
     ignoreEval: true,
     optimistic: false,
@@ -843,7 +879,7 @@ export function analyzeScope(ast: any, parserOptions: ParserOptions) {
         parserOptions.ecmaFeatures.globalReturn) === true,
     impliedStrict: false,
     sourceType: parserOptions.sourceType,
-    ecmaVersion: parserOptions.ecmaVersion || 2018,
+    ecmaVersion: parserOptions.ecmaVersion ?? 2018,
     childVisitorKeys,
     fallback,
   };

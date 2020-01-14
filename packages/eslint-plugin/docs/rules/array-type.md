@@ -1,20 +1,33 @@
-# Requires using either `T[]` or `Array<T>` for arrays (array-type)
+# Requires using either `T[]` or `Array<T>` for arrays (`array-type`)
 
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 
 ## Rule Details
 
-This rule aims to standardise usage of array types within your codebase.
+This rule aims to standardize usage of array types within your codebase.
 
 ## Options
 
-This rule accepts one option - a single string
+```ts
+type ArrayOption = 'array' | 'generic' | 'array-simple';
+type Options = {
+  default: ArrayOption;
+  readonly?: ArrayOption;
+};
 
-- `"array"` enforces use of `T[]` for all types `T`.
-- `"generic"` enforces use of `Array<T>` for all types `T`.
-- `"array-simple"` enforces use of `T[]` if `T` is a simple type.
+const defaultOptions: Options = {
+  default: 'array',
+};
+```
 
-Without providing an option, by default the rule will enforce `"array"`.
+The rule accepts an options object with the following properties:
+
+- `default` - sets the array type expected for mutable cases.
+- `readonly` - sets the array type expected for readonly arrays. If this is omitted, then the value for `default` will be used.
+
+Each property can be set to one of three strings: `'array' | 'generic' | 'array-simple'`.
+
+The default config will enforce that all mutable and readonly arrays use the `'array'` syntax.
 
 ### `"array"`
 
@@ -61,7 +74,7 @@ Incorrect code for `"array-simple"`:
 
 ```ts
 const a: (string | number)[] = ['a', 'b'];
-const b: ({ prop: string })[] = [{ prop: 'a' }];
+const b: { prop: string }[] = [{ prop: 'a' }];
 const c: (() => void)[] = [() => {}];
 const d: Array<MyType> = ['a', 'b'];
 const e: Array<string> = ['a', 'b'];

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/no-explicit-any */
 
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import {
@@ -98,7 +98,7 @@ interface Scope {
   /**
    * returns this scope has materialized arguments
    * @method Scope#isArgumentsMaterialized
-   * @returns {boolean} arguemnts materialized
+   * @returns {boolean} arguments materialized
    */
   isArgumentsMaterialized(): boolean;
 

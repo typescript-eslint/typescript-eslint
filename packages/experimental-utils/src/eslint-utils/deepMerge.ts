@@ -1,11 +1,13 @@
-type ObjectLike<T = any> = Record<string, T>;
+type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
- * Check if the variable contains an object stricly rejecting arrays
+ * Check if the variable contains an object strictly rejecting arrays
  * @param obj an object
  * @returns `true` if obj is an object
  */
-export function isObjectNotArray<T extends object>(obj: T | any[]): obj is T {
+export function isObjectNotArray<T extends ObjectLike>(
+  obj: unknown | unknown[],
+): obj is T {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
 
@@ -16,31 +18,33 @@ export function isObjectNotArray<T extends object>(obj: T | any[]): obj is T {
  * @param second The second object
  * @returns a new object
  */
-export function deepMerge(first: ObjectLike = {}, second: ObjectLike = {}) {
+export function deepMerge(
+  first: ObjectLike = {},
+  second: ObjectLike = {},
+): Record<string, unknown> {
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
-  return Array.from(keys).reduce(
-    (acc, key) => {
-      const firstHasKey = key in first;
-      const secondHasKey = key in second;
+  return Array.from(keys).reduce((acc, key) => {
+    const firstHasKey = key in first;
+    const secondHasKey = key in second;
+    const firstValue = first[key];
+    const secondValue = second[key];
 
-      if (firstHasKey && secondHasKey) {
-        if (isObjectNotArray(first[key]) && isObjectNotArray(second[key])) {
-          // object type
-          acc[key] = deepMerge(first[key], second[key]);
-        } else {
-          // value type
-          acc[key] = second[key];
-        }
-      } else if (firstHasKey) {
-        acc[key] = first[key];
+    if (firstHasKey && secondHasKey) {
+      if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
+        // object type
+        acc[key] = deepMerge(firstValue, secondValue);
       } else {
-        acc[key] = second[key];
+        // value type
+        acc[key] = secondValue;
       }
+    } else if (firstHasKey) {
+      acc[key] = firstValue;
+    } else {
+      acc[key] = secondValue;
+    }
 
-      return acc;
-    },
-    {} as ObjectLike,
-  );
+    return acc;
+  }, {} as ObjectLike);
 }

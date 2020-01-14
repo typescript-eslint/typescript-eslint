@@ -39,12 +39,13 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
     linter.defineRule('test', {
       create(context) {
         return {
-          TSTypeReference(node) {
+          TSTypeReference(node): void {
             const name = context.getSourceCode().getText(node.typeName);
             context.report({
               node,
               message: 'called on {{name}}',
               data: { name },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any);
           },
         };

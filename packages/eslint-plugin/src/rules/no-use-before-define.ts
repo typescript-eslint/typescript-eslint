@@ -13,6 +13,7 @@ const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFun
 function parseOptions(options: string | Config | null): Required<Config> {
   let functions = true;
   let classes = true;
+  let enums = true;
   let variables = true;
   let typedefs = true;
 
@@ -21,11 +22,12 @@ function parseOptions(options: string | Config | null): Required<Config> {
   } else if (typeof options === 'object' && options !== null) {
     functions = options.functions !== false;
     classes = options.classes !== false;
+    enums = options.enums !== false;
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
   }
 
-  return { functions, classes, variables, typedefs };
+  return { functions, classes, enums, variables, typedefs };
 }
 
 /**
@@ -36,10 +38,42 @@ function isTopLevelScope(scope: TSESLint.Scope.Scope): boolean {
 }
 
 /**
+ * Checks whether or not a given variable declaration in an upper scope.
+ */
+function isOuterScope(
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
+): boolean {
+  if (variable.scope.variableScope === reference.from.variableScope) {
+    // allow the same scope only if it's the top level global/module scope
+    if (!isTopLevelScope(variable.scope.variableScope)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Checks whether or not a given variable is a function declaration.
  */
 function isFunction(variable: TSESLint.Scope.Variable): boolean {
   return variable.defs[0].type === 'FunctionName';
+}
+
+/**
+ * Checks whether or not a given variable is a enum declaration in an upper function scope.
+ */
+function isOuterEnum(
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
+): boolean {
+  const node = variable.defs[0].node as TSESTree.Node;
+
+  return (
+    node.type === AST_NODE_TYPES.TSEnumDeclaration &&
+    isOuterScope(variable, reference)
+  );
 }
 
 /**
@@ -49,18 +83,9 @@ function isOuterClass(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  if (variable.defs[0].type !== 'ClassName') {
-    return false;
-  }
-
-  if (variable.scope.variableScope === reference.from.variableScope) {
-    // allow the same scope only if it's the top level global/module scope
-    if (!isTopLevelScope(variable.scope.variableScope)) {
-      return false;
-    }
-  }
-
-  return true;
+  return (
+    variable.defs[0].type === 'ClassName' && isOuterScope(variable, reference)
+  );
 }
 
 /**
@@ -70,18 +95,9 @@ function isOuterVariable(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  if (variable.defs[0].type !== 'Variable') {
-    return false;
-  }
-
-  if (variable.scope.variableScope === reference.from.variableScope) {
-    // allow the same scope only if it's the top level global/module scope
-    if (!isTopLevelScope(variable.scope.variableScope)) {
-      return false;
-    }
-  }
-
-  return true;
+  return (
+    variable.defs[0].type === 'Variable' && isOuterScope(variable, reference)
+  );
 }
 
 /**
@@ -147,6 +163,7 @@ function isInInitializer(
 interface Config {
   functions?: boolean;
   classes?: boolean;
+  enums?: boolean;
   variables?: boolean;
   typedefs?: boolean;
 }
@@ -176,6 +193,7 @@ export default util.createRule<Options, MessageIds>({
             properties: {
               functions: { type: 'boolean' },
               classes: { type: 'boolean' },
+              enums: { type: 'boolean' },
               variables: { type: 'boolean' },
               typedefs: { type: 'boolean' },
             },
@@ -189,6 +207,7 @@ export default util.createRule<Options, MessageIds>({
     {
       functions: true,
       classes: true,
+      enums: true,
       variables: true,
       typedefs: true,
     },
@@ -214,6 +233,10 @@ export default util.createRule<Options, MessageIds>({
       if (isOuterVariable(variable, reference)) {
         return !!options.variables;
       }
+      if (isOuterEnum(variable, reference)) {
+        return !!options.enums;
+      }
+
       return true;
     }
 
@@ -225,7 +248,7 @@ export default util.createRule<Options, MessageIds>({
         const variable = reference.resolved;
 
         // Skips when the reference is:
-        // - initialization's.
+        // - initializations.
         // - referring to an undefined variable.
         // - referring to a global environment variable (there're no identifiers).
         // - located preceded by the variable (except in initializers).
@@ -245,7 +268,9 @@ export default util.createRule<Options, MessageIds>({
         context.report({
           node: reference.identifier,
           messageId: 'noUseBeforeDefine',
-          data: reference.identifier,
+          data: {
+            name: reference.identifier.name,
+          },
         });
       });
 
@@ -253,7 +278,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      Program() {
+      Program(): void {
         findVariablesInScope(context.getScope());
       },
     };

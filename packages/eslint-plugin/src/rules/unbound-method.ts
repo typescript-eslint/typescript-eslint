@@ -3,7 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -25,7 +25,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       unbound:
@@ -54,7 +55,9 @@ export default util.createRule<Options, MessageIds>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      [AST_NODE_TYPES.MemberExpression](node: TSESTree.MemberExpression) {
+      'MemberExpression, OptionalMemberExpression'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      ): void {
         if (isSafeUse(node)) {
           return;
         }
@@ -73,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
+function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
@@ -102,12 +105,14 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.OptionalMemberExpression:
     case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;
 
     case AST_NODE_TYPES.CallExpression:
+    case AST_NODE_TYPES.OptionalCallExpression:
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:
@@ -118,6 +123,12 @@ function isSafeUse(node: TSESTree.Node): boolean {
 
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
+
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === 'typeof';
+
+    case AST_NODE_TYPES.BinaryExpression:
+      return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:

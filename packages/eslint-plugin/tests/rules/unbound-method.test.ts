@@ -52,14 +52,26 @@ instance.unbound\`\`;
 if (instance.bound) { }
 if (instance.unbound) { }
 
+if (instance.bound !== undefined) { }
+if (instance.unbound !== undefined) { }
+
 if (ContainsMethods.boundStatic) { }
 if (ContainsMethods.unboundStatic) { }
+
+if (ContainsMethods.boundStatic !== undefined) { }
+if (ContainsMethods.unboundStatic !== undefined) { }
 
 while (instance.bound) { }
 while (instance.unbound) { }
 
+while (instance.bound !== undefined) { }
+while (instance.unbound !== undefined) { }
+
 while (ContainsMethods.boundStatic) { }
 while (ContainsMethods.unboundStatic) { }
+
+while (ContainsMethods.boundStatic !== undefined) { }
+while (ContainsMethods.unboundStatic !== undefined) { }
 
 instance.bound as any;
 ContainsMethods.boundStatic as any;
@@ -97,8 +109,15 @@ instane.boundStatic && 0;
 
 ContainsMethods.boundStatic ? 1 : 0;
 ContainsMethods.unboundStatic ? 1 : 0;
+
+typeof instance.bound === 'function';
+typeof instance.unbound === 'function';
+
+typeof ContainsMethods.boundStatic === 'function';
+typeof ContainsMethods.unboundStatic === 'function';
     `,
-    `interface RecordA {
+    `
+interface RecordA {
   readonly type: "A"
   readonly a: {}
 }
@@ -125,8 +144,61 @@ class CommunicationError {
 class CommunicationError {}
 const x = CommunicationError.prototype;
     `,
+    // optional chain
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+function foo(instance: ContainsMethods | null) {
+  instance?.bound();
+  instance?.unbound();
+
+  instance?.bound++;
+
+  if (instance?.bound) { }
+  if (instance?.unbound) { }
+
+  typeof instance?.bound === 'function';
+  typeof instance?.unbound === 'function';
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+function foo(instance: ContainsMethods | null) {
+  const unbound = instance?.unbound;
+  instance.unbound += 1;
+  instance?.unbound as any;
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unbound',
+        },
+        {
+          line: 11,
+          messageId: 'unbound',
+        },
+        {
+          line: 12,
+          messageId: 'unbound',
+        },
+      ],
+    },
     {
       code: `
 class ContainsMethods {

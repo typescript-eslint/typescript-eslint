@@ -1,4 +1,4 @@
-# Disallow the use of variables before they are defined (no-use-before-define)
+# Disallow the use of variables before they are defined (`no-use-before-define`)
 
 In JavaScript, prior to ES6, variable and function declarations are hoisted to the top of a scope, so it's possible to use identifiers before their formal declarations in code. This can be confusing and some believe it is best to always declare variables and functions before using them.
 
@@ -83,6 +83,11 @@ let myVar: StringOrNumber;
   Otherwise, ignores those references if the declaration is in upper function scopes.
   Class declarations are not hoisted, so it might be danger.
   Default is `true`.
+- `enums` (`boolean`) -
+  The flag which shows whether or not this rule checks enum declarations of upper scopes.
+  If this is `true`, this rule warns every reference to a enum before the enum declaration.
+  Otherwise, ignores those references.
+  Default is `true`.
 - `variables` (`boolean`) -
   This flag determines whether or not the rule checks variable declarations in upper scopes.
   If this is `true`, the rule warns every reference to a variable before the variable declaration.
@@ -98,7 +103,7 @@ let myVar: StringOrNumber;
 This rule accepts `"nofunc"` string as an option.
 `"nofunc"` is the same as `{ "functions": false, "classes": true }`.
 
-### functions
+### `functions`
 
 Examples of **correct** code for the `{ "functions": false }` option:
 
@@ -109,7 +114,7 @@ f();
 function f() {}
 ```
 
-### classes
+### `classes`
 
 Examples of **incorrect** code for the `{ "classes": false }` option:
 
@@ -134,7 +139,44 @@ function foo() {
 class A {}
 ```
 
-### variables
+### `enums`
+
+Examples of **incorrect** code for the `{ "enums": true }` option:
+
+```ts
+/*eslint no-use-before-define: ["error", { "enums": true }]*/
+
+function foo() {
+  return Foo.FOO;
+}
+
+class Test {
+  foo() {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+  BAR,
+}
+```
+
+Examples of **correct** code for the `{ "enums": false }` option:
+
+```ts
+/*eslint no-use-before-define: ["error", { "enums": false }]*/
+
+function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+```
+
+### `variables`
 
 Examples of **incorrect** code for the `{ "variables": false }` option:
 
@@ -157,7 +199,7 @@ function baz() {
 var foo = 1;
 ```
 
-### typedefs
+### `typedefs`
 
 Examples of **correct** code for the `{ "typedefs": false }` option:
 

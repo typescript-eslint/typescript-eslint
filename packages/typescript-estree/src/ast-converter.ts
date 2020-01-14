@@ -1,20 +1,25 @@
 import { SourceFile } from 'typescript';
-import { convertError, Converter } from './convert';
+import { convertError, Converter, ASTMaps } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { Extra } from './parser-options';
+import { TSESTree } from './ts-estree';
+import { simpleTraverse } from './simple-traverse';
 
-export default function astConverter(
+export function astConverter(
   ast: SourceFile,
   extra: Extra,
   shouldPreserveNodeMaps: boolean,
-) {
+): { estree: TSESTree.Program; astMaps: ASTMaps } {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
    */
-  if ((ast as any).parseDiagnostics.length) {
-    throw convertError((ast as any).parseDiagnostics[0]);
+  // internal typescript api...
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const parseDiagnostics = (ast as any).parseDiagnostics;
+  if (parseDiagnostics.length) {
+    throw convertError(parseDiagnostics[0]);
   }
 
   /**
@@ -27,6 +32,22 @@ export default function astConverter(
   });
 
   const estree = instance.convertProgram();
+
+  /**
+   * Optionally remove range and loc if specified
+   */
+  if (extra.range || extra.loc) {
+    simpleTraverse(estree, {
+      enter: node => {
+        if (!extra.range) {
+          delete node.range;
+        }
+        if (!extra.loc) {
+          delete node.loc;
+        }
+      },
+    });
+  }
 
   /**
    * Optionally convert and include all tokens in the AST

@@ -8,12 +8,12 @@ const ERROR_MESSAGE =
  */
 export function getParserServices<
   TMessageIds extends string,
-  TOptions extends readonly any[]
+  TOptions extends readonly unknown[]
 >(
   context: TSESLint.RuleContext<TMessageIds, TOptions>,
   allowWithoutFullTypeInformation: boolean = false,
 ): ParserServices {
-  // backwards compatability check
+  // backwards compatibility check
   // old versions of the parser would not return any parserServices unless parserOptions.project was set
   if (
     !context.parserServices ||
@@ -25,12 +25,10 @@ export function getParserServices<
   }
 
   const hasFullTypeInformation =
-    typeof context.parserServices.hasFullTypeInformation === 'boolean'
-      ? context.parserServices.hasFullTypeInformation
-      : // backwards compatible
-        true;
+    context.parserServices.hasFullTypeInformation ??
+    /* backwards compatible */ true;
 
-  // if a rule requries full type information, then hard fail if it doesn't exist
+  // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
   if (!hasFullTypeInformation && !allowWithoutFullTypeInformation) {
     throw new Error(ERROR_MESSAGE);

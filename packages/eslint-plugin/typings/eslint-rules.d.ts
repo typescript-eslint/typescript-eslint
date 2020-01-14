@@ -16,7 +16,7 @@ declare module 'eslint/lib/rules/arrow-parens' {
       'always' | 'as-needed',
       {
         requireForBlockBody?: boolean;
-      }?
+      }?,
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -35,7 +35,8 @@ declare module 'eslint/lib/rules/camelcase' {
         allow?: string[];
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
-      }
+        genericType?: 'never' | 'always';
+      },
     ],
     {
       Identifier(node: TSESTree.Identifier): void;
@@ -53,7 +54,7 @@ declare module 'eslint/lib/rules/indent' {
     'wrongIndentation',
     [
       ('tab' | number)?,
-      ({
+      {
         SwitchCase?: number;
         VariableDeclarator?:
           | ElementList
@@ -81,7 +82,7 @@ declare module 'eslint/lib/rules/indent' {
         flatTernaryExpressions?: boolean;
         ignoredNodes?: string[];
         ignoreComments?: boolean;
-      })?
+      }?,
     ],
     {
       '*:exit'(node: TSESTree.Node): void;
@@ -163,7 +164,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
     [
       {
         allow?: string[];
-      }
+      },
     ],
     {
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
@@ -199,7 +200,8 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         detectObjects?: boolean;
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
-      }
+        ignoreReadonlyClassProperties?: boolean;
+      },
     ],
     {
       Literal(node: TSESTree.Literal): void;
@@ -212,11 +214,11 @@ declare module 'eslint/lib/rules/no-redeclare' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    never,
+    'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax',
     [
       {
         builtinGlobals?: boolean;
-      }?
+      }?,
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -235,7 +237,8 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
       | {
           name: string;
           message?: string;
-        })[],
+        }
+    )[],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -253,7 +256,7 @@ declare module 'eslint/lib/rules/no-shadow' {
         builtinGlobals?: boolean;
         hoist: 'all' | 'functions' | 'never';
         allow: string[];
-      }
+      },
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -270,7 +273,7 @@ declare module 'eslint/lib/rules/no-undef' {
     [
       {
         typeof?: boolean;
-      }
+      },
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
@@ -295,9 +298,31 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
-        })[],
+        }
+    )[],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-unused-expressions' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'expected',
+    (
+      | 'all'
+      | 'local'
+      | {
+          allowShortCircuit?: boolean;
+          allowTernary?: boolean;
+          allowTaggedTemplates?: boolean;
+        }
+    )[],
+    {
+      ExpressionStatement(node: TSESTree.ExpressionStatement): void;
     }
   >;
   export = rule;
@@ -314,7 +339,8 @@ declare module 'eslint/lib/rules/no-use-before-define' {
           functions?: boolean;
           classes?: boolean;
           variables?: boolean;
-        })[],
+        }
+    )[],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -370,7 +396,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         nestedBinaryExpressions?: boolean;
         ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
         enforceForArrowConditionals?: boolean;
-      }?
+      }?,
     ],
     {
       ArrayExpression(node: TSESTree.ArrayExpression): void;
@@ -387,6 +413,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
       ForStatement(node: TSESTree.ForStatement): void;
+      'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
       LogicalExpression(node: TSESTree.LogicalExpression): void;
       MemberExpression(node: TSESTree.MemberExpression): void;
@@ -409,6 +436,29 @@ declare module 'eslint/lib/rules/no-extra-parens' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/require-await' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      AwaitExpression(): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/semi' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -419,7 +469,7 @@ declare module 'eslint/lib/rules/semi' {
       {
         beforeStatementContinuationChars?: 'always' | 'any' | 'never';
         omitLastInOneLineBlock?: boolean;
-      }?
+      }?,
     ],
     {
       VariableDeclaration(node: TSESTree.VariableDeclaration): void;
@@ -434,6 +484,68 @@ declare module 'eslint/lib/rules/semi' {
       ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
       ExportDefaultDeclaration(node: TSESTree.ExportDefaultDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/quotes' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      'single' | 'double' | 'backtick',
+      {
+        allowTemplateLiterals?: boolean;
+        avoidEscape?: boolean;
+      }?,
+    ],
+    {
+      Literal(node: TSESTree.Literal): void;
+      TemplateLiteral(node: TSESTree.TemplateLiteral): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/brace-style' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'nextLineOpen'
+    | 'sameLineOpen'
+    | 'blockSameLine'
+    | 'nextLineClose'
+    | 'singleLineClose'
+    | 'sameLineClose',
+    [
+      '1tbs' | 'stroustrup' | 'allman',
+      {
+        allowSingleLine?: boolean;
+      }?,
+    ],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      IfStatement(node: TSESTree.IfStatement): void;
+      TryStatement(node: TSESTree.TryStatement): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-extra-semi' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [],
+    {
+      EmptyStatement(node: TSESTree.EmptyStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      MethodDefinition(node: TSESTree.MethodDefinition): void;
     }
   >;
   export = rule;

@@ -1,21 +1,25 @@
+import { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
+
 export interface ParserOptions {
-  loc?: boolean;
   comment?: boolean;
-  range?: boolean;
-  tokens?: boolean;
-  sourceType?: 'script' | 'module';
-  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 2015 | 2016 | 2017 | 2018;
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
   };
-  // ts-estree specific
-  filePath?: string;
-  project?: string | string[];
-  useJSXTextNode?: boolean;
-  errorOnUnknownASTType?: boolean;
+  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 10 | 2015 | 2016 | 2017 | 2018 | 2019;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
-  tsconfigRootDir?: string;
+  errorOnUnknownASTType?: boolean;
   extraFileExtensions?: string[];
+  // ts-estree specific
+  debugLevel?: TSESTreeOptions['debugLevel'];
+  filePath?: string;
+  loc?: boolean;
+  noWatch?: boolean;
+  project?: string | string[];
+  range?: boolean;
+  sourceType?: 'script' | 'module';
+  tokens?: boolean;
+  tsconfigRootDir?: string;
+  useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }

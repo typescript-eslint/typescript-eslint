@@ -58,7 +58,8 @@ export default util.createRule({
         node.type === AST_NODE_TYPES.BinaryExpression &&
         node.operator === '<' &&
         isMatchingIdentifier(node.left, name) &&
-        node.right.type === AST_NODE_TYPES.MemberExpression &&
+        (node.right.type === AST_NODE_TYPES.MemberExpression ||
+          node.right.type === AST_NODE_TYPES.OptionalMemberExpression) &&
         isMatchingIdentifier(node.right.property, 'length')
       ) {
         return node.right.object;
@@ -148,9 +149,8 @@ export default util.createRule({
       // ({ foo: a[i] }) = { foo: 0 }
       if (
         parent.type === AST_NODE_TYPES.Property &&
-        parent.parent !== undefined &&
-        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
         parent.value === node &&
+        parent.parent?.type === AST_NODE_TYPES.ObjectExpression &&
         isAssignee(parent.parent)
       ) {
         return true;
@@ -172,7 +172,8 @@ export default util.createRule({
         return (
           !contains(body, id) ||
           (node !== undefined &&
-            node.type === AST_NODE_TYPES.MemberExpression &&
+            (node.type === AST_NODE_TYPES.MemberExpression ||
+              node.type === AST_NODE_TYPES.OptionalMemberExpression) &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))
@@ -181,7 +182,7 @@ export default util.createRule({
     }
 
     return {
-      'ForStatement:exit'(node: TSESTree.ForStatement) {
+      'ForStatement:exit'(node: TSESTree.ForStatement): void {
         if (!isSingleVariableDeclaration(node.init)) {
           return;
         }

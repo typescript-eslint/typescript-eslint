@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [];
@@ -22,12 +25,16 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node) {
+      'CallExpression, OptionalCallExpression'(
+        node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
+      ): void {
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&
           node.parent &&
-          node.parent.type === AST_NODE_TYPES.VariableDeclarator
+          (node.parent.type === AST_NODE_TYPES.VariableDeclarator ||
+            node.parent.type === AST_NODE_TYPES.CallExpression ||
+            node.parent.type === AST_NODE_TYPES.OptionalCallExpression)
         ) {
           context.report({
             node,

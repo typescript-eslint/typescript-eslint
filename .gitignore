@@ -57,6 +57,12 @@ jspm_packages/
 # next.js build output
 .next
 
+
+# Editor-specific metadata folders
+.vs
+
 .DS_Store
 .idea
 dist
+*.tsbuildinfo
+.watchmanconfig

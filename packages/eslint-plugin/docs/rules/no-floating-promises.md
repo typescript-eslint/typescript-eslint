@@ -1,4 +1,4 @@
-# Requires Promise-like values to be handled appropriately (no-floating-promises)
+# Requires Promise-like values to be handled appropriately (`no-floating-promises`)
 
 This rule forbids usage of Promise-like values in statements without handling
 their errors appropriately. Unhandled promises can cause several issues, such
@@ -31,9 +31,42 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
-returnsPromise().then(() => {}, () => {});
+returnsPromise().then(
+  () => {},
+  () => {},
+);
 
 Promise.reject('value').catch(() => {});
+```
+
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, checking void expressions will be skipped
+  ignoreVoid?: boolean;
+};
+
+const defaults = {
+  ignoreVoid: false,
+};
+```
+
+### `ignoreVoid`
+
+This allows to easily suppress false-positives with void operator.
+
+Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
+
+```ts
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+
+void Promise.reject('value');
 ```
 
 ## When Not To Use It
@@ -43,4 +76,4 @@ remain unhandled.
 
 ## Related to
 
-- Tslint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
+- TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)

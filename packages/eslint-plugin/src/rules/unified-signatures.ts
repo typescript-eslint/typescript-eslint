@@ -35,6 +35,9 @@ type ScopeNode =
   | TSESTree.TSTypeLiteral;
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
+type ContainingNode =
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -55,6 +58,7 @@ export default util.createRule({
       description:
         'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
       category: 'Variables',
+      // too opinionated to be recommended
       recommended: false,
     },
     type: 'suggestion',
@@ -104,12 +108,8 @@ export default util.createRule({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(
-                  typeAnnotation0 && typeAnnotation0.typeAnnotation,
-                ),
-                type2: sourceCode.getText(
-                  typeAnnotation1 && typeAnnotation1.typeAnnotation,
-                ),
+                type1: sourceCode.getText(typeAnnotation0?.typeAnnotation),
+                type2: sourceCode.getText(typeAnnotation1?.typeAnnotation),
               },
               node: p1,
             });
@@ -307,14 +307,14 @@ export default util.createRule({
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
       if (typeParameters === undefined) {
-        return () => false;
+        return (() => false) as IsTypeParameter;
       }
 
       const set = new Set<string>();
       for (const t of typeParameters.params) {
         set.add(t.name.name);
       }
-      return typeName => set.has(typeName);
+      return (typeName => set.has(typeName)) as IsTypeParameter;
     }
 
     /** True if any of the outer type parameters are used in a signature. */
@@ -423,7 +423,8 @@ export default util.createRule({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          a.typeAnnotation.type === b.typeAnnotation.type)
+          sourceCode.getText(a.typeAnnotation) ===
+            sourceCode.getText(b.typeAnnotation))
       );
     }
 
@@ -476,7 +477,7 @@ export default util.createRule({
     function createScope(
       parent: ScopeNode,
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
-    ) {
+    ): void {
       currentScope && scopes.push(currentScope);
       currentScope = {
         overloads: new Map(),
@@ -485,7 +486,7 @@ export default util.createRule({
       };
     }
 
-    function checkScope() {
+    function checkScope(): void {
       const failures = checkOverloads(
         Array.from(currentScope.overloads.values()),
         currentScope.typeParameters,
@@ -494,9 +495,16 @@ export default util.createRule({
       currentScope = scopes.pop()!;
     }
 
-    function addOverload(signature: OverloadNode, key?: string) {
-      key = key || getOverloadKey(signature);
-      if (currentScope && signature.parent === currentScope.parent && key) {
+    function addOverload(
+      signature: OverloadNode,
+      key?: string,
+      containingNode?: ContainingNode,
+    ): void {
+      key = key ?? getOverloadKey(signature);
+      if (
+        currentScope &&
+        (containingNode || signature).parent === currentScope.parent
+      ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {
           overloads.push(signature);
@@ -513,32 +521,33 @@ export default util.createRule({
     return {
       Program: createScope,
       TSModuleBlock: createScope,
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
-      ClassDeclaration(node) {
+      ClassDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
       TSTypeLiteral: createScope,
+
       // collect overloads
-      TSDeclareFunction(node) {
-        if (node.id && !node.body) {
-          addOverload(node, node.id.name);
-        }
+      TSDeclareFunction(node): void {
+        const exportingNode = getExportingNode(node);
+        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,
       TSMethodSignature: addOverload,
-      TSAbstractMethodDefinition(node) {
+      TSAbstractMethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }
       },
-      MethodDefinition(node) {
+      MethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }
       },
+
       // validate scopes
       'Program:exit': checkScope,
       'TSModuleBlock:exit': checkScope,
@@ -549,7 +558,20 @@ export default util.createRule({
   },
 });
 
-function getOverloadKey(node: OverloadNode): string | undefined {
+function getExportingNode(
+  node: TSESTree.TSDeclareFunction,
+):
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ExportDefaultDeclaration
+  | undefined {
+  return node.parent &&
+    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+    ? node.parent
+    : undefined;
+}
+
+function getOverloadKey(node: OverloadNode): string {
   const info = getOverloadInfo(node);
 
   return (
