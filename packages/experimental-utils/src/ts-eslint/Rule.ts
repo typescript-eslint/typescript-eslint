@@ -40,9 +40,9 @@ interface RuleMetaData<TMessageIds extends string> {
    */
   deprecated?: boolean;
   /**
-   * Documentation for the rule
+   * Documentation for the rule, unnecessary for custom rules/plugins
    */
-  docs: RuleMetaDataDocs;
+  docs?: RuleMetaDataDocs;
   /**
    * The fixer category. Omit if there is no fixer
    */
