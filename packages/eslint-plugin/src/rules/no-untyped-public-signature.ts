@@ -11,6 +11,8 @@ type Options = [{ ignoredMethods: string[] }];
 export default util.createRule<Options, MessageIds>({
   name: 'no-untyped-public-signature',
   meta: {
+    deprecated: true,
+    replacedBy: ['explicit-module-boundary-types'],
     docs: {
       description: 'Disallow untyped public methods',
       category: 'Best Practices',
