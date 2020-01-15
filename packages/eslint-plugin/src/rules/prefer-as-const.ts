@@ -2,7 +2,6 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import * as util from '../util';
 
 export default util.createRule({
@@ -16,7 +15,10 @@ export default util.createRule({
     },
     fixable: 'code',
     messages: {
-      preferAsConst: 'Expected a `const` instead of a `type literal`',
+      preferConstAssertion:
+        'Expected a `const` instead of a literal type assertion',
+      variableConstAssertion:
+        'Expected a `const` assertion instead of a literal type annotation',
     },
     schema: [],
   },
@@ -33,13 +35,18 @@ export default util.createRule({
         'raw' in typeNode.literal &&
         valueNode.raw === typeNode.literal.raw
       ) {
-        context.report({
-          node: typeNode,
-          messageId: 'preferAsConst',
-          fix: canFix
-            ? (fixer): RuleFix => fixer.replaceText(typeNode, 'const')
-            : undefined,
-        });
+        if (canFix) {
+          context.report({
+            node: typeNode,
+            messageId: 'preferConstAssertion',
+            fix: fixer => fixer.replaceText(typeNode, 'const'),
+          });
+        } else {
+          context.report({
+            node: typeNode,
+            messageId: 'variableConstAssertion',
+          });
+        }
       }
     }
 

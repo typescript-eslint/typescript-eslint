@@ -27,6 +27,7 @@ ruleTester.run('prefer-as-const', rule, {
     'class foo { bar = "baz" }',
     "let foo: 'bar'",
     'let foo = { bar }',
+    "let foo: 'baz' = 'baz' as const",
   ],
   invalid: [
     {
@@ -34,7 +35,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo = { bar: 'baz' as const }",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 27,
         },
@@ -45,7 +46,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: 'let foo = { bar: 1 as const }',
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 23,
         },
@@ -56,7 +57,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let []: 'bar' = 'bar';",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'variableConstAssertion',
           line: 1,
           column: 9,
         },
@@ -67,7 +68,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo: 'bar' = 'bar';",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'variableConstAssertion',
           line: 1,
           column: 10,
         },
@@ -78,7 +79,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: 'let foo: 2 = 2;',
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'variableConstAssertion',
           line: 1,
           column: 10,
         },
@@ -89,7 +90,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo: 'bar' = 'bar' as const;",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 27,
         },
@@ -100,7 +101,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo = <const>'bar';",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 12,
         },
@@ -111,7 +112,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: 'let foo = <const>4;',
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 12,
         },
@@ -122,7 +123,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo = 'bar' as const;",
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 20,
         },
@@ -133,7 +134,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: 'let foo = 5 as const;',
       errors: [
         {
-          messageId: 'preferAsConst',
+          messageId: 'preferConstAssertion',
           line: 1,
           column: 16,
         },
