@@ -97,14 +97,12 @@ describe('Validating rule metadata', () => {
 
 describe('Validating README.md', () => {
   const rulesTables = parseReadme();
-  const notDeprecated = rulesData.filter(
-    ([, rule]) => rule.meta.deprecated !== true,
-  );
+  const notDeprecated = rulesData.filter(([, rule]) => !rule.meta.deprecated);
   const baseRules = notDeprecated.filter(
-    ([, rule]) => rule.meta.docs.extendsBaseRule !== true,
+    ([, rule]) => !rule.meta.docs.extendsBaseRule,
   );
   const extensionRules = notDeprecated.filter(
-    ([, rule]) => rule.meta.docs.extendsBaseRule === true,
+    ([, rule]) => rule.meta.docs.extendsBaseRule,
   );
 
   it('All non-deprecated base rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {

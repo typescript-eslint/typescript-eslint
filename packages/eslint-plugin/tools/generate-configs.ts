@@ -21,10 +21,18 @@ interface LinterConfig extends TSESLint.Linter.Config {
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const MAX_RULE_NAME_LENGTH = 32;
 const DEFAULT_RULE_SETTING = 'warn';
-const BASE_RULES_TO_BE_OVERRIDDEN = new Set(
+const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
   Object.entries(rules)
     .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
-    .map(([ruleName]) => ruleName),
+    .map(
+      ([ruleName, rule]) =>
+        [
+          ruleName,
+          typeof rule.meta.docs.extendsBaseRule === 'string'
+            ? rule.meta.docs.extendsBaseRule
+            : ruleName,
+        ] as const,
+    ),
 );
 // list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
@@ -85,14 +93,15 @@ function reducer<TMessageIds extends string>(
     : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
+    const baseRuleName = BASE_RULES_TO_BE_OVERRIDDEN.get(key)!;
     console.log(
-      key
-        .padStart(RULE_NAME_PREFIX.length + key.length)
+      baseRuleName
+        .padStart(RULE_NAME_PREFIX.length + baseRuleName.length)
         .padEnd(RULE_NAME_PREFIX.length + MAX_RULE_NAME_LENGTH),
       '=',
       chalk.green('off'),
     );
-    config[key] = 'off';
+    config[baseRuleName] = 'off';
   }
   console.log(
     `${chalk.dim(RULE_NAME_PREFIX)}${key.padEnd(MAX_RULE_NAME_LENGTH)}`,

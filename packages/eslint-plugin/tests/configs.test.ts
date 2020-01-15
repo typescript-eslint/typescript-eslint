@@ -1,6 +1,19 @@
 import rules from '../src/rules';
 import plugin from '../src/index';
 
+const RULE_NAME_PREFIX = '@typescript-eslint/';
+const EXTENSION_RULES = Object.entries(rules)
+  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
+  .map(
+    ([ruleName, rule]) =>
+      [
+        `${RULE_NAME_PREFIX}${ruleName}`,
+        typeof rule.meta.docs.extendsBaseRule === 'string'
+          ? rule.meta.docs.extendsBaseRule
+          : ruleName,
+      ] as const,
+  );
+
 function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
   return value.reduce<Record<string, T>>((accum, [k, v]) => {
     accum[k] = v;
@@ -14,11 +27,22 @@ function filterRules(values: Record<string, string>): [string, string][] {
   );
 }
 
-const EXTENSION_RULES = Object.entries(rules)
-  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
-  .map(([ruleName]) => ruleName);
-
-const RULE_NAME_PREFIX = '@typescript-eslint/';
+function itHasBaseRulesOverriden(
+  unfilteredConfigRules: Record<string, string>,
+): void {
+  it('has the base rules overriden by the appropriate extension rules', () => {
+    const ruleNames = new Set(Object.keys(unfilteredConfigRules));
+    EXTENSION_RULES.forEach(([ruleName, extRuleName]) => {
+      if (ruleNames.has(ruleName)) {
+        // this looks a little weird, but it provides the cleanest test output style
+        expect(unfilteredConfigRules).toMatchObject({
+          ...unfilteredConfigRules,
+          [extRuleName]: 'off',
+        });
+      }
+    });
+  });
+}
 
 describe('all.json config', () => {
   const unfilteredConfigRules: Record<string, string> =
@@ -33,13 +57,7 @@ describe('all.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  it('has the base rules overriden by extensions', () => {
-    EXTENSION_RULES.forEach(ext => {
-      if (configRules.find(([name]) => name === `${RULE_NAME_PREFIX}${ext}`)) {
-        expect(unfilteredConfigRules[ext]).toBeDefined();
-      }
-    });
-  });
+  itHasBaseRulesOverriden(unfilteredConfigRules);
 });
 
 describe('recommended.json config', () => {
@@ -62,13 +80,7 @@ describe('recommended.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  it('has the base rules overriden by extensions', () => {
-    EXTENSION_RULES.forEach(ext => {
-      if (configRules.find(([name]) => name === `${RULE_NAME_PREFIX}${ext}`)) {
-        expect(unfilteredConfigRules[ext]).toBeDefined();
-      }
-    });
-  });
+  itHasBaseRulesOverriden(unfilteredConfigRules);
 });
 
 describe('recommended-requiring-type-checking.json config', () => {
@@ -91,11 +103,5 @@ describe('recommended-requiring-type-checking.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  it('has the base rules overriden by extensions', () => {
-    EXTENSION_RULES.forEach(ext => {
-      if (configRules.find(([name]) => name === `${RULE_NAME_PREFIX}${ext}`)) {
-        expect(unfilteredConfigRules[ext]).toBeDefined();
-      }
-    });
-  });
+  itHasBaseRulesOverriden(unfilteredConfigRules);
 });
