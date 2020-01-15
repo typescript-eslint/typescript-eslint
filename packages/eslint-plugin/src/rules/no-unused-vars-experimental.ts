@@ -1,6 +1,6 @@
 /* eslint-disable no-fallthrough */
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -29,7 +29,6 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unused variables and arguments',
       category: 'Best Practices',
       recommended: false,
-      requiresTypeChecking: true,
     },
     schema: [
       {
@@ -68,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [userOptions]) {
-    const parserServices = util.getParserServices(context, true);
+    const parserServices = ESLintUtils.getParserServices(context, true);
     const tsProgram = parserServices.program;
     const afterAllDiagnosticsCallbacks: (() => void)[] = [];
 
