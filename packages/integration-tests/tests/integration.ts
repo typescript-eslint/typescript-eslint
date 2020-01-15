@@ -37,36 +37,16 @@ function runEslint(directory: string, paths: string): unknown {
   }
 }
 
-describe('markdown', () => {
-  it('it should produce the expected lint output', () => {
-    expect(runEslint('markdown', '*.md')).toMatchSnapshot();
-  });
-});
+const integrationTests: [string, string][] = [
+  ['markdown', '*.md'],
+  ['recommended-does-not-require-program', '*.ts'],
+  ['typescript-and-tslint-plugins-together', '*.ts'],
+  ['vue-jsx', '*.vue'],
+  ['vue-sfc', '*.vue'],
+];
 
-describe('recommended-does-not-require-program', () => {
+describe.each(integrationTests)('%s', (directory, path) => {
   it('it should produce the expected lint output', () => {
-    expect(
-      runEslint('recommended-does-not-require-program', '*.ts'),
-    ).toMatchSnapshot();
-  });
-});
-
-describe('typescript-and-tslint-plugins-together', () => {
-  it('it should produce the expected lint output', () => {
-    expect(
-      runEslint('typescript-and-tslint-plugins-together', '*.ts'),
-    ).toMatchSnapshot();
-  });
-});
-
-describe('vue-jsx', () => {
-  it('it should produce the expected lint output', () => {
-    expect(runEslint('vue-jsx', '*.vue')).toMatchSnapshot();
-  });
-});
-
-describe('vue-sfc', () => {
-  it('it should produce the expected lint output', () => {
-    expect(runEslint('vue-sfc', '*.vue')).toMatchSnapshot();
+    expect(runEslint(directory, path)).toMatchSnapshot();
   });
 });
