@@ -19,14 +19,16 @@ Each property will be described in detail below. Also see the examples section b
 ```ts
 type Options = {
   // format options
-  format: (
-    | 'camelCase'
-    | 'strictCamelCase'
-    | 'PascalCase'
-    | 'StrictPascalCase'
-    | 'snake_case'
-    | 'UPPER_CASE'
-  )[];
+  format:
+    | (
+        | 'camelCase'
+        | 'strictCamelCase'
+        | 'PascalCase'
+        | 'StrictPascalCase'
+        | 'snake_case'
+        | 'UPPER_CASE'
+      )[]
+    | null;
   custom?: {
     regex: string;
     match: boolean;
@@ -79,7 +81,7 @@ When the format of an identifier is checked, it is checked in the following orde
 1. validate custom
 1. validate format
 
-At each step, if the identifier matches the option, the matching part will be removed.
+For steps 1-4, if the identifier matches the option, the matching part will be removed.
 For example, if you provide the following formatting option: `{ leadingUnderscore: 'allow', prefix: ['I'], format: ['StrictPascalCase'] }`, for the identifier `_IMyInterface`, then the following checks will occur:
 
 1. `name = _IMyInterface`
@@ -89,6 +91,7 @@ For example, if you provide the following formatting option: `{ leadingUnderscor
 1. validate prefix - pass
    - Trim prefix - `name = MyInterface`
 1. validate suffix - no check
+1. validate custom - no check
 1. validate format - pass
 
 One final note is that if the name were to become empty via this trimming process, it is considered to match all `format`s. An example of where this might be useful is for generic type parameters, where you want all names to be prefixed with `T`, but also want to allow for the single character `T` name.
@@ -103,6 +106,9 @@ The `format` option defines the allowed formats for the identifier. This option 
 - `StrictPascalCase` - same as `strictCamelCase`, except the first character must be upper-case.
 - `snake_case` - standard snake_case format - all characters must be lower-case, and underscores are allowed.
 - `UPPER_CASE` - same as `snake_case`, except all characters must be upper-case.
+
+Instead of an array, you may also pass `null`. This signifies "this selector shall not have its format checked".
+This can be useful if you want to enforce no particular format for a specific selector, after applying a group selector.
 
 ### `custom`
 
@@ -229,7 +235,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     { "selector": "variableLike", "format": ["camelCase"] }
   ]
@@ -240,7 +246,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "memberLike",
@@ -256,7 +262,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "variable",
@@ -272,7 +278,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "variable",
@@ -286,7 +292,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "typeParameter",
@@ -301,7 +307,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
-  "@typescript-eslint/naming-conventions": [
+  "@typescript-eslint/naming-convention": [
     "error",
     {
       "selector": "default",
