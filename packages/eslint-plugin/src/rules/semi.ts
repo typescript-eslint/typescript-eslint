@@ -18,6 +18,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'code',
     schema: baseRule.meta.schema,

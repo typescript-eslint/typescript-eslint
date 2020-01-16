@@ -12,6 +12,7 @@ export default util.createRule({
       description: 'Disallow generic `Array` constructors',
       category: 'Stylistic Issues',
       recommended: 'error',
+      extendsBaseRule: true,
     },
     fixable: 'code',
     messages: {

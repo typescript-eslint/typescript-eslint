@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.15.0...v2.16.0) (2020-01-13)
+
+
+### Features
+
+* **typescript-estree:** add parserOption to turn on debug logs ([#1413](https://github.com/typescript-eslint/typescript-eslint/issues/1413)) ([25092fd](https://github.com/typescript-eslint/typescript-eslint/commit/25092fd))
+* **typescript-estree:** add strict type mapping to esTreeNodeToTSNodeMap ([#1382](https://github.com/typescript-eslint/typescript-eslint/issues/1382)) ([d3d70a3](https://github.com/typescript-eslint/typescript-eslint/commit/d3d70a3))
+
+
+
+
+
 # [2.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.14.0...v2.15.0) (2020-01-06)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow magic numbers',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
     },
     // Extend base schema with additional property to ignore TS numeric literal types
     schema: [

@@ -681,7 +681,7 @@ export interface ArrayExpression extends BaseNode {
 
 export interface ArrayPattern extends BaseNode {
   type: AST_NODE_TYPES.ArrayPattern;
-  elements: DestructuringPattern[];
+  elements: (DestructuringPattern | null)[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];

@@ -9,7 +9,8 @@
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/ROADMAP.md",
-    "**/*.{json,snap}"
+    "**/*.{json,snap}",
+    ".cspell.json"
   ],
   "dictionaries": [
     "typescript",
@@ -54,6 +55,8 @@
     "destructure",
     "destructured",
     "erroring",
+    "ESLint",
+    "ESLint's",
     "espree",
     "estree",
     "linebreaks",

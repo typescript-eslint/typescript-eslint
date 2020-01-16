@@ -11,6 +11,7 @@ import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
+import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
@@ -18,6 +19,7 @@ import interfaceNamePrefix from './interface-name-prefix';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
+import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -91,6 +93,7 @@ export default {
   'default-param-last': defaultParamLast,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
+  'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
   'generic-type-naming': genericTypeNaming,
   indent: indent,
@@ -98,6 +101,7 @@ export default {
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
+  'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,

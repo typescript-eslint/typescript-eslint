@@ -12,7 +12,9 @@ import {
 //------------------------------------------------------------------------------
 
 const FIXTURES_DIR = './tests/fixtures/services';
-const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
+const testFiles = glob.sync(`**/*.src.ts`, {
+  cwd: FIXTURES_DIR,
+});
 
 function createConfig(filename: string): object {
   return {
@@ -29,7 +31,7 @@ function createConfig(filename: string): object {
 
 describe('services', () => {
   testFiles.forEach(filename => {
-    const code = fs.readFileSync(filename, 'utf8');
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const config = createConfig(filename);
     it(
       formatSnapshotName(filename, FIXTURES_DIR, '.ts'),

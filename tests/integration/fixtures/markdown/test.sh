@@ -9,6 +9,7 @@ npm install
 # Use the local volumes for our own packages
 npm install $(npm pack /usr/typescript-estree | tail -1)
 npm install $(npm pack /usr/parser | tail -1)
+npm install $(npm pack /usr/experimental-utils | tail -1)
 npm install $(npm pack /usr/eslint-plugin | tail -1)
 
 # Install the latest vue-eslint-parser (this may break us occassionally, but it's probably good to get that feedback early)

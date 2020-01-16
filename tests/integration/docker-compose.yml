@@ -13,6 +13,8 @@ services:
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       - ../../packages/eslint-plugin-tslint/:/usr/eslint-plugin-tslint
@@ -32,6 +34,8 @@ services:
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
@@ -49,6 +53,8 @@ services:
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
@@ -66,6 +72,8 @@ services:
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
@@ -83,6 +91,8 @@ services:
       - /usr/parser/tests
       - ../../packages/typescript-estree/:/usr/typescript-estree
       - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.

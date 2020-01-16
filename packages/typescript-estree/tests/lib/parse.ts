@@ -1,7 +1,9 @@
+import debug from 'debug';
 import { join, resolve } from 'path';
 import * as parser from '../../src/parser';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
+import * as sharedParserUtils from '../../src/create-program/shared';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/simpleProject';
@@ -144,7 +146,7 @@ describe('parse()', () => {
       tokens: true,
       range: true,
       loc: true,
-      filePath: 'tests/fixtures/simpleProject/file.ts',
+      filePath: 'file.ts',
     };
     const projectConfig: TSESTreeOptions = {
       ...baseConfig,
@@ -494,6 +496,65 @@ describe('parse()', () => {
           testParse('other/unknownFileType.unknown'),
         ).toThrowErrorMatchingSnapshot();
       });
+    });
+  });
+
+  describe('debug options', () => {
+    const debugEnable = jest.fn();
+    beforeEach(() => {
+      debugEnable.mockReset();
+      debug.enable = debugEnable;
+      jest.spyOn(debug, 'enabled').mockImplementation(() => false);
+    });
+
+    it("shouldn't turn on debugger if no options were provided", () => {
+      parser.parseAndGenerateServices('const x = 1;', {
+        debugLevel: [],
+      });
+      expect(debugEnable).not.toHaveBeenCalled();
+    });
+
+    it('should turn on eslint debugger', () => {
+      parser.parseAndGenerateServices('const x = 1;', {
+        debugLevel: ['eslint'],
+      });
+      expect(debugEnable).toHaveBeenCalledTimes(1);
+      expect(debugEnable).toHaveBeenCalledWith('eslint:*,-eslint:code-path');
+    });
+
+    it('should turn on typescript-eslint debugger', () => {
+      parser.parseAndGenerateServices('const x = 1;', {
+        debugLevel: ['typescript-eslint'],
+      });
+      expect(debugEnable).toHaveBeenCalledTimes(1);
+      expect(debugEnable).toHaveBeenCalledWith('typescript-eslint:*');
+    });
+
+    it('should turn on both eslint and typescript-eslint debugger', () => {
+      parser.parseAndGenerateServices('const x = 1;', {
+        debugLevel: ['typescript-eslint', 'eslint'],
+      });
+      expect(debugEnable).toHaveBeenCalledTimes(1);
+      expect(debugEnable).toHaveBeenCalledWith(
+        'typescript-eslint:*,eslint:*,-eslint:code-path',
+      );
+    });
+
+    it('should turn on typescript debugger', () => {
+      const spy = jest.spyOn(
+        sharedParserUtils,
+        'createDefaultCompilerOptionsFromExtra',
+      );
+
+      parser.parseAndGenerateServices('const x = 1;', {
+        debugLevel: ['typescript'],
+      });
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveReturnedWith(
+        expect.objectContaining({
+          extendedDiagnostics: true,
+        }),
+      );
     });
   });
 });

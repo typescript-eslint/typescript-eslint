@@ -49,6 +49,8 @@ export default util.createRule<Options, MessageIds>({
       // https://github.com/typescript-eslint/typescript-eslint/issues/374
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       noPrefix: 'Interface name must not be prefixed with "I".',
       alwaysPrefix: 'Interface name must be prefixed with "I".',
