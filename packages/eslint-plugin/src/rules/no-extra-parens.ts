@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unnecessary parentheses',
       category: 'Possible Errors',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'code',
     schema: baseRule.meta.schema,

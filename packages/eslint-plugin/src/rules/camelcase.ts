@@ -29,6 +29,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Enforce camelCase naming convention',
       category: 'Stylistic Issues',
       recommended: 'error',
+      extendsBaseRule: true,
     },
     deprecated: true,
     replacedBy: ['naming-convention'],

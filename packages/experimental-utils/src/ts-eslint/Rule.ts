@@ -33,6 +33,12 @@ interface RuleMetaDataDocs {
    * to type-check code. This is only used for documentation purposes.
    */
   requiresTypeChecking?: boolean;
+  /**
+   * Does the rule extend (or is it based off of) an ESLint code rule?
+   * Alternately accepts the name of the base rule, in case the rule has been renamed.
+   * This is only used for documentation purposes.
+   */
+  extendsBaseRule?: boolean | string;
 }
 interface RuleMetaData<TMessageIds extends string> {
   /**
