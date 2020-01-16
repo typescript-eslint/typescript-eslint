@@ -19,17 +19,6 @@ jobs:
         with:
           node-version: 12
 
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
         run: yarn --ignore-engines --frozen-lockfile
@@ -49,7 +38,7 @@ jobs:
         run: yarn check:spelling
 
       - name: Run unit tests
-        run: yarn test
+        run: yarn test -- -- --runInBand
         env:
           CI: true
 
@@ -77,17 +66,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
         run: yarn --ignore-engines --frozen-lockfile
@@ -95,7 +73,7 @@ jobs:
           CI: true
 
       - name: Run unit tests
-        run: yarn test
+        run: yarn test -- -- --runInBand
         env:
           CI: true
 
@@ -111,17 +89,6 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
