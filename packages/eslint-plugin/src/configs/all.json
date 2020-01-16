@@ -82,6 +82,7 @@
     "@typescript-eslint/require-await": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
     "@typescript-eslint/restrict-template-expressions": "error",
+    "no-return-await": "off",
     "@typescript-eslint/return-await": "error",
     "semi": "off",
     "@typescript-eslint/semi": "error",
