@@ -87,6 +87,7 @@ export interface EstreeToTsNodeTypes {
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement;
   [AST_NODE_TYPES.JSXOpeningFragment]: ts.JsxOpeningFragment;
+  [AST_NODE_TYPES.JSXPrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.JSXSpreadAttribute]: ts.JsxSpreadAttribute;
   [AST_NODE_TYPES.JSXSpreadChild]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXMemberExpression]: ts.PropertyAccessExpression;

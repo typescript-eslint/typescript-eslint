@@ -84,6 +84,7 @@ export type TSNode = ts.Node &
     | ts.TemplateTail
     | ts.TemplateExpression
     | ts.TemplateSpan
+    | ts.PrivateIdentifier
     | ts.ParenthesizedExpression
     | ts.ArrayLiteralExpression
     | ts.SpreadElement

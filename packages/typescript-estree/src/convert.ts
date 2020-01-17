@@ -18,14 +18,14 @@ import {
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
-  unescapeStringLiteralText,
   TSError,
+  unescapeStringLiteralText,
 } from './node-utils';
 import {
   AST_NODE_TYPES,
   TSESTree,
-  TSNode,
   TSESTreeToTSNode,
+  TSNode,
 } from './ts-estree';
 import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 
@@ -442,10 +442,10 @@ export class Converter {
    * @returns the converted ESTree name object
    */
   private convertJSXTagName(
-    node: ts.JsxTagNameExpression,
+    node: ts.JsxTagNameExpression | ts.PrivateIdentifier,
     parent: ts.Node,
-  ): TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier {
-    let result: TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier;
+  ): TSESTree.JSXTagNameExpression {
+    let result: TSESTree.JSXTagNameExpression;
     switch (node.kind) {
       case SyntaxKind.PropertyAccessExpression:
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
@@ -461,6 +461,12 @@ export class Converter {
         result = this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,
           name: 'this',
+        });
+        break;
+      case SyntaxKind.PrivateIdentifier:
+        result = this.createNode<TSESTree.JSXPrivateIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXPrivateIdentifier,
+          name: node.text,
         });
         break;
       case SyntaxKind.Identifier:
@@ -1563,9 +1569,10 @@ export class Converter {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
             source: this.convertChild(node.moduleSpecifier),
-            specifiers: node.exportClause.elements.map(el =>
-              this.convertChild(el),
-            ),
+            specifiers:
+              node.exportClause.kind === SyntaxKind.NamedExports
+                ? node.exportClause.elements.map(el => this.convertChild(el))
+                : [this.convertChild(node.exportClause.name)],
             declaration: null,
           });
         } else {
