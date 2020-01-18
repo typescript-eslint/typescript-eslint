@@ -33,6 +33,7 @@ export default util.createRule({
     return {
       'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
       'OptionalMemberExpression > TSNonNullExpression': checkExtraNonNullAssertion,
+      'OptionalCallExpression > TSNonNullExpression.callee': checkExtraNonNullAssertion,
     };
   },
 });

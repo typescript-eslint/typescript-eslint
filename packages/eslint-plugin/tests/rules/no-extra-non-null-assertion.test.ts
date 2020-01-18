@@ -86,6 +86,26 @@ function foo(bar?: { n: number }) {
         },
       ],
     },
+    {
+      code: `
+function foo(bar?: { n: number }) {
+  return bar!?.();
+}
+      `,
+      output: `
+function foo(bar?: { n: number }) {
+  return bar?.();
+}
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 14,
+          column: 10,
+          line: 3,
+        },
+      ],
+    },
     // parentheses
     {
       code: `
@@ -141,6 +161,26 @@ function foo(bar?: { n: number }) {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 16,
           column: 10,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(bar?: { n: number }) {
+  return (bar!)?.();
+}
+      `,
+      output: `
+function foo(bar?: { n: number }) {
+  return (bar)?.();
+}
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 15,
+          column: 11,
           line: 3,
         },
       ],
