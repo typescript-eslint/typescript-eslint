@@ -75,6 +75,12 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           delete node.parameters;
         }
       },
+      MethodDefinition(node: any) {
+        if (node.abstract) {
+          delete node.abstract;
+          node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
+        }
+      },
       /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
@@ -198,6 +204,10 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }
+
+        if (!node.body) {
+          node.body = null;
+        }
       },
       /**
        * Template strings seem to also be affected by the difference in opinion between different parsers in
@@ -246,6 +256,15 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       TSTypePredicate(node) {
         if (!node.asserts) {
           node.asserts = false;
+        }
+      },
+      /**
+       * babel: sets declaration property as unknown/undefined
+       * ts-estree: sets asserts property as unknown/null
+       */
+      ExportNamedDeclaration(node) {
+        if (!node.declaration) {
+          node.declaration = null;
         }
       },
     },

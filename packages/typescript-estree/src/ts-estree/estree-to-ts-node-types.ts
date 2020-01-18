@@ -53,6 +53,7 @@ export interface EstreeToTsNodeTypes {
     | ts.InterfaceDeclaration
     | ts.EnumDeclaration
     | ts.ModuleDeclaration;
+  [AST_NODE_TYPES.ExportNamespaceSpecifier]: ts.NamespaceExport;
   [AST_NODE_TYPES.ExportSpecifier]: ts.ExportSpecifier;
   [AST_NODE_TYPES.ExpressionStatement]: ts.ExpressionStatement;
   [AST_NODE_TYPES.ForInStatement]: ts.ForInStatement;

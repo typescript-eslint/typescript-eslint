@@ -1582,7 +1582,7 @@ export class Converter {
             specifiers:
               node.exportClause.kind === SyntaxKind.NamedExports
                 ? node.exportClause.elements.map(el => this.convertChild(el))
-                : [this.convertChild(node.exportClause.name)],
+                : [this.convertChild(node.exportClause)],
             declaration: null,
           });
         } else {
@@ -1611,6 +1611,12 @@ export class Converter {
             declaration: this.convertChild(node.expression),
           });
         }
+
+      case SyntaxKind.NamespaceExport:
+        return this.createNode<TSESTree.ExportNamespaceSpecifier>(node as any, {
+          type: AST_NODE_TYPES.ExportNamespaceSpecifier,
+          exported: this.convertChild(node.name),
+        });
 
       // Unary Operations
 

@@ -102,6 +102,7 @@ export type Node =
   | ExportAllDeclaration
   | ExportDefaultDeclaration
   | ExportNamedDeclaration
+  | ExportNamespaceSpecifier
   | ExportSpecifier
   | ExpressionStatement
   | ForInStatement
@@ -825,6 +826,11 @@ export interface ExportNamedDeclaration extends BaseNode {
   declaration: ExportDeclaration | null;
   specifiers: ExportSpecifier[];
   source: Expression | null;
+}
+
+export interface ExportNamespaceSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ExportNamespaceSpecifier;
+  exported: Identifier;
 }
 
 export interface ExportSpecifier extends BaseNode {

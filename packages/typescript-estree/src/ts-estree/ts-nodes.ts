@@ -158,6 +158,7 @@ export type TSNode = ts.Node &
     | ts.ImportSpecifier
     | ts.ExportSpecifier
     | ts.ExportAssignment
+    | ts.NamespaceExport
     | ts.CommentRange
     | ts.SourceFile
     | ts.Bundle

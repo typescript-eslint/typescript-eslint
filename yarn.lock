@@ -8009,10 +8009,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@*, typescript@3.8.0-dev.20200117, typescript@next:
-  version "3.8.0-dev.20200117"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20200117.tgz#15abe5da4fab61af2f28c2cff89e8d3283c37d77"
-  integrity sha512-80flPGfPkB9agERB/XHIt1C9F27EYBt3alVUS8VVjblPvigLjQbva/tkAhGacsbrRYzL8qWIEwRVTOrtiT2CaQ==
+typescript@*, typescript@3.8.0-dev.20200118, typescript@next:
+  version "3.8.0-dev.20200118"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20200118.tgz#026018ee95bd40e8eec0037180e8a1ff00f78b4c"
+  integrity sha512-ip3RvbS7dBp4T/z+X5Gil2nCAOPBXNMLUzlvbpH5ekevlVrkwf4fGsq1Kfsw6HcN2MoGtyHhXNQUx6xRLWKRhA==
 
 uglify-js@^3.1.4:
   version "3.6.0"

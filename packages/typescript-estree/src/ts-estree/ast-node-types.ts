@@ -24,6 +24,7 @@ export enum AST_NODE_TYPES {
   ExportAllDeclaration = 'ExportAllDeclaration',
   ExportDefaultDeclaration = 'ExportDefaultDeclaration',
   ExportNamedDeclaration = 'ExportNamedDeclaration',
+  ExportNamespaceSpecifier = 'ExportNamespaceSpecifier',
   ExportSpecifier = 'ExportSpecifier',
   ExpressionStatement = 'ExpressionStatement',
   ForInStatement = 'ForInStatement',

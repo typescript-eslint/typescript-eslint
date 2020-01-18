@@ -81,6 +81,6 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "resolutions": {
-    "typescript": "3.8.0-dev.20200117"
+    "typescript": "3.8.0-dev.20200118"
   }
 }
