@@ -38,6 +38,7 @@ import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
+import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
@@ -120,6 +121,7 @@ export default {
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
+  'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-parameter-properties': noParameterProperties,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
