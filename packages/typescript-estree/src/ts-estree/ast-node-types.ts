@@ -64,6 +64,7 @@ export enum AST_NODE_TYPES {
   ObjectPattern = 'ObjectPattern',
   OptionalCallExpression = 'OptionalCallExpression',
   OptionalMemberExpression = 'OptionalMemberExpression',
+  PrivateName = 'PrivateName',
   Program = 'Program',
   Property = 'Property',
   RestElement = 'RestElement',

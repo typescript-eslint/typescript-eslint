@@ -119,6 +119,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.OptionalMemberExpression]:
     | ts.PropertyAccessExpression
     | ts.ElementAccessExpression;
+  [AST_NODE_TYPES.PrivateName]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.Program]: ts.SourceFile;
   [AST_NODE_TYPES.Property]:
     | ts.PropertyAssignment

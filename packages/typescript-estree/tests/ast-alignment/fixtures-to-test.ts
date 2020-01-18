@@ -510,6 +510,10 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   ],
 });
 
+tester.addFixturePatternConfig('typescript/3.8', {
+  fileType: 'ts',
+});
+
 const fixturesToTest = tester.getFixtures();
 
 export { fixturesToTest };

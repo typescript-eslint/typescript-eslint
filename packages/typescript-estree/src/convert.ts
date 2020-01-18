@@ -594,6 +594,16 @@ export class Converter {
         });
       }
 
+      /**
+       * TODO: This structure should be valdiated before merge
+       * @see https://github.com/estree/estree/pull/180
+       */
+      case SyntaxKind.PrivateIdentifier:
+        return this.createNode<TSESTree.PrivateName>(node, {
+          type: AST_NODE_TYPES.PrivateName,
+          name: node.text,
+        });
+
       case SyntaxKind.WithStatement:
         return this.createNode<TSESTree.WithStatement>(node, {
           type: AST_NODE_TYPES.WithStatement,

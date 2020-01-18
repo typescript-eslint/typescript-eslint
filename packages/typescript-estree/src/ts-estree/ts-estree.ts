@@ -142,6 +142,7 @@ export type Node =
   | ObjectPattern
   | OptionalCallExpression
   | OptionalMemberExpression
+  | PrivateName
   | Program
   | Property
   | RestElement
@@ -1076,6 +1077,15 @@ export interface OptionalMemberExpressionNonComputedName
   extends MemberExpressionNonComputedNameBase {
   type: AST_NODE_TYPES.OptionalMemberExpression;
   optional: boolean;
+}
+
+/**
+ * TODO: This structure should be valdiated before merge
+ * @see https://github.com/estree/estree/pull/180
+ */
+export interface PrivateName extends BaseNode {
+  type: AST_NODE_TYPES.PrivateName;
+  name: string;
 }
 
 export interface Program extends BaseNode {
