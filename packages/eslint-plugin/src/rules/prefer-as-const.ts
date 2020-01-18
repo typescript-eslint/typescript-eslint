@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
@@ -50,11 +51,12 @@ export default util.createRule({
             suggest: [
               {
                 messageId: 'variableSuggest1',
-                fix: fixer => fixer.insertTextAfter(valueNode, ' as const'),
+                fix: (fixer): TSESLint.RuleFix =>
+                  fixer.insertTextAfter(valueNode, ' as const'),
               },
               {
                 messageId: 'variableSuggest2',
-                fix: fixer => [
+                fix: (fixer): TSESLint.RuleFix[] => [
                   fixer.remove(typeNode.parent!),
                   fixer.insertTextAfter(valueNode, ' as const'),
                 ],
