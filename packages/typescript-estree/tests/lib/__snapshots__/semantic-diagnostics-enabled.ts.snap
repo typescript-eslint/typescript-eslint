@@ -1649,15 +1649,15 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/react-typed-props.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-field.src 1`] = `[Error: Unknown AST_NODE_TYPE: "TSPrivateIdentifier"]`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-field.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-field-modifiers-error.src 1`] = `[Error: Unknown AST_NODE_TYPE: "TSPrivateIdentifier"]`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-field-modifiers-error.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-getter.src 1`] = `[Error: Unknown AST_NODE_TYPE: "TSPrivateIdentifier"]`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-getter.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-method.src 1`] = `[Error: Unknown AST_NODE_TYPE: "TSPrivateIdentifier"]`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-private-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-readonly-private-field.src 1`] = `[Error: Unknown AST_NODE_TYPE: "TSPrivateIdentifier"]`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/class-readonly-private-field.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/3.8/export-star-as-ns-from.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

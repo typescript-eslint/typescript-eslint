@@ -32,6 +32,8 @@ function parseWithBabelParser(text: string, jsx = true): any {
     'importMeta',
     'optionalChaining',
     'nullishCoalescingOperator',
+    'classPrivateMethods',
+    'classPrivateProperties',
   ];
   if (jsx) {
     plugins.push('jsx');
