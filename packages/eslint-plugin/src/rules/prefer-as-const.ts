@@ -19,6 +19,8 @@ export default util.createRule({
         'Expected a `const` instead of a literal type assertion',
       variableConstAssertion:
         'Expected a `const` assertion instead of a literal type annotation',
+      variableSuggest1: 'You should add `as const` assertion.',
+      variableSuggest2: 'You should use `as const` instead of type annotation.',
     },
     schema: [],
   },
@@ -45,6 +47,19 @@ export default util.createRule({
           context.report({
             node: typeNode,
             messageId: 'variableConstAssertion',
+            suggest: [
+              {
+                messageId: 'variableSuggest1',
+                fix: fixer => fixer.insertTextAfter(valueNode, ' as const'),
+              },
+              {
+                messageId: 'variableSuggest2',
+                fix: fixer => [
+                  fixer.remove(typeNode.parent!),
+                  fixer.insertTextAfter(valueNode, ' as const'),
+                ],
+              },
+            ],
           });
         }
       }

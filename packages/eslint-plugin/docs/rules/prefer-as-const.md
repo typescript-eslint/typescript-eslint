@@ -16,6 +16,8 @@ Examples of **correct** code for this rule:
 
 ```ts
 let foo = 'bar';
+let foo = 'bar' as const;
+let foo: 'bar' = 'bar' as const;
 let bar = 'bar' as string;
 let foo = <string>'bar';
 let foo = { bar: 'baz' };
