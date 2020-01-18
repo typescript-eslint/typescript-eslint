@@ -5,12 +5,12 @@ jobs:
   - job: primary_code_validation_and_tests
     displayName: Primary code validation and tests
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall
@@ -50,7 +50,7 @@ jobs:
   - job: unit_tests_on_other_node_versions
     displayName: Run unit tests on other Node.js versions
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     strategy:
       maxParallel: 3
       matrix:
@@ -80,12 +80,12 @@ jobs:
       - unit_tests_on_other_node_versions
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall

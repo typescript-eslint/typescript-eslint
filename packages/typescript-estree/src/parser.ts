@@ -1,7 +1,8 @@
-import semver from 'semver';
-import * as ts from 'typescript';
+import debug from 'debug';
 import { sync as globSync } from 'glob';
 import isGlob from 'is-glob';
+import semver from 'semver';
+import * as ts from 'typescript';
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { createDefaultProgram } from './create-program/createDefaultProgram';
@@ -11,6 +12,7 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
+import { ensureAbsolutePath } from './create-program/shared';
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -91,6 +93,7 @@ function resetExtra(): void {
     comment: false,
     comments: [],
     createDefaultProgram: false,
+    debugLevel: new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: false,
     extraFileExtensions: [],
@@ -109,6 +112,31 @@ function resetExtra(): void {
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
+  /**
+   * Configure Debug logging
+   */
+  if (options.debugLevel === true) {
+    extra.debugLevel = new Set(['typescript-eslint']);
+  } else if (Array.isArray(options.debugLevel)) {
+    extra.debugLevel = new Set(options.debugLevel);
+  }
+  if (extra.debugLevel.size > 0) {
+    // debug doesn't support multiple `enable` calls, so have to do it all at once
+    const namespaces = [];
+    if (extra.debugLevel.has('typescript-eslint')) {
+      namespaces.push('typescript-eslint:*');
+    }
+    if (
+      extra.debugLevel.has('eslint') ||
+      // make sure we don't turn off the eslint debug if it was enabled via --debug
+      debug.enabled('eslint:*')
+    ) {
+      // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/bin/eslint.js#L25
+      namespaces.push('eslint:*,-eslint:code-path');
+    }
+    debug.enable(namespaces.join(','));
+  }
+
   /**
    * Track range information in the AST
    */
@@ -189,6 +217,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
+  extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   // Transform glob patterns into paths
   if (extra.projects) {
@@ -255,7 +284,6 @@ function warnAboutTSVersion(): void {
 //------------------------------------------------------------------------------
 
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['range'] extends true ? { range: [number, number] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
 
@@ -415,10 +443,9 @@ export {
   parse,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
-  ParserServices,
-  TSESTreeOptions,
   version,
 };
+export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export { visitorKeys } from './visitor-keys';
 export * from './ts-estree';

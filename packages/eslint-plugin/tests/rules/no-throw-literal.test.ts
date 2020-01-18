@@ -14,8 +14,8 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-throw-literal', rule, {
   valid: [
     'throw new Error();',
-    "throw new Error('error');",
-    "throw Error('error');",
+    'throw new Error("error");',
+    'throw Error("error");',
     `
 const e = new Error();
 throw e;
@@ -65,15 +65,27 @@ throw new CustomError();
     `,
     'throw foo = new Error();',
     'throw 1, 2, new Error();',
-    "throw 'literal' && new Error();",
-    "throw new Error() || 'literal'",
-    "throw foo ? new Error() : 'literal';",
-    "throw foo ? 'literal' : new Error();",
+    'throw "literal" && new Error();',
+    'throw new Error() || "literal"',
+    'throw foo ? new Error() : "literal";',
+    'throw foo ? "literal" : new Error();',
     'function* foo() { let index = 0; throw yield index++; }',
     'async function foo() { throw await bar; }',
     `
 import { Error } from './missing';
 throw Error;
+    `,
+    `
+class CustomError<T, C> extends Error {}
+throw new CustomError<string, string>();
+    `,
+    `
+class CustomError<T = {}> extends Error {}
+throw new CustomError();
+    `,
+    `
+class CustomError<T extends object> extends Error {}
+throw new CustomError();
     `,
   ],
   invalid: [
@@ -86,7 +98,7 @@ throw Error;
       ],
     },
     {
-      code: "throw new String('');",
+      code: 'throw new String("");',
       errors: [
         {
           messageId: 'object',
@@ -94,7 +106,7 @@ throw Error;
       ],
     },
     {
-      code: "throw 'error';",
+      code: 'throw "error";',
       errors: [
         {
           messageId: 'object',
@@ -134,7 +146,7 @@ throw Error;
       ],
     },
     {
-      code: "throw 'a' + 'b';",
+      code: 'throw "a" + "b";',
       errors: [
         {
           messageId: 'object',
@@ -153,7 +165,7 @@ throw a + 'b';
       ],
     },
     {
-      code: "throw foo = 'error';",
+      code: 'throw foo = "error";',
       errors: [
         {
           messageId: 'object',
@@ -169,7 +181,7 @@ throw a + 'b';
       ],
     },
     {
-      code: "throw 'literal' && 'not an Error';",
+      code: 'throw "literal" && "not an Error";',
       errors: [
         {
           messageId: 'object',
@@ -177,7 +189,7 @@ throw a + 'b';
       ],
     },
     {
-      code: "throw foo ? 'not an Error' : 'literal';",
+      code: 'throw foo ? "not an Error" : "literal";',
       errors: [
         {
           messageId: 'object',
@@ -279,6 +291,19 @@ throw Error;
       code: `
 import { Error } from './class';
 throw new Error();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+          line: 3,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+class CustomError<T extends object> extends Foo {}
+throw new CustomError();
       `,
       errors: [
         {

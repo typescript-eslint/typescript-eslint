@@ -50,7 +50,7 @@ describe('parser', () => {
         jsx: false,
       },
       // ts-estree specific
-      filePath: 'tests/fixtures/services/isolated-file.src.ts',
+      filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
       useJSXTextNode: false,
       errorOnUnknownASTType: false,

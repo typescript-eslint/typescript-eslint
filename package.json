@@ -22,7 +22,7 @@
     "cz": "git-cz",
     "check:docs": "lerna run check:docs",
     "check:configs": "lerna run check:configs",
-    "check:spelling": "cspell --config=.cspell.json **/*.{md,ts,js}",
+    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",

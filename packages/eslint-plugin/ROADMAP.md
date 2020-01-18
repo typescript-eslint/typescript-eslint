@@ -1,6 +1,6 @@
 # TSLint Migration Guide
 
-This document serves as a guid to help you migrate from TSLint.
+This document serves as a guide to help you migrate from TSLint.
 It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
 
 ## TSLint rules

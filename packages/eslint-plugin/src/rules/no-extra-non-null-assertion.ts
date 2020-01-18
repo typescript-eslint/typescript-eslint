@@ -1,4 +1,5 @@
 import * as util from '../util';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 export default util.createRule({
   name: 'no-extra-non-null-assertion',
@@ -16,10 +17,15 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    function checkExtraNonNullAssertion(
+      node: TSESTree.TSNonNullExpression,
+    ): void {
+      context.report({ messageId: 'noExtraNonNullAssertion', node });
+    }
+
     return {
-      'TSNonNullExpression > TSNonNullExpression'(node): void {
-        context.report({ messageId: 'noExtraNonNullAssertion', node });
-      },
+      'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
+      'OptionalMemberExpression > TSNonNullExpression': checkExtraNonNullAssertion,
     };
   },
 });

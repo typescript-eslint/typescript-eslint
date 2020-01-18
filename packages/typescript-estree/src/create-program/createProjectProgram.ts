@@ -35,7 +35,7 @@ function createProjectProgram(
     const errorLines = [
       '"parserOptions.project" has been set for @typescript-eslint/parser.',
       `The file does not match your project config: ${path.relative(
-        process.cwd(),
+        extra.tsconfigRootDir || process.cwd(),
         extra.filePath,
       )}.`,
     ];

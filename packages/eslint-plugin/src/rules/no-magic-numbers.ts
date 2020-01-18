@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow magic numbers',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
     },
     // Extend base schema with additional property to ignore TS numeric literal types
     schema: [
@@ -55,130 +56,6 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const rules = baseRule.create(context);
 
-    /**
-     * Returns whether the node is number literal
-     * @param node the node literal being evaluated
-     * @returns true if the node is a number literal
-     */
-    function isNumber(node: TSESTree.Literal): boolean {
-      return typeof node.value === 'number';
-    }
-
-    /**
-     * Checks if the node grandparent is a Typescript type alias declaration
-     * @param node the node to be validated.
-     * @returns true if the node grandparent is a Typescript type alias declaration
-     * @private
-     */
-    function isGrandparentTSTypeAliasDeclaration(node: TSESTree.Node): boolean {
-      return node.parent && node.parent.parent
-        ? node.parent.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration
-        : false;
-    }
-
-    /**
-     * Checks if the node grandparent is a Typescript union type and its parent is a type alias declaration
-     * @param node the node to be validated.
-     * @returns true if the node grandparent is a Typescript union type and its parent is a type alias declaration
-     * @private
-     */
-    function isGrandparentTSUnionType(node: TSESTree.Node): boolean {
-      if (
-        node.parent &&
-        node.parent.parent &&
-        node.parent.parent.type === AST_NODE_TYPES.TSUnionType
-      ) {
-        return isGrandparentTSTypeAliasDeclaration(node.parent);
-      }
-
-      return false;
-    }
-
-    /**
-     * Checks if the node parent is a Typescript enum member
-     * @param node the node to be validated.
-     * @returns true if the node parent is a Typescript enum member
-     * @private
-     */
-    function isParentTSEnumDeclaration(node: TSESTree.Node): boolean {
-      return (
-        typeof node.parent !== 'undefined' &&
-        node.parent.type === AST_NODE_TYPES.TSEnumMember
-      );
-    }
-
-    /**
-     * Checks if the node parent is a Typescript literal type
-     * @param node the node to be validated.
-     * @returns true if the node parent is a Typescript literal type
-     * @private
-     */
-    function isParentTSLiteralType(node: TSESTree.Node): boolean {
-      return node.parent
-        ? node.parent.type === AST_NODE_TYPES.TSLiteralType
-        : false;
-    }
-
-    /**
-     * Checks if the node is a valid TypeScript numeric literal type.
-     * @param node the node to be validated.
-     * @returns true if the node is a TypeScript numeric literal type.
-     * @private
-     */
-    function isTSNumericLiteralType(node: TSESTree.Node): boolean {
-      // For negative numbers, update the parent node
-      if (
-        node.parent &&
-        node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-        node.parent.operator === '-'
-      ) {
-        node = node.parent;
-      }
-
-      // If the parent node is not a TSLiteralType, early return
-      if (!isParentTSLiteralType(node)) {
-        return false;
-      }
-
-      // If the grandparent is a TSTypeAliasDeclaration, ignore
-      if (isGrandparentTSTypeAliasDeclaration(node)) {
-        return true;
-      }
-
-      // If the grandparent is a TSUnionType and it's parent is a TSTypeAliasDeclaration, ignore
-      if (isGrandparentTSUnionType(node)) {
-        return true;
-      }
-
-      return false;
-    }
-
-    /**
-     * Checks if the node parent is a readonly class property
-     * @param node the node to be validated.
-     * @returns true if the node parent is a readonly class property
-     * @private
-     */
-    function isParentTSReadonlyClassProperty(node: TSESTree.Node): boolean {
-      if (
-        node.parent &&
-        node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-        ['-', '+'].includes(node.parent.operator)
-      ) {
-        node = node.parent;
-      }
-
-      if (
-        node.parent &&
-        node.parent.type === AST_NODE_TYPES.ClassProperty &&
-        node.parent.readonly
-      ) {
-        return true;
-      }
-
-      return false;
-    }
-
     return {
       Literal(node): void {
         // Check if the node is a TypeScript enum declaration
@@ -189,14 +66,17 @@ export default util.createRule<Options, MessageIds>({
         // Check TypeScript specific nodes for Numeric Literal
         if (
           options.ignoreNumericLiteralTypes &&
-          isNumber(node) &&
+          typeof node.value === 'number' &&
           isTSNumericLiteralType(node)
         ) {
           return;
         }
 
         // Check if the node is a readonly class property
-        if (isNumber(node) && isParentTSReadonlyClassProperty(node)) {
+        if (
+          typeof node.value === 'number' &&
+          isParentTSReadonlyClassProperty(node)
+        ) {
           if (options.ignoreReadonlyClassProperties) {
             return;
           }
@@ -207,8 +87,10 @@ export default util.createRule<Options, MessageIds>({
           let raw = node.raw;
 
           if (
-            node.parent &&
-            node.parent.type === AST_NODE_TYPES.UnaryExpression
+            node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
+            // the base rule only shows the operator for negative numbers
+            // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/lib/rules/no-magic-numbers.js#L126
+            node.parent.operator === '-'
           ) {
             fullNumberNode = node.parent;
             raw = `${node.parent.operator}${node.raw}`;
@@ -229,3 +111,111 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
+
+/**
+ * Gets the true parent of the literal, handling prefixed numbers (-1 / +1)
+ */
+function getLiteralParent(node: TSESTree.Literal): TSESTree.Node | undefined {
+  if (
+    node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
+    ['-', '+'].includes(node.parent.operator)
+  ) {
+    return node.parent.parent;
+  }
+
+  return node.parent;
+}
+
+/**
+ * Checks if the node grandparent is a Typescript type alias declaration
+ * @param node the node to be validated.
+ * @returns true if the node grandparent is a Typescript type alias declaration
+ * @private
+ */
+function isGrandparentTSTypeAliasDeclaration(node: TSESTree.Node): boolean {
+  return node.parent?.parent?.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
+}
+
+/**
+ * Checks if the node grandparent is a Typescript union type and its parent is a type alias declaration
+ * @param node the node to be validated.
+ * @returns true if the node grandparent is a Typescript union type and its parent is a type alias declaration
+ * @private
+ */
+function isGrandparentTSUnionType(node: TSESTree.Node): boolean {
+  if (node.parent?.parent?.type === AST_NODE_TYPES.TSUnionType) {
+    return isGrandparentTSTypeAliasDeclaration(node.parent);
+  }
+
+  return false;
+}
+
+/**
+ * Checks if the node parent is a Typescript enum member
+ * @param node the node to be validated.
+ * @returns true if the node parent is a Typescript enum member
+ * @private
+ */
+function isParentTSEnumDeclaration(node: TSESTree.Literal): boolean {
+  const parent = getLiteralParent(node);
+  return parent?.type === AST_NODE_TYPES.TSEnumMember;
+}
+
+/**
+ * Checks if the node parent is a Typescript literal type
+ * @param node the node to be validated.
+ * @returns true if the node parent is a Typescript literal type
+ * @private
+ */
+function isParentTSLiteralType(node: TSESTree.Node): boolean {
+  return node.parent?.type === AST_NODE_TYPES.TSLiteralType;
+}
+
+/**
+ * Checks if the node is a valid TypeScript numeric literal type.
+ * @param node the node to be validated.
+ * @returns true if the node is a TypeScript numeric literal type.
+ * @private
+ */
+function isTSNumericLiteralType(node: TSESTree.Node): boolean {
+  // For negative numbers, use the parent node
+  if (
+    node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
+    node.parent.operator === '-'
+  ) {
+    node = node.parent;
+  }
+
+  // If the parent node is not a TSLiteralType, early return
+  if (!isParentTSLiteralType(node)) {
+    return false;
+  }
+
+  // If the grandparent is a TSTypeAliasDeclaration, ignore
+  if (isGrandparentTSTypeAliasDeclaration(node)) {
+    return true;
+  }
+
+  // If the grandparent is a TSUnionType and it's parent is a TSTypeAliasDeclaration, ignore
+  if (isGrandparentTSUnionType(node)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Checks if the node parent is a readonly class property
+ * @param node the node to be validated.
+ * @returns true if the node parent is a readonly class property
+ * @private
+ */
+function isParentTSReadonlyClassProperty(node: TSESTree.Literal): boolean {
+  const parent = getLiteralParent(node);
+
+  if (parent?.type === AST_NODE_TYPES.ClassProperty && parent.readonly) {
+    return true;
+  }
+
+  return false;
+}

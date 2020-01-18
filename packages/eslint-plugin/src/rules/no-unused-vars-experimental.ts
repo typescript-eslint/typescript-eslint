@@ -290,7 +290,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      'Program:exit'(program: TSESTree.Node): void {
+      'Program:exit'(program: TSESTree.Program): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(program);
         const sourceFile = util.getSourceFileOfNode(tsNode);
         const diagnostics = tsProgram.getSemanticDiagnostics(sourceFile);

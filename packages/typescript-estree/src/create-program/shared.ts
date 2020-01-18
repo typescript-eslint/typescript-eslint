@@ -20,6 +20,19 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   noUnusedParameters: true,
 };
 
+function createDefaultCompilerOptionsFromExtra(
+  extra: Extra,
+): ts.CompilerOptions {
+  if (extra.debugLevel.has('typescript')) {
+    return {
+      ...DEFAULT_COMPILER_OPTIONS,
+      extendedDiagnostics: true,
+    };
+  }
+
+  return DEFAULT_COMPILER_OPTIONS;
+}
+
 // This narrows the type so we can be sure we're passing canonical names in the correct places
 type CanonicalPath = string & { __brand: unknown };
 
@@ -38,12 +51,14 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
+function ensureAbsolutePath(p: string, extra: Extra): string {
+  return path.isAbsolute(p)
+    ? p
+    : path.join(extra.tsconfigRootDir || process.cwd(), p);
+}
+
 function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
-  return getCanonicalFileName(
-    path.isAbsolute(tsconfigPath)
-      ? tsconfigPath
-      : path.join(extra.tsconfigRootDir || process.cwd(), tsconfigPath),
-  );
+  return getCanonicalFileName(ensureAbsolutePath(tsconfigPath, extra));
 }
 
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
@@ -83,7 +98,8 @@ export {
   ASTAndProgram,
   canonicalDirname,
   CanonicalPath,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
+  ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
   getTsconfigPath,

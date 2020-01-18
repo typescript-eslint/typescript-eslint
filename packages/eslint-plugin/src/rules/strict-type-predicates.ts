@@ -9,21 +9,7 @@ import {
   isStrictCompilerOptionEnabled,
 } from 'tsutils';
 
-type Options = [
-  {
-    typesToIgnore?: string[];
-  },
-];
-type MessageIds =
-  | 'expressionAlwaysFalse'
-  | 'expressionAlwaysTrue'
-  | 'badTypeof'
-  | 'useStrictlyUndefined'
-  | 'useStrictlyNotUndefined'
-  | 'useStrictlyNull'
-  | 'useStrictlyNotNull';
-
-export default util.createRule<Options, MessageIds>({
+export default util.createRule({
   name: 'strict-type-predicates',
   meta: {
     type: 'suggestion',
@@ -55,15 +41,16 @@ export default util.createRule<Options, MessageIds>({
       esNode: TSESTree.Node,
       { isStrict, isPositive }: EqualsKind,
     ): void {
-      isPositive;
-
       const exprPred = getTypePredicate(node, isStrict);
       if (exprPred === undefined) {
         return;
       }
 
       if (exprPred.kind === TypePredicateKind.TypeofTypo) {
-        fail('badTypeof');
+        context.report({
+          node: esNode,
+          messageId: 'badTypeof',
+        });
         return;
       }
 
@@ -87,11 +74,13 @@ export default util.createRule<Options, MessageIds>({
             value !== undefined &&
             (isNullOrUndefined || !isEmptyType(checker, exprType))
           ) {
-            fail(
-              value === isPositive
-                ? 'expressionAlwaysTrue'
-                : 'expressionAlwaysFalse',
-            );
+            context.report({
+              node: esNode,
+              messageId:
+                value === isPositive
+                  ? 'expressionAlwaysTrue'
+                  : 'expressionAlwaysFalse',
+            });
           }
           break;
         }
@@ -99,25 +88,23 @@ export default util.createRule<Options, MessageIds>({
         case TypePredicateKind.NonStructNullUndefined: {
           const result = testNonStrictNullUndefined(exprType);
           if (result !== undefined) {
-            fail(
-              typeof result === 'boolean'
-                ? result === isPositive
-                  ? 'expressionAlwaysTrue'
-                  : 'expressionAlwaysFalse'
-                : result === 'null'
-                ? isPositive
-                  ? 'useStrictlyNull'
-                  : 'useStrictlyNotNull'
-                : isPositive
-                ? 'useStrictlyUndefined'
-                : 'useStrictlyNotUndefined',
-            );
+            context.report({
+              node: esNode,
+              messageId:
+                typeof result === 'boolean'
+                  ? result === isPositive
+                    ? 'expressionAlwaysTrue'
+                    : 'expressionAlwaysFalse'
+                  : result === 'null'
+                  ? isPositive
+                    ? 'useStrictlyNull'
+                    : 'useStrictlyNotNull'
+                  : isPositive
+                  ? 'useStrictlyUndefined'
+                  : 'useStrictlyNotUndefined',
+            });
           }
         }
-      }
-
-      function fail(failure: MessageIds): void {
-        context.report({ node: esNode, messageId: failure });
       }
     }
 
@@ -200,7 +187,7 @@ export default util.createRule<Options, MessageIds>({
             const equals = getEqualsKind(node.operator);
             if (equals !== undefined) {
               const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-              checkEquals(tsNode as ts.BinaryExpression, node, equals);
+              checkEquals(tsNode, node, equals);
             }
           },
         }

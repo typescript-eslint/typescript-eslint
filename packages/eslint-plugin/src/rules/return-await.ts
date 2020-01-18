@@ -14,6 +14,7 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
+      extendsBaseRule: 'no-return-await',
     },
     type: 'problem',
     messages: {
@@ -135,9 +136,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ReturnStatement
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const { expression } = originalNode;
 
