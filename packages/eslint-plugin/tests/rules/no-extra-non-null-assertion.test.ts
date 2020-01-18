@@ -31,21 +31,13 @@ function foo(bar?: { n: number }) {
     {
       code: `
 const foo: { bar: number } | null = null;
-const bar = foo!!!!.bar;
+const bar = foo!!.bar;
+      `,
+      output: `
+const foo: { bar: number } | null = null;
+const bar = foo!.bar;
       `,
       errors: [
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 19,
-          column: 13,
-          line: 3,
-        },
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 18,
-          column: 13,
-          line: 3,
-        },
         {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 17,
@@ -58,6 +50,11 @@ const bar = foo!!!!.bar;
       code: `
 function foo(bar: number | undefined) {
   const bar: number = bar!!;
+}
+      `,
+      output: `
+function foo(bar: number | undefined) {
+  const bar: number = bar!;
 }
       `,
       errors: [
@@ -75,6 +72,11 @@ function foo(bar?: { n: number }) {
   return bar!?.n;
 }
       `,
+      output: `
+function foo(bar?: { n: number }) {
+  return bar?.n;
+}
+      `,
       errors: [
         {
           messageId: 'noExtraNonNullAssertion',
@@ -84,28 +86,60 @@ function foo(bar?: { n: number }) {
         },
       ],
     },
+    // parentheses
+    {
+      code: `
+const foo: { bar: number } | null = null;
+const bar = (foo!)!.bar;
+      `,
+      output: `
+const foo: { bar: number } | null = null;
+const bar = (foo)!.bar;
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 18,
+          column: 14,
+          line: 3,
+        },
+      ],
+    },
     {
       code: `
 function foo(bar?: { n: number }) {
-  return bar!!!?.n;
+  return (bar!)?.n;
+}
+      `,
+      output: `
+function foo(bar?: { n: number }) {
+  return (bar)?.n;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 15,
+          column: 11,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(bar?: { n: number }) {
+  return (bar)!?.n;
+}
+      `,
+      output: `
+function foo(bar?: { n: number }) {
+  return (bar)?.n;
 }
       `,
       errors: [
         {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 16,
-          column: 10,
-          line: 3,
-        },
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 15,
-          column: 10,
-          line: 3,
-        },
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 14,
           column: 10,
           line: 3,
         },
