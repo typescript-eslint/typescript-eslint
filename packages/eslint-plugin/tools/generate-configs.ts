@@ -19,7 +19,10 @@ interface LinterConfig extends TSESLint.Linter.Config {
 }
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
-const MAX_RULE_NAME_LENGTH = 32;
+const MAX_RULE_NAME_LENGTH = Object.keys(rules).reduce(
+  (acc, name) => Math.max(acc, name.length),
+  0,
+);
 const DEFAULT_RULE_SETTING = 'warn';
 const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
   Object.entries(rules)
