@@ -30,6 +30,20 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       ],
     },
     {
+      code: 'foo?.["bar"]!',
+      errors: [
+        {
+          messageId: 'noNonNullOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: 'foo?.["bar"]',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'foo?.bar()!',
       errors: [
         {
@@ -38,6 +52,20 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
             {
               messageId: 'suggestRemovingNonNull',
               output: 'foo?.bar()',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'foo.bar?.()!',
+      errors: [
+        {
+          messageId: 'noNonNullOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: 'foo.bar?.()',
             },
           ],
         },
@@ -66,6 +94,20 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
             {
               messageId: 'suggestRemovingNonNull',
               output: '(foo?.bar).baz',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'foo?.["bar"]!.baz',
+      errors: [
+        {
+          messageId: 'noNonNullOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: 'foo?.["bar"].baz',
             },
           ],
         },
