@@ -27,6 +27,22 @@ ruleTester.run('enum-style', rule, {
       code: 'const enum Foo { FOO = "FOO", BAR = "BAR" }',
       options: ['always'],
     },
+    {
+      code: 'enum Foo {}',
+      options: ['never'],
+    },
+    {
+      code: 'enum Foo { FOO }',
+      options: ['never'],
+    },
+    {
+      code: 'enum Foo { FOO = 1, BAR = 2 }',
+      options: ['never'],
+    },
+    {
+      code: 'enum Foo { FOO = "FOO", BAR = "BAR" }',
+      options: ['never'],
+    },
   ],
   invalid: [
     {
@@ -34,9 +50,6 @@ ruleTester.run('enum-style', rule, {
       errors: [
         {
           messageId: 'noConstEnums',
-          data: {
-            name: 'Object',
-          },
           line: 1,
           column: 1,
         },
@@ -47,9 +60,6 @@ ruleTester.run('enum-style', rule, {
       errors: [
         {
           messageId: 'noConstEnums',
-          data: {
-            name: 'Object',
-          },
           line: 1,
           column: 1,
         },
@@ -61,9 +71,6 @@ ruleTester.run('enum-style', rule, {
       errors: [
         {
           messageId: 'noNonConstEnums',
-          data: {
-            name: 'Object',
-          },
           line: 1,
           column: 1,
         },
