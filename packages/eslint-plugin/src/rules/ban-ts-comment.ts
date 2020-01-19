@@ -21,7 +21,7 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Bans “// @ts-<directive>” comments from being used',
+      description: 'Bans `// @ts-<directive>` comments from being used',
       category: 'Best Practices',
       recommended: false,
     },
