@@ -26,7 +26,7 @@ export default util.createRule<Options, Messages>({
   defaultOptions: ['never'],
   create(context, [options]) {
     return {
-      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration) {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
         if (options === 'always' && !node.const) {
           context.report({
             node,
