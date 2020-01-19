@@ -258,6 +258,20 @@ async function test() {
       ],
     },
     {
+      options: [{ ignoreVoid: true }],
+      code: `
+async function test() {
+  Promise.resolve("value");
+}
+`,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
       code: `
 async function test() {
   Promise.reject(new Error("message"));

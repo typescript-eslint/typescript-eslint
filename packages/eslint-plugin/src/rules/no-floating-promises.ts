@@ -9,7 +9,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, 'floating'>({
+export default util.createRule<Options, 'floating' | 'floatingVoid'>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -20,6 +20,8 @@ export default util.createRule<Options, 'floating'>({
     },
     messages: {
       floating: 'Promises must be handled appropriately',
+      floatingVoid:
+        'Promises must be handled appropriately or explicitly marked as ignored with the `void` operator',
     },
     schema: [
       {
@@ -48,7 +50,7 @@ export default util.createRule<Options, 'floating'>({
 
         if (isUnhandledPromise(checker, expression)) {
           context.report({
-            messageId: 'floating',
+            messageId: options.ignoreVoid ? 'floatingVoid' : 'floating',
             node,
           });
         }
