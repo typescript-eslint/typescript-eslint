@@ -1,11 +1,14 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
   {
     allowDestructuring?: boolean;
     allowedNames?: string[];
-  }
+  },
 ];
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
@@ -15,9 +18,8 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow aliasing `this`',
-      tslintRuleName: 'no-this-assignment',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     schema: [
       {
@@ -44,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowDestructuring: false,
+      allowDestructuring: true,
       allowedNames: [],
     },
   ],
@@ -52,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       "VariableDeclarator[init.type='ThisExpression']"(
         node: TSESTree.VariableDeclarator,
-      ) {
+      ): void {
         const { id } = node;
 
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {

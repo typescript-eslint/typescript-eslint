@@ -1,11 +1,14 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
   {
     allowDeclarations?: boolean;
     allowDefinitionFiles?: boolean;
-  }
+  },
 ];
 type MessageIds = 'moduleSyntaxIsPreferred';
 
@@ -16,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow the use of custom TypeScript modules and namespaces',
-      tslintRuleName: 'no-namespace',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -51,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(
         node: TSESTree.TSModuleDeclaration,
-      ) {
+      ): void {
         if (
           (node.parent &&
             node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||

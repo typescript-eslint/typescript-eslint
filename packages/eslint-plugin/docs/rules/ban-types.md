@@ -1,6 +1,7 @@
-# Enforces that types will not to be used (ban-types)
+# Bans specific types from being used (`ban-types`)
 
-Bans specific types from being used. Does not ban the corresponding runtime objects from being used.
+This rule bans specific types and can suggest alternatives. It does not ban the
+corresponding runtime objects from being used.
 
 ## Rule Details
 
@@ -30,6 +31,8 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
 
 ## Options
 
+The banned type can either be a type name literal (`Foo`), a type name with generic parameter instantiations(s) (`Foo<Bar>`), or the empty object literal (`{}`).
+
 ```CJSON
 {
     "@typescript-eslint/ban-types": ["error", {
@@ -45,8 +48,13 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
                 "message": "Use string instead",
                 "fixWith": "string"
             }
+
+            "{}": {
+              "message": "Use object instead",
+              "fixWith": "object"
+            }
         }
-    }
+    }]
 }
 ```
 

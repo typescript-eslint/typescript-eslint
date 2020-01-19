@@ -1,71 +1,92 @@
-import { ParserOptions } from '@typescript-eslint/parser';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { RuleTester as ESLintRuleTester } from 'eslint';
+import { TSESLint, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { clearCaches } from '@typescript-eslint/parser';
 import * as path from 'path';
-import RuleModule from 'ts-eslint';
 
-interface ValidTestCase<TOptions extends Readonly<any[]>> {
-  code: string;
-  options?: TOptions;
-  filename?: string;
-  parserOptions?: ParserOptions;
-  settings?: Record<string, any>;
-  parser?: string;
-  globals?: Record<string, boolean>;
-  env?: {
-    browser?: boolean;
-  };
-}
+const parser = '@typescript-eslint/parser';
 
-interface InvalidTestCase<
-  TMessageIds extends string,
-  TOptions extends Readonly<any[]>
-> extends ValidTestCase<TOptions> {
-  errors: TestCaseError<TMessageIds>[];
-  output?: string;
-}
-
-interface TestCaseError<TMessageIds extends string> {
-  messageId: TMessageIds;
-  data?: Record<string, any>;
-  type?: AST_NODE_TYPES;
-  line?: number;
-  column?: number;
-}
-
-interface RunTests<
-  TMessageIds extends string,
-  TOptions extends Readonly<any[]>
-> {
-  // RuleTester.run also accepts strings for valid cases
-  valid: (ValidTestCase<TOptions> | string)[];
-  invalid: InvalidTestCase<TMessageIds, TOptions>[];
-}
-
-declare class RuleTesterTyped {
-  run<TMessageIds extends string, TOptions extends Readonly<any[]>>(
-    name: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    tests: RunTests<TMessageIds, TOptions>,
-  ): void;
-}
-
-const RuleTester = (ESLintRuleTester as any) as {
-  new (config?: {
-    parser: '@typescript-eslint/parser';
-    parserOptions?: ParserOptions;
-  }): RuleTesterTyped;
+type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
+  parser: typeof parser;
 };
+class RuleTester extends TSESLint.RuleTester {
+  // as of eslint 6 you have to provide an absolute path to the parser
+  // but that's not as clean to type, this saves us trying to manually enforce
+  // that contributors require.resolve everything
+  constructor(private readonly options: RuleTesterConfig) {
+    super({
+      ...options,
+      parser: require.resolve(options.parser),
+    });
+  }
+  private getFilename(options?: TSESLint.ParserOptions): string {
+    if (options) {
+      const filename = `file.ts${
+        options.ecmaFeatures && options.ecmaFeatures.jsx ? 'x' : ''
+      }`;
+      if (options.project) {
+        return path.join(getFixturesRootDir(), filename);
+      }
 
-function getFixturesRootDir() {
+      return filename;
+    } else if (this.options.parserOptions) {
+      return this.getFilename(this.options.parserOptions);
+    }
+
+    return 'file.ts';
+  }
+
+  // as of eslint 6 you have to provide an absolute path to the parser
+  // If you don't do that at the test level, the test will fail somewhat cryptically...
+  // This is a lot more explicit
+  run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
+    name: string,
+    rule: TSESLint.RuleModule<TMessageIds, TOptions>,
+    tests: TSESLint.RunTests<TMessageIds, TOptions>,
+  ): void {
+    const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${parser}`;
+
+    // standardize the valid tests as objects
+    tests.valid = tests.valid.map(test => {
+      if (typeof test === 'string') {
+        return {
+          code: test,
+        };
+      }
+      return test;
+    });
+
+    tests.valid.forEach(test => {
+      if (typeof test !== 'string') {
+        if (test.parser === parser) {
+          throw new Error(errorMessage);
+        }
+        if (!test.filename) {
+          test.filename = this.getFilename(test.parserOptions);
+        }
+      }
+    });
+    tests.invalid.forEach(test => {
+      if (test.parser === parser) {
+        throw new Error(errorMessage);
+      }
+      if (!test.filename) {
+        test.filename = this.getFilename(test.parserOptions);
+      }
+    });
+
+    super.run(name, rule, tests);
+  }
+}
+
+function getFixturesRootDir(): string {
   return path.join(process.cwd(), 'tests/fixtures/');
 }
 
-export {
-  RuleTester,
-  RunTests,
-  TestCaseError,
-  InvalidTestCase,
-  ValidTestCase,
-  getFixturesRootDir,
-};
+const { batchedSingleLineTests } = ESLintUtils;
+
+// make sure that the parser doesn't hold onto file handles between tests
+// on linux (i.e. our CI env), there can be very a limited number of watch handles available
+afterAll(() => {
+  clearCaches();
+});
+
+export { RuleTester, getFixturesRootDir, batchedSingleLineTests };

@@ -13,6 +13,7 @@ const ruleTester = new RuleTester({
 // the base rule doesn't have messageIds
 function error(
   messages: { message: string; line: number; column: number }[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] {
   return messages;
 }

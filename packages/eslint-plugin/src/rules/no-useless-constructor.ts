@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';
 
@@ -48,6 +51,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unnecessary constructors',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
@@ -56,10 +60,11 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     return {
-      MethodDefinition(node) {
+      MethodDefinition(node): void {
         if (
           node.value &&
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
+          node.value.body &&
           checkAccessibility(node) &&
           checkParams(node)
         ) {

@@ -8,6 +8,10 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-type-alias', rule, {
   valid: [
     {
+      code: "type A = 'a' & ('b' | 'c');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
       code: "type Foo = 'a';",
       options: [{ allowAliases: 'always' }],
     },
@@ -354,7 +358,8 @@ type Foo<T> = {
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
     {
-      code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
+      code:
+        'export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;',
       options: [
         {
           allowAliases: 'in-unions-and-intersections',
@@ -363,6 +368,85 @@ type Foo<T> = {
           allowMappedTypes: 'in-unions-and-intersections',
         },
       ],
+    },
+    {
+      code: 'type Foo = typeof bar;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = typeof bar | typeof baz;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = keyof [string]',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | readonly [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & readonly [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | readonly [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | keyof [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & keyof [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code:
+        'type Foo = [string] & [number, number] | keyof [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'always' }],
     },
   ],
   invalid: [
@@ -2891,7 +2975,7 @@ type Foo<T> = {
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/270
-      code: `export type ButtonProps = JSX.IntrinsicElements['button'];`,
+      code: "export type ButtonProps = JSX.IntrinsicElements['button'];",
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -2900,6 +2984,269 @@ type Foo<T> = {
           },
           line: 1,
           column: 27,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | [number, number]',
+      options: [{ allowTupleTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] & [number, number]',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | [number, number]',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number] | keyof [number, number]',
+      options: [{ allowTupleTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 32,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = keyof [number] & [number, number]',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'intersection',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 29,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = [number] | readonly [number, number]',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = keyof [number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly [number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'constructors',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      // unique symbol is not allowed in this context
+      code: 'type Foo = keyof [string] | unique symbol;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Unhandled',
+          },
+          line: 1,
+          column: 29,
         },
       ],
     },

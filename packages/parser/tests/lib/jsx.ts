@@ -1,6 +1,6 @@
+import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import fs from 'fs';
 import glob from 'glob';
-import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 import {
   createScopeSnapshotTestBlock,
   formatSnapshotName,
@@ -27,7 +27,7 @@ describe('JSX', () => {
    * Test each fixture file
    */
   function testFixture(fixturesDir: string, useJSXTextNode: boolean) {
-    return (filename: string) => {
+    return (filename: string): void => {
       const code = fs.readFileSync(filename, 'utf8');
       const config = {
         useJSXTextNode,

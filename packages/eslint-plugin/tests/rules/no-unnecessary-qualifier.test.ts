@@ -1,7 +1,7 @@
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-qualifier';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const messageId = 'unnecessaryQualifier';
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
@@ -199,7 +199,6 @@ import * as Foo from './foo';
 declare module './foo' {
   const x: Foo.T = 3;
 }`,
-      filename: path.join(rootPath, 'bar.ts'),
       errors: [
         {
           messageId,

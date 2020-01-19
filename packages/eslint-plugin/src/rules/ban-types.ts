@@ -1,29 +1,58 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
-import { ReportFixFunction } from 'ts-eslint';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+
+type Types = Record<
+  string,
+  | string
+  | null
+  | {
+      message: string;
+      fixWith?: string;
+    }
+>;
 
 type Options = [
   {
-    types: Record<
-      string,
-      | string
-      | null
-      | {
-          message: string;
-          fixWith?: string;
-        }
-    >;
-  }
+    types: Types;
+  },
 ];
 type MessageIds = 'bannedTypeMessage';
+
+function removeSpaces(str: string): string {
+  return str.replace(/ /g, '');
+}
+
+function stringifyTypeName(
+  node: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+  sourceCode: TSESLint.SourceCode,
+): string {
+  return removeSpaces(sourceCode.getText(node));
+}
+
+function getCustomMessage(
+  bannedType: null | string | { message?: string; fixWith?: string },
+): string {
+  if (bannedType === null) {
+    return '';
+  }
+
+  if (typeof bannedType === 'string') {
+    return ` ${bannedType}`;
+  }
+
+  if (bannedType.message) {
+    return ` ${bannedType.message}`;
+  }
+
+  return '';
+}
 
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces that types will not to be used',
-      tslintRuleName: 'ban-types',
+      description: 'Bans specific types from being used',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -83,42 +112,47 @@ export default util.createRule<Options, MessageIds>({
       },
     },
   ],
-  create(context, [{ types: bannedTypes }]) {
+  create(context, [{ types }]) {
+    const bannedTypes: Types = Object.keys(types).reduce(
+      (res, type) => ({ ...res, [removeSpaces(type)]: types[type] }),
+      {},
+    );
+
+    function checkBannedTypes(
+      typeNode: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+    ): void {
+      const name = stringifyTypeName(typeNode, context.getSourceCode());
+
+      if (name in bannedTypes) {
+        const bannedType = bannedTypes[name];
+        const customMessage = getCustomMessage(bannedType);
+        const fixWith =
+          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+        context.report({
+          node: typeNode,
+          messageId: 'bannedTypeMessage',
+          data: {
+            name,
+            customMessage,
+          },
+          fix: fixWith
+            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+            : null,
+        });
+      }
+    }
+
     return {
-      'TSTypeReference Identifier'(node: TSESTree.Identifier) {
-        if (
-          node.parent &&
-          node.parent.type !== AST_NODE_TYPES.TSQualifiedName
-        ) {
-          if (node.name in bannedTypes) {
-            let customMessage = '';
-            const bannedCfgValue = bannedTypes[node.name];
-
-            let fix: ReportFixFunction | null = null;
-
-            if (typeof bannedCfgValue === 'string') {
-              customMessage += ` ${bannedCfgValue}`;
-            } else if (bannedCfgValue !== null) {
-              if (bannedCfgValue.message) {
-                customMessage += ` ${bannedCfgValue.message}`;
-              }
-              if (bannedCfgValue.fixWith) {
-                const fixWith = bannedCfgValue.fixWith;
-                fix = fixer => fixer.replaceText(node, fixWith);
-              }
-            }
-
-            context.report({
-              node,
-              messageId: 'bannedTypeMessage',
-              data: {
-                name: node.name,
-                customMessage,
-              },
-              fix,
-            });
-          }
+      TSTypeLiteral(node): void {
+        if (node.members.length) {
+          return;
         }
+
+        checkBannedTypes(node);
+      },
+      TSTypeReference({ typeName }): void {
+        checkBannedTypes(typeName);
       },
     };
   },

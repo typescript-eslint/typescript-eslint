@@ -1,19 +1,26 @@
-import traverser from 'eslint/lib/util/traverser';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import {
   AST_NODE_TYPES,
   parseAndGenerateServices,
-  ParserOptions as ParserOptionsTsESTree,
   ParserServices,
+  TSESTreeOptions,
+  TSESTree,
+  simpleTraverse,
+  visitorKeys,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
-import { ParserOptions } from './parser-options';
-import { visitorKeys } from './visitor-keys';
+
+type ParserOptions = TSESLint.ParserOptions;
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
-  ast: any;
+  ast: TSESTree.Program & {
+    range?: [number, number];
+    tokens?: TSESTree.Token[];
+    comments?: TSESTree.Comment[];
+  };
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
   scopeManager: ReturnType<typeof analyzeScope>;
@@ -21,7 +28,7 @@ interface ParseForESLintResult {
 
 function validateBoolean(
   value: boolean | undefined,
-  fallback: boolean = false,
+  fallback = false,
 ): boolean {
   if (typeof value !== 'boolean') {
     return fallback;
@@ -37,7 +44,10 @@ export const version = packageJSON.version;
 
 export const Syntax = Object.freeze(AST_NODE_TYPES);
 
-export function parse(code: string, options?: ParserOptions) {
+export function parse(
+  code: string,
+  options?: ParserOptions,
+): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
@@ -57,7 +67,7 @@ export function parseForESLint(
     options.ecmaFeatures = {};
   }
 
-  const parserOptions: ParserOptionsTsESTree = {};
+  const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),
@@ -85,13 +95,14 @@ export function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  traverser.traverse(ast, {
-    enter(node: any) {
+  simpleTraverse(ast, {
+    enter(node) {
       switch (node.type) {
         // Function#body cannot be null in ESTree spec.
         case 'FunctionExpression':
           if (!node.body) {
-            node.type = `TSEmptyBody${node.type}` as AST_NODE_TYPES;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            node.type = `TSEmptyBody${node.type}` as any;
           }
           break;
         // no default
@@ -104,3 +115,4 @@ export function parseForESLint(
 }
 
 export { ParserServices, ParserOptions };
+export { clearCaches } from '@typescript-eslint/typescript-estree';

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "1.4.2",
+  "version": "2.16.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -9,7 +9,7 @@
     "typescript"
   ],
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "files": [
     "dist",
@@ -18,33 +18,50 @@
     "README.md",
     "LICENSE"
   ],
-  "repository": "typescript-eslint/typescript-eslint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/eslint-plugin"
+  },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "docs": "eslint-docs",
-    "docs:check": "eslint-docs check",
+    "build": "tsc -b tsconfig.build.json",
+    "check:docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
+    "check:configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "generate:configs": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-configs.ts",
+    "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
     "test": "jest --coverage",
-    "recommended:update": "ts-node tools/update-recommended.ts",
-    "prebuild": "npm run clean",
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "1.4.2",
-    "@typescript-eslint/typescript-estree": "1.4.2",
-    "requireindex": "^1.2.0",
-    "tsutils": "^3.7.0"
+    "@typescript-eslint/experimental-utils": "2.16.0",
+    "eslint-utils": "^1.4.3",
+    "functional-red-black-tree": "^1.0.1",
+    "regexpp": "^3.0.0",
+    "tsutils": "^3.17.1"
   },
   "devDependencies": {
-    "eslint-docs": "^0.2.6"
+    "@types/json-schema": "^7.0.3",
+    "@types/marked": "^0.7.1",
+    "@types/prettier": "^1.18.2",
+    "chalk": "^3.0.0",
+    "marked": "^0.7.0",
+    "prettier": "*",
+    "typescript": "*"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0",
-    "typescript": "*"
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^5.0.0 || ^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }

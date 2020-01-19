@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Options = [
@@ -6,7 +9,8 @@ type Options = [
     allowConstructorOnly?: boolean;
     allowEmpty?: boolean;
     allowStaticOnly?: boolean;
-  }
+    allowWithDecorator?: boolean;
+  },
 ];
 type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
 
@@ -16,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Forbids the use of classes as namespaces',
-      tslintRuleName: 'no-unnecessary-class',
       category: 'Best Practices',
       recommended: false,
     },
@@ -34,6 +37,9 @@ export default util.createRule<Options, MessageIds>({
           allowStaticOnly: {
             type: 'boolean',
           },
+          allowWithDecorator: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -48,11 +54,26 @@ export default util.createRule<Options, MessageIds>({
       allowConstructorOnly: false,
       allowEmpty: false,
       allowStaticOnly: false,
+      allowWithDecorator: false,
     },
   ],
-  create(context, [{ allowConstructorOnly, allowEmpty, allowStaticOnly }]) {
+  create(
+    context,
+    [{ allowConstructorOnly, allowEmpty, allowStaticOnly, allowWithDecorator }],
+  ) {
+    const isAllowWithDecorator = (
+      node: TSESTree.ClassDeclaration | TSESTree.ClassExpression | undefined,
+    ): boolean => {
+      return !!(
+        allowWithDecorator &&
+        node &&
+        node.decorators &&
+        node.decorators.length
+      );
+    };
+
     return {
-      ClassBody(node) {
+      ClassBody(node): void {
         const parent = node.parent as
           | TSESTree.ClassDeclaration
           | TSESTree.ClassExpression
@@ -63,9 +84,8 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const reportNode = 'id' in parent && parent.id ? parent.id : parent;
-
         if (node.body.length === 0) {
-          if (allowEmpty) {
+          if (allowEmpty || isAllowWithDecorator(parent)) {
             return;
           }
 
@@ -96,7 +116,9 @@ export default util.createRule<Options, MessageIds>({
               onlyStatic = false;
             }
           }
-          if (!(onlyStatic || onlyConstructor)) break;
+          if (!(onlyStatic || onlyConstructor)) {
+            break;
+          }
         }
 
         if (onlyConstructor) {

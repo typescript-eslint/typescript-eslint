@@ -1,6 +1,6 @@
 import rule from '../../src/rules/no-use-before-define';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -213,7 +213,6 @@ export namespace Third {
 }
             `,
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      parser: '@typescript-eslint/parser',
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/550
     `
@@ -230,6 +229,54 @@ interface Foo {
 }
 const bar = 'blah'
     `,
+    {
+      code: `
+function foo(): Foo {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: Foo;
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  foo(args: Foo): Foo {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -398,7 +445,7 @@ a();
     function a() {}
 }
             `,
-      parser: 'espree',
+      parser: require.resolve('espree'),
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -838,6 +885,69 @@ var bar;
             name: 'bar',
           },
           type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  foo(args: Foo): Foo {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Foo {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = Foo.Foo;
+
+enum Foo {
+  FOO,
+}
+      `,
+      options: [
+        {
+          enums: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },

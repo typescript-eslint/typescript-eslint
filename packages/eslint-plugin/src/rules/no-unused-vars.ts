@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import * as util from '../util';
 
@@ -8,9 +11,9 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      tslintRuleName: 'no-unused-variable',
       category: 'Variables',
       recommended: 'warn',
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,

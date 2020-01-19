@@ -21,6 +21,7 @@ Object {
       12,
       12,
     ],
+    "transformFlags": 0,
     "type": "TSEndOfFileToken",
   },
   "externalModuleIndicator": undefined,
@@ -33,7 +34,7 @@ Object {
   },
   "isDeclarationFile": false,
   "languageVariant": 1,
-  "languageVersion": 6,
+  "languageVersion": 99,
   "libReferenceDirectives": Array [],
   "lineMap": Array [
     null,
@@ -168,7 +169,7 @@ Object {
     },
   ],
   "text": "new foo<T>()",
-  "transformFlags": undefined,
+  "transformFlags": 0,
   "type": "TSSourceFile",
   "typeReferenceDirectives": Array [],
 }
@@ -226,7 +227,7 @@ Object {
           11,
           35,
         ],
-        "transformFlags": undefined,
+        "transformFlags": 0,
         "type": "TSJSDocNullableType",
         "typeAnnotation": Object {
           "loc": Object {
@@ -366,7 +367,7 @@ Object {
                   21,
                   35,
                 ],
-                "transformFlags": undefined,
+                "transformFlags": 0,
                 "type": "TSJSDocNullableType",
                 "typeAnnotation": Object {
                   "loc": Object {
@@ -399,7 +400,7 @@ Object {
                       22,
                       35,
                     ],
-                    "transformFlags": undefined,
+                    "transformFlags": 0,
                     "type": "TSJSDocNullableType",
                     "typeAnnotation": Object {
                       "loc": Object {
@@ -589,7 +590,7 @@ Object {
     0,
     18,
   ],
-  "transformFlags": undefined,
+  "transformFlags": 0,
   "type": "TSClassDeclaration",
   "typeParameters": null,
 }
@@ -630,7 +631,7 @@ Object {
     0,
     12,
   ],
-  "transformFlags": undefined,
+  "transformFlags": 0,
   "type": "TSNewExpression",
   "typeParameters": Object {
     "loc": Object {
@@ -726,7 +727,7 @@ Object {
     0,
     15,
   ],
-  "transformFlags": undefined,
+  "transformFlags": 0,
   "type": "TSClassDeclaration",
   "typeParameters": Object {
     "loc": Object {

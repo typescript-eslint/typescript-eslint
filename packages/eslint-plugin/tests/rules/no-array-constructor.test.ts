@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-array-constructor';
 import { RuleTester } from '../RuleTester';
 
@@ -24,6 +24,18 @@ ruleTester.run('no-array-constructor', rule, {
     'new Array<Foo>()',
     'Array<Foo>(1, 2, 3)',
     'Array<Foo>()',
+
+    // optional chain
+    'Array?.(x)',
+    'Array?.(9)',
+    'foo?.Array()',
+    'Array?.foo()',
+    'foo.Array?.()',
+    'Array.foo?.()',
+    'Array?.<Foo>(1, 2, 3)',
+    'Array?.<Foo>()',
+    'Array?.(0, 1, 2)',
+    'Array?.(x, y)',
   ],
 
   invalid: [

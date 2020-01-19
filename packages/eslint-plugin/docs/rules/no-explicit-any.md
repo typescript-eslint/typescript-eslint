@@ -1,11 +1,11 @@
-# Disallow usage of the `any` type (no-explicit-any)
+# Disallow usage of the `any` type (`no-explicit-any`)
 
 Using the `any` type defeats the purpose of using TypeScript.
 When `any` is used, all compiler type checks around that value are ignored.
 
 ## Rule Details
 
-This rule goes doesn't allow `any` types to be defined.
+This rule doesn't allow `any` types to be defined.
 It aims to keep TypeScript maximally useful.
 TypeScript has a compiler flag for `--noImplicitAny` that will prevent
 an `any` type from being implied by the compiler, but doesn't prevent
@@ -85,6 +85,100 @@ function greet(param: Array<string>): string {}
 
 ```ts
 function greet(param: Array<string>): Array<string> {}
+```
+
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, auto-fixing will be made available in which the "any" type is converted to an "unknown" type
+  fixToUnknown: boolean;
+  // specify if arrays from the rest operator are considered okay
+  ignoreRestArgs: boolean;
+};
+
+const defaults = {
+  fixToUnknown: false,
+  ignoreRestArgs: false,
+};
+```
+
+### `ignoreRestArgs`
+
+A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
+
+Examples of **incorrect** code for the `{ "ignoreRestArgs": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
+
+function foo1(...args: any[]): void {}
+function foo2(...args: readonly any[]): void {}
+function foo3(...args: Array<any>): void {}
+function foo4(...args: ReadonlyArray<any>): void {}
+
+const bar1 = (...args: any[]): void {}
+const bar2 = (...args: readonly any[]): void {}
+const bar3 = (...args: Array<any>): void {}
+const bar4 = (...args: ReadonlyArray<any>): void {}
+
+const baz1 = function (...args: any[]) {}
+const baz2 = function (...args: readonly any[]) {}
+const baz3 = function (...args: Array<any>) {}
+const baz4 = function (...args: ReadonlyArray<any>) {}
+
+interface Qux1 { (...args: any[]): void; }
+interface Qux2 { (...args: readonly any[]): void; }
+interface Qux3 { (...args: Array<any>): void; }
+interface Qux4 { (...args: ReadonlyArray<any>): void; }
+
+function quux1(fn: (...args: any[]) => void): void {}
+function quux2(fn: (...args: readonly any[]) => void): void {}
+function quux3(fn: (...args: Array<any>) => void): void {}
+function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
+
+function quuz1(): ((...args: any[]) => void) {}
+function quuz2(): ((...args: readonly any[]) => void) {}
+function quuz3(): ((...args: Array<any>) => void) {}
+function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
+```
+
+Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
+
+function foo1(...args: any[]): void {}
+function foo2(...args: readonly any[]): void {}
+function foo3(...args: Array<any>): void {}
+function foo4(...args: ReadonlyArray<any>): void {}
+
+const bar1 = (...args: any[]): void {}
+const bar2 = (...args: readonly any[]): void {}
+const bar3 = (...args: Array<any>): void {}
+const bar4 = (...args: ReadonlyArray<any>): void {}
+
+const baz1 = function (...args: any[]) {}
+const baz2 = function (...args: readonly any[]) {}
+const baz3 = function (...args: Array<any>) {}
+const baz4 = function (...args: ReadonlyArray<any>) {}
+
+interface Qux1 { (...args: any[]): void; }
+interface Qux2 { (...args: readonly any[]): void; }
+interface Qux3 { (...args: Array<any>): void; }
+interface Qux4 { (...args: ReadonlyArray<any>): void; }
+
+function quux1(fn: (...args: any[]) => void): void {}
+function quux2(fn: (...args: readonly any[]) => void): void {}
+function quux3(fn: (...args: Array<any>) => void): void {}
+function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
+
+function quuz1(): ((...args: any[]) => void) {}
+function quuz2(): ((...args: readonly any[]) => void) {}
+function quuz3(): ((...args: Array<any>) => void) {}
+function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
 ```
 
 ## When Not To Use It

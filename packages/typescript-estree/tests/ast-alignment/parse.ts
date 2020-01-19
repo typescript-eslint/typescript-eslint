@@ -1,9 +1,14 @@
-import codeFrame from 'babel-code-frame';
-import * as parser from '../../src/parser';
-import * as parseUtils from './utils';
-import { ParserPlugin } from '@babel/parser';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-function createError(message: string, line: number, column: number) {
+import { ParserPlugin } from '@babel/parser';
+import { codeFrameColumns } from '@babel/code-frame';
+import * as parser from '../../src/parser';
+
+function createError(
+  message: string,
+  line: number,
+  column: number,
+): SyntaxError {
   // Construct an error similar to the ones thrown by Babylon.
   const error = new SyntaxError(`${message} (${line}:${column})`);
   (error as any).loc = {
@@ -13,7 +18,7 @@ function createError(message: string, line: number, column: number) {
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx: boolean = true) {
+function parseWithBabelParser(text: string, jsx = true): any {
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'typescript',
@@ -25,6 +30,8 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
     'estree',
     'bigInt',
     'importMeta',
+    'optionalChaining',
+    'nullishCoalescingOperator',
   ];
   if (jsx) {
     plugins.push('jsx');
@@ -39,7 +46,7 @@ function parseWithBabelParser(text: string, jsx: boolean = true) {
   });
 }
 
-function parseWithTypeScriptESTree(text: string, jsx: boolean = true) {
+function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
   try {
     const result = parser.parseAndGenerateServices(text, {
       loc: true,
@@ -68,12 +75,15 @@ interface ASTComparisonParseOptions {
   jsx?: boolean;
 }
 
-export function parse(text: string, opts: ASTComparisonParseOptions) {
+export function parse(
+  text: string,
+  opts: ASTComparisonParseOptions,
+): { parseError: any | null; ast: any | null } {
   /**
    * Always return a consistent interface, there will be times when we expect both
    * parsers to fail to parse the invalid source.
    */
-  const result: any = {
+  const result: { parseError: any | null; ast: any | null } = {
     parseError: null,
     ast: null,
   };
@@ -81,14 +91,10 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
   try {
     switch (opts.parser) {
       case '@typescript-eslint/typescript-estree':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithTypeScriptESTree(text, opts.jsx),
-        );
+        result.ast = parseWithTypeScriptESTree(text, opts.jsx);
         break;
       case '@babel/parser':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabelParser(text, opts.jsx),
-        );
+        result.ast = parseWithBabelParser(text, opts.jsx);
         break;
       default:
         throw new Error(
@@ -98,9 +104,18 @@ export function parse(text: string, opts: ASTComparisonParseOptions) {
   } catch (error) {
     const loc = error.loc;
     if (loc) {
-      error.codeFrame = codeFrame(text, loc.line, loc.column + 1, {
-        highlightCode: true,
-      });
+      error.codeFrame = codeFrameColumns(
+        text,
+        {
+          start: {
+            line: loc.line,
+            column: loc.column + 1,
+          },
+        },
+        {
+          highlightCode: true,
+        },
+      );
       error.message += `\n${error.codeFrame}`;
     }
     result.parseError = error;

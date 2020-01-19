@@ -1,17 +1,22 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "1.4.2",
+  "version": "2.16.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "main": "dist/parser.js",
+  "types": "dist/parser.d.ts",
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
-  "repository": "typescript-eslint/typescript-eslint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/parser"
+  },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
@@ -26,24 +31,30 @@
     "eslint"
   ],
   "scripts": {
-    "prebuild": "npm run clean",
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0",
-    "typescript": "*"
+    "eslint": "^5.0.0 || ^6.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "1.4.2",
-    "eslint-scope": "^4.0.0",
-    "eslint-visitor-keys": "^1.0.0"
+    "@types/eslint-visitor-keys": "^1.0.0",
+    "@typescript-eslint/experimental-utils": "2.16.0",
+    "@typescript-eslint/typescript-estree": "2.16.0",
+    "eslint-visitor-keys": "^1.1.0"
   },
   "devDependencies": {
-    "@types/eslint": "^4.16.5",
-    "@types/eslint-visitor-keys": "^1.0.0",
-    "@typescript-eslint/shared-fixtures": "1.4.2"
+    "@types/glob": "^7.1.1",
+    "@typescript-eslint/shared-fixtures": "2.16.0",
+    "glob": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   }
 }

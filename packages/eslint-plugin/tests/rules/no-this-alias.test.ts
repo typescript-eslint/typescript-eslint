@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-this-alias';
 import { RuleTester } from '../RuleTester';
 
@@ -68,6 +68,11 @@ declare module 'foo' {
     },
     {
       code: 'const { props, state } = this;',
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [destructureError],
     },
     {
@@ -104,6 +109,11 @@ class TestClass {
     }
 }
 `,
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [
         idError,
         idError,

@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type MessageIds = 'incorrectOrder';
@@ -10,29 +13,33 @@ type Options = [
     classExpressions?: OrderConfig;
     interfaces?: OrderConfig;
     typeLiterals?: OrderConfig;
-  }
+  },
 ];
 
-const schemaOptions = ['field', 'method', 'constructor'].reduce<string[]>(
-  (options, type) => {
-    options.push(type);
+const allMemberTypes = ['field', 'method', 'constructor'].reduce<string[]>(
+  (all, type) => {
+    all.push(type);
 
     ['public', 'protected', 'private'].forEach(accessibility => {
-      options.push(`${accessibility}-${type}`);
+      all.push(`${accessibility}-${type}`); // e.g. `public-field`
+
       if (type !== 'constructor') {
-        ['static', 'instance'].forEach(scope => {
-          if (options.indexOf(`${scope}-${type}`) === -1) {
-            options.push(`${scope}-${type}`);
+        // There is no `static-constructor` or `instance-constructor or `abstract-constructor`
+        ['static', 'instance', 'abstract'].forEach(scope => {
+          if (!all.includes(`${scope}-${type}`)) {
+            all.push(`${scope}-${type}`);
           }
-          options.push(`${accessibility}-${scope}-${type}`);
+
+          all.push(`${accessibility}-${scope}-${type}`);
         });
       }
     });
 
-    return options;
+    return all;
   },
   [],
 );
+allMemberTypes.unshift('signature');
 
 export default util.createRule<Options, MessageIds>({
   name: 'member-ordering',
@@ -40,7 +47,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      tslintRuleName: 'member-ordering',
       category: 'Stylistic Issues',
       recommended: false,
     },
@@ -60,7 +66,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -73,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -86,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: schemaOptions,
+                  enum: allMemberTypes,
                 },
               },
             ],
@@ -99,7 +105,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -112,7 +118,7 @@ export default util.createRule<Options, MessageIds>({
               {
                 type: 'array',
                 items: {
-                  enum: ['field', 'method', 'constructor'],
+                  enum: ['signature', 'field', 'method', 'constructor'],
                 },
               },
             ],
@@ -125,6 +131,8 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       default: [
+        'signature',
+
         'public-static-field',
         'protected-static-field',
         'private-static-field',
@@ -133,12 +141,17 @@ export default util.createRule<Options, MessageIds>({
         'protected-instance-field',
         'private-instance-field',
 
+        'public-abstract-field',
+        'protected-abstract-field',
+        'private-abstract-field',
+
         'public-field',
         'protected-field',
         'private-field',
 
         'static-field',
         'instance-field',
+        'abstract-field',
 
         'field',
 
@@ -152,18 +165,25 @@ export default util.createRule<Options, MessageIds>({
         'protected-instance-method',
         'private-instance-method',
 
+        'public-abstract-method',
+        'protected-abstract-method',
+        'private-abstract-method',
+
         'public-method',
         'protected-method',
         'private-method',
 
         'static-method',
         'instance-method',
+        'abstract-method',
 
         'method',
       ],
     },
   ],
   create(context, [options]) {
+    const sourceCode = context.getSourceCode();
+
     const functionExpressions = [
       AST_NODE_TYPES.FunctionExpression,
       AST_NODE_TYPES.ArrowFunctionExpression,
@@ -177,22 +197,23 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ClassElement | TSESTree.TypeElement,
     ): string | null {
       // TODO: add missing TSCallSignatureDeclaration
-      // TODO: add missing TSIndexSignature
-      // TODO: add missing TSAbstractClassProperty
-      // TODO: add missing TSAbstractMethodDefinition
       switch (node.type) {
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind;
         case AST_NODE_TYPES.TSMethodSignature:
           return 'method';
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'constructor';
+        case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
-          return node.value && functionExpressions.indexOf(node.value.type) > -1
+          return node.value && functionExpressions.includes(node.value.type)
             ? 'method'
             : 'field';
         case AST_NODE_TYPES.TSPropertySignature:
           return 'field';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return 'signature';
         default:
           return null;
       }
@@ -208,14 +229,18 @@ export default util.createRule<Options, MessageIds>({
       switch (node.type) {
         case AST_NODE_TYPES.TSPropertySignature:
         case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.TSAbstractClassProperty:
         case AST_NODE_TYPES.ClassProperty:
-          return util.getNameFromPropertyName(node.key);
+          return util.getNameFromMember(node, sourceCode);
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.MethodDefinition:
           return node.kind === 'constructor'
             ? 'constructor'
-            : util.getNameFromPropertyName(node.key);
+            : util.getNameFromMember(node, sourceCode);
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
+        case AST_NODE_TYPES.TSIndexSignature:
+          return util.getNameFromIndexSignature(node);
         default:
           return null;
       }
@@ -228,12 +253,14 @@ export default util.createRule<Options, MessageIds>({
      * - If there is no order for accessibility-scope-type, then strip out the accessibility.
      * - If there is no order for scope-type, then strip out the scope.
      * - If there is no order for type, then return -1
-     * @param names the valid names to be validated.
+     * @param memberTypes the valid names to be validated.
      * @param order the current order to be validated.
+     *
+     * @return Index of the matching member type in the order configuration.
      */
-    function getRankOrder(names: string[], order: string[]): number {
+    function getRankOrder(memberTypes: string[], order: string[]): number {
       let rank = -1;
-      const stack = names.slice();
+      const stack = memberTypes.slice(); // Get a copy of the member types
 
       while (stack.length > 0 && rank === -1) {
         rank = order.indexOf(stack.shift()!);
@@ -246,7 +273,7 @@ export default util.createRule<Options, MessageIds>({
      * Gets the rank of the node given the order.
      * @param node the node to be evaluated.
      * @param order the current order to be validated.
-     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
+     * @param supportsModifiers a flag indicating whether the type supports modifiers (scope or accessibility) or not.
      */
     function getRank(
       node: TSESTree.ClassElement | TSESTree.TypeElement,
@@ -259,25 +286,36 @@ export default util.createRule<Options, MessageIds>({
         return order.length - 1;
       }
 
-      const scope = 'static' in node && node.static ? 'static' : 'instance';
+      const abstract =
+        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
+
+      const scope =
+        'static' in node && node.static
+          ? 'static'
+          : abstract
+          ? 'abstract'
+          : 'instance';
       const accessibility =
         'accessibility' in node && node.accessibility
           ? node.accessibility
           : 'public';
 
-      const names = [];
+      const memberTypes = [];
 
       if (supportsModifiers) {
         if (type !== 'constructor') {
-          names.push(`${accessibility}-${scope}-${type}`);
-          names.push(`${scope}-${type}`);
+          // Constructors have no scope
+          memberTypes.push(`${accessibility}-${scope}-${type}`);
+          memberTypes.push(`${scope}-${type}`);
         }
-        names.push(`${accessibility}-${type}`);
+
+        memberTypes.push(`${accessibility}-${type}`);
       }
 
-      names.push(type);
+      memberTypes.push(type);
 
-      return getRankOrder(names, order);
+      return getRankOrder(memberTypes, order);
     }
 
     /**
@@ -316,12 +354,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Validates each member rank.
-     * @param members the members to be validated.
-     * @param order the current order to be validated.
-     * @param supportsModifiers a flag indicating whether the type supports modifiers or not.
+     * Validates if all members are correctly sorted.
+     *
+     * @param members Members to be validated.
+     * @param order Current order to be validated.
+     * @param supportsModifiers A flag indicating whether the type supports modifiers (scope or accessibility) or not.
      */
-    function validateMembers(
+    function validateMembersOrder(
       members: (TSESTree.ClassElement | TSESTree.TypeElement)[],
       order: OrderConfig,
       supportsModifiers: boolean,
@@ -329,6 +368,7 @@ export default util.createRule<Options, MessageIds>({
       if (members && order !== 'never') {
         const previousRanks: number[] = [];
 
+        // Find first member which isn't correctly sorted
         members.forEach(member => {
           const rank = getRank(member, order, supportsModifiers);
 
@@ -351,31 +391,31 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ClassDeclaration(node) {
-        validateMembers(
+      ClassDeclaration(node): void {
+        validateMembersOrder(
           node.body.body,
-          options.classes || options.default!,
+          options.classes ?? options.default!,
           true,
         );
       },
-      ClassExpression(node) {
-        validateMembers(
+      ClassExpression(node): void {
+        validateMembersOrder(
           node.body.body,
-          options.classExpressions || options.default!,
+          options.classExpressions ?? options.default!,
           true,
         );
       },
-      TSInterfaceDeclaration(node) {
-        validateMembers(
+      TSInterfaceDeclaration(node): void {
+        validateMembersOrder(
           node.body.body,
-          options.interfaces || options.default!,
+          options.interfaces ?? options.default!,
           false,
         );
       },
-      TSTypeLiteral(node) {
-        validateMembers(
+      TSTypeLiteral(node): void {
+        validateMembersOrder(
           node.members,
-          options.typeLiterals || options.default!,
+          options.typeLiterals ?? options.default!,
           false,
         );
       },

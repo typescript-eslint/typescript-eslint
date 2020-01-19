@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Config<T = string> {
@@ -16,10 +19,12 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforces naming conventions for class members by visibility.',
+        'Enforces naming conventions for class members by visibility',
       category: 'Stylistic Issues',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       incorrectName:
         '{{accessibility}} property {{name}} should match {{convention}}.',
@@ -51,6 +56,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [config]) {
+    const sourceCode = context.getSourceCode();
+
     const conventions = (Object.keys(config) as Modifiers[]).reduce<
       Config<RegExp>
     >((acc, accessibility) => {
@@ -59,30 +66,73 @@ export default util.createRule<Options, MessageIds>({
       return acc;
     }, {});
 
-    /**
-     * Check that the property name matches the convention for its
-     * accessibility.
-     * @param {ASTNode} node the named node to evaluate.
-     * @returns {void}
-     * @private
-     */
+    function getParameterNode(
+      node: TSESTree.TSParameterProperty,
+    ): TSESTree.Identifier | null {
+      if (node.parameter.type === AST_NODE_TYPES.AssignmentPattern) {
+        return node.parameter.left as TSESTree.Identifier;
+      }
+
+      if (node.parameter.type === AST_NODE_TYPES.Identifier) {
+        return node.parameter;
+      }
+
+      return null;
+    }
+
+    function validateParameterName(node: TSESTree.TSParameterProperty): void {
+      const parameterNode = getParameterNode(node);
+      if (!parameterNode) {
+        return;
+      }
+
+      validate(parameterNode, parameterNode.name, node.accessibility);
+    }
+
     function validateName(
       node: TSESTree.MethodDefinition | TSESTree.ClassProperty,
     ): void {
-      const name = util.getNameFromPropertyName(node.key);
-      const accessibility: Modifiers = node.accessibility || 'public';
-      const convention = conventions[accessibility];
+      if (
+        node.type === AST_NODE_TYPES.MethodDefinition &&
+        node.kind === 'constructor'
+      ) {
+        return;
+      }
 
-      if (!convention || convention.test(name)) return;
+      validate(
+        node.key,
+        util.getNameFromMember(node, sourceCode),
+        node.accessibility,
+      );
+    }
+
+    /**
+     * Check that the name matches the convention for its accessibility.
+     * @param {ASTNode}   node the named node to evaluate.
+     * @param {string}    name
+     * @param {Modifiers} accessibility
+     * @returns {void}
+     * @private
+     */
+    function validate(
+      node: TSESTree.Identifier | TSESTree.Expression,
+      name: string,
+      accessibility: Modifiers = 'public',
+    ): void {
+      const convention = conventions[accessibility];
+      if (!convention || convention.test(name)) {
+        return;
+      }
 
       context.report({
-        node: node.key,
+        node,
         messageId: 'incorrectName',
         data: { accessibility, name, convention },
       });
     }
 
     return {
+      TSParameterProperty: validateParameterName,
       MethodDefinition: validateName,
       ClassProperty: validateName,
     };

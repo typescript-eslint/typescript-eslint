@@ -1,4 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type RuleNode =
@@ -16,7 +19,6 @@ export default util.createRule({
     docs: {
       description: 'Require that member overloads be consecutive',
       category: 'Best Practices',
-      tslintName: 'adjacent-overload-signatures',
       recommended: 'error',
     },
     schema: [],
@@ -26,6 +28,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
+
     /**
      * Gets the name of the member being processed.
      * @param member the member being processed.
@@ -51,13 +55,13 @@ export default util.createRule({
         case AST_NODE_TYPES.FunctionDeclaration:
           return member.id && member.id.name;
         case AST_NODE_TYPES.TSMethodSignature:
-          return util.getNameFromPropertyName(member.key);
+          return util.getNameFromMember(member, sourceCode);
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return 'call';
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return 'new';
         case AST_NODE_TYPES.MethodDefinition:
-          return util.getNameFromPropertyName(member.key);
+          return util.getNameFromMember(member, sourceCode);
       }
 
       return null;
@@ -86,8 +90,6 @@ export default util.createRule({
         case AST_NODE_TYPES.TSTypeLiteral:
           return node.members;
       }
-
-      return [];
     }
 
     /**

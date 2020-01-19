@@ -1,7 +1,7 @@
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -10,8 +10,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules.',
-      tslintRuleName: 'no-internal-module',
+        'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules',
       category: 'Best Practices',
       recommended: 'error',
     },
@@ -27,7 +26,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
 
     return {
-      TSModuleDeclaration(node) {
+      TSModuleDeclaration(node): void {
         // Do nothing if the name is a string.
         if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
           return;
