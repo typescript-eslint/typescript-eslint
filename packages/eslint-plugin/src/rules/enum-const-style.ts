@@ -1,19 +1,17 @@
-/**
- * @fileoverview Enforce usage of const enum.
- */
-
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export default util.createRule({
+type Messages = 'noNonConstEnums' | 'noConstEnums';
+type Options = ['always' | 'never'];
+
+export default util.createRule<Options, Messages>({
   name: 'enum-const-style',
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce usage of const enum',
-      tslintRuleName: 'enum-const-style',
+      description: 'Enforce const enum style',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       noNonConstEnums: 'enums are forbidden. Use const enums',
@@ -26,27 +24,19 @@ export default util.createRule({
     ],
   },
   defaultOptions: ['never'],
-  create(context, [option]) {
+  create(context, [options]) {
     return {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration) {
-        switch (option) {
-          default:
-          case 'never':
-            if (node.const) {
-              context.report({
-                node,
-                messageId: 'noConstEnums',
-              });
-            }
-            break;
-          case 'always':
-            if (!node.const) {
-              context.report({
-                node,
-                messageId: 'noNonConstEnums',
-              });
-            }
-            break;
+        if (options === 'always' && !node.const) {
+          context.report({
+            node,
+            messageId: 'noNonConstEnums',
+          });
+        } else if (options === 'never' && node.const) {
+          context.report({
+            node,
+            messageId: 'noConstEnums',
+          });
         }
       },
     };

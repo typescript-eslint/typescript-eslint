@@ -1,6 +1,6 @@
-# Enforce const enum style
+# Enforce const enum style (`enum-const-style`)
 
-This rule regulate usage of `const enum`.
+This rule enforces consistent usage of `const enum`.
 
 ## Rule Details
 
@@ -12,7 +12,7 @@ This rule aims to standardize usage of const enums.
 
 ```JSON
 {
-    "enum-const-style": ["error", "never"]
+  "enum-const-style": ["error", "never"]
 }
 ```
 
