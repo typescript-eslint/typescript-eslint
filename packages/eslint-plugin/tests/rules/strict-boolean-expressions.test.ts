@@ -217,7 +217,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
           column: 21,
         },
@@ -230,7 +230,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 21,
         },
@@ -243,9 +243,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -256,9 +256,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -269,9 +269,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -282,9 +282,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -296,7 +296,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 2,
           column: 13,
         },
@@ -310,7 +310,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 13,
         },
@@ -325,7 +325,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
           column: 13,
         },
@@ -340,7 +340,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 13,
         },
@@ -356,9 +356,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
-          column: 13,
+          column: 22,
         },
       ],
     },
@@ -372,7 +372,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 13,
         },
@@ -388,7 +388,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 13,
         },
@@ -404,9 +404,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
-          column: 13,
+          column: 22,
         },
       ],
     },
@@ -420,7 +420,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 13,
         },
@@ -436,7 +436,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 13,
         },
@@ -448,7 +448,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 2,
           column: 22,
         },
@@ -460,7 +460,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 22,
         },
@@ -473,7 +473,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
           column: 22,
         },
@@ -486,7 +486,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 22,
         },
@@ -500,7 +500,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 22,
         },
@@ -514,9 +514,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -528,9 +528,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -542,7 +542,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 22,
         },
@@ -556,9 +556,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -570,9 +570,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -584,7 +584,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 2,
           column: 25,
         },
@@ -598,7 +598,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 25,
         },
@@ -613,7 +613,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
           column: 25,
         },
@@ -628,7 +628,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 25,
         },
@@ -644,7 +644,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 25,
         },
@@ -660,7 +660,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 25,
         },
@@ -676,7 +676,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 25,
         },
@@ -692,7 +692,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 25,
         },
@@ -706,7 +706,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 2,
           column: 16,
         },
@@ -720,7 +720,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 16,
         },
@@ -735,7 +735,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 3,
           column: 16,
         },
@@ -750,7 +750,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 16,
         },
@@ -766,7 +766,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 16,
         },
@@ -782,7 +782,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 16,
         },
@@ -798,7 +798,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 16,
         },
@@ -814,7 +814,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 16,
         },
@@ -828,7 +828,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 4,
           column: 18,
         },
@@ -842,7 +842,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 18,
         },
@@ -857,7 +857,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 5,
           column: 18,
         },
@@ -872,7 +872,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 5,
           column: 18,
         },
@@ -888,7 +888,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 6,
           column: 18,
         },
@@ -904,7 +904,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 6,
           column: 18,
         },
@@ -920,7 +920,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 6,
           column: 18,
         },
@@ -936,7 +936,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 6,
           column: 18,
         },
@@ -948,7 +948,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 2,
           column: 58,
         },
@@ -957,17 +957,17 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullableBoolean',
           line: 2,
           column: 55,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullableBoolean',
           line: 3,
           column: 37,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 4,
           column: 41,
         },
@@ -982,12 +982,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
       options: [{ ignoreRhs: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 4,
           column: 19,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 5,
           column: 20,
         },
@@ -1003,36 +1003,36 @@ const objAndBool = obj && bool;
       options: [{ allowNullable: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
-          column: 44,
+          column: 45,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullablePrimitive',
           line: 3,
-          column: 35,
+          column: 36,
         },
       ],
       code: `
-        const f = (x: null | undefined) => x ? 1 : 0;
-        const f = (x?: number) => x ? 1 : 0;
+        const f1 = (x: null | undefined) => x ? 1 : 0;
+        const f2 = (x?: number) => x ? 1 : 0;
       `,
     },
     {
       options: [{ allowSafe: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 3,
           column: 42,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 4,
           column: 42,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 5,
           column: 44,
         },
@@ -1048,12 +1048,12 @@ const objAndBool = obj && bool;
       options: [{ allowSafe: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 8,
           column: 34,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorPrimitive',
           line: 9,
           column: 34,
         },
@@ -1073,12 +1073,12 @@ const objAndBool = obj && bool;
       options: [{ allowNullable: true, allowSafe: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 3,
           column: 43,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorOther',
           line: 4,
           column: 49,
         },
