@@ -1000,6 +1000,48 @@ const objAndBool = obj && bool;
 `,
     },
     {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 13,
+        },
+      ],
+      code: `
+        const condition = () => true;
+        const obj = {};
+        if (condition() || obj) {}
+        if (condition() && obj) {}
+      `,
+    },
+    {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 13,
+        },
+      ],
+      code: `
+        declare let condition: boolean;
+        const obj = {};
+        if (condition || obj) {}
+        if (condition && obj) {}
+      `,
+    },
+    {
       options: [{ allowNullable: true }],
       errors: [
         {
