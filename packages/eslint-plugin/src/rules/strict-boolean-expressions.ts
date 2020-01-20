@@ -108,22 +108,25 @@ export default util.createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function checkTestExpression(node: ExpressionWithTest): boolean {
+    function checkTestExpression(node: ExpressionWithTest): void {
       if (node.test == null) {
-        return false;
+        return;
       }
 
       if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
         if (node.test.operator !== '??') {
           if (checkBinaryLogicalExpression(node.test)) {
-            return true;
+            return;
           }
         }
       }
 
-      return checkNode(node.test);
+      checkNode(node.test);
     }
 
+    /**
+     * @returns `true` if there was an error reported
+     */
     function checkBinaryLogicalExpression(
       node: TSESTree.LogicalExpression,
     ): boolean {
@@ -159,10 +162,10 @@ export default util.createRule<Options, MessageId>({
         hasFalsyT,
         hasMixedT,
         hasTruthyT,
-        hasAny,
+        isAny,
       } = tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)
-        ? getConditionTypes((type as ts.UnionType).types)
-        : getConditionTypes([type]);
+        ? inspectVariantTypes((type as ts.UnionType).types)
+        : inspectVariantTypes([type]);
 
       // boolean
       if (isBoolean) {
@@ -170,7 +173,7 @@ export default util.createRule<Options, MessageId>({
         return false;
       }
       // any or unknown
-      else if (hasAny) {
+      else if (isAny) {
         messageId = 'conditionErrorAny';
       }
       // undefined | null
@@ -221,16 +224,25 @@ export default util.createRule<Options, MessageId>({
       return false;
     }
 
-    interface ConditionTypes {
+    interface TypeSummary {
+      /** Whether this type is simply a boolean */
       isBoolean: boolean;
+      /** Whether there was an union variant of type boolean */
       hasBoolean: boolean;
+      /** Whether there was an union variant which is always falsy (undefined or null) */
       hasFalsyT: boolean;
+      /** Whether there was an union variant of primitive type which can be falsy (string or number) */
       hasMixedT: boolean;
+      /** Whether there was an union variant which is always truthy (object, function, symbol, etc) */
       hasTruthyT: boolean;
-      hasAny: boolean;
+      /** Whether this type is simply an any or unknown */
+      isAny: boolean;
     }
 
-    function getConditionTypes(types: ts.Type[]): ConditionTypes {
+    /**
+     * Check union variants for the types we care about
+     */
+    function inspectVariantTypes(types: ts.Type[]): TypeSummary {
       return {
         isBoolean: types.every(type =>
           tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
@@ -260,7 +272,7 @@ export default util.createRule<Options, MessageId>({
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) &&
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
         ),
-        hasAny: types.every(
+        isAny: types.every(
           type =>
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
