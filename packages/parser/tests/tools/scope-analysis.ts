@@ -75,8 +75,7 @@ export function variableToJSON(
   }));
   const identifiers = variable.identifiers.map(nodeToJSON);
   const references = variable.references.map(resolver.ref, resolver);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const scope = resolver.ref((variable as any).scope);
+  const scope = resolver.ref(variable.scope);
 
   return resolver.resolve(variable, {
     name,
