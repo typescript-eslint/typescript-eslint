@@ -2,10 +2,10 @@
 
 ## Table of Contents
 
-- [My linting seems really slow](#my-linting-seems-really-slow)
-- [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-"the-file-must-be-included-in-at-least-one-of-the-projects-provided")
-- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](<#i-use-a-framework-(like-vue)-that-requires-custom-file-extensions,-and-i-get-errors-like-"you-should-add-`parserOptions.extraFileExtensions`-to-your-config">)
-- [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core,-and-it-doesn't-work-correctly-with-typescript-code)
+- [My linting feels really slow](#my-linting-feels-really-slow)
+- [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided)
+- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](#i-use-a-framework-like-vue-that-requires-custom-file-extensions-and-i-get-errors-like-you-should-add-parseroptionsextrafileextensions-to-your-config)
+- [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
 
 ---
 
