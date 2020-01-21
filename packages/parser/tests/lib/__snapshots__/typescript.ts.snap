@@ -20267,31 +20267,31 @@ Object {
 
 exports[`typescript fixtures/basics/keyword-variables.src 1`] = `
 Object {
-  "$id": 23,
+  "$id": 108,
   "block": Object {
     "range": Array [
       0,
-      212,
+      1078,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 22,
+      "$id": 107,
       "block": Object {
         "range": Array [
           0,
-          212,
+          1078,
         ],
         "type": "Program",
       },
       "childScopes": Array [
         Object {
-          "$id": 21,
+          "$id": 94,
           "block": Object {
             "range": Array [
               0,
-              126,
+              613,
             ],
             "type": "BlockStatement",
           },
@@ -20300,176 +20300,776 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 14,
+              "$id": 63,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
               "identifier": Object {
-                "name": "get",
+                "name": "abstract",
                 "range": Array [
                   10,
-                  13,
+                  18,
                 ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 7,
+                "$ref": 32,
               },
               "writeExpr": Object {
                 "range": Array [
-                  16,
-                  17,
+                  21,
+                  22,
                 ],
                 "type": "Literal",
               },
             },
             Object {
-              "$id": 15,
+              "$id": 64,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
               "identifier": Object {
-                "name": "set",
+                "name": "as",
                 "range": Array [
-                  27,
-                  30,
-                ],
-                "type": "Identifier",
-              },
-              "kind": "w",
-              "resolved": Object {
-                "$ref": 8,
-              },
-              "writeExpr": Object {
-                "range": Array [
-                  33,
+                  32,
                   34,
                 ],
-                "type": "Literal",
-              },
-            },
-            Object {
-              "$id": 16,
-              "from": Object {
-                "$ref": 21,
-              },
-              "identifier": Object {
-                "name": "module",
-                "range": Array [
-                  44,
-                  50,
-                ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 9,
+                "$ref": 33,
               },
               "writeExpr": Object {
                 "range": Array [
-                  53,
-                  54,
+                  37,
+                  38,
                 ],
                 "type": "Literal",
               },
             },
             Object {
-              "$id": 17,
+              "$id": 65,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
               "identifier": Object {
-                "name": "type",
+                "name": "asserts",
                 "range": Array [
-                  64,
-                  68,
+                  48,
+                  55,
                 ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 10,
+                "$ref": 34,
               },
               "writeExpr": Object {
                 "range": Array [
-                  71,
+                  58,
+                  59,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 66,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "any",
+                "range": Array [
+                  69,
                   72,
                 ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 35,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  75,
+                  76,
+                ],
                 "type": "Literal",
               },
             },
             Object {
-              "$id": 18,
+              "$id": 67,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
               "identifier": Object {
                 "name": "async",
                 "range": Array [
-                  82,
-                  87,
+                  86,
+                  91,
                 ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 11,
+                "$ref": 36,
               },
               "writeExpr": Object {
                 "range": Array [
-                  90,
-                  91,
+                  94,
+                  95,
                 ],
                 "type": "Literal",
               },
             },
             Object {
-              "$id": 19,
+              "$id": 68,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "await",
+                "range": Array [
+                  105,
+                  110,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 37,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  113,
+                  114,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 69,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "boolean",
+                "range": Array [
+                  124,
+                  131,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 38,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  134,
+                  135,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 70,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "constructor",
+                "range": Array [
+                  145,
+                  156,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 39,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  159,
+                  160,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 71,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "declare",
+                "range": Array [
+                  170,
+                  177,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 40,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  180,
+                  181,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 72,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "get",
+                "range": Array [
+                  191,
+                  194,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 41,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  197,
+                  198,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 73,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "infer",
+                "range": Array [
+                  208,
+                  213,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 42,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  216,
+                  217,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 74,
+              "from": Object {
+                "$ref": 94,
               },
               "identifier": Object {
                 "name": "is",
                 "range": Array [
-                  101,
-                  103,
+                  227,
+                  229,
                 ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 12,
+                "$ref": 43,
               },
               "writeExpr": Object {
                 "range": Array [
-                  106,
-                  107,
+                  232,
+                  233,
                 ],
                 "type": "Literal",
               },
             },
             Object {
-              "$id": 20,
+              "$id": 75,
               "from": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
               "identifier": Object {
-                "name": "of",
+                "name": "keyof",
                 "range": Array [
-                  117,
-                  119,
+                  243,
+                  248,
                 ],
                 "type": "Identifier",
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 13,
+                "$ref": 44,
               },
               "writeExpr": Object {
                 "range": Array [
-                  122,
-                  123,
+                  251,
+                  252,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 76,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "module",
+                "range": Array [
+                  262,
+                  268,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 45,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  271,
+                  272,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 77,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "namespace",
+                "range": Array [
+                  282,
+                  291,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 46,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  294,
+                  295,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 78,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "never",
+                "range": Array [
+                  305,
+                  310,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 47,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  313,
+                  314,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 79,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "readonly",
+                "range": Array [
+                  324,
+                  332,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 48,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  335,
+                  336,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 80,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "require",
+                "range": Array [
+                  346,
+                  353,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 49,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  356,
+                  357,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 81,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "number",
+                "range": Array [
+                  367,
+                  373,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 50,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  376,
+                  377,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 82,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "object",
+                "range": Array [
+                  387,
+                  393,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 51,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  396,
+                  397,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 83,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "set",
+                "range": Array [
+                  407,
+                  410,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 52,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  413,
+                  414,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 84,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "string",
+                "range": Array [
+                  424,
+                  430,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 53,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  433,
+                  434,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 85,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "symbol",
+                "range": Array [
+                  444,
+                  450,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 54,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  453,
+                  454,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 86,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "type",
+                "range": Array [
+                  464,
+                  468,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 55,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  471,
+                  472,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 87,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "undefined",
+                "range": Array [
+                  482,
+                  491,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 56,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  494,
+                  495,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 88,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "unique",
+                "range": Array [
+                  505,
+                  511,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 57,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  514,
+                  515,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 89,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "unknown",
+                "range": Array [
+                  525,
+                  532,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 58,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  535,
+                  536,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 90,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "from",
+                "range": Array [
+                  546,
+                  550,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 59,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  553,
+                  554,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 91,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "global",
+                "range": Array [
+                  564,
+                  570,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 60,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  573,
+                  574,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 92,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "bigint",
+                "range": Array [
+                  584,
+                  590,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 61,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  593,
+                  594,
+                ],
+                "type": "Literal",
+              },
+            },
+            Object {
+              "$id": 93,
+              "from": Object {
+                "$ref": 94,
+              },
+              "identifier": Object {
+                "name": "of",
+                "range": Array [
+                  604,
+                  606,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 62,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  609,
+                  610,
                 ],
                 "type": "Literal",
               },
@@ -20478,58 +21078,130 @@ Object {
           "throughReferences": Array [],
           "type": "block",
           "upperScope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
           "variableMap": Object {
+            "abstract": Object {
+              "$ref": 32,
+            },
+            "any": Object {
+              "$ref": 35,
+            },
+            "as": Object {
+              "$ref": 33,
+            },
+            "asserts": Object {
+              "$ref": 34,
+            },
             "async": Object {
-              "$ref": 11,
+              "$ref": 36,
+            },
+            "await": Object {
+              "$ref": 37,
+            },
+            "bigint": Object {
+              "$ref": 61,
+            },
+            "boolean": Object {
+              "$ref": 38,
+            },
+            "constructor": Object {
+              "$ref": 39,
+            },
+            "declare": Object {
+              "$ref": 40,
+            },
+            "from": Object {
+              "$ref": 59,
             },
             "get": Object {
-              "$ref": 7,
+              "$ref": 41,
+            },
+            "global": Object {
+              "$ref": 60,
+            },
+            "infer": Object {
+              "$ref": 42,
             },
             "is": Object {
-              "$ref": 12,
+              "$ref": 43,
+            },
+            "keyof": Object {
+              "$ref": 44,
             },
             "module": Object {
-              "$ref": 9,
+              "$ref": 45,
+            },
+            "namespace": Object {
+              "$ref": 46,
+            },
+            "never": Object {
+              "$ref": 47,
+            },
+            "number": Object {
+              "$ref": 50,
+            },
+            "object": Object {
+              "$ref": 51,
             },
             "of": Object {
-              "$ref": 13,
+              "$ref": 62,
+            },
+            "readonly": Object {
+              "$ref": 48,
+            },
+            "require": Object {
+              "$ref": 49,
             },
             "set": Object {
-              "$ref": 8,
+              "$ref": 52,
+            },
+            "string": Object {
+              "$ref": 53,
+            },
+            "symbol": Object {
+              "$ref": 54,
             },
             "type": Object {
-              "$ref": 10,
+              "$ref": 55,
+            },
+            "undefined": Object {
+              "$ref": 56,
+            },
+            "unique": Object {
+              "$ref": 57,
+            },
+            "unknown": Object {
+              "$ref": 58,
             },
           },
           "variableScope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
           "variables": Array [
             Object {
-              "$id": 7,
+              "$id": 32,
               "defs": Array [
                 Object {
                   "name": Object {
-                    "name": "get",
+                    "name": "abstract",
                     "range": Array [
                       10,
-                      13,
+                      18,
                     ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
                       10,
-                      17,
+                      22,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
                       4,
-                      18,
+                      23,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20539,47 +21211,47 @@ Object {
               "eslintUsed": undefined,
               "identifiers": Array [
                 Object {
-                  "name": "get",
+                  "name": "abstract",
                   "range": Array [
                     10,
-                    13,
+                    18,
                   ],
                   "type": "Identifier",
                 },
               ],
-              "name": "get",
+              "name": "abstract",
               "references": Array [
                 Object {
-                  "$ref": 14,
+                  "$ref": 63,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
             },
             Object {
-              "$id": 8,
+              "$id": 33,
               "defs": Array [
                 Object {
                   "name": Object {
-                    "name": "set",
+                    "name": "as",
                     "range": Array [
-                      27,
-                      30,
-                    ],
-                    "type": "Identifier",
-                  },
-                  "node": Object {
-                    "range": Array [
-                      27,
+                      32,
                       34,
                     ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      32,
+                      38,
+                    ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
-                      21,
-                      35,
+                      26,
+                      39,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20589,97 +21261,47 @@ Object {
               "eslintUsed": undefined,
               "identifiers": Array [
                 Object {
-                  "name": "set",
+                  "name": "as",
                   "range": Array [
-                    27,
-                    30,
+                    32,
+                    34,
                   ],
                   "type": "Identifier",
                 },
               ],
-              "name": "set",
+              "name": "as",
               "references": Array [
                 Object {
-                  "$ref": 15,
+                  "$ref": 64,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
             },
             Object {
-              "$id": 9,
+              "$id": 34,
               "defs": Array [
                 Object {
                   "name": Object {
-                    "name": "module",
+                    "name": "asserts",
                     "range": Array [
-                      44,
-                      50,
-                    ],
-                    "type": "Identifier",
-                  },
-                  "node": Object {
-                    "range": Array [
-                      44,
-                      54,
-                    ],
-                    "type": "VariableDeclarator",
-                  },
-                  "parent": Object {
-                    "range": Array [
-                      38,
+                      48,
                       55,
                     ],
-                    "type": "VariableDeclaration",
-                  },
-                  "type": "Variable",
-                },
-              ],
-              "eslintUsed": undefined,
-              "identifiers": Array [
-                Object {
-                  "name": "module",
-                  "range": Array [
-                    44,
-                    50,
-                  ],
-                  "type": "Identifier",
-                },
-              ],
-              "name": "module",
-              "references": Array [
-                Object {
-                  "$ref": 16,
-                },
-              ],
-              "scope": Object {
-                "$ref": 21,
-              },
-            },
-            Object {
-              "$id": 10,
-              "defs": Array [
-                Object {
-                  "name": Object {
-                    "name": "type",
-                    "range": Array [
-                      64,
-                      68,
-                    ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
-                      64,
-                      72,
+                      48,
+                      59,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
-                      58,
-                      73,
+                      42,
+                      60,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20689,47 +21311,97 @@ Object {
               "eslintUsed": undefined,
               "identifiers": Array [
                 Object {
-                  "name": "type",
+                  "name": "asserts",
                   "range": Array [
-                    64,
-                    68,
+                    48,
+                    55,
                   ],
                   "type": "Identifier",
                 },
               ],
-              "name": "type",
+              "name": "asserts",
               "references": Array [
                 Object {
-                  "$ref": 17,
+                  "$ref": 65,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
             },
             Object {
-              "$id": 11,
+              "$id": 35,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "any",
+                    "range": Array [
+                      69,
+                      72,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      69,
+                      76,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      63,
+                      77,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "any",
+                  "range": Array [
+                    69,
+                    72,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "any",
+              "references": Array [
+                Object {
+                  "$ref": 66,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 36,
               "defs": Array [
                 Object {
                   "name": Object {
                     "name": "async",
                     "range": Array [
-                      82,
-                      87,
+                      86,
+                      91,
                     ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
-                      82,
-                      91,
+                      86,
+                      95,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
-                      76,
-                      92,
+                      80,
+                      96,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20741,8 +21413,8 @@ Object {
                 Object {
                   "name": "async",
                   "range": Array [
-                    82,
-                    87,
+                    86,
+                    91,
                   ],
                   "type": "Identifier",
                 },
@@ -20750,36 +21422,336 @@ Object {
               "name": "async",
               "references": Array [
                 Object {
-                  "$ref": 18,
+                  "$ref": 67,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
             },
             Object {
-              "$id": 12,
+              "$id": 37,
               "defs": Array [
                 Object {
                   "name": Object {
-                    "name": "is",
+                    "name": "await",
                     "range": Array [
-                      101,
-                      103,
+                      105,
+                      110,
                     ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
-                      101,
-                      107,
+                      105,
+                      114,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
-                      95,
-                      108,
+                      99,
+                      115,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "await",
+                  "range": Array [
+                    105,
+                    110,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "await",
+              "references": Array [
+                Object {
+                  "$ref": 68,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 38,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "boolean",
+                    "range": Array [
+                      124,
+                      131,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      124,
+                      135,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      118,
+                      136,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "boolean",
+                  "range": Array [
+                    124,
+                    131,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "boolean",
+              "references": Array [
+                Object {
+                  "$ref": 69,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 39,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "constructor",
+                    "range": Array [
+                      145,
+                      156,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      145,
+                      160,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      139,
+                      161,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "constructor",
+                  "range": Array [
+                    145,
+                    156,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "constructor",
+              "references": Array [
+                Object {
+                  "$ref": 70,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 40,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "declare",
+                    "range": Array [
+                      170,
+                      177,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      170,
+                      181,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      164,
+                      182,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "declare",
+                  "range": Array [
+                    170,
+                    177,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "declare",
+              "references": Array [
+                Object {
+                  "$ref": 71,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 41,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "get",
+                    "range": Array [
+                      191,
+                      194,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      191,
+                      198,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      185,
+                      199,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "get",
+                  "range": Array [
+                    191,
+                    194,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "get",
+              "references": Array [
+                Object {
+                  "$ref": 72,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 42,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "infer",
+                    "range": Array [
+                      208,
+                      213,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      208,
+                      217,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      202,
+                      218,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "infer",
+                  "range": Array [
+                    208,
+                    213,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "infer",
+              "references": Array [
+                Object {
+                  "$ref": 73,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 43,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "is",
+                    "range": Array [
+                      227,
+                      229,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      227,
+                      233,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      221,
+                      234,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20791,8 +21763,8 @@ Object {
                 Object {
                   "name": "is",
                   "range": Array [
-                    101,
-                    103,
+                    227,
+                    229,
                   ],
                   "type": "Identifier",
                 },
@@ -20800,36 +21772,936 @@ Object {
               "name": "is",
               "references": Array [
                 Object {
-                  "$ref": 19,
+                  "$ref": 74,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
               },
             },
             Object {
-              "$id": 13,
+              "$id": 44,
               "defs": Array [
                 Object {
                   "name": Object {
-                    "name": "of",
+                    "name": "keyof",
                     "range": Array [
-                      117,
-                      119,
+                      243,
+                      248,
                     ],
                     "type": "Identifier",
                   },
                   "node": Object {
                     "range": Array [
-                      117,
-                      123,
+                      243,
+                      252,
                     ],
                     "type": "VariableDeclarator",
                   },
                   "parent": Object {
                     "range": Array [
-                      111,
-                      124,
+                      237,
+                      253,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "keyof",
+                  "range": Array [
+                    243,
+                    248,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "keyof",
+              "references": Array [
+                Object {
+                  "$ref": 75,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 45,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "module",
+                    "range": Array [
+                      262,
+                      268,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      262,
+                      272,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      256,
+                      273,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "module",
+                  "range": Array [
+                    262,
+                    268,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "module",
+              "references": Array [
+                Object {
+                  "$ref": 76,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 46,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "namespace",
+                    "range": Array [
+                      282,
+                      291,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      282,
+                      295,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      276,
+                      296,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "namespace",
+                  "range": Array [
+                    282,
+                    291,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "namespace",
+              "references": Array [
+                Object {
+                  "$ref": 77,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 47,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "never",
+                    "range": Array [
+                      305,
+                      310,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      305,
+                      314,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      299,
+                      315,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "never",
+                  "range": Array [
+                    305,
+                    310,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "never",
+              "references": Array [
+                Object {
+                  "$ref": 78,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 48,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "readonly",
+                    "range": Array [
+                      324,
+                      332,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      324,
+                      336,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      318,
+                      337,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "readonly",
+                  "range": Array [
+                    324,
+                    332,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "readonly",
+              "references": Array [
+                Object {
+                  "$ref": 79,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 49,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "require",
+                    "range": Array [
+                      346,
+                      353,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      346,
+                      357,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      340,
+                      358,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "require",
+                  "range": Array [
+                    346,
+                    353,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "require",
+              "references": Array [
+                Object {
+                  "$ref": 80,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 50,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "number",
+                    "range": Array [
+                      367,
+                      373,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      367,
+                      377,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      361,
+                      378,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "number",
+                  "range": Array [
+                    367,
+                    373,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "number",
+              "references": Array [
+                Object {
+                  "$ref": 81,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 51,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "object",
+                    "range": Array [
+                      387,
+                      393,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      387,
+                      397,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      381,
+                      398,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "object",
+                  "range": Array [
+                    387,
+                    393,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "object",
+              "references": Array [
+                Object {
+                  "$ref": 82,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 52,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "set",
+                    "range": Array [
+                      407,
+                      410,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      407,
+                      414,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      401,
+                      415,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "set",
+                  "range": Array [
+                    407,
+                    410,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "set",
+              "references": Array [
+                Object {
+                  "$ref": 83,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 53,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "string",
+                    "range": Array [
+                      424,
+                      430,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      424,
+                      434,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      418,
+                      435,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "string",
+                  "range": Array [
+                    424,
+                    430,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "string",
+              "references": Array [
+                Object {
+                  "$ref": 84,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 54,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "symbol",
+                    "range": Array [
+                      444,
+                      450,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      444,
+                      454,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      438,
+                      455,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "symbol",
+                  "range": Array [
+                    444,
+                    450,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "symbol",
+              "references": Array [
+                Object {
+                  "$ref": 85,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 55,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "type",
+                    "range": Array [
+                      464,
+                      468,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      464,
+                      472,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      458,
+                      473,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "type",
+                  "range": Array [
+                    464,
+                    468,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "type",
+              "references": Array [
+                Object {
+                  "$ref": 86,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 56,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "undefined",
+                    "range": Array [
+                      482,
+                      491,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      482,
+                      495,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      476,
+                      496,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "undefined",
+                  "range": Array [
+                    482,
+                    491,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "undefined",
+              "references": Array [
+                Object {
+                  "$ref": 87,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 57,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "unique",
+                    "range": Array [
+                      505,
+                      511,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      505,
+                      515,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      499,
+                      516,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "unique",
+                  "range": Array [
+                    505,
+                    511,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "unique",
+              "references": Array [
+                Object {
+                  "$ref": 88,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 58,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "unknown",
+                    "range": Array [
+                      525,
+                      532,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      525,
+                      536,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      519,
+                      537,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "unknown",
+                  "range": Array [
+                    525,
+                    532,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "unknown",
+              "references": Array [
+                Object {
+                  "$ref": 89,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 59,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "from",
+                    "range": Array [
+                      546,
+                      550,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      546,
+                      554,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      540,
+                      555,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "from",
+                  "range": Array [
+                    546,
+                    550,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "from",
+              "references": Array [
+                Object {
+                  "$ref": 90,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 60,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "global",
+                    "range": Array [
+                      564,
+                      570,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      564,
+                      574,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      558,
+                      575,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "global",
+                  "range": Array [
+                    564,
+                    570,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "global",
+              "references": Array [
+                Object {
+                  "$ref": 91,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 61,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "bigint",
+                    "range": Array [
+                      584,
+                      590,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      584,
+                      594,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      578,
+                      595,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "bigint",
+                  "range": Array [
+                    584,
+                    590,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "bigint",
+              "references": Array [
+                Object {
+                  "$ref": 92,
+                },
+              ],
+              "scope": Object {
+                "$ref": 94,
+              },
+            },
+            Object {
+              "$id": 62,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "of",
+                    "range": Array [
+                      604,
+                      606,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      604,
+                      610,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      598,
+                      611,
                     ],
                     "type": "VariableDeclaration",
                   },
@@ -20841,8 +22713,8 @@ Object {
                 Object {
                   "name": "of",
                   "range": Array [
-                    117,
-                    119,
+                    604,
+                    606,
                   ],
                   "type": "Identifier",
                 },
@@ -20850,11 +22722,320 @@ Object {
               "name": "of",
               "references": Array [
                 Object {
-                  "$ref": 20,
+                  "$ref": 93,
                 },
               ],
               "scope": Object {
-                "$ref": 21,
+                "$ref": 94,
+              },
+            },
+          ],
+        },
+        Object {
+          "$id": 106,
+          "block": Object {
+            "range": Array [
+              962,
+              1077,
+            ],
+            "type": "ClassDeclaration",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 97,
+              "block": Object {
+                "range": Array [
+                  995,
+                  1000,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 106,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 96,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 97,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 96,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 97,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 99,
+              "block": Object {
+                "range": Array [
+                  1012,
+                  1017,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 106,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 98,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 99,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 98,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 99,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 101,
+              "block": Object {
+                "range": Array [
+                  1028,
+                  1033,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 106,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 100,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 101,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 100,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 101,
+                  },
+                },
+              ],
+            },
+            Object {
+              "$id": 105,
+              "block": Object {
+                "range": Array [
+                  1048,
+                  1075,
+                ],
+                "type": "FunctionExpression",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [
+                Object {
+                  "$id": 104,
+                  "from": Object {
+                    "$ref": 105,
+                  },
+                  "identifier": Object {
+                    "name": "x",
+                    "range": Array [
+                      1061,
+                      1062,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "kind": "w",
+                  "resolved": Object {
+                    "$ref": 103,
+                  },
+                  "writeExpr": Object {
+                    "range": Array [
+                      1065,
+                      1070,
+                    ],
+                    "type": "YieldExpression",
+                  },
+                },
+              ],
+              "throughReferences": Array [],
+              "type": "function",
+              "upperScope": Object {
+                "$ref": 106,
+              },
+              "variableMap": Object {
+                "arguments": Object {
+                  "$ref": 102,
+                },
+                "x": Object {
+                  "$ref": 103,
+                },
+              },
+              "variableScope": Object {
+                "$ref": 105,
+              },
+              "variables": Array [
+                Object {
+                  "$id": 102,
+                  "defs": Array [],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [],
+                  "name": "arguments",
+                  "references": Array [],
+                  "scope": Object {
+                    "$ref": 105,
+                  },
+                },
+                Object {
+                  "$id": 103,
+                  "defs": Array [
+                    Object {
+                      "name": Object {
+                        "name": "x",
+                        "range": Array [
+                          1061,
+                          1062,
+                        ],
+                        "type": "Identifier",
+                      },
+                      "node": Object {
+                        "range": Array [
+                          1061,
+                          1070,
+                        ],
+                        "type": "VariableDeclarator",
+                      },
+                      "parent": Object {
+                        "range": Array [
+                          1057,
+                          1071,
+                        ],
+                        "type": "VariableDeclaration",
+                      },
+                      "type": "Variable",
+                    },
+                  ],
+                  "eslintUsed": undefined,
+                  "identifiers": Array [
+                    Object {
+                      "name": "x",
+                      "range": Array [
+                        1061,
+                        1062,
+                      ],
+                      "type": "Identifier",
+                    },
+                  ],
+                  "name": "x",
+                  "references": Array [
+                    Object {
+                      "$ref": 104,
+                    },
+                  ],
+                  "scope": Object {
+                    "$ref": 105,
+                  },
+                },
+              ],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "class",
+          "upperScope": Object {
+            "$ref": 107,
+          },
+          "variableMap": Object {
+            "C": Object {
+              "$ref": 95,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 107,
+          },
+          "variables": Array [
+            Object {
+              "$id": 95,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "C",
+                    "range": Array [
+                      968,
+                      969,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      962,
+                      1077,
+                    ],
+                    "type": "ClassDeclaration",
+                  },
+                  "parent": undefined,
+                  "type": "ClassName",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "C",
+                  "range": Array [
+                    968,
+                    969,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "C",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 106,
               },
             },
           ],
@@ -20866,33 +23047,108 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 23,
+        "$ref": 108,
       },
       "variableMap": Object {
+        "C": Object {
+          "$ref": 31,
+        },
+        "abstract": Object {
+          "$ref": 0,
+        },
+        "any": Object {
+          "$ref": 3,
+        },
+        "as": Object {
+          "$ref": 1,
+        },
+        "asserts": Object {
+          "$ref": 2,
+        },
         "async": Object {
           "$ref": 4,
         },
-        "get": Object {
-          "$ref": 0,
-        },
-        "is": Object {
+        "await": Object {
           "$ref": 5,
         },
-        "module": Object {
-          "$ref": 2,
+        "bigint": Object {
+          "$ref": 29,
         },
-        "of": Object {
+        "boolean": Object {
           "$ref": 6,
         },
+        "constructor": Object {
+          "$ref": 7,
+        },
+        "declare": Object {
+          "$ref": 8,
+        },
+        "from": Object {
+          "$ref": 27,
+        },
+        "get": Object {
+          "$ref": 9,
+        },
+        "global": Object {
+          "$ref": 28,
+        },
+        "infer": Object {
+          "$ref": 10,
+        },
+        "is": Object {
+          "$ref": 11,
+        },
+        "keyof": Object {
+          "$ref": 12,
+        },
+        "module": Object {
+          "$ref": 13,
+        },
+        "namespace": Object {
+          "$ref": 14,
+        },
+        "never": Object {
+          "$ref": 15,
+        },
+        "number": Object {
+          "$ref": 18,
+        },
+        "object": Object {
+          "$ref": 19,
+        },
+        "of": Object {
+          "$ref": 30,
+        },
+        "readonly": Object {
+          "$ref": 16,
+        },
+        "require": Object {
+          "$ref": 17,
+        },
         "set": Object {
-          "$ref": 1,
+          "$ref": 20,
+        },
+        "string": Object {
+          "$ref": 21,
+        },
+        "symbol": Object {
+          "$ref": 22,
         },
         "type": Object {
-          "$ref": 3,
+          "$ref": 23,
+        },
+        "undefined": Object {
+          "$ref": 24,
+        },
+        "unique": Object {
+          "$ref": 25,
+        },
+        "unknown": Object {
+          "$ref": 26,
         },
       },
       "variableScope": Object {
-        "$ref": 22,
+        "$ref": 107,
       },
       "variables": Array [
         Object {
@@ -20900,24 +23156,24 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "get",
+                "name": "abstract",
                 "range": Array [
-                  139,
-                  142,
+                  626,
+                  634,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  139,
-                  142,
+                  626,
+                  634,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20927,18 +23183,18 @@ Object {
           "eslintUsed": undefined,
           "identifiers": Array [
             Object {
-              "name": "get",
+              "name": "abstract",
               "range": Array [
-                139,
-                142,
+                626,
+                634,
               ],
               "type": "Identifier",
             },
           ],
-          "name": "get",
+          "name": "abstract",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
@@ -20946,24 +23202,24 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "set",
+                "name": "as",
                 "range": Array [
-                  146,
-                  149,
+                  638,
+                  640,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  146,
-                  149,
+                  638,
+                  640,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20973,18 +23229,18 @@ Object {
           "eslintUsed": undefined,
           "identifiers": Array [
             Object {
-              "name": "set",
+              "name": "as",
               "range": Array [
-                146,
-                149,
+                638,
+                640,
               ],
               "type": "Identifier",
             },
           ],
-          "name": "set",
+          "name": "as",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
@@ -20992,24 +23248,24 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "module",
+                "name": "asserts",
                 "range": Array [
-                  153,
-                  159,
+                  644,
+                  651,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  153,
-                  159,
+                  644,
+                  651,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21019,18 +23275,18 @@ Object {
           "eslintUsed": undefined,
           "identifiers": Array [
             Object {
-              "name": "module",
+              "name": "asserts",
               "range": Array [
-                153,
-                159,
+                644,
+                651,
               ],
               "type": "Identifier",
             },
           ],
-          "name": "module",
+          "name": "asserts",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
@@ -21038,24 +23294,24 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "type",
+                "name": "any",
                 "range": Array [
-                  163,
-                  167,
+                  655,
+                  658,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  163,
-                  167,
+                  655,
+                  658,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21065,18 +23321,18 @@ Object {
           "eslintUsed": undefined,
           "identifiers": Array [
             Object {
-              "name": "type",
+              "name": "any",
               "range": Array [
-                163,
-                167,
+                655,
+                658,
               ],
               "type": "Identifier",
             },
           ],
-          "name": "type",
+          "name": "any",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
@@ -21086,22 +23342,22 @@ Object {
               "name": Object {
                 "name": "async",
                 "range": Array [
-                  171,
-                  176,
+                  662,
+                  667,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  171,
-                  176,
+                  662,
+                  667,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21113,8 +23369,8 @@ Object {
             Object {
               "name": "async",
               "range": Array [
-                171,
-                176,
+                662,
+                667,
               ],
               "type": "Identifier",
             },
@@ -21122,7 +23378,7 @@ Object {
           "name": "async",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
@@ -21130,24 +23386,300 @@ Object {
           "defs": Array [
             Object {
               "name": Object {
-                "name": "is",
+                "name": "await",
                 "range": Array [
-                  180,
-                  182,
+                  671,
+                  676,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  180,
-                  182,
+                  671,
+                  676,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "await",
+              "range": Array [
+                671,
+                676,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "await",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 6,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "boolean",
+                "range": Array [
+                  680,
+                  687,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  680,
+                  687,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "boolean",
+              "range": Array [
+                680,
+                687,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "boolean",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 7,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "constructor",
+                "range": Array [
+                  691,
+                  702,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  691,
+                  702,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "constructor",
+              "range": Array [
+                691,
+                702,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "constructor",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 8,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "declare",
+                "range": Array [
+                  706,
+                  713,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  706,
+                  713,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "declare",
+              "range": Array [
+                706,
+                713,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "declare",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 9,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "get",
+                "range": Array [
+                  717,
+                  720,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  717,
+                  720,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "get",
+              "range": Array [
+                717,
+                720,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "get",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 10,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "infer",
+                "range": Array [
+                  724,
+                  729,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  724,
+                  729,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "infer",
+              "range": Array [
+                724,
+                729,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "infer",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 11,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "is",
+                "range": Array [
+                  733,
+                  735,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  733,
+                  735,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21159,8 +23691,8 @@ Object {
             Object {
               "name": "is",
               "range": Array [
-                180,
-                182,
+                733,
+                735,
               ],
               "type": "Identifier",
             },
@@ -21168,32 +23700,860 @@ Object {
           "name": "is",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
           },
         },
         Object {
-          "$id": 6,
+          "$id": 12,
           "defs": Array [
             Object {
               "name": Object {
-                "name": "of",
+                "name": "keyof",
                 "range": Array [
-                  186,
-                  188,
+                  739,
+                  744,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  186,
-                  188,
+                  739,
+                  744,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  128,
-                  211,
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "keyof",
+              "range": Array [
+                739,
+                744,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "keyof",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 13,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "module",
+                "range": Array [
+                  748,
+                  754,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  748,
+                  754,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "module",
+              "range": Array [
+                748,
+                754,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "module",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 14,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "namespace",
+                "range": Array [
+                  758,
+                  767,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  758,
+                  767,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "namespace",
+              "range": Array [
+                758,
+                767,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "namespace",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 15,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "never",
+                "range": Array [
+                  771,
+                  776,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  771,
+                  776,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "never",
+              "range": Array [
+                771,
+                776,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "never",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 16,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "readonly",
+                "range": Array [
+                  780,
+                  788,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  780,
+                  788,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "readonly",
+              "range": Array [
+                780,
+                788,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "readonly",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 17,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "require",
+                "range": Array [
+                  792,
+                  799,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  792,
+                  799,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "require",
+              "range": Array [
+                792,
+                799,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "require",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 18,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "number",
+                "range": Array [
+                  803,
+                  809,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  803,
+                  809,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "number",
+              "range": Array [
+                803,
+                809,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "number",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 19,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "object",
+                "range": Array [
+                  813,
+                  819,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  813,
+                  819,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "object",
+              "range": Array [
+                813,
+                819,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "object",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 20,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "set",
+                "range": Array [
+                  823,
+                  826,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  823,
+                  826,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "set",
+              "range": Array [
+                823,
+                826,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "set",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 21,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "string",
+                "range": Array [
+                  830,
+                  836,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  830,
+                  836,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "string",
+              "range": Array [
+                830,
+                836,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "string",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 22,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "symbol",
+                "range": Array [
+                  840,
+                  846,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  840,
+                  846,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "symbol",
+              "range": Array [
+                840,
+                846,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "symbol",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 23,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "type",
+                "range": Array [
+                  850,
+                  854,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  850,
+                  854,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "type",
+              "range": Array [
+                850,
+                854,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "type",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 24,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "undefined",
+                "range": Array [
+                  858,
+                  867,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  858,
+                  867,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "undefined",
+              "range": Array [
+                858,
+                867,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "undefined",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 25,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "unique",
+                "range": Array [
+                  871,
+                  877,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  871,
+                  877,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "unique",
+              "range": Array [
+                871,
+                877,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "unique",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 26,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "unknown",
+                "range": Array [
+                  881,
+                  888,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  881,
+                  888,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "unknown",
+              "range": Array [
+                881,
+                888,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "unknown",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 27,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "from",
+                "range": Array [
+                  892,
+                  896,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  892,
+                  896,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "from",
+              "range": Array [
+                892,
+                896,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "from",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 28,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "global",
+                "range": Array [
+                  900,
+                  906,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  900,
+                  906,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "global",
+              "range": Array [
+                900,
+                906,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "global",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 29,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "bigint",
+                "range": Array [
+                  910,
+                  916,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  910,
+                  916,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "bigint",
+              "range": Array [
+                910,
+                916,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "bigint",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 30,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "of",
+                "range": Array [
+                  920,
+                  922,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  920,
+                  922,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  615,
+                  945,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21205,8 +24565,8 @@ Object {
             Object {
               "name": "of",
               "range": Array [
-                186,
-                188,
+                920,
+                922,
               ],
               "type": "Identifier",
             },
@@ -21214,7 +24574,47 @@ Object {
           "name": "of",
           "references": Array [],
           "scope": Object {
-            "$ref": 22,
+            "$ref": 107,
+          },
+        },
+        Object {
+          "$id": 31,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "C",
+                "range": Array [
+                  968,
+                  969,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  962,
+                  1077,
+                ],
+                "type": "ClassDeclaration",
+              },
+              "parent": null,
+              "type": "ClassName",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "C",
+              "range": Array [
+                968,
+                969,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "C",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 107,
           },
         },
       ],
@@ -21228,7 +24628,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 23,
+    "$ref": 108,
   },
   "variables": Array [],
 }
