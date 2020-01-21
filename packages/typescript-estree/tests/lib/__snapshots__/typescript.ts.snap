@@ -11018,7 +11018,7 @@ Object {
         0,
         8,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {
@@ -11222,7 +11222,7 @@ Object {
         0,
         7,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "declare",
     },
     Object {
@@ -24094,7 +24094,7 @@ Object {
         33,
         42,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "undefined",
     },
     Object {
@@ -27094,7 +27094,7 @@ Object {
         27,
         36,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "undefined",
     },
     Object {
@@ -69535,7 +69535,7 @@ Object {
         10,
         18,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {
@@ -69625,7 +69625,7 @@ Object {
         32,
         34,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "as",
     },
     Object {
@@ -69715,7 +69715,7 @@ Object {
         48,
         55,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "asserts",
     },
     Object {
@@ -69805,7 +69805,7 @@ Object {
         69,
         72,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "any",
     },
     Object {
@@ -69985,7 +69985,7 @@ Object {
         105,
         110,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "await",
     },
     Object {
@@ -70075,7 +70075,7 @@ Object {
         124,
         131,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "boolean",
     },
     Object {
@@ -70165,7 +70165,7 @@ Object {
         145,
         156,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "constructor",
     },
     Object {
@@ -70255,7 +70255,7 @@ Object {
         170,
         177,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "declare",
     },
     Object {
@@ -70435,7 +70435,7 @@ Object {
         208,
         213,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "infer",
     },
     Object {
@@ -70615,7 +70615,7 @@ Object {
         243,
         248,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "keyof",
     },
     Object {
@@ -70795,7 +70795,7 @@ Object {
         282,
         291,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "namespace",
     },
     Object {
@@ -70885,7 +70885,7 @@ Object {
         305,
         310,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "never",
     },
     Object {
@@ -70975,7 +70975,7 @@ Object {
         324,
         332,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "readonly",
     },
     Object {
@@ -71065,7 +71065,7 @@ Object {
         346,
         353,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "require",
     },
     Object {
@@ -71155,7 +71155,7 @@ Object {
         367,
         373,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "number",
     },
     Object {
@@ -71245,7 +71245,7 @@ Object {
         387,
         393,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "object",
     },
     Object {
@@ -71425,7 +71425,7 @@ Object {
         424,
         430,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "string",
     },
     Object {
@@ -71515,7 +71515,7 @@ Object {
         444,
         450,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "symbol",
     },
     Object {
@@ -71695,7 +71695,7 @@ Object {
         482,
         491,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "undefined",
     },
     Object {
@@ -71785,7 +71785,7 @@ Object {
         505,
         511,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "unique",
     },
     Object {
@@ -71875,7 +71875,7 @@ Object {
         525,
         532,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "unknown",
     },
     Object {
@@ -71965,7 +71965,7 @@ Object {
         546,
         550,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "from",
     },
     Object {
@@ -72055,7 +72055,7 @@ Object {
         564,
         570,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -72145,7 +72145,7 @@ Object {
         584,
         590,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "bigint",
     },
     Object {
@@ -72361,7 +72361,7 @@ Object {
         626,
         634,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {
@@ -72397,7 +72397,7 @@ Object {
         638,
         640,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "as",
     },
     Object {
@@ -72433,7 +72433,7 @@ Object {
         644,
         651,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "asserts",
     },
     Object {
@@ -72469,7 +72469,7 @@ Object {
         655,
         658,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "any",
     },
     Object {
@@ -72541,7 +72541,7 @@ Object {
         671,
         676,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "await",
     },
     Object {
@@ -72577,7 +72577,7 @@ Object {
         680,
         687,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "boolean",
     },
     Object {
@@ -72613,7 +72613,7 @@ Object {
         691,
         702,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "constructor",
     },
     Object {
@@ -72649,7 +72649,7 @@ Object {
         706,
         713,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "declare",
     },
     Object {
@@ -72721,7 +72721,7 @@ Object {
         724,
         729,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "infer",
     },
     Object {
@@ -72793,7 +72793,7 @@ Object {
         739,
         744,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "keyof",
     },
     Object {
@@ -72865,7 +72865,7 @@ Object {
         758,
         767,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "namespace",
     },
     Object {
@@ -72901,7 +72901,7 @@ Object {
         771,
         776,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "never",
     },
     Object {
@@ -72937,7 +72937,7 @@ Object {
         780,
         788,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "readonly",
     },
     Object {
@@ -72973,7 +72973,7 @@ Object {
         792,
         799,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "require",
     },
     Object {
@@ -73009,7 +73009,7 @@ Object {
         803,
         809,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "number",
     },
     Object {
@@ -73045,7 +73045,7 @@ Object {
         813,
         819,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "object",
     },
     Object {
@@ -73117,7 +73117,7 @@ Object {
         830,
         836,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "string",
     },
     Object {
@@ -73153,7 +73153,7 @@ Object {
         840,
         846,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "symbol",
     },
     Object {
@@ -73225,7 +73225,7 @@ Object {
         858,
         867,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "undefined",
     },
     Object {
@@ -73261,7 +73261,7 @@ Object {
         871,
         877,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "unique",
     },
     Object {
@@ -73297,7 +73297,7 @@ Object {
         881,
         888,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "unknown",
     },
     Object {
@@ -73333,7 +73333,7 @@ Object {
         892,
         896,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "from",
     },
     Object {
@@ -73369,7 +73369,7 @@ Object {
         900,
         906,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -73405,7 +73405,7 @@ Object {
         910,
         916,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "bigint",
     },
     Object {
@@ -146941,7 +146941,7 @@ Object {
         8,
         14,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -147013,7 +147013,7 @@ Object {
         36,
         42,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -147103,7 +147103,7 @@ Object {
         74,
         80,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
