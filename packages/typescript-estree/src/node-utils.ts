@@ -468,6 +468,7 @@ export function getTokenType(
       case SyntaxKind.ModuleKeyword:
       case SyntaxKind.AsyncKeyword:
       case SyntaxKind.IsKeyword:
+      case SyntaxKind.OfKeyword:
         return AST_TOKEN_TYPES.Identifier;
 
       default:

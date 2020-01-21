@@ -66492,7 +66492,7 @@ Object {
         117,
         119,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "of",
     },
     Object {
@@ -66834,7 +66834,7 @@ Object {
         186,
         188,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "of",
     },
     Object {
