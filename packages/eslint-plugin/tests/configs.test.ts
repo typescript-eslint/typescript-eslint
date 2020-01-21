@@ -3,12 +3,12 @@ import plugin from '../src/index';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
-  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
+  .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
   .map(
     ([ruleName, rule]) =>
       [
         `${RULE_NAME_PREFIX}${ruleName}`,
-        typeof rule.meta.docs.extendsBaseRule === 'string'
+        typeof rule.meta.docs?.extendsBaseRule === 'string'
           ? rule.meta.docs.extendsBaseRule
           : ruleName,
       ] as const,
@@ -68,12 +68,12 @@ describe('recommended.json config', () => {
   const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
-        rule.meta.docs.recommended !== false &&
-        rule.meta.docs.requiresTypeChecking !== true,
+        rule.meta.docs?.recommended !== false &&
+        rule.meta.docs?.requiresTypeChecking !== true,
     )
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs.recommended || 'off',
+      rule.meta.docs?.recommended || 'off',
     ]);
 
   it("contains all recommended rules that don't require typechecking, excluding the deprecated ones", () => {
@@ -91,12 +91,12 @@ describe('recommended-requiring-type-checking.json config', () => {
   const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
-        rule.meta.docs.recommended !== false &&
-        rule.meta.docs.requiresTypeChecking === true,
+        rule.meta.docs?.recommended !== false &&
+        rule.meta.docs?.requiresTypeChecking === true,
     )
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs.recommended || 'off',
+      rule.meta.docs?.recommended || 'off',
     ]);
 
   it('contains all recommended rules that require type checking, excluding the deprecated ones', () => {
