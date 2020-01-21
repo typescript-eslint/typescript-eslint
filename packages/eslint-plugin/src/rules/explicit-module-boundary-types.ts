@@ -211,6 +211,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isUnexported(node: TSESTree.Node | undefined): boolean {
+      let isReturnedValue = false;
       while (node) {
         if (
           node.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
@@ -218,6 +219,22 @@ export default util.createRule<Options, MessageIds>({
           node.type === AST_NODE_TYPES.ExportSpecifier
         ) {
           return false;
+        }
+
+        if (node.type === AST_NODE_TYPES.ReturnStatement) {
+          isReturnedValue = true;
+        }
+
+        if (
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          node.type === AST_NODE_TYPES.FunctionDeclaration ||
+          node.type === AST_NODE_TYPES.FunctionExpression
+        ) {
+          isReturnedValue = false;
+        }
+
+        if (node.type === AST_NODE_TYPES.BlockStatement && !isReturnedValue) {
+          return true;
         }
 
         node = node.parent;
