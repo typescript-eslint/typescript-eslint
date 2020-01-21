@@ -456,23 +456,16 @@ export function isOptional(node: {
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): AST_TOKEN_TYPES {
-  // Need two checks for keywords since some are also identifiers
   if ('originalKeywordKind' in token && token.originalKeywordKind) {
-    switch (token.originalKeywordKind) {
-      case SyntaxKind.NullKeyword:
-        return AST_TOKEN_TYPES.Null;
-
-      case SyntaxKind.GetKeyword:
-      case SyntaxKind.SetKeyword:
-      case SyntaxKind.TypeKeyword:
-      case SyntaxKind.ModuleKeyword:
-      case SyntaxKind.AsyncKeyword:
-      case SyntaxKind.IsKeyword:
-        return AST_TOKEN_TYPES.Identifier;
-
-      default:
-        return AST_TOKEN_TYPES.Keyword;
+    if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
+      return AST_TOKEN_TYPES.Null;
+    } else if (
+      token.originalKeywordKind >= SyntaxKind.FirstFutureReservedWord &&
+      token.originalKeywordKind <= SyntaxKind.LastKeyword
+    ) {
+      return AST_TOKEN_TYPES.Identifier;
     }
+    return AST_TOKEN_TYPES.Keyword;
   }
 
   if (
