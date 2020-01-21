@@ -159,7 +159,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ ignoreRhs: true }],
       code: `
-        const obj = {};
+        const obj = { x: 1 };
         const bool = false;
         const boolOrObj = bool || obj;
         const boolAndObj = bool && obj;
@@ -982,18 +982,18 @@ ruleTester.run('strict-boolean-expressions', rule, {
       options: [{ ignoreRhs: true }],
       errors: [
         {
-          messageId: 'conditionErrorOther',
+          messageId: 'conditionErrorObject',
           line: 4,
           column: 19,
         },
         {
-          messageId: 'conditionErrorOther',
+          messageId: 'conditionErrorObject',
           line: 5,
           column: 20,
         },
       ],
       code: `
-const obj = {};
+const obj = { x: 1 };
 const bool = false;
 const objOrBool = obj || bool;
 const objAndBool = obj && bool;
@@ -1014,8 +1014,8 @@ const objAndBool = obj && bool;
         },
       ],
       code: `
-        const condition = () => true;
-        const obj = {};
+        const condition = () => false;
+        const obj = { x: 1 };
         if (condition() || obj) {}
         if (condition() && obj) {}
       `,
@@ -1036,7 +1036,7 @@ const objAndBool = obj && bool;
       ],
       code: `
         declare let condition: boolean;
-        const obj = {};
+        const obj = { x: 1 };
         if (condition || obj) {}
         if (condition && obj) {}
       `,
@@ -1058,6 +1058,25 @@ const objAndBool = obj && bool;
       code: `
         const f1 = (x: null | undefined) => x ? 1 : 0;
         const f2 = (x?: number) => x ? 1 : 0;
+      `,
+    },
+    {
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 3,
+          column: 43,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 44,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x: Type | boolean) => x ? 1 : 0;
+        const f2 = (x?: Type | boolean) => x ? 1 : 0;
       `,
     },
     {
@@ -1129,6 +1148,31 @@ const objAndBool = obj && bool;
         type Type = { a: string; };
         const f1 = (x?: Type | string) => x ? 1 : 0;
         const f2 = (x: Type | number | null) => x ? 1 : 0;
+      `,
+    },
+    {
+      errors: [
+        {
+          messageId: 'conditionErrorObject',
+          line: 3,
+          column: 33,
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 4,
+          column: 34,
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 5,
+          column: 41,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x: Type) => x ? 1 : 0;
+        const f2 = (x?: Type) => x ? 1 : 0;
+        const f3 = (x?: Type | null) => x ? 1 : 0;
       `,
     },
   ],

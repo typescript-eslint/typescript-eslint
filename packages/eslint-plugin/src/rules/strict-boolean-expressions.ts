@@ -162,7 +162,7 @@ export default util.createRule<Options, MessageId>({
         hasFalsyT,
         hasMixedT,
         hasTruthyT,
-        isAny,
+        hasAny,
       } = tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)
         ? inspectVariantTypes((type as ts.UnionType).types)
         : inspectVariantTypes([type]);
@@ -173,7 +173,7 @@ export default util.createRule<Options, MessageId>({
         return false;
       }
       // any or unknown
-      else if (isAny) {
+      else if (hasAny) {
         messageId = 'conditionErrorAny';
       }
       // undefined | null
@@ -193,6 +193,12 @@ export default util.createRule<Options, MessageId>({
       // string | number | undefined | null
       else if (!hasBoolean && hasFalsyT && hasMixedT && !hasTruthyT) {
         messageId = 'conditionErrorNullablePrimitive';
+      }
+      // object | function
+      else if (!hasBoolean && !hasFalsyT && !hasMixedT && hasTruthyT) {
+        if (!options.allowSafe) {
+          messageId = 'conditionErrorObject';
+        }
       }
       // object | function | boolean
       else if (hasBoolean && !hasFalsyT && !hasMixedT && hasTruthyT) {
@@ -236,7 +242,7 @@ export default util.createRule<Options, MessageId>({
       /** Whether there was an union variant which is always truthy (object, function, symbol, etc) */
       hasTruthyT: boolean;
       /** Whether this type is simply an any or unknown */
-      isAny: boolean;
+      hasAny: boolean;
     }
 
     /**
@@ -272,7 +278,7 @@ export default util.createRule<Options, MessageId>({
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) &&
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
         ),
-        isAny: types.every(
+        hasAny: types.some(
           type =>
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
