@@ -73,7 +73,7 @@ describe('recommended.json config', () => {
     )
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs?.recommended || 'off',
+      rule.meta.docs?.recommended ? rule.meta.docs.recommended : 'off',
     ]);
 
   it("contains all recommended rules that don't require typechecking, excluding the deprecated ones", () => {
@@ -96,7 +96,7 @@ describe('recommended-requiring-type-checking.json config', () => {
     )
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs?.recommended || 'off',
+      rule.meta.docs?.recommended ? rule.meta.docs.recommended : 'off',
     ]);
 
   it('contains all recommended rules that require type checking, excluding the deprecated ones', () => {
