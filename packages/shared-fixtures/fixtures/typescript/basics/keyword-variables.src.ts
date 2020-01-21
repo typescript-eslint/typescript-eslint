@@ -5,6 +5,7 @@
   const type = 1;
   const async = 1;
   const is = 1;
+  const of = 1;
 }
 
 import {
@@ -14,4 +15,5 @@ import {
   type,
   async,
   is,
+  of,
 } from 'fake-module';

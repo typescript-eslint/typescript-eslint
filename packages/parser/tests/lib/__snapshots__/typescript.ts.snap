@@ -20267,31 +20267,31 @@ Object {
 
 exports[`typescript fixtures/basics/keyword-variables.src 1`] = `
 Object {
-  "$id": 20,
+  "$id": 23,
   "block": Object {
     "range": Array [
       0,
-      190,
+      212,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 19,
+      "$id": 22,
       "block": Object {
         "range": Array [
           0,
-          190,
+          212,
         ],
         "type": "Program",
       },
       "childScopes": Array [
         Object {
-          "$id": 18,
+          "$id": 21,
           "block": Object {
             "range": Array [
               0,
-              110,
+              126,
             ],
             "type": "BlockStatement",
           },
@@ -20300,9 +20300,9 @@ Object {
           "isStrict": true,
           "references": Array [
             Object {
-              "$id": 12,
+              "$id": 14,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "get",
@@ -20314,7 +20314,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 6,
+                "$ref": 7,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20325,9 +20325,9 @@ Object {
               },
             },
             Object {
-              "$id": 13,
+              "$id": 15,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "set",
@@ -20339,7 +20339,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 7,
+                "$ref": 8,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20350,9 +20350,9 @@ Object {
               },
             },
             Object {
-              "$id": 14,
+              "$id": 16,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "module",
@@ -20364,7 +20364,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 8,
+                "$ref": 9,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20375,9 +20375,9 @@ Object {
               },
             },
             Object {
-              "$id": 15,
+              "$id": 17,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "type",
@@ -20389,7 +20389,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 9,
+                "$ref": 10,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20400,9 +20400,9 @@ Object {
               },
             },
             Object {
-              "$id": 16,
+              "$id": 18,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "async",
@@ -20414,7 +20414,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 10,
+                "$ref": 11,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20425,9 +20425,9 @@ Object {
               },
             },
             Object {
-              "$id": 17,
+              "$id": 19,
               "from": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
               "identifier": Object {
                 "name": "is",
@@ -20439,7 +20439,7 @@ Object {
               },
               "kind": "w",
               "resolved": Object {
-                "$ref": 11,
+                "$ref": 12,
               },
               "writeExpr": Object {
                 "range": Array [
@@ -20449,38 +20449,66 @@ Object {
                 "type": "Literal",
               },
             },
+            Object {
+              "$id": 20,
+              "from": Object {
+                "$ref": 21,
+              },
+              "identifier": Object {
+                "name": "of",
+                "range": Array [
+                  117,
+                  119,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "w",
+              "resolved": Object {
+                "$ref": 13,
+              },
+              "writeExpr": Object {
+                "range": Array [
+                  122,
+                  123,
+                ],
+                "type": "Literal",
+              },
+            },
           ],
           "throughReferences": Array [],
           "type": "block",
           "upperScope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
           "variableMap": Object {
             "async": Object {
-              "$ref": 10,
-            },
-            "get": Object {
-              "$ref": 6,
-            },
-            "is": Object {
               "$ref": 11,
             },
-            "module": Object {
-              "$ref": 8,
-            },
-            "set": Object {
+            "get": Object {
               "$ref": 7,
             },
-            "type": Object {
+            "is": Object {
+              "$ref": 12,
+            },
+            "module": Object {
               "$ref": 9,
+            },
+            "of": Object {
+              "$ref": 13,
+            },
+            "set": Object {
+              "$ref": 8,
+            },
+            "type": Object {
+              "$ref": 10,
             },
           },
           "variableScope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
           "variables": Array [
             Object {
-              "$id": 6,
+              "$id": 7,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20522,15 +20550,15 @@ Object {
               "name": "get",
               "references": Array [
                 Object {
-                  "$ref": 12,
+                  "$ref": 14,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
             },
             Object {
-              "$id": 7,
+              "$id": 8,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20572,15 +20600,15 @@ Object {
               "name": "set",
               "references": Array [
                 Object {
-                  "$ref": 13,
+                  "$ref": 15,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
             },
             Object {
-              "$id": 8,
+              "$id": 9,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20622,15 +20650,15 @@ Object {
               "name": "module",
               "references": Array [
                 Object {
-                  "$ref": 14,
+                  "$ref": 16,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
             },
             Object {
-              "$id": 9,
+              "$id": 10,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20672,15 +20700,15 @@ Object {
               "name": "type",
               "references": Array [
                 Object {
-                  "$ref": 15,
+                  "$ref": 17,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
             },
             Object {
-              "$id": 10,
+              "$id": 11,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20722,15 +20750,15 @@ Object {
               "name": "async",
               "references": Array [
                 Object {
-                  "$ref": 16,
+                  "$ref": 18,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
               },
             },
             Object {
-              "$id": 11,
+              "$id": 12,
               "defs": Array [
                 Object {
                   "name": Object {
@@ -20772,11 +20800,61 @@ Object {
               "name": "is",
               "references": Array [
                 Object {
-                  "$ref": 17,
+                  "$ref": 19,
                 },
               ],
               "scope": Object {
-                "$ref": 18,
+                "$ref": 21,
+              },
+            },
+            Object {
+              "$id": 13,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "of",
+                    "range": Array [
+                      117,
+                      119,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      117,
+                      123,
+                    ],
+                    "type": "VariableDeclarator",
+                  },
+                  "parent": Object {
+                    "range": Array [
+                      111,
+                      124,
+                    ],
+                    "type": "VariableDeclaration",
+                  },
+                  "type": "Variable",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "of",
+                  "range": Array [
+                    117,
+                    119,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "of",
+              "references": Array [
+                Object {
+                  "$ref": 20,
+                },
+              ],
+              "scope": Object {
+                "$ref": 21,
               },
             },
           ],
@@ -20788,7 +20866,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 20,
+        "$ref": 23,
       },
       "variableMap": Object {
         "async": Object {
@@ -20803,6 +20881,9 @@ Object {
         "module": Object {
           "$ref": 2,
         },
+        "of": Object {
+          "$ref": 6,
+        },
         "set": Object {
           "$ref": 1,
         },
@@ -20811,7 +20892,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 19,
+        "$ref": 22,
       },
       "variables": Array [
         Object {
@@ -20821,22 +20902,22 @@ Object {
               "name": Object {
                 "name": "get",
                 "range": Array [
-                  123,
-                  126,
+                  139,
+                  142,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  123,
-                  126,
+                  139,
+                  142,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20848,8 +20929,8 @@ Object {
             Object {
               "name": "get",
               "range": Array [
-                123,
-                126,
+                139,
+                142,
               ],
               "type": "Identifier",
             },
@@ -20857,7 +20938,7 @@ Object {
           "name": "get",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
         },
         Object {
@@ -20867,22 +20948,22 @@ Object {
               "name": Object {
                 "name": "set",
                 "range": Array [
-                  130,
-                  133,
+                  146,
+                  149,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  130,
-                  133,
+                  146,
+                  149,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20894,8 +20975,8 @@ Object {
             Object {
               "name": "set",
               "range": Array [
-                130,
-                133,
+                146,
+                149,
               ],
               "type": "Identifier",
             },
@@ -20903,7 +20984,7 @@ Object {
           "name": "set",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
         },
         Object {
@@ -20913,22 +20994,22 @@ Object {
               "name": Object {
                 "name": "module",
                 "range": Array [
-                  137,
-                  143,
+                  153,
+                  159,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  137,
-                  143,
+                  153,
+                  159,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20940,8 +21021,8 @@ Object {
             Object {
               "name": "module",
               "range": Array [
-                137,
-                143,
+                153,
+                159,
               ],
               "type": "Identifier",
             },
@@ -20949,7 +21030,7 @@ Object {
           "name": "module",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
         },
         Object {
@@ -20959,22 +21040,22 @@ Object {
               "name": Object {
                 "name": "type",
                 "range": Array [
-                  147,
-                  151,
+                  163,
+                  167,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  147,
-                  151,
+                  163,
+                  167,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -20986,8 +21067,8 @@ Object {
             Object {
               "name": "type",
               "range": Array [
-                147,
-                151,
+                163,
+                167,
               ],
               "type": "Identifier",
             },
@@ -20995,7 +21076,7 @@ Object {
           "name": "type",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
         },
         Object {
@@ -21005,22 +21086,22 @@ Object {
               "name": Object {
                 "name": "async",
                 "range": Array [
-                  155,
-                  160,
+                  171,
+                  176,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  155,
-                  160,
+                  171,
+                  176,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21032,8 +21113,8 @@ Object {
             Object {
               "name": "async",
               "range": Array [
-                155,
-                160,
+                171,
+                176,
               ],
               "type": "Identifier",
             },
@@ -21041,7 +21122,7 @@ Object {
           "name": "async",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
           },
         },
         Object {
@@ -21051,22 +21132,22 @@ Object {
               "name": Object {
                 "name": "is",
                 "range": Array [
-                  164,
-                  166,
+                  180,
+                  182,
                 ],
                 "type": "Identifier",
               },
               "node": Object {
                 "range": Array [
-                  164,
-                  166,
+                  180,
+                  182,
                 ],
                 "type": "ImportSpecifier",
               },
               "parent": Object {
                 "range": Array [
-                  112,
-                  189,
+                  128,
+                  211,
                 ],
                 "type": "ImportDeclaration",
               },
@@ -21078,8 +21159,8 @@ Object {
             Object {
               "name": "is",
               "range": Array [
-                164,
-                166,
+                180,
+                182,
               ],
               "type": "Identifier",
             },
@@ -21087,7 +21168,53 @@ Object {
           "name": "is",
           "references": Array [],
           "scope": Object {
-            "$ref": 19,
+            "$ref": 22,
+          },
+        },
+        Object {
+          "$id": 6,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "of",
+                "range": Array [
+                  186,
+                  188,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  186,
+                  188,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  128,
+                  211,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "of",
+              "range": Array [
+                186,
+                188,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "of",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 22,
           },
         },
       ],
@@ -21101,7 +21228,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 20,
+    "$ref": 23,
   },
   "variables": Array [],
 }
