@@ -73,11 +73,7 @@ ruleTester.run('prefer-as-const', rule, {
           column: 10,
           suggestions: [
             {
-              messageId: 'variableSuggest1',
-              output: "let foo: 'bar' = 'bar' as const;",
-            },
-            {
-              messageId: 'variableSuggest2',
+              messageId: 'variableSuggest',
               output: "let foo = 'bar' as const;",
             },
           ],
@@ -94,11 +90,7 @@ ruleTester.run('prefer-as-const', rule, {
           column: 10,
           suggestions: [
             {
-              messageId: 'variableSuggest1',
-              output: 'let foo: 2 = 2 as const;',
-            },
-            {
-              messageId: 'variableSuggest2',
+              messageId: 'variableSuggest',
               output: 'let foo = 2 as const;',
             },
           ],

@@ -20,8 +20,7 @@ export default util.createRule({
         'Expected a `const` instead of a literal type assertion',
       variableConstAssertion:
         'Expected a `const` assertion instead of a literal type annotation',
-      variableSuggest1: 'You should add `as const` assertion.',
-      variableSuggest2: 'You should use `as const` instead of type annotation.',
+      variableSuggest: 'You should use `as const` instead of type annotation.',
     },
     schema: [],
   },
@@ -50,12 +49,7 @@ export default util.createRule({
             messageId: 'variableConstAssertion',
             suggest: [
               {
-                messageId: 'variableSuggest1',
-                fix: (fixer): TSESLint.RuleFix =>
-                  fixer.insertTextAfter(valueNode, ' as const'),
-              },
-              {
-                messageId: 'variableSuggest2',
+                messageId: 'variableSuggest',
                 fix: (fixer): TSESLint.RuleFix[] => [
                   fixer.remove(typeNode.parent!),
                   fixer.insertTextAfter(valueNode, ' as const'),
