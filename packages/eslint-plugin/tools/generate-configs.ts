@@ -19,28 +19,24 @@ interface LinterConfig extends TSESLint.Linter.Config {
 }
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
-const MAX_RULE_NAME_LENGTH = 32;
+const MAX_RULE_NAME_LENGTH = Object.keys(rules).reduce(
+  (acc, name) => Math.max(acc, name.length),
+  0,
+);
 const DEFAULT_RULE_SETTING = 'warn';
-const BASE_RULES_TO_BE_OVERRIDDEN = new Set([
-  'brace-style',
-  'camelcase',
-  'default-param-last',
-  'func-call-spacing',
-  'indent',
-  'no-array-constructor',
-  'no-empty-function',
-  'no-extra-parens',
-  'no-extra-semi',
-  'no-magic-numbers',
-  'quotes',
-  'no-unused-expressions',
-  'no-unused-vars',
-  'no-use-before-define',
-  'no-useless-constructor',
-  'require-await',
-  'semi',
-  'space-before-function-paren',
-]);
+const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
+  Object.entries(rules)
+    .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
+    .map(
+      ([ruleName, rule]) =>
+        [
+          ruleName,
+          typeof rule.meta.docs.extendsBaseRule === 'string'
+            ? rule.meta.docs.extendsBaseRule
+            : ruleName,
+        ] as const,
+    ),
+);
 // list of rules from the base plugin that we think should be turned on for typescript code
 const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
   'no-var',
@@ -100,14 +96,15 @@ function reducer<TMessageIds extends string>(
     : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
+    const baseRuleName = BASE_RULES_TO_BE_OVERRIDDEN.get(key)!;
     console.log(
-      key
-        .padStart(RULE_NAME_PREFIX.length + key.length)
+      baseRuleName
+        .padStart(RULE_NAME_PREFIX.length + baseRuleName.length)
         .padEnd(RULE_NAME_PREFIX.length + MAX_RULE_NAME_LENGTH),
       '=',
       chalk.green('off'),
     );
-    config[key] = 'off';
+    config[baseRuleName] = 'off';
   }
   console.log(
     `${chalk.dim(RULE_NAME_PREFIX)}${key.padEnd(MAX_RULE_NAME_LENGTH)}`,

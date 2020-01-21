@@ -250,7 +250,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
     "error",
     {
       "selector": "memberLike",
-      "modifier": ["private"],
+      "modifiers": ["private"],
       "format": ["camelCase"],
       "leadingUnderscore": "require"
     }

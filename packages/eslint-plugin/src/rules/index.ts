@@ -2,6 +2,7 @@ import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
+import banTsComment from './ban-ts-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
@@ -38,6 +39,7 @@ import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
 import noNonNullAssertion from './no-non-null-assertion';
+import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
@@ -54,6 +56,7 @@ import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
+import preferAsConst from './prefer-as-const';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -84,6 +87,7 @@ export default {
   'array-type': arrayType,
   'await-thenable': awaitThenable,
   'ban-ts-ignore': banTsIgnore,
+  'ban-ts-comment': banTsComment,
   'ban-types': banTypes,
   'brace-style': braceStyle,
   camelcase: camelcase,
@@ -120,6 +124,7 @@ export default {
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
   'no-non-null-assertion': noNonNullAssertion,
+  'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-parameter-properties': noParameterProperties,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
@@ -136,6 +141,7 @@ export default {
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
+  'prefer-as-const': preferAsConst,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,

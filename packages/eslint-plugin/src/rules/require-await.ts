@@ -19,6 +19,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
