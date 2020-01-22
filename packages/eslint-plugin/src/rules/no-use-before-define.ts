@@ -101,6 +101,21 @@ function isOuterVariable(
 }
 
 /**
+ * Checks whether or not a given variable is a type declaration.
+ */
+function isType(
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
+): boolean {
+  const node = variable.defs[0].node as TSESTree.Node;
+
+  return (
+    node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+    isOuterScope(variable, reference)
+  );
+}
+
+/**
  * Checks whether or not a given location is inside of the range of a given node.
  */
 function isInRange(
@@ -230,6 +245,9 @@ export default util.createRule<Options, MessageIds>({
       }
       if (isOuterClass(variable, reference)) {
         return !!options.classes;
+      }
+      if (isType(variable, reference)) {
+        return !!options.typedefs;
       }
       if (isOuterVariable(variable, reference)) {
         return !!options.variables;

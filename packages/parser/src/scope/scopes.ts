@@ -78,17 +78,21 @@ export class Scope extends TSESLintScope.Scope {
   __defineType = defineType;
 
   /** @internal */
-  __resolveType = resolveType;
+  __shouldStaticallyCloseForGlobal(this: Scope, ref: TSESLintScope.Reference) {
+    const name = ref.identifier.name;
+    if (this.setTypes.has(name)) {
+      return false;
+    }
 
-  /** @internal */
-  __resolveTypeLike = resolveTypeLike;
+    return super.__shouldStaticallyCloseForGlobal(ref);
+  }
 
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
     if (ref.typeMode) {
-      return this.__resolveType(ref) || this.__resolveTypeLike(ref);
+      return resolveType.call(this, ref) || resolveTypeLike.call(this, ref);
     }
-    return super.__resolve.call(this, ref);
+    return super.__resolve(ref);
   }
 }
 
@@ -140,17 +144,21 @@ export class GlobalScope extends TSESLintScope.GlobalScope implements Scope {
   setTypes: Map<string, TSESLintScope.Variable> = new Map();
 
   /** @internal */
-  __resolveType = resolveType;
+  __shouldStaticallyCloseForGlobal(this: Scope, ref: TSESLintScope.Reference) {
+    const name = ref.identifier.name;
+    if (this.setTypes.has(name)) {
+      return false;
+    }
 
-  /** @internal */
-  __resolveTypeLike = resolveTypeLike;
+    return super.__shouldStaticallyCloseForGlobal(ref);
+  }
 
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
     if (ref.typeMode) {
-      return this.__resolveType(ref) || this.__resolveTypeLike(ref);
+      return resolveType.call(this, ref) || resolveTypeLike.call(this, ref);
     }
-    return TSESLintScope.Scope.prototype.__resolve.call(this, ref);
+    return super.__resolve(ref);
   }
 
   /** @internal */
@@ -192,17 +200,21 @@ export class FunctionExpressionNameScope
   __defineType = defineType;
 
   /** @internal */
-  __resolveType = resolveType;
+  __shouldStaticallyCloseForGlobal(this: Scope, ref: TSESLintScope.Reference) {
+    const name = ref.identifier.name;
+    if (this.setTypes.has(name)) {
+      return false;
+    }
 
-  /** @internal */
-  __resolveTypeLike = resolveTypeLike;
+    return super.__shouldStaticallyCloseForGlobal(ref);
+  }
 
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
     if (ref.typeMode) {
-      return this.__resolveType(ref) || this.__resolveTypeLike(ref);
+      return resolveType.call(this, ref) || resolveTypeLike.call(this, ref);
     }
-    return super.__resolve.call(this, ref);
+    return super.__resolve(ref);
   }
 }
 
@@ -213,17 +225,21 @@ export class WithScope extends TSESLintScope.WithScope implements Scope {
   __defineType = defineType;
 
   /** @internal */
-  __resolveType = resolveType;
+  __shouldStaticallyCloseForGlobal(this: Scope, ref: TSESLintScope.Reference) {
+    const name = ref.identifier.name;
+    if (this.setTypes.has(name)) {
+      return false;
+    }
 
-  /** @internal */
-  __resolveTypeLike = resolveTypeLike;
+    return super.__shouldStaticallyCloseForGlobal(ref);
+  }
 
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
     if (ref.typeMode) {
-      return this.__resolveType(ref) || this.__resolveTypeLike(ref);
+      return resolveType.call(this, ref) || resolveTypeLike.call(this, ref);
     }
-    return super.__resolve.call(this, ref);
+    return super.__resolve(ref);
   }
 }
 
@@ -235,24 +251,28 @@ export class FunctionScope extends TSESLintScope.FunctionScope
   __defineType = defineType;
 
   /** @internal */
-  __resolveType = resolveType;
+  __shouldStaticallyCloseForGlobal(this: Scope, ref: TSESLintScope.Reference) {
+    const name = ref.identifier.name;
+    if (this.setTypes.has(name)) {
+      return false;
+    }
 
-  /** @internal */
-  __resolveTypeLike = resolveTypeLike;
+    return super.__shouldStaticallyCloseForGlobal(ref);
+  }
 
   /** @internal */
   __resolve(ref: TSESLintScope.Reference): boolean {
     if (ref.typeMode) {
-      return this.__resolveType(ref) || this.__resolveTypeLike(ref);
+      return resolveType.call(this, ref) || resolveTypeLike.call(this, ref);
     } else {
-      return super.__resolve.call(this, ref);
+      return super.__resolve(ref);
     }
   }
 }
 
 // eslint simple scopes
 
-export class ModuleScope extends Scope {
+export class ModuleScope extends Scope implements TSESLintScope.ModuleScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
@@ -262,7 +282,7 @@ export class ModuleScope extends Scope {
   }
 }
 
-export class CatchScope extends Scope {
+export class CatchScope extends Scope implements TSESLintScope.CatchScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
@@ -272,7 +292,7 @@ export class CatchScope extends Scope {
   }
 }
 
-export class BlockScope extends Scope {
+export class BlockScope extends Scope implements TSESLintScope.BlockScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
@@ -282,7 +302,7 @@ export class BlockScope extends Scope {
   }
 }
 
-export class SwitchScope extends Scope {
+export class SwitchScope extends Scope implements TSESLintScope.SwitchScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
@@ -292,7 +312,7 @@ export class SwitchScope extends Scope {
   }
 }
 
-export class ForScope extends Scope {
+export class ForScope extends Scope implements TSESLintScope.ForScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,
@@ -302,7 +322,7 @@ export class ForScope extends Scope {
   }
 }
 
-export class ClassScope extends Scope {
+export class ClassScope extends Scope implements TSESLintScope.ClassScope {
   constructor(
     scopeManager: ScopeManager,
     upperScope: Scope,

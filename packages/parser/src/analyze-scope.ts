@@ -781,9 +781,11 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
   }
 
   TSTypeAliasDeclaration(node: TSESTree.TSTypeAliasDeclaration): void {
+    const upperTypeMode = this.typeMode;
+    this.typeMode = true;
+
     const scopeManager = this.scopeManager;
     const scope = this.currentScope();
-    this.typeMode = true;
 
     if (node.id && node.id.type === AST_NODE_TYPES.Identifier) {
       scope.__defineType(
@@ -811,7 +813,7 @@ class Referencer extends TSESLintScope.Referencer<Scope, ScopeManager> {
 
     this.close(node);
 
-    this.typeMode = false;
+    this.typeMode = upperTypeMode;
   }
 
   /**
