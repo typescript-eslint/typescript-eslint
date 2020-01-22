@@ -1035,33 +1035,37 @@ type Bar = Record<keyof Foo, string>
     },
     'let resolver: (() => PromiseLike<T>) | PromiseLike<T>;',
     {
-      code : 'const foo:string;',
-      options : [{
-        overrides: {
-          colon: {
-            after: false,
-            before: true
+      code: 'const foo:string;',
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            variable: {
+              before: false,
+            },
           },
-          variable: {
-            before: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
-      code : 'const foo:string;',
-      options : [{
-        before: true,
-        overrides: {
-          colon : {
-            after: true,
-            before: false
+      code: 'const foo:string;',
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            variable: {
+              after: false,
+            },
           },
-          variable: {
-            after: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: `
@@ -1069,17 +1073,19 @@ interface Foo {
   greet():string;
 }
             `,
-      options: [{
-        overrides: {
-          colon: {
-            after: false,
-            before: true
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            property: {
+              before: false,
+            },
           },
-          property: {
-            before: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: `
@@ -1087,77 +1093,87 @@ interface Foo {
   name:string;
 }
              `,
-      options: [{
-        before: true,
-        overrides: {
-          colon: {
-            after:true,
-            before:false
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            property: {
+              after: false,
+            },
           },
-          property: {
-            after: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: 'function foo(name:string) {}',
-      options: [{
-        overrides: {
-          colon: {
-            after:false,
-            before:true
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            parameter: {
+              before: false,
+            },
           },
-          parameter: {
-            before:false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: 'function foo(name:string) {}',
-      options: [{
-        before: true,
-        overrides: {
-          colon: {
-            after: true,
-            before: false
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            parameter: {
+              after: false,
+            },
           },
-          parameter: {
-            after: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: 'function foo():string {}',
-      options: [{
-        overrides: {
-          colon: {
-            after: false,
-            before: true
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            returnType: {
+              before: false,
+            },
           },
-          returnType: {
-            before: false
-          }
-        }
-      }]
+        },
+      ],
     },
     {
       code: 'function foo():string {}',
-      options: [{
-        before: true,
-        overrides: {
-          colon: {
-            after: true,
-            before: false
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            returnType: {
+              after: false,
+            },
           },
-          returnType: {
-            after: false
-          }
-        }
-      }]
-    }
+        },
+      ],
+    },
   ],
   invalid: [
     {

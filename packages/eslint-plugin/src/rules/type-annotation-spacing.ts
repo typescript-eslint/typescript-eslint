@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/experimental-utils';
-import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface WhitespaceRule {
@@ -10,7 +12,7 @@ interface WhitespaceRule {
 interface WhitespaceOverride {
   readonly colon?: WhitespaceRule;
   readonly arrow?: WhitespaceRule;
-  readonly variable? : WhitespaceRule;
+  readonly variable?: WhitespaceRule;
   readonly property?: WhitespaceRule;
   readonly parameter?: WhitespaceRule;
   readonly returnType?: WhitespaceRule;
@@ -29,7 +31,7 @@ interface WhitespaceRules {
   returnType: WhitespaceRule;
 }
 
-type Options = [ Config? ];
+type Options = [Config?];
 type MessageIds =
   | 'expectedSpaceAfter'
   | 'expectedSpaceBefore'
@@ -45,15 +47,22 @@ const definition = {
   additionalProperties: false,
 };
 
-
-function createSettings(options?: Config): WhitespaceRules {
+function createRules(options?: Config): WhitespaceRules {
   const globals = {
-    ...(options?.before !== undefined ? { before : options.before } : {}),
-    ...(options?.after !== undefined ? { after : options.after } : {})
+    ...(options?.before !== undefined ? { before: options.before } : {}),
+    ...(options?.after !== undefined ? { after: options.after } : {}),
   };
   const override = options?.overrides ?? {};
-  const colon = { ...{ before : false, after : true }, ...globals, ...override?.colon };
-  const arrow = { ...{ before : true, after : true }, ...globals, ...override?.arrow };
+  const colon = {
+    ...{ before: false, after: true },
+    ...globals,
+    ...override?.colon,
+  };
+  const arrow = {
+    ...{ before: true, after: true },
+    ...globals,
+    ...override?.arrow,
+  };
 
   return {
     colon: colon,
@@ -61,12 +70,11 @@ function createSettings(options?: Config): WhitespaceRules {
     variable: { ...colon, ...override?.variable },
     property: { ...colon, ...override?.property },
     parameter: { ...colon, ...override?.parameter },
-    returnType: { ...colon, ...override?.returnType }
+    returnType: { ...colon, ...override?.returnType },
   };
 }
 
-
-function getNodeType(node?: Node): string {
+function getNodeType(node?: TSESTree.Node): string {
   return node?.type ?? '';
 }
 
@@ -83,14 +91,14 @@ function typeIsProperty(type: string): boolean {
     AST_NODE_TYPES.ClassProperty,
     AST_NODE_TYPES.FunctionExpression,
     AST_NODE_TYPES.TSPropertySignature,
-    AST_NODE_TYPES.TSMethodSignature
+    AST_NODE_TYPES.TSMethodSignature,
   ].includes(type as AST_NODE_TYPES);
 }
 
 function typeIsReturnType(type: string): boolean {
   return [
     AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.ArrowFunctionExpression
+    AST_NODE_TYPES.ArrowFunctionExpression,
   ].includes(type as AST_NODE_TYPES);
 }
 
@@ -103,30 +111,42 @@ function typeIsParameter(type: string): boolean {
     AST_NODE_TYPES.FunctionDeclaration,
     AST_NODE_TYPES.TSFunctionType,
     AST_NODE_TYPES.TSMethodSignature,
-    AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
   ].includes(type as AST_NODE_TYPES);
 }
 
-function getIdentifierSettings(rules: WhitespaceRules, node?: Node): WhitespaceRule {
+function getIdentifierRules(
+  rules: WhitespaceRules,
+  node?: TSESTree.Node,
+): WhitespaceRule {
   const scope = node?.parent;
   const type = getNodeType(scope);
 
-  if (typeIsVariable(type)) return rules.variable;
-  else if (typeIsParameter(type)) return rules.parameter;
-  else return rules.colon;
+  if (typeIsVariable(type)) {
+    return rules.variable;
+  } else if (typeIsParameter(type)) {
+    return rules.parameter;
+  } else {
+    return rules.colon;
+  }
 }
 
-function getSettings(rules: WhitespaceRules, node: Node): WhitespaceRule {
+function getRules(rules: WhitespaceRules, node: TSESTree.Node): WhitespaceRule {
   const scope = node?.parent?.parent;
   const type = getNodeType(scope);
 
-  if (typeIsArrowFunction(type)) return rules.arrow;
-  else if (typeIsIdentifier(type)) return getIdentifierSettings(rules, scope);
-  else if (typeIsProperty(type)) return rules.property;
-  else if (typeIsReturnType(type)) return rules.returnType;
-  else return rules.colon;
+  if (typeIsArrowFunction(type)) {
+    return rules.arrow;
+  } else if (typeIsIdentifier(type)) {
+    return getIdentifierRules(rules, scope);
+  } else if (typeIsProperty(type)) {
+    return rules.property;
+  } else if (typeIsReturnType(type)) {
+    return rules.returnType;
+  } else {
+    return rules.colon;
+  }
 }
-
 
 export default util.createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
@@ -158,7 +178,7 @@ export default util.createRule<Options, MessageIds>({
               variable: definition,
               parameter: definition,
               property: definition,
-              returnType: definition
+              returnType: definition,
             },
             additionalProperties: false,
           },
@@ -176,7 +196,7 @@ export default util.createRule<Options, MessageIds>({
     const punctuators = [':', '=>'];
     const sourceCode = context.getSourceCode();
 
-    const settings = createSettings(options);
+    const ruleSet = createRules(options);
 
     /**
      * Checks if there's proper spacing around type annotations (no space
@@ -195,7 +215,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const { before, after } = getSettings(settings, typeAnnotation);
+      const { before, after } = getRules(ruleSet, typeAnnotation);
 
       if (type === ':' && previousToken.value === '?') {
         // shift the start to the ?
