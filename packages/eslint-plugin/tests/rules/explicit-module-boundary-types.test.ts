@@ -394,7 +394,7 @@ export class Test {
   get prop() {
       return 1;
   }
-  set prop() {}
+  set prop(value) {}
   method() {
     return;
   }
@@ -413,6 +413,13 @@ export class Test {
           endColumn: 13,
         },
         {
+          messageId: 'missingArgType',
+          line: 7,
+          endLine: 7,
+          column: 11,
+          endColumn: 21,
+        },
+        {
           messageId: 'missingReturnType',
           line: 8,
           endLine: 8,
@@ -420,18 +427,18 @@ export class Test {
           endColumn: 11,
         },
         {
-          messageId: 'missingArgType',
-          line: 11,
-          endLine: 11,
-          column: 11,
-          endColumn: 27,
-        },
-        {
           messageId: 'missingReturnType',
           line: 11,
           endLine: 11,
           column: 11,
           endColumn: 19,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 11,
+          endLine: 11,
+          column: 11,
+          endColumn: 27,
         },
       ],
     },
