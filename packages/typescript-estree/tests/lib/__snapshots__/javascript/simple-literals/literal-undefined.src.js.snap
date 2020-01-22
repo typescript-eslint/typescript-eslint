@@ -162,7 +162,7 @@ Object {
         10,
         19,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "undefined",
     },
     Object {

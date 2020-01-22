@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript fixtures/arrowFunctions/error-missing-paren.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/arrowFunctions/error-not-arrow.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/arrowFunctions/error-numeric-param.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/arrowFunctions/error-numeric-param-multi.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/arrowFunctions/error-reverse-arrow.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/arrowFunctions/error-wrapped-param.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/binaryLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/classes/class-with-no-body.src 1`] = `"'{' expected."`;
+
+exports[`javascript fixtures/classes/invalid-class-two-super-classes.src 1`] = `"Classes can only extend a single class."`;
+
+exports[`javascript fixtures/experimentalObjectRestSpread/invalid-rest.src 1`] = `"',' expected."`;
+
+exports[`javascript fixtures/forIn/for-in-object.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/hexLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-batch-missing-from-clause.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-batch-token.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-default.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-default-equal.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-default-token.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-named-extra-comma.src 1`] = `"Identifier expected."`;
+
+exports[`javascript fixtures/modules/invalid-export-named-middle-comma.src 1`] = `"Identifier expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-default.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-default-after-named.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-default-after-named-after-default.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-default-missing-module-specifier.src 1`] = `"'=' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-missing-module-specifier.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-named-after-named.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-named-after-namespace.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-named-as-missing-from.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-named-extra-comma.src 1`] = `"Identifier expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-named-middle-comma.src 1`] = `"Identifier expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-namespace-after-named.src 1`] = `"'from' expected."`;
+
+exports[`javascript fixtures/modules/invalid-import-namespace-missing-as.src 1`] = `"'as' expected."`;
+
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `"':' expected."`;
+
+exports[`javascript fixtures/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `"':' expected."`;
+
+exports[`javascript fixtures/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `"'{' expected."`;
+
+exports[`javascript fixtures/octalLiterals/invalid.src 1`] = `"';' expected."`;
+
+exports[`javascript fixtures/spread/error-invalid-if.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/spread/error-invalid-sequence.src 1`] = `"Expression expected."`;
+
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `"Hexadecimal digit expected."`;
+
+exports[`javascript fixtures/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `"An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive."`;

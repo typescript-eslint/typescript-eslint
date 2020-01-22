@@ -11,7 +11,7 @@
 ## Getting Started
 
 **[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
-**[You can find our FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
+**[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
 
 These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
 

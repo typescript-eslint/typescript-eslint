@@ -217,7 +217,7 @@ Object {
         8,
         14,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -289,7 +289,7 @@ Object {
         36,
         42,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {
@@ -379,7 +379,7 @@ Object {
         74,
         80,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "global",
     },
     Object {

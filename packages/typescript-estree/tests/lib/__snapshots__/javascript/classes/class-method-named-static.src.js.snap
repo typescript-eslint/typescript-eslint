@@ -239,7 +239,7 @@ Object {
         9,
         15,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "static",
     },
     Object {

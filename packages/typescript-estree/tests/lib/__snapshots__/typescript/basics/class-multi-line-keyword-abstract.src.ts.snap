@@ -124,7 +124,7 @@ Object {
         0,
         8,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {

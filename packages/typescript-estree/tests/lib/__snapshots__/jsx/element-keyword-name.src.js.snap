@@ -486,7 +486,7 @@ Object {
         11,
         17,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "object",
     },
     Object {
@@ -577,7 +577,7 @@ Object {
         26,
         34,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {
