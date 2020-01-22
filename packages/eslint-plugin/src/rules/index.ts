@@ -22,6 +22,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noDupeClassMembers from './no-dupe-class-members';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -107,6 +108,7 @@ export default {
   'member-ordering': memberOrdering,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-dupe-class-members': noDupeClassMembers,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,

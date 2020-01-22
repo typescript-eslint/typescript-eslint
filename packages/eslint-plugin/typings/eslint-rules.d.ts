@@ -142,6 +142,22 @@ declare module 'eslint/lib/rules/indent' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-dupe-class-members' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unexpected',
+    [],
+    {
+      Program(): void;
+      ClassBody(): void;
+      'ClassBody:exit'(): void;
+      MethodDefinition(node: TSESTree.MethodDefinition): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-args' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
