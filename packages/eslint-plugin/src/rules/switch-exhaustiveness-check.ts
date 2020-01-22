@@ -102,7 +102,7 @@ export default createRule({
           data: {
             missingBranches: missingBranchTypes
               .map(missingType => checker.typeToString(missingType))
-              .join(', '),
+              .join(' | '),
           },
           fix(fixer) {
             return fixSwitch(fixer, node, missingBranchTypes);
