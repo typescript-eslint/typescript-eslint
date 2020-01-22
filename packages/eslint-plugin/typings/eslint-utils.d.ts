@@ -149,10 +149,10 @@ declare module 'eslint-utils' {
   ): boolean;
   export function isCommentToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
-  export function isNotCommentToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.Comment;
+  export function isNotCommentToken<T extends TSESTree.Token>(
+    token: T,
+  ): token is Exclude<T, TSESTree.Comment>;
   export function isOpeningBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;

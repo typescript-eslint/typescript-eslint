@@ -455,7 +455,7 @@ export function isOptional(node: {
  */
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
-): AST_TOKEN_TYPES {
+): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
   if ('originalKeywordKind' in token && token.originalKeywordKind) {
     if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
       return AST_TOKEN_TYPES.Null;
@@ -561,21 +561,27 @@ export function convertToken(
       : token.getStart(ast);
   const end = token.getEnd();
   const value = ast.text.slice(start, end);
-  const newToken: TSESTree.Token = {
-    type: getTokenType(token),
-    value,
-    range: [start, end],
-    loc: getLocFor(start, end, ast),
-  };
+  const tokenType = getTokenType(token);
 
-  if (newToken.type === AST_TOKEN_TYPES.RegularExpression) {
-    newToken.regex = {
-      pattern: value.slice(1, value.lastIndexOf('/')),
-      flags: value.slice(value.lastIndexOf('/') + 1),
+  if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
+    return {
+      type: tokenType,
+      value,
+      range: [start, end],
+      loc: getLocFor(start, end, ast),
+      regex: {
+        pattern: value.slice(1, value.lastIndexOf('/')),
+        flags: value.slice(value.lastIndexOf('/') + 1),
+      },
+    };
+  } else {
+    return {
+      type: tokenType,
+      value,
+      range: [start, end],
+      loc: getLocFor(start, end, ast),
     };
   }
-
-  return newToken;
 }
 
 /**
