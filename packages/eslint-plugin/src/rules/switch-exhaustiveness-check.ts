@@ -77,18 +77,18 @@ export default createRule({
 
       if (discriminantType.isUnion()) {
         const unionTypes = unionTypeParts(discriminantType);
-        const caseTypes: ts.Type[] = [];
+        const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
           if (switchCase.test === null) {
             // Switch has 'default' branch - do nothing.
             return;
           }
 
-          caseTypes.push(getNodeType(switchCase.test));
+          caseTypes.add(getNodeType(switchCase.test));
         }
 
         const missingBranchTypes = unionTypes.filter(
-          unionType => !caseTypes.includes(unionType),
+          unionType => !caseTypes.has(unionType),
         );
 
         if (missingBranchTypes.length === 0) {
