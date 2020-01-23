@@ -67,7 +67,7 @@ export default createRule<Options, MessageIds>({
       for (const element of node.elements) {
         let token: TSESTree.Token | null;
         if (element === null) {
-          token = sourceCode.getTokenAfter(previousToken as TSESTree.Token);
+          token = sourceCode.getTokenAfter(previousToken!);
           if (token && isCommaToken(token)) {
             ignoredTokens.add(token);
           }
