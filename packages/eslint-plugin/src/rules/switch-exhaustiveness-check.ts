@@ -5,7 +5,7 @@ import {
   getParserServices,
   getConstrainedTypeAtLocation,
 } from '../util';
-import { unionTypeParts } from 'tsutils';
+import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
@@ -22,6 +22,7 @@ export default createRule({
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+      addMissingCases: 'Add branches for missing cases',
     },
   },
   defaultOptions: [],
@@ -101,12 +102,16 @@ export default createRule({
           messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingBranchTypes
-              .map(missingType => checker.typeToString(missingType))
+              .map(missingType =>
+                isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                  ? `typeof ${missingType.symbol.escapedName}`
+                  : checker.typeToString(missingType),
+              )
               .join(' | '),
           },
           suggest: [
             {
-              desc: 'Add branches for missing cases',
+              messageId: 'addMissingCases',
               fix(fixer) {
                 return fixSwitch(fixer, node, missingBranchTypes);
               },

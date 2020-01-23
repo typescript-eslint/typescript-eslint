@@ -272,5 +272,21 @@ switch (foobar) {
       `,
       errors: [{ messageId: 'switchIsNotExhaustive', line: 7, column: 9 }],
     },
+    {
+      code: `
+const a = Symbol('a')
+const b = Symbol('b')
+const c = Symbol('c')
+
+type T = typeof a | typeof b | typeof c
+
+function test(value: T): number {
+  switch (value) {
+    case a: return 1;
+  }
+}
+      `,
+      errors: [{ messageId: 'switchIsNotExhaustive', line: 9, column: 11 }],
+    },
   ],
 });
