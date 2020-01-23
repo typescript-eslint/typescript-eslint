@@ -55,8 +55,8 @@ function isLogicalOrOperator(node: TSESTree.Node): boolean {
  * Determines whether two adjacent tokens are on the same line
  */
 function isTokenOnSameLine(
-  left: TSESTree.Token,
-  right: TSESTree.Token,
+  left: TSESTree.Token | TSESTree.Comment,
+  right: TSESTree.Token | TSESTree.Comment,
 ): boolean {
   return left.loc.end.line === right.loc.start.line;
 }
