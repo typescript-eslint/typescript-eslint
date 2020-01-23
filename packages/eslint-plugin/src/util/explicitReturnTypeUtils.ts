@@ -99,7 +99,7 @@ function isClassPropertyWithTypeAnnotation(node: TSESTree.Node): boolean {
  *         ^^^^^^^^
  * ```
  */
-function isConstructorArgument(parent: TSESTree.Node): boolean {
+function isConstructorArgument(node: TSESTree.Node): node is TSESTree.NewExpression {
   return parent.type === AST_NODE_TYPES.NewExpression;
 }
 
