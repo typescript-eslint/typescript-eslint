@@ -33,8 +33,8 @@ declare interface SourceCode {
   getNodeByRangeIndex(index: number): TSESTree.Node | null;
 
   isSpaceBetween(
-    first: TSESTree.Token | TSESTree.Node,
-    second: TSESTree.Token | TSESTree.Node,
+    first: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
+    second: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
   ): boolean;
 
   /**
