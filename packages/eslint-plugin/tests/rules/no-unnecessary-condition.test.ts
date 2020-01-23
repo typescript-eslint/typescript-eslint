@@ -72,6 +72,16 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
 function test<T extends string>(t: T) {
   return t ? 'yes' : 'no'
 }`,
+    `
+// Naked type param
+function test<T>(t: T) {
+  return t ? 'yes' : 'no'
+}`,
+    `
+// Naked type param in union
+function test<T>(t: T | []) {
+  return t ? 'yes' : 'no'
+}`,
 
     // Boolean expressions
     `
@@ -79,6 +89,68 @@ function test(a: string) {
   return a === "a"
 }`,
 
+    /**
+     * Predicate functions
+     **/
+    // valid, with the flag off
+    `
+[1,3,5].filter(() => true);
+[1,2,3].find(() => false);
+function truthy() {
+  return [];
+}
+function falsy() {}
+[1,3,5].filter(truthy);
+[1,2,3].find(falsy);
+`,
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+// with literal arrow function
+[0,1,2].filter(x => x);
+
+// filter with named function
+function length(x: string) {
+  return x.length;
+}
+["a", "b", ""].filter(length);
+
+// with non-literal array
+function nonEmptyStrings(x: string[]) {
+  return x.filter(length);
+}
+`,
+    },
+    // Ignores non-array methods of the same name
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+const notArray = {
+  filter: (func: () => boolean) => func(),
+  find: (func: () => boolean) => func(),
+};
+notArray.filter(() => true);
+notArray.find(() => true);
+`,
+    },
+
+    // Nullish coalescing operator
+    `
+function test(a: string | null) {
+  return a ?? "default";
+}`,
+    `
+function test(a: string | undefined) {
+  return a ?? "default";
+}`,
+    `
+function test(a: string | null | undefined) {
+  return a ?? "default";
+}`,
+    `
+function test(a: unknown) {
+  return a ?? "default";
+}`,
     // Supports ignoring the RHS
     {
       code: `
@@ -87,6 +159,70 @@ declare const b2: true;
 if(b1 && b2) {}`,
       options: [{ ignoreRhs: true }],
     },
+    {
+      code: `
+while(true) {}
+for (;true;) {}
+do {} while(true)
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    `
+let foo: undefined | { bar: true };
+foo?.bar;
+`,
+    `
+let foo: null | { bar: true };
+foo?.bar;
+`,
+    `
+let foo: undefined;
+foo?.bar;
+`,
+    `
+let foo: undefined;
+foo?.bar.baz;
+`,
+    `
+let foo: null;
+foo?.bar;
+`,
+    `
+let anyValue: any;
+anyValue?.foo;
+`,
+    `
+let unknownValue: unknown;
+unknownValue?.foo;
+`,
+    `
+let foo: undefined | (() => {});
+foo?.();
+`,
+    `
+let foo: null | (() => {});
+foo?.();
+`,
+    `
+let foo: undefined;
+foo?.();
+`,
+    `
+let foo: undefined;
+foo?.().bar;
+`,
+    `
+let foo: null;
+foo?.();
+`,
+    `
+let anyValue: any;
+anyValue?.();
+`,
+    `
+let unknownValue: unknown;
+unknownValue?.();
+`,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -169,6 +305,92 @@ if (x === Foo.a) {}
 `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
     },
+    // Nullish coalescing operator
+    {
+      code: `
+function test(a: string) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
+    {
+      code: `
+function test(a: string | false) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
+    {
+      code: `
+function test(a: null) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test(a: never) {
+  return a ?? 'default';
+}`,
+      errors: [ruleError(3, 10, 'never')],
+    },
+
+    // Predicate functions
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+[1,3,5].filter(() => true);
+[1,2,3].find(() => { return false; });
+
+// with non-literal array
+function nothing(x: string[]) {
+  return x.filter(() => false);
+}
+// with readonly array
+function nothing2(x: readonly string[]) {
+  return x.filter(() => false);
+}
+// with tuple
+function nothing3(x: [string, string]) {
+  return x.filter(() => false);
+}
+`,
+      errors: [
+        ruleError(2, 22, 'alwaysTruthy'),
+        ruleError(3, 29, 'alwaysFalsy'),
+        ruleError(7, 25, 'alwaysFalsy'),
+        ruleError(11, 25, 'alwaysFalsy'),
+        ruleError(15, 25, 'alwaysFalsy'),
+      ],
+    },
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+function truthy() {
+  return [];
+}
+function falsy() {}
+[1,3,5].filter(truthy);
+[1,2,3].find(falsy);
+`,
+      errors: [
+        ruleError(6, 16, 'alwaysTruthyFunc'),
+        ruleError(7, 14, 'alwaysFalsyFunc'),
+      ],
+    },
+    // Supports generics
+    // TODO: fix this
+    //     {
+    //       options: [{ checkArrayPredicates: true }],
+    //       code: `
+    // const isTruthy = <T>(t: T) => T;
+    // // Valid: numbers can be truthy or falsy (0).
+    // [0,1,2,3].filter(isTruthy);
+    // // Invalid: arrays are always falsy.
+    // [[1,2], [3,4]].filter(isTruthy);
+    // `,
+    //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
+    //     },
 
     // Still errors on in the expected locations when ignoring RHS
     {
@@ -189,6 +411,169 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
         ruleError(7, 7, 'alwaysTruthy'),
         ruleError(8, 18, 'alwaysTruthy'),
         ruleError(9, 13, 'alwaysTruthy'),
+      ],
+    },
+    {
+      code: `
+while(true) {}
+for (;true;) {}
+do {} while(true)
+      `,
+      options: [{ allowConstantLoopConditions: false }],
+      errors: [
+        ruleError(2, 7, 'alwaysTruthy'),
+        ruleError(3, 7, 'alwaysTruthy'),
+        ruleError(4, 13, 'alwaysTruthy'),
+      ],
+    },
+    {
+      code: `
+let foo = { bar: true };
+foo?.bar;
+foo ?. bar;
+foo ?.
+  bar;
+foo
+  ?. bar;
+`,
+      output: `
+let foo = { bar: true };
+foo.bar;
+foo . bar;
+foo .
+  bar;
+foo
+  . bar;
+`,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          column: 4,
+          endLine: 3,
+          endColumn: 6,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 5,
+          endLine: 4,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          column: 5,
+          endLine: 5,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 8,
+          column: 3,
+          endLine: 8,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = () => {};
+foo?.();
+foo ?. ();
+foo ?.
+  ();
+foo
+  ?. ();
+`,
+      output: `
+let foo = () => {};
+foo();
+foo  ();
+foo${' '}
+  ();
+foo
+   ();
+`,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          column: 4,
+          endLine: 3,
+          endColumn: 6,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 5,
+          endLine: 4,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          column: 5,
+          endLine: 5,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 8,
+          column: 3,
+          endLine: 8,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = () => {};
+foo?.(bar);
+foo ?. (bar);
+foo ?.
+  (bar);
+foo
+  ?. (bar);
+`,
+      output: `
+let foo = () => {};
+foo(bar);
+foo  (bar);
+foo${' '}
+  (bar);
+foo
+   (bar);
+`,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          column: 4,
+          endLine: 3,
+          endColumn: 6,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 5,
+          endLine: 4,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          column: 5,
+          endLine: 5,
+          endColumn: 7,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 8,
+          column: 3,
+          endLine: 8,
+          endColumn: 5,
+        },
       ],
     },
   ],

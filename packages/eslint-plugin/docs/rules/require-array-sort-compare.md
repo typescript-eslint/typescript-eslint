@@ -1,21 +1,23 @@
-# Enforce giving `compare` argument to `Array#sort` (require-array-sort-compare)
+# Requires `Array#sort` calls to always provide a `compareFunction` (`require-array-sort-compare`)
 
-This rule prevents to invoke `Array#sort()` method without `compare` argument.
+This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
 
-`Array#sort()` method sorts that element by the alphabet order.
+When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units.
+
+The result is that elements are sorted alphabetically, regardless of their type.
+When sorting numbers, this results in the classic "10 before 2" order:
 
 ```ts
 [1, 2, 3, 10, 20, 30].sort(); //→ [1, 10, 2, 20, 3, 30]
 ```
 
-The language specification also noted this trap.
+This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the noted in the language specification thusly:
 
-> NOTE 2: Method calls performed by the ToString abstract operations in steps 5 and 7 have the potential to cause SortCompare to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
+> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 
 ## Rule Details
 
-This rule is aimed at preventing the calls of `Array#sort` method.
-This rule ignores the `sort` methods of user-defined types.
+This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
 
 Examples of **incorrect** code for this rule:
 
@@ -25,7 +27,7 @@ const stringArray: string[];
 
 array.sort();
 
-// Even if a string array, warns it in favor of `String#localeCompare` method.
+// String arrays should be sorted using `String#localeCompare`.
 stringArray.sort();
 ```
 
@@ -41,9 +43,9 @@ array.sort((a, b) => a.localeCompare(b));
 userDefinedType.sort();
 ```
 
-### Options
+## Options
 
-There is no option.
+None.
 
 ## When Not To Use It
 

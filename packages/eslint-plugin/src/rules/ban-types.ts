@@ -1,26 +1,32 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type Types = Record<
+  string,
+  | string
+  | null
+  | {
+      message: string;
+      fixWith?: string;
+    }
+>;
+
 type Options = [
   {
-    types: Record<
-      string,
-      | string
-      | null
-      | {
-          message: string;
-          fixWith?: string;
-        }
-    >;
+    types: Types;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
 
+function removeSpaces(str: string): string {
+  return str.replace(/ /g, '');
+}
+
 function stringifyTypeName(
-  node: TSESTree.EntityName,
+  node: TSESTree.EntityName | TSESTree.TSTypeLiteral,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  return sourceCode.getText(node).replace(/ /g, '');
+  return removeSpaces(sourceCode.getText(node));
 }
 
 function getCustomMessage(
@@ -106,28 +112,47 @@ export default util.createRule<Options, MessageIds>({
       },
     },
   ],
-  create(context, [{ types: bannedTypes }]) {
+  create(context, [{ types }]) {
+    const bannedTypes: Types = Object.keys(types).reduce(
+      (res, type) => ({ ...res, [removeSpaces(type)]: types[type] }),
+      {},
+    );
+
+    function checkBannedTypes(
+      typeNode: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+    ): void {
+      const name = stringifyTypeName(typeNode, context.getSourceCode());
+
+      if (name in bannedTypes) {
+        const bannedType = bannedTypes[name];
+        const customMessage = getCustomMessage(bannedType);
+        const fixWith =
+          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+        context.report({
+          node: typeNode,
+          messageId: 'bannedTypeMessage',
+          data: {
+            name,
+            customMessage,
+          },
+          fix: fixWith
+            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+            : null,
+        });
+      }
+    }
+
     return {
-      TSTypeReference({ typeName }): void {
-        const name = stringifyTypeName(typeName, context.getSourceCode());
-
-        if (name in bannedTypes) {
-          const bannedType = bannedTypes[name];
-          const customMessage = getCustomMessage(bannedType);
-          const fixWith =
-            bannedType && typeof bannedType === 'object' && bannedType.fixWith;
-
-          context.report({
-            node: typeName,
-            messageId: 'bannedTypeMessage',
-            data: {
-              name: name,
-              customMessage,
-            },
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-            fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
-          });
+      TSTypeLiteral(node): void {
+        if (node.members.length) {
+          return;
         }
+
+        checkBannedTypes(node);
+      },
+      TSTypeReference({ typeName }): void {
+        checkBannedTypes(typeName);
       },
     };
   },

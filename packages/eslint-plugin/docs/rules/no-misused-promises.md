@@ -1,6 +1,6 @@
-# Avoid using promises in places not designed to handle them (no-misused-promises)
+# Avoid using promises in places not designed to handle them (`no-misused-promises`)
 
-This rule forbids using promises in places where the Typescript compiler
+This rule forbids using promises in places where the TypeScript compiler
 allows them but they are not handled properly. These situations can often arise
 due to a missing `await` keyword or just a misunderstanding of the way async
 functions are handled/awaited.
@@ -108,7 +108,7 @@ like this:
 ## When Not To Use It
 
 If you do not use Promises in your codebase or are not concerned with possible
-misuses of them outside of what the Typescript compiler will check.
+misuses of them outside of what the TypeScript compiler will check.
 
 ## Related to
 
@@ -116,4 +116,4 @@ misuses of them outside of what the Typescript compiler will check.
 
 ## Further Reading
 
-- [Typescript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+- [TypeScript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)

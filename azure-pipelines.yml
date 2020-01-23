@@ -5,12 +5,12 @@ jobs:
   - job: primary_code_validation_and_tests
     displayName: Primary code validation and tests
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall
@@ -32,12 +32,8 @@ jobs:
         displayName: 'Run linting'
 
       - script: |
-          yarn check:docs
-        displayName: 'Validate documentation'
-
-      - script: |
-          yarn check:configs
-        displayName: 'Validate plugin configs'
+          yarn check:spelling
+        displayName: 'Validate documentation spelling'
 
       - script: |
           yarn test
@@ -48,13 +44,13 @@ jobs:
         displayName: 'Run integrations tests'
 
       - script: |
-          npx codecov -t $(CODECOV_TOKEN)
+          bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
         displayName: 'Publish code coverage report'
 
   - job: unit_tests_on_other_node_versions
     displayName: Run unit tests on other Node.js versions
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     strategy:
       maxParallel: 3
       matrix:
@@ -80,16 +76,16 @@ jobs:
   - job: publish_canary_version
     displayName: Publish the latest code as a canary version
     dependsOn:
-    - primary_code_validation_and_tests
-    - unit_tests_on_other_node_versions
+      - primary_code_validation_and_tests
+      - unit_tests_on_other_node_versions
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall

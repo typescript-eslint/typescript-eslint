@@ -16,6 +16,9 @@ interface ScopeManagerOptions {
 interface ScopeManager {
   __options: ScopeManagerOptions;
   __currentScope: Scope;
+  __nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
+  __declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+
   scopes: Scope[];
   globalScope: Scope;
 
@@ -28,7 +31,7 @@ interface ScopeManager {
   isStrictModeSupported(): boolean;
 
   // Returns appropriate scope for this node.
-  __get(node: TSESTree.Node): Scope;
+  __get(node: TSESTree.Node): Scope | undefined;
   getDeclaredVariables(node: TSESTree.Node): Variable[];
   acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
   acquireAll(node: TSESTree.Node): Scope | null;
@@ -36,7 +39,7 @@ interface ScopeManager {
   attach(): void;
   detach(): void;
 
-  __nestScope(scope: Scope): Scope;
+  __nestScope<T extends Scope>(scope: T): T;
   __nestGlobalScope(node: TSESTree.Node): Scope;
   __nestBlockScope(node: TSESTree.Node): Scope;
   __nestFunctionScope(node: TSESTree.Node, isMethodDefinition: boolean): Scope;

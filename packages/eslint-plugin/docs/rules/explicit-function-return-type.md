@@ -1,4 +1,4 @@
-# Require explicit return types on functions and class methods (explicit-function-return-type)
+# Require explicit return types on functions and class methods (`explicit-function-return-type`)
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case
@@ -100,7 +100,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 }
 ```
 
-### allowExpressions
+### `allowExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
 
@@ -122,7 +122,7 @@ node.addEventListener('click', function() {});
 const foo = arr.map(i => i * i);
 ```
 
-### allowTypedFunctionExpressions
+### `allowTypedFunctionExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: true }`:
 
@@ -176,7 +176,7 @@ functionWithObjectArg({
 });
 ```
 
-### allowHigherOrderFunctions
+### `allowHigherOrderFunctions`
 
 Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
 

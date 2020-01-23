@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { extname, join, resolve } from 'path';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import { TSESTreeOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
@@ -9,14 +9,16 @@ import {
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import {
+  clearCaches,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
 } from '../../src/parser';
 import { TSESTree } from '../../src/ts-estree';
-import { clearCaches } from '../../src/tsconfig-parser';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
-const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.ts`);
+const testFiles = glob.sync(`**/*.src.ts`, {
+  cwd: FIXTURES_DIR,
+});
 
 function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
@@ -40,7 +42,7 @@ beforeEach(() => clearCaches());
 describe('semanticInfo', () => {
   // test all AST snapshots
   testFiles.forEach(filename => {
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     it(
       formatSnapshotName(filename, FIXTURES_DIR, extname(filename)),
       createSnapshotTestBlock(
@@ -53,7 +55,7 @@ describe('semanticInfo', () => {
 
   it(`should cache the created ts.program`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -68,7 +70,7 @@ describe('semanticInfo', () => {
 
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -85,7 +87,7 @@ describe('semanticInfo', () => {
 
   it(`should resolve absolute and relative tsconfig paths the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsAbsolutePath = {
       ...options,
@@ -236,7 +238,7 @@ describe('semanticInfo', () => {
         `function M() { return Base }`,
         createOptions('<input>'),
       ),
-    ).toThrow(/The file does not match your project config: <input>/);
+    ).toThrow(/The file does not match your project config: estree.ts/);
   });
 
   it('non-existent project file', () => {
@@ -254,7 +256,10 @@ describe('semanticInfo', () => {
     badConfig.project = '.';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
-    ).toThrow(/File .+semanticInfo' not found/);
+    ).toThrow(
+      // case insensitive because unix based systems are case insensitive
+      /File .+semanticInfo' not found/i,
+    );
   });
 
   it('malformed project file', () => {
@@ -335,8 +340,7 @@ function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   expect((nodeType as ts.ObjectType).objectFlags).toBe(
     ts.ObjectFlags.Reference,
   );
-  expect((nodeType as ts.TypeReference).typeArguments).toHaveLength(1);
-  expect((nodeType as ts.TypeReference).typeArguments![0].flags).toBe(
-    ts.TypeFlags.Number,
-  );
+  const typeArguments = checker.getTypeArguments(nodeType as ts.TypeReference);
+  expect(typeArguments).toHaveLength(1);
+  expect(typeArguments[0].flags).toBe(ts.TypeFlags.Number);
 }

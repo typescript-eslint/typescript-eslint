@@ -9,16 +9,15 @@ type ParsedOptions =
       allowUnderscorePrefix: boolean;
     };
 type Options = [
-
-    | 'never'
-    | 'always'
-    | {
-        prefixWithI?: 'never';
-      }
-    | {
-        prefixWithI: 'always';
-        allowUnderscorePrefix?: boolean;
-      },
+  | 'never'
+  | 'always'
+  | {
+      prefixWithI?: 'never';
+    }
+  | {
+      prefixWithI: 'always';
+      allowUnderscorePrefix?: boolean;
+    },
 ];
 type MessageIds = 'noPrefix' | 'alwaysPrefix';
 
@@ -50,6 +49,8 @@ export default util.createRule<Options, MessageIds>({
       // https://github.com/typescript-eslint/typescript-eslint/issues/374
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       noPrefix: 'Interface name must not be prefixed with "I".',
       alwaysPrefix: 'Interface name must be prefixed with "I".',

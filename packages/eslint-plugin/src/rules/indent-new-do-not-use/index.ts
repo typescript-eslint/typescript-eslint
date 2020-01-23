@@ -4,21 +4,21 @@
 
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  isOpeningParenToken,
-  isClosingParenToken,
-  isNotOpeningParenToken,
-  isSemicolonToken,
-  isClosingBracketToken,
   isClosingBraceToken,
-  isOpeningBraceToken,
-  isNotClosingParenToken,
+  isClosingBracketToken,
+  isClosingParenToken,
   isColonToken,
   isCommentToken,
+  isNotClosingParenToken,
+  isNotOpeningParenToken,
+  isOpeningBraceToken,
+  isOpeningParenToken,
+  isSemicolonToken,
 } from 'eslint-utils';
 import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
@@ -92,7 +92,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.WithStatement,
   AST_NODE_TYPES.YieldExpression,
   AST_NODE_TYPES.JSXIdentifier,
-  AST_NODE_TYPES.JSXNamespacedName,
   AST_NODE_TYPES.JSXMemberExpression,
   AST_NODE_TYPES.JSXEmptyExpression,
   AST_NODE_TYPES.JSXExpressionContainer,
@@ -164,7 +163,7 @@ const KNOWN_NODES = new Set([
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
-  AST_NODE_TYPES.TSQuestionToken,
+  'TSQuestionToken',
   AST_NODE_TYPES.TSRestType,
   AST_NODE_TYPES.TSThisType,
   AST_NODE_TYPES.TSTupleType,
@@ -524,7 +523,7 @@ export default createRule<Options, MessageIds>({
        */
       if (
         !node.parent ||
-        node.parent.type !== 'CallExpression' ||
+        node.parent.type !== AST_NODE_TYPES.CallExpression ||
         node.parent.callee !== node
       ) {
         return false;
@@ -579,7 +578,7 @@ export default createRule<Options, MessageIds>({
      * @param offset The amount that the elements should be offset
      */
     function addElementListIndent(
-      elements: TSESTree.Node[],
+      elements: (TSESTree.Node | null)[],
       startToken: TSESTree.Token,
       endToken: TSESTree.Token,
       offset: number | string,
@@ -607,7 +606,8 @@ export default createRule<Options, MessageIds>({
       offsets.setDesiredOffset(endToken, startToken, 0);
 
       // If the preference is "first" but there is no first element (e.g. sparse arrays w/ empty first slot), fall back to 1 level.
-      if (offset === 'first' && elements.length && !elements[0]) {
+      const firstElement = elements[0];
+      if (offset === 'first' && elements.length && !firstElement) {
         return;
       }
       elements.forEach((element, index) => {
@@ -629,7 +629,7 @@ export default createRule<Options, MessageIds>({
           tokenInfo.isFirstTokenOfLine(getFirstToken(element))
         ) {
           offsets.matchOffsetOf(
-            getFirstToken(elements[0]),
+            getFirstToken(firstElement!),
             getFirstToken(element),
           );
         } else {
@@ -641,6 +641,7 @@ export default createRule<Options, MessageIds>({
 
           if (
             previousElement &&
+            previousElementLastToken &&
             previousElementLastToken.loc.end.line -
               countTrailingLinebreaks(previousElementLastToken.value) >
               startToken.loc.end.line
@@ -660,7 +661,7 @@ export default createRule<Options, MessageIds>({
      * Scenarios are for or while statements without braces around them
      */
     function addBlocklessNodeIndent(node: TSESTree.Node): void {
-      if (node.type !== 'BlockStatement') {
+      if (node.type !== AST_NODE_TYPES.BlockStatement) {
         const lastParentToken = sourceCode.getTokenBefore(
           node,
           isNotOpeningParenToken,
@@ -693,7 +694,7 @@ export default createRule<Options, MessageIds>({
 
         if (
           lastToken &&
-          node.type !== 'EmptyStatement' &&
+          node.type !== AST_NODE_TYPES.EmptyStatement &&
           isSemicolonToken(lastToken)
         ) {
           offsets.setDesiredOffset(lastToken, lastParentToken, 0);
@@ -855,7 +856,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const openingBracket = sourceCode.getFirstToken(node)!;
         const closingBracket = sourceCode.getTokenAfter(
-          node.elements[node.elements.length - 1] || openingBracket,
+          node.elements[node.elements.length - 1] ?? openingBracket,
           isClosingBracketToken,
         )!;
 
@@ -1128,7 +1129,10 @@ export default createRule<Options, MessageIds>({
 
       IfStatement(node) {
         addBlocklessNodeIndent(node.consequent);
-        if (node.alternate && node.alternate.type !== 'IfStatement') {
+        if (
+          node.alternate &&
+          node.alternate.type !== AST_NODE_TYPES.IfStatement
+        ) {
           addBlocklessNodeIndent(node.alternate);
         }
       },
@@ -1136,7 +1140,7 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration(node) {
         if (
           node.specifiers.some(
-            specifier => specifier.type === 'ImportSpecifier',
+            specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
           )
         ) {
           const openingCurly = sourceCode.getFirstToken(
@@ -1150,7 +1154,7 @@ export default createRule<Options, MessageIds>({
 
           addElementListIndent(
             node.specifiers.filter(
-              specifier => specifier.type === 'ImportSpecifier',
+              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
             ),
             openingCurly,
             closingCurly,
@@ -1160,11 +1164,12 @@ export default createRule<Options, MessageIds>({
 
         const fromToken = sourceCode.getLastToken(
           node,
-          token => token.type === 'Identifier' && token.value === 'from',
+          token =>
+            token.type === AST_TOKEN_TYPES.Identifier && token.value === 'from',
         )!;
         const sourceToken = sourceCode.getLastToken(
           node,
-          token => token.type === 'String',
+          token => token.type === AST_TOKEN_TYPES.String,
         )!;
         const semiToken = sourceCode.getLastToken(
           node,
@@ -1346,7 +1351,7 @@ export default createRule<Options, MessageIds>({
         if (
           !(
             node.consequent.length === 1 &&
-            node.consequent[0].type === 'BlockStatement'
+            node.consequent[0].type === AST_NODE_TYPES.BlockStatement
           )
         ) {
           const caseKeyword = sourceCode.getFirstToken(node)!;

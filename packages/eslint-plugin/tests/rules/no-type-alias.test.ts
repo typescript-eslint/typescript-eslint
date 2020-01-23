@@ -358,7 +358,8 @@ type Foo<T> = {
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
     {
-      code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
+      code:
+        'export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;',
       options: [
         {
           allowAliases: 'in-unions-and-intersections',
@@ -438,6 +439,14 @@ type Foo<T> = {
       code:
         'type Foo = [string] & [number, number] | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'always' }],
     },
   ],
   invalid: [
@@ -2966,7 +2975,7 @@ type Foo<T> = {
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/270
-      code: `export type ButtonProps = JSX.IntrinsicElements['button'];`,
+      code: "export type ButtonProps = JSX.IntrinsicElements['button'];",
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -3173,6 +3182,71 @@ type Foo<T> = {
       errors: [
         {
           messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'constructors',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      // unique symbol is not allowed in this context
+      code: 'type Foo = keyof [string] | unique symbol;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Unhandled',
+          },
+          line: 1,
+          column: 29,
         },
       ],
     },

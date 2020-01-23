@@ -27,7 +27,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       category: 'Best Practices',
-      description: 'Enforces consistent usage of type assertions.',
+      description: 'Enforces consistent usage of type assertions',
       recommended: 'error',
     },
     messages: {
@@ -124,6 +124,7 @@ export default util.createRule<Options, MessageIds>({
         node.parent &&
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
+          node.parent.type === AST_NODE_TYPES.OptionalCallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||
           node.parent.type === AST_NODE_TYPES.AssignmentPattern)
       ) {

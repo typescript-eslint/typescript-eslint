@@ -3,6 +3,7 @@ import { RuleTester } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
+type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -306,11 +307,31 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 1,
           column: 31,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'function generic(param: Array<unknown>): Array<any> {}',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'function generic(param: Array<never>): Array<any> {}',
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 44,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'function generic(param: Array<any>): Array<unknown> {}',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'function generic(param: Array<any>): Array<never> {}',
+            },
+          ],
         },
       ],
     },
@@ -705,11 +726,31 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 1,
           column: 15,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `class Foo<t = unknown> extends Bar<any> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `class Foo<t = never> extends Bar<any> {}`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 32,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `class Foo<t = any> extends Bar<unknown> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `class Foo<t = any> extends Bar<never> {}`,
+            },
+          ],
         },
       ],
     },
@@ -720,11 +761,31 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 1,
           column: 24,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `abstract class Foo<t = unknown> extends Bar<any> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `abstract class Foo<t = never> extends Bar<any> {}`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 41,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `abstract class Foo<t = any> extends Bar<unknown> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `abstract class Foo<t = any> extends Bar<never> {}`,
+            },
+          ],
         },
       ],
     },
@@ -735,16 +796,46 @@ type obj = {
           messageId: 'unexpectedAny',
           line: 1,
           column: 24,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `abstract class Foo<t = unknown> implements Bar<any>, Baz<any> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `abstract class Foo<t = never> implements Bar<any>, Baz<any> {}`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 44,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `abstract class Foo<t = any> implements Bar<unknown>, Baz<any> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `abstract class Foo<t = any> implements Bar<never>, Baz<any> {}`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 54,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `abstract class Foo<t = any> implements Bar<any>, Baz<unknown> {}`,
+            },
+            {
+              messageId: 'suggestNever',
+              output: `abstract class Foo<t = any> implements Bar<any>, Baz<never> {}`,
+            },
+          ],
         },
       ],
     },
@@ -771,19 +862,51 @@ type obj = {
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/64
       code: `
-        function test<T extends Partial<any>>() {}
-        const test = <T extends Partial<any>>() => {};
-      `,
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<any>>() => {};
+      `.trimRight(),
       errors: [
         {
           messageId: 'unexpectedAny',
           line: 2,
-          column: 41,
+          column: 33,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `
+function test<T extends Partial<unknown>>() {}
+const test = <T extends Partial<any>>() => {};
+              `.trimRight(),
+            },
+            {
+              messageId: 'suggestNever',
+              output: `
+function test<T extends Partial<never>>() {}
+const test = <T extends Partial<any>>() => {};
+              `.trimRight(),
+            },
+          ],
         },
         {
           messageId: 'unexpectedAny',
           line: 3,
-          column: 41,
+          column: 33,
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: `
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<unknown>>() => {};
+              `.trimRight(),
+            },
+            {
+              messageId: 'suggestNever',
+              output: `
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<never>>() => {};
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
@@ -869,8 +992,24 @@ type obj = {
       ],
     },
   ] as InvalidTestCase[]).reduce<InvalidTestCase[]>((acc, testCase) => {
-    acc.push(testCase);
-    const options = testCase.options || [];
+    const suggestions = (code: string): SuggestionOutput[] => [
+      {
+        messageId: 'suggestUnknown',
+        output: code.replace(/any/, 'unknown'),
+      },
+      {
+        messageId: 'suggestNever',
+        output: code.replace(/any/, 'never'),
+      },
+    ];
+    acc.push({
+      ...testCase,
+      errors: testCase.errors.map(e => ({
+        ...e,
+        suggestions: e.suggestions ?? suggestions(testCase.code),
+      })),
+    });
+    const options = testCase.options ?? [];
     const code = `// fixToUnknown: true\n${testCase.code}`;
     acc.push({
       code,
@@ -881,7 +1020,17 @@ type obj = {
           return err;
         }
 
-        return { ...err, line: err.line + 1 };
+        return {
+          ...err,
+          line: err.line + 1,
+          suggestions:
+            err.suggestions?.map(
+              (s): SuggestionOutput => ({
+                ...s,
+                output: `// fixToUnknown: true\n${s.output}`,
+              }),
+            ) ?? suggestions(code),
+        };
       }),
     });
 

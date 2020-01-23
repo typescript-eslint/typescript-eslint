@@ -1,4 +1,4 @@
-# Disallow unused variables (no-unused-vars)
+# Disallow unused variables (`no-unused-vars`)
 
 Variables that are declared and not used anywhere in the code are most likely an error due to incomplete refactoring. Such variables take up space in the code and can lead to confusion by readers.
 
@@ -122,14 +122,14 @@ By default this rule is enabled with `all` option for variables and `after-used`
 }
 ```
 
-### vars
+### `vars`
 
 The `vars` option has two settings:
 
 - `all` checks all variables for usage, including those in the global scope. This is the default setting.
 - `local` checks only that locally-declared variables are used but will allow global variables to be unused.
 
-#### vars: local
+#### `vars: local`
 
 Examples of **correct** code for the `{ "vars": "local" }` option:
 
@@ -140,7 +140,7 @@ Examples of **correct** code for the `{ "vars": "local" }` option:
 some_unused_var = 42;
 ```
 
-### varsIgnorePattern
+### `varsIgnorePattern`
 
 The `varsIgnorePattern` option specifies exceptions not to check for usage: variables whose names match a regexp pattern. For example, variables whose names contain `ignored` or `Ignored`.
 
@@ -154,7 +154,7 @@ var secondVar = 2;
 console.log(secondVar);
 ```
 
-### args
+### `args`
 
 The `args` option has three settings:
 
@@ -162,7 +162,7 @@ The `args` option has three settings:
 - `all` - all named arguments must be used.
 - `none` - do not check arguments.
 
-#### args: after-used
+#### `args: after-used`
 
 Examples of **incorrect** code for the default `{ "args": "after-used" }` option:
 
@@ -187,7 +187,7 @@ Examples of **correct** code for the default `{ "args": "after-used" }` option:
 })();
 ```
 
-#### args: all
+#### `args: all`
 
 Examples of **incorrect** code for the `{ "args": "all" }` option:
 
@@ -202,7 +202,7 @@ Examples of **incorrect** code for the `{ "args": "all" }` option:
 })();
 ```
 
-#### args: none
+#### `args: none`
 
 Examples of **correct** code for the `{ "args": "none" }` option:
 
@@ -214,7 +214,7 @@ Examples of **correct** code for the `{ "args": "none" }` option:
 })();
 ```
 
-### ignoreRestSiblings
+### `ignoreRestSiblings`
 
 The `ignoreRestSiblings` option is a boolean (default: `false`). Using a [Rest Property](https://github.com/tc39/proposal-object-rest-spread) it is possible to "omit" properties from an object, but by default the sibling properties are marked as "unused". With this option enabled the rest property's siblings are ignored.
 
@@ -226,7 +226,7 @@ Examples of **correct** code for the `{ "ignoreRestSiblings": true }` option:
 var { type, ...coords } = data;
 ```
 
-### argsIgnorePattern
+### `argsIgnorePattern`
 
 The `argsIgnorePattern` option specifies exceptions not to check for usage: arguments whose names match a regexp pattern. For example, variables whose names begin with an underscore.
 
@@ -241,7 +241,7 @@ function foo(x, _y) {
 foo();
 ```
 
-### caughtErrors
+### `caughtErrors`
 
 The `caughtErrors` option is used for `catch` block arguments validation.
 
@@ -250,7 +250,7 @@ It has two settings:
 - `none` - do not check error objects. This is the default setting.
 - `all` - all named arguments must be used.
 
-#### caughtErrors: none
+#### `caughtErrors: none`
 
 Not specifying this rule is equivalent of assigning it to `none`.
 
@@ -266,7 +266,7 @@ try {
 }
 ```
 
-#### caughtErrors: all
+#### `caughtErrors: all`
 
 Examples of **incorrect** code for the `{ "caughtErrors": "all" }` option:
 
@@ -282,7 +282,7 @@ try {
 }
 ```
 
-### caughtErrorsIgnorePattern
+### `caughtErrorsIgnorePattern`
 
 The `caughtErrorsIgnorePattern` option specifies exceptions not to check for usage: catch arguments whose names match a regexp pattern. For example, variables whose names begin with a string 'ignore'.
 
