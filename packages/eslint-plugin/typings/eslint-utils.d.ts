@@ -150,9 +150,9 @@ declare module 'eslint-utils' {
   export function isCommentToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): token is TSESTree.Comment;
-  export function isNotCommentToken<T extends TSESTree.Token>(
-    token: T,
-  ): token is Exclude<T, TSESTree.Comment>;
+  export function isNotCommentToken<
+    T extends TSESTree.Token | TSESTree.Comment
+  >(token: T): token is Exclude<T, TSESTree.Comment>;
   export function isOpeningBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): token is TSESTree.PunctuatorToken & { value: '{' };
