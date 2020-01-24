@@ -76,7 +76,9 @@ function getReporLoc(
  * const x: Foo = ...
  * ```
  */
-function isVariableDeclaratorWithTypeAnnotation(node: TSESTree.Node): boolean {
+function isVariableDeclaratorWithTypeAnnotation(
+  node: TSESTree.Node,
+): node is TSESTree.VariableDeclarator {
   return (
     node.type === AST_NODE_TYPES.VariableDeclarator && !!node.id.typeAnnotation
   );
@@ -88,7 +90,9 @@ function isVariableDeclaratorWithTypeAnnotation(node: TSESTree.Node): boolean {
  * public x: Foo = ...
  * ```
  */
-function isClassPropertyWithTypeAnnotation(node: TSESTree.Node): boolean {
+function isClassPropertyWithTypeAnnotation(
+  node: TSESTree.Node,
+): node is TSESTree.ClassProperty {
   return node.type === AST_NODE_TYPES.ClassProperty && !!node.typeAnnotation;
 }
 
@@ -99,8 +103,10 @@ function isClassPropertyWithTypeAnnotation(node: TSESTree.Node): boolean {
  *         ^^^^^^^^
  * ```
  */
-function isConstructorArgument(node: TSESTree.Node): node is TSESTree.NewExpression {
-  return parent.type === AST_NODE_TYPES.NewExpression;
+function isConstructorArgument(
+  node: TSESTree.Node,
+): node is TSESTree.NewExpression {
+  return node.type === AST_NODE_TYPES.NewExpression;
 }
 
 /**
@@ -190,7 +196,7 @@ function doesImmediatelyReturnFunctionExpression({
 function isFunctionArgument(
   parent: TSESTree.Node,
   callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-): boolean {
+): parent is TSESTree.CallExpression | TSESTree.OptionalCallExpression {
   return (
     (parent.type === AST_NODE_TYPES.CallExpression ||
       parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
@@ -202,7 +208,7 @@ function isFunctionArgument(
 /**
  * Checks if a function belongs to:
  * ```
- * () => ({ action: 'xxx' }) as const
+ * () => ({ action: 'xxx' } as const)
  * ```
  */
 function returnsConstAssertionDirectly(
