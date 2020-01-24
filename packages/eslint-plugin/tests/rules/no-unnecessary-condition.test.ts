@@ -1,15 +1,14 @@
-import path from 'path';
-import rule, {
-  Options,
-  MessageId,
-} from '../../src/rules/no-unnecessary-condition';
-import { RuleTester } from '../RuleTester';
 import {
   TestCaseError,
   InvalidTestCase,
 } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import rule, {
+  Options,
+  MessageId,
+} from '../../src/rules/no-unnecessary-condition';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
