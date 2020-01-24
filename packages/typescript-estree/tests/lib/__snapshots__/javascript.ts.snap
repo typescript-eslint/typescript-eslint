@@ -108270,6 +108270,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 8,
@@ -108864,6 +108865,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 12,
@@ -109472,6 +109474,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 30,
@@ -109734,6 +109737,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 21,
@@ -111891,6 +111895,7 @@ exports[`javascript fixtures/modules/export-from-batch.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -112043,6 +112048,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 28,
@@ -112286,6 +112292,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 35,
@@ -112565,6 +112572,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 31,
@@ -112844,6 +112852,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 40,
@@ -113212,6 +113221,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 24,
@@ -113455,6 +113465,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -113843,6 +113854,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 25,
@@ -114087,6 +114099,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -114240,6 +114253,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 24,
@@ -114465,6 +114479,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -114690,6 +114705,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -115057,6 +115073,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -115192,6 +115209,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 10,
@@ -115309,6 +115327,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 13,
@@ -115498,6 +115517,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -115776,6 +115796,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -116127,6 +116148,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 15,
@@ -116338,6 +116360,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 32,
@@ -116636,6 +116659,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -116823,6 +116847,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -117011,6 +117036,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -117324,6 +117350,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -117897,6 +117924,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 8,
@@ -120425,6 +120453,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 17,
@@ -120721,6 +120750,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 16,
@@ -120937,6 +120967,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -121093,6 +121124,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 21,

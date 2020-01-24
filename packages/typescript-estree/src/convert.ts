@@ -177,6 +177,7 @@ export class Converter {
           declaration: result,
           specifiers: [],
           source: null,
+          exportKind: 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }
@@ -1571,6 +1572,7 @@ export class Converter {
         return this.createNode<TSESTree.ImportDefaultSpecifier>(node, {
           type: AST_NODE_TYPES.ImportDefaultSpecifier,
           local: this.convertChild(node.name),
+          importKind: node.isTypeOnly ? 'type' : 'value',
           range: [node.getStart(this.ast), node.name!.end],
         });
 
@@ -1583,11 +1585,13 @@ export class Converter {
               node.exportClause.kind === SyntaxKind.NamedExports
                 ? node.exportClause.elements.map(el => this.convertChild(el))
                 : [this.convertChild(node.exportClause)],
+            exportKind: node.isTypeOnly ? 'type' : 'value',
             declaration: null,
           });
         } else {
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
             type: AST_NODE_TYPES.ExportAllDeclaration,
+            exportKind: node.isTypeOnly ? 'type' : 'value',
             source: this.convertChild(node.moduleSpecifier),
           });
         }
@@ -1613,7 +1617,7 @@ export class Converter {
         }
 
       case SyntaxKind.NamespaceExport:
-        return this.createNode<TSESTree.ExportNamespaceSpecifier>(node as any, {
+        return this.createNode<TSESTree.ExportNamespaceSpecifier>(node, {
           type: AST_NODE_TYPES.ExportNamespaceSpecifier,
           exported: this.convertChild(node.name),
         });

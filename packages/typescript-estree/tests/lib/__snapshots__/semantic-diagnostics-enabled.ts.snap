@@ -1748,7 +1748,7 @@ Object {
   "column": 14,
   "index": 31,
   "lineNumber": 2,
-  "message": "'await' expression is only allowed within an async function.",
+  "message": "'await' expressions are only allowed within async functions and at the top levels of modules.",
 }
 `;
 

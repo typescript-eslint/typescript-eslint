@@ -2650,6 +2650,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 26,
@@ -2685,6 +2686,24 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "exported": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 15,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 12,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "range": Array [
+              12,
+              15,
+            ],
+            "type": "Identifier",
+          },
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -2695,12 +2714,11 @@ Object {
               "line": 1,
             },
           },
-          "name": "foo",
           "range": Array [
             12,
             15,
           ],
-          "type": "Identifier",
+          "type": "ExportNamespaceSpecifier",
         },
       ],
       "type": "ExportNamedDeclaration",
@@ -2840,6 +2858,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -3047,6 +3066,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 23,
@@ -3292,6 +3312,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 30,
@@ -3535,6 +3556,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 34,
@@ -3866,6 +3888,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "type",
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -4072,6 +4095,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 11,
@@ -4260,6 +4284,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "type",
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -6262,6 +6287,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -6709,6 +6735,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -7925,6 +7952,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -9525,6 +9553,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -9911,6 +9940,7 @@ Object {
         ],
         "type": "TSInterfaceDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -49153,6 +49183,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -49540,6 +49571,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -50515,6 +50547,7 @@ Object {
           "type": "TSTypeParameterDeclaration",
         },
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -50846,6 +50879,7 @@ Object {
           "type": "TSTypeParameterDeclaration",
         },
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -51196,6 +51230,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -51494,6 +51529,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -51774,6 +51810,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -52053,6 +52090,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -52347,6 +52385,7 @@ Object {
           ],
         },
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 40,
@@ -52659,6 +52698,7 @@ Object {
           "type": "TSTypeLiteral",
         },
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 2,
@@ -53023,6 +53063,7 @@ Object {
           "type": "TSFunctionType",
         },
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 47,
@@ -54348,6 +54389,7 @@ Object {
         },
         "type": "TSDeclareFunction",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 37,
@@ -54493,6 +54535,7 @@ Object {
         },
         "type": "TSDeclareFunction",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 37,
@@ -54764,6 +54807,7 @@ Object {
         },
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -140126,6 +140170,7 @@ Object {
         ],
         "type": "TSEnumDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 72,
@@ -151250,6 +151295,7 @@ Object {
             },
             "specifiers": Array [
               Object {
+                "importKind": "value",
                 "loc": Object {
                   "end": Object {
                     "column": 11,
@@ -151729,6 +151775,7 @@ Object {
               },
               "type": "TSDeclareFunction",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 59,
@@ -153509,6 +153556,7 @@ Object {
               ],
               "type": "VariableDeclaration",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -153802,6 +153850,7 @@ Object {
               "superClass": null,
               "type": "ClassDeclaration",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -153949,6 +153998,7 @@ Object {
                       ],
                       "type": "TSInterfaceDeclaration",
                     },
+                    "exportKind": "value",
                     "loc": Object {
                       "end": Object {
                         "column": 9,
@@ -154018,6 +154068,7 @@ Object {
               ],
               "type": "TSModuleDeclaration",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 5,

@@ -266,6 +266,28 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         if (!node.declaration) {
           node.declaration = null;
         }
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          node.exportKind = 'value';
+        }
+      },
+      ExportAllDeclaration(node) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          node.exportKind = 'value';
+        }
+      },
+      ImportDefaultSpecifier(node) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.importKind) {
+          node.importKind = 'value';
+        }
       },
     },
   );

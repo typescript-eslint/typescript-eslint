@@ -338,6 +338,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "loc": Object {
             "end": Object {
               "column": 10,
