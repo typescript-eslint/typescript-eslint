@@ -111,70 +111,82 @@ declare module 'eslint-utils' {
     }
   }
 
+  type NegateGuard<T, U> = T extends U ? T : U;
+
   export function isArrowToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: '=>' };
-  export function isNotArrowToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<'=>'>;
+  export function isNotArrowToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<'=>'>, T>;
+
   export function isClosingBraceToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: '}' };
-  export function isNotClosingBraceToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<'}'>;
+  export function isNotClosingBraceToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<'}'>, T>;
+
   export function isClosingBracketToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: ']' };
-  export function isNotClosingBracketToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<']'>;
+  export function isNotClosingBracketToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<']'>, T>;
+
   export function isClosingParenToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: ')' };
-  export function isNotClosingParenToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<')'>;
+  export function isNotClosingParenToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<')'>, T>;
+
   export function isColonToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: ':' };
-  export function isNotColonToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<':'>;
+  export function isNotColonToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<':'>, T>;
+
   export function isCommaToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: ',' };
-  export function isNotCommaToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<','>;
+  export function isNotCommaToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<','>, T>;
+
   export function isCommentToken(
-    token: TSESTree.Token | TSESTree.Comment,
+    token: TSESTree.TokenOrComment,
   ): token is TSESTree.Comment;
-  export function isNotCommentToken<
-    T extends TSESTree.Token | TSESTree.Comment
-  >(token: T): token is Exclude<T, TSESTree.Comment>;
+  export function isNotCommentToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is Exclude<T, TSESTree.Comment>;
+
   export function isOpeningBraceToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: '{' };
-  export function isNotOpeningBraceToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<'{'>;
+  export function isNotOpeningBraceToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<'{'>, T>;
+
   export function isOpeningBracketToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: '[' };
-  export function isNotOpeningBracketToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<'['>;
+  export function isNotOpeningBracketToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<'['>, T>;
+
   export function isOpeningParenToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: '(' };
-  export function isNotOpeningParenToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<'('>;
+  export function isNotOpeningParenToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<'('>, T>;
+
   export function isSemicolonToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): token is TSESTree.PunctuatorToken & { value: ';' };
-  export function isNotSemicolonToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+    token: TSESTree.TokenOrComment,
+  ): token is TSESTree.PunctuatorToken<';'>;
+  export function isNotSemicolonToken<T extends TSESTree.TokenOrComment>(
+    token: T,
+  ): token is NegateGuard<TSESTree.PunctuatorToken<';'>, T>;
 }

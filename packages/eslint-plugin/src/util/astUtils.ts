@@ -4,27 +4,29 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
+type NegateGuard<T, U> = T extends U ? T : U;
+
 const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
 
 function isOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): token is TSESTree.PunctuatorToken & { value: '?.' } {
+  token: TSESTree.TokenOrComment,
+): token is TSESTree.PunctuatorToken<'?.'> {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
 }
-function isNotOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+function isNotOptionalChainPunctuator<T extends TSESTree.TokenOrComment>(
+  token: T,
+): token is NegateGuard<TSESTree.PunctuatorToken<'?.'>, T> {
   return !isOptionalChainPunctuator(token);
 }
 
 function isNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): token is TSESTree.PunctuatorToken & { value: '!' } {
+  token: TSESTree.TokenOrComment,
+): token is TSESTree.PunctuatorToken<'!'> {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
 }
-function isNotNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+function isNotNonNullAssertionPunctuator<T extends TSESTree.TokenOrComment>(
+  token: T,
+): token is NegateGuard<TSESTree.PunctuatorToken<'!'>, T> {
   return !isNonNullAssertionPunctuator(token);
 }
 
@@ -57,8 +59,8 @@ function isLogicalOrOperator(
  * Determines whether two adjacent tokens are on the same line
  */
 function isTokenOnSameLine(
-  left: TSESTree.Token | TSESTree.Comment,
-  right: TSESTree.Token | TSESTree.Comment,
+  left: TSESTree.TokenOrComment,
+  right: TSESTree.TokenOrComment,
 ): boolean {
   return left.loc.end.line === right.loc.start.line;
 }

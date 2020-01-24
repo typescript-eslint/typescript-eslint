@@ -101,8 +101,8 @@ export default createRule<Options, MessageIds>({
      */
     function validateCommaSpacing(
       commaToken: TSESTree.PunctuatorToken,
-      prevToken: TSESTree.Token | TSESTree.Comment | null,
-      nextToken: TSESTree.Token | TSESTree.Comment | null,
+      prevToken: TSESTree.TokenOrComment | null,
+      nextToken: TSESTree.TokenOrComment | null,
     ): void {
       if (
         prevToken &&

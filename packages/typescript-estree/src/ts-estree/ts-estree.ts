@@ -84,8 +84,9 @@ export interface NumericToken extends BaseToken {
   type: AST_TOKEN_TYPES.Numeric;
 }
 
-export interface PunctuatorToken extends BaseToken {
+export interface PunctuatorToken<T extends string = string> extends BaseToken {
   type: AST_TOKEN_TYPES.Punctuator;
+  value: T;
 }
 
 export interface RegularExpressionToken extends BaseToken {
@@ -125,6 +126,8 @@ export type Token =
   | RegularExpressionToken
   | StringToken
   | TemplateToken;
+
+export type TokenOrComment = Token | Comment;
 
 export type OptionalRangeAndLoc<T> = Pick<
   T,
