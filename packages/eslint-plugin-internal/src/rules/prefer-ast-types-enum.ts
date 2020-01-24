@@ -57,11 +57,11 @@ export = ESLintUtils.RuleCreator(name => name)({
 
         const value = node.value;
 
-        if (value in AST_NODE_TYPES) {
+        if (Object.prototype.hasOwnProperty.call(AST_NODE_TYPES, value)) {
           report('AST_NODE_TYPES', node);
         }
 
-        if (value in AST_TOKEN_TYPES) {
+        if (Object.prototype.hasOwnProperty.call(AST_TOKEN_TYPES, value)) {
           report('AST_TOKEN_TYPES', node);
         }
       },

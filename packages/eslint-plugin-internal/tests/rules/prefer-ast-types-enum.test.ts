@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-ast-types-enum', rule, {
   valid: [
+    'node.type === "constructor"',
     'node.type === AST_NODE_TYPES.Literal',
     'node.type === AST_TOKEN_TYPES.Keyword',
     'node.type === 1',
