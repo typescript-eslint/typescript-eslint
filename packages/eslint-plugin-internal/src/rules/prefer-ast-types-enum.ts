@@ -17,10 +17,10 @@ export = ESLintUtils.RuleCreator(name => name)({
       category: 'Best Practices',
       recommended: 'error',
       description:
-        'Ensures consistent usage of AST_NODE_TYPES & AST_TOKEN_TYPES.',
+        'Ensures consistent usage of AST_NODE_TYPES & AST_TOKEN_TYPES enums.',
     },
     messages: {
-      preferConstant: 'Prefer {{ constant }}.{{ literal }} over raw literal',
+      preferEnum: 'Prefer {{ enumName }}.{{ literal }} over raw literal',
     },
     fixable: 'code',
     schema: [],
@@ -28,15 +28,15 @@ export = ESLintUtils.RuleCreator(name => name)({
   defaultOptions: [],
   create(context) {
     const report = (
-      constant: 'AST_NODE_TYPES' | 'AST_TOKEN_TYPES',
+      enumName: 'AST_NODE_TYPES' | 'AST_TOKEN_TYPES',
       literal: TSESTree.StringLiteral,
     ): void =>
       context.report({
-        data: { constant, literal: literal.value },
-        messageId: 'preferConstant',
+        data: { enumName, literal: literal.value },
+        messageId: 'preferEnum',
         node: literal,
         fix: fixer =>
-          fixer.replaceText(literal, `${constant}.${literal.value}`),
+          fixer.replaceText(literal, `${enumName}.${literal.value}`),
       });
 
     return {

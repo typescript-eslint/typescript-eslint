@@ -1,4 +1,4 @@
-import rule from '../../src/rules/prefer-ast-types-constant';
+import rule from '../../src/rules/prefer-ast-types-enum';
 import { RuleTester, batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -8,7 +8,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('prefer-ast-types-constant', rule, {
+ruleTester.run('prefer-ast-types-enum', rule, {
   valid: [
     'node.type === AST_NODE_TYPES.Literal',
     'node.type === AST_TOKEN_TYPES.Keyword',
@@ -30,13 +30,13 @@ node.type === AST_TOKEN_TYPES.Keyword
     `,
     errors: [
       {
-        data: { constant: 'AST_NODE_TYPES', literal: 'Literal' },
-        messageId: 'preferConstant',
+        data: { enumName: 'AST_NODE_TYPES', literal: 'Literal' },
+        messageId: 'preferEnum',
         line: 2,
       },
       {
-        data: { constant: 'AST_TOKEN_TYPES', literal: 'Keyword' },
-        messageId: 'preferConstant',
+        data: { enumName: 'AST_TOKEN_TYPES', literal: 'Keyword' },
+        messageId: 'preferEnum',
         line: 3,
       },
     ],
