@@ -17,6 +17,7 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
     `f<>();`,
     `f<string>();`,
+    `expect().toBe<>();`,
     `class Foo extends Bar<> {}`,
     `class Foo extends Bar<string> {}`,
     `class Foo implements Bar<> {}`,
