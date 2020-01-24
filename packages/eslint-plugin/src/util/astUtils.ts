@@ -8,7 +8,7 @@ const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
 
 function isOptionalChainPunctuator(
   token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+): token is TSESTree.PunctuatorToken & { value: '?.' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
 }
 function isNotOptionalChainPunctuator(
@@ -19,7 +19,7 @@ function isNotOptionalChainPunctuator(
 
 function isNonNullAssertionPunctuator(
   token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+): token is TSESTree.PunctuatorToken & { value: '!' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
 }
 function isNotNonNullAssertionPunctuator(
@@ -33,7 +33,7 @@ function isNotNonNullAssertionPunctuator(
  */
 function isOptionalOptionalChain(
   node: TSESTree.Node,
-): node is TSESTree.OptionalCallExpression {
+): node is TSESTree.OptionalCallExpression & { optional: true } {
   return (
     node.type === AST_NODE_TYPES.OptionalCallExpression &&
     // this flag means the call expression itself is option
@@ -45,7 +45,9 @@ function isOptionalOptionalChain(
 /**
  * Returns true if and only if the node represents logical OR
  */
-function isLogicalOrOperator(node: TSESTree.Node): boolean {
+function isLogicalOrOperator(
+  node: TSESTree.Node,
+): node is TSESTree.LogicalExpression & { operator: '||' } {
   return (
     node.type === AST_NODE_TYPES.LogicalExpression && node.operator === '||'
   );
@@ -55,8 +57,8 @@ function isLogicalOrOperator(node: TSESTree.Node): boolean {
  * Determines whether two adjacent tokens are on the same line
  */
 function isTokenOnSameLine(
-  left: TSESTree.Token,
-  right: TSESTree.Token,
+  left: TSESTree.Token | TSESTree.Comment,
+  right: TSESTree.Token | TSESTree.Comment,
 ): boolean {
   return left.loc.end.line === right.loc.start.line;
 }

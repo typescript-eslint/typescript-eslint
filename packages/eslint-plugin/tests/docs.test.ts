@@ -63,7 +63,7 @@ describe('Validating rule docs', () => {
       expect(tokens[0]).toEqual({
         type: 'heading',
         depth: 1,
-        text: `${rule.meta.docs.description} (\`${ruleName}\`)`,
+        text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,
       });
     });
   }
@@ -76,7 +76,7 @@ describe('Validating rule metadata', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url
         expect(
-          rule.meta.docs.url.endsWith(`rules/${ruleName}.md`),
+          rule.meta.docs?.url.endsWith(`rules/${ruleName}.md`),
         ).toBeTruthy();
       });
 
@@ -88,7 +88,7 @@ describe('Validating rule metadata', () => {
         );
 
         expect(ruleFileContents.includes('getParserServices')).toEqual(
-          rule.meta.docs.requiresTypeChecking ?? false,
+          rule.meta.docs?.requiresTypeChecking ?? false,
         );
       });
     });
@@ -99,10 +99,10 @@ describe('Validating README.md', () => {
   const rulesTables = parseReadme();
   const notDeprecated = rulesData.filter(([, rule]) => !rule.meta.deprecated);
   const baseRules = notDeprecated.filter(
-    ([, rule]) => !rule.meta.docs.extendsBaseRule,
+    ([, rule]) => !rule.meta.docs?.extendsBaseRule,
   );
   const extensionRules = notDeprecated.filter(
-    ([, rule]) => rule.meta.docs.extendsBaseRule,
+    ([, rule]) => rule.meta.docs?.extendsBaseRule,
   );
 
   it('All non-deprecated base rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {
@@ -128,7 +128,7 @@ describe('Validating README.md', () => {
 
   for (const [ruleName, rule] of notDeprecated) {
     describe(`Checking rule ${ruleName}`, () => {
-      const ruleRow: string[] | undefined = (rule.meta.docs.extendsBaseRule
+      const ruleRow: string[] | undefined = (rule.meta.docs?.extendsBaseRule
         ? rulesTables.extension.cells
         : rulesTables.base.cells
       ).find(row => row[0].includes(`/${ruleName}.md`));
@@ -143,12 +143,12 @@ describe('Validating README.md', () => {
       });
 
       it('Description column should be correct', () => {
-        expect(ruleRow[1]).toEqual(rule.meta.docs.description);
+        expect(ruleRow[1]).toEqual(rule.meta.docs?.description);
       });
 
       it('Recommended column should be correct', () => {
         expect(ruleRow[2]).toEqual(
-          rule.meta.docs.recommended ? ':heavy_check_mark:' : '',
+          rule.meta.docs?.recommended ? ':heavy_check_mark:' : '',
         );
       });
 
@@ -160,7 +160,7 @@ describe('Validating README.md', () => {
 
       it('Requiring type information column should be correct', () => {
         expect(ruleRow[4]).toEqual(
-          rule.meta.docs.requiresTypeChecking === true
+          rule.meta.docs?.requiresTypeChecking === true
             ? ':thought_balloon:'
             : '',
         );

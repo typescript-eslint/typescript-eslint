@@ -113,67 +113,67 @@ declare module 'eslint-utils' {
 
   export function isArrowToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: '=>' };
   export function isNotArrowToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: '}' };
   export function isNotClosingBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingBracketToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: ']' };
   export function isNotClosingBracketToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isClosingParenToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: ')' };
   export function isNotClosingParenToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isColonToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: ':' };
   export function isNotColonToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isCommaToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: ',' };
   export function isNotCommaToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isCommentToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
-  export function isNotCommentToken(
-    token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.Comment;
+  export function isNotCommentToken<
+    T extends TSESTree.Token | TSESTree.Comment
+  >(token: T): token is Exclude<T, TSESTree.Comment>;
   export function isOpeningBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: '{' };
   export function isNotOpeningBraceToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isOpeningBracketToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: '[' };
   export function isNotOpeningBracketToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isOpeningParenToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: '(' };
   export function isNotOpeningParenToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;
   export function isSemicolonToken(
     token: TSESTree.Token | TSESTree.Comment,
-  ): boolean;
+  ): token is TSESTree.PunctuatorToken & { value: ';' };
   export function isNotSemicolonToken(
     token: TSESTree.Token | TSESTree.Comment,
   ): boolean;

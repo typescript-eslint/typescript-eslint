@@ -80,6 +80,7 @@ const formatTestNames: Readonly<Record<
 };
 
 const REPLACE_REGEX = /%/g;
+const IGNORED_REGEX = /^.(?!gnored)/; // negative lookahead to not match `[iI]gnored`
 
 type Cases = {
   code: string[];
@@ -99,7 +100,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
           options: [
             {
               ...options,
-              filter: '[iI]gnored',
+              filter: IGNORED_REGEX.source,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -205,7 +206,7 @@ function createInvalidTestCases(
           options: [
             {
               ...options,
-              filter: '[iI]gnored',
+              filter: IGNORED_REGEX.source,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -721,6 +722,20 @@ ruleTester.run('naming-convention', rule, {
         {
           selector: 'variable',
           format: [],
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      options: [
+        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
+        {
+          selector: 'variable',
+          format: ['snake_case'],
+          filter: 'child_process',
         },
       ],
     },

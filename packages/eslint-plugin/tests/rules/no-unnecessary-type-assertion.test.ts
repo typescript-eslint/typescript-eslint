@@ -5,7 +5,7 @@ import { RuleTester } from '../RuleTester';
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 2015,
+    sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },

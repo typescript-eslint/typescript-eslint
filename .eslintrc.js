@@ -33,6 +33,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/prefer-as-const': 'error',
 
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': [

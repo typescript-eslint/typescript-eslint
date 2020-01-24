@@ -1158,7 +1158,7 @@ Object {
         11,
         17,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "object",
     },
     Object {
@@ -1249,7 +1249,7 @@ Object {
         26,
         34,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "abstract",
     },
     Object {
@@ -10601,7 +10601,7 @@ Object {
         28,
         35,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "declare",
     },
     Object {
@@ -10637,7 +10637,7 @@ Object {
         36,
         42,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "static",
     },
     Object {
@@ -10781,7 +10781,7 @@ Object {
         56,
         63,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "declare",
     },
     Object {
@@ -10817,7 +10817,7 @@ Object {
         64,
         70,
       ],
-      "type": "Keyword",
+      "type": "Identifier",
       "value": "static",
     },
     Object {
