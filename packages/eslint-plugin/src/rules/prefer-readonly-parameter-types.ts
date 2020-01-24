@@ -7,7 +7,7 @@ import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
-  name: 'prefer-readonly-parameters',
+  name: 'prefer-readonly-parameter-types',
   meta: {
     type: 'suggestion',
     docs: {

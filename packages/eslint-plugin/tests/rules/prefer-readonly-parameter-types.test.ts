@@ -1,4 +1,4 @@
-import rule from '../../src/rules/prefer-readonly-parameters';
+import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
@@ -25,7 +25,7 @@ const primitives = [
   'undefined',
 ];
 
-ruleTester.run('prefer-readonly-parameters', rule, {
+ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
     // primitives
     ...primitives.map(type => `function foo(arg: ${type}) {}`),
