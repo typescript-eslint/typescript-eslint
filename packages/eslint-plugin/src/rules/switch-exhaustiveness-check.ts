@@ -1,5 +1,5 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
@@ -112,7 +112,7 @@ export default createRule({
           suggest: [
             {
               messageId: 'addMissingCases',
-              fix(fixer) {
+              fix(fixer): TSESLint.RuleFix | null {
                 return fixSwitch(fixer, node, missingBranchTypes);
               },
             },
