@@ -1,20 +1,18 @@
-import path from 'path';
-import rule from '../../src/rules/no-unnecessary-qualifier';
-import { RuleTester } from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import rule from '../../src/rules/no-unnecessary-qualifier';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const messageId = 'unnecessaryQualifier';
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
-    sourceType: 'module',
-    ecmaVersion: 6,
   },
 });
+
+const messageId = 'unnecessaryQualifier';
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
   valid: [
