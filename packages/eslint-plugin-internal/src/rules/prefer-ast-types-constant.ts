@@ -41,6 +41,16 @@ export = ESLintUtils.RuleCreator(name => name)({
 
     return {
       Literal(node: TSESTree.Literal): void {
+        if (
+          node.parent?.type === AST_NODE_TYPES.TSEnumMember &&
+          node.parent.parent?.type === AST_NODE_TYPES.TSEnumDeclaration &&
+          ['AST_NODE_TYPES', 'AST_TOKEN_TYPES'].includes(
+            node.parent.parent.id.name,
+          )
+        ) {
+          return;
+        }
+
         if (!isStringLiteral(node)) {
           return;
         }

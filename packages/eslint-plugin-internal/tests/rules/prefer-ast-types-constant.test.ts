@@ -13,6 +13,11 @@ ruleTester.run('prefer-ast-types-constant', rule, {
     'node.type === AST_NODE_TYPES.Literal',
     'node.type === AST_TOKEN_TYPES.Keyword',
     'node.type === 1',
+    `
+    enum AST_NODE_TYPES {
+      Literal = 'Literal'
+    }
+    `,
   ],
   invalid: batchedSingleLineTests({
     code: `
