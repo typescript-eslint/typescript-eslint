@@ -54,7 +54,7 @@ export default createRule<Options, MessageIds>({
   create(context, [{ before: spaceBefore, after: spaceAfter }]) {
     const sourceCode = context.getSourceCode();
     const tokensAndComments = sourceCode.tokensAndComments;
-    const ignoredTokens = new Set<TSESTree.Token>();
+    const ignoredTokens = new Set<TSESTree.PunctuatorToken>();
 
     /**
      * Adds null elements of the ArrayExpression or ArrayPattern node to the ignore list
@@ -67,7 +67,7 @@ export default createRule<Options, MessageIds>({
       for (const element of node.elements) {
         let token: TSESTree.Token | null;
         if (element === null) {
-          token = sourceCode.getTokenAfter(previousToken as TSESTree.Token);
+          token = sourceCode.getTokenAfter(previousToken!);
           if (token && isCommaToken(token)) {
             ignoredTokens.add(token);
           }
@@ -100,9 +100,9 @@ export default createRule<Options, MessageIds>({
      * @param nextToken The first token after the comma
      */
     function validateCommaSpacing(
-      commaToken: TSESTree.Token,
-      prevToken: TSESTree.Token | null,
-      nextToken: TSESTree.Token | null,
+      commaToken: TSESTree.PunctuatorToken,
+      prevToken: TSESTree.Token | TSESTree.Comment | null,
+      nextToken: TSESTree.Token | TSESTree.Comment | null,
     ): void {
       if (
         prevToken &&
@@ -166,20 +166,15 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          if (token.type === AST_TOKEN_TYPES.JSXText) {
-            return;
-          }
-
-          const commaToken = token as TSESTree.Token;
-          const prevToken = tokensAndComments[i - 1] as TSESTree.Token;
-          const nextToken = tokensAndComments[i + 1] as TSESTree.Token;
+          const prevToken = tokensAndComments[i - 1];
+          const nextToken = tokensAndComments[i + 1];
 
           validateCommaSpacing(
-            commaToken,
-            isCommaToken(prevToken) || ignoredTokens.has(commaToken)
+            token,
+            isCommaToken(prevToken) || ignoredTokens.has(token)
               ? null
               : prevToken,
-            isCommaToken(nextToken) || ignoredTokens.has(commaToken)
+            isCommaToken(nextToken) || ignoredTokens.has(token)
               ? null
               : nextToken,
           );
