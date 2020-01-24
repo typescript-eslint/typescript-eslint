@@ -7,6 +7,7 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
