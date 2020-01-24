@@ -16,6 +16,7 @@ jobs:
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           # Note that this command *also* typechecks tests/tools,
@@ -68,6 +69,7 @@ jobs:
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           yarn test
@@ -91,6 +93,7 @@ jobs:
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           npm config set //registry.npmjs.org/:_authToken=$(NPM_TOKEN)

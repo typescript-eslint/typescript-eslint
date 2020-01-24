@@ -1,22 +1,22 @@
-import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-arguments';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
+const rootPath = getFixturesRootDir();
+
 const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2015,
     sourceType: 'module',
-    tsconfigRootDir: rootDir,
+    tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
     `f<>();`,
     `f<string>();`,
+    `expect().toBe<>();`,
     `class Foo extends Bar<> {}`,
     `class Foo extends Bar<string> {}`,
     `class Foo implements Bar<> {}`,
