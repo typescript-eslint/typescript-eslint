@@ -115,7 +115,7 @@ This can be useful if you want to enforce no particular format for a specific se
 The `custom` option defines a custom regex that the identifier must (or must not) match. This option allows you to have a bit more finer-grained control over identifiers, letting you ban (or force) certain patterns and substrings.
 Accepts an object with the following properties:
 
-- `regex` - accepts a regular expression (anything accepted into `new RegExp(filter)`).
+- `regex` - accepts a regular expression (anything accepted into `new RegExp(regex)`).
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
 
 #### `leadingUnderscore` / `trailingUnderscore`
