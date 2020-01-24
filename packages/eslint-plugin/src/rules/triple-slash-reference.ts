@@ -1,5 +1,8 @@
+import {
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {

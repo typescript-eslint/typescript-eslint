@@ -1,3 +1,4 @@
+import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({

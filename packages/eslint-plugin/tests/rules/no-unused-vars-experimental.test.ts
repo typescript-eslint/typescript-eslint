@@ -543,7 +543,8 @@ export class Foo {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
-            type: AST_NODE_TYPES.Property,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Property',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 3,
@@ -970,7 +971,8 @@ export function foo([[a]], used) {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 1,
@@ -1044,7 +1046,8 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1063,7 +1066,8 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1082,7 +1086,8 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1101,7 +1106,8 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1120,7 +1126,8 @@ console.log(named1);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named2',
-            type: AST_NODE_TYPES.Import,
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,

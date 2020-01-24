@@ -141,7 +141,8 @@ export default util.createRule<Options, MessageIds>({
         case ts.SyntaxKind.ImportSpecifier:
         // a namespace import is NOT used, but the default import is used
         case ts.SyntaxKind.NamespaceImport:
-          report(AST_NODE_TYPES.Import);
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+          report('Import');
           break;
 
         case ts.SyntaxKind.InterfaceDeclaration:
@@ -160,7 +161,8 @@ export default util.createRule<Options, MessageIds>({
           break;
 
         case ts.SyntaxKind.PropertyDeclaration:
-          report(AST_NODE_TYPES.Property);
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+          report('Property');
           break;
 
         case ts.SyntaxKind.TypeAliasDeclaration:

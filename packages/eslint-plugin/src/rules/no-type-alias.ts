@@ -260,7 +260,8 @@ export default util.createRule<Options, MessageIds>({
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
       } else if (
-        type.node.type.endsWith(AST_TOKEN_TYPES.Keyword) ||
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+        type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {
         // alias / keyword
