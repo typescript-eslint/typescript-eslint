@@ -11,11 +11,11 @@ declare module 'typescript' {
      * - foo[]
      * - readonly foo[]
      */
-    isArrayType(type: Type): boolean;
+    isArrayType(type: Type): type is TypeReference;
     /**
      * @returns `true` if the given type is a tuple type:
      * - [foo]
      */
-    isTupleType(type: Type): boolean;
+    isTupleType(type: Type): type is TupleTypeReference;
   }
 }
