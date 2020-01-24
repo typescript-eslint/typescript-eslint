@@ -2,11 +2,7 @@
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import {
-  BinarySearchTree,
-  TokenOrComment,
-  TreeValue,
-} from './BinarySearchTree';
+import { BinarySearchTree, TreeValue } from './BinarySearchTree';
 import { TokenInfo } from './TokenInfo';
 
 /**
@@ -17,9 +13,12 @@ export class OffsetStorage {
   private readonly indentSize: number;
   private readonly indentType: string;
   private readonly tree: BinarySearchTree;
-  private readonly lockedFirstTokens: WeakMap<TokenOrComment, TokenOrComment>;
-  private readonly desiredIndentCache: WeakMap<TokenOrComment, string>;
-  private readonly ignoredTokens: WeakSet<TokenOrComment>;
+  private readonly lockedFirstTokens: WeakMap<
+    TSESTree.TokenOrComment,
+    TSESTree.TokenOrComment
+  >;
+  private readonly desiredIndentCache: WeakMap<TSESTree.TokenOrComment, string>;
+  private readonly ignoredTokens: WeakSet<TSESTree.TokenOrComment>;
   /**
    * @param tokenInfo a TokenInfo instance
    * @param indentSize The desired size of each indentation level
@@ -38,7 +37,7 @@ export class OffsetStorage {
     this.ignoredTokens = new WeakSet();
   }
 
-  private getOffsetDescriptor(token: TokenOrComment): TreeValue {
+  private getOffsetDescriptor(token: TSESTree.TokenOrComment): TreeValue {
     return this.tree.findLe(token.range[0]).value;
   }
 
@@ -50,8 +49,8 @@ export class OffsetStorage {
    * @param offsetToken The second token, whose offset should be matched to the first token
    */
   public matchOffsetOf(
-    baseToken: TokenOrComment,
-    offsetToken: TokenOrComment,
+    baseToken: TSESTree.TokenOrComment,
+    offsetToken: TSESTree.TokenOrComment,
   ): void {
     /*
      * lockedFirstTokens is a map from a token whose indentation is controlled by the "first" option to
@@ -120,8 +119,8 @@ export class OffsetStorage {
    * @param offset The desired indent level
    */
   public setDesiredOffset(
-    token: TokenOrComment,
-    fromToken: TokenOrComment | null,
+    token: TSESTree.TokenOrComment,
+    fromToken: TSESTree.TokenOrComment | null,
     offset: number,
   ): void {
     this.setDesiredOffsets(token.range, fromToken, offset);
@@ -154,7 +153,7 @@ export class OffsetStorage {
    */
   public setDesiredOffsets(
     range: [number, number],
-    fromToken: TokenOrComment | null,
+    fromToken: TSESTree.TokenOrComment | null,
     offset = 0,
     force = false,
   ): void {
@@ -212,7 +211,7 @@ export class OffsetStorage {
    * Gets the desired indent of a token
    * @returns The desired indent of the token
    */
-  public getDesiredIndent(token: TokenOrComment): string {
+  public getDesiredIndent(token: TSESTree.TokenOrComment): string {
     if (!this.desiredIndentCache.has(token)) {
       if (this.ignoredTokens.has(token)) {
         /*
@@ -263,7 +262,7 @@ export class OffsetStorage {
   /**
    * Ignores a token, preventing it from being reported.
    */
-  ignoreToken(token: TokenOrComment): void {
+  ignoreToken(token: TSESTree.TokenOrComment): void {
     if (this.tokenInfo.isFirstTokenOfLine(token)) {
       this.ignoredTokens.add(token);
     }
@@ -274,8 +273,12 @@ export class OffsetStorage {
    * @returns The token that the given token depends on, or `null` if the given token is at the top level
    */
   getFirstDependency(token: TSESTree.Token): TSESTree.Token | null;
-  getFirstDependency(token: TokenOrComment): TokenOrComment | null;
-  getFirstDependency(token: TokenOrComment): TokenOrComment | null {
+  getFirstDependency(
+    token: TSESTree.TokenOrComment,
+  ): TSESTree.TokenOrComment | null;
+  getFirstDependency(
+    token: TSESTree.TokenOrComment,
+  ): TSESTree.TokenOrComment | null {
     return this.getOffsetDescriptor(token).from;
   }
 }

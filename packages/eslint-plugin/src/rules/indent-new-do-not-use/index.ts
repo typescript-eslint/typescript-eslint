@@ -20,7 +20,6 @@ import {
   isOpeningParenToken,
   isSemicolonToken,
 } from 'eslint-utils';
-import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
 import { createRule, ExcludeKeys, RequireKeys } from '../../util';
@@ -471,7 +470,10 @@ export default createRule<Options, MessageIds>({
      * @param token Token violating the indent rule
      * @param neededIndent Expected indentation string
      */
-    function report(token: TokenOrComment, neededIndent: string): void {
+    function report(
+      token: TSESTree.TokenOrComment,
+      neededIndent: string,
+    ): void {
       const actualIndent = Array.from(tokenInfo.getTokenIndent(token));
       const numSpaces = actualIndent.filter(char => char === ' ').length;
       const numTabs = actualIndent.filter(char => char === '\t').length;
@@ -500,7 +502,7 @@ export default createRule<Options, MessageIds>({
      * @returns `true` if the token's indentation is correct
      */
     function validateTokenIndent(
-      token: TokenOrComment,
+      token: TSESTree.TokenOrComment,
       desiredIndent: string,
     ): boolean {
       const indentation = tokenInfo.getTokenIndent(token);
