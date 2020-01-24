@@ -51,7 +51,7 @@ export default util.createRule<[], MessageIds>({
 
       // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
       if (
-        !param.default ||
+        !param?.default ||
         param.default.getText() !== sourceCode.getText(arg)
       ) {
         return;
