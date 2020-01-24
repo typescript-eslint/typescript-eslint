@@ -124,6 +124,7 @@ module.exports = {
     // Internal repo rules
     //
     '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
   },
   parserOptions: {
     sourceType: 'module',
