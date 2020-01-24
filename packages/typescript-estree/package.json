@@ -60,7 +60,7 @@
     "@types/tmp": "^0.1.0",
     "@typescript-eslint/shared-fixtures": "2.17.0",
     "tmp": "^0.1.0",
-    "typescript": "next"
+    "typescript": "3.8.0-dev.20200124"
   },
   "peerDependenciesMeta": {
     "typescript": {

@@ -74,9 +74,9 @@
     "ts-jest": "^24.0.0",
     "ts-node": "^8.6.2",
     "tslint": "^5.20.1",
-    "typescript": "next"
+    "typescript": "3.8.0-dev.20200124"
   },
   "resolutions": {
-    "typescript": "3.8.0-dev.20200118"
+    "typescript": "3.8.0-dev.20200124"
   }
 }

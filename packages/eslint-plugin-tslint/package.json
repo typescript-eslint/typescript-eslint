@@ -37,7 +37,7 @@
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0",
     "tslint": "^5.0.0",
-    "typescript": "next"
+    "typescript": "3.8.0-dev.20200124"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",

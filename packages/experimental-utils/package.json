@@ -44,7 +44,7 @@
     "eslint": "*"
   },
   "devDependencies": {
-    "typescript": "next"
+    "typescript": "3.8.0-dev.20200124"
   },
   "funding": {
     "type": "opencollective",
