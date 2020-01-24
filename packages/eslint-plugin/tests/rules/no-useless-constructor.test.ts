@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const error: any = {
   message: 'Useless constructor.',
-  type: 'MethodDefinition',
+  type: AST_NODE_TYPES.MethodDefinition,
 };
 
 ruleTester.run('no-useless-constructor', rule, {

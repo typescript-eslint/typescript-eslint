@@ -141,7 +141,7 @@ export default util.createRule<Options, MessageIds>({
         case ts.SyntaxKind.ImportSpecifier:
         // a namespace import is NOT used, but the default import is used
         case ts.SyntaxKind.NamespaceImport:
-          report('Import');
+          report(AST_NODE_TYPES.Import);
           break;
 
         case ts.SyntaxKind.InterfaceDeclaration:
@@ -160,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
           break;
 
         case ts.SyntaxKind.PropertyDeclaration:
-          report('Property');
+          report(AST_NODE_TYPES.Property);
           break;
 
         case ts.SyntaxKind.TypeAliasDeclaration:

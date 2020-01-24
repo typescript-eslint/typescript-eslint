@@ -543,7 +543,7 @@ export class Foo {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
-            type: 'Property',
+            type: AST_NODE_TYPES.Property,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 3,
@@ -970,7 +970,7 @@ export function foo([[a]], used) {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 1,
@@ -1044,7 +1044,7 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1063,7 +1063,7 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1082,7 +1082,7 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1101,7 +1101,7 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,
@@ -1120,7 +1120,7 @@ console.log(named1);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named2',
-            type: 'Import',
+            type: AST_NODE_TYPES.Import,
             pattern: DEFAULT_IGNORED_REGEX,
           },
           line: 2,

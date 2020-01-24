@@ -18,7 +18,7 @@ function nonTsTestCase(example: TemplateStringsArray): string {
 
 const individualNodeTests = [
   {
-    node: 'ClassDeclaration',
+    node: AST_NODE_TYPES.ClassDeclaration,
     code: [
       `
 abstract class Foo {
@@ -31,7 +31,7 @@ abstract class Foo {
     ],
   },
   {
-    node: 'TSAbstractClassProperty',
+    node: AST_NODE_TYPES.TSAbstractClassProperty,
     code: [
       `
 class Foo {
@@ -45,7 +45,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSAbstractMethodDefinition',
+    node: AST_NODE_TYPES.TSAbstractMethodDefinition,
     code: [
       `
 class Foo {
@@ -59,7 +59,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSArrayType',
+    node: AST_NODE_TYPES.TSArrayType,
     code: [
       `
 type foo = ArrType[];
@@ -67,7 +67,7 @@ type foo = ArrType[];
     ],
   },
   {
-    node: 'TSAsExpression',
+    node: AST_NODE_TYPES.TSAsExpression,
     code: [
       `
 const foo = {} as {
@@ -92,7 +92,7 @@ const foo = {} as
     ],
   },
   {
-    node: 'TSConditionalType',
+    node: AST_NODE_TYPES.TSConditionalType,
     code: [
       nonTsTestCase`
 const Foo = T
@@ -129,7 +129,7 @@ type Foo<T> = T extends string ? {
     ],
   },
   {
-    node: 'TSConstructorType',
+    node: AST_NODE_TYPES.TSConstructorType,
     code: [
       `
 type Constructor<T> = new (
@@ -153,7 +153,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSDeclareFunction',
+    node: AST_NODE_TYPES.TSDeclareFunction,
     code: [
       `
 declare function foo() : {
@@ -164,7 +164,7 @@ declare function foo() : {
     ],
   },
   {
-    node: 'TSEmptyBodyFunctionExpression',
+    node: AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     code: [
       `
 class Foo {
@@ -190,7 +190,7 @@ enum Foo {
     ],
   },
   {
-    node: 'TSExportAssignment',
+    node: AST_NODE_TYPES.TSExportAssignment,
     code: [
       `
 export = {
@@ -201,7 +201,7 @@ export = {
     ],
   },
   {
-    node: 'TSFunctionType',
+    node: AST_NODE_TYPES.TSFunctionType,
     code: [
       `
 const foo: () => void = () => ({
@@ -242,7 +242,7 @@ const foo: ({
     ],
   },
   {
-    node: 'TSImportType',
+    node: AST_NODE_TYPES.TSImportType,
     code: [
       `
 const foo: import("bar") = {
@@ -261,7 +261,7 @@ const foo: import(
     ],
   },
   {
-    node: 'TSIndexedAccessType',
+    node: AST_NODE_TYPES.TSIndexedAccessType,
     code: [
       nonTsTestCase`
 const Foo = Bar[
@@ -276,7 +276,7 @@ type Foo = Bar[
     ],
   },
   {
-    node: 'TSIndexSignature',
+    node: AST_NODE_TYPES.TSIndexSignature,
     code: [
       `
 type Foo = {
@@ -289,7 +289,7 @@ type Foo = {
     ],
   },
   {
-    node: 'TSInferType',
+    node: AST_NODE_TYPES.TSInferType,
     code: [
       `
 type Foo<T> = T extends string
@@ -315,7 +315,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSInterfaceHeritage',
+    node: AST_NODE_TYPES.TSInterfaceHeritage,
     code: [
       `
 interface Foo extends Bar {
@@ -329,7 +329,7 @@ interface Foo extends Bar {
     ],
   },
   {
-    node: 'TSIntersectionType',
+    node: AST_NODE_TYPES.TSIntersectionType,
     code: [
       `
 type Foo = "string" & {
@@ -355,7 +355,7 @@ import foo = require(
   },
   // TSLiteralType
   {
-    node: 'TSMappedType',
+    node: AST_NODE_TYPES.TSMappedType,
     code: [
       `
 type Partial<T> = {
@@ -383,7 +383,7 @@ type Partial<T> = {
     ],
   },
   {
-    node: 'TSMethodSignature',
+    node: AST_NODE_TYPES.TSMethodSignature,
     code: [
       `
 interface Foo {
@@ -411,7 +411,7 @@ declare module "foo" {
     ],
   },
   {
-    node: 'TSNonNullExpression',
+    node: AST_NODE_TYPES.TSNonNullExpression,
     code: [
       nonTsTestCase`
 const foo = a
@@ -426,7 +426,7 @@ const foo = a!
     ],
   },
   {
-    node: 'TSParameterProperty',
+    node: AST_NODE_TYPES.TSParameterProperty,
     code: [
       `
 class Foo {
@@ -444,7 +444,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSParenthesizedType',
+    node: AST_NODE_TYPES.TSParenthesizedType,
     code: [
       `
 const x: Array<(
@@ -468,7 +468,7 @@ const x: Array<(
   },
   // TSPlusToken - tested in TSMappedType
   {
-    node: 'TSPropertySignature',
+    node: AST_NODE_TYPES.TSPropertySignature,
     code: [
       `
 interface Foo {
@@ -482,7 +482,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSQualifiedName',
+    node: AST_NODE_TYPES.TSQualifiedName,
     code: [
       `
 const a: Foo.bar = {
@@ -510,7 +510,7 @@ const a: Foo.
   },
   // TSQuestionToken - tested in TSMappedType
   {
-    node: 'TSRestType',
+    node: AST_NODE_TYPES.TSRestType,
     code: [
       `
 type foo = [
@@ -521,7 +521,7 @@ type foo = [
     ],
   },
   {
-    node: 'TSThisType',
+    node: AST_NODE_TYPES.TSThisType,
     code: [
       `
 declare class MyArray<T> extends Array<T> {
@@ -534,7 +534,7 @@ declare class MyArray<T> extends Array<T> {
     ],
   },
   {
-    node: 'TSTupleType',
+    node: AST_NODE_TYPES.TSTupleType,
     code: [
       nonTsTestCase`
 const foo = [
@@ -569,7 +569,7 @@ type foo = [
   // TSTypeAnnotation - tested in everything..
   // TSTypeLiteral - tested in everything..
   {
-    node: 'TSTypeOperator',
+    node: AST_NODE_TYPES.TSTypeOperator,
     code: [
       `
 type T = keyof {
@@ -600,7 +600,7 @@ function foo<
   },
   // TSTypeReference - tested in everything..
   {
-    node: 'TSUnionType',
+    node: AST_NODE_TYPES.TSUnionType,
     code: [
       `
 type Foo = string | {

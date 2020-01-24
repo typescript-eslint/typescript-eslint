@@ -60,7 +60,7 @@ export default util.createRule<[Options], MessageIds>({
         const comments = sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          if (comment.type !== 'Line') {
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
             return;
           }
 

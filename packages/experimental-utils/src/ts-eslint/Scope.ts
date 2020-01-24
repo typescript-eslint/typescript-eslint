@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 
 namespace Scope {
   export interface ScopeManager {
@@ -65,7 +65,11 @@ namespace Scope {
   }
 
   export type DefinitionType =
-    | { type: 'CatchClause'; node: TSESTree.CatchClause; parent: null }
+    | {
+        type: AST_NODE_TYPES.CatchClause;
+        node: TSESTree.CatchClause;
+        parent: null;
+      }
     | {
         type: 'ClassName';
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression;

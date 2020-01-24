@@ -125,7 +125,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSBooleanKeyword:
           return (
             hasUnaryPrefix(init, '!') ||
-            isFunctionCall(init, 'Boolean') ||
+            isFunctionCall(init, AST_TOKEN_TYPES.Boolean) ||
             isLiteral(init, 'boolean')
           );
 
@@ -146,7 +146,7 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (
-            isFunctionCall(init, 'String') ||
+            isFunctionCall(init, AST_TOKEN_TYPES.String) ||
             isLiteral(init, 'string') ||
             init.type === AST_NODE_TYPES.TemplateLiteral
           );
