@@ -63,5 +63,9 @@
     "typescript": {
       "optional": true
     }
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
   }
 }
