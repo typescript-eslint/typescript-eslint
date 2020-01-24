@@ -11,7 +11,7 @@ export type Options = [
     ignoreRestArgs?: boolean;
   },
 ];
-export type MessageIds = 'unexpectedAny';
+export type MessageIds = 'unexpectedAny' | 'suggestUnknown' | 'suggestNever';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -25,6 +25,10 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      suggestNever:
+        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
     },
     schema: [
       {
@@ -172,17 +176,36 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let fix: TSESLint.ReportFixFunction | null = null;
+        const fixOrSuggest: {
+          fix: TSESLint.ReportFixFunction | null;
+          suggest: TSESLint.ReportSuggestionArray<MessageIds> | null;
+        } = {
+          fix: null,
+          suggest: [
+            {
+              messageId: 'suggestUnknown',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.replaceText(node, 'unknown');
+              },
+            },
+            {
+              messageId: 'suggestNever',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.replaceText(node, 'never');
+              },
+            },
+          ],
+        };
 
         if (fixToUnknown) {
-          fix = (fixer =>
+          fixOrSuggest.fix = (fixer =>
             fixer.replaceText(node, 'unknown')) as TSESLint.ReportFixFunction;
         }
 
         context.report({
           node,
           messageId: 'unexpectedAny',
-          fix,
+          ...fixOrSuggest,
         });
       },
     };

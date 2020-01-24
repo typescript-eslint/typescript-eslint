@@ -129,6 +129,35 @@ export interface Foo {
   bar(): string[];
 }
 `,
+    `
+declare module "foo" {
+  export default function(foo: number): string[];
+}
+`,
+    `
+export default function(foo: number): string[];
+`,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/740
+    `
+function p(key: string): Promise<string | undefined>
+function p(key: string, defaultValue: string): Promise<string>
+function p(key: string, defaultValue?: string): Promise<string | undefined>
+{
+  const obj: Record<string, string> = { }
+  return obj[key] || defaultValue
+}
+  `,
+    `
+interface I {
+    p<T>(x: T): Promise<T>;
+    p(x: number): Promise<number>;
+}
+  `,
+    `
+function rest(...xs: number[]): Promise<number[]>;
+function rest(xs: number[], y: string): Promise<string>;
+async function rest(...args: any[], y?: string): Promise<number[] | string> { return y || args }
+`,
   ],
   invalid: [
     {
@@ -646,6 +675,34 @@ export function foo(line: number, character?: number): number;
           },
           line: 3,
           column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+declare module "foo" {
+  export default function(foo: number): string[];
+  export default function(foo: number, bar?: string): string[];
+}
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 4,
+          column: 40,
+        },
+      ],
+    },
+    {
+      code: `
+export default function(foo: number): string[];
+export default function(foo: number, bar?: string): string[];
+`,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          line: 3,
+          column: 38,
         },
       ],
     },

@@ -1,10 +1,14 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
-  isNotClosingParenToken,
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import {
   getPropertyName,
   getStaticValue,
+  isNotClosingParenToken,
 } from 'eslint-utils';
-import { RegExpParser, AST as RegExpAST } from 'regexpp';
+import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import { createRule, getParserServices, getTypeName } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -41,7 +45,7 @@ export default createRule({
      * Check if a given node is a string.
      * @param node The node to check.
      */
-    function isStringType(node: TSESTree.Node): boolean {
+    function isStringType(node: TSESTree.LeftHandSideExpression): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
@@ -94,7 +98,8 @@ export default createRule({
       node: TSESTree.Node,
     ): node is TSESTree.BinaryExpression {
       return (
-        node.type === 'BinaryExpression' && EQ_OPERATORS.test(node.operator)
+        node.type === AST_NODE_TYPES.BinaryExpression &&
+        EQ_OPERATORS.test(node.operator)
       );
     }
 
@@ -138,7 +143,10 @@ export default createRule({
       node: TSESTree.Node,
       expectedObjectNode: TSESTree.Node,
     ): boolean {
-      if (node.type === 'MemberExpression') {
+      if (
+        node.type === AST_NODE_TYPES.MemberExpression ||
+        node.type === AST_NODE_TYPES.OptionalMemberExpression
+      ) {
         return (
           getPropertyName(node, globalScope) === 'length' &&
           isSameTokens(node.object, expectedObjectNode)
@@ -169,7 +177,7 @@ export default createRule({
       expectedObjectNode: TSESTree.Node,
     ): boolean {
       return (
-        node.type === 'BinaryExpression' &&
+        node.type === AST_NODE_TYPES.BinaryExpression &&
         node.operator === '-' &&
         isLengthExpression(node.left, expectedObjectNode) &&
         isNumber(node.right, 1)
@@ -186,7 +194,7 @@ export default createRule({
      * @param node The member expression node to get.
      */
     function getPropertyRange(
-      node: TSESTree.MemberExpression,
+      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
     ): [number, number] {
       const dotOrOpenBracket = sourceCode.getTokenAfter(
         node.object,
@@ -264,26 +272,30 @@ export default createRule({
      * @param fixer The rule fixer.
      * @param node The node which was reported.
      * @param kind The kind of the report.
-     * @param negative The flag to fix to negative condition.
+     * @param isNegative The flag to fix to negative condition.
      */
     function* fixWithRightOperand(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
       kind: 'start' | 'end',
-      negative: boolean,
+      isNegative: boolean,
+      isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
       // left is CallExpression or MemberExpression.
-      const leftNode = (node.left.type === 'CallExpression'
+      const leftNode = (node.left.type === AST_NODE_TYPES.CallExpression ||
+      node.left.type === AST_NODE_TYPES.OptionalCallExpression
         ? node.left.callee
-        : node.left) as TSESTree.MemberExpression;
+        : node.left) as
+        | TSESTree.MemberExpression
+        | TSESTree.OptionalMemberExpression;
       const propertyRange = getPropertyRange(leftNode);
 
-      if (negative) {
+      if (isNegative) {
         yield fixer.insertTextBefore(node, '!');
       }
       yield fixer.replaceTextRange(
         [propertyRange[0], node.right.range[0]],
-        `.${kind}sWith(`,
+        `${isOptional ? '?.' : '.'}${kind}sWith(`,
       );
       yield fixer.replaceTextRange([node.right.range[1], node.range[1]], ')');
     }
@@ -301,16 +313,21 @@ export default createRule({
       node: TSESTree.BinaryExpression,
       kind: 'start' | 'end',
       negative: boolean,
+      isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
-      const callNode = node.left as TSESTree.CallExpression;
-      const calleeNode = callNode.callee as TSESTree.MemberExpression;
+      const callNode = node.left as
+        | TSESTree.CallExpression
+        | TSESTree.OptionalCallExpression;
+      const calleeNode = callNode.callee as
+        | TSESTree.MemberExpression
+        | TSESTree.OptionalMemberExpression;
 
       if (negative) {
         yield fixer.insertTextBefore(node, '!');
       }
       yield fixer.replaceTextRange(
         getPropertyRange(calleeNode),
-        `.${kind}sWith`,
+        `${isOptional ? '?.' : '.'}${kind}sWith`,
       );
       yield fixer.removeRange([callNode.range[1], node.range[1]]);
     }
@@ -320,13 +337,18 @@ export default createRule({
       // foo.charAt(0) === "a"
       // foo[foo.length - 1] === "a"
       // foo.charAt(foo.length - 1) === "a"
-      [String([
-        'BinaryExpression > MemberExpression.left[computed=true]',
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="charAt"][computed=false]',
-      ])](node: TSESTree.MemberExpression): void {
+      [[
+        'BinaryExpression > :matches(MemberExpression, OptionalMemberExpression).left[computed=true]',
+        'BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="charAt"][computed=false]',
+      ].join(', ')](
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      ): void {
         let parentNode = node.parent!;
         let indexNode: TSESTree.Node | null = null;
-        if (parentNode.type === 'CallExpression') {
+        if (
+          parentNode.type === AST_NODE_TYPES.CallExpression ||
+          parentNode.type === AST_NODE_TYPES.OptionalCallExpression
+        ) {
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }
@@ -363,16 +385,19 @@ export default createRule({
               eqNode,
               isStartsWith ? 'start' : 'end',
               eqNode.operator.startsWith('!'),
+              node.optional,
             );
           },
         });
       },
 
       // foo.indexOf('bar') === 0
-      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="indexOf"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      'BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="indexOf"][computed=false]'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent! as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const parentNode = callNode.parent!;
 
         if (
@@ -394,6 +419,7 @@ export default createRule({
               parentNode,
               'start',
               parentNode.operator.startsWith('!'),
+              node.optional,
             );
           },
         });
@@ -401,17 +427,19 @@ export default createRule({
 
       // foo.lastIndexOf('bar') === foo.length - 3
       // foo.lastIndexOf(bar) === foo.length - bar.length
-      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="lastIndexOf"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      'BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="lastIndexOf"][computed=false]'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent! as TSESTree.CallExpression;
+        const callNode = node.parent! as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const parentNode = callNode.parent!;
 
         if (
           callNode.arguments.length !== 1 ||
           !isEqualityComparison(parentNode) ||
           parentNode.left !== callNode ||
-          parentNode.right.type !== 'BinaryExpression' ||
+          parentNode.right.type !== AST_NODE_TYPES.BinaryExpression ||
           parentNode.right.operator !== '-' ||
           !isLengthExpression(parentNode.right.left, node.object) ||
           !isLengthExpression(parentNode.right.right, callNode.arguments[0]) ||
@@ -429,6 +457,7 @@ export default createRule({
               parentNode,
               'end',
               parentNode.operator.startsWith('!'),
+              node.optional,
             );
           },
         });
@@ -436,10 +465,12 @@ export default createRule({
 
       // foo.match(/^bar/) === null
       // foo.match(/bar$/) === null
-      'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="match"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      'BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="match"][computed=false]'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const parentNode = callNode.parent as TSESTree.BinaryExpression;
         if (
           !isEqualityComparison(parentNode) ||
@@ -467,7 +498,9 @@ export default createRule({
             }
             yield fixer.replaceTextRange(
               getPropertyRange(node),
-              `.${isStartsWith ? 'start' : 'end'}sWith`,
+              `${node.optional ? '?.' : '.'}${
+                isStartsWith ? 'start' : 'end'
+              }sWith`,
             );
             yield fixer.replaceText(
               callNode.arguments[0],
@@ -484,11 +517,15 @@ export default createRule({
       // foo.substring(0, 3) === 'bar'
       // foo.substring(foo.length - 3) === 'bar'
       // foo.substring(foo.length - 3, foo.length) === 'bar'
-      [String([
-        'CallExpression > MemberExpression.callee[property.name=slice][computed=false]',
-        'CallExpression > MemberExpression.callee[property.name=substring][computed=false]',
-      ])](node: TSESTree.MemberExpression): void {
-        const callNode = node.parent! as TSESTree.CallExpression;
+      [[
+        ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="slice"][computed=false]',
+        ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="substring"][computed=false]',
+      ].join(', ')](
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      ): void {
+        const callNode = node.parent! as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const parentNode = callNode.parent!;
         if (
           !isEqualityComparison(parentNode) ||
@@ -520,7 +557,7 @@ export default createRule({
             // Don't fix if it can change the behavior.
             if (
               eqNode.operator.length === 2 &&
-              (eqNode.right.type !== 'Literal' ||
+              (eqNode.right.type !== AST_NODE_TYPES.Literal ||
                 typeof eqNode.right.value !== 'string')
             ) {
               return null;
@@ -532,12 +569,12 @@ export default createRule({
             } else {
               const posNode = callNode.arguments[0];
               const posNodeIsAbsolutelyValid =
-                (posNode.type === 'BinaryExpression' &&
+                (posNode.type === AST_NODE_TYPES.BinaryExpression &&
                   posNode.operator === '-' &&
                   isLengthExpression(posNode.left, node.object) &&
                   isLengthExpression(posNode.right, eqNode.right)) ||
                 (negativeIndexSupported &&
-                  posNode.type === 'UnaryExpression' &&
+                  posNode.type === AST_NODE_TYPES.UnaryExpression &&
                   posNode.operator === '-' &&
                   isLengthExpression(posNode.argument, eqNode.right));
               if (!posNodeIsAbsolutelyValid) {
@@ -550,6 +587,7 @@ export default createRule({
               parentNode,
               isStartsWith ? 'start' : 'end',
               parentNode.operator.startsWith('!'),
+              node.optional,
             );
           },
         });
@@ -557,10 +595,12 @@ export default createRule({
 
       // /^bar/.test(foo)
       // /bar$/.test(foo)
-      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="test"][computed=false]'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const parsed =
           callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
         if (parsed == null) {
@@ -576,11 +616,13 @@ export default createRule({
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
-              argNode.type !== 'Literal' &&
-              argNode.type !== 'TemplateLiteral' &&
-              argNode.type !== 'Identifier' &&
-              argNode.type !== 'MemberExpression' &&
-              argNode.type !== 'CallExpression';
+              argNode.type !== AST_NODE_TYPES.Literal &&
+              argNode.type !== AST_NODE_TYPES.TemplateLiteral &&
+              argNode.type !== AST_NODE_TYPES.Identifier &&
+              argNode.type !== AST_NODE_TYPES.MemberExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalMemberExpression &&
+              argNode.type !== AST_NODE_TYPES.CallExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalCallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {
@@ -589,7 +631,11 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `.${methodName}(${JSON.stringify(text)}`,
+              `${
+                callNode.type === AST_NODE_TYPES.OptionalCallExpression
+                  ? '?.'
+                  : '.'
+              }${methodName}(${JSON.stringify(text)}`,
             );
           },
         });

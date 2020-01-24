@@ -5,7 +5,7 @@ import {
   getParserServices,
   getConstrainedTypeAtLocation,
 } from '../util';
-import { unionTypeParts } from 'tsutils';
+import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
@@ -22,6 +22,7 @@ export default createRule({
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+      addMissingCases: 'Add branches for missing cases',
     },
   },
   defaultOptions: [],
@@ -77,18 +78,18 @@ export default createRule({
 
       if (discriminantType.isUnion()) {
         const unionTypes = unionTypeParts(discriminantType);
-        const caseTypes: ts.Type[] = [];
+        const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
           if (switchCase.test === null) {
             // Switch has 'default' branch - do nothing.
             return;
           }
 
-          caseTypes.push(getNodeType(switchCase.test));
+          caseTypes.add(getNodeType(switchCase.test));
         }
 
         const missingBranchTypes = unionTypes.filter(
-          unionType => !caseTypes.includes(unionType),
+          unionType => !caseTypes.has(unionType),
         );
 
         if (missingBranchTypes.length === 0) {
@@ -101,12 +102,21 @@ export default createRule({
           messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingBranchTypes
-              .map(missingType => checker.typeToString(missingType))
-              .join(', '),
+              .map(missingType =>
+                isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                  ? `typeof ${missingType.symbol.escapedName}`
+                  : checker.typeToString(missingType),
+              )
+              .join(' | '),
           },
-          fix(fixer) {
-            return fixSwitch(fixer, node, missingBranchTypes);
-          },
+          suggest: [
+            {
+              messageId: 'addMissingCases',
+              fix(fixer) {
+                return fixSwitch(fixer, node, missingBranchTypes);
+              },
+            },
+          ],
         });
       }
     }

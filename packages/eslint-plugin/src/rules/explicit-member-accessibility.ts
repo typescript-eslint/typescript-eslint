@@ -75,14 +75,14 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
-    const baseCheck: AccessibilityLevel = option.accessibility || 'explicit';
-    const overrides = option.overrides || {};
-    const ctorCheck = overrides.constructors || baseCheck;
-    const accessorCheck = overrides.accessors || baseCheck;
-    const methodCheck = overrides.methods || baseCheck;
-    const propCheck = overrides.properties || baseCheck;
-    const paramPropCheck = overrides.parameterProperties || baseCheck;
-    const ignoredMethodNames = new Set(option.ignoredMethodNames || []);
+    const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
+    const overrides = option.overrides ?? {};
+    const ctorCheck = overrides.constructors ?? baseCheck;
+    const accessorCheck = overrides.accessors ?? baseCheck;
+    const methodCheck = overrides.methods ?? baseCheck;
+    const propCheck = overrides.properties ?? baseCheck;
+    const paramPropCheck = overrides.parameterProperties ?? baseCheck;
+    const ignoredMethodNames = new Set(option.ignoredMethodNames ?? []);
     /**
      * Generates the report for rule violations
      */
@@ -125,10 +125,7 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromClassMember(
-        methodDefinition,
-        sourceCode,
-      );
+      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -163,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromPropertyName(classProperty.key);
+      const propertyName = util.getNameFromMember(classProperty, sourceCode);
       if (
         propCheck === 'no-public' &&
         classProperty.accessibility === 'public'
@@ -186,7 +183,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks that the parameter property has the desired accessibility modifiers set.
-     * @param {TSESTree.TSParameterProperty} node The node representing a Parameter Property
+     * @param node The node representing a Parameter Property
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,

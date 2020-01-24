@@ -1,4 +1,4 @@
-# Disallow generic `Array` constructors (no-array-constructor)
+# Disallow generic `Array` constructors (`no-array-constructor`)
 
 Use of the `Array` constructor to construct a new array is generally discouraged in favor of array literal notation because of the single-argument pitfall and because the `Array` global may be redefined. Two exceptions are when the Array constructor is used to intentionally create sparse arrays of a specified size by giving the constructor a single numeric argument, or when using TypeScript type parameters to specify the type of the items of the array (`new Array<Foo>()`).
 

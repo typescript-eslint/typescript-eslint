@@ -1,90 +1,25 @@
-// bablyon types are something we don't really care about
+// babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AST_NODE_TYPES } from '../../src/ts-estree';
-import isPlainObject from 'lodash.isplainobject';
-
-/**
- * By default, pretty-format (within Jest matchers) retains the names/types of nodes from the babylon AST,
- * quick and dirty way to avoid that is to JSON.stringify and then JSON.parser the
- * ASTs before comparing them with pretty-format
- *
- * @param {Object} ast raw AST
- * @returns {Object} normalized AST
- */
-export function normalizeNodeTypes(ast: any): any {
-  return JSON.parse(JSON.stringify(ast));
-}
-
-/**
- * Removes the given keys from the given AST object recursively
- * @param root A JavaScript object to remove keys from
- * @param keysToOmit Names and predicate functions use to determine what keys to omit from the final object
- * @param nodes advance ast modifications
- * @returns {Object} formatted object
- */
-export function omitDeep(
-  root: any,
-  keysToOmit: { key: string; predicate: Function }[],
-  nodes: Record<string, (node: any, parent: any) => void> = {},
-): any {
-  function shouldOmit(keyName: string, val: any): boolean {
-    if (keysToOmit && keysToOmit.length) {
-      return keysToOmit.some(
-        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
-      );
-    }
-    return false;
-  }
-
-  function visit(node: any, parent: any): void {
-    if (!node) {
-      return;
-    }
-
-    for (const prop in node) {
-      if (Object.prototype.hasOwnProperty.call(node, prop)) {
-        if (shouldOmit(prop, node[prop])) {
-          delete node[prop];
-          continue;
-        }
-
-        const child = node[prop];
-
-        if (Array.isArray(child)) {
-          for (const el of child) {
-            visit(el, node);
-          }
-        } else if (isPlainObject(child)) {
-          visit(child, node);
-        }
-      }
-    }
-
-    if (typeof node.type === 'string' && node.type in nodes) {
-      nodes[node.type](node, parent);
-    }
-  }
-
-  visit(root, null);
-  return root;
-}
+import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
+import { deeplyCopy, omitDeep } from '../../tools/test-utils';
+import * as BabelTypes from '@babel/types';
 
 /**
  * Common predicates for Babylon AST preprocessing
  */
 const always = (): boolean => true;
-const ifNumber = (val: any): boolean => typeof val === 'number';
+const ifNumber = (val: unknown): boolean => typeof val === 'number';
 
 /**
  * - Babylon wraps the "Program" node in an extra "File" node, normalize this for simplicity for now...
  * - Remove "start" and "end" values from Babylon nodes to reduce unimportant noise in diffs ("loc" data will still be in
  * each final AST and compared).
  *
- * @param {Object} ast raw babylon AST
- * @returns {Object} processed babylon AST
+ * @param ast raw babylon AST
+ * @returns processed babylon AST
  */
-export function preprocessBabylonAST(ast: any): any {
-  return omitDeep(
+export function preprocessBabylonAST(ast: BabelTypes.File): any {
+  return omitDeep<any>(
     ast.program,
     [
       {
@@ -128,28 +63,9 @@ export function preprocessBabylonAST(ast: any): any {
     ],
     {
       /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      StringLiteral(node: any) {
-        node.type = 'Literal';
-      },
-      /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      NumericLiteral(node: any) {
-        node.type = 'Literal';
-      },
-      /**
-       * Not yet supported in Babel https://github.com/babel/babel/issues/9228
-       */
-      BooleanLiteral(node: any) {
-        node.type = 'Literal';
-        node.raw = String(node.value);
-      },
-      /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
-      TSCallSignatureDeclaration(node: any) {
+      TSCallSignatureDeclaration(node) {
         if (node.typeAnnotation) {
           node.returnType = node.typeAnnotation;
           delete node.typeAnnotation;
@@ -162,7 +78,7 @@ export function preprocessBabylonAST(ast: any): any {
       /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
-      TSConstructSignatureDeclaration(node: any) {
+      TSConstructSignatureDeclaration(node) {
         if (node.typeAnnotation) {
           node.returnType = node.typeAnnotation;
           delete node.typeAnnotation;
@@ -175,7 +91,7 @@ export function preprocessBabylonAST(ast: any): any {
       /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
-      TSFunctionType(node: any) {
+      TSFunctionType(node) {
         if (node.typeAnnotation) {
           node.returnType = node.typeAnnotation;
           delete node.typeAnnotation;
@@ -188,7 +104,7 @@ export function preprocessBabylonAST(ast: any): any {
       /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
-      TSConstructorType(node: any) {
+      TSConstructorType(node) {
         if (node.typeAnnotation) {
           node.returnType = node.typeAnnotation;
           delete node.typeAnnotation;
@@ -201,7 +117,7 @@ export function preprocessBabylonAST(ast: any): any {
       /**
        * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
        */
-      TSMethodSignature(node: any) {
+      TSMethodSignature(node) {
         if (node.typeAnnotation) {
           node.returnType = node.typeAnnotation;
           delete node.typeAnnotation;
@@ -214,6 +130,7 @@ export function preprocessBabylonAST(ast: any): any {
       /**
        * We want this node to be different
        * @see https://github.com/JamesHenry/typescript-estree/issues/109
+       * @see https://github.com/prettier/prettier/pull/5728
        */
       TSTypeParameter(node: any) {
         if (node.name) {
@@ -234,17 +151,25 @@ export function preprocessBabylonAST(ast: any): any {
           };
         }
       },
-      /**
-       * Babel: ClassProperty + abstract: true
-       * ts-estree: TSAbstractClassProperty
-       */
-      ClassProperty(node: any) {
+      ClassProperty(node) {
+        /**
+         * Babel: ClassProperty + abstract: true
+         * ts-estree: TSAbstractClassProperty
+         */
         if (node.abstract) {
           node.type = 'TSAbstractClassProperty';
           delete node.abstract;
         }
+        /**
+         * TS 3.7: declare class properties
+         * babel: sets declare property as true/undefined
+         * ts-estree: sets declare property as true/false
+         */
+        if (!node.declare) {
+          node.declare = false;
+        }
       },
-      TSExpressionWithTypeArguments(node: any, parent: any) {
+      TSExpressionWithTypeArguments(node, parent: any) {
         if (parent.type === 'TSInterfaceDeclaration') {
           node.type = 'TSInterfaceHeritage';
         } else if (
@@ -254,7 +179,9 @@ export function preprocessBabylonAST(ast: any): any {
           node.type = 'TSClassImplements';
         }
       },
-      // https://github.com/prettier/prettier/issues/5817
+      /**
+       * @see https://github.com/prettier/prettier/issues/5817
+       */
       FunctionExpression(node: any, parent: any) {
         if (parent.typeParameters && parent.type === 'Property') {
           node.typeParameters = parent.typeParameters;
@@ -272,6 +199,55 @@ export function preprocessBabylonAST(ast: any): any {
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
         }
       },
+      /**
+       * Template strings seem to also be affected by the difference in opinion between different parsers in
+       * @see https://github.com/babel/babel/issues/6681
+       * @see https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+       */
+      TemplateLiteral(node: any) {
+        for (let j = 0; j < node.quasis.length; j++) {
+          const q = node.quasis[j];
+          q.range[0] -= 1;
+          q.loc.start.column -= 1;
+          if (q.tail) {
+            q.range[1] += 1;
+            q.loc.end.column += 1;
+          } else {
+            q.range[1] += 2;
+            q.loc.end.column += 2;
+          }
+        }
+      },
+      /**
+       * TS 3.7: optional chaining
+       * babel: sets optional property as true/undefined
+       * ts-estree: sets optional property as true/false
+       */
+      MemberExpression(node) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      CallExpression(node) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      OptionalCallExpression(node) {
+        if (!node.optional) {
+          node.optional = false;
+        }
+      },
+      /**
+       * TS 3.7: type assertion function
+       * babel: sets asserts property as true/undefined
+       * ts-estree: sets asserts property as true/false
+       */
+      TSTypePredicate(node) {
+        if (!node.asserts) {
+          node.asserts = false;
+        }
+      },
     },
   );
 }
@@ -283,9 +259,9 @@ export function preprocessBabylonAST(ast: any): any {
  *
  * See: https://github.com/babel/babel/issues/6681
  *
- * @param {Object} ast the raw AST with a Program node at its top level
- * @param {boolean} ignoreSourceType fix for issues with unambiguous type detection
- * @returns {Object} the ast with the location data removed from the Program node
+ * @param ast the raw AST with a Program node at its top level
+ * @param ignoreSourceType fix for issues with unambiguous type detection
+ * @returns the ast with the location data removed from the Program node
  */
 export function removeLocationDataAndSourceTypeFromProgramNode(
   ast: any,
@@ -297,4 +273,13 @@ export function removeLocationDataAndSourceTypeFromProgramNode(
     delete ast.sourceType;
   }
   return ast;
+}
+
+/**
+ * Returns a raw copy of the typescript AST
+ * @param ast the AST object
+ * @returns copy of the AST object
+ */
+export function preprocessTypescriptAST<T = TSESTree.Program>(ast: T): T {
+  return deeplyCopy<T>(ast);
 }

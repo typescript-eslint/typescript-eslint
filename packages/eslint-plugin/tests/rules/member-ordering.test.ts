@@ -10,6 +10,7 @@ ruleTester.run('member-ordering', rule, {
     `
 // no accessibility === public
 interface Foo {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -38,6 +39,7 @@ interface Foo {
     new();
     G();
     H();
+    [Z: string]: any;
     B: string;
     C: string;
     I();
@@ -50,6 +52,7 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -65,7 +68,7 @@ interface Foo {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
 
     {
@@ -76,6 +79,7 @@ interface Foo {
     J();
     K();
     D: string;
+    [Z: string]: any;
     E: string;
     F: string;
     new();
@@ -93,27 +97,7 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-}
-            `,
-      options: [{ interfaces: ['method', 'constructor', 'field'] }],
-    },
-    {
-      code: `
-// no accessibility === public
-interface Foo {
+    [Z: string]: any;
     G();
     H();
     I();
@@ -130,9 +114,33 @@ interface Foo {
 }
             `,
       options: [
+        { interfaces: ['signature', 'method', 'constructor', 'field'] },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+    G();
+    H();
+    I();
+    J();
+    K();
+    L();
+    new();
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+    E: string;
+    F: string;
+    [Z: string]: any;
+}
+            `,
+      options: [
         {
-          default: ['field', 'constructor', 'method'],
-          interfaces: ['method', 'constructor', 'field'],
+          default: ['signature', 'field', 'constructor', 'method'],
+          interfaces: ['method', 'constructor', 'field', 'signature'],
         },
       ],
     },
@@ -144,6 +152,7 @@ interface Foo {
     H();
     I();
     new();
+    [Z: string]: any;
     D: string;
     E: string;
     F: string;
@@ -176,6 +185,7 @@ interface Foo {
     J();
     K();
     L();
+    [Z: string]: any;
     D: string;
     E: string;
     F: string;
@@ -194,6 +204,7 @@ interface Foo {
     `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -219,6 +230,7 @@ type Foo = {
     D: string;
     E: string;
     F: string;
+    [Z: string]: any;
     G();
     H();
     I();
@@ -233,6 +245,7 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -247,12 +260,13 @@ type Foo = {
     L();
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     new();
     A: string;
     B: string;
@@ -276,6 +290,7 @@ type Foo = {
 type Foo = {
     G();
     H();
+    [Z: string]: any;
     K();
     L();
     A: string;
@@ -306,9 +321,10 @@ type Foo = {
     D: string;
     E: string;
     F: string;
+    [Z: string]: any;
 }
             `,
-      options: [{ typeLiterals: ['method', 'field'] }],
+      options: [{ typeLiterals: ['method', 'field', 'signature'] }],
     },
     {
       code: `
@@ -326,9 +342,12 @@ type Foo = {
     D: string;
     E: string;
     F: string;
+    [Z: string]: any;
 }
             `,
-      options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
+      options: [
+        { typeLiterals: ['method', 'constructor', 'field', 'signature'] },
+      ],
     },
     {
       code: `
@@ -346,12 +365,13 @@ type Foo = {
     D: string;
     E: string;
     F: string;
+    [Z: string]: any;
 }
             `,
       options: [
         {
-          default: ['field', 'constructor', 'method'],
-          typeLiterals: ['method', 'constructor', 'field'],
+          default: ['signature', 'field', 'constructor', 'method'],
+          typeLiterals: ['method', 'constructor', 'field', 'signature'],
         },
       ],
     },
@@ -359,6 +379,7 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     D: string;
     E: string;
     F: string;
@@ -380,12 +401,13 @@ type Foo = {
             'public-constructor',
             'protected-static-field',
           ],
-          typeLiterals: ['field', 'method'],
+          typeLiterals: ['signature', 'field', 'method'],
         },
       ],
     },
     `
 class Foo {
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -404,6 +426,7 @@ class Foo {
     {
       code: `
 class Foo {
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -424,6 +447,7 @@ class Foo {
     {
       code: `
 class Foo {
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -439,11 +463,12 @@ class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 class Foo {
+    [Z: string]: any;
     constructor() {}
     public static A: string;
     protected static B: string = "";
@@ -470,6 +495,7 @@ class Foo {
     private static I() {}
     public J() {}
     public D: string = "";
+    [Z: string]: any;
     protected static H() {}
     public static A: string;
     protected static B: string = "";
@@ -490,6 +516,7 @@ class Foo {
     public J() {}
     protected K() {}
     private L() {}
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -517,9 +544,10 @@ class Foo {
     public D: string = "";
     protected E: string = "";
     private F: string = "";
+    [Z: string]: any;
 }
             `,
-      options: [{ classes: ['method', 'constructor', 'field'] }],
+      options: [{ classes: ['method', 'constructor', 'field', 'signature'] }],
     },
     {
       code: `
@@ -552,12 +580,13 @@ class Foo {
     public D: string = "";
     protected E: string = "";
     private F: string = "";
+    [Z: string]: any;
 }
             `,
       options: [
         {
-          default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field'],
+          default: ['signature', 'field', 'constructor', 'method'],
+          classes: ['method', 'constructor', 'field', 'signature'],
         },
       ],
     },
@@ -570,6 +599,7 @@ class Foo {
     private static I() {}
     protected K() {}
     private L() {}
+    [Z: string]: any;
     constructor() {}
     public D: string = "";
     public static A: string;
@@ -583,6 +613,7 @@ class Foo {
         {
           classes: [
             'public-method',
+            'signature',
             'constructor',
             'public-field',
             'private-field',
@@ -600,6 +631,7 @@ class Foo {
     public J() {}
     private L() {}
     protected K() {}
+    [Z: string]: any;
     constructor() {}
     public D: string = "";
     public static A: string;
@@ -616,6 +648,7 @@ class Foo {
             'static-method',
             'public-instance-method',
             'instance-method',
+            'signature',
             'constructor',
             'public-field',
             'protected-field',
@@ -640,6 +673,7 @@ class Foo {
     private static C: string = "";
     protected E: string = "";
     private F: string = "";
+    [Z: string]: any;
 }
             `,
       options: [
@@ -650,6 +684,7 @@ class Foo {
             'constructor',
             'method',
             'field',
+            'signature',
           ],
         },
       ],
@@ -664,6 +699,7 @@ class Foo {
     protected K() {}
     private L() {}
     constructor() {}
+    [Z: string]: any;
     public static A: string;
     private F: string = "";
     protected static B: string = "";
@@ -681,6 +717,7 @@ class Foo {
             'protected-instance-method',
             'private-instance-method',
             'constructor',
+            'signature',
             'field',
           ],
         },
@@ -702,7 +739,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-
+    [Z: string]: any;
 }
             `,
       options: [
@@ -727,7 +764,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-
+    [Z: string]: any;
 }
             `,
       options: [
@@ -752,7 +789,7 @@ class Foo {
     public static A: string;
     public D: string = "";
     constructor() {}
-
+    [Z: string]: any;
 }
             `,
       options: [
@@ -764,6 +801,7 @@ class Foo {
     {
       code: `
 class Foo {
+    [Z: string]: any;
     public D: string = "";
     private L() {}
     private static I() {}
@@ -804,6 +842,7 @@ class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
+    [Z: string]: any;
     protected static B: string = "";
     protected K() {}
     private static C: string = "";
@@ -829,6 +868,7 @@ class Foo {
     },
     `
 const foo = class Foo {
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -853,6 +893,7 @@ const foo = class Foo {
     private static I() {}
     public J() {}
     private F: string = "";
+    [Z: string]: any;
     public static G() {}
     private static C: string = "";
     public D: string = "";
@@ -867,6 +908,7 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
+    [Z: string]: any;
     public static A: string;
     protected static B: string = "";
     private static C: string = "";
@@ -882,7 +924,7 @@ const foo = class Foo {
     private L() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
@@ -894,6 +936,7 @@ const foo = class Foo {
     public D: string = "";
     protected E: string = "";
     private F: string = "";
+    [Z: string]: any;
     public static G() {}
     protected static H() {}
     private static I() {}
@@ -913,6 +956,7 @@ const foo = class Foo {
     private static I() {}
     public J() {}
     private static C: string = "";
+    [Z: string]: any;
     public D: string = "";
     protected K() {}
     public static G() {}
@@ -940,6 +984,7 @@ const foo = class Foo {
     protected E: string = "";
     private F: string = "";
     constructor() {}
+    [Z: string]: any;
 }
             `,
       options: [{ classExpressions: ['method', 'field'] }],
@@ -953,6 +998,7 @@ const foo = class Foo {
     public J() {}
     protected K() {}
     private L() {}
+    [Z: string]: any;
     constructor() {}
     public static A: string;
     protected static B: string = "";
@@ -962,7 +1008,9 @@ const foo = class Foo {
     private F: string = "";
 }
             `,
-      options: [{ classExpressions: ['method', 'constructor', 'field'] }],
+      options: [
+        { classExpressions: ['method', 'signature', 'constructor', 'field'] },
+      ],
     },
     {
       code: `
@@ -973,6 +1021,7 @@ const foo = class Foo {
     public J() {}
     protected K() {}
     private L() {}
+    [Z: string]: any;
     constructor() {}
     public static A: string;
     protected static B: string = "";
@@ -985,13 +1034,14 @@ const foo = class Foo {
       options: [
         {
           default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field'],
+          classExpressions: ['method', 'signature', 'constructor', 'field'],
         },
       ],
     },
     {
       code: `
 const foo = class Foo {
+    [Z: string]: any;
     private L() {}
     private static I() {}
     protected static H() {}
@@ -1025,6 +1075,7 @@ const foo = class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
+    [Z: string]: any;
     protected static B: string = "";
     protected K() {}
     private static C: string = "";
@@ -1050,6 +1101,7 @@ const foo = class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
+    [Z: string]: any;
     protected static B: string = "";
     protected K() {}
     private static C: string = "";
@@ -1079,6 +1131,7 @@ const foo = class Foo {
     protected static H() {}
     public static G() {}
     public J() {}
+    [Z: string]: any;
     private constructor() {}
     protected static B: string = "";
     protected K() {}
@@ -1120,6 +1173,7 @@ const foo = class Foo {
     public J() {}
     protected static B: string = "";
     protected K() {}
+    [Z: string]: any;
     private static C: string = "";
     private F: string = "";
     protected E: string = "";
@@ -1148,6 +1202,7 @@ const foo = class Foo {
     },
     `
 class Foo {
+    [Z: string]: any;
     A: string;
     constructor () {}
     J() {}
@@ -1161,9 +1216,10 @@ class Foo {
     K = () => {}
     constructor () {}
     A: string;
+    [Z: string]: any;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
     },
     {
       code: `
@@ -1171,14 +1227,16 @@ class Foo {
     J() {}
     K = () => {}
     constructor () {}
+    [Z: string]: any;
     A: string;
     L: () => {}
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
     `
 interface Foo {
+    [Z: string]: any;
     A: string;
     K: () => {};
     J();
@@ -1187,15 +1245,17 @@ interface Foo {
     {
       code: `
 interface Foo {
+    [Z: string]: any;
     J();
     K: () => {}
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
     },
     `
 type Foo = {
+    [Z: string]: any;
     A: string;
     K: () => {}
     J();
@@ -1205,24 +1265,60 @@ type Foo = {
       code: `
 type Foo = {
     J();
+    [Z: string]: any;
     K: () => {}
     A: string;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
-    `
+    {
+      code: `
 abstract class Foo {
     B: string;
     abstract A: () => {}
 }
     `,
+    },
+    {
+      code: `
+interface Foo {
+    [A:string]: number;
+    public B: string;
+}
+    `,
+    },
+    {
+      code: `
+abstract class Foo {
+    [Z: string]: any;
+    private static C: string;
+    B: string;
+    private D: string;
+    protected static F(): {};
+    public E(): {};
+    public abstract A = () => {};
+    protected abstract G(): void;
+}
+    `,
+    },
+    {
+      code: `
+abstract class Foo {
+    protected typeChecker: (data: any) => boolean;
+    public abstract required: boolean;
+    abstract verify(): void;
+}
+            `,
+      options: [{ classes: ['signature', 'field', 'constructor', 'method'] }],
+    },
   ],
   invalid: [
     {
       code: `
 // no accessibility === public
 interface Foo {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -1245,7 +1341,7 @@ interface Foo {
             name: 'new',
             rank: 'method',
           },
-          line: 16,
+          line: 17,
           column: 5,
         },
       ],
@@ -1267,9 +1363,10 @@ interface Foo {
     K();
     L();
     new();
+    [Z: string]: any;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
       errors: [
         {
           messageId: 'incorrectOrder',
@@ -1334,6 +1431,15 @@ interface Foo {
           line: 16,
           column: 5,
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          column: 5,
+        },
       ],
     },
     {
@@ -1353,9 +1459,12 @@ interface Foo {
     K();
     L();
     new();
+    [Z: string]: any;
 }
             `,
-      options: [{ interfaces: ['method', 'constructor', 'field'] }],
+      options: [
+        { interfaces: ['method', 'signature', 'constructor', 'field'] },
+      ],
       errors: [
         {
           messageId: 'incorrectOrder',
@@ -1420,6 +1529,15 @@ interface Foo {
           line: 16,
           column: 5,
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          column: 5,
+        },
       ],
     },
     {
@@ -1439,12 +1557,13 @@ interface Foo {
     K();
     L();
     new();
+    [Z: string]: any;
 }
             `,
       options: [
         {
-          default: ['field', 'method', 'constructor'],
-          interfaces: ['method', 'constructor', 'field'],
+          default: ['field', 'method', 'constructor', 'signature'],
+          interfaces: ['method', 'signature', 'constructor', 'field'],
         },
       ],
       errors: [
@@ -1511,12 +1630,22 @@ interface Foo {
           line: 16,
           column: 5,
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          column: 5,
+        },
       ],
     },
     {
       code: `
 // no accessibility === public
 interface Foo {
+    [Z: string]: any;
     new();
     A: string;
     G();
@@ -1534,7 +1663,7 @@ interface Foo {
             `,
       options: [
         {
-          interfaces: ['constructor', 'field', 'method'],
+          interfaces: ['signature', 'constructor', 'field', 'method'],
         },
       ],
       errors: [
@@ -1544,7 +1673,7 @@ interface Foo {
             name: 'B',
             rank: 'method',
           },
-          line: 7,
+          line: 8,
           column: 5,
         },
         {
@@ -1553,7 +1682,7 @@ interface Foo {
             name: 'C',
             rank: 'method',
           },
-          line: 9,
+          line: 10,
           column: 5,
         },
         {
@@ -1562,7 +1691,7 @@ interface Foo {
             name: 'D',
             rank: 'method',
           },
-          line: 11,
+          line: 12,
           column: 5,
         },
         {
@@ -1571,7 +1700,7 @@ interface Foo {
             name: 'E',
             rank: 'method',
           },
-          line: 13,
+          line: 14,
           column: 5,
         },
         {
@@ -1580,7 +1709,7 @@ interface Foo {
             name: 'F',
             rank: 'method',
           },
-          line: 15,
+          line: 16,
           column: 5,
         },
       ],
@@ -1589,6 +1718,7 @@ interface Foo {
       code: `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -1611,7 +1741,7 @@ type Foo = {
             name: 'new',
             rank: 'method',
           },
-          line: 16,
+          line: 17,
           column: 5,
         },
       ],
@@ -1632,10 +1762,11 @@ type Foo = {
     J();
     K();
     L();
+    [Z: string]: any;
     new();
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
       errors: [
         {
           messageId: 'incorrectOrder',
@@ -1694,87 +1825,10 @@ type Foo = {
         {
           messageId: 'incorrectOrder',
           data: {
-            name: 'new',
+            name: 'Z',
             rank: 'field',
           },
           line: 16,
-          column: 5,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-}
-            `,
-      options: [{ typeLiterals: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
           column: 5,
         },
         {
@@ -1783,7 +1837,7 @@ type Foo = {
             name: 'new',
             rank: 'field',
           },
-          line: 16,
+          line: 17,
           column: 5,
         },
       ],
@@ -1792,6 +1846,7 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
+    [Z: string]: any;
     A: string;
     B: string;
     C: string;
@@ -1808,9 +1863,98 @@ type Foo = {
 }
             `,
       options: [
+        { typeLiterals: ['method', 'constructor', 'signature', 'field'] },
+      ],
+      errors: [
         {
-          default: ['field', 'method', 'constructor'],
-          typeLiterals: ['method', 'constructor', 'field'],
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'G',
+            rank: 'signature',
+          },
+          line: 11,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'H',
+            rank: 'signature',
+          },
+          line: 12,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'I',
+            rank: 'signature',
+          },
+          line: 13,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'J',
+            rank: 'signature',
+          },
+          line: 14,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'K',
+            rank: 'signature',
+          },
+          line: 15,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'L',
+            rank: 'signature',
+          },
+          line: 16,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'new',
+            rank: 'signature',
+          },
+          line: 17,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+    E: string;
+    F: string;
+    G();
+    H();
+    I();
+    J();
+    K();
+    L();
+    new();
+    [Z: string]: any;
+}
+            `,
+      options: [
+        {
+          default: ['field', 'method', 'constructor', 'signature'],
+          typeLiterals: ['signature', 'method', 'constructor', 'field'],
         },
       ],
       errors: [
@@ -1877,6 +2021,15 @@ type Foo = {
           line: 16,
           column: 5,
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          column: 5,
+        },
       ],
     },
     {
@@ -1884,6 +2037,7 @@ type Foo = {
 // no accessibility === public
 type Foo = {
     new();
+    [Z: string]: any;
     A: string;
     G();
     B: string;
@@ -1900,7 +2054,7 @@ type Foo = {
             `,
       options: [
         {
-          typeLiterals: ['constructor', 'field', 'method'],
+          typeLiterals: ['constructor', 'signature', 'field', 'method'],
         },
       ],
       errors: [
@@ -1910,7 +2064,7 @@ type Foo = {
             name: 'B',
             rank: 'method',
           },
-          line: 7,
+          line: 8,
           column: 5,
         },
         {
@@ -1919,7 +2073,7 @@ type Foo = {
             name: 'C',
             rank: 'method',
           },
-          line: 9,
+          line: 10,
           column: 5,
         },
         {
@@ -1928,7 +2082,7 @@ type Foo = {
             name: 'D',
             rank: 'method',
           },
-          line: 11,
+          line: 12,
           column: 5,
         },
         {
@@ -1937,7 +2091,7 @@ type Foo = {
             name: 'E',
             rank: 'method',
           },
-          line: 13,
+          line: 14,
           column: 5,
         },
         {
@@ -1946,7 +2100,7 @@ type Foo = {
             name: 'F',
             rank: 'method',
           },
-          line: 15,
+          line: 16,
           column: 5,
         },
       ],
@@ -1954,6 +2108,7 @@ type Foo = {
     {
       code: `
 class Foo {
+    [Z: string]: any;
     public static A: string = "";
     protected static B: string = "";
     private static C: string = "";
@@ -1976,7 +2131,7 @@ class Foo {
             name: 'G',
             rank: 'public instance method',
           },
-          line: 13,
+          line: 14,
           column: 5,
         },
         {
@@ -1985,7 +2140,7 @@ class Foo {
             name: 'H',
             rank: 'public instance method',
           },
-          line: 14,
+          line: 15,
           column: 5,
         },
         {
@@ -1994,7 +2149,7 @@ class Foo {
             name: 'I',
             rank: 'public instance method',
           },
-          line: 15,
+          line: 16,
           column: 5,
         },
       ],
@@ -2015,9 +2170,10 @@ class Foo {
     public static G() {}
     protected static H() {}
     private static I() {}
+    [Z: string]: any;
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['field', 'constructor', 'method', 'signature'] }],
       errors: [
         {
           messageId: 'incorrectOrder',
@@ -2614,6 +2770,7 @@ const foo = class Foo {
     {
       code: `
 const foo = class {
+    [Z: string]: any;
     constructor() {}
     public static A: string = "";
     protected static B: string = "";
@@ -2629,21 +2786,12 @@ const foo = class {
     private static I() {}
 }
             `,
-      options: [{ default: ['field', 'constructor', 'method'] }],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
       errors: [
         {
           messageId: 'incorrectOrder',
           data: {
             name: 'A',
-            rank: 'constructor',
-          },
-          line: 4,
-          column: 5,
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            name: 'B',
             rank: 'constructor',
           },
           line: 5,
@@ -2652,7 +2800,7 @@ const foo = class {
         {
           messageId: 'incorrectOrder',
           data: {
-            name: 'C',
+            name: 'B',
             rank: 'constructor',
           },
           line: 6,
@@ -2661,7 +2809,7 @@ const foo = class {
         {
           messageId: 'incorrectOrder',
           data: {
-            name: 'D',
+            name: 'C',
             rank: 'constructor',
           },
           line: 7,
@@ -2670,7 +2818,7 @@ const foo = class {
         {
           messageId: 'incorrectOrder',
           data: {
-            name: 'E',
+            name: 'D',
             rank: 'constructor',
           },
           line: 8,
@@ -2679,10 +2827,19 @@ const foo = class {
         {
           messageId: 'incorrectOrder',
           data: {
-            name: 'F',
+            name: 'E',
             rank: 'constructor',
           },
           line: 9,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'F',
+            rank: 'constructor',
+          },
+          line: 10,
           column: 5,
         },
       ],
@@ -2696,6 +2853,7 @@ const foo = class {
     public D: string = "";
     protected E: string = "";
     private F: string = "";
+    [Z: string]: any;
     public static G() {}
     public static A: string;
     protected static H() {}
@@ -2713,7 +2871,7 @@ const foo = class {
             name: 'A',
             rank: 'method',
           },
-          line: 10,
+          line: 11,
           column: 5,
         },
       ],
@@ -2761,6 +2919,7 @@ const foo = class {
     private L() {}
     public static A: string;
     constructor() {}
+    [Z: string]: any;
     private static C: string = "";
     public D: string = "";
     protected E: string = "";
@@ -3186,6 +3345,7 @@ class Foo {
     K = () => {}
     A: string;
     constructor () {}
+    [Z: string]: any;
     J() {}
 }
             `,
@@ -3208,6 +3368,15 @@ class Foo {
           line: 5,
           column: 5,
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'Z',
+            rank: 'public instance method',
+          },
+          line: 6,
+          column: 5,
+        },
       ],
     },
     {
@@ -3217,9 +3386,10 @@ class Foo {
     constructor () {}
     K = () => {}
     A: string;
+    [Z: string]: any;
 }
             `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
+      options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
       errors: [
         {
           messageId: 'incorrectOrder',
@@ -3319,7 +3489,7 @@ type Foo = {
     {
       code: `
 abstract class Foo {
-    abstract A: () => {}
+    abstract A = () => {};
     B: string;
 }
           `,
@@ -3328,9 +3498,115 @@ abstract class Foo {
           messageId: 'incorrectOrder',
           data: {
             name: 'B',
-            rank: 'method',
+            rank: 'public abstract method',
           },
           line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {};
+    B: string;
+    public C() {};
+    private D() {};
+    abstract E() {};
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    B: string;
+    abstract C = () => {};
+    abstract A: () => {};
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    C: number;
+    [A:string]: number;
+    public static D(): {};
+    private static [B:string]: number;
+}
+          `,
+      options: [
+        {
+          default: [
+            'field',
+            'method',
+            'public-static-method',
+            'private-static-method',
+            'signature',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'D',
+            rank: 'signature',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract B: string;
+    abstract A(): void;
+    public C(): {};
+
+}
+          `,
+      options: [{ default: ['method', 'constructor', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 4,
+          column: 5,
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 5,
           column: 5,
         },
       ],

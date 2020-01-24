@@ -1,8 +1,5 @@
-import {
-  ESLintUtils,
-  ParserServices,
-} from '@typescript-eslint/experimental-utils';
-import memoize from 'lodash.memoize';
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import memoize from 'lodash/memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
 
@@ -47,8 +44,8 @@ const tslintConfig = memoize(
       return Configuration.loadConfigurationFromPath(lintFile);
     }
     return Configuration.parseConfigFile({
-      rules: tslintRules || {},
-      rulesDirectory: tslintRulesDirectory || [],
+      rules: tslintRules ?? {},
+      rulesDirectory: tslintRulesDirectory ?? [],
     });
   },
   (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
@@ -67,6 +64,7 @@ export default createRule<Options, MessageIds>({
       category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       recommended: false,
     },
+    fixable: 'code',
     type: 'problem',
     messages: {
       failure: '{{message}} (tslint:{{ruleName}})',
@@ -100,17 +98,7 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
-    const parserServices: ParserServices | undefined = context.parserServices;
-
-    /**
-     * The user needs to have configured "project" in their parserOptions
-     * for @typescript-eslint/parser
-     */
-    if (!parserServices || !parserServices.program) {
-      throw new Error(
-        `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
-      );
-    }
+    const parserServices = ESLintUtils.getParserServices(context);
 
     /**
      * The TSLint rules configuration passed in by the user
@@ -164,6 +152,23 @@ export default createRule<Options, MessageIds>({
               line: end.line + 1,
               column: end.character,
             },
+          },
+          fix: fixer => {
+            const replacements = failure.getFix();
+
+            return Array.isArray(replacements)
+              ? replacements.map(replacement =>
+                  fixer.replaceTextRange(
+                    [replacement.start, replacement.end],
+                    replacement.text,
+                  ),
+                )
+              : replacements !== undefined
+              ? fixer.replaceTextRange(
+                  [replacements.start, replacements.end],
+                  replacements.text,
+                )
+              : [];
           },
         });
       });

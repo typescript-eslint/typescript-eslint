@@ -78,7 +78,7 @@ fixturesToTest.forEach(fixture => {
       ),
     ).toEqual(
       parseUtils.removeLocationDataAndSourceTypeFromProgramNode(
-        typeScriptESTreeResult.ast,
+        parseUtils.preprocessTypescriptAST(typeScriptESTreeResult.ast),
         fixture.ignoreSourceType,
       ),
     );

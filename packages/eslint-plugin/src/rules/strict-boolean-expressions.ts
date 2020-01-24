@@ -2,7 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 
@@ -17,6 +17,7 @@ type Options = [
   {
     ignoreRhs?: boolean;
     allowNullable?: boolean;
+    allowSafe?: boolean;
   },
 ];
 
@@ -40,6 +41,9 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
           allowNullable: {
             type: 'boolean',
           },
+          allowSafe: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -52,6 +56,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
     {
       ignoreRhs: false,
       allowNullable: false,
+      allowSafe: false,
     },
   ],
   create(context, [options]) {
@@ -59,12 +64,10 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
     const checker = service.program.getTypeChecker();
 
     /**
-     * Determines if the node has a boolean type.
+     * Determines if the node is safe for boolean type
      */
-    function isBooleanType(node: TSESTree.Node): boolean {
-      const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
-        node,
-      );
+    function isValidBooleanNode(node: TSESTree.Expression): boolean {
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
 
       if (tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)) {
@@ -79,20 +82,31 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
             hasBoolean = true;
             continue;
           }
-          if (options.allowNullable) {
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) {
-              continue;
+
+          if (
+            tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null) ||
+            tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)
+          ) {
+            if (!options.allowNullable) {
+              return false;
             }
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) {
+            continue;
+          }
+
+          if (
+            !tsutils.isTypeFlagSet(ty, ts.TypeFlags.StringLike) &&
+            !tsutils.isTypeFlagSet(ty, ts.TypeFlags.NumberLike)
+          ) {
+            if (options.allowSafe) {
+              hasBoolean = true;
               continue;
             }
           }
-          // Union variant is something else
+
           return false;
         }
         return hasBoolean;
       }
-
       return false;
     }
 
@@ -106,7 +120,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
       if (
         node.test !== null &&
         node.test.type !== AST_NODE_TYPES.LogicalExpression &&
-        !isBooleanType(node.test)
+        !isValidBooleanNode(node.test)
       ) {
         reportNode(node.test);
       }
@@ -119,8 +133,8 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
       node: TSESTree.LogicalExpression,
     ): void {
       if (
-        !isBooleanType(node.left) ||
-        (!options.ignoreRhs && !isBooleanType(node.right))
+        !isValidBooleanNode(node.left) ||
+        (!options.ignoreRhs && !isValidBooleanNode(node.right))
       ) {
         reportNode(node);
       }
@@ -132,7 +146,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
     function assertUnaryExpressionContainsBoolean(
       node: TSESTree.UnaryExpression,
     ): void {
-      if (!isBooleanType(node.argument)) {
+      if (!isValidBooleanNode(node.argument)) {
         reportNode(node.argument);
       }
     }
@@ -150,7 +164,7 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
       ForStatement: assertTestExpressionContainsBoolean,
       IfStatement: assertTestExpressionContainsBoolean,
       WhileStatement: assertTestExpressionContainsBoolean,
-      LogicalExpression: assertLocalExpressionContainsBoolean,
+      'LogicalExpression[operator!="??"]': assertLocalExpressionContainsBoolean,
       'UnaryExpression[operator="!"]': assertUnaryExpressionContainsBoolean,
     };
   },

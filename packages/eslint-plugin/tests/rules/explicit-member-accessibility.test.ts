@@ -252,11 +252,7 @@ class Test {
   constructor(public foo: number){}
 }
       `,
-      options: [
-        {
-          accessibility: 'no-public',
-        },
-      ],
+      options: [{ accessibility: 'no-public' }],
     },
     {
       filename: 'test.ts',
@@ -267,11 +263,7 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          ignoredMethodNames: ['getX'],
-        },
-      ],
+      options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
       filename: 'test.ts',
@@ -282,11 +274,7 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          ignoredMethodNames: ['getX'],
-        },
-      ],
+      options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
       filename: 'test.ts',
@@ -297,11 +285,7 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          ignoredMethodNames: ['getX'],
-        },
-      ],
+      options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
       filename: 'test.ts',
@@ -312,11 +296,29 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          ignoredMethodNames: ['getX'],
-        },
-      ],
+      options: [{ ignoredMethodNames: ['getX'] }],
+    },
+    {
+      filename: 'test.ts',
+      code: 'class Test { x = 2 }',
+      options: [{ overrides: { properties: 'off' } }],
+    },
+    {
+      filename: 'test.ts',
+      code: 'class Test { private x = 2 }',
+      options: [{ overrides: { properties: 'explicit' } }],
+    },
+    {
+      filename: 'test.ts',
+      code: `class Test {
+        x = 2
+        private x = 2
+      }`,
+      options: [{ overrides: { properties: 'no-public' } }],
+    },
+    {
+      code: 'class Test { constructor(private { x }: any[]) { }}',
+      options: [{ accessibility: 'no-public' }],
     },
   ],
   invalid: [
@@ -653,6 +655,54 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 15,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'class Test { x = 2 }',
+      options: [
+        {
+          accessibility: 'off',
+          overrides: { properties: 'explicit' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 1,
+          column: 14,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `class Test {
+        public x = 2
+        private x = 2
+      }`,
+      options: [
+        {
+          accessibility: 'off',
+          overrides: { properties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: 'class Test { constructor(public ...x: any[]) { }}',
+      options: [{ accessibility: 'explicit' }],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 1,
+          column: 14,
         },
       ],
     },

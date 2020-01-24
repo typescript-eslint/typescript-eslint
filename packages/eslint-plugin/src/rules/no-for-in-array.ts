@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -23,9 +23,7 @@ export default util.createRule({
       ForInStatement(node): void {
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.ForInStatement
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const type = checker.getTypeAtLocation(originalNode.expression);
 

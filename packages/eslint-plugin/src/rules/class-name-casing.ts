@@ -20,6 +20,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       notPascalCased: "{{friendlyName}} '{{name}}' must be PascalCased.",
     },
@@ -38,16 +40,28 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ allowUnderscorePrefix: false }],
   create(context, [options]) {
+    const UNDERSCORE = '_';
+
+    /**
+     * Determine if the string is Upper cased
+     * @param str
+     */
+    function isUpperCase(str: string): boolean {
+      return str === str.toUpperCase();
+    }
+
     /**
      * Determine if the identifier name is PascalCased
      * @param name The identifier name
      */
     function isPascalCase(name: string): boolean {
-      if (options.allowUnderscorePrefix) {
-        return /^_?[A-Z][0-9A-Za-z]*$/.test(name);
-      } else {
-        return /^[A-Z][0-9A-Za-z]*$/.test(name);
-      }
+      const startIndex =
+        options.allowUnderscorePrefix && name.startsWith(UNDERSCORE) ? 1 : 0;
+
+      return (
+        isUpperCase(name.charAt(startIndex)) &&
+        !name.includes(UNDERSCORE, startIndex)
+      );
     }
 
     /**
@@ -55,7 +69,13 @@ export default util.createRule<Options, MessageIds>({
      * @param decl The declaration
      * @param id The name of the declaration
      */
-    function report(decl: TSESTree.Node, id: TSESTree.Identifier): void {
+    function report(
+      decl:
+        | TSESTree.ClassDeclaration
+        | TSESTree.TSInterfaceDeclaration
+        | TSESTree.ClassExpression,
+      id: TSESTree.Identifier,
+    ): void {
       let friendlyName;
 
       switch (decl.type) {
@@ -66,8 +86,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSInterfaceDeclaration:
           friendlyName = 'Interface';
           break;
-        default:
-          friendlyName = decl.type;
       }
 
       context.report({

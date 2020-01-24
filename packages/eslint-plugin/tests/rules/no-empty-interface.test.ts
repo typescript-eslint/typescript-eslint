@@ -73,5 +73,63 @@ interface Bar extends Foo {}
         },
       ],
     },
+    {
+      code: 'interface Foo extends Array<number> {}',
+      output: 'type Foo = Array<number>',
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: 'interface Foo extends Array<number | {}> { }',
+      output: 'type Foo = Array<number | {}>',
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+interface Bar {
+  bar: string;
+}
+interface Foo extends Array<Bar> {}
+`,
+      output: `
+interface Bar {
+  bar: string;
+}
+type Foo = Array<Bar>
+`,
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 5,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+type R = Record<string, unknown>;
+interface Foo extends R {   };`,
+      output: `
+type R = Record<string, unknown>;
+type Foo = R;`,
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 3,
+          column: 11,
+        },
+      ],
+    },
   ],
 });

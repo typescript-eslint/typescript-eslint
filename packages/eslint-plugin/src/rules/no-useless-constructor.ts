@@ -51,6 +51,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unnecessary constructors',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
