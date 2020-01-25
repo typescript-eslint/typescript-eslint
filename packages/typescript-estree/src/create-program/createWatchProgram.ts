@@ -175,8 +175,6 @@ function getProgramsForProjects(
 
       updatedProgram =
         updatedProgram ?? existingWatch.getProgram().getProgram();
-      // sets parent pointers in source files
-      updatedProgram.getTypeChecker();
 
       return [updatedProgram];
     }
@@ -206,8 +204,6 @@ function getProgramsForProjects(
         continue;
       }
 
-      // sets parent pointers in source files
-      updatedProgram.getTypeChecker();
       results.push(updatedProgram);
 
       continue;
@@ -218,8 +214,6 @@ function getProgramsForProjects(
 
     // cache watch program and return current program
     knownWatchProgramMap.set(tsconfigPath, programWatch);
-    // sets parent pointers in source files
-    program.getTypeChecker();
     results.push(program);
   }
 
