@@ -6,6 +6,7 @@
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/ban-types": "error",
+    "@typescript-eslint/base-to-string": "error",
     "brace-style": "off",
     "@typescript-eslint/brace-style": "error",
     "comma-spacing": "off",

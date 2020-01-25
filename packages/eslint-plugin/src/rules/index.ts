@@ -4,6 +4,7 @@ import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
 import banTsComment from './ban-ts-comment';
 import banTypes from './ban-types';
+import baseToString from './base-to-string';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
@@ -90,6 +91,7 @@ export default {
   'ban-ts-ignore': banTsIgnore,
   'ban-ts-comment': banTsComment,
   'ban-types': banTypes,
+  'base-to-string': baseToString,
   'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
