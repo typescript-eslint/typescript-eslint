@@ -308,21 +308,33 @@ describe('persistent parse', () => {
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
   });
 
-  describe('tsconfig with module none', () => {
-    const tsConfigIncludeAll = {
-      compilerOptions: {
-        module: 'none',
-      },
-      include: ['./**/*'],
-    };
+  describe('tsconfig with module set', () => {
+    const moduleTypes = [
+      'None',
+      'CommonJS',
+      'AMD',
+      'System',
+      'UMD',
+      'ES6',
+      'ES2015',
+      'ESNext',
+    ];
 
-    const testNames = ['object', 'number', 'string', 'foo'] as const;
+    for (const module of moduleTypes) {
+      describe(`module ${module}`, () => {
+        const tsConfigIncludeAll = {
+          compilerOptions: { module },
+          include: ['./**/*'],
+        };
 
-    for (const name of testNames) {
-      it(`first parse of ${name} should not throw`, () => {
-        const PROJECT_DIR = setup(tsConfigIncludeAll);
-        writeFile(PROJECT_DIR, name);
-        expect(() => parseFile(name, PROJECT_DIR)).not.toThrow();
+        const testNames = ['object', 'number', 'string', 'foo'] as const;
+        for (const name of testNames) {
+          it(`first parse of ${name} should not throw`, () => {
+            const PROJECT_DIR = setup(tsConfigIncludeAll);
+            writeFile(PROJECT_DIR, name);
+            expect(() => parseFile(name, PROJECT_DIR)).not.toThrow();
+          });
+        }
       });
     }
   });
