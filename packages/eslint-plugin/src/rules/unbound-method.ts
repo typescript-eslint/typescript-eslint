@@ -53,6 +53,9 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const currentSourceFile = parserServices.program.getSourceFile(
+      context.getFilename(),
+    );
 
     return {
       'MemberExpression, OptionalMemberExpression'(
@@ -65,7 +68,10 @@ export default util.createRule<Options, MessageIds>({
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const symbol = checker.getSymbolAtLocation(originalNode);
 
-        if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
+        if (
+          symbol &&
+          isDangerousMethod(symbol, ignoreStatic, currentSourceFile)
+        ) {
           context.report({
             messageId: 'unbound',
             node,
@@ -76,10 +82,21 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
+function isDangerousMethod(
+  symbol: ts.Symbol,
+  ignoreStatic: boolean,
+  currentSourceFile?: ts.SourceFile,
+): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  if (
+    currentSourceFile &&
+    currentSourceFile !== valueDeclaration.getSourceFile()
+  ) {
     return false;
   }
 
