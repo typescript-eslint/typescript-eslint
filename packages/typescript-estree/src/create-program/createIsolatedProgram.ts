@@ -46,7 +46,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
         filename,
         code,
         ts.ScriptTarget.Latest,
-        true,
+        /* setParentNodes */ true,
         getScriptKind(extra, filename),
       );
     },
