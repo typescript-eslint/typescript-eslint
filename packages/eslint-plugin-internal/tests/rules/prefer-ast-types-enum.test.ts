@@ -1,3 +1,7 @@
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/prefer-ast-types-enum';
 import { RuleTester, batchedSingleLineTests } from '../RuleTester';
 
@@ -36,12 +40,12 @@ node.type === AST_TOKEN_TYPES.Keyword
     `,
     errors: [
       {
-        data: { enumName: 'AST_NODE_TYPES', literal: 'Literal' },
+        data: { enumName: 'AST_NODE_TYPES', literal: AST_NODE_TYPES.Literal },
         messageId: 'preferEnum',
         line: 2,
       },
       {
-        data: { enumName: 'AST_TOKEN_TYPES', literal: 'Keyword' },
+        data: { enumName: 'AST_TOKEN_TYPES', literal: AST_TOKEN_TYPES.Keyword },
         messageId: 'preferEnum',
         line: 3,
       },
