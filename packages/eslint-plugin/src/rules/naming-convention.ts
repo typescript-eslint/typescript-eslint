@@ -113,7 +113,12 @@ interface Selector {
   selector: IndividualAndMetaSelectorsString;
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
-  filter?: string;
+  filter?:
+    | string
+    | {
+        regex: string;
+        match: boolean;
+      };
 }
 interface NormalizedSelector {
   // format options
@@ -130,7 +135,10 @@ interface NormalizedSelector {
   selector: Selectors | MetaSelectors;
   modifiers: Modifiers[] | null;
   types: TypeModifiers[] | null;
-  filter: RegExp | null;
+  filter: {
+    regex: RegExp;
+    match: boolean;
+  } | null;
   // calculated ordering weight based on modifiers
   modifierWeight: number;
 }
@@ -197,8 +205,24 @@ function selectorSchema(
 ): JSONSchema.JSONSchema4[] {
   const selector: JSONSchemaProperties = {
     filter: {
-      type: 'string',
-      minLength: 1,
+      oneOf: [
+        {
+          type: 'string',
+          minLength: 1,
+        },
+        {
+          type: 'object',
+          properties: {
+            regex: {
+              type: 'string',
+            },
+            match: {
+              type: 'boolean',
+            },
+          },
+          required: ['regex', 'match'],
+        },
+      ],
     },
     selector: {
       type: 'string',
@@ -797,7 +821,7 @@ function createValidator(
     // return will break the loop and stop checking configs
     // it is only used when the name is known to have failed or succeeded a config.
     for (const config of configs) {
-      if (config.filter?.test(originalName) === false) {
+      if (config.filter?.regex.test(originalName) !== config.filter?.match) {
         // name does not match the filter
         continue;
       }
@@ -1216,7 +1240,15 @@ function normalizeOption(option: Selector): NormalizedSelector {
       : Selectors[option.selector],
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
     types: option.types?.map(m => TypeModifiers[m]) ?? null,
-    filter: option.filter !== undefined ? new RegExp(option.filter) : null,
+    filter:
+      option.filter !== undefined
+        ? typeof option.filter === 'string'
+          ? { regex: new RegExp(option.filter), match: true }
+          : {
+              regex: new RegExp(option.filter.regex),
+              match: option.filter.match,
+            }
+        : null,
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
   };

@@ -608,6 +608,22 @@ ruleTester.run('naming-convention', rule, {
     ...createValidTestCases(cases),
     {
       code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
         declare const string_camelCase: string;
         declare const string_camelCase: string | null;
         declare const string_camelCase: string | null | undefined;
@@ -742,6 +758,23 @@ ruleTester.run('naming-convention', rule, {
   ],
   invalid: [
     ...createInvalidTestCases(cases),
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
     {
       code: `
         declare const string_camelCase01: string;
