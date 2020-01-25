@@ -1,4 +1,7 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../../RuleTester';
 import rule from '../../../src/rules/indent';
 import {

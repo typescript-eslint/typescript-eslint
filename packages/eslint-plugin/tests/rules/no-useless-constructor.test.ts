@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-useless-constructor';
 import { RuleTester } from '../RuleTester';
 
