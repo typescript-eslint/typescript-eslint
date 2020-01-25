@@ -390,34 +390,6 @@ export function findNextToken(
 }
 
 /**
- * Find the first matching ancestor based on the given predicate function.
- * @param node The current ts.Node
- * @param predicate The predicate function to apply to each checked ancestor
- * @returns a matching parent ts.Node
- */
-export function findFirstMatchingAncestor(
-  node: ts.Node,
-  predicate: (node: ts.Node) => boolean,
-): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
-    }
-    node = node.parent;
-  }
-  return undefined;
-}
-
-/**
- * Returns true if a given ts.Node has a JSX token within its hierarchy
- * @param node ts.Node to be checked
- * @returns has JSX ancestor
- */
-export function hasJSXAncestor(node: ts.Node): boolean {
-  return !!findFirstMatchingAncestor(node, isJSXToken);
-}
-
-/**
  * Unescape the text content of string literals, e.g. &amp; -> &
  * @param text The escaped string literal text.
  * @returns The unescaped string literal text.
@@ -450,11 +422,12 @@ export function isOptional(node: {
 
 /**
  * Returns the type of a given ts.Token
- * @param token the ts.Token
  * @returns the token type
  */
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
+  parent: ts.Node | undefined,
+  hasJSXAncestor: boolean,
 ): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
   if ('originalKeywordKind' in token && token.originalKeywordKind) {
     if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
@@ -507,9 +480,9 @@ export function getTokenType(
       // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
       // must actually be an ESTree-JSXText token
       if (
-        token.parent &&
-        (token.parent.kind === SyntaxKind.JsxAttribute ||
-          token.parent.kind === SyntaxKind.JsxElement)
+        parent &&
+        (parent.kind === SyntaxKind.JsxAttribute ||
+          parent.kind === SyntaxKind.JsxElement)
       ) {
         return AST_TOKEN_TYPES.JSXText;
       }
@@ -529,15 +502,12 @@ export function getTokenType(
   }
 
   // Some JSX tokens have to be determined based on their parent
-  if (token.parent && token.kind === SyntaxKind.Identifier) {
-    if (isJSXToken(token.parent)) {
+  if (parent && token.kind === SyntaxKind.Identifier) {
+    if (isJSXToken(parent)) {
       return AST_TOKEN_TYPES.JSXIdentifier;
     }
 
-    if (
-      token.parent.kind === SyntaxKind.PropertyAccessExpression &&
-      hasJSXAncestor(token)
-    ) {
+    if (parent.kind === SyntaxKind.PropertyAccessExpression && hasJSXAncestor) {
       return AST_TOKEN_TYPES.JSXIdentifier;
     }
   }
@@ -554,6 +524,8 @@ export function getTokenType(
 export function convertToken(
   token: ts.Node,
   ast: ts.SourceFile,
+  parent: ts.Node | undefined,
+  hasJSXAncestor: boolean,
 ): TSESTree.Token {
   const start =
     token.kind === SyntaxKind.JsxText
@@ -561,7 +533,7 @@ export function convertToken(
       : token.getStart(ast);
   const end = token.getEnd();
   const value = ast.text.slice(start, end);
-  const tokenType = getTokenType(token);
+  const tokenType = getTokenType(token, parent, hasJSXAncestor);
 
   if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
     return {
@@ -591,10 +563,12 @@ export function convertToken(
  */
 export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   const result: TSESTree.Token[] = [];
-  /**
-   * @param node the ts.Node
-   */
-  function walk(node: ts.Node): void {
+
+  function walk(
+    node: ts.Node,
+    parent: ts.Node | undefined,
+    hasJSXAncestor: boolean,
+  ): void {
     // TypeScript generates tokens for types in JSDoc blocks. Comment tokens
     // and their children should not be walked or added to the resulting tokens list.
     if (isComment(node) || isJSDocComment(node)) {
@@ -602,16 +576,17 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     }
 
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      const converted = convertToken(node, ast);
+      const converted = convertToken(node, ast, parent, hasJSXAncestor);
 
       if (converted) {
         result.push(converted);
       }
     } else {
-      node.getChildren(ast).forEach(walk);
+      hasJSXAncestor = hasJSXAncestor || isJSXToken(node);
+      node.getChildren(ast).forEach(child => walk(child, node, hasJSXAncestor));
     }
   }
-  walk(ast);
+  walk(ast, undefined, false);
   return result;
 }
 
