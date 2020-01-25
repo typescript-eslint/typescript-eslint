@@ -175,6 +175,69 @@ Object {
 }
 `;
 
+exports[`convert deeplyCopy should convert node correctly 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "modifiers": undefined,
+      "name": Object {
+        "escapedText": "foo",
+        "loc": Object {
+          "end": Object {
+            "column": 8,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          5,
+          8,
+        ],
+        "transformFlags": 0,
+        "type": "TSUnparsedPrologue",
+      },
+      "range": Array [
+        0,
+        35,
+      ],
+      "transformFlags": 0,
+      "type": "TSUnparsedPrologue",
+      "typeAnnotation": null,
+      "typeParameters": null,
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 35,
+      "line": 1,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    35,
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
 exports[`convert deeplyCopy should convert node with decorators correctly 1`] = `
 Object {
   "decorators": Array [

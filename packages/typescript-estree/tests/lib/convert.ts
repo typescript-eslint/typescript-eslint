@@ -14,6 +14,24 @@ describe('convert', () => {
     );
   }
 
+  it('deeplyCopy should convert node correctly', () => {
+    const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
+
+    function fakeUnknownKind(node: ts.Node): void {
+      ts.forEachChild(node, fakeUnknownKind);
+      node.kind = ts.SyntaxKind.UnparsedPrologue;
+    }
+
+    ts.forEachChild(ast, fakeUnknownKind);
+
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldPreserveNodeMaps: false,
+    });
+    expect(instance.convertProgram()).toMatchSnapshot();
+  });
+
   it('deeplyCopy should convert node with decorators correctly', () => {
     const ast = convertCode('@test class foo {}');
 
