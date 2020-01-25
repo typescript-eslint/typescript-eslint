@@ -212,12 +212,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
   invalid: [
     {
       code: `
-        let val = 1;
+        let val = "foo";
         let bool = !val;
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 3,
           column: 21,
         },
@@ -243,7 +243,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 28,
         },
@@ -269,7 +269,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 28,
         },
@@ -296,7 +296,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 13,
         },
@@ -318,14 +318,14 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let item = 1;
+        let item = "foo";
         if (item) {
           return;
         }
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 3,
           column: 13,
         },
@@ -356,7 +356,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -372,7 +372,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 13,
         },
@@ -404,7 +404,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -420,7 +420,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 13,
         },
@@ -444,11 +444,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        const bool = 1 ? true : false;
+        const bool = "foo" ? true : false;
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 2,
           column: 22,
         },
@@ -473,7 +473,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 22,
         },
@@ -500,7 +500,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -514,7 +514,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 31,
         },
@@ -542,7 +542,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -556,7 +556,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 31,
         },
@@ -584,7 +584,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 25,
         },
@@ -613,7 +613,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 25,
         },
@@ -636,7 +636,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let bool1 = 1;
+        let bool1 = "foo";
         let bool2 = true;
         for (let i = 0; bool1 && bool2; i++) {
           return;
@@ -644,7 +644,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 4,
           column: 25,
         },
@@ -676,7 +676,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 25,
         },
@@ -706,7 +706,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 16,
         },
@@ -735,7 +735,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 16,
         },
@@ -766,7 +766,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 16,
         },
@@ -798,7 +798,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 16,
         },
@@ -824,11 +824,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
       code: `
         do {
           return;
-        } while (1);
+        } while ("foo");
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 4,
           column: 18,
         },
@@ -857,7 +857,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 5,
           column: 18,
         },
@@ -888,7 +888,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 6,
           column: 18,
         },
@@ -920,7 +920,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 6,
           column: 18,
         },
@@ -948,7 +948,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 58,
         },
@@ -1050,14 +1050,26 @@ const objAndBool = obj && bool;
           column: 45,
         },
         {
-          messageId: 'conditionErrorNullablePrimitive',
+          messageId: 'conditionErrorNullableNumber',
           line: 3,
           column: 36,
+        },
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 45,
         },
       ],
       code: `
         const f1 = (x: null | undefined) => x ? 1 : 0;
         const f2 = (x?: number) => x ? 1 : 0;
+        const f3 = (x?: string) => x ? 1 : 0;
+        const f4 = (x?: string | number) => x ? 1 : 0;
       `,
     },
     {
@@ -1093,7 +1105,7 @@ const objAndBool = obj && bool;
           column: 42,
         },
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorOther',
           line: 5,
           column: 44,
         },
@@ -1109,12 +1121,12 @@ const objAndBool = obj && bool;
       options: [{ allowSafe: true }],
       errors: [
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorNumber',
           line: 8,
           column: 34,
         },
         {
-          messageId: 'conditionErrorPrimitive',
+          messageId: 'conditionErrorString',
           line: 9,
           column: 34,
         },

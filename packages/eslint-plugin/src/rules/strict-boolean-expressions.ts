@@ -19,8 +19,10 @@ type MessageId =
   | 'conditionErrorAny'
   | 'conditionErrorNullish'
   | 'conditionErrorNullableBoolean'
-  | 'conditionErrorPrimitive'
-  | 'conditionErrorNullablePrimitive'
+  | 'conditionErrorString'
+  | 'conditionErrorNullableString'
+  | 'conditionErrorNumber'
+  | 'conditionErrorNullableNumber'
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject';
 
@@ -64,12 +66,18 @@ export default util.createRule<Options, MessageId>({
       conditionErrorNullableBoolean:
         'Unexpected nullable boolean value in conditional. ' +
         'Please handle the nullish case explicitly.',
-      conditionErrorPrimitive:
-        'Unexpected possibly falsy value in conditional. ' +
-        'An explicit comparison is required.',
-      conditionErrorNullablePrimitive:
-        'Unexpected nullable, possibly falsy value in conditional. ' +
-        'Please handle the nullish and falsy cases explicitly.',
+      conditionErrorString:
+        'Unexpected string value in conditional. ' +
+        'An explicit empty string check is required.',
+      conditionErrorNullableString:
+        'Unexpected nullable string value in conditional. ' +
+        'Please handle the nullish/empty cases explicitly.',
+      conditionErrorNumber:
+        'Unexpected number value in conditional. ' +
+        'An explicit zero/NaN check is required.',
+      conditionErrorNullableNumber:
+        'Unexpected nullable number value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
       conditionErrorObject:
         'Unexpected object value in conditional. ' +
         'The condition is always true.',
@@ -156,69 +164,76 @@ export default util.createRule<Options, MessageId>({
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
       let messageId: MessageId | undefined;
 
-      const {
-        isBoolean,
-        hasBoolean,
-        hasFalsyT,
-        hasMixedT,
-        hasTruthyT,
-        hasAny,
-      } = tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)
+      const types = tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)
         ? inspectVariantTypes((type as ts.UnionType).types)
         : inspectVariantTypes([type]);
 
+      const is = (...wantedTypes: readonly VariantType[]): boolean =>
+        types.size === wantedTypes.length &&
+        wantedTypes.every(type => types.has(type));
+
       // boolean
-      if (isBoolean) {
+      if (is('boolean')) {
         // boolean is always okay
         return false;
       }
-      // any or unknown
-      else if (hasAny) {
-        messageId = 'conditionErrorAny';
-      }
-      // undefined | null
-      else if (!hasBoolean && hasFalsyT && !hasMixedT && !hasTruthyT) {
+      // nullish
+      else if (is('nullish')) {
+        // condition is always false
         messageId = 'conditionErrorNullish';
       }
-      // boolean | undefined | null
-      else if (hasBoolean && hasFalsyT && !hasMixedT && !hasTruthyT) {
+      // nullable boolean
+      else if (is('nullish', 'boolean')) {
         if (!options.allowNullable) {
           messageId = 'conditionErrorNullableBoolean';
         }
       }
-      // string | number
-      else if (!hasBoolean && !hasFalsyT && hasMixedT && !hasTruthyT) {
-        messageId = 'conditionErrorPrimitive';
+      // string
+      else if (is('string')) {
+        messageId = 'conditionErrorString';
       }
-      // string | number | undefined | null
-      else if (!hasBoolean && hasFalsyT && hasMixedT && !hasTruthyT) {
-        messageId = 'conditionErrorNullablePrimitive';
+      // nullable string
+      else if (is('nullish', 'string')) {
+        messageId = 'conditionErrorNullableString';
       }
-      // object | function
-      else if (!hasBoolean && !hasFalsyT && !hasMixedT && hasTruthyT) {
+      // number
+      else if (is('number')) {
+        messageId = 'conditionErrorNumber';
+      }
+      // nullable number
+      else if (is('nullish', 'number')) {
+        messageId = 'conditionErrorNullableNumber';
+      }
+      // object
+      else if (is('object')) {
+        // condition is always true
         if (!options.allowSafe) {
           messageId = 'conditionErrorObject';
         }
       }
-      // object | function | boolean
-      else if (hasBoolean && !hasFalsyT && !hasMixedT && hasTruthyT) {
-        if (!options.allowSafe) {
-          messageId = 'conditionErrorOther';
-        }
-      }
-      // object | function | boolean | null | undefined
-      else if (hasBoolean && hasFalsyT && !hasMixedT && hasTruthyT) {
-        if (!options.allowSafe || !options.allowNullable) {
-          messageId = 'conditionErrorOther';
-        }
-      }
-      // object | function | undefined | null
-      else if (!hasBoolean && hasFalsyT && !hasMixedT && hasTruthyT) {
+      // nullable object
+      else if (is('nullish', 'object')) {
         if (!options.allowSafe || !options.allowNullable) {
           messageId = 'conditionErrorNullableObject';
         }
       }
-      // any other combination
+      // boolean/object
+      else if (is('boolean', 'object')) {
+        if (!options.allowSafe) {
+          messageId = 'conditionErrorOther';
+        }
+      }
+      // nullable boolean/object
+      else if (is('nullish', 'boolean', 'object')) {
+        if (!options.allowSafe || !options.allowNullable) {
+          messageId = 'conditionErrorOther';
+        }
+      }
+      // any
+      else if (is('any')) {
+        messageId = 'conditionErrorAny';
+      }
+      // other
       else {
         messageId = 'conditionErrorOther';
       }
@@ -230,44 +245,53 @@ export default util.createRule<Options, MessageId>({
       return false;
     }
 
-    interface TypeSummary {
-      /** Whether this type is simply a boolean */
-      isBoolean: boolean;
-      /** Whether there was an union variant of type boolean */
-      hasBoolean: boolean;
-      /** Whether there was an union variant which is always falsy (undefined or null) */
-      hasFalsyT: boolean;
-      /** Whether there was an union variant of primitive type which can be falsy (string or number) */
-      hasMixedT: boolean;
-      /** Whether there was an union variant which is always truthy (object, function, symbol, etc) */
-      hasTruthyT: boolean;
-      /** Whether this type is simply an any or unknown */
-      hasAny: boolean;
-    }
+    /** The types we care about */
+    type VariantType =
+      | 'nullish'
+      | 'boolean'
+      | 'string'
+      | 'number'
+      | 'object'
+      | 'any';
 
     /**
      * Check union variants for the types we care about
      */
-    function inspectVariantTypes(types: ts.Type[]): TypeSummary {
-      return {
-        isBoolean: types.every(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-        ),
-        hasBoolean: types.some(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-        ),
-        hasFalsyT: types.some(
+    function inspectVariantTypes(types: ts.Type[]): Set<VariantType> {
+      const variantTypes = new Set<VariantType>();
+
+      if (
+        types.some(
           type =>
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Null) ||
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined) ||
             tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike),
-        ),
-        hasMixedT: types.some(
-          type =>
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike) ||
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
-        ),
-        hasTruthyT: types.some(
+        )
+      ) {
+        variantTypes.add('nullish');
+      }
+
+      if (
+        types.some(type =>
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+        )
+      ) {
+        variantTypes.add('boolean');
+      }
+
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike))
+      ) {
+        variantTypes.add('string');
+      }
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike))
+      ) {
+        variantTypes.add('number');
+      }
+
+      if (
+        types.some(
           type =>
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Null) &&
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined) &&
@@ -277,13 +301,22 @@ export default util.createRule<Options, MessageId>({
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) &&
             !tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
-        ),
-        hasAny: types.some(
+        )
+      ) {
+        variantTypes.add('object');
+      }
+
+      if (
+        types.some(
           type =>
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
             tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
-        ),
-      };
+        )
+      ) {
+        variantTypes.add('any');
+      }
+
+      return variantTypes;
     }
   },
 });
