@@ -256,14 +256,14 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
   node: ts.SourceFile | ts.Block | ts.ModuleBlock,
+  parent: ts.Node,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
-    switch (node.parent.kind) {
+    switch (parent.kind) {
       case ts.SyntaxKind.Constructor:
       case ts.SyntaxKind.GetAccessor:
       case ts.SyntaxKind.SetAccessor:

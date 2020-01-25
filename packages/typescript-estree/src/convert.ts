@@ -271,26 +271,26 @@ export class Converter {
       type: AST_NODE_TYPES.TSTypeAnnotation,
       loc,
       range: [annotationStartCol, child.end],
-      typeAnnotation: this.convertType(child),
+      typeAnnotation: this.convertType(child, parent),
     };
   }
 
   /**
    * Coverts body Nodes and add a directive field to StringLiterals
-   * @param nodes of ts.Node
+   * @param node of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
    */
   private convertBodyExpressions(
-    nodes: ts.NodeArray<ts.Statement>,
-    parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
+    node: ts.SourceFile | ts.Block | ts.ModuleBlock,
+    parent: ts.Node,
   ): TSESTree.Statement[] {
-    let allowDirectives = canContainDirective(parent);
+    let allowDirectives = canContainDirective(node, parent);
 
     return (
-      nodes
+      node.statements
         .map(statement => {
-          const child = this.convertChild(statement);
+          const child = this.convertChild(statement, node);
           if (allowDirectives) {
             if (
               child?.expression &&
@@ -565,7 +565,7 @@ export class Converter {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
           type: AST_NODE_TYPES.Program,
-          body: this.convertBodyExpressions(node.statements, node),
+          body: this.convertBodyExpressions(node, parent),
           // externalModuleIndicator is internal field in TSC
           sourceType: (node as any).externalModuleIndicator
             ? 'module'
@@ -577,7 +577,7 @@ export class Converter {
       case SyntaxKind.Block: {
         return this.createNode<TSESTree.BlockStatement>(node, {
           type: AST_NODE_TYPES.BlockStatement,
-          body: this.convertBodyExpressions(node.statements, node),
+          body: this.convertBodyExpressions(node, parent),
         });
       }
 
@@ -1503,7 +1503,7 @@ export class Converter {
       case SyntaxKind.ModuleBlock:
         return this.createNode<TSESTree.TSModuleBlock>(node, {
           type: AST_NODE_TYPES.TSModuleBlock,
-          body: this.convertBodyExpressions(node.statements, node),
+          body: this.convertBodyExpressions(node, parent),
         });
 
       case SyntaxKind.ImportDeclaration: {
@@ -1874,7 +1874,7 @@ export class Converter {
         return this.createNode<TSESTree.Literal>(node, {
           type: AST_NODE_TYPES.Literal,
           value: Number(node.text),
-          raw: node.getText(),
+          raw: node.getText(this.ast),
         });
       }
 
