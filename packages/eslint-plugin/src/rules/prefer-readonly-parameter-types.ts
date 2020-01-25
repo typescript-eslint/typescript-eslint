@@ -38,25 +38,41 @@ export default util.createRule({
      * - false if the type is a mutable array or mutable tuple.
      */
     function isTypeReadonlyArrayOrTuple(type: ts.Type): boolean | null {
+      function checkTypeArguments(arrayType: ts.TypeReference): boolean {
+        const typeArguments = checker.getTypeArguments(arrayType);
+        if (typeArguments.length === 0) {
+          // this shouldn't happen in reality as:
+          // - tuples require at least 1 type argument
+          // - ReadonlyArray requires at least 1 type argument
+          return true;
+        }
+
+        // validate the element types are also readonly
+        if (typeArguments.some(typeArg => !isTypeReadonly(typeArg))) {
+          return false;
+        }
+        return true;
+      }
+
       if (checker.isArrayType(type)) {
         const symbol = util.nullThrows(
           type.getSymbol(),
           util.NullThrowsReasons.MissingToken('symbol', 'array type'),
         );
         const escapedName = symbol.getEscapedName();
-        if (escapedName === 'ReadonlyArray') {
-          return true;
-        }
-        if (escapedName === 'Array') {
+        if (escapedName === 'Array' && escapedName !== 'ReadonlyArray') {
           return false;
         }
+
+        return checkTypeArguments(type);
       }
 
       if (checker.isTupleType(type)) {
-        if (type.target.readonly) {
-          return true;
+        if (!type.target.readonly) {
+          return false;
         }
-        return false;
+
+        return checkTypeArguments(type);
       }
 
       return null;

@@ -1,5 +1,13 @@
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../../src/util';
+
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
+type Options = InferOptionsTypeFromRule<typeof rule>;
 
 const rootPath = getFixturesRootDir();
 
@@ -24,54 +32,158 @@ const primitives = [
   'null',
   'undefined',
 ];
+const arrays = [
+  'readonly string[]',
+  'Readonly<string[]>',
+  'ReadonlyArray<string>',
+  'readonly [string]',
+  'Readonly<[string]>',
+];
+const weirdIntersections = [
+  `
+    interface Test extends ReadonlyArray<string> {
+      readonly property: boolean
+    }
+    function foo(arg: Test) {}
+  `,
+  `
+    type Test = (readonly string[]) & {
+      readonly property: boolean
+    };
+    function foo(arg: Test) {}
+  `,
+  `
+    interface Test {
+      (): void
+      readonly property: boolean
+    }
+    function foo(arg: Test) {}
+  `,
+  `
+    type Test = (() => void) & {
+      readonly property: boolean
+    };
+    function foo(arg: Test) {}
+  `,
+];
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
+    'function foo() {}',
+
     // primitives
     ...primitives.map(type => `function foo(arg: ${type}) {}`),
 
     // arrays
-    'function foo(arg: readonly string[]) {}',
-    'function foo(arg: Readonly<string[]>) {}',
-    'function foo(arg: ReadonlyArray<string>) {}',
-    'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
+    ...arrays.map(type => `function foo(arg: ${type}) {}`),
+    // nested arrays
+    'function foo(arg: readonly (readonly string[])[]) {}',
+    'function foo(arg: Readonly<Readonly<string[]>[]>) {}',
+    'function foo(arg: ReadonlyArray<ReadonlyArray<string>>) {}',
 
     // functions
     'function foo(arg: () => void) {}',
-    `
-      interface ImmutablePropFunction {
-        (): void
-        readonly immutable: boolean
-      }
-      function foo(arg: ImmutablePropFunction) {}
-    `,
 
     // unions
     'function foo(arg: string | null) {}',
     'function foo(arg: string | ReadonlyArray<string>) {}',
     'function foo(arg: string | (() => void)) {}',
+    'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
+
+    // objects
+
+    // weird intersections
+    ...weirdIntersections.map(code => code),
   ],
   invalid: [
+    // arrays
+    ...arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
+      const type = baseType
+        .replace(/readonly /g, '')
+        .replace(/Readonly<(.+?)>/g, '$1')
+        .replace(/ReadonlyArray/g, 'Array');
+      return {
+        code: `function foo(arg: ${type}) {}`,
+        errors: [
+          {
+            messageId: 'shouldBeReadonly',
+            column: 14,
+            endColumn: 19 + type.length,
+          },
+        ],
+      };
+    }),
+    // nested arrays
     {
-      code: 'function foo(arg: string[]) {}',
+      code: 'function foo(arg: readonly (string[])[]) {}',
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          data: {
-            type: 'Parameters',
-          },
+          column: 14,
+          endColumn: 40,
         },
       ],
     },
     {
+      code: 'function foo(arg: Readonly<string[][]>) {}',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 14,
+          endColumn: 39,
+        },
+      ],
+    },
+    {
+      code: 'function foo(arg: ReadonlyArray<Array<string>>) {}',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 14,
+          endColumn: 47,
+        },
+      ],
+    },
+
+    // objects
+    // {
+    //   code: `
+    //     interface MutablePropFunction {
+    //       (): void
+    //       mutable: boolean
+    //     }
+    //     function foo(arg: MutablePropFunction) {}
+    //   `,
+    //   errors: [],
+    // },
+
+    // weird intersections
+    ...weirdIntersections.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+      baseCode => {
+        const code = baseCode.replace(/readonly /g, '');
+        return {
+          code,
+          errors: [{ messageId: 'shouldBeReadonly' }],
+        };
+      },
+    ),
+    {
       code: `
-        interface MutablePropFunction {
-          (): void
-          mutable: boolean
+        interface Test extends Array<string> {
+          readonly property: boolean
         }
-        function foo(arg: MutablePropFunction) {}
+        function foo(arg: Test) {}
       `,
-      errors: [],
+      errors: [{ messageId: 'shouldBeReadonly' }],
+    },
+    {
+      code: `
+        interface Test extends Array<string> {
+          property: boolean
+        }
+        function foo(arg: Test) {}
+      `,
+      errors: [{ messageId: 'shouldBeReadonly' }],
     },
   ],
 });
