@@ -378,7 +378,7 @@ export class Converter {
 
       if (param.decorators && param.decorators.length) {
         convertedParam.decorators = param.decorators.map(el =>
-          this.convertChild(el, parent),
+          this.convertChild(el, param),
         );
       }
       return convertedParam;
@@ -391,7 +391,19 @@ export class Converter {
    * property instead of a kind property. Recursively copies all children.
    */
   private deeplyCopy(node: TSNode): any {
+    if (
+      node.kind >= SyntaxKind.FirstJSDocNode &&
+      node.kind <= SyntaxKind.LastJSDocNode
+    ) {
+      throw createError(
+        this.ast,
+        node.pos,
+        'JSDoc types can only be used inside documentation comments.',
+      );
+    }
+
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
+
     /**
      * If the "errorOnUnknownASTType" option is set to true, throw an error,
      * otherwise fallback to just including the unknown type as-is.
@@ -399,6 +411,7 @@ export class Converter {
     if (this.options.errorOnUnknownASTType && !AST_NODE_TYPES[customType]) {
       throw new Error(`Unknown AST_NODE_TYPE: "${customType}"`);
     }
+
     const result = this.createNode<any>(node, {
       type: customType,
     });
