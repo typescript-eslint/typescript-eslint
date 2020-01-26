@@ -290,6 +290,31 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
+        let num = 1;
+        let str = "foo"
+        let val = null;
+        let bool = true && (val || num || str);
+      `,
+      errors: [
+        {
+          messageId: 'conditionErrorNullish',
+          line: 5,
+          column: 29,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 5,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 5,
+          column: 43,
+        },
+      ],
+    },
+    {
+      code: `
         if (1) {
           return;
         }

@@ -105,7 +105,7 @@ export default util.createRule<Options, MessageId>({
       ForStatement: checkTestExpression,
       IfStatement: checkTestExpression,
       WhileStatement: checkTestExpression,
-      'LogicalExpression[operator!="??"]': checkBinaryLogicalExpression,
+      'LogicalExpression[operator!="??"]': checkNode,
       'UnaryExpression[operator="!"]': checkUnaryLogicalExpression,
     };
 
@@ -120,46 +120,56 @@ export default util.createRule<Options, MessageId>({
       if (node.test == null) {
         return;
       }
+      checkNode(node.test, true);
+    }
 
-      if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
-        if (node.test.operator !== '??') {
-          if (checkBinaryLogicalExpression(node.test)) {
-            return;
-          }
-        }
-      }
-
-      checkNode(node.test);
+    function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
+      checkNode(node.argument, true);
     }
 
     /**
-     * @returns `true` if there was an error reported
+     * This function analyzes the type of a boolean expression node and checks if it is allowed.
+     * It can recurse when checking nested logical operators, so that only the outermost expressions are reported.
+     * @param node The AST node to check.
+     * @param isRoot Whether it is the root of a logical expression and there was no recursion yet.
+     * @returns `true` if there was an error reported.
      */
-    function checkBinaryLogicalExpression(
-      node: TSESTree.LogicalExpression,
-    ): boolean {
+    function checkNode(node: TSESTree.Node, isRoot = false): boolean {
+      // prevent checking the same node multiple times
       if (checkedNodes.has(node)) {
         return false;
       }
       checkedNodes.add(node);
 
-      let hasError = false;
-      if (checkNode(node.left)) {
-        hasError = true;
-      }
-      if (!options.ignoreRhs) {
-        if (checkNode(node.right)) {
+      // for logical operator, we also check its operands
+      if (
+        node.type === AST_NODE_TYPES.LogicalExpression &&
+        node.operator !== '??'
+      ) {
+        let hasError = false;
+        if (checkNode(node.left)) {
           hasError = true;
         }
+        if (!options.ignoreRhs) {
+          if (checkNode(node.right)) {
+            hasError = true;
+          }
+        }
+        // if this logical operator is not the root of a logical expression
+        // we only check its operands and return
+        if (!isRoot) {
+          return hasError;
+        }
+        // if this is the root of a logical expression
+        // we want to check its resulting type too
+        else {
+          // ...unless there already was an error, we exit so we don't double-report
+          if (hasError) {
+            return true;
+          }
+        }
       }
-      return hasError;
-    }
 
-    function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
-      checkNode(node.argument);
-    }
-
-    function checkNode(node: TSESTree.Node): boolean {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
       let messageId: MessageId | undefined;
