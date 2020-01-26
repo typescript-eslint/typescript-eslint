@@ -65,8 +65,10 @@ function isTokenOnSameLine(
 
 /**
  * Checks if a node is a type assertion:
- * - x as foo
- * - <foo>x
+ * ```
+ * x as foo
+ * <foo>x
+ * ```
  */
 function isTypeAssertion(
   node: TSESTree.Node | undefined | null,
@@ -80,14 +82,49 @@ function isTypeAssertion(
   );
 }
 
+/**
+ * Checks if a node is a constructor method.
+ */
+function isConstructor(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.MethodDefinition {
+  return (
+    node?.type === AST_NODE_TYPES.MethodDefinition &&
+    node.kind === 'constructor'
+  );
+}
+
+/**
+ * Checks if a node is a setter method.
+ */
+function isSetter(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.MethodDefinition | TSESTree.Property {
+  return (
+    !!node &&
+    (node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.Property) &&
+    node.kind === 'set'
+  );
+}
+
+function isIdentifier(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.Identifier {
+  return node?.type === AST_NODE_TYPES.Identifier;
+}
+
 export {
-  isTypeAssertion,
+  isConstructor,
+  isIdentifier,
+  isLogicalOrOperator,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
   isOptionalOptionalChain,
+  isSetter,
   isTokenOnSameLine,
-  isLogicalOrOperator,
+  isTypeAssertion,
   LINEBREAK_MATCHER,
 };
