@@ -1,4 +1,4 @@
-name: Node CI
+name: CI
 
 on:
   push:
@@ -21,7 +21,9 @@ jobs:
 
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
-        run: yarn --ignore-engines --frozen-lockfile
+        run: |
+          yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       # Note that this command *also* typechecks tests/tools,
       # whereas the build only checks src files
@@ -34,11 +36,11 @@ jobs:
       - name: Run linting
         run: yarn lint
 
-      - name: Validate documentation spelling
+      - name: Validate spelling
         run: yarn check:spelling
 
       - name: Run unit tests
-        run: yarn test -- -- --runInBand
+        run: yarn test
         env:
           CI: true
 
@@ -68,12 +70,12 @@ jobs:
 
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
-        run: yarn --ignore-engines --frozen-lockfile
-        env:
-          CI: true
+        run: |
+          yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - name: Run unit tests
-        run: yarn test -- -- --runInBand
+        run: yarn test
         env:
           CI: true
 
@@ -92,9 +94,9 @@ jobs:
 
       # This also runs a build as part of the postinstall bootstrap
       - name: install and build
-        run: yarn --ignore-engines --frozen-lockfile
-        env:
-          CI: true
+        run: |
+          yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
 #      - name: Publish all packages to npm
 #        run: npx lerna publish --canary --exact --force-publish --yes
