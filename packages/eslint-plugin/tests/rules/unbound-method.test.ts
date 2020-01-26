@@ -1,9 +1,8 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import path from 'path';
 import rule, { MessageIds, Options } from '../../src/rules/unbound-method';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
