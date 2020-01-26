@@ -44,8 +44,9 @@ jobs:
           yarn integration-tests
         displayName: 'Run integrations tests'
 
-      - script: |
-          bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
+      - bash: bash <(curl -s https://codecov.io/bash) -P "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"
+        env:
+          CODECOV_TOKEN: $(CODECOV_TOKEN)
         displayName: 'Publish code coverage report'
 
   - job: unit_tests_on_other_node_versions
