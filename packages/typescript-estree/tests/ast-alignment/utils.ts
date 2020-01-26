@@ -157,7 +157,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
          * ts-estree: TSAbstractClassProperty
          */
         if (node.abstract) {
-          node.type = 'TSAbstractClassProperty';
+          node.type = AST_NODE_TYPES.TSAbstractClassProperty;
           delete node.abstract;
         }
         /**
@@ -170,20 +170,20 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       TSExpressionWithTypeArguments(node, parent: any) {
-        if (parent.type === 'TSInterfaceDeclaration') {
-          node.type = 'TSInterfaceHeritage';
+        if (parent.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
+          node.type = AST_NODE_TYPES.TSInterfaceHeritage;
         } else if (
-          parent.type === 'ClassExpression' ||
-          parent.type === 'ClassDeclaration'
+          parent.type === AST_NODE_TYPES.ClassExpression ||
+          parent.type === AST_NODE_TYPES.ClassDeclaration
         ) {
-          node.type = 'TSClassImplements';
+          node.type = AST_NODE_TYPES.TSClassImplements;
         }
       },
       /**
        * @see https://github.com/prettier/prettier/issues/5817
        */
       FunctionExpression(node: any, parent: any) {
-        if (parent.typeParameters && parent.type === 'Property') {
+        if (parent.typeParameters && parent.type === AST_NODE_TYPES.Property) {
           node.typeParameters = parent.typeParameters;
           delete parent.typeParameters;
         }

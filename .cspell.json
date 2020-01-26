@@ -29,7 +29,8 @@
     "/\\.\\/docs\\/rules\\/[^.]*.md/",
     "/@typescript-eslint\\/[a-z-]+/",
     "/\\.all-contributorsrc/",
-    "/TS[^\\s]+/"
+    "/TS[^\\s]+/",
+    "\\(#.+?\\)"
   ],
   "words": [
     "ASTs",
@@ -61,6 +62,7 @@
     "estree",
     "linebreaks",
     "necroing",
+    "nocheck",
     "nullish",
     "parameterised",
     "performant",
