@@ -14,7 +14,7 @@
         "--runInBand",
         "--no-cache",
         "--no-coverage",
-        "${fileBasename}"
+        "${fileBasenameNoExtension}"
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
@@ -30,7 +30,7 @@
         "--runInBand",
         "--no-cache",
         "--no-coverage",
-        "${fileBasename}"
+        "${fileBasenameNoExtension}"
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
@@ -78,7 +78,7 @@
         "--runInBand",
         "--no-cache",
         "--no-coverage",
-        "${fileBasename}"
+        "${fileBasenameNoExtension}"
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
