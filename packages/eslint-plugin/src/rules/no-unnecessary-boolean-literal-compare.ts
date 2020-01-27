@@ -20,7 +20,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     docs: {
       description:
-        'Flags unnecessary equality comparisons against boolean literals.',
+        'Flags unnecessary equality comparisons against boolean literals',
       category: 'Stylistic Issues',
       recommended: false,
       requiresTypeChecking: true,
