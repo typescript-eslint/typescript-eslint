@@ -158,7 +158,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`newline-before-return`]           | 🌟  | [`padding-line-between-statements`][padding-line-between-statements] <sup>[1]</sup> |
 | [`newline-per-chained-call`]        | 🌟  | [`newline-per-chained-call`][newline-per-chained-call]                              |
 | [`new-parens`]                      | 🌟  | [`new-parens`][new-parens]                                                          |
-| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/no-angle-bracket-type-assertion`]                              |
+| [`no-angle-bracket-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                   |
 | [`no-boolean-literal-compare`]      | ✅  | [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]                       |
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
@@ -600,6 +600,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/type-annotation-spacing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/type-annotation-spacing.md
 [`@typescript-eslint/typedef`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/typedef.md
 [`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
+[`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-boolean-literal-compare.md
 [`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
 [`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
 [`@typescript-eslint/no-throw-literal`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-throw-literal.md
