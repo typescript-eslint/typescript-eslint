@@ -145,9 +145,9 @@ export default createRule<Options, MessageId>({
       const nodeType = getNodeType(node);
       return checker.isArrayType(nodeType);
     }
-    function nodeIsArrayOrTupleType(node: TSESTree.Expression): boolean {
+    function nodeIsTupleType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
-      return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
+      return checker.isTupleType(nodeType);
     }
 
     /**
@@ -160,7 +160,12 @@ export default createRule<Options, MessageId>({
         // Since typescript array index signature types don't represent the
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
-        if (nodeIsArrayType(node.object)) {
+        if (
+          nodeIsArrayType(node.object) ||
+          (nodeIsTupleType(node.object) &&
+            // Exception: literal index into a tuple - will have a sound type
+            node.property.type !== AST_NODE_TYPES.Literal)
+        ) {
           return;
         }
       }
@@ -320,7 +325,7 @@ export default createRule<Options, MessageId>({
         callee.property.type === AST_NODE_TYPES.Identifier &&
         ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
         // and the left-hand side is an array, according to the types
-        nodeIsArrayOrTupleType(callee.object)
+        (nodeIsArrayType(callee.object) || nodeIsTupleType(callee.object))
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {

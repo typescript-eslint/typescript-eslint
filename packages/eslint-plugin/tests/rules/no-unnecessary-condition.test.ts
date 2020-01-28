@@ -154,6 +154,10 @@ function test(a: unknown) {
     `
 declare const arr: object[];
 if(arr[42]) {} // looks unnecessary from the types, but isn't
+
+const tuple = [{}] as [object];
+declare const n: number;
+if(tuple[n]) {}
 `,
     // Supports ignoring the RHS
     {
@@ -374,6 +378,14 @@ function nothing3(x: [string, string]) {
       code: `
 declare const dict: Record<string, object>;
 if(dict["mightNotExist"]) {}
+`,
+      errors: [ruleError(3, 4, 'alwaysTruthy')],
+    },
+    {
+      // Should still check tuples when accessed with literal numbers, since they don't have
+      code: `
+const x = [{}] as [object];
+if(x[0]) {}
 `,
       errors: [ruleError(3, 4, 'alwaysTruthy')],
     },
