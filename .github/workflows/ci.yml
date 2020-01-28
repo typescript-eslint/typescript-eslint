@@ -54,6 +54,8 @@ jobs:
         with:
           yml: ./codecov.yml
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittest
+          name: codecov
 
   unit_tests_on_other_node_versions:
     name: Run unit tests on other Node.js versions
