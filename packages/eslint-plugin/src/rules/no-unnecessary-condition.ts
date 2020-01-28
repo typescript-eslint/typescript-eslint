@@ -143,6 +143,10 @@ export default createRule<Options, MessageId>({
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
+      return checker.isArrayType(nodeType);
+    }
+    function nodeIsArrayOrTupleType(node: TSESTree.Expression): boolean {
+      const nodeType = getNodeType(node);
       return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
     }
 
@@ -151,6 +155,16 @@ export default createRule<Options, MessageId>({
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(node: TSESTree.Expression): void {
+      // Index signature
+      if (node.type === AST_NODE_TYPES.MemberExpression && node.computed) {
+        // Since typescript array index signature types don't represent the
+        //  possibility of out-of-bounds access, if we're indexing into an array
+        //  just skip the check, to avoid false positives
+        if (nodeIsArrayType(node.object)) {
+          return;
+        }
+      }
+
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
@@ -306,7 +320,7 @@ export default createRule<Options, MessageId>({
         callee.property.type === AST_NODE_TYPES.Identifier &&
         ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
         // and the left-hand side is an array, according to the types
-        nodeIsArrayType(callee.object)
+        nodeIsArrayOrTupleType(callee.object)
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {

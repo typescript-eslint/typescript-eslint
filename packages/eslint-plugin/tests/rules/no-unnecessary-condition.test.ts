@@ -150,6 +150,11 @@ function test(a: string | null | undefined) {
 function test(a: unknown) {
   return a ?? "default";
 }`,
+    // Indexing cases
+    `
+declare const arr: object[];
+if(arr[42]) {} // looks unnecessary from the types, but isn't
+`,
     // Supports ignoring the RHS
     {
       code: `
@@ -361,6 +366,24 @@ function nothing3(x: [string, string]) {
         ruleError(11, 25, 'alwaysFalsy'),
         ruleError(15, 25, 'alwaysFalsy'),
       ],
+    },
+    // Indexing cases
+    {
+      // This is an error because 'dict' doesn't represent
+      //  the potential for undefined in its types
+      code: `
+declare const dict: Record<string, object>;
+if(dict["mightNotExist"]) {}
+`,
+      errors: [ruleError(3, 4, 'alwaysTruthy')],
+    },
+    {
+      // Shouldn't mistake this for an array indexing case
+      code: `
+declare const arr: object[];
+if(arr.filter) {}
+`,
+      errors: [ruleError(3, 4, 'alwaysTruthy')],
     },
     {
       options: [{ checkArrayPredicates: true }],
