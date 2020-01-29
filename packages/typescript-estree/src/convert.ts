@@ -379,10 +379,7 @@ export class Converter {
    * property instead of a kind property. Recursively copies all children.
    */
   private deeplyCopy(node: TSNode): any {
-    if (
-      node.kind >= SyntaxKind.FirstJSDocNode &&
-      node.kind <= SyntaxKind.LastJSDocNode
-    ) {
+    if (node.kind === ts.SyntaxKind.JSDocFunctionType) {
       throw createError(
         this.ast,
         node.pos,
