@@ -295,7 +295,8 @@ export type Node =
   | VariableDeclarator
   | WhileStatement
   | WithStatement
-  | YieldExpression;
+  | YieldExpression
+  | TSUnknownJSDocType;
 
 //////////
 // Reusable Unions
@@ -1701,4 +1702,15 @@ export interface YieldExpression extends BaseNode {
   type: AST_NODE_TYPES.YieldExpression;
   delegate: boolean;
   argument?: Expression;
+}
+
+export interface TSUnknownJSDocType extends BaseNode {
+  type: AST_NODE_TYPES.TSUnknownJSDocType;
+  kind:
+    | 'JSDocAllType'
+    | 'JSDocUnknownType'
+    | 'JSDocFunctionType'
+    | 'JSDocNullableType'
+    | 'JSDocNonNullableType';
+  value: string;
 }

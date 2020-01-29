@@ -236,24 +236,4 @@ describe('convert', () => {
       range: [0, 20],
     });
   });
-
-  it('should throw error on jsDoc node', () => {
-    const jsDocCode = [
-      'type foo = ?foo<T> | ?(() => void)?',
-      'var a: function(b): c;',
-    ];
-
-    for (const code of jsDocCode) {
-      const ast = convertCode(code);
-
-      const instance = new Converter(ast, {
-        errorOnUnknownASTType: false,
-        useJSXTextNode: false,
-        shouldPreserveNodeMaps: false,
-      });
-      expect(() => instance.convertProgram()).toThrow(
-        'JSDoc types can only be used inside documentation comments.',
-      );
-    }
-  });
 });

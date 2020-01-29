@@ -123,4 +123,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSUndefinedKeyword: [],
   TSUnknownKeyword: [],
   TSVoidKeyword: [],
+
+  // Invalid nodes
+  TSUnknownJSDocType: [],
 });

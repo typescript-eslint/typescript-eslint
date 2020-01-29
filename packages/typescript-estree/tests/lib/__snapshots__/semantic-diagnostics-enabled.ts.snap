@@ -2471,6 +2471,8 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-with-optional-index-signature.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/jsdoc-disallowed-in-typescript.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-assertion-not-allowed.src 1`] = `
 Object {
   "column": 3,

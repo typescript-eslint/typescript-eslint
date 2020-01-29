@@ -161,6 +161,9 @@ export enum AST_NODE_TYPES {
   TSUndefinedKeyword = 'TSUndefinedKeyword',
   TSUnknownKeyword = 'TSUnknownKeyword',
   TSVoidKeyword = 'TSVoidKeyword',
+
+  // Invalid jsdoc node types
+  TSUnknownJSDocType = 'TSUnknownJSDocType',
 }
 
 export enum AST_TOKEN_TYPES {

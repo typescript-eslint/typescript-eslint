@@ -258,6 +258,14 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSVoidKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSUndefinedKeyword]: ts.KeywordTypeNode;
 
+  // Invalid nodes
+  [AST_NODE_TYPES.TSUnknownJSDocType]:
+    | ts.JSDocAllType
+    | ts.JSDocUnknownType
+    | ts.JSDocFunctionType
+    | ts.JSDocNullableType
+    | ts.JSDocNonNullableType;
+
   // Unused
   [AST_NODE_TYPES.TSAsyncKeyword]: ts.Token<ts.SyntaxKind.AsyncKeyword>;
   [AST_NODE_TYPES.TSDeclareKeyword]: ts.Token<ts.SyntaxKind.DeclareKeyword>;

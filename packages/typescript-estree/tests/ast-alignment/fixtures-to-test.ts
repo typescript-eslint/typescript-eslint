@@ -489,6 +489,10 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      * TODO: enable error code TS1024: 'readonly' modifier can only appear on a property declaration or index signature.
      */
     'interface-method-readonly',
+    /**
+     * Babel correctly errors on this
+     */
+    'jsdoc-disallowed-in-typescript',
   ],
 });
 

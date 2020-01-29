@@ -379,17 +379,6 @@ export class Converter {
    * property instead of a kind property. Recursively copies all children.
    */
   private deeplyCopy(node: TSNode): any {
-    if (
-      node.kind >= SyntaxKind.FirstJSDocNode &&
-      node.kind <= SyntaxKind.LastJSDocNode
-    ) {
-      throw createError(
-        this.ast,
-        node.pos,
-        'JSDoc types can only be used inside documentation comments.',
-      );
-    }
-
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
 
     /**
@@ -2651,6 +2640,21 @@ export class Converter {
           type: AST_NODE_TYPES.TSAbstractKeyword,
         });
       }
+      case SyntaxKind.JSDocAllType:
+      case SyntaxKind.JSDocUnknownType:
+      case SyntaxKind.JSDocFunctionType:
+      case SyntaxKind.JSDocNullableType:
+      case SyntaxKind.JSDocNonNullableType:
+        return this.createNode<TSESTree.TSUnknownJSDocType>(node, {
+          type: AST_NODE_TYPES.TSUnknownJSDocType,
+          kind: ts.SyntaxKind[node.kind] as
+            | 'JSDocAllType'
+            | 'JSDocUnknownType'
+            | 'JSDocFunctionType'
+            | 'JSDocNullableType'
+            | 'JSDocNonNullableType',
+          value: node.getText(this.ast),
+        });
       default:
         return this.deeplyCopy(node);
     }
