@@ -15,6 +15,7 @@ import * as util from '../util';
 interface ScopeInfo {
   upper: ScopeInfo | null;
   hasAwait: boolean;
+  hasAsync: boolean;
 }
 type FunctionNode =
   | TSESTree.FunctionDeclaration
@@ -48,10 +49,11 @@ export default util.createRule({
     /**
      * Push the scope info object to the stack.
      */
-    function enterFunction(): void {
+    function enterFunction(node: FunctionNode): void {
       scopeInfo = {
         upper: scopeInfo,
         hasAwait: false,
+        hasAsync: node.async,
       };
     }
 
@@ -100,12 +102,10 @@ export default util.createRule({
     }
 
     return {
-      'FunctionDeclaration[async = true]': enterFunction,
-      'FunctionExpression[async = true]': enterFunction,
-      'ArrowFunctionExpression[async = true]'(
-        node: TSESTree.ArrowFunctionExpression,
-      ): void {
-        enterFunction();
+      FunctionDeclaration: enterFunction,
+      FunctionExpression: enterFunction,
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void {
+        enterFunction(node);
 
         // If body type is not BlockStatement, we need to check the return type here
         if (
@@ -131,7 +131,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        if (!scopeInfo || scopeInfo.hasAwait) {
+        if (!scopeInfo || scopeInfo.hasAwait || !scopeInfo.hasAsync) {
           // short circuit early to avoid unnecessary type checks
           return;
         }

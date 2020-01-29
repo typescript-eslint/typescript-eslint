@@ -12,20 +12,6 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-// The rule has no messageId
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const noAwaitFunctionDeclaration: any = {
-  message: "Async function 'numberOne' has no 'await' expression.",
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const noAwaitFunctionExpression: any = {
-  message: "Async function has no 'await' expression.",
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const noAwaitAsyncFunctionExpression: any = {
-  message: "Async arrow function has no 'await' expression.",
-};
-
 ruleTester.run('require-await', rule, {
   valid: [
     // Non-async function declaration
@@ -126,19 +112,53 @@ async function testFunction(): Promise<void> {
       code: `async function numberOne(): Promise<number> {
         return 1;
       }`,
-      errors: [noAwaitFunctionDeclaration],
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async function 'numberOne'",
+          },
+        },
+      ],
     },
     {
       // Async function expression with no await
       code: `const numberOne = async function(): Promise<number> {
         return 1;
       }`,
-      errors: [noAwaitFunctionExpression],
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: 'Async function',
+          },
+        },
+      ],
     },
     {
       // Async arrow function expression with no await
       code: `const numberOne = async (): Promise<number> => 1;`,
-      errors: [noAwaitAsyncFunctionExpression],
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: 'Async arrow function',
+          },
+        },
+      ],
+    },
+    {
+      // non-async function with await inside async function without await
+      code:
+        'async function foo() { function nested() { await doSomething() } }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async function 'foo'",
+          },
+        },
+      ],
     },
   ],
 });
