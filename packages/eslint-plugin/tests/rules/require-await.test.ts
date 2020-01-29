@@ -142,3 +142,132 @@ async function testFunction(): Promise<void> {
     },
   ],
 });
+
+// base eslint tests
+// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/tests/lib/rules/require-await.js#L25-L132
+ruleTester.run('require-await', rule, {
+  valid: [
+    'async function foo() { await doSomething() }',
+    '(async function() { await doSomething() })',
+    'async () => { await doSomething() }',
+    'async () => await doSomething()',
+    '({ async foo() { await doSomething() } })',
+    'class A { async foo() { await doSomething() } }',
+    '(class { async foo() { await doSomething() } })',
+    'async function foo() { await (async () => { await doSomething() }) }',
+
+    // empty functions are ok.
+    'async function foo() {}',
+    'async () => {}',
+
+    // normal functions are ok.
+    'function foo() { doSomething() }',
+
+    // for-await-of
+    'async function foo() { for await (x of xs); }',
+
+    // global await
+    {
+      code: 'await foo()',
+    },
+    {
+      code: `
+        for await (let num of asyncIterable) {
+            console.log(num);
+        }
+      `,
+    },
+  ],
+  invalid: [
+    {
+      code: 'async function foo() { doSomething() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async function 'foo'" },
+        },
+      ],
+    },
+    {
+      code: '(async function() { doSomething() })',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async function' },
+        },
+      ],
+    },
+    {
+      code: 'async () => { doSomething() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async arrow function' },
+        },
+      ],
+    },
+    {
+      code: 'async () => doSomething()',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async arrow function' },
+        },
+      ],
+    },
+    {
+      code: '({ async foo() { doSomething() } })',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async method 'foo'" },
+        },
+      ],
+    },
+    {
+      code: 'class A { async foo() { doSomething() } }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async method 'foo'" },
+        },
+      ],
+    },
+    {
+      code: '(class { async foo() { doSomething() } })',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async method 'foo'" },
+        },
+      ],
+    },
+    {
+      code: "(class { async ''() { doSomething() } })",
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async method' },
+        },
+      ],
+    },
+    {
+      code: 'async function foo() { async () => { await doSomething() } }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async function 'foo'" },
+        },
+      ],
+    },
+    {
+      code: 'async function foo() { await (async () => { doSomething() }) }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async arrow function' },
+        },
+      ],
+    },
+  ],
+});
