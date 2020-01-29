@@ -1,4 +1,4 @@
-import { TypeChecker, Type } from 'typescript';
+import 'typescript';
 
 declare module 'typescript' {
   interface TypeChecker {

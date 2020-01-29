@@ -65,10 +65,27 @@ const weirdIntersections = [
     };
     function foo(arg: Test) {}
   `,
+  `
+    type Test = string & number;
+    function foo(arg: Test) {}
+  `,
 ];
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
+    `
+      type Test = (readonly string[]) & {
+        property: boolean
+      };
+      function foo(arg: Test) {}
+    `,
+    `
+      interface Test extends ReadonlyArray<string> {
+        property: boolean
+      }
+      function foo(arg: Test) {}
+    `,
+    'function foo(arg: { readonly a: string }) {}',
     'function foo() {}',
 
     // primitives
@@ -92,8 +109,26 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
     // objects
 
-    // weird intersections
+    // weird other cases
     ...weirdIntersections.map(code => code),
+    `
+      class Foo {
+        readonly bang = 1;
+      }
+      interface Foo {
+        readonly prop: string;
+      }
+      interface Foo {
+        readonly prop2: string;
+      }
+      function foo(arg: Foo) {}
+    `,
+    `
+      class Foo {
+        method() {}
+      }
+      function foo(arg: Readonly<Foo>) {}
+    `,
   ],
   invalid: [
     // arrays
