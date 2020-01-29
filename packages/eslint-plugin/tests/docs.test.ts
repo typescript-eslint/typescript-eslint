@@ -85,6 +85,11 @@ describe('Validating rule metadata', () => {
         // not perfect but should be good enough
         const ruleFileContents = fs.readFileSync(
           path.resolve(__dirname, `../src/rules/${ruleName}.ts`),
+          'utf-8',
+        );
+
+        const requiresTypeChecking = /getParserServices(\(\s*[a-z]+\s*)\)/.test(
+          ruleFileContents,
         );
 
         expect(requiresTypeChecking).toEqual(
