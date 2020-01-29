@@ -14,6 +14,7 @@ export default util.createRule({
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
+      extendsBaseRule: 'no-return-await',
     },
     type: 'problem',
     messages: {

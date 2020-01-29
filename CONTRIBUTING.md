@@ -76,7 +76,7 @@ And `<package>` is the name of the package you have made changes within (`eslint
 
 And `<short description>` is a succinct title for the PR.
 
-Within the body of your PR, make sure you reference the issue that you have worked on, as well as a pointing out anything of note you wish us to look at during our review.
+Within the body of your PR, make sure you reference the issue that you have worked on, as well as pointing out anything of note you wish us to look at during our review.
 
 Make sure you use the "Fixes #xxx" format to reference issues, so that GitHub automatically closes the issues when we merge the PR. Also note that if you are fixing multiple issues at once, you can only reference one issue per line, and must put one "Fixes #xxx" per issue number.
 

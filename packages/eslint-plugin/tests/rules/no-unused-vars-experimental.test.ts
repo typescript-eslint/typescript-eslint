@@ -541,6 +541,7 @@ export class Foo {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Property',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -968,6 +969,7 @@ export function foo([[a]], used) {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -1042,6 +1044,7 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -1061,6 +1064,7 @@ console.log(named);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'defaultImp',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -1080,6 +1084,7 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -1099,6 +1104,7 @@ console.log(defaultImp);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },
@@ -1118,6 +1124,7 @@ console.log(named1);
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'named2',
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Import',
             pattern: DEFAULT_IGNORED_REGEX,
           },

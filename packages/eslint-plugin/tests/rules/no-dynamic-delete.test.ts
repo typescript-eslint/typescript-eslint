@@ -1,15 +1,14 @@
-import path from 'path';
 import rule from '../../src/rules/no-dynamic-delete';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
+const rootPath = getFixturesRootDir();
+
 const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
+    tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-dynamic-delete', rule, {

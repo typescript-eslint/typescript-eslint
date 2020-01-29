@@ -5,17 +5,18 @@ jobs:
   - job: primary_code_validation_and_tests
     displayName: Primary code validation and tests
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           # Note that this command *also* typechecks tests/tools,
@@ -43,14 +44,15 @@ jobs:
           yarn integration-tests
         displayName: 'Run integrations tests'
 
-      - script: |
-          bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
+      - bash: bash <(curl -s https://codecov.io/bash) -P "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"
+        env:
+          CODECOV_TOKEN: $(CODECOV_TOKEN)
         displayName: 'Publish code coverage report'
 
   - job: unit_tests_on_other_node_versions
     displayName: Run unit tests on other Node.js versions
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     strategy:
       maxParallel: 3
       matrix:
@@ -68,6 +70,7 @@ jobs:
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           yarn test
@@ -80,17 +83,18 @@ jobs:
       - unit_tests_on_other_node_versions
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-18.04'
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 11
-        displayName: 'Install Node.js 11'
+          versionSpec: 12
+        displayName: 'Install Node.js 12'
 
       - script: |
           # This also runs a build as part of the postinstall
           # bootstrap
           yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
 
       - script: |
           npm config set //registry.npmjs.org/:_authToken=$(NPM_TOKEN)

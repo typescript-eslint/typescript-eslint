@@ -13,6 +13,7 @@ export default util.createRule({
       description: 'Disallow unused variables',
       category: 'Variables',
       recommended: 'warn',
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,

@@ -10,6 +10,7 @@ export default util.createRule({
       description: 'Disallow unused expressions',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
     messages: {},
