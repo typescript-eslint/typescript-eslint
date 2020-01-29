@@ -104,35 +104,30 @@ export default util.createRule({
     return {
       FunctionDeclaration: enterFunction,
       FunctionExpression: enterFunction,
-      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void {
-        enterFunction(node);
-
-        // If body type is not BlockStatement, we need to check the return type here
-        if (
-          node.body.type !== AST_NODE_TYPES.BlockStatement &&
-          node.body.type !== AST_NODE_TYPES.AwaitExpression
-        ) {
-          const expression = parserServices.esTreeNodeToTSNodeMap.get(
-            node.body,
-          );
-          if (expression && isThenableType(expression)) {
-            markAsHasAwait();
-          }
-        }
-      },
+      ArrowFunctionExpression: enterFunction,
       'FunctionDeclaration:exit': exitFunction,
       'FunctionExpression:exit': exitFunction,
       'ArrowFunctionExpression:exit': exitFunction,
 
       AwaitExpression: markAsHasAwait,
-      ForOfStatement(node): void {
-        if (node.await) {
+      'ForOfStatement[await = true]': markAsHasAwait,
+
+      // check body-less async arrow function.
+      // ignore `async () => await foo` because it's obviously correct
+      'ArrowFunctionExpression[async = true] > :not(BlockStatement, AwaitExpression)'(
+        node: Exclude<
+          TSESTree.Node,
+          TSESTree.BlockStatement | TSESTree.AwaitExpression
+        >,
+      ): void {
+        const expression = parserServices.esTreeNodeToTSNodeMap.get(node);
+        if (expression && isThenableType(expression)) {
           markAsHasAwait();
         }
       },
       ReturnStatement(node): void {
+        // short circuit early to avoid unnecessary type checks
         if (!scopeInfo || scopeInfo.hasAwait || !scopeInfo.hasAsync) {
-          // short circuit early to avoid unnecessary type checks
           return;
         }
 
