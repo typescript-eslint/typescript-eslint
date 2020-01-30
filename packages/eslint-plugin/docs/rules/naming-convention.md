@@ -127,7 +127,7 @@ Accepts an object with the following properties:
 
 The `filter` option operates similar to `custom`, accepting the same shaped object, except that it controls if the rest of the configuration should or should not be applied to an identifier.
 
-You can use this to exclude specific identifiers from specific configurations.
+You can use this to include or exclude specific identifiers from specific configurations.
 
 Accepts an object with the following properties:
 
