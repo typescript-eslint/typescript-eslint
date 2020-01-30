@@ -706,5 +706,164 @@ class Test {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public /*public*/constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  /*public*/constructor(private foo: string) {}
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public foo() {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  foo() {}
+}
+      `,
+    },
+
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public foo;
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  foo;
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public foo = "";
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  foo = "";
+}
+      `,
+    },
+
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  contructor(public /* Hi there */ readonly foo)
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 14,
+        },
+      ],
+      output: `
+class Test {
+  contructor(/* Hi there */ readonly foo)
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  contructor(public readonly foo: string)
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 14,
+        },
+      ],
+      output: `
+class Test {
+  contructor(readonly foo: string)
+}
+      `,
+    },
   ],
 });
