@@ -1,8 +1,9 @@
 import semver from 'semver';
 import * as parser from '../../src/parser';
 
-jest.mock('semver');
-
+jest.mock('semver', () => ({
+  satisfies: jest.fn(),
+}));
 const resetIsTTY = process.stdout.isTTY;
 
 describe('Warn on unsupported TypeScript version', () => {

@@ -17,17 +17,13 @@ const neverOptionWithoutContinuationChars: Options = [
   { beforeStatementContinuationChars: 'never' },
 ];
 
-// the base rule doesn't use a message id...
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const missingSemicolon: any = {
-  message: 'Missing semicolon.',
-};
+const missingSemicolon = {
+  messageId: 'missingSemi',
+} as const;
 
-// the base rule doesn't use a message id...
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const extraSemicolon: any = {
-  message: 'Extra semicolon.',
-};
+const extraSemicolon = {
+  messageId: 'extraSemi',
+} as const;
 
 ruleTester.run('semi', rule, {
   valid: [
@@ -691,31 +687,19 @@ class PanCamera extends FreeCamera {
         code: 'for (;;){var i;}',
         output: 'for (;;){var i}',
         options: neverOption,
-        errors: [
-          {
-            line: 1,
-          },
-        ],
+        errors: [extraSemicolon],
       },
       {
         code: 'for (;;) var i; ',
         output: 'for (;;) var i ',
         options: neverOption,
-        errors: [
-          {
-            line: 1,
-          },
-        ],
+        errors: [extraSemicolon],
       },
       {
         code: 'for (var j;;) {var i;}',
         output: 'for (var j;;) {var i}',
         options: neverOption,
-        errors: [
-          {
-            line: 1,
-          },
-        ],
+        errors: [extraSemicolon],
       },
 
       {
@@ -761,7 +745,7 @@ class PanCamera extends FreeCamera {
         code: 'if (foo) { bar(); }',
         output: 'if (foo) { bar() }',
         options: ['always', { omitLastInOneLineBlock: true }],
-        errors: [{ message: 'Extra semicolon.' }],
+        errors: [extraSemicolon],
       },
 
       // https://github.com/eslint/eslint/issues/9521
@@ -775,8 +759,7 @@ class PanCamera extends FreeCamera {
                       [1,2,3].forEach(doSomething)
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
-
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -788,8 +771,7 @@ class PanCamera extends FreeCamera {
                       [a] = b
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
-
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -806,7 +788,7 @@ class PanCamera extends FreeCamera {
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         parserOptions: { ecmaVersion: 2015 },
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -822,7 +804,7 @@ class PanCamera extends FreeCamera {
                       }
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -838,7 +820,7 @@ class PanCamera extends FreeCamera {
                       }
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -850,7 +832,7 @@ class PanCamera extends FreeCamera {
                       [1,2,3].forEach(doSomething)
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -863,7 +845,7 @@ class PanCamera extends FreeCamera {
                   `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         parserOptions: { ecmaVersion: 2015 },
-        errors: ['Missing semicolon.'],
+        errors: [missingSemicolon],
       },
       {
         code: `
@@ -875,7 +857,6 @@ class PanCamera extends FreeCamera {
                       [1,2,3].forEach(doSomething)
                   `,
         options: neverOptionWithoutContinuationChars,
-
         errors: [extraSemicolon],
       },
       {
@@ -888,7 +869,6 @@ class PanCamera extends FreeCamera {
                       [a] = b
                   `,
         options: neverOptionWithoutContinuationChars,
-
         errors: [extraSemicolon],
       },
       {
@@ -1078,7 +1058,7 @@ class PanCamera extends FreeCamera {
           ';[0,1,2].forEach(bar)',
         ].join('\n'),
         options: neverOption,
-        errors: ['Extra semicolon.', 'Unnecessary semicolon.'],
+        errors: [extraSemicolon],
       },
     ],
   ),
