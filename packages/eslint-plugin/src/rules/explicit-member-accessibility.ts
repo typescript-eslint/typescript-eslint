@@ -199,13 +199,7 @@ export default util.createRule<Options, MessageIds>({
             }
           }
         }
-        if (typeof rangeToRemove! === 'undefined') {
-          throw new Error(
-            `Couldn't define a range for "public" keyword that is to be deleted`,
-          );
-        }
-
-        return fixer.removeRange(rangeToRemove);
+        return fixer.removeRange(rangeToRemove!);
       };
     }
 
