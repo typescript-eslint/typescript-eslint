@@ -6,6 +6,7 @@ import {
   getConstrainedTypeAtLocation,
 } from '../util';
 import { isTypeFlagSet, unionTypeParts } from 'tsutils';
+import { isClosingBraceToken, isOpeningBraceToken } from 'eslint-utils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
@@ -27,6 +28,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
 
@@ -40,16 +42,15 @@ export default createRule({
       node: TSESTree.SwitchStatement,
       missingBranchTypes: Array<ts.Type>,
     ): TSESLint.RuleFix | null {
-      // It seems, there is no way to insert automatically generated cases
-      // inside an empty switch body
-      if (node.cases.length === 0) {
-        return null;
-      }
+      const lastCase =
+        node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
+      const caseIndent = lastCase
+        ? ' '.repeat(lastCase.loc.start.column)
+        : // if there are no cases, use indentation of the switch statement
+          // and leave it to user to format it correctly
+          ' '.repeat(node.loc.start.column);
 
-      const lastCase = node.cases[node.cases.length - 1];
-      const lastCaseIndent = Array(lastCase.loc.start.column + 1).join(' ');
-      let fixString = '';
-
+      const missingCases = [];
       for (const missingBranchType of missingBranchTypes) {
         // While running this rule on checker.ts of TypeScript project
         // the fix introduced a compiler error due to:
@@ -68,10 +69,33 @@ export default createRule({
         const caseTest = checker.typeToString(missingBranchType);
         const errorMessage = `Not implemented yet: ${caseTest} case`;
 
-        fixString += `\n${lastCaseIndent}case ${caseTest}: { throw new Error('${errorMessage}') }`;
+        missingCases.push(
+          `case ${caseTest}: { throw new Error('${errorMessage}') }`,
+        );
       }
 
-      return fixer.insertTextAfter(lastCase, fixString);
+      const fixString = missingCases
+        .map(code => `${caseIndent}${code}`)
+        .join('\n');
+
+      if (lastCase) {
+        return fixer.insertTextAfter(lastCase, `\n${fixString}`);
+      }
+
+      // there were no existing cases
+      const openingBrace = sourceCode.getTokenAfter(
+        node.discriminant,
+        isOpeningBraceToken,
+      )!;
+      const closingBrace = sourceCode.getTokenAfter(
+        node.discriminant,
+        isClosingBraceToken,
+      )!;
+
+      return fixer.replaceTextRange(
+        [openingBrace.range[0], closingBrace.range[1]],
+        ['{', fixString, `${caseIndent}}`].join('\n'),
+      );
     }
 
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {

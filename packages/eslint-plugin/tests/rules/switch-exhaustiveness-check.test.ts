@@ -292,5 +292,69 @@ function test(value: T): number {
       `,
       errors: [{ messageId: 'switchIsNotExhaustive', line: 9, column: 11 }],
     },
+    // Provides suggestions to add missing cases
+    {
+      // with existing cases present
+      code: `
+type T = 1 | 2
+
+function test(value: T): number {
+  switch (value) {
+    case 1: return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type T = 1 | 2
+
+function test(value: T): number {
+  switch (value) {
+    case 1: return 1;
+    case 2: { throw new Error('Not implemented yet: 2 case') }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // without existing cases
+      code: `
+type T = 1 | 2
+
+function test(value: T): number {
+  switch (value) {
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type T = 1 | 2
+
+function test(value: T): number {
+  switch (value) {
+  case 1: { throw new Error('Not implemented yet: 1 case') }
+  case 2: { throw new Error('Not implemented yet: 2 case') }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
