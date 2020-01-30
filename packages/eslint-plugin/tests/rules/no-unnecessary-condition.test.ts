@@ -159,6 +159,20 @@ const tuple = [{}] as [object];
 declare const n: number;
 if(tuple[n]) {}
 `,
+    // Optional-chaining indexing
+    `
+declare const arr: Array<{value: string} & (() => void)>;
+if(arr[42]?.value) {}
+arr[41]?.();
+
+// An array access can "infect" deeper into the chain
+declare const arr2: Array<{x: {y: {z: object}}}>;
+arr2[42]?.x?.y?.z;
+
+const tuple = ["foo"] as const;
+declare const n: number;
+tuple[n]?.toUpperCase();
+    `,
     // Supports ignoring the RHS
     {
       code: `
@@ -384,10 +398,14 @@ if(dict["mightNotExist"]) {}
     {
       // Should still check tuples when accessed with literal numbers, since they don't have
       code: `
-const x = [{}] as [object];
+const x = [{}] as [{foo: string}];
 if(x[0]) {}
+if(x[0]?.foo) {}
 `,
-      errors: [ruleError(3, 4, 'alwaysTruthy')],
+      errors: [
+        ruleError(3, 4, 'alwaysTruthy'),
+        ruleError(4, 8, 'neverOptionalChain'),
+      ],
     },
     {
       // Shouldn't mistake this for an array indexing case
