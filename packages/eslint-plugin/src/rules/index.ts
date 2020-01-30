@@ -46,6 +46,7 @@ import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
+import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import useDefaultTypeParameter from './no-unnecessary-type-arguments';
@@ -133,6 +134,7 @@ export default {
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
   'no-throw-literal': noThrowLiteral,
+  'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,

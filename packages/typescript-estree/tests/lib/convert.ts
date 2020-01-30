@@ -17,6 +17,13 @@ describe('convert', () => {
   it('deeplyCopy should convert node correctly', () => {
     const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
+    function fakeUnknownKind(node: ts.Node): void {
+      ts.forEachChild(node, fakeUnknownKind);
+      node.kind = ts.SyntaxKind.UnparsedPrologue;
+    }
+
+    ts.forEachChild(ast, fakeUnknownKind);
+
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
@@ -32,8 +39,9 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    }) as any;
+
+    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type parameters correctly', () => {
@@ -43,8 +51,9 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    }) as any;
+
+    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type arguments correctly', () => {
@@ -54,9 +63,10 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
+    }) as any;
+
     expect(
-      (instance as any).deeplyCopy((ast.statements[0] as any).expression),
+      instance.deeplyCopy((ast.statements[0] as any).expression),
     ).toMatchSnapshot();
   });
 
@@ -67,8 +77,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast)).toMatchSnapshot();
+    }) as any;
+    expect(instance.deeplyCopy(ast)).toMatchSnapshot();
   });
 
   it('deeplyCopy should fail on unknown node', () => {
@@ -78,9 +88,10 @@ describe('convert', () => {
       errorOnUnknownASTType: true,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect(() => instance.convertProgram()).toThrow(
-      'Unknown AST_NODE_TYPE: "TSJSDocNullableType"',
+    }) as any;
+
+    expect(() => instance.deeplyCopy(ast)).toThrow(
+      'Unknown AST_NODE_TYPE: "TSSourceFile"',
     );
   });
 
@@ -224,5 +235,26 @@ describe('convert', () => {
       },
       range: [0, 20],
     });
+  });
+
+  it('should throw error on jsDoc node', () => {
+    const jsDocCode = [
+      'const x: function(new: number, string);',
+      'const x: function(this: number, string);',
+      'var g: function(number, number): number;',
+    ];
+
+    for (const code of jsDocCode) {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast, {
+        errorOnUnknownASTType: false,
+        useJSXTextNode: false,
+        shouldPreserveNodeMaps: false,
+      });
+      expect(() => instance.convertProgram()).toThrow(
+        'JSDoc types can only be used inside documentation comments.',
+      );
+    }
   });
 });
