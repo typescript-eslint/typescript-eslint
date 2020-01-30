@@ -6,7 +6,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const messageId = 'useLiteral' as 'useLiteral';
+const messageId = 'useLiteral' as const;
 
 ruleTester.run('no-array-constructor', rule, {
   valid: [

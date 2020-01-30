@@ -26,6 +26,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Enforces consistent spacing before function parenthesis',
       category: 'Stylistic Issues',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'whitespace',
     schema: [

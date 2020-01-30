@@ -15,6 +15,12 @@ function foo(bar: number | undefined) {
 }
 ```
 
+```ts
+function foo(bar?: { n: number }) {
+  return bar!?.n;
+}
+```
+
 Examples of **correct** code for this rule:
 
 ```ts
@@ -25,6 +31,12 @@ const bar = foo!.bar;
 ```ts
 function foo(bar: number | undefined) {
   const bar: number = bar!;
+}
+```
+
+```ts
+function foo(bar?: { n: number }) {
+  return bar?.n;
 }
 ```
 

@@ -14,9 +14,9 @@ interface Config {
   ignoreStatic: boolean;
 }
 
-type Options = [Config];
+export type Options = [Config];
 
-type MessageIds = 'unbound';
+export type MessageIds = 'unbound';
 
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
@@ -99,9 +99,9 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
-  const parent = node.parent!;
+  const parent = node.parent;
 
-  switch (parent.type) {
+  switch (parent?.type) {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
@@ -118,9 +118,6 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.ConditionalExpression:
       return parent.test === node;
 
-    case AST_NODE_TYPES.LogicalExpression:
-      return parent.operator !== '||';
-
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
 
@@ -133,6 +130,16 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
+      return isSafeUse(parent);
+
+    case AST_NODE_TYPES.LogicalExpression:
+      if (parent.operator === '&&' && parent.left === node) {
+        // this is safe, as && will return the left if and only if it's falsy
+        return true;
+      }
+
+      // in all other cases, it's likely the logical expression will return the method ref
+      // so make sure the parent is a safe usage
       return isSafeUse(parent);
   }
 
