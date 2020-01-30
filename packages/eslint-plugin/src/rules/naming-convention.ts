@@ -766,8 +766,8 @@ function createValidator(
     .sort((a, b) => {
       if (a.selector === b.selector) {
         // in the event of the same selector, order by modifier weight
-        // sort ascending - the type modifiers are "more important"
-        return a.modifierWeight - b.modifierWeight;
+        // sort descending - the type modifiers are "more important"
+        return b.modifierWeight - a.modifierWeight;
       }
 
       /*
@@ -797,7 +797,7 @@ function createValidator(
     // return will break the loop and stop checking configs
     // it is only used when the name is known to have failed or succeeded a config.
     for (const config of configs) {
-      if (config.filter?.test(originalName)) {
+      if (config.filter?.test(originalName) === false) {
         // name does not match the filter
         continue;
       }

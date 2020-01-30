@@ -6,7 +6,7 @@ import { visitorKeys } from '../../src/visitor-keys';
 //------------------------------------------------------------------------------
 
 const astTypes = Object.keys(AST_NODE_TYPES);
-astTypes.push('TSEmptyBodyFunctionExpression'); // node created by parser.ts
+astTypes.push(AST_NODE_TYPES.TSEmptyBodyFunctionExpression); // node created by parser.ts
 
 //------------------------------------------------------------------------------
 // Tests

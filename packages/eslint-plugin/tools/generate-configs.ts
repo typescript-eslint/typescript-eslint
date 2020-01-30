@@ -19,17 +19,20 @@ interface LinterConfig extends TSESLint.Linter.Config {
 }
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
-const MAX_RULE_NAME_LENGTH = 32;
+const MAX_RULE_NAME_LENGTH = Object.keys(rules).reduce(
+  (acc, name) => Math.max(acc, name.length),
+  0,
+);
 const DEFAULT_RULE_SETTING = 'warn';
 const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
   Object.entries(rules)
-    .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
+    .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
     .map(
       ([ruleName, rule]) =>
         [
           ruleName,
-          typeof rule.meta.docs.extendsBaseRule === 'string'
-            ? rule.meta.docs.extendsBaseRule
+          typeof rule.meta.docs?.extendsBaseRule === 'string'
+            ? rule.meta.docs?.extendsBaseRule
             : ruleName,
         ] as const,
     ),
@@ -71,7 +74,7 @@ function reducer<TMessageIds extends string>(
   // Explicitly exclude rules requiring type-checking
   if (
     settings.filterRequiresTypeChecking === 'exclude' &&
-    value.meta.docs.requiresTypeChecking === true
+    value.meta.docs?.requiresTypeChecking === true
   ) {
     return config;
   }
@@ -79,13 +82,13 @@ function reducer<TMessageIds extends string>(
   // Explicitly include rules requiring type-checking
   if (
     settings.filterRequiresTypeChecking === 'include' &&
-    value.meta.docs.requiresTypeChecking !== true
+    value.meta.docs?.requiresTypeChecking !== true
   ) {
     return config;
   }
 
   const ruleName = `${RULE_NAME_PREFIX}${key}`;
-  const recommendation = value.meta.docs.recommended;
+  const recommendation = value.meta.docs?.recommended;
   const usedSetting = settings.errorLevel
     ? settings.errorLevel
     : !recommendation
@@ -154,7 +157,7 @@ console.log(
   '------------------------------ recommended.json (should not require program) ------------------------------',
 );
 const recommendedRules = ruleEntries
-  .filter(entry => !!entry[1].meta.docs.recommended)
+  .filter(entry => !!entry[1].meta.docs?.recommended)
   .reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, {
@@ -180,7 +183,7 @@ console.log(
   '--------------------------------- recommended-requiring-type-checking.json ---------------------------------',
 );
 const recommendedRulesRequiringProgram = ruleEntries
-  .filter(entry => !!entry[1].meta.docs.recommended)
+  .filter(entry => !!entry[1].meta.docs?.recommended)
   .reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, {

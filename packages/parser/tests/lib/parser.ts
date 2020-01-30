@@ -43,7 +43,7 @@ describe('parser', () => {
       comment: false,
       range: false,
       tokens: false,
-      sourceType: 'module' as 'module',
+      sourceType: 'module' as const,
       ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
