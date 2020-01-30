@@ -80,7 +80,11 @@ const formatTestNames: Readonly<Record<
 };
 
 const REPLACE_REGEX = /%/g;
-const IGNORED_REGEX = /^.(?!gnored)/; // negative lookahead to not match `[iI]gnored`
+// filter to not match `[iI]gnored`
+const IGNORED_FILTER = {
+  match: false,
+  regex: /.gnored/.source,
+};
 
 type Cases = {
   code: string[];
@@ -100,7 +104,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -206,7 +210,7 @@ function createInvalidTestCases(
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
