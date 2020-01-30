@@ -1058,7 +1058,11 @@ class PanCamera extends FreeCamera {
           ';[0,1,2].forEach(bar)',
         ].join('\n'),
         options: neverOption,
-        errors: [extraSemicolon],
+        errors: [
+          extraSemicolon,
+          // weird test in the base eslint tests which tests two rules at the same time
+          'Unnecessary semicolon.' as never,
+        ],
       },
     ],
   ),
