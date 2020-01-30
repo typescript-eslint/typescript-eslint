@@ -164,6 +164,14 @@ const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
   },
   additionalItems: false,
 };
+const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
+  type: 'object',
+  properties: {
+    match: { type: 'boolean' },
+    regex: { type: 'string' },
+  },
+  required: ['match', 'regex'],
+};
 type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
   format: {
@@ -181,18 +189,7 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
       },
     ],
   },
-  custom: {
-    type: 'object',
-    properties: {
-      regex: {
-        type: 'string',
-      },
-      match: {
-        type: 'boolean',
-      },
-    },
-    required: ['regex', 'match'],
-  },
+  custom: MATCH_REGEX_SCHEMA,
   leadingUnderscore: UNDERSCORE_SCHEMA,
   trailingUnderscore: UNDERSCORE_SCHEMA,
   prefix: PREFIX_SUFFIX_SCHEMA,
@@ -210,18 +207,7 @@ function selectorSchema(
           type: 'string',
           minLength: 1,
         },
-        {
-          type: 'object',
-          properties: {
-            regex: {
-              type: 'string',
-            },
-            match: {
-              type: 'boolean',
-            },
-          },
-          required: ['regex', 'match'],
-        },
+        MATCH_REGEX_SCHEMA,
       ],
     },
     selector: {
