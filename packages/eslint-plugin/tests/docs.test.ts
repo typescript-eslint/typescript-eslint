@@ -70,6 +70,10 @@ describe('Validating rule docs', () => {
 });
 
 describe('Validating rule metadata', () => {
+  function requiresFullTypeInformation(content: string): boolean {
+    return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
+  }
+
   for (const [ruleName, rule] of rulesData) {
     describe(`${ruleName}`, () => {
       it('`name` field in rule must match the filename', () => {
@@ -88,11 +92,7 @@ describe('Validating rule metadata', () => {
           'utf-8',
         );
 
-        const requiresTypeChecking = /getParserServices(\(\s*[a-z]+\s*)\)/.test(
-          ruleFileContents,
-        );
-
-        expect(requiresTypeChecking).toEqual(
+        expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
           rule.meta.docs?.requiresTypeChecking ?? false,
         );
       });
