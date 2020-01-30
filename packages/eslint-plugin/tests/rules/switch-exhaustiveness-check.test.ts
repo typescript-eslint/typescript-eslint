@@ -50,7 +50,7 @@ switch (day) {
      result = 7
      break
   }
-} 
+}
 `,
     // Other primitive literals work too
     `
@@ -120,7 +120,7 @@ function test(value: Union): number {
 `,
     // Switch contains default clause.
     `
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'  
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
 
 const day = 'Monday' as Day
 let result = 0
@@ -132,7 +132,7 @@ switch (day) {
   }
   default: {
      result = 42
-  }   
+  }
 }
   `,
     // Exhaustiveness check only works for union types...
@@ -149,7 +149,7 @@ switch (day) {
     result = 2
     break
   }
-} 
+}
   `,
     // ... and enums (at least for now).
     `
@@ -177,7 +177,7 @@ function test(value: ObjectUnion): number {
     {
       // Matched only one branch out of seven.
       code: `
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'  
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
 
 const day = 'Monday' as Day
 let result = 0
@@ -328,7 +328,7 @@ switch (foobar) {
     result = 42
     break
   }
-}      
+}
       `,
       errors: [
         {
