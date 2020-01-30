@@ -55,25 +55,29 @@ switch (day) {
     // Other primitive literals work too
     `
 type Num = 0 | 1 | 2
-type Bool = true | false
-type Mix = 0 | 1 | 'two' | 'three' | true
 
-function test1(value: Num): number {
+function test(value: Num): number {
   switch (value) {
     case 0: return 0
     case 1: return 1
     case 2: return 2
   }
 }
+`,
+    `
+type Bool = true | false
 
-function test2(value: Bool): number {
+function test(value: Bool): number {
   switch (value) {
     case true: return 1
     case false: return 0
   }
 }
+`,
+    `
+type Mix = 0 | 1 | 'two' | 'three' | true
 
-function test3(value: Mix): number {
+function test(value: Mix): number {
   switch (value) {
     case 0: return 0
     case 1: return 1
