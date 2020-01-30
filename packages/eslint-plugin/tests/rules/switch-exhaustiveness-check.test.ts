@@ -189,7 +189,17 @@ switch (day) {
   }
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 7, column: 9 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          data: {
+            missingBranches:
+              '"Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+          },
+        },
+      ],
     },
     {
       // Didn't match all enum variants
@@ -202,7 +212,16 @@ function test(value: Enum): number {
   }
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 5, column: 11 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 5,
+          column: 11,
+          data: {
+            missingBranches: 'Enum.B',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -217,7 +236,16 @@ function test(value: Union): number {
   }
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 8, column: 11 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 8,
+          column: 11,
+          data: {
+            missingBranches: '"b" | "c"',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -233,7 +261,16 @@ function test(value: Union): number {
   }
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 9, column: 11 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 9,
+          column: 11,
+          data: {
+            missingBranches: 'true | 1',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -245,19 +282,38 @@ function test(value: DiscriminatedUnion): number {
   }
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 5, column: 11 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 5,
+          column: 11,
+          data: {
+            missingBranches: '"B"',
+          },
+        },
+      ],
     },
     {
       // Still complains with empty switch
       code: `
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'  
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
 
 const day = 'Monday' as Day
 
 switch (day) {
 }
 `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 6, column: 9 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 6,
+          column: 9,
+          data: {
+            missingBranches:
+              '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+          },
+        },
+      ],
     },
     {
       // Still complains with union intersection part
@@ -274,7 +330,16 @@ switch (foobar) {
   }
 }      
       `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 7, column: 9 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          data: {
+            missingBranches: 'string & { foo: void; }',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -290,7 +355,16 @@ function test(value: T): number {
   }
 }
       `,
-      errors: [{ messageId: 'switchIsNotExhaustive', line: 9, column: 11 }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 9,
+          column: 11,
+          data: {
+            missingBranches: 'typeof b | typeof c',
+          },
+        },
+      ],
     },
     // Provides suggestions to add missing cases
     {
