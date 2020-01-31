@@ -39,19 +39,12 @@ const arrays = [
   'readonly [string]',
   'Readonly<[string]>',
 ];
+const objects = [
+  '{ foo: "" }',
+  '{ foo: readonly string[] }',
+  '{ foo(): void }',
+];
 const weirdIntersections = [
-  `
-    interface Test extends ReadonlyArray<string> {
-      readonly property: boolean
-    }
-    function foo(arg: Test) {}
-  `,
-  `
-    type Test = (readonly string[]) & {
-      readonly property: boolean
-    };
-    function foo(arg: Test) {}
-  `,
   `
     interface Test {
       (): void
@@ -65,26 +58,10 @@ const weirdIntersections = [
     };
     function foo(arg: Test) {}
   `,
-  `
-    type Test = string & number;
-    function foo(arg: Test) {}
-  `,
 ];
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
-    `
-      type Test = (readonly string[]) & {
-        property: boolean
-      };
-      function foo(arg: Test) {}
-    `,
-    `
-      interface Test extends ReadonlyArray<string> {
-        property: boolean
-      }
-      function foo(arg: Test) {}
-    `,
     'function foo(arg: { readonly a: string }) {}',
     'function foo() {}',
 
@@ -108,9 +85,35 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
 
     // objects
+    ...objects.map(type => `function foo(arg: Readonly<${type}>) {}`),
+    `
+      function foo(arg: {
+        readonly foo: {
+          readonly bar: string
+        }
+      }) {}
+    `,
 
     // weird other cases
     ...weirdIntersections.map(code => code),
+    `
+      interface Test extends ReadonlyArray<string> {
+        readonly property: boolean
+      }
+      function foo(arg: Readonly<Test>) {}
+    `,
+    `
+      type Test = (readonly string[]) & {
+        readonly property: boolean
+      };
+      function foo(arg: Readonly<Test>) {}
+    `,
+    `
+      type Test = string & number;
+      function foo(arg: Test) {}
+    `,
+
+    // declaration merging
     `
       class Foo {
         readonly bang = 1;
@@ -123,6 +126,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       }
       function foo(arg: Foo) {}
     `,
+    // method made readonly via Readonly<T>
     `
       class Foo {
         method() {}
@@ -181,16 +185,36 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // objects
-    // {
-    //   code: `
-    //     interface MutablePropFunction {
-    //       (): void
-    //       mutable: boolean
-    //     }
-    //     function foo(arg: MutablePropFunction) {}
-    //   `,
-    //   errors: [],
-    // },
+    ...objects.map<TSESLint.InvalidTestCase<MessageIds, Options>>(type => {
+      return {
+        code: `function foo(arg: ${type}) {}`,
+        errors: [
+          {
+            messageId: 'shouldBeReadonly',
+            column: 14,
+            endColumn: 19 + type.length,
+          },
+        ],
+      };
+    }),
+    {
+      code: `
+        function foo(arg: {
+          readonly foo: {
+            bar: string
+          }
+        }) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endLine: 6,
+          endColumn: 10,
+        },
+      ],
+    },
 
     // weird intersections
     ...weirdIntersections.map<TSESLint.InvalidTestCase<MessageIds, Options>>(

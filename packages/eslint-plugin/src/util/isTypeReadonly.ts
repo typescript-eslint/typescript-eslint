@@ -3,10 +3,10 @@ import {
   isUnionType,
   isUnionOrIntersectionType,
   unionTypeParts,
+  isPropertyReadonlyInType,
 } from 'tsutils';
 import * as ts from 'typescript';
-import { nullThrows, NullThrowsReasons } from '..';
-import { isReadonlySymbol } from './isReadonlySymbol';
+import { nullThrows, NullThrowsReasons } from '.';
 
 /**
  * Returns:
@@ -79,20 +79,32 @@ function isTypeReadonlyObject(
 
   const properties = type.getProperties();
   if (properties.length) {
+    // ensure the properties are marked as readonly
     for (const property of properties) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      const x = checker.isReadonlySymbol(property);
-      const y = isReadonlySymbol(property);
-      if (x !== y) {
-        throw new Error('FUCK');
-      }
-      if (!isReadonlySymbol(property)) {
+      if (!isPropertyReadonlyInType(
+        type,
+        property.getEscapedName(),
+        checker,
+      )) {
         return false;
       }
     }
 
     // all properties were readonly
+    // now ensure that all of the values are readonly also.
+
+    // do this after checking property readonly-ness as a perf optimization,
+    // as we might be able to bail out early due to a mutable property before
+    // doing this deep, potentially expensive check.
+    for (const property of properties) {
+      const propertyType = nullThrows(
+        checker.getTypeOfPropertyOfType(type, property.getName()),
+        NullThrowsReasons.MissingToken(`property "${property.name}"`, 'type'),
+      );
+      if (!isTypeReadonly(checker, propertyType)) {
+        return false;
+      }
+    }
   }
 
   const isStringIndexSigReadonly = checkIndexSignature(ts.IndexKind.String);
