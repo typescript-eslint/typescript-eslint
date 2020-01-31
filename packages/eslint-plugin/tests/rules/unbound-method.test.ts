@@ -48,10 +48,6 @@ ruleTester.run('unbound-method', rule, {
     '["1", "2", "3"].map(Number.parseInt)',
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log',
-    `
-import console from './consoleshim';
-Promise.resolve().then(console.log);
-      `,
     ...[
       'instance.bound();',
       'instance.unbound();',
