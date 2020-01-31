@@ -2,14 +2,9 @@ import {
   AST_NODE_TYPES,
   TSESTree,
   AST_TOKEN_TYPES,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import {
-  ReportFixFunction,
-  RuleFixer,
-  RuleFix,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
-import { Range } from '../../../typescript-estree/dist/ts-estree/ts-estree';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -99,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
       nodeType: string,
       node: TSESTree.Node,
       nodeName: string,
-      fix: ReportFixFunction | null = null,
+      fix: TSESLint.ReportFixFunction | null = null,
     ): void {
       context.report({
         node: node,
@@ -170,10 +165,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.MethodDefinition
         | TSESTree.ClassProperty
         | TSESTree.TSParameterProperty,
-    ): ReportFixFunction {
-      return function(fixer: RuleFixer): RuleFix {
+    ): TSESLint.ReportFixFunction {
+      return function(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
         const tokens = sourceCode.getTokens(node);
-        let rangeToRemove: Range;
+        let rangeToRemove: TSESLint.AST.Range;
         for (let i = 0; i < tokens.length; i++) {
           const token = tokens[i];
           if (

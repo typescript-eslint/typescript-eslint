@@ -818,7 +818,7 @@ class Test {
       filename: 'test.ts',
       code: `
 class Test {
-  contructor(public /* Hi there */ readonly foo)
+  contructor(public/* Hi there */ readonly foo)
 }
       `,
       options: [
