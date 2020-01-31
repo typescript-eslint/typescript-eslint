@@ -48,7 +48,7 @@ const nativelyBoundMembers = [
   )
   .reduce((arr, names) => arr.concat(names), []);
 
-const isMemberImported = (
+const isMemberNotImported = (
   symbol: ts.Symbol,
   currentSourceFile: ts.SourceFile | undefined,
 ): boolean => {
@@ -125,7 +125,7 @@ export default util.createRule<Options, MessageIds>({
         if (
           objectSymbol &&
           nativelyBoundMembers.includes(getMemberFullName(node)) &&
-          isMemberImported(objectSymbol, currentSourceFile)
+          isMemberNotImported(objectSymbol, currentSourceFile)
         ) {
           return;
         }
