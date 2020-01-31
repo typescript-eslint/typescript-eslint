@@ -81,11 +81,7 @@ function isTypeReadonlyObject(
   if (properties.length) {
     // ensure the properties are marked as readonly
     for (const property of properties) {
-      if (!isPropertyReadonlyInType(
-        type,
-        property.getEscapedName(),
-        checker,
-      )) {
+      if (!isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
         return false;
       }
     }
