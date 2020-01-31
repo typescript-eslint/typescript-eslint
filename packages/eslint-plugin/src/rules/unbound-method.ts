@@ -18,6 +18,61 @@ export type Options = [Config];
 
 export type MessageIds = 'unbound';
 
+const nativelyBoundMembers = [
+  ...[
+    Promise,
+    //    BigInt, // todo: enable when we drop node@8
+    Number,
+    Object,
+    String,
+    RegExp,
+    Symbol,
+    Array,
+    Proxy,
+    Date,
+  ].map(x => [x.name, x]),
+  ['Infinity', Infinity],
+  ['Atomics', Atomics],
+  ['Reflect', Reflect],
+  ['console', console],
+  ['Math', Math],
+  ['JSON', JSON],
+  ['Intl', Intl],
+]
+  .map(([namespace, object]) =>
+    Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof (object as Record<string, unknown>)[name] === 'function',
+      )
+      .map(name => `${namespace}.${name}`),
+  )
+  .reduce((arr, names) => arr.concat(names), []);
+
+const isMemberImported = (
+  symbol: ts.Symbol,
+  currentSourceFile: ts.SourceFile | undefined,
+): boolean => {
+  const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  return (
+    !!currentSourceFile &&
+    currentSourceFile !== valueDeclaration.getSourceFile()
+  );
+};
+
+const getNodeName = (node: TSESTree.Node): string | null =>
+  node.type === AST_NODE_TYPES.Identifier ? node.name : null;
+
+const getMemberFullName = (
+  node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+): string => `${getNodeName(node.object)}.${getNodeName(node.property)}`;
+
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
@@ -65,13 +120,22 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
+        const objectSymbol = checker.getSymbolAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(node.object),
+        );
+
+        if (
+          objectSymbol &&
+          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          isMemberImported(objectSymbol, currentSourceFile)
+        ) {
+          return;
+        }
+
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const symbol = checker.getSymbolAtLocation(originalNode);
 
-        if (
-          symbol &&
-          isDangerousMethod(symbol, ignoreStatic, currentSourceFile)
-        ) {
+        if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
           context.report({
             messageId: 'unbound',
             node,
@@ -82,21 +146,10 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(
-  symbol: ts.Symbol,
-  ignoreStatic: boolean,
-  currentSourceFile?: ts.SourceFile,
-): boolean {
+function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
-    return false;
-  }
-
-  if (
-    currentSourceFile &&
-    currentSourceFile !== valueDeclaration.getSourceFile()
-  ) {
     return false;
   }
 

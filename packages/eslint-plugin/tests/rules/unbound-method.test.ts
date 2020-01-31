@@ -46,6 +46,8 @@ ruleTester.run('unbound-method', rule, {
   valid: [
     'Promise.resolve().then(console.log)',
     '["1", "2", "3"].map(Number.parseInt)',
+    '[5.2, 7.1, 3.6].map(Math.floor);',
+    'const x = console.log',
     `
 import console from './consoleshim';
 Promise.resolve().then(console.log);
@@ -230,6 +232,18 @@ Promise.resolve().then(console.log);
       errors: [
         {
           line: 10,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+import { console } from './class';
+const x = console.log;
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'unbound',
         },
       ],
