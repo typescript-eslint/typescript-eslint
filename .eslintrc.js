@@ -33,6 +33,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/prefer-as-const': 'error',
 
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': [
@@ -123,6 +124,7 @@ module.exports = {
     // Internal repo rules
     //
     '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
   },
   parserOptions: {
     sourceType: 'module',

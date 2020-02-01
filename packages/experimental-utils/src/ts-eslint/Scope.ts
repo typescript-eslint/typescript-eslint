@@ -65,7 +65,12 @@ namespace Scope {
   }
 
   export type DefinitionType =
-    | { type: 'CatchClause'; node: TSESTree.CatchClause; parent: null }
+    | {
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+        type: 'CatchClause';
+        node: TSESTree.CatchClause;
+        parent: null;
+      }
     | {
         type: 'ClassName';
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression;

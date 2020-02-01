@@ -72,6 +72,39 @@ export class Test {
     {
       filename: 'test.ts',
       code: `
+export function test(): void {
+    nested();
+    return;
+
+    function nested() {}
+}
+            `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export function test(): string {
+    const nested = () => 'value';
+    return nested();
+}
+            `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export function test(): string {
+    class Nested {
+        public method() {
+            return 'value';
+        }
+    }
+    return new Nested().method();
+}
+            `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
 export var arrowFn: Foo = () => 'test';
             `,
       options: [
@@ -361,7 +394,7 @@ export class Test {
   get prop() {
       return 1;
   }
-  set prop() {}
+  set prop(value) {}
   method() {
     return;
   }
@@ -380,6 +413,13 @@ export class Test {
           endColumn: 13,
         },
         {
+          messageId: 'missingArgType',
+          line: 7,
+          endLine: 7,
+          column: 11,
+          endColumn: 21,
+        },
+        {
           messageId: 'missingReturnType',
           line: 8,
           endLine: 8,
@@ -387,18 +427,18 @@ export class Test {
           endColumn: 11,
         },
         {
-          messageId: 'missingArgType',
-          line: 11,
-          endLine: 11,
-          column: 11,
-          endColumn: 27,
-        },
-        {
           messageId: 'missingReturnType',
           line: 11,
           endLine: 11,
           column: 11,
           endColumn: 19,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 11,
+          endLine: 11,
+          column: 11,
+          endColumn: 27,
         },
       ],
     },
@@ -449,6 +489,26 @@ export class Foo {
           endLine: 8,
           column: 14,
           endColumn: 25,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'export default () => true ? (() => {}) : ((): void => {});',
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 16,
+          endColumn: 21,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 30,
+          endColumn: 35,
         },
       ],
     },

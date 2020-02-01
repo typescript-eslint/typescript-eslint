@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import { forEachComment } from 'tsutils/util/util';
 import { getLocFor } from './node-utils';
-import { TSESTree } from './ts-estree';
+import { AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 /**
  * Convert all comments for the given AST.
@@ -21,8 +21,8 @@ export function convertComments(
     (_, comment) => {
       const type =
         comment.kind == ts.SyntaxKind.SingleLineCommentTrivia
-          ? 'Line'
-          : 'Block';
+          ? AST_TOKEN_TYPES.Line
+          : AST_TOKEN_TYPES.Block;
       const range: TSESTree.Range = [comment.pos, comment.end];
       const loc = getLocFor(range[0], range[1], ast);
 

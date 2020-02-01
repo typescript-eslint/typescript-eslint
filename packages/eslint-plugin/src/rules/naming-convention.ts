@@ -113,7 +113,12 @@ interface Selector {
   selector: IndividualAndMetaSelectorsString;
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
-  filter?: string;
+  filter?:
+    | string
+    | {
+        regex: string;
+        match: boolean;
+      };
 }
 interface NormalizedSelector {
   // format options
@@ -130,7 +135,10 @@ interface NormalizedSelector {
   selector: Selectors | MetaSelectors;
   modifiers: Modifiers[] | null;
   types: TypeModifiers[] | null;
-  filter: RegExp | null;
+  filter: {
+    regex: RegExp;
+    match: boolean;
+  } | null;
   // calculated ordering weight based on modifiers
   modifierWeight: number;
 }
@@ -156,6 +164,14 @@ const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
   },
   additionalItems: false,
 };
+const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
+  type: 'object',
+  properties: {
+    match: { type: 'boolean' },
+    regex: { type: 'string' },
+  },
+  required: ['match', 'regex'],
+};
 type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
   format: {
@@ -173,18 +189,7 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
       },
     ],
   },
-  custom: {
-    type: 'object',
-    properties: {
-      regex: {
-        type: 'string',
-      },
-      match: {
-        type: 'boolean',
-      },
-    },
-    required: ['regex', 'match'],
-  },
+  custom: MATCH_REGEX_SCHEMA,
   leadingUnderscore: UNDERSCORE_SCHEMA,
   trailingUnderscore: UNDERSCORE_SCHEMA,
   prefix: PREFIX_SUFFIX_SCHEMA,
@@ -197,8 +202,13 @@ function selectorSchema(
 ): JSONSchema.JSONSchema4[] {
   const selector: JSONSchemaProperties = {
     filter: {
-      type: 'string',
-      minLength: 1,
+      oneOf: [
+        {
+          type: 'string',
+          minLength: 1,
+        },
+        MATCH_REGEX_SCHEMA,
+      ],
     },
     selector: {
       type: 'string',
@@ -766,8 +776,8 @@ function createValidator(
     .sort((a, b) => {
       if (a.selector === b.selector) {
         // in the event of the same selector, order by modifier weight
-        // sort ascending - the type modifiers are "more important"
-        return a.modifierWeight - b.modifierWeight;
+        // sort descending - the type modifiers are "more important"
+        return b.modifierWeight - a.modifierWeight;
       }
 
       /*
@@ -797,7 +807,7 @@ function createValidator(
     // return will break the loop and stop checking configs
     // it is only used when the name is known to have failed or succeeded a config.
     for (const config of configs) {
-      if (config.filter?.test(originalName)) {
+      if (config.filter?.regex.test(originalName) !== config.filter?.match) {
         // name does not match the filter
         continue;
       }
@@ -1216,7 +1226,15 @@ function normalizeOption(option: Selector): NormalizedSelector {
       : Selectors[option.selector],
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
     types: option.types?.map(m => TypeModifiers[m]) ?? null,
-    filter: option.filter !== undefined ? new RegExp(option.filter) : null,
+    filter:
+      option.filter !== undefined
+        ? typeof option.filter === 'string'
+          ? { regex: new RegExp(option.filter), match: true }
+          : {
+              regex: new RegExp(option.filter.regex),
+              match: option.filter.match,
+            }
+        : null,
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
   };
