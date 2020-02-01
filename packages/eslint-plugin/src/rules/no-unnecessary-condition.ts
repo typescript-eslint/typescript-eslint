@@ -206,6 +206,12 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (isArrayIndexExpression(node)) {
+        return;
+      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {

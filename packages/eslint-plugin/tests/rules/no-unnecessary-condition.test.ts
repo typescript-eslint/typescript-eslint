@@ -173,6 +173,11 @@ const tuple = ["foo"] as const;
 declare const n: number;
 tuple[n]?.toUpperCase();
     `,
+    // nullish + array index
+    `
+declare const arr: string[][];
+arr[x] ?? [];
+`,
     // Supports ignoring the RHS
     {
       code: `
