@@ -185,6 +185,11 @@ export default util.createRule<Options, MessageId>({
         // boolean is always okay
         return false;
       }
+      // never
+      if (is('never')) {
+        // never is always okay
+        return false;
+      }
       // nullish
       else if (is('nullish')) {
         // condition is always false
@@ -260,7 +265,8 @@ export default util.createRule<Options, MessageId>({
       | 'string'
       | 'number'
       | 'object'
-      | 'any';
+      | 'any'
+      | 'never';
 
     /**
      * Check union variants for the types we care about
@@ -311,7 +317,8 @@ export default util.createRule<Options, MessageId>({
                 ts.TypeFlags.StringLike |
                 ts.TypeFlags.NumberLike |
                 ts.TypeFlags.Any |
-                ts.TypeFlags.Unknown,
+                ts.TypeFlags.Unknown |
+                ts.TypeFlags.Never,
             ),
         )
       ) {
@@ -324,6 +331,10 @@ export default util.createRule<Options, MessageId>({
         )
       ) {
         variantTypes.add('any');
+      }
+
+      if (types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.Never))) {
+        variantTypes.add('never');
       }
 
       return variantTypes;

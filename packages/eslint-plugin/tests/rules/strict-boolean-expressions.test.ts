@@ -206,6 +206,18 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const f2 = (g?: (x: number) => number) => g && g(1)
       `,
     }),
+    `
+      declare let x: never;
+      if (x) {}
+    `,
+    ...batchedSingleLineTests({
+      code: `
+        function f1(x: never) { return !x }
+        function f2(x: never) { return x ? 1 : 0 }
+        function f3(x: never, y: never) { return x && y }
+        function f5(x: never | boolean) { if (!x) {} }
+      `,
+    }),
   ],
 
   invalid: [
