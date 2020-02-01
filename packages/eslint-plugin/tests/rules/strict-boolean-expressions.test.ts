@@ -1,5 +1,9 @@
 import rule from '../../src/rules/strict-boolean-expressions';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import {
+  RuleTester,
+  getFixturesRootDir,
+  batchedSingleLineTests,
+} from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -164,7 +168,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const boolAndObj = bool && obj;
       `,
     },
-    {
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true }],
       code: `
         const f1 = (x?: boolean) => x ? 1 : 0;
@@ -172,40 +176,36 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const f3 = (x?: true | null) => x ? 1 : 0;
         const f4 = (x?: false) => x ? 1 : 0;
       `,
-    },
+    }),
     `
       declare const x: string | null;
       y = x ?? 'foo';
     `,
-    {
+    ...batchedSingleLineTests({
       options: [{ allowSafe: true }],
       code: `
-        type TestType = { a: string; };
-        const f1 = (x: boolean | TestType) => x ? 1 : 0;
-        const f2 = (x: true | TestType) => x ? 1 : 0;
-        const f3 = (x: TestType | false) => x ? 1 : 0;
+        const f1 = (x: boolean | { a: string }) => x ? 1 : 0;
+        const f2 = (x: true | { a: string }) => x ? 1 : 0;
+        const f3 = (x: { a: string } | false) => x ? 1 : 0;
       `,
-    },
-    {
+    }),
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true, allowSafe: true }],
       code: `
-        type TestType = { a: string; };
-        type TestType2 = { b: number; };
-        const f1 = (x?: boolean | TestType) => x ? 1 : 0;
-        const f2 = (x: TestType | TestType2 | null) => x ? 1 : 0;
-        const f3 = (x?: TestType | TestType2 | null) => x ? 1 : 0;
-        const f4 = (x?: TestType2 | true) => x ? 1 : 0;
+        const f1 = (x?: boolean | { a?: 1 }) => x ? 1 : 0;
+        const f2 = (x: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
+        const f3 = (x?: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
+        const f4 = (x?: { b?: "a" } | true) => x ? 1 : 0;
         const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
       `,
-    },
-    {
+    }),
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
       code: `
-        type TestType = { foo? : { bar?: string; }; };
-        const f1 = (x?: TestType) => x && x.foo && x.foo.bar
+        const f1 = (x?: { a: null }) => x && x.foo && x.foo.bar
         const f2 = (g?: (x: number) => number) => g && g(1)
       `,
-    },
+    }),
   ],
 
   invalid: [
@@ -978,12 +978,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
         },
       ],
     },
-    {
+    ...batchedSingleLineTests({
       errors: [
         {
           messageId: 'conditionErrorNullableBoolean',
           line: 2,
-          column: 55,
+          column: 47,
         },
         {
           messageId: 'conditionErrorNullableBoolean',
@@ -1001,27 +1001,27 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const f2 = (x?: boolean) => x ? 1 : 0;
         const f3 = (x: boolean | {}) => x ? 1 : 0;
       `,
-    },
+    }),
     {
       options: [{ ignoreRhs: true }],
       errors: [
         {
           messageId: 'conditionErrorObject',
           line: 4,
-          column: 19,
+          column: 27,
         },
         {
           messageId: 'conditionErrorObject',
           line: 5,
-          column: 20,
+          column: 28,
         },
       ],
       code: `
-const obj = { x: 1 };
-const bool = false;
-const objOrBool = obj || bool;
-const objAndBool = obj && bool;
-`,
+        const obj = { x: 1 };
+        const bool = false;
+        const objOrBool = obj || bool;
+        const objAndBool = obj && bool;
+      `,
     },
     {
       options: [{ ignoreRhs: true }],
@@ -1065,13 +1065,13 @@ const objAndBool = obj && bool;
         if (condition && obj) {}
       `,
     },
-    {
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true }],
       errors: [
         {
           messageId: 'conditionErrorNullish',
           line: 2,
-          column: 45,
+          column: 37,
         },
         {
           messageId: 'conditionErrorNullableNumber',
@@ -1095,7 +1095,7 @@ const objAndBool = obj && bool;
         const f3 = (x?: string) => x ? 1 : 0;
         const f4 = (x?: string | number) => x ? 1 : 0;
       `,
-    },
+    }),
     {
       errors: [
         {
@@ -1115,32 +1115,31 @@ const objAndBool = obj && bool;
         const f2 = (x?: Type | boolean) => x ? 1 : 0;
       `,
     },
-    {
+    ...batchedSingleLineTests({
       options: [{ allowSafe: true }],
       errors: [
         {
           messageId: 'conditionErrorOther',
+          line: 2,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorOther',
           line: 3,
-          column: 42,
+          column: 44,
         },
         {
           messageId: 'conditionErrorOther',
           line: 4,
-          column: 42,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 5,
           column: 44,
         },
       ],
       code: `
-        type Type = { a: string; };
-        const f1 = (x: Type | string) => x ? 1 : 0;
-        const f2 = (x: Type | number) => x ? 1 : 0;
+        const f1 = (x: object | string) => x ? 1 : 0;
+        const f2 = (x: object | number) => x ? 1 : 0;
         const f3 = (x: number | string) => x ? 1 : 0;
       `,
-    },
+    }),
     {
       options: [{ allowSafe: true }],
       errors: [
@@ -1186,30 +1185,29 @@ const objAndBool = obj && bool;
         const f2 = (x: Type | number | null) => x ? 1 : 0;
       `,
     },
-    {
+    ...batchedSingleLineTests({
       errors: [
         {
           messageId: 'conditionErrorObject',
+          line: 2,
+          column: 31,
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
           line: 3,
-          column: 33,
+          column: 40,
         },
         {
           messageId: 'conditionErrorNullableObject',
           line: 4,
-          column: 34,
-        },
-        {
-          messageId: 'conditionErrorNullableObject',
-          line: 5,
-          column: 41,
+          column: 47,
         },
       ],
       code: `
-        type Type = { a: string; };
-        const f1 = (x: Type) => x ? 1 : 0;
-        const f2 = (x?: Type) => x ? 1 : 0;
-        const f3 = (x?: Type | null) => x ? 1 : 0;
+        const f1 = (x: { x: any }) => x ? 1 : 0;
+        const f2 = (x?: { x: any }) => x ? 1 : 0;
+        const f3 = (x?: { x: any } | null) => x ? 1 : 0;
       `,
-    },
+    }),
   ],
 });

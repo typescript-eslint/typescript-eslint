@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageId>({
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
-    const checkedNodes = new WeakSet<TSESTree.Node>();
+    const checkedNodes = new Set<TSESTree.Node>();
 
     return {
       ConditionalExpression: checkTestExpression,
@@ -174,9 +174,7 @@ export default util.createRule<Options, MessageId>({
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
       let messageId: MessageId | undefined;
 
-      const types = tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)
-        ? inspectVariantTypes((type as ts.UnionType).types)
-        : inspectVariantTypes([type]);
+      const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
         types.size === wantedTypes.length &&
@@ -271,11 +269,11 @@ export default util.createRule<Options, MessageId>({
       const variantTypes = new Set<VariantType>();
 
       if (
-        types.some(
-          type =>
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.Null) ||
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined) ||
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike),
+        types.some(type =>
+          tsutils.isTypeFlagSet(
+            type,
+            ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.VoidLike,
+          ),
         )
       ) {
         variantTypes.add('nullish');
@@ -294,6 +292,7 @@ export default util.createRule<Options, MessageId>({
       ) {
         variantTypes.add('string');
       }
+
       if (
         types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike))
       ) {
@@ -303,24 +302,25 @@ export default util.createRule<Options, MessageId>({
       if (
         types.some(
           type =>
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.Null) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) &&
-            !tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
+            !tsutils.isTypeFlagSet(
+              type,
+              ts.TypeFlags.Null |
+                ts.TypeFlags.Undefined |
+                ts.TypeFlags.VoidLike |
+                ts.TypeFlags.BooleanLike |
+                ts.TypeFlags.StringLike |
+                ts.TypeFlags.NumberLike |
+                ts.TypeFlags.Any |
+                ts.TypeFlags.Unknown,
+            ),
         )
       ) {
         variantTypes.add('object');
       }
 
       if (
-        types.some(
-          type =>
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) ||
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown),
+        types.some(type =>
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
         )
       ) {
         variantTypes.add('any');
