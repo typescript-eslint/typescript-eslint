@@ -1,26 +1,24 @@
-import assert from 'assert';
 import rule, { parseOptions } from '../../src/rules/interface-name-prefix';
 import { RuleTester } from '../RuleTester';
 
 describe('interface-name-prefix', () => {
   it('parseOptions', () => {
-    assert.deepEqual(parseOptions(['never']), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions(['always']), {
+    expect(parseOptions(['never'])).toEqual({ prefixWithI: 'never' });
+    expect(parseOptions(['always'])).toEqual({
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
     });
-    assert.deepEqual(parseOptions([{}]), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'never' }]), {
+    expect(parseOptions([{}])).toEqual({ prefixWithI: 'never' });
+    expect(parseOptions([{ prefixWithI: 'never' }])).toEqual({
       prefixWithI: 'never',
     });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'always' }]), {
+    expect(parseOptions([{ prefixWithI: 'always' }])).toEqual({
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
     });
-    assert.deepEqual(
+    expect(
       parseOptions([{ prefixWithI: 'always', allowUnderscorePrefix: true }]),
-      { prefixWithI: 'always', allowUnderscorePrefix: true },
-    );
+    ).toEqual({ prefixWithI: 'always', allowUnderscorePrefix: true });
   });
 });
 

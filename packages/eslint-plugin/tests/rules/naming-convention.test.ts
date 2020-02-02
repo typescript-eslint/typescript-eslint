@@ -80,6 +80,11 @@ const formatTestNames: Readonly<Record<
 };
 
 const REPLACE_REGEX = /%/g;
+// filter to not match `[iI]gnored`
+const IGNORED_FILTER = {
+  match: false,
+  regex: /.gnored/.source,
+};
 
 type Cases = {
   code: string[];
@@ -99,7 +104,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
           options: [
             {
               ...options,
-              filter: '[iI]gnored',
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -205,7 +210,7 @@ function createInvalidTestCases(
           options: [
             {
               ...options,
-              filter: '[iI]gnored',
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -607,6 +612,22 @@ ruleTester.run('naming-convention', rule, {
     ...createValidTestCases(cases),
     {
       code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
         declare const string_camelCase: string;
         declare const string_camelCase: string | null;
         declare const string_camelCase: string | null | undefined;
@@ -724,9 +745,40 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      options: [
+        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
+        {
+          selector: 'variable',
+          format: ['snake_case'],
+          filter: 'child_process',
+        },
+      ],
+    },
   ],
   invalid: [
     ...createInvalidTestCases(cases),
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
     {
       code: `
         declare const string_camelCase01: string;

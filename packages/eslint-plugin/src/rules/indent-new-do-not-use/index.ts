@@ -245,7 +245,7 @@ type MessageIds = 'wrongIndentation';
 type AppliedOptions = ExcludeKeys<
   // slight hack to make interface work with Record<string, unknown>
   RequireKeys<Pick<IndentConfig, keyof IndentConfig>, keyof IndentConfig>,
-  'VariableDeclarator'
+  AST_NODE_TYPES.VariableDeclarator
 > & {
   VariableDeclarator: 'off' | VariableDeclaratorObj;
 };

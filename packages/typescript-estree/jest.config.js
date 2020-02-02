@@ -12,6 +12,7 @@ module.exports = {
   coverageReporters: ['text-summary', 'lcov'],
   globals: {
     'ts-jest': {
+      isolatedModules: true,
       diagnostics: {
         // ignore the diagnostic error for the invalidFileErrors fixtures
         ignoreCodes: [5056],
