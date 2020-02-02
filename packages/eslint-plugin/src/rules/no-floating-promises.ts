@@ -1,5 +1,6 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 import * as util from '../util';
 
@@ -9,7 +10,9 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, 'floating' | 'floatingVoid'>({
+type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
+
+export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -21,7 +24,9 @@ export default util.createRule<Options, 'floating' | 'floatingVoid'>({
     messages: {
       floating: 'Promises must be handled appropriately',
       floatingVoid:
-        'Promises must be handled appropriately or explicitly marked as ignored with the `void` operator',
+        'Promises must be handled appropriately' +
+        ' or explicitly marked as ignored with the `void` operator',
+      floatingFixVoid: 'Add void operator to ignore',
     },
     schema: [
       {
@@ -43,16 +48,34 @@ export default util.createRule<Options, 'floating' | 'floatingVoid'>({
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     return {
       ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         if (isUnhandledPromise(checker, expression)) {
-          context.report({
-            messageId: options.ignoreVoid ? 'floatingVoid' : 'floating',
-            node,
-          });
+          if (options.ignoreVoid) {
+            context.report({
+              node,
+              messageId: 'floatingVoid',
+              suggest: [
+                {
+                  messageId: 'floatingFixVoid',
+                  fix(fixer): TSESLint.RuleFix {
+                    let code = sourceCode.getText(node);
+                    code = `void ${code}`;
+                    return fixer.replaceText(node, code);
+                  },
+                },
+              ],
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'floating',
+            });
+          }
         }
       },
     };

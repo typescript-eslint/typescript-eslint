@@ -2,7 +2,6 @@ import rule from '../../src/rules/no-floating-promises';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageId = 'floating';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -245,15 +244,15 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -268,6 +267,16 @@ async function test() {
         {
           line: 3,
           messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function test() {
+  void Promise.resolve("value");
+}
+`,
+            },
+          ],
         },
       ],
     },
@@ -282,15 +291,15 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -305,15 +314,15 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -330,15 +339,15 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -352,11 +361,11 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -371,15 +380,15 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -392,7 +401,7 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -406,7 +415,7 @@ async function test() {
       errors: [
         {
           line: 4,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -419,7 +428,7 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -436,15 +445,15 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -459,7 +468,7 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -476,15 +485,15 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -502,15 +511,15 @@ async function test() {
       errors: [
         {
           line: 6,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 8,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -531,11 +540,11 @@ async function test() {
       errors: [
         {
           line: 10,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 11,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
@@ -565,15 +574,15 @@ async function test() {
       errors: [
         {
           line: 18,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 19,
-          messageId,
+          messageId: 'floating',
         },
         {
           line: 20,
-          messageId,
+          messageId: 'floating',
         },
       ],
     },
