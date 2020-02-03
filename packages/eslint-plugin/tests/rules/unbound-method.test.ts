@@ -324,5 +324,15 @@ const x = CommunicationError.prototype.foo;
         },
       ],
     },
+    {
+      // Promise.all is not auto-bound to Promise
+      code: 'const x = Promise.all',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unbound',
+        },
+      ],
+    },
   ],
 });
