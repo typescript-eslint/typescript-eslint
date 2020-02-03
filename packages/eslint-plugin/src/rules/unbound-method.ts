@@ -18,34 +18,34 @@ export type Options = [Config];
 
 export type MessageIds = 'unbound';
 
-const nativelyBoundMembers = [
-  ...[
-    Promise,
-    //    BigInt, // todo: enable when we drop node@8
-    Number,
-    Object,
-    String,
-    Symbol,
-    Array,
-    Proxy,
-    Date,
-  ].map(x => [x.name, x]),
-  ['Atomics', Atomics],
-  ['Reflect', Reflect],
-  ['console', console],
-  ['Math', Math],
-  ['JSON', JSON],
-  ['Intl', Intl],
-]
-  .map(([namespace, object]) =>
-    Object.getOwnPropertyNames(object)
+const nativelyBoundMembers = ([
+  'Promise',
+  'Number',
+  'Object',
+  'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+  'RegExp',
+  'Symbol',
+  'Array',
+  'Proxy',
+  'Date',
+  'Infinity',
+  'Atomics',
+  'Reflect',
+  'console',
+  'Math',
+  'JSON',
+  'Intl',
+] as const)
+  .map(namespace => {
+    const object = global[namespace];
+    return Object.getOwnPropertyNames(object)
       .filter(
         name =>
           !name.startsWith('_') &&
           typeof (object as Record<string, unknown>)[name] === 'function',
       )
-      .map(name => `${namespace}.${name}`),
-  )
+      .map(name => `${namespace}.${name}`);
+  })
   .reduce((arr, names) => arr.concat(names), []);
 
 const isMemberNotImported = (
