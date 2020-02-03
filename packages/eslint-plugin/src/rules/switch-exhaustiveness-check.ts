@@ -12,7 +12,6 @@ export default createRule({
   name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
     docs: {
       description: 'Exhaustiveness checking in switch with union type',
       category: 'Best Practices',
