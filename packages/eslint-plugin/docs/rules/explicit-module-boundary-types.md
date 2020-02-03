@@ -65,13 +65,26 @@ The rule accepts an options object with the following properties:
 
 ```ts
 type Options = {
-  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly
+  /**
+   * If true, type annotations are also allowed on the variable of a function expression
+   * rather than on the function arguments/return value directly.
+   */
   allowTypedFunctionExpressions?: boolean;
-  // if true, functions immediately returning another function expression will not be checked
+  /**
+   * If true, functions immediately returning another function expression will not
+   * require an explicit return value annotation.
+   * You must still type the parameters of the function.
+   */
   allowHigherOrderFunctions?: boolean;
-  // if true, body-less arrow functions are allowed to return an object as const
+  /**
+   * If true, body-less arrow functions that return an `as const` type assertion will not
+   * require an explicit return value annotation.
+   * You must still type the parameters of the function.
+   */
   allowDirectConstAssertionInArrowFunctions?: boolean;
-  // an array of function/method names that will not be checked
+  /**
+   * An array of function/method names that will not have their arguments or their return values checked.
+   */
   allowedNames?: string[];
 };
 
@@ -118,6 +131,8 @@ export let funcExpr = function() {
 export let objectProp = {
   foo: () => 1,
 };
+
+export const foo = bar => {};
 ```
 
 Examples of additional **correct** code for this rule with `{ allowTypedFunctionExpressions: true }`:
@@ -146,6 +161,9 @@ export let objectPropAs = {
 export let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
+
+type FooType = (bar: string) => void;
+export const foo: FooType = bar => {};
 ```
 
 ### `allowHigherOrderFunctions`
@@ -158,6 +176,10 @@ export var arrowFn = () => () => {};
 export function fn() {
   return function() {};
 }
+
+export function foo(outer) {
+  return function(inner): void {};
+}
 ```
 
 Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
@@ -168,17 +190,15 @@ export var arrowFn = () => (): void => {};
 export function fn() {
   return function(): void {};
 }
+
+export function foo(outer: string) {
+  return function(inner: string): void {};
+}
 ```
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-Examples of additional **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
-
-```ts
-export const func = (value: number) => ({ type: 'X', value } as const);
-```
-
-Examples of additional **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
@@ -187,15 +207,34 @@ export const foo = () => {
     bar: true,
   } as const;
 };
+export const bar = () => 1;
+export const baz = arg => arg as const;
+```
+
+Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+export const func = (value: number) => ({ type: 'X', value } as const);
+export const foo = () =>
+  ({
+    bar: true,
+  } as const);
+export const bar = () => 1 as const;
+export const baz = (arg: string) => arg as const;
 ```
 
 ### `allowedNames`
 
 You may pass function/method names you would like this rule to ignore, like so:
 
-```cjson
+```json
 {
-    "@typescript-eslint/explicit-module-boundary-types": ["error", { "allowedName": ["ignoredFunctionName", "ignoredMethodName"] }]
+  "@typescript-eslint/explicit-module-boundary-types": [
+    "error",
+    {
+      "allowedName": ["ignoredFunctionName", "ignoredMethodName"]
+    }
+  ]
 }
 ```
 
