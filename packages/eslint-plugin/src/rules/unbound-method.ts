@@ -18,8 +18,53 @@ export type Options = [Config];
 
 export type MessageIds = 'unbound';
 
-const nativelyBoundMembers = ([
-  'Promise',
+/**
+ * The following is a list of exceptions to the rule
+ * Generated via the following script.
+ * This is statically defined to save making purposely invalid calls every lint run
+ * ```
+SUPPORTED_GLOBALS.flatMap(namespace => {
+  const object = window[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof object[name] === 'function',
+      )
+      .map(name => {
+        try {
+          const x = object[name];
+          x();
+        } catch (e) {
+          if (e.message.includes("called on non-object")) {
+            return `${namespace}.${name}`;
+          }
+        }
+      });
+}).filter(Boolean);
+   * ```
+ */
+const nativelyNotBoundMembers = new Set([
+  'Promise.all',
+  'Promise.race',
+  'Promise.resolve',
+  'Promise.reject',
+  'Promise.allSettled',
+  'Object.defineProperties',
+  'Object.defineProperty',
+  'Reflect.defineProperty',
+  'Reflect.deleteProperty',
+  'Reflect.get',
+  'Reflect.getOwnPropertyDescriptor',
+  'Reflect.getPrototypeOf',
+  'Reflect.has',
+  'Reflect.isExtensible',
+  'Reflect.ownKeys',
+  'Reflect.preventExtensions',
+  'Reflect.set',
+  'Reflect.setPrototypeOf',
+]);
+const SUPPORTED_GLOBALS = [
   'Number',
   'Object',
   'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -35,18 +80,19 @@ const nativelyBoundMembers = ([
   'Math',
   'JSON',
   'Intl',
-] as const)
-  .map(namespace => {
-    const object = global[namespace];
-    return Object.getOwnPropertyNames(object)
-      .filter(
-        name =>
-          !name.startsWith('_') &&
-          typeof (object as Record<string, unknown>)[name] === 'function',
-      )
-      .map(name => `${namespace}.${name}`);
-  })
-  .reduce((arr, names) => arr.concat(names), []);
+] as const;
+const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
+  const object = global[namespace];
+  return Object.getOwnPropertyNames(object)
+    .filter(
+      name =>
+        !name.startsWith('_') &&
+        typeof (object as Record<string, unknown>)[name] === 'function',
+    )
+    .map(name => `${namespace}.${name}`);
+})
+  .reduce((arr, names) => arr.concat(names), [])
+  .filter(name => !nativelyNotBoundMembers.has(name));
 
 const isMemberNotImported = (
   symbol: ts.Symbol,
