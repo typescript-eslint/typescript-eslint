@@ -18,6 +18,59 @@ export type Options = [Config];
 
 export type MessageIds = 'unbound';
 
+const nativelyBoundMembers = ([
+  'Promise',
+  'Number',
+  'Object',
+  'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+  'RegExp',
+  'Symbol',
+  'Array',
+  'Proxy',
+  'Date',
+  'Infinity',
+  'Atomics',
+  'Reflect',
+  'console',
+  'Math',
+  'JSON',
+  'Intl',
+] as const)
+  .map(namespace => {
+    const object = global[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof (object as Record<string, unknown>)[name] === 'function',
+      )
+      .map(name => `${namespace}.${name}`);
+  })
+  .reduce((arr, names) => arr.concat(names), []);
+
+const isMemberNotImported = (
+  symbol: ts.Symbol,
+  currentSourceFile: ts.SourceFile | undefined,
+): boolean => {
+  const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  return (
+    !!currentSourceFile &&
+    currentSourceFile !== valueDeclaration.getSourceFile()
+  );
+};
+
+const getNodeName = (node: TSESTree.Node): string | null =>
+  node.type === AST_NODE_TYPES.Identifier ? node.name : null;
+
+const getMemberFullName = (
+  node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+): string => `${getNodeName(node.object)}.${getNodeName(node.property)}`;
+
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
@@ -53,12 +106,27 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const currentSourceFile = parserServices.program.getSourceFile(
+      context.getFilename(),
+    );
 
     return {
       'MemberExpression, OptionalMemberExpression'(
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         if (isSafeUse(node)) {
+          return;
+        }
+
+        const objectSymbol = checker.getSymbolAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(node.object),
+        );
+
+        if (
+          objectSymbol &&
+          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          isMemberNotImported(objectSymbol, currentSourceFile)
+        ) {
           return;
         }
 
