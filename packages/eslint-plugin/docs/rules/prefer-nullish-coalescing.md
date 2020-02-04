@@ -160,8 +160,8 @@ Correct code for `ignoreStrings: false`:
 declare const nullString: string | null;
 const emptyString = '';
 
-const a = nullString || 'fallback';
-const b = emptyString || 'fallback';
+const a = nullString ?? 'fallback';
+const b = emptyString ?? 'fallback';
 const c = !emptyString ? 'fallback' : emptyString;
 
 // a === 'fallback'
