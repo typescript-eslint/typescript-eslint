@@ -5,11 +5,13 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import * as ts from 'typescript';
 
 export type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    ignoreStrings?: boolean;
     forceSuggestionFixer?: boolean;
   },
 ];
@@ -41,6 +43,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
+          ignoreStrings: {
+            type: 'boolean',
+          },
           forceSuggestionFixer: {
             type: 'boolean',
           },
@@ -53,6 +58,7 @@ export default util.createRule<Options, MessageIds>({
     {
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: true,
+      ignoreStrings: false,
       forceSuggestionFixer: false,
     },
   ],
@@ -62,6 +68,7 @@ export default util.createRule<Options, MessageIds>({
       {
         ignoreConditionalTests,
         ignoreMixedLogicalExpressions,
+        ignoreStrings,
         forceSuggestionFixer,
       },
     ],
@@ -87,6 +94,10 @@ export default util.createRule<Options, MessageIds>({
 
         const isMixedLogical = isMixedLogicalExpression(node);
         if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
+          return;
+        }
+
+        if (ignoreStrings === true && isStringOrNullish(checker, type)) {
           return;
         }
 
@@ -198,4 +209,13 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
   }
 
   return false;
+}
+
+function isStringOrNullish(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return util
+    .getTypeName(checker, type)
+    .split(' ')
+    .every(resolvedType =>
+      ['string', 'undefined', 'null', '|', '&'].includes(resolvedType),
+    );
 }

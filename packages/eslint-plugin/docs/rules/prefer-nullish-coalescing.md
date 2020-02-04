@@ -46,6 +46,7 @@ type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    ignoreStrings?: boolean;
     forceSuggestionFixer?: boolean;
   },
 ];
@@ -54,6 +55,7 @@ const defaultOptions = [
   {
     ignoreConditionalTests: true,
     ignoreMixedLogicalExpressions: true,
+    ignoreStrings: false,
     forceSuggestionFixer: false,
   },
 ];
@@ -132,6 +134,40 @@ a ?? (b && c && d);
 ```
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
+
+### `ignoreStrings`
+
+Setting this option to `true` will cause the rule to be ignored when the left-hand's TypeScript type is `string`, whether it may be nullish or not.
+
+This can be useful if you want to enforce the use of `??` on every types but `string`, because you want to handle empty strings.
+
+Incorrect code for `ignoreStrings: false`, and correct code for `ignoreStrings: true`:
+
+```ts
+declare const nullString: string | null;
+const emptyString = '';
+
+const a = nullString || 'fallback';
+const b = emptyString || 'fallback';
+
+// a === 'fallback'
+// b === 'fallback'
+```
+
+Correct code for `ignoreStrings: false`:
+
+```ts
+declare const nullString: string | null;
+const emptyString = '';
+
+const a = nullString || 'fallback';
+const b = emptyString || 'fallback';
+const c = !emptyString ? 'fallback' : emptyString;
+
+// a === 'fallback'
+// b === ''
+// c === 'fallback'
+```
 
 ### `forceSuggestionFixer`
 

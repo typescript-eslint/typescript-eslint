@@ -15,7 +15,8 @@ const ruleTester = new RuleTester({
   },
 });
 
-const types = ['string', 'number', 'boolean', 'object'];
+const allTypesButString = ['number', 'boolean', 'object'];
+const types = ['string', ...allTypesButString];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
 
 function typeValidTest(
@@ -28,10 +29,11 @@ function nullishTypeValidTest(
     nullish: string,
     type: string,
   ) => TSESLint.ValidTestCase<Options> | string,
+  testedTypes: string[] = types,
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
-      types.forEach(type => {
+      testedTypes.forEach(type => {
         acc.push(cb(nullish, type));
       });
       return acc;
@@ -44,10 +46,11 @@ function nullishTypeInvalidTest(
     nullish: string,
     type: string,
   ) => TSESLint.InvalidTestCase<MessageIds, Options>,
+  testedTypes: string[] = types,
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] {
   return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (acc, nullish) => {
-      types.forEach(type => {
+      testedTypes.forEach(type => {
         acc.push(cb(nullish, type));
       });
       return acc;
@@ -138,6 +141,21 @@ a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
+
+    // ignoreStrings
+    ...nullishTypeValidTest(
+      (nullish, type) => ({
+        code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} & ${nullish};
+declare const c: ${type};
+a || b || c;
+c || b || a;
+      `,
+        options: [{ ignoreStrings: true }],
+      }),
+      ['string'],
+    ),
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
@@ -392,6 +410,80 @@ a && b || c ?? d;
         },
       ],
     })),
+
+    // ignoreStrings
+    ...nullishTypeInvalidTest((nullish, type) => ({
+      code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+a || b;
+      `,
+      output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+a ?? b;
+      `,
+      options: [{ ignoreStrings: false }],
+      errors: [
+        {
+          messageId: 'preferNullish',
+          line: 4,
+          column: 3,
+          endLine: 4,
+          endColumn: 5,
+        },
+      ],
+    })),
+    ...nullishTypeInvalidTest(
+      (nullish, type) => ({
+        code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+a || b;
+      `,
+        output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+a ?? b;
+      `,
+        options: [{ ignoreStrings: true }],
+        errors: [
+          {
+            messageId: 'preferNullish',
+            line: 4,
+            column: 3,
+            endLine: 4,
+            endColumn: 5,
+          },
+        ],
+      }),
+      allTypesButString,
+    ),
+    ...nullishTypeInvalidTest(
+      (nullish, type) => ({
+        code: `
+declare const a: string | ${type} | ${nullish};
+declare const b: string;
+a || b;
+      `,
+        output: `
+declare const a: string | ${type} | ${nullish};
+declare const b: string;
+a ?? b;
+      `,
+        options: [{ ignoreStrings: true }],
+        errors: [
+          {
+            messageId: 'preferNullish',
+            line: 4,
+            column: 3,
+            endLine: 4,
+            endColumn: 5,
+          },
+        ],
+      }),
+      allTypesButString,
+    ),
 
     // should not false positive for functions inside conditional tests
     ...nullishTypeInvalidTest((nullish, type) => ({
