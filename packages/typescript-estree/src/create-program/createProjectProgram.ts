@@ -9,6 +9,13 @@ const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 
 const DEFAULT_EXTRA_FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
+function getExtension(fileName: string | undefined): string | null {
+  if (!fileName) {
+    return null;
+  }
+  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName)
+}
+
 /**
  * @param code The code of the file being linted
  * @param createDefaultProgram True if the default program should be created
@@ -26,6 +33,14 @@ function createProjectProgram(
     getProgramsForProjects(code, extra.filePath, extra),
     currentProgram => {
       const ast = currentProgram.getSourceFile(extra.filePath);
+
+      // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
+      const expectedExt = getExtension(extra.filePath);
+      const returnedExt = getExtension(ast?.fileName);
+      if (expectedExt !== returnedExt) {
+        return;
+      }
+
       return ast && { ast, program: currentProgram };
     },
   );
