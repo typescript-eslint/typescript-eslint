@@ -288,7 +288,7 @@ export default createRule<Options, MessageId>({
       'some',
       'every',
     ]);
-    function shouldCheckCallback(node: TSESTree.CallExpression): boolean {
+    function isArrayPredicateFunction(node: TSESTree.CallExpression): boolean {
       const { callee } = node;
       return (
         // looks like `something.filter` or `something.find`
@@ -300,10 +300,9 @@ export default createRule<Options, MessageId>({
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {
-      const {
-        arguments: [callback],
-      } = node;
-      if (callback && shouldCheckCallback(node)) {
+      // If this is something like arr.filter(x => /*condition*/), check `condition`
+      if (isArrayPredicateFunction(node) && node.arguments.length) {
+        const callback = node.arguments[0]!;
         // Inline defined functions
         if (
           (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
