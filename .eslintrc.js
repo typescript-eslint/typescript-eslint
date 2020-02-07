@@ -6,6 +6,7 @@ module.exports = {
     'jest',
     'import',
     'eslint-comments',
+    '@typescript-eslint/internal',
   ],
   env: {
     es6: true,
@@ -15,35 +16,37 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   rules: {
     //
     // our plugin :D
     //
 
-    '@typescript-eslint/ban-ts-ignore': 'error',
-    '@typescript-eslint/consistent-type-definitions': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/indent': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-inferrable-types': 'error',
-    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/no-object-literal-type-assertion': 'off',
-    '@typescript-eslint/no-parameter-properties': 'off',
-    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    '@typescript-eslint/no-throw-literal': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/prefer-includes': 'error',
-    '@typescript-eslint/prefer-regexp-exec': 'error',
-    '@typescript-eslint/prefer-string-starts-ends-with': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/prefer-optional-chain': 'error',
+    '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/prefer-as-const': 'error',
+
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': [
+      'error',
+      { allow: ['arrowFunctions'] },
+    ],
 
     //
     // eslint base
     //
 
     'comma-dangle': ['error', 'always-multiline'],
+    'constructor-super': 'off',
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
@@ -110,23 +113,32 @@ module.exports = {
     'import/no-mutable-exports': 'error',
     // Prevent importing the default as if it were named
     'import/no-named-default': 'error',
-    // Prohibit named exports // we want everything to be a named export
-    'import/no-named-export': 'off',
+    // Prohibit named exports
+    'import/no-named-export': 'off', // we want everything to be a named export
     // Forbid a module from importing itself
     'import/no-self-import': 'error',
-    // Require modules with a single export to use a default export // we want everything to be named
-    'import/prefer-default-export': 'off',
+    // Require modules with a single export to use a default export
+    'import/prefer-default-export': 'off', // we want everything to be named
+
+    //
+    // Internal repo rules
+    //
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
   },
   parserOptions: {
     sourceType: 'module',
     ecmaFeatures: {
       jsx: false,
     },
-    project: './tsconfig.base.json',
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
   overrides: [
+    // all test files
     {
       files: [
+        'packages/eslint-plugin-internal/tests/**/*.test.ts',
         'packages/eslint-plugin-tslint/tests/**/*.ts',
         'packages/eslint-plugin/tests/**/*.test.ts',
         'packages/parser/tests/**/*.ts',
@@ -136,6 +148,7 @@ module.exports = {
         'jest/globals': true,
       },
       rules: {
+        'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',
@@ -150,26 +163,31 @@ module.exports = {
         'jest/valid-expect': 'error',
       },
     },
+    // plugin source files
     {
       files: [
-        'packages/eslint-plugin/tests/**/*.test.ts',
-        'packages/eslint-plugin-tslint/tests/**/*.spec.ts',
+        'packages/eslint-plugin-internal/**/*.ts',
+        'packages/eslint-plugin-tslint/**/*.ts',
+        'packages/eslint-plugin/**/*.ts',
       ],
       rules: {
-        'eslint-plugin/no-identical-tests': 'error',
+        '@typescript-eslint/internal/no-typescript-estree-import': 'error',
       },
     },
+    // rule source files
     {
       files: [
-        'packages/eslint-plugin/src/rules/**/*.ts',
-        'packages/eslint-plugin/src/configs/**/*.ts',
+        'packages/eslint-plugin-internal/src/rules/**/*.ts',
         'packages/eslint-plugin-tslint/src/rules/**/*.ts',
+        'packages/eslint-plugin/src/configs/**/*.ts',
+        'packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
       },
     },
+    // tools and tests
     {
       files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
       rules: {

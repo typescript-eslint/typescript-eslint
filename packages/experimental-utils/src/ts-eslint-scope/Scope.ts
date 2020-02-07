@@ -15,7 +15,7 @@ import {
   ClassScope as ESLintClassScope,
 } from 'eslint-scope/lib/scope';
 import { Definition } from './Definition';
-import { Reference } from './Reference';
+import { Reference, ReferenceFlag } from './Reference';
 import { ScopeManager } from './ScopeManager';
 import { Variable } from './Variable';
 
@@ -46,7 +46,9 @@ interface Scope {
   references: Reference[];
   through: Reference[];
   thisFound?: boolean;
+  taints: Map<string, boolean>;
   functionExpressionScope: boolean;
+  __left: Reference[];
 
   __shouldStaticallyClose(scopeManager: ScopeManager): boolean;
   __shouldStaticallyCloseForGlobal(ref: any): boolean;
@@ -54,15 +56,15 @@ interface Scope {
   __dynamicCloseRef(ref: any): void;
   __globalCloseRef(ref: any): void;
   __close(scopeManager: ScopeManager): Scope;
-  __isValidResolution(ref: any, variable: any): boolean;
-  __resolve(ref: any): boolean;
+  __isValidResolution(ref: any, variable: any): variable is Variable;
+  __resolve(ref: Reference): boolean;
   __delegateToUpperScope(ref: any): void;
   __addDeclaredVariablesOfNode(variable: any, node: TSESTree.Node): void;
   __defineGeneric(
-    name: any,
-    set: any,
-    variables: any,
-    node: any,
+    name: string,
+    set: Map<string, Variable>,
+    variables: Variable[],
+    node: TSESTree.Identifier,
     def: Definition,
   ): void;
 
@@ -70,11 +72,11 @@ interface Scope {
 
   __referencing(
     node: TSESTree.Node,
-    assign: number,
-    writeExpr: TSESTree.Node,
-    maybeImplicitGlobal: any,
-    partial: any,
-    init: any,
+    assign?: ReferenceFlag,
+    writeExpr?: TSESTree.Node,
+    maybeImplicitGlobal?: any,
+    partial?: any,
+    init?: any,
   ): void;
 
   __detectEval(): void;
@@ -98,7 +100,7 @@ interface Scope {
   /**
    * returns this scope has materialized arguments
    * @method Scope#isArgumentsMaterialized
-   * @returns {boolean} arguemnts materialized
+   * @returns {boolean} arguments materialized
    */
   isArgumentsMaterialized(): boolean;
 

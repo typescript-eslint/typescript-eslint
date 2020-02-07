@@ -1,28 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  TSESTree,
+  TSESLintScope,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
+import { ScopeManager } from '../../src/scope/scope-manager';
 
 /** Reference resolver. */
-export class ReferenceResolver {
-  map: Map<any, any>;
+export class ReferenceResolver<TKey = unknown> {
+  map: Map<TKey, { $id: number }>;
 
   constructor() {
     this.map = new Map();
   }
 
-  resolve(obj: any, properties: any) {
-    const resolved = Object.assign({ $id: this.map.size }, properties);
+  resolve<T>(obj: TKey, properties: T): T & { $id: number } {
+    const resolved = { ...properties, $id: this.map.size };
     this.map.set(obj, resolved);
     return resolved;
   }
 
-  ref(obj: any) {
+  ref(obj: TKey): { $ref: number } | TKey {
     if (typeof obj !== 'object' || obj === null) {
       return obj;
     }
 
-    const { map } = this;
+    const map = this.map;
     return {
-      get $ref() {
-        return map.get(obj).$id;
+      get $ref(): number {
+        return map.get(obj)!.$id;
       },
     };
   }
@@ -31,30 +36,38 @@ export class ReferenceResolver {
 /**
  * Convert a given node object to JSON object.
  * This saves only type and range to know what the node is.
- * @param {ASTNode} node The AST node object.
- * @returns {Object} The object that can be used for JSON.stringify.
+ * @param node The AST node object.
+ * @returns The object that can be used for JSON.stringify.
  */
-export function nodeToJSON(node: any) {
+export function nodeToJSON(
+  node: TSESTree.Node | null | undefined,
+):
+  | { type: AST_NODE_TYPES; range: [number, number]; name?: string }
+  | null
+  | undefined {
   if (!node) {
     return node;
   }
 
-  const { type, name, range } = node;
-  if (node.type === 'Identifier') {
-    return { type, name, range };
+  const { type, range } = node;
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    return { type, name: node.name, range };
   }
   return { type, range };
 }
 
 /**
  * Convert a given variable object to JSON object.
- * @param {Variable} variable The eslint-scope's variable object.
- * @param {ReferenceResolver} resolver The reference resolver.
- * @returns {Object} The object that can be used for JSON.stringify.
+ * @param variable The eslint-scope's variable object.
+ * @param resolver The reference resolver.
+ * @returns The object that can be used for JSON.stringify.
  */
-export function variableToJSON(variable: any, resolver: any) {
+export function variableToJSON(
+  variable: TSESLintScope.Variable,
+  resolver: ReferenceResolver,
+): unknown {
   const { name, eslintUsed } = variable;
-  const defs = variable.defs.map((d: any) => ({
+  const defs = variable.defs.map(d => ({
     type: d.type,
     name: nodeToJSON(d.name),
     node: nodeToJSON(d.node),
@@ -76,11 +89,14 @@ export function variableToJSON(variable: any, resolver: any) {
 
 /**
  * Convert a given reference object to JSON object.
- * @param {Reference} reference The eslint-scope's reference object.
- * @param {ReferenceResolver} resolver The reference resolver.
- * @returns {Object} The object that can be used for JSON.stringify.
+ * @param reference The eslint-scope's reference object.
+ * @param resolver The reference resolver.
+ * @returns The object that can be used for JSON.stringify.
  */
-export function referenceToJSON(reference: any, resolver: any) {
+export function referenceToJSON(
+  reference: TSESLintScope.Reference,
+  resolver: ReferenceResolver,
+): unknown {
   const kind = `${reference.isRead() ? 'r' : ''}${
     reference.isWrite() ? 'w' : ''
   }`;
@@ -100,32 +116,28 @@ export function referenceToJSON(reference: any, resolver: any) {
 
 /**
  * Convert a given scope object to JSON object.
- * @param {Scope} scope The eslint-scope's scope object.
- * @param {ReferenceResolver} resolver The reference resolver.
+ * @param scope The eslint-scope's scope object.
+ * @param resolver The reference resolver.
  * @returns {Object} The object that can be used for JSON.stringify.
  */
-export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
+export function scopeToJSON(
+  scope: TSESLintScope.Scope,
+  resolver = new ReferenceResolver(),
+): unknown {
   const { type, functionExpressionScope, isStrict } = scope;
   const block = nodeToJSON(scope.block);
-  const variables = scope.variables.map((v: any) =>
-    variableToJSON(v, resolver),
-  );
-  const references = scope.references.map((r: any) =>
-    referenceToJSON(r, resolver),
-  );
-  const variableMap = Array.from(scope.set.entries()).reduce(
-    (map: any, [name, variable]: any) => {
-      map[name] = resolver.ref(variable);
-      return map;
-    },
-    {},
-  );
+  const variables = scope.variables.map(v => variableToJSON(v, resolver));
+  const references = scope.references.map(r => referenceToJSON(r, resolver));
+  const variableMap = Array.from(scope.set.entries()).reduce<
+    Record<string, unknown>
+  >((map, [name, variable]) => {
+    map[name] = resolver.ref(variable);
+    return map;
+  }, {});
   const throughReferences = scope.through.map(resolver.ref, resolver);
   const variableScope = resolver.ref(scope.variableScope);
   const upperScope = resolver.ref(scope.upper);
-  const childScopes = scope.childScopes.map((c: any) =>
-    scopeToJSON(c, resolver),
-  );
+  const childScopes = scope.childScopes.map(c => scopeToJSON(c, resolver));
 
   return resolver.resolve(scope, {
     type,
@@ -142,12 +154,12 @@ export function scopeToJSON(scope: any, resolver = new ReferenceResolver()) {
   });
 }
 
-export function getScopeTree(scopeManager: any) {
+export function getScopeTree(scopeManager: ScopeManager): unknown {
   const { globalScope } = scopeManager;
 
   // Do the postprocess to test.
   // https://github.com/eslint/eslint/blob/84ce72fdeba082b7b132e4ac6b714fb1a93831b7/lib/linter.js#L112-L129
-  globalScope.through = globalScope.through.filter((reference: any) => {
+  globalScope.through = globalScope.through.filter(reference => {
     const name = reference.identifier.name;
     const variable = globalScope.set.get(name);
     if (variable) {

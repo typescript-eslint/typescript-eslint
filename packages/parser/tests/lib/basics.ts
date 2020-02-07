@@ -1,4 +1,7 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';
@@ -39,7 +42,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
     linter.defineRule('test', {
       create(context) {
         return {
-          TSTypeReference(node) {
+          TSTypeReference(node): void {
             const name = context.getSourceCode().getText(node.typeName);
             context.report({
               node,
@@ -61,7 +64,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         endLine: 2,
         line: 2,
         message: 'called on React.SFC',
-        nodeType: 'TSTypeReference',
+        nodeType: AST_NODE_TYPES.TSTypeReference,
         ruleId: 'test',
         severity: 2,
       },
@@ -71,7 +74,7 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
         endLine: 2,
         line: 2,
         message: 'called on PriceProps',
-        nodeType: 'TSTypeReference',
+        nodeType: AST_NODE_TYPES.TSTypeReference,
         ruleId: 'test',
         severity: 2,
       },

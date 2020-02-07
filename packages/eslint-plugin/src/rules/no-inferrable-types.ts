@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -44,24 +44,31 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreParameters: true,
-      ignoreProperties: true,
+      ignoreParameters: false,
+      ignoreProperties: false,
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
-    function isFunctionCall(init: TSESTree.Expression, callName: string) {
+    function isFunctionCall(
+      init: TSESTree.Expression,
+      callName: string,
+    ): boolean {
       return (
-        init.type === AST_NODE_TYPES.CallExpression &&
+        (init.type === AST_NODE_TYPES.CallExpression ||
+          init.type === AST_NODE_TYPES.OptionalCallExpression) &&
         init.callee.type === AST_NODE_TYPES.Identifier &&
         init.callee.name === callName
       );
     }
-    function isLiteral(init: TSESTree.Expression, typeName: string) {
+    function isLiteral(init: TSESTree.Expression, typeName: string): boolean {
       return (
         init.type === AST_NODE_TYPES.Literal && typeof init.value === typeName
       );
     }
-    function isIdentifier(init: TSESTree.Expression, ...names: string[]) {
+    function isIdentifier(
+      init: TSESTree.Expression,
+      ...names: string[]
+    ): boolean {
       return (
         init.type === AST_NODE_TYPES.Identifier && names.includes(init.name)
       );
@@ -118,6 +125,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSBooleanKeyword:
           return (
             hasUnaryPrefix(init, '!') ||
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'Boolean') ||
             isLiteral(init, 'boolean')
           );
@@ -139,6 +147,7 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'String') ||
             isLiteral(init, 'string') ||
             init.type === AST_NODE_TYPES.TemplateLiteral
@@ -157,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
               init.value instanceof RegExp;
             const isRegExpNewCall =
               init.type === AST_NODE_TYPES.NewExpression &&
-              init.callee.type === 'Identifier' &&
+              init.callee.type === AST_NODE_TYPES.Identifier &&
               init.callee.name === 'RegExp';
             const isRegExpCall = isFunctionCall(init, 'RegExp');
 
@@ -244,7 +253,7 @@ export default util.createRule<Options, MessageIds>({
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
       // compile errors if the type is stripped.
-      if (ignoreProperties || node.readonly) {
+      if (ignoreProperties || node.readonly || node.optional) {
         return;
       }
       reportInferrableType(node, node.typeAnnotation, node.value);

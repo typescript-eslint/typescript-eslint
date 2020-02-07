@@ -1,31 +1,41 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type Types = Record<
+  string,
+  | string
+  | null
+  | {
+      message: string;
+      fixWith?: string;
+    }
+>;
+
 type Options = [
   {
-    types: Record<
-      string,
-      | string
-      | null
-      | {
-          message: string;
-          fixWith?: string;
-        }
-    >;
+    types: Types;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
 
+function removeSpaces(str: string): string {
+  return str.replace(/ /g, '');
+}
+
 function stringifyTypeName(
-  node: TSESTree.EntityName,
+  node:
+    | TSESTree.EntityName
+    | TSESTree.TSTypeLiteral
+    | TSESTree.TSNullKeyword
+    | TSESTree.TSUndefinedKeyword,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  return sourceCode.getText(node).replace(/ /g, '');
+  return removeSpaces(sourceCode.getText(node));
 }
 
 function getCustomMessage(
   bannedType: null | string | { message?: string; fixWith?: string },
-) {
+): string {
   if (bannedType === null) {
     return '';
   }
@@ -106,57 +116,61 @@ export default util.createRule<Options, MessageIds>({
       },
     },
   ],
-  create(context, [{ types: bannedTypes }]) {
-    function reportBannedType(
-      node:
+  create(context, [{ types }]) {
+    const bannedTypes = new Map(
+      Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
+    );
+
+    function checkBannedTypes(
+      typeNode:
         | TSESTree.EntityName
+        | TSESTree.TSTypeLiteral
         | TSESTree.TSNullKeyword
         | TSESTree.TSUndefinedKeyword,
-      name: string,
-    ) {
-      const bannedType = bannedTypes[name];
-      const customMessage = getCustomMessage(bannedType);
-      const fixWith =
-        bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+      name = stringifyTypeName(typeNode, context.getSourceCode()),
+    ): void {
+      const bannedType = bannedTypes.get(name);
 
-      context.report({
-        node: node,
-        messageId: 'bannedTypeMessage',
-        data: {
-          name,
-          customMessage,
+      if (bannedType !== undefined) {
+        const customMessage = getCustomMessage(bannedType);
+        const fixWith =
+          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+        context.report({
+          node: typeNode,
+          messageId: 'bannedTypeMessage',
+          data: {
+            name,
+            customMessage,
+          },
+          fix: fixWith ? fixer => fixer.replaceText(typeNode, fixWith) : null,
+        });
+      }
+    }
+
+    return {
+      ...(bannedTypes.has('null') && {
+        TSNullKeyword(node) {
+          checkBannedTypes(node, 'null');
         },
-        fix: fixWith ? fixer => fixer.replaceText(node, fixWith) : null,
-      });
-    }
+      }),
 
-    let trackedBannedTypes = 0;
-    const bannedTypeNames = Object.keys(bannedTypes);
-    const ruleListener: TSESLint.RuleListener = {};
+      ...(bannedTypes.has('undefined') && {
+        TSUndefinedKeyword(node) {
+          checkBannedTypes(node, 'undefined');
+        },
+      }),
 
-    if ('null' in bannedTypes) {
-      ruleListener.TSNullKeyword = typeName => {
-        reportBannedType(typeName, 'null');
-      };
-      ++trackedBannedTypes;
-    }
-
-    if ('undefined' in bannedTypes) {
-      ruleListener.TSUndefinedKeyword = typeName => {
-        reportBannedType(typeName, 'undefined');
-      };
-      ++trackedBannedTypes;
-    }
-
-    if (bannedTypeNames.length > trackedBannedTypes) {
-      ruleListener.TSTypeReference = ({ typeName }) => {
-        const name = stringifyTypeName(typeName, context.getSourceCode());
-        if (name in bannedTypes) {
-          reportBannedType(typeName, name);
+      TSTypeLiteral(node): void {
+        if (node.members.length) {
+          return;
         }
-      };
-    }
 
-    return ruleListener;
+        checkBannedTypes(node);
+      },
+      TSTypeReference({ typeName }): void {
+        checkBannedTypes(typeName);
+      },
+    };
   },
 });

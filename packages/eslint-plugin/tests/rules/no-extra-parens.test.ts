@@ -23,7 +23,6 @@ for (a in b, c);
 for (a in b);
       `,
     }),
-    `t.true((me.get as SinonStub).calledWithExactly('/foo', other));`,
     ...batchedSingleLineTests({
       code: `
 while ((foo = bar())) {}
@@ -120,6 +119,27 @@ typeof (a);
     }),
     ...batchedSingleLineTests({
       code: `
+const x = (1 as 1) | (1 as 1);
+const x = (<1>1) | (<1>1);
+const x = (1 as 1) | 2;
+const x = (1 as 1) + 2 + 2;
+const x = 1 + 1 + (2 as 2);
+const x = 1 | (2 as 2);
+const x = (<1>1) | 2;
+const x = 1 | (<2>2);
+t.true((me.get as SinonStub).calledWithExactly('/foo', other));
+t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
+(requestInit.headers as Headers).get('Cookie');
+(<Headers> requestInit.headers).get('Cookie');
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: false,
+        },
+      },
+    }),
+    ...batchedSingleLineTests({
+      code: `
 [a as b];
 () => (1 as 1);
 x = a as b;
@@ -148,6 +168,48 @@ const x = (1 as 1)++;
 function *x() { yield (1 as 1); yield 1; }
 switch (foo) { case 1: case (2 as 2): break; default: break; }
       `,
+      options: [
+        'all',
+        {
+          nestedBinaryExpressions: false,
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: `
+[<b>a];
+() => (<1>1);
+x = <b>a;
+const x = (<1>1) | 2;
+const x = 1 | (<2>2);
+const x = await (<Promise<void>>foo);
+const res2 = (<foo>fn)();
+(<boolean>x) ? 1 : 0;
+x ? (<1>1) : 2;
+x ? 1 : (<2>2);
+while (<boolean>foo) {};
+do {} while (<boolean>foo);
+for (let i of (<Foo>[])) {}
+for (let i in (<Foo>{})) {}
+for ((<1>1);;) {}
+for (;(<1>1);) {}
+for (;;(<1>1)) {}
+if (<1>1) {}
+const x = (<1>1).toString();
+new (<1>1)();
+const x = { ...(<1>1), ...{} };
+throw (<1>1);
+throw 1;
+const x = !(<1>1);
+const x = (<1>1)++;
+function *x() { yield (<1>1); yield 1; }
+switch (foo) { case 1: case (<2>2): break; default: break; }
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: false,
+        },
+      },
       options: [
         'all',
         {

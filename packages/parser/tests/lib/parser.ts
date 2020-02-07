@@ -43,20 +43,20 @@ describe('parser', () => {
       comment: false,
       range: false,
       tokens: false,
-      sourceType: 'module' as 'module',
+      sourceType: 'module' as const,
       ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
       },
       // ts-estree specific
-      filePath: 'tests/fixtures/services/isolated-file.src.ts',
+      filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
       useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
-      extraFileExtensions: ['foo'],
+      extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledWith(code, {

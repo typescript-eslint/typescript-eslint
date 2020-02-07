@@ -3,14 +3,14 @@ import {
   isUnionOrIntersectionType,
   unionTypeParts,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 /**
  * @param type Type being checked by name.
  * @param allowedNames Symbol names checking on the type.
- * @returns Whether the type is, extends, or contains any of the allowed names.
+ * @returns Whether the type is, extends, or contains all of the allowed names.
  */
-export function containsTypeByName(
+export function containsAllTypesByName(
   type: ts.Type,
   allowAny: boolean,
   allowedNames: Set<string>,
@@ -31,13 +31,16 @@ export function containsTypeByName(
   }
 
   if (isUnionOrIntersectionType(type)) {
-    return type.types.some(t => containsTypeByName(t, allowAny, allowedNames));
+    return type.types.every(t =>
+      containsAllTypesByName(t, allowAny, allowedNames),
+    );
   }
 
   const bases = type.getBaseTypes();
   return (
     typeof bases !== 'undefined' &&
-    bases.some(t => containsTypeByName(t, allowAny, allowedNames))
+    bases.length > 0 &&
+    bases.every(t => containsAllTypesByName(t, allowAny, allowedNames))
   );
 }
 
@@ -108,7 +111,7 @@ export function getConstrainedTypeAtLocation(
   const nodeType = checker.getTypeAtLocation(node);
   const constrained = checker.getBaseConstraintOfType(nodeType);
 
-  return constrained || nodeType;
+  return constrained ?? nodeType;
 }
 
 /**
@@ -186,7 +189,10 @@ export function isTypeFlagSet(
 /**
  * @returns Whether a type is an instance of the parent type, including for the parent's base types.
  */
-export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
+export function typeIsOrHasBaseType(
+  type: ts.Type,
+  parentType: ts.Type,
+): boolean {
   if (type.symbol === undefined || parentType.symbol === undefined) {
     return false;
   }
@@ -208,4 +214,79 @@ export const typeIsOrHasBaseType = (type: ts.Type, parentType: ts.Type) => {
   }
 
   return false;
-};
+}
+
+/**
+ * Gets the source file for a given node
+ */
+export function getSourceFileOfNode(node: ts.Node): ts.SourceFile {
+  while (node && node.kind !== ts.SyntaxKind.SourceFile) {
+    node = node.parent;
+  }
+  return node as ts.SourceFile;
+}
+
+export function getTokenAtPosition(
+  sourceFile: ts.SourceFile,
+  position: number,
+): ts.Node {
+  const queue: ts.Node[] = [sourceFile];
+  let current: ts.Node;
+  while (queue.length > 0) {
+    current = queue.shift()!;
+    // find the child that contains 'position'
+    for (const child of current.getChildren(sourceFile)) {
+      const start = child.getFullStart();
+      if (start > position) {
+        // If this child begins after position, then all subsequent children will as well.
+        return current;
+      }
+
+      const end = child.getEnd();
+      if (
+        position < end ||
+        (position === end && child.kind === ts.SyntaxKind.EndOfFileToken)
+      ) {
+        queue.push(child);
+        break;
+      }
+    }
+  }
+  return current!;
+}
+
+export interface EqualsKind {
+  isPositive: boolean;
+  isStrict: boolean;
+}
+
+export function getEqualsKind(operator: string): EqualsKind | undefined {
+  switch (operator) {
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    case '!=':
+      return {
+        isPositive: false,
+        isStrict: false,
+      };
+
+    case '!==':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    default:
+      return undefined;
+  }
+}

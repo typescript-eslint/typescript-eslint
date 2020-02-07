@@ -13,9 +13,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-readonly', rule, {
   valid: [
-    `function ignore() { }`,
-    `const ignore = function () { }`,
-    `const ignore = () => { }`,
+    'function ignore() { }',
+    'const ignore = function () { }',
+    'const ignore = () => { }',
     `const container = { member: true };
       container.member;`,
     `const container = { member: 1 };
@@ -30,7 +30,7 @@ ruleTester.run('prefer-readonly', rule, {
       --container.member;`,
     `const container = { member: 1 };
       container.member--;`,
-    `class TestEmpty { }`,
+    'class TestEmpty { }',
     `class TestReadonlyStatic {
       private static readonly correctlyReadonlyStatic = 7;
     }`,
@@ -220,6 +220,54 @@ ruleTester.run('prefer-readonly', rule, {
         this['computed'] = 1;
       }
     }`,
+    {
+      code: `
+class Foo {
+  private value: number = 0
+
+  bar(newValue: { value: number }) {
+    ({ value: this.value } = newValue);
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: Record<string, number> = {};
+
+  bar(newValue: Record<string, number>) {
+    ({ ...this.value } = newValue);
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: number[] = []
+
+  bar(newValue: number[]) {
+    [...this.value] = newValue;
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  private value: number = 0;
+
+  bar(newValue: number[]) {
+    [this.value] = newValue;
+    return this.value;
+  }
+}
+      `,
+    },
   ],
   invalid: [
     {

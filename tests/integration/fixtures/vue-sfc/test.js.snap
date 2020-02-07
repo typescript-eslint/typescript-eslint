@@ -18,6 +18,30 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                708,
+                711,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                708,
+                711,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
     ],
     "source": "<!-- Hello.vue -->
@@ -57,6 +81,14 @@ export default Vue.extend({
 });
 </script>
 ",
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 0,
+    "filePath": "/usr/linked/World.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [],
     "warningCount": 0,
   },
 ]

@@ -3,7 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
@@ -14,9 +14,108 @@ interface Config {
   ignoreStatic: boolean;
 }
 
-type Options = [Config];
+export type Options = [Config];
 
-type MessageIds = 'unbound';
+export type MessageIds = 'unbound';
+
+/**
+ * The following is a list of exceptions to the rule
+ * Generated via the following script.
+ * This is statically defined to save making purposely invalid calls every lint run
+ * ```
+SUPPORTED_GLOBALS.flatMap(namespace => {
+  const object = window[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof object[name] === 'function',
+      )
+      .map(name => {
+        try {
+          const x = object[name];
+          x();
+        } catch (e) {
+          if (e.message.includes("called on non-object")) {
+            return `${namespace}.${name}`;
+          }
+        }
+      });
+}).filter(Boolean);
+   * ```
+ */
+const nativelyNotBoundMembers = new Set([
+  'Promise.all',
+  'Promise.race',
+  'Promise.resolve',
+  'Promise.reject',
+  'Promise.allSettled',
+  'Object.defineProperties',
+  'Object.defineProperty',
+  'Reflect.defineProperty',
+  'Reflect.deleteProperty',
+  'Reflect.get',
+  'Reflect.getOwnPropertyDescriptor',
+  'Reflect.getPrototypeOf',
+  'Reflect.has',
+  'Reflect.isExtensible',
+  'Reflect.ownKeys',
+  'Reflect.preventExtensions',
+  'Reflect.set',
+  'Reflect.setPrototypeOf',
+]);
+const SUPPORTED_GLOBALS = [
+  'Number',
+  'Object',
+  'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+  'RegExp',
+  'Symbol',
+  'Array',
+  'Proxy',
+  'Date',
+  'Infinity',
+  'Atomics',
+  'Reflect',
+  'console',
+  'Math',
+  'JSON',
+  'Intl',
+] as const;
+const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
+  const object = global[namespace];
+  return Object.getOwnPropertyNames(object)
+    .filter(
+      name =>
+        !name.startsWith('_') &&
+        typeof (object as Record<string, unknown>)[name] === 'function',
+    )
+    .map(name => `${namespace}.${name}`);
+})
+  .reduce((arr, names) => arr.concat(names), [])
+  .filter(name => !nativelyNotBoundMembers.has(name));
+
+const isMemberNotImported = (
+  symbol: ts.Symbol,
+  currentSourceFile: ts.SourceFile | undefined,
+): boolean => {
+  const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  return (
+    !!currentSourceFile &&
+    currentSourceFile !== valueDeclaration.getSourceFile()
+  );
+};
+
+const getNodeName = (node: TSESTree.Node): string | null =>
+  node.type === AST_NODE_TYPES.Identifier ? node.name : null;
+
+const getMemberFullName = (
+  node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+): string => `${getNodeName(node.object)}.${getNodeName(node.property)}`;
 
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
@@ -25,7 +124,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
-      recommended: false,
+      recommended: 'error',
+      requiresTypeChecking: true,
     },
     messages: {
       unbound:
@@ -52,10 +152,27 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const currentSourceFile = parserServices.program.getSourceFile(
+      context.getFilename(),
+    );
 
     return {
-      [AST_NODE_TYPES.MemberExpression](node: TSESTree.MemberExpression) {
+      'MemberExpression, OptionalMemberExpression'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      ): void {
         if (isSafeUse(node)) {
+          return;
+        }
+
+        const objectSymbol = checker.getSymbolAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(node.object),
+        );
+
+        if (
+          objectSymbol &&
+          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          isMemberNotImported(objectSymbol, currentSourceFile)
+        ) {
           return;
         }
 
@@ -73,7 +190,7 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
+function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
@@ -96,32 +213,47 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean) {
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
-  const parent = node.parent!;
+  const parent = node.parent;
 
-  switch (parent.type) {
+  switch (parent?.type) {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.OptionalMemberExpression:
     case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;
 
     case AST_NODE_TYPES.CallExpression:
+    case AST_NODE_TYPES.OptionalCallExpression:
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:
       return parent.test === node;
 
-    case AST_NODE_TYPES.LogicalExpression:
-      return parent.operator !== '||';
-
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return parent.tag === node;
+
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === 'typeof';
+
+    case AST_NODE_TYPES.BinaryExpression:
+      return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
+      return isSafeUse(parent);
+
+    case AST_NODE_TYPES.LogicalExpression:
+      if (parent.operator === '&&' && parent.left === node) {
+        // this is safe, as && will return the left if and only if it's falsy
+        return true;
+      }
+
+      // in all other cases, it's likely the logical expression will return the method ref
+      // so make sure the parent is a safe usage
       return isSafeUse(parent);
   }
 

@@ -4,27 +4,29 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type Values =
+  | 'always'
+  | 'never'
+  | 'in-unions'
+  | 'in-intersections'
+  | 'in-unions-and-intersections';
+const enumValues: Values[] = [
+  'always',
+  'never',
+  'in-unions',
+  'in-intersections',
+  'in-unions-and-intersections',
+];
+
 type Options = [
   {
-    allowAliases?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
+    allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
-    allowLiterals?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
-    allowMappedTypes?:
-      | 'always'
-      | 'never'
-      | 'in-unions'
-      | 'in-intersections'
-      | 'in-unions-and-intersections';
+    allowConditionalTypes?: 'always' | 'never';
+    allowConstructors?: 'always' | 'never';
+    allowLiterals?: Values;
+    allowMappedTypes?: Values;
+    allowTupleTypes?: Values;
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -44,6 +46,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the use of type aliases',
       category: 'Stylistic Issues',
+      // too opinionated to be recommended
       recommended: false,
     },
     messages: {
@@ -56,34 +59,25 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAliases: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
           allowCallbacks: {
             enum: ['always', 'never'],
           },
+          allowConditionalTypes: {
+            enum: ['always', 'never'],
+          },
+          allowConstructors: {
+            enum: ['always', 'never'],
+          },
           allowLiterals: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
           },
           allowMappedTypes: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ],
+            enum: enumValues,
+          },
+          allowTupleTypes: {
+            enum: enumValues,
           },
         },
         additionalProperties: false,
@@ -94,13 +88,26 @@ export default util.createRule<Options, MessageIds>({
     {
       allowAliases: 'never',
       allowCallbacks: 'never',
+      allowConditionalTypes: 'never',
+      allowConstructors: 'never',
       allowLiterals: 'never',
       allowMappedTypes: 'never',
+      allowTupleTypes: 'never',
     },
   ],
   create(
     context,
-    [{ allowAliases, allowCallbacks, allowLiterals, allowMappedTypes }],
+    [
+      {
+        allowAliases,
+        allowCallbacks,
+        allowConditionalTypes,
+        allowConstructors,
+        allowLiterals,
+        allowMappedTypes,
+        allowTupleTypes,
+      },
+    ],
   ) {
     const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
     const intersections = [
@@ -179,66 +186,86 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
+    const isValidTupleType = (type: TypeWithLabel): boolean => {
+      if (type.node.type === AST_NODE_TYPES.TSTupleType) {
+        return true;
+      }
+      if (type.node.type === AST_NODE_TYPES.TSTypeOperator) {
+        if (
+          ['keyof', 'readonly'].includes(type.node.operator) &&
+          type.node.typeAnnotation &&
+          type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const checkAndReport = (
+      optionValue: Values,
+      isTopLevel: boolean,
+      type: TypeWithLabel,
+      label: string,
+    ): void => {
+      if (
+        optionValue === 'never' ||
+        !isSupportedComposition(isTopLevel, type.compositionType, optionValue)
+      ) {
+        reportError(type.node, type.compositionType, isTopLevel, label);
+      }
+    };
+
     /**
      * Validates the node looking for aliases, callbacks and literals.
-     * @param node the node to be validated.
-     * @param compositionType the type of composition this alias is part of (null if not
+     * @param type the type of composition this alias is part of (null if not
      *                                  part of a composition)
      * @param isTopLevel a flag indicating this is the top level node.
      */
     function validateTypeAliases(
       type: TypeWithLabel,
-      isTopLevel: boolean = false,
+      isTopLevel = false,
     ): void {
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
         if (allowCallbacks === 'never') {
           reportError(type.node, type.compositionType, isTopLevel, 'Callbacks');
         }
-      } else if (type.node.type === AST_NODE_TYPES.TSTypeLiteral) {
-        // literal object type
-        if (
-          allowLiterals === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowLiterals!,
-          )
-        ) {
-          reportError(type.node, type.compositionType, isTopLevel, 'Literals');
-        }
-      } else if (type.node.type === AST_NODE_TYPES.TSMappedType) {
-        // mapped type
-        if (
-          allowMappedTypes === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowMappedTypes!,
-          )
-        ) {
+      } else if (type.node.type === AST_NODE_TYPES.TSConditionalType) {
+        // conditional type
+        if (allowConditionalTypes === 'never') {
           reportError(
             type.node,
             type.compositionType,
             isTopLevel,
-            'Mapped types',
+            'Conditional types',
           );
         }
+      } else if (type.node.type === AST_NODE_TYPES.TSConstructorType) {
+        if (allowConstructors === 'never') {
+          reportError(
+            type.node,
+            type.compositionType,
+            isTopLevel,
+            'Constructors',
+          );
+        }
+      } else if (type.node.type === AST_NODE_TYPES.TSTypeLiteral) {
+        // literal object type
+        checkAndReport(allowLiterals!, isTopLevel, type, 'Literals');
+      } else if (type.node.type === AST_NODE_TYPES.TSMappedType) {
+        // mapped type
+        checkAndReport(allowMappedTypes!, isTopLevel, type, 'Mapped types');
+      } else if (isValidTupleType(type)) {
+        // tuple types
+        checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
       } else if (
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {
         // alias / keyword
-        if (
-          allowAliases === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            allowAliases!,
-          )
-        ) {
-          reportError(type.node, type.compositionType, isTopLevel, 'Aliases');
-        }
+        checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');
       } else {
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
@@ -268,7 +295,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAliasDeclaration(node) {
+      TSTypeAliasDeclaration(node): void {
         const types = getTypes(node.typeAnnotation);
         if (types.length === 1) {
           // is a top level type annotation

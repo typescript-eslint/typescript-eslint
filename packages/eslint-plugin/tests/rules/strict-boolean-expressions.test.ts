@@ -1,8 +1,7 @@
-import path from 'path';
 import rule from '../../src/rules/strict-boolean-expressions';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -159,11 +158,53 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ ignoreRhs: true }],
       code: `
-const obj = {};
-const bool = false;
-const boolOrObj = bool || obj;
-const boolAndObj = bool && obj;
-`,
+        const obj = {};
+        const bool = false;
+        const boolOrObj = bool || obj;
+        const boolAndObj = bool && obj;
+      `,
+    },
+    {
+      options: [{ allowNullable: true }],
+      code: `
+        const f1 = (x?: boolean) => x ? 1 : 0;
+        const f2 = (x: boolean | null) => x ? 1 : 0;
+        const f3 = (x?: true | null) => x ? 1 : 0;
+        const f4 = (x?: false) => x ? 1 : 0;
+      `,
+    },
+    `
+      declare const x: string | null;
+      y = x ?? 'foo';
+    `,
+    {
+      options: [{ allowSafe: true }],
+      code: `
+        type TestType = { a: string; };
+        const f1 = (x: boolean | TestType) => x ? 1 : 0;
+        const f2 = (x: true | TestType) => x ? 1 : 0;
+        const f3 = (x: TestType | false) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true }],
+      code: `
+        type TestType = { a: string; };
+        type TestType2 = { b: number; };
+        const f1 = (x?: boolean | TestType) => x ? 1 : 0;
+        const f2 = (x: TestType | TestType2 | null) => x ? 1 : 0;
+        const f3 = (x?: TestType | TestType2 | null) => x ? 1 : 0;
+        const f4 = (x?: TestType2 | true) => x ? 1 : 0;
+        const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
+      code: `
+        type TestType = { foo? : { bar?: string; }; };
+        const f1 = (x?: TestType) => x && x.foo && x.foo.bar
+        const f2 = (g?: (x: number) => number) => g && g(1)
+      `,
     },
   ],
 
@@ -913,6 +954,30 @@ const boolAndObj = bool && obj;
       ],
     },
     {
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 55,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 37,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 41,
+        },
+      ],
+      code: `
+        const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
+        const f2 = (x?: boolean) => x ? 1 : 0;
+        const f3 = (x: boolean | {}) => x ? 1 : 0;
+      `,
+    },
+    {
       options: [{ ignoreRhs: true }],
       errors: [
         {
@@ -932,6 +997,96 @@ const bool = false;
 const objOrBool = obj || bool;
 const objAndBool = obj && bool;
 `,
+    },
+    {
+      options: [{ allowNullable: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 2,
+          column: 44,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 35,
+        },
+      ],
+      code: `
+        const f = (x: null | undefined) => x ? 1 : 0;
+        const f = (x?: number) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 42,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 42,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 5,
+          column: 44,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x: Type | string) => x ? 1 : 0;
+        const f2 = (x: Type | number) => x ? 1 : 0;
+        const f3 = (x: number | string) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 8,
+          column: 34,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 9,
+          column: 34,
+        },
+      ],
+      code: `
+        enum Enum1 {
+          A, B, C
+        }
+        enum Enum2 {
+          A = 'A', B = 'B', C = 'C'
+        }
+        const f1 = (x: Enum1) => x ? 1 : 0;
+        const f2 = (x: Enum2) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true }],
+      errors: [
+        {
+          messageId: 'strictBooleanExpression',
+          line: 3,
+          column: 43,
+        },
+        {
+          messageId: 'strictBooleanExpression',
+          line: 4,
+          column: 49,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x?: Type | string) => x ? 1 : 0;
+        const f2 = (x: Type | number | null) => x ? 1 : 0;
+      `,
     },
   ],
 });

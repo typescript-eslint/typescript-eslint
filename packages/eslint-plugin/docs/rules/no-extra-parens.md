@@ -1,10 +1,10 @@
-# disallow unnecessary parentheses (no-extra-parens)
+# Disallow unnecessary parentheses (`no-extra-parens`)
 
 This rule restricts the use of parentheses to only where they are necessary.
 
 ## Rule Details
 
-This rule extends the base [eslint/no-extra-parens](https://eslint.org/docs/rules/no-extra-parens) rule.
+This rule extends the base [`eslint/no-extra-parens`](https://eslint.org/docs/rules/no-extra-parens) rule.
 It supports all options and features of the base rule plus TS type assertions.
 
 ## How to use
@@ -19,4 +19,4 @@ It supports all options and features of the base rule plus TS type assertions.
 
 ## Options
 
-See [eslint/no-extra-parens options](https://eslint.org/docs/rules/no-extra-parens#options).
+See [`eslint/no-extra-parens` options](https://eslint.org/docs/rules/no-extra-parens#options).

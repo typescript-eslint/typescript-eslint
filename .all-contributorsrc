@@ -24,17 +24,17 @@
       "contributions": []
     },
     {
-      "login": "soda0289",
-      "name": "Reyad Attiyat",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/2373964?v=4",
-      "profile": "https://github.com/soda0289",
-      "contributions": []
-    },
-    {
       "login": "bradzacher",
       "name": "Brad Zacher",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7462525?v=4",
       "profile": "https://github.com/bradzacher",
+      "contributions": []
+    },
+    {
+      "login": "soda0289",
+      "name": "Reyad Attiyat",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2373964?v=4",
+      "profile": "https://github.com/soda0289",
       "contributions": []
     },
     {
@@ -59,10 +59,31 @@
       "contributions": []
     },
     {
+      "login": "a-tarasyuk",
+      "name": "Alexander T.",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/509265?v=4",
+      "profile": "https://github.com/a-tarasyuk",
+      "contributions": []
+    },
+    {
       "login": "uniqueiniquity",
-      "name": "Benjamin Lichtman",
+      "name": "Ben Lichtman",
       "avatar_url": "https://avatars1.githubusercontent.com/u/9092011?v=4",
       "profile": "https://github.com/uniqueiniquity",
+      "contributions": []
+    },
+    {
+      "login": "scottohara",
+      "name": "Scott O'Hara",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/289327?v=4",
+      "profile": "https://github.com/scottohara",
+      "contributions": []
+    },
+    {
+      "login": "JoshuaKGoldberg",
+      "name": "Josh Goldberg",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3335181?v=4",
+      "profile": "https://github.com/JoshuaKGoldberg",
       "contributions": []
     },
     {
@@ -77,6 +98,13 @@
       "name": "Rasmus Eneman",
       "avatar_url": "https://avatars1.githubusercontent.com/u/817422?v=4",
       "profile": "https://github.com/Pajn",
+      "contributions": []
+    },
+    {
+      "login": "mysticatea",
+      "name": "Toru Nagashima",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1937871?v=4",
+      "profile": "https://github.com/mysticatea",
       "contributions": []
     },
     {
@@ -101,13 +129,6 @@
       "contributions": []
     },
     {
-      "login": "mysticatea",
-      "name": "Toru Nagashima",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/1937871?v=4",
-      "profile": "https://github.com/mysticatea",
-      "contributions": []
-    },
-    {
       "login": "macklinu",
       "name": "mackie",
       "avatar_url": "https://avatars1.githubusercontent.com/u/2344137?v=4",
@@ -122,6 +143,27 @@
       "contributions": []
     },
     {
+      "login": "ldrick",
+      "name": "Ricky Lippmann",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3674067?v=4",
+      "profile": "https://github.com/ldrick",
+      "contributions": []
+    },
+    {
+      "login": "SimenB",
+      "name": "Simen Bekkhus",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1404810?v=4",
+      "profile": "https://github.com/SimenB",
+      "contributions": []
+    },
+    {
+      "login": "gavinbarron",
+      "name": "Gavin Barron",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7122716?v=4",
+      "profile": "https://github.com/gavinbarron",
+      "contributions": []
+    },
+    {
       "login": "platinumazure",
       "name": "Kevin Partington",
       "avatar_url": "https://avatars0.githubusercontent.com/u/284282?v=4",
@@ -129,17 +171,52 @@
       "contributions": []
     },
     {
+      "login": "duailibe",
+      "name": "Lucas Duailibe",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1574588?v=4",
+      "profile": "https://github.com/duailibe",
+      "contributions": []
+    },
+    {
+      "login": "octogonz",
+      "name": "Pete Gonzalez",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/4673363?v=4",
+      "profile": "https://github.com/octogonz",
+      "contributions": []
+    },
+    {
+      "login": "Retsam",
+      "name": "Retsam",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2281166?v=4",
+      "profile": "https://github.com/Retsam",
+      "contributions": []
+    },
+    {
       "login": "mightyiam",
-      "name": "Shahar Or",
+      "name": "Shahar Dawn Or",
       "avatar_url": "https://avatars2.githubusercontent.com/u/635591?v=4",
       "profile": "https://github.com/mightyiam",
       "contributions": []
     },
     {
-      "login": "invalid-email-address",
-      "name": "Check your git settings!",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/148100?v=4",
-      "profile": "https://github.com/invalid-email-address",
+      "login": "webschik",
+      "name": "Denys Kniazevych",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1665314?v=4",
+      "profile": "https://github.com/webschik",
+      "contributions": []
+    },
+    {
+      "login": "Validark",
+      "name": "Niles",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/15217173?v=4",
+      "profile": "https://github.com/Validark",
+      "contributions": []
+    },
+    {
+      "login": "pablobirukov",
+      "name": "Pavel Birukov ",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1861546?v=4",
+      "profile": "https://github.com/pablobirukov",
       "contributions": []
     },
     {
@@ -155,7 +232,21 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/17216317?v=4",
       "profile": "https://github.com/g-plane",
       "contributions": []
+    },
+    {
+      "login": "ThomasdenH",
+      "name": "Thomas den Hollander",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3889750?v=4",
+      "profile": "https://github.com/ThomasdenH",
+      "contributions": []
+    },
+    {
+      "login": "madbence",
+      "name": "Bence Dányi",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/296735?v=4",
+      "profile": "https://github.com/madbence",
+      "contributions": []
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 5
 }

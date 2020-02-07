@@ -1,5 +1,8 @@
+import {
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -18,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Sets preference level for triple slash directives versus ES6-style import declarations',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       tripleSlashReference:
@@ -52,12 +55,12 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ lib, path, types }]) {
     let programNode: TSESTree.Node;
     const sourceCode = context.getSourceCode();
-    const references: ({
+    const references: {
       comment: TSESTree.Comment;
       importName: string;
-    })[] = [];
+    }[] = [];
 
-    function hasMatchingReference(source: TSESTree.Literal) {
+    function hasMatchingReference(source: TSESTree.Literal): void {
       references.forEach(reference => {
         if (reference.importName === source.value) {
           context.report({
@@ -71,20 +74,19 @@ export default util.createRule<Options, MessageIds>({
       });
     }
     return {
-      ImportDeclaration(node) {
+      ImportDeclaration(node): void {
         if (programNode) {
-          const source = node.source as TSESTree.Literal;
-          hasMatchingReference(source);
+          hasMatchingReference(node.source);
         }
       },
-      TSImportEqualsDeclaration(node) {
+      TSImportEqualsDeclaration(node): void {
         if (programNode) {
           const source = (node.moduleReference as TSESTree.TSExternalModuleReference)
             .expression as TSESTree.Literal;
           hasMatchingReference(source);
         }
       },
-      Program(node) {
+      Program(node): void {
         if (lib === 'always' && path === 'always' && types == 'always') {
           return;
         }
@@ -93,7 +95,7 @@ export default util.createRule<Options, MessageIds>({
         const commentsBefore = sourceCode.getCommentsBefore(programNode);
 
         commentsBefore.forEach(comment => {
-          if (comment.type !== 'Line') {
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
             return;
           }
           const referenceResult = referenceRegExp.exec(comment.value);

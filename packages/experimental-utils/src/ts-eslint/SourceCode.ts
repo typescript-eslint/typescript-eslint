@@ -32,6 +32,14 @@ declare interface SourceCode {
 
   getNodeByRangeIndex(index: number): TSESTree.Node | null;
 
+  isSpaceBetween(
+    first: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
+    second: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
+  ): boolean;
+
+  /**
+   * @deprecated in favor of isSpaceBetween()
+   */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
 
   getLocFromIndex(index: number): TSESTree.LineAndColumnData;
@@ -41,93 +49,90 @@ declare interface SourceCode {
   // Inherited methods from TokenStore
   // ---------------------------------
 
-  getTokenByRangeStart(
+  getTokenByRangeStart<T extends { includeComments?: boolean }>(
     offset: number,
-    options?: { includeComments?: boolean },
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getFirstToken(
+  getFirstToken<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getFirstTokens(
+  getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getLastToken(
+  getLastToken<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getLastTokens(
+  getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getTokenBefore(
+  getTokenBefore<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getTokensBefore(
+  getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getTokenAfter(
+  getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getTokensAfter(
+  getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getFirstTokenBetween(
+  getFirstTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
     left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
     right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getFirstTokensBetween(
+  getFirstTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
     right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getLastTokenBetween(
+  getLastTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
     left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
     right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithSkipOptions,
-  ): TSESTree.Token | null;
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
 
-  getLastTokensBetween(
+  getLastTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
     right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    options?: SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
-  getTokensBetween(
+  getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
     right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    padding?:
-      | number
-      | SourceCode.FilterPredicate
-      | SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    padding?: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
   getTokens(
     node: TSESTree.Node,
     beforeCount?: number,
     afterCount?: number,
   ): TSESTree.Token[];
-  getTokens(
+  getTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
-    options: SourceCode.FilterPredicate | SourceCode.CursorWithCountOptions,
-  ): TSESTree.Token[];
+    options: T,
+  ): SourceCode.ReturnTypeFromOptions<T>[];
 
   commentsExistBetween(
     left: TSESTree.Node | TSESTree.Token,
@@ -166,6 +171,10 @@ namespace SourceCode {
   export type FilterPredicate = (
     tokenOrComment: TSESTree.Token | TSESTree.Comment,
   ) => boolean;
+
+  export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
+    ? TSESTree.Token | TSESTree.Comment
+    : TSESTree.Token;
 
   export type CursorWithSkipOptions =
     | number

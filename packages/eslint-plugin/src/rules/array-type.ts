@@ -94,7 +94,8 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      // too opinionated to be recommended
+      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -126,7 +127,7 @@ export default util.createRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode();
 
     const defaultOption = options.default;
-    const readonlyOption = options.readonly || defaultOption;
+    const readonlyOption = options.readonly ?? defaultOption;
 
     const isArraySimpleOption =
       defaultOption === 'array-simple' && readonlyOption === 'array-simple';
@@ -145,7 +146,8 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      if (node.range[0] - prevToken.range[1] > 0) {
+      const nextToken = sourceCode.getTokenAfter(prevToken);
+      if (nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)) {
         return false;
       }
 
@@ -167,8 +169,23 @@ export default util.createRule<Options, MessageIds>({
       return 'T';
     }
 
+    /**
+     * @param node the node to be evaluated
+     */
+    function getTypeOpNodeRange(
+      node: TSESTree.Node | null,
+    ): [number, number] | undefined {
+      if (!node) {
+        return undefined;
+      }
+
+      const firstToken = sourceCode.getFirstToken(node)!;
+      const nextToken = sourceCode.getTokenAfter(firstToken)!;
+      return [firstToken.range[0], nextToken.range[0]];
+    }
+
     return {
-      TSArrayType(node: TSESTree.TSArrayType) {
+      TSArrayType(node): void {
         if (
           isArrayOption ||
           (isArraySimpleOption && isSimpleType(node.elementType))
@@ -207,23 +224,26 @@ export default util.createRule<Options, MessageIds>({
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
-            const startText = requireWhitespaceBefore(node);
             const toFix = [
               fixer.replaceTextRange([node.range[1] - 2, node.range[1]], '>'),
-              fixer.insertTextBefore(
-                node,
-                `${startText ? ' ' : ''}${isReadonly ? 'Readonly' : ''}Array<`,
-              ),
             ];
-            if (typeOpNode) {
-              // remove the readonly operator if it exists
-              toFix.unshift(
-                fixer.removeRange([
-                  typeOpNode.range[0],
-                  typeOpNode.range[0] + 'readonly '.length,
-                ]),
+            const startText = requireWhitespaceBefore(node);
+            const typeOpNodeRange = getTypeOpNodeRange(typeOpNode);
+
+            if (typeOpNodeRange) {
+              toFix.unshift(fixer.removeRange(typeOpNodeRange));
+            } else {
+              toFix.push(
+                fixer.insertTextBefore(node, `${startText ? ' ' : ''}`),
               );
             }
+
+            toFix.push(
+              fixer.insertTextBefore(
+                node,
+                `${isReadonly ? 'Readonly' : ''}Array<`,
+              ),
+            );
 
             if (node.elementType.type === AST_NODE_TYPES.TSParenthesizedType) {
               const first = sourceCode.getFirstToken(node.elementType);
@@ -241,7 +261,7 @@ export default util.createRule<Options, MessageIds>({
         });
       },
 
-      TSTypeReference(node: TSESTree.TSTypeReference) {
+      TSTypeReference(node): void {
         if (
           isGenericOption ||
           node.typeName.type !== AST_NODE_TYPES.Identifier

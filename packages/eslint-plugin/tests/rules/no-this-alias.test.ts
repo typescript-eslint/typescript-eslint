@@ -3,15 +3,15 @@ import rule from '../../src/rules/no-this-alias';
 import { RuleTester } from '../RuleTester';
 
 const idError = {
-  messageId: 'thisAssignment' as 'thisAssignment',
+  messageId: 'thisAssignment' as const,
   type: AST_NODE_TYPES.Identifier,
 };
 const destructureError = {
-  messageId: 'thisDestructure' as 'thisDestructure',
+  messageId: 'thisDestructure' as const,
   type: AST_NODE_TYPES.ObjectPattern,
 };
 const arrayDestructureError = {
-  messageId: 'thisDestructure' as 'thisDestructure',
+  messageId: 'thisDestructure' as const,
   type: AST_NODE_TYPES.ArrayPattern,
 };
 
@@ -68,6 +68,11 @@ declare module 'foo' {
     },
     {
       code: 'const { props, state } = this;',
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [destructureError],
     },
     {
@@ -104,6 +109,11 @@ class TestClass {
     }
 }
 `,
+      options: [
+        {
+          allowDestructuring: false,
+        },
+      ],
       errors: [
         idError,
         idError,

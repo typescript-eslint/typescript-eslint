@@ -1,8 +1,7 @@
-import path from 'path';
 import rule from '../../src/rules/require-array-sort-compare';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -72,6 +71,22 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       }
     `,
+    // optional chain
+    `
+      function f(a: any[]) {
+        a?.sort((a, b) => a - b)
+      }
+    `,
+    `
+      namespace UserDefined {
+        interface Array {
+          sort(): void
+        }
+        function f(a: Array) {
+          a?.sort()
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -119,6 +134,15 @@ ruleTester.run('require-array-sort-compare', rule, {
       code: `
         function f<T, U extends T[]>(a: U) {
           a.sort()
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    // optional chain
+    {
+      code: `
+        function f(a: string[]) {
+          a?.sort()
         }
       `,
       errors: [{ messageId: 'requireCompare' }],

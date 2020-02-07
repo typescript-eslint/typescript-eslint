@@ -1,7 +1,7 @@
 // deeplyCopy is private internal
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Converter } from '../../src/convert';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 describe('convert', () => {
   function convertCode(code: string): ts.SourceFile {
@@ -16,6 +16,13 @@ describe('convert', () => {
 
   it('deeplyCopy should convert node correctly', () => {
     const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
+
+    function fakeUnknownKind(node: ts.Node): void {
+      ts.forEachChild(node, fakeUnknownKind);
+      node.kind = ts.SyntaxKind.UnparsedPrologue;
+    }
+
+    ts.forEachChild(ast, fakeUnknownKind);
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
@@ -32,8 +39,9 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    }) as any;
+
+    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type parameters correctly', () => {
@@ -43,8 +51,9 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    }) as any;
+
+    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type arguments correctly', () => {
@@ -54,9 +63,10 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
+    }) as any;
+
     expect(
-      (instance as any).deeplyCopy((ast.statements[0] as any).expression),
+      instance.deeplyCopy((ast.statements[0] as any).expression),
     ).toMatchSnapshot();
   });
 
@@ -67,8 +77,8 @@ describe('convert', () => {
       errorOnUnknownASTType: false,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect((instance as any).deeplyCopy(ast)).toMatchSnapshot();
+    }) as any;
+    expect(instance.deeplyCopy(ast)).toMatchSnapshot();
   });
 
   it('deeplyCopy should fail on unknown node', () => {
@@ -78,9 +88,10 @@ describe('convert', () => {
       errorOnUnknownASTType: true,
       useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    });
-    expect(() => instance.convertProgram()).toThrow(
-      'Unknown AST_NODE_TYPE: "TSJSDocNullableType"',
+    }) as any;
+
+    expect(() => instance.deeplyCopy(ast)).toThrow(
+      'Unknown AST_NODE_TYPE: "TSSourceFile"',
     );
   });
 
@@ -100,7 +111,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
+    function checkMaps(child: any): void {
       child.forEachChild((node: any) => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -134,7 +145,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
+    function checkMaps(child: any): void {
       child.forEachChild((node: any) => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -167,7 +178,7 @@ describe('convert', () => {
     const program = instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: any) {
+    function checkMaps(child: any): void {
       child.forEachChild((node: any) => {
         if (node.kind !== ts.SyntaxKind.EndOfFileToken) {
           expect(ast).toBe(
@@ -184,8 +195,66 @@ describe('convert', () => {
 
     expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
-      maps.tsNodeToESTreeNodeMap.get(ast.statements[0]),
+      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as any),
     );
     checkMaps(ast);
+  });
+
+  it('should correctly create node with range and loc set', () => {
+    const ast = convertCode('');
+    const instance = new Converter(ast, {
+      errorOnUnknownASTType: false,
+      useJSXTextNode: false,
+      shouldPreserveNodeMaps: true,
+    });
+
+    const tsNode = ts.createNode(ts.SyntaxKind.AsKeyword, 0, 10);
+    const convertedNode = (instance as any).createNode(tsNode, {
+      range: [0, 20],
+      loc: {
+        start: {
+          line: 10,
+          column: 20,
+        },
+        end: {
+          line: 15,
+          column: 25,
+        },
+      },
+    });
+    expect(convertedNode).toEqual({
+      loc: {
+        end: {
+          column: 25,
+          line: 15,
+        },
+        start: {
+          column: 20,
+          line: 10,
+        },
+      },
+      range: [0, 20],
+    });
+  });
+
+  it('should throw error on jsDoc node', () => {
+    const jsDocCode = [
+      'const x: function(new: number, string);',
+      'const x: function(this: number, string);',
+      'var g: function(number, number): number;',
+    ];
+
+    for (const code of jsDocCode) {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast, {
+        errorOnUnknownASTType: false,
+        useJSXTextNode: false,
+        shouldPreserveNodeMaps: false,
+      });
+      expect(() => instance.convertProgram()).toThrow(
+        'JSDoc types can only be used inside documentation comments.',
+      );
+    }
   });
 });

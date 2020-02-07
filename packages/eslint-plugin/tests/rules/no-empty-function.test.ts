@@ -32,6 +32,29 @@ ruleTester.run('no-empty-function', rule, {
       }`,
       options: [{ allow: ['methods'] }],
     },
+    {
+      code: `
+class Foo {
+  private constructor() {}
+}
+      `,
+      options: [{ allow: ['private-constructors'] }],
+    },
+    {
+      code: `
+class Foo {
+  protected constructor() {}
+}
+      `,
+      options: [{ allow: ['protected-constructors'] }],
+    },
+    {
+      code: `
+function foo() {
+  const a = null;
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -62,6 +85,56 @@ ruleTester.run('no-empty-function', rule, {
           },
           line: 2,
           column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private constructor() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: 'constructor',
+          },
+          line: 3,
+          column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected constructor() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: 'constructor',
+          },
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: "function 'foo'",
+          },
+          line: 2,
+          column: 16,
         },
       ],
     },

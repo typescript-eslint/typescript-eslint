@@ -34,7 +34,7 @@ Object {
   },
   "isDeclarationFile": false,
   "languageVariant": 1,
-  "languageVersion": 8,
+  "languageVersion": 99,
   "libReferenceDirectives": Array [],
   "lineMap": Array [
     null,
@@ -179,24 +179,6 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
 Object {
   "body": Array [
     Object {
-      "id": Object {
-        "loc": Object {
-          "end": Object {
-            "column": 8,
-            "line": 1,
-          },
-          "start": Object {
-            "column": 5,
-            "line": 1,
-          },
-        },
-        "name": "foo",
-        "range": Array [
-          5,
-          8,
-        ],
-        "type": "Identifier",
-      },
       "loc": Object {
         "end": Object {
           "column": 35,
@@ -207,294 +189,34 @@ Object {
           "line": 1,
         },
       },
-      "range": Array [
-        0,
-        35,
-      ],
-      "type": "TSTypeAliasDeclaration",
-      "typeAnnotation": Object {
+      "modifiers": undefined,
+      "name": Object {
+        "escapedText": "foo",
         "loc": Object {
           "end": Object {
-            "column": 35,
+            "column": 8,
             "line": 1,
           },
           "start": Object {
-            "column": 11,
+            "column": 5,
             "line": 1,
           },
         },
         "range": Array [
-          11,
-          35,
+          5,
+          8,
         ],
         "transformFlags": 0,
-        "type": "TSJSDocNullableType",
-        "typeAnnotation": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 35,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 11,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            11,
-            35,
-          ],
-          "type": "TSTypeAnnotation",
-          "typeAnnotation": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 35,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 12,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              12,
-              35,
-            ],
-            "type": "TSUnionType",
-            "types": Array [
-              Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 18,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 12,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  12,
-                  18,
-                ],
-                "type": "TSTypeReference",
-                "typeName": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 15,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 12,
-                      "line": 1,
-                    },
-                  },
-                  "name": "foo",
-                  "range": Array [
-                    12,
-                    15,
-                  ],
-                  "type": "Identifier",
-                },
-                "typeParameters": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 18,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 15,
-                      "line": 1,
-                    },
-                  },
-                  "params": Array [
-                    Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 17,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 16,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        16,
-                        17,
-                      ],
-                      "type": "TSTypeReference",
-                      "typeName": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 17,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 16,
-                            "line": 1,
-                          },
-                        },
-                        "name": "T",
-                        "range": Array [
-                          16,
-                          17,
-                        ],
-                        "type": "Identifier",
-                      },
-                      "typeParameters": undefined,
-                    },
-                  ],
-                  "range": Array [
-                    15,
-                    18,
-                  ],
-                  "type": "TSTypeParameterInstantiation",
-                },
-              },
-              Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 35,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 21,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  21,
-                  35,
-                ],
-                "transformFlags": 0,
-                "type": "TSJSDocNullableType",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 35,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 21,
-                      "line": 1,
-                    },
-                  },
-                  "range": Array [
-                    21,
-                    35,
-                  ],
-                  "type": "TSTypeAnnotation",
-                  "typeAnnotation": Object {
-                    "loc": Object {
-                      "end": Object {
-                        "column": 35,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 22,
-                        "line": 1,
-                      },
-                    },
-                    "range": Array [
-                      22,
-                      35,
-                    ],
-                    "transformFlags": 0,
-                    "type": "TSJSDocNullableType",
-                    "typeAnnotation": Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 34,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 21,
-                          "line": 1,
-                        },
-                      },
-                      "range": Array [
-                        21,
-                        34,
-                      ],
-                      "type": "TSTypeAnnotation",
-                      "typeAnnotation": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 34,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 22,
-                            "line": 1,
-                          },
-                        },
-                        "range": Array [
-                          22,
-                          34,
-                        ],
-                        "type": "TSParenthesizedType",
-                        "typeAnnotation": Object {
-                          "loc": Object {
-                            "end": Object {
-                              "column": 33,
-                              "line": 1,
-                            },
-                            "start": Object {
-                              "column": 23,
-                              "line": 1,
-                            },
-                          },
-                          "params": Array [],
-                          "range": Array [
-                            23,
-                            33,
-                          ],
-                          "returnType": Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 33,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 26,
-                                "line": 1,
-                              },
-                            },
-                            "range": Array [
-                              26,
-                              33,
-                            ],
-                            "type": "TSTypeAnnotation",
-                            "typeAnnotation": Object {
-                              "loc": Object {
-                                "end": Object {
-                                  "column": 33,
-                                  "line": 1,
-                                },
-                                "start": Object {
-                                  "column": 29,
-                                  "line": 1,
-                                },
-                              },
-                              "range": Array [
-                                29,
-                                33,
-                              ],
-                              "type": "TSVoidKeyword",
-                            },
-                          },
-                          "type": "TSFunctionType",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        },
+        "type": "TSUnparsedPrologue",
       },
+      "range": Array [
+        0,
+        35,
+      ],
+      "transformFlags": 0,
+      "type": "TSUnparsedPrologue",
+      "typeAnnotation": null,
+      "typeParameters": null,
     },
   ],
   "loc": Object {

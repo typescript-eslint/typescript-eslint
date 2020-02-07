@@ -1,4 +1,4 @@
-# Disallow the use of type aliases (no-type-alias)
+# Disallow the use of type aliases (`no-type-alias`)
 
 In TypeScript, type aliases serve three purposes:
 
@@ -84,10 +84,13 @@ or more of the following you may pass an object with the options set as follows:
 
 - `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
 - `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
+- `allowConditionalTypes` set to `"always"` will allow you to use type aliases with conditional types (Defaults to `"never"`)
+- `allowConstructors` set to `"always"` will allow you to use type aliases with constructors (Defaults to `"never"`)
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
+- `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
 
-### allowAliases
+### `allowAliases`
 
 This applies to primitive types and reference types.
 
@@ -225,7 +228,7 @@ type Foo = Bar | Baz;
 type Foo = Bar & Baz;
 ```
 
-### allowCallbacks
+### `allowCallbacks`
 
 This applies to function types.
 
@@ -247,7 +250,31 @@ type Foo = (name: string, age: number) => string | Person;
 type Foo = (name: string, age: number) => string & Person;
 ```
 
-### allowLiterals
+### `allowConditionalTypes`
+
+This applies to conditional types.
+
+Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` option:
+
+```ts
+type Foo<T> = T extends number ? number : null;
+```
+
+### `allowConstructors`
+
+This applies to constructor types.
+
+The setting accepts the following values:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+
+Examples of **correct** code for the `{ "allowConstructors": "always" }` option:
+
+```ts
+type Foo = new () => void;
+```
+
+### `allowLiterals`
 
 This applies to literal types (`type Foo = { ... }`).
 
@@ -354,7 +381,7 @@ type Foo = { name: string } | { age: number };
 type Foo = { name: string } & { age: number };
 ```
 
-### allowMappedTypes
+### `allowMappedTypes`
 
 This applies to literal types.
 
@@ -451,6 +478,81 @@ type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
   { readonly [P in keyof U]: U[P] };
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+```
+
+### `allowTupleTypes`
+
+This applies to tuple types (`type Foo = [number]`).
+
+The setting accepts the following options:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`, allows tuples in union statements, e.g. `type Foo = [string] | [string, string];`
+- `"in-intersections"`, allows tuples in intersection statements, e.g. `type Foo = [string] & [string, string];`
+- `"in-unions-and-intersections"`, allows tuples in union and/or intersection statements.
+
+Examples of **correct** code for the `{ "allowTupleTypes": "always" }` options:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [number] | ([number, number] & [string, string]);
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+```
+
+Examples of **correct** code for the `{ "allowTupleTypes": "in-unions" }` option:
+
+```ts
+type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-intersections" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+```
+
+Examples of **correct** code for the `{ "allowTupleTypes": "in-intersections" }` option:
+
+```ts
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+```
+
+Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = [number];
+
+type Foo = [string];
+```
+
+Examples of **correct** code for the `{ "allowLiterals": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = [number] & [number, number];
+
+type Foo = [string] | [number];
 ```
 
 ## When Not To Use It

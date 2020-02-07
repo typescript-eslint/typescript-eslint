@@ -1,20 +1,20 @@
-import path from 'path';
-import rule from '../../src/rules/unbound-method';
-import { RuleTester } from '../RuleTester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import rule, { MessageIds, Options } from '../../src/rules/unbound-method';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
 });
 
-ruleTester.run('unbound-method', rule, {
-  valid: [
-    `
+function addContainsMethodsClass(code: string): string {
+  return `
 class ContainsMethods {
   bound?: () => void;
   unbound?(): void;
@@ -25,80 +25,131 @@ class ContainsMethods {
 
 let instance = new ContainsMethods();
 
-instance.bound();
-instance.unbound();
-
-ContainsMethods.boundStatic();
-ContainsMethods.unboundStatic();
-
-{
-    const bound = instance.bound;
-    const boundStatic = ContainsMethods;
+${code}
+  `;
 }
-{
-    const { bound } = instance;
-    const { boundStatic } = ContainsMethods;
+function addContainsMethodsClassInvalid(
+  code: string[],
+): TSESLint.InvalidTestCase<MessageIds, Options>[] {
+  return code.map(c => ({
+    code: addContainsMethodsClass(c),
+    errors: [
+      {
+        line: 12,
+        messageId: 'unbound',
+      },
+    ],
+  }));
 }
 
-(instance.bound)();
-(instance.unbound)();
+ruleTester.run('unbound-method', rule, {
+  valid: [
+    'Promise.resolve().then(console.log)',
+    '["1", "2", "3"].map(Number.parseInt)',
+    '[5.2, 7.1, 3.6].map(Math.floor);',
+    'const x = console.log',
+    ...[
+      'instance.bound();',
+      'instance.unbound();',
 
-(ContainsMethods.boundStatic)();
-(ContainsMethods.unboundStatic)();
+      'ContainsMethods.boundStatic();',
+      'ContainsMethods.unboundStatic();',
 
-instance.bound\`\`;
-instance.unbound\`\`;
+      'const bound = instance.bound;',
+      'const boundStatic = ContainsMethods;',
 
-if (instance.bound) { }
-if (instance.unbound) { }
+      'const { bound } = instance;',
+      'const { boundStatic } = ContainsMethods;',
 
-if (ContainsMethods.boundStatic) { }
-if (ContainsMethods.unboundStatic) { }
+      '(instance.bound)();',
+      '(instance.unbound)();',
 
-while (instance.bound) { }
-while (instance.unbound) { }
+      '(ContainsMethods.boundStatic)();',
+      '(ContainsMethods.unboundStatic)();',
 
-while (ContainsMethods.boundStatic) { }
-while (ContainsMethods.unboundStatic) { }
+      'instance.bound``;',
+      'instance.unbound``;',
 
-instance.bound as any;
-ContainsMethods.boundStatic as any;
+      'if (instance.bound) { }',
+      'if (instance.unbound) { }',
 
-instance.bound++;
-+instance.bound;
-++instance.bound;
-instance.bound--;
--instance.bound;
---instance.bound;
-instance.bound += 1;
-instance.bound -= 1;
-instance.bound *= 1;
-instance.bound /= 1;
+      'if (instance.bound !== undefined) { }',
+      'if (instance.unbound !== undefined) { }',
 
-instance.bound || 0;
-instane.bound && 0;
+      'if (ContainsMethods.boundStatic) { }',
+      'if (ContainsMethods.unboundStatic) { }',
 
-instance.bound ? 1 : 0;
-instance.unbound ? 1 : 0;
+      'if (ContainsMethods.boundStatic !== undefined) { }',
+      'if (ContainsMethods.unboundStatic !== undefined) { }',
 
-ContainsMethods.boundStatic++;
-+ContainsMethods.boundStatic;
-++ContainsMethods.boundStatic;
-ContainsMethods.boundStatic--;
--ContainsMethods.boundStatic;
---ContainsMethods.boundStatic;
-ContainsMethods.boundStatic += 1;
-ContainsMethods.boundStatic -= 1;
-ContainsMethods.boundStatic *= 1;
-ContainsMethods.boundStatic /= 1;
+      'if (ContainsMethods.boundStatic && instance) { }',
+      'if (ContainsMethods.unboundStatic && instance) { }',
 
-ContainsMethods.boundStatic || 0;
-instane.boundStatic && 0;
+      'if (instance.bound || instance) { }',
+      'if (instance.unbound || instance) { }',
 
-ContainsMethods.boundStatic ? 1 : 0;
-ContainsMethods.unboundStatic ? 1 : 0;
-    `,
-    `interface RecordA {
+      'ContainsMethods.unboundStatic && 0 || ContainsMethods;',
+
+      '(instance.bound || instance) ? 1 : 0',
+      '(instance.unbound || instance) ? 1 : 0',
+
+      'while (instance.bound) { }',
+      'while (instance.unbound) { }',
+
+      'while (instance.bound !== undefined) { }',
+      'while (instance.unbound !== undefined) { }',
+
+      'while (ContainsMethods.boundStatic) { }',
+      'while (ContainsMethods.unboundStatic) { }',
+
+      'while (ContainsMethods.boundStatic !== undefined) { }',
+      'while (ContainsMethods.unboundStatic !== undefined) { }',
+
+      'instance.bound as any;',
+      'ContainsMethods.boundStatic as any;',
+
+      'instance.bound++;',
+      '+instance.bound;',
+      '++instance.bound;',
+      'instance.bound--;',
+      '-instance.bound;',
+      '--instance.bound;',
+      'instance.bound += 1;',
+      'instance.bound -= 1;',
+      'instance.bound *= 1;',
+      'instance.bound /= 1;',
+
+      'instance.bound || 0;',
+      'instance.bound && 0;',
+
+      'instance.bound ? 1 : 0;',
+      'instance.unbound ? 1 : 0;',
+
+      'ContainsMethods.boundStatic++;',
+      '+ContainsMethods.boundStatic;',
+      '++ContainsMethods.boundStatic;',
+      'ContainsMethods.boundStatic--;',
+      '-ContainsMethods.boundStatic;',
+      '--ContainsMethods.boundStatic;',
+      'ContainsMethods.boundStatic += 1;',
+      'ContainsMethods.boundStatic -= 1;',
+      'ContainsMethods.boundStatic *= 1;',
+      'ContainsMethods.boundStatic /= 1;',
+
+      'ContainsMethods.boundStatic || 0;',
+      'instane.boundStatic && 0;',
+
+      'ContainsMethods.boundStatic ? 1 : 0;',
+      'ContainsMethods.unboundStatic ? 1 : 0;',
+
+      "typeof instance.bound === 'function';",
+      "typeof instance.unbound === 'function';",
+
+      "typeof ContainsMethods.boundStatic === 'function';",
+      "typeof ContainsMethods.unboundStatic === 'function';",
+    ].map(addContainsMethodsClass),
+    `
+interface RecordA {
   readonly type: "A"
   readonly a: {}
 }
@@ -125,153 +176,115 @@ class CommunicationError {
 class CommunicationError {}
 const x = CommunicationError.prototype;
     `,
-  ],
-  invalid: [
-    {
-      code: `
+    // optional chain
+    `
 class ContainsMethods {
   bound?: () => void;
   unbound?(): void;
+
   static boundStatic?: () => void;
   static unboundStatic?(): void;
 }
 
-const instance = new ContainsMethods();
+function foo(instance: ContainsMethods | null) {
+  instance?.bound();
+  instance?.unbound();
 
-{
-  const unbound = instance.unbound;
-  const unboundStatic = ContainsMethods.unboundStatic;
+  instance?.bound++;
+
+  if (instance?.bound) { }
+  if (instance?.unbound) { }
+
+  typeof instance?.bound === 'function';
+  typeof instance?.unbound === 'function';
 }
-{
-  const { unbound } = instance.unbound;
-  const { unboundStatic } = ContainsMethods.unboundStatic;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1425
+    `
+interface OptionalMethod {
+  mightBeDefined?(): void
 }
 
-<any>instance.unbound;
-instance.unbound as any;
+const x: OptionalMethod = {};
+declare const myCondition: boolean;
+if(myCondition || x.mightBeDefined) {
+  console.log('hello world')
+}
+    `,
+  ],
+  invalid: [
+    {
+      code: `
+class Console {
+  log(str) {
+    process.stdout.write(str);
+  }
+}
 
-<any>ContainsMethods.unboundStatic;
-ContainsMethods.unboundStatic as any;
+const console = new Console();
 
-instance.unbound++;
-+instance.unbound;
-++instance.unbound;
-instance.unbound--;
--instance.unbound;
---instance.unbound;
-instance.unbound += 1;
-instance.unbound -= 1;
-instance.unbound *= 1;
-instance.unbound /= 1;
-
-instance.unbound || 0;
-instance.unbound && 0;
-
-ContainsMethods.unboundStatic++;
-+ContainsMethods.unboundStatic;
-++ContainsMethods.unboundStatic;
-ContainsMethods.unboundStatic--;
--ContainsMethods.unboundStatic;
---ContainsMethods.unboundStatic;
-ContainsMethods.unboundStatic += 1;
-ContainsMethods.unboundStatic -= 1;
-ContainsMethods.unboundStatic *= 1;
-ContainsMethods.unboundStatic /= 1;
-
-ContainsMethods.unboundStatic || 0;
-ContainsMethods.unboundStatic && 0;
-`,
+Promise.resolve().then(console.log);
+      `,
       errors: [
         {
-          line: 12,
+          line: 10,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+import { console } from './class';
+const x = console.log;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: addContainsMethodsClass(`
+function foo(arg: ContainsMethods | null) {
+  const unbound = arg?.unbound;
+  arg.unbound += 1;
+  arg?.unbound as any;
+}
+      `),
+      errors: [
+        {
+          line: 14,
           messageId: 'unbound',
         },
         {
-          line: 13,
+          line: 15,
           messageId: 'unbound',
         },
         {
           line: 16,
           messageId: 'unbound',
         },
-        {
-          line: 17,
-          messageId: 'unbound',
-        },
-        {
-          line: 20,
-          messageId: 'unbound',
-        },
-        {
-          line: 21,
-          messageId: 'unbound',
-        },
-        {
-          line: 23,
-          messageId: 'unbound',
-        },
-        {
-          line: 24,
-          messageId: 'unbound',
-        },
-        {
-          line: 27,
-          messageId: 'unbound',
-        },
-        {
-          line: 30,
-          messageId: 'unbound',
-        },
-        {
-          line: 32,
-          messageId: 'unbound',
-        },
-        {
-          line: 33,
-          messageId: 'unbound',
-        },
-        {
-          line: 34,
-          messageId: 'unbound',
-        },
-        {
-          line: 35,
-          messageId: 'unbound',
-        },
-        {
-          line: 37,
-          messageId: 'unbound',
-        },
-        {
-          line: 41,
-          messageId: 'unbound',
-        },
-        {
-          line: 44,
-          messageId: 'unbound',
-        },
-        {
-          line: 46,
-          messageId: 'unbound',
-        },
-        {
-          line: 47,
-          messageId: 'unbound',
-        },
-        {
-          line: 48,
-          messageId: 'unbound',
-        },
-        {
-          line: 49,
-          messageId: 'unbound',
-        },
-        {
-          line: 51,
-          messageId: 'unbound',
-        },
       ],
     },
+    ...addContainsMethodsClassInvalid([
+      'const unbound = instance.unbound;',
+      'const unboundStatic = ContainsMethods.unboundStatic;',
+
+      'const { unbound } = instance.unbound;',
+      'const { unboundStatic } = ContainsMethods.unboundStatic;',
+
+      '<any>instance.unbound;',
+      'instance.unbound as any;',
+
+      '<any>ContainsMethods.unboundStatic;',
+      'ContainsMethods.unboundStatic as any;',
+
+      'instance.unbound || 0;',
+      'ContainsMethods.unboundStatic || 0;',
+
+      'instance.unbound ? instance.unbound : null',
+    ]),
     {
       code: `
 class ContainsMethods {
@@ -307,6 +320,16 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      // Promise.all is not auto-bound to Promise
+      code: 'const x = Promise.all',
+      errors: [
+        {
+          line: 1,
           messageId: 'unbound',
         },
       ],

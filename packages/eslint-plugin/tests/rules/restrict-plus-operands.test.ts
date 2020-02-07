@@ -1,8 +1,7 @@
-import path from 'path';
 import rule from '../../src/rules/restrict-plus-operands';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -26,37 +25,37 @@ ruleTester.run('restrict-plus-operands', rule, {
     `var foo = BigInt(1) + 1n`,
     `var foo = 1n; foo + 2n`,
     `
-function test () : number { return 2; }
+function test(s: string, n: number) : number { return 2; }
 var foo = test("5.5", 10) + 10;
-            `,
+    `,
     `
 var x = 5;
 var z = 8.2;
 var foo = x + z;
-            `,
+    `,
     `
 var w = "6.5";
 var y = "10";
 var foo = y + w;
-            `,
+    `,
     'var foo = 1 + 1;',
     "var foo = '1' + '1';",
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = pair.first + 10;
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = pair.first + (10 as number);
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = "5.5" + pair.second;
-            `,
+    `,
     `
 var pair: { first: number, second: string } = { first: 5, second: "10" };
 var foo = ("5.5" as string) + pair.second;
-            `,
+    `,
     `const foo = 'hello' + (someBoolean ? 'a' : 'b') + (() => someBoolean ? 'c' : 'd')() + 'e';`,
     `const balls = true;`,
     `balls === true;`,
@@ -81,6 +80,28 @@ function foo<T extends 1>(a: T) {
     return a + 1;
 }
     `,
+    {
+      code: `
+let foo: number = 0;
+foo += 1;
+    `,
+      options: [
+        {
+          checkCompoundAssignments: false,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: number = 0;
+foo += "string";
+    `,
+      options: [
+        {
+          checkCompoundAssignments: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -380,6 +401,42 @@ function foo<T extends 1>(a: T) {
           messageId: 'notStrings',
           line: 3,
           column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+let foo: string | undefined;
+foo += "some data";
+      `,
+      options: [
+        {
+          checkCompoundAssignments: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = '';
+foo += 0;
+      `,
+      options: [
+        {
+          checkCompoundAssignments: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 3,
+          column: 1,
         },
       ],
     },

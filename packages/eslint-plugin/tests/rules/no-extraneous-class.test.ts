@@ -3,13 +3,13 @@ import rule from '../../src/rules/no-extraneous-class';
 import { RuleTester } from '../RuleTester';
 
 const empty = {
-  messageId: 'empty' as 'empty',
+  messageId: 'empty' as const,
 };
 const onlyStatic = {
-  messageId: 'onlyStatic' as 'onlyStatic',
+  messageId: 'onlyStatic' as const,
 };
 const onlyConstructor = {
-  messageId: 'onlyConstructor' as 'onlyConstructor',
+  messageId: 'onlyConstructor' as const,
 };
 
 const ruleTester = new RuleTester({
@@ -65,6 +65,13 @@ export class Bar {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/170
     'export default class { hello() { return "I am foo!"; } }',
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
   ],
 
   invalid: [
@@ -122,6 +129,18 @@ export class AClass {
         {
           ...onlyStatic,
           type: AST_NODE_TYPES.ClassDeclaration,
+        },
+      ],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      options: [{ allowWithDecorator: false }],
+      errors: [
+        {
+          messageId: 'empty',
         },
       ],
     },

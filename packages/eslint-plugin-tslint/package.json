@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "1.13.0",
+  "version": "2.19.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "TSLint wrapper plugin for ESLint",
@@ -11,7 +11,7 @@
     "tslint"
   ],
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0"
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
   },
   "repository": {
     "type": "git",
@@ -23,16 +23,16 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist/",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b tsconfig.build.json --clean",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "prebuild": "npm run clean",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "1.13.0",
-    "lodash.memoize": "^4.1.2"
+    "@typescript-eslint/experimental-utils": "2.19.0",
+    "lodash": "^4.17.15"
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0",
@@ -40,7 +40,7 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@types/lodash.memoize": "^4.1.4",
-    "@typescript-eslint/parser": "1.13.0"
+    "@types/lodash": "^4.14.149",
+    "@typescript-eslint/parser": "2.19.0"
   }
 }

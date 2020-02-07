@@ -5,7 +5,7 @@ import { RuleTester } from '../RuleTester';
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 2015,
+    sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
@@ -30,6 +30,8 @@ const foo = ({ hello: "hello" }) as PossibleTuple;`,
     `
 type PossibleTuple = { 0: "hello", 5: "hello" };
 const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
+    `let bar: number | undefined = x;
+      let foo: number = bar!;`,
     {
       code: `
 type Foo = number;
@@ -37,15 +39,15 @@ const foo = (3 + 5) as Foo;`,
       options: [{ typesToIgnore: ['Foo'] }],
     },
     {
-      code: `const foo = (3 + 5) as any;`,
+      code: 'const foo = (3 + 5) as any;',
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `((Syntax as any).ArrayExpression = 'foo')`,
+      code: "((Syntax as any).ArrayExpression = 'foo')",
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: `const foo = (3 + 5) as string;`,
+      code: 'const foo = (3 + 5) as string;',
       options: [{ typesToIgnore: ['string'] }],
     },
     {
@@ -104,12 +106,30 @@ class Mx {
   private prop = 1;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1199
     `
-class Mx {
-  @a(b!)
-  private prop = 1;
-}
+function testFunction(_param: string | undefined): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
     `,
+    `
+function testFunction(_param: string | null): void { /* noop */ }
+const value = 'test' as string | null | undefined
+testFunction(value!)
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: null | string | number;
+}) {
+  return <div key={props.id!} />;
+}
+      `,
+      filename: 'react.tsx',
+    },
   ],
 
   invalid: [
@@ -319,6 +339,34 @@ class Mx {
           line: 5,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id!} />;
+}
+      `,
+      output: `
+declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+
+function Test(props: {
+  id?: string | number;
+}) {
+  return <div key={props.id} />;
+}
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 7,
+        },
+      ],
+      filename: 'react.tsx',
     },
   ],
 });

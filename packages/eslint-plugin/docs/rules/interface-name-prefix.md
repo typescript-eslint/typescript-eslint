@@ -1,27 +1,48 @@
-# Require that interface names be prefixed with `I` (interface-name-prefix)
+# Require that interface names should or should not prefixed with `I` (`interface-name-prefix`)
 
-It can be hard to differentiate between classes and interfaces.
-Prefixing interfaces with "I" can help telling them apart at a glance.
+Interfaces often represent important software contracts, so it can be helpful to prefix their names with `I`.
+The unprefixed name is then available for a class that provides a standard implementation of the interface.
+Alternatively, the contributor guidelines for the TypeScript repo suggest
+[never prefixing](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#names) interfaces with `I`.
 
 ## Rule Details
 
-This rule enforces consistency of interface naming prefix conventions.
+This rule enforces whether or not the `I` prefix is required for interface names.
+The `_` prefix is sometimes used to designate a private declaration, so the rule also supports a private interface
+that might be named `_IAnimal` instead of `IAnimal`.
 
 ## Options
 
-This rule has a string option.
+This rule has an object option:
 
-- `"never"` (default) disallows all interfaces being prefixed with `"I"`
-- `"always"` requires all interfaces be prefixed with `"I"`
+- `{ "prefixWithI": "never" }`: (default) disallows all interfaces being prefixed with `"I"` or `"_I"`
+- `{ "prefixWithI": "always" }`: requires all interfaces be prefixed with `"I"` (but does not allow `"_I"`)
+- `{ "prefixWithI": "always", "allowUnderscorePrefix": true }`: requires all interfaces be prefixed with
+  either `"I"` or `"_I"`
+
+For backwards compatibility, this rule supports a string option instead:
+
+- `"never"`: Equivalent to `{ "prefixWithI": "never" }`
+- `"always"`: Equivalent to `{ "prefixWithI": "always" }`
+
+## Examples
 
 ### never
 
-TypeScript suggests [never prefixing](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#names) interfaces with "I".
+**Configuration:** `{ "prefixWithI": "never" }`
 
 The following patterns are considered warnings:
 
 ```ts
 interface IAnimal {
+  name: string;
+}
+
+interface IIguana {
+  name: string;
+}
+
+interface _IAnimal {
   name: string;
 }
 ```
@@ -30,16 +51,30 @@ The following patterns are not warnings:
 
 ```ts
 interface Animal {
+  name: string;
+}
+
+interface Iguana {
   name: string;
 }
 ```
 
 ### always
 
+**Configuration:** `{ "prefixWithI": "always" }`
+
 The following patterns are considered warnings:
 
 ```ts
 interface Animal {
+  name: string;
+}
+
+interface Iguana {
+  name: string;
+}
+
+interface _IAnimal {
   name: string;
 }
 ```
@@ -48,6 +83,42 @@ The following patterns are not warnings:
 
 ```ts
 interface IAnimal {
+  name: string;
+}
+
+interface IIguana {
+  name: string;
+}
+```
+
+### always and allowing underscores
+
+**Configuration:** `{ "prefixWithI": "always", "allowUnderscorePrefix": true }`
+
+The following patterns are considered warnings:
+
+```ts
+interface Animal {
+  name: string;
+}
+
+interface Iguana {
+  name: string;
+}
+```
+
+The following patterns are not warnings:
+
+```ts
+interface IAnimal {
+  name: string;
+}
+
+interface IIguana {
+  name: string;
+}
+
+interface _IAnimal {
   name: string;
 }
 ```

@@ -27,7 +27,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       category: 'Best Practices',
-      description: 'Enforces consistent usage of type assertions.',
+      description: 'Enforces consistent usage of type assertions',
       recommended: 'error',
     },
     messages: {
@@ -77,7 +77,7 @@ export default util.createRule<Options, MessageIds>({
 
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ) {
+    ): void {
       const messageId = options.assertionStyle;
       context.report({
         node,
@@ -89,17 +89,20 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    function checkType(node: TSESTree.TypeNode) {
+    function checkType(node: TSESTree.TypeNode): boolean {
       switch (node.type) {
         case AST_NODE_TYPES.TSAnyKeyword:
         case AST_NODE_TYPES.TSUnknownKeyword:
           return false;
         case AST_NODE_TYPES.TSTypeReference:
-          // Ignore `as const` and `<const>`
           return (
-            node.typeName.type === AST_NODE_TYPES.Identifier &&
-            node.typeName.name !== 'const'
+            // Ignore `as const` and `<const>`
+            (node.typeName.type === AST_NODE_TYPES.Identifier &&
+              node.typeName.name !== 'const') ||
+            // Allow qualified names which have dots between identifiers, `Foo.Bar`
+            node.typeName.type === AST_NODE_TYPES.TSQualifiedName
           );
+
         default:
           return true;
       }
@@ -107,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkExpression(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ) {
+    ): void {
       if (
         options.assertionStyle === 'never' ||
         options.objectLiteralTypeAssertions === 'allow' ||
@@ -115,12 +118,15 @@ export default util.createRule<Options, MessageIds>({
       ) {
         return;
       }
+
       if (
         options.objectLiteralTypeAssertions === 'allow-as-parameter' &&
         node.parent &&
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
-          node.parent.type === AST_NODE_TYPES.ThrowStatement)
+          node.parent.type === AST_NODE_TYPES.OptionalCallExpression ||
+          node.parent.type === AST_NODE_TYPES.ThrowStatement ||
+          node.parent.type === AST_NODE_TYPES.AssignmentPattern)
       ) {
         return;
       }
@@ -137,7 +143,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAssertion(node) {
+      TSTypeAssertion(node): void {
         if (options.assertionStyle !== 'angle-bracket') {
           reportIncorrectAssertionType(node);
           return;
@@ -145,7 +151,7 @@ export default util.createRule<Options, MessageIds>({
 
         checkExpression(node);
       },
-      TSAsExpression(node) {
+      TSAsExpression(node): void {
         if (options.assertionStyle !== 'as') {
           reportIncorrectAssertionType(node);
           return;

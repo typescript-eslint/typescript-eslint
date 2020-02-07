@@ -1,53 +1,37 @@
 import * as parser from '../src/parser';
 import { TSESTreeOptions } from '../src/parser-options';
 
-/**
- * Returns a raw copy of the given AST
- * @param  {Object} ast the AST object
- * @returns {Object}     copy of the AST object
- */
-export function getRaw(ast: parser.TSESTree.Program) {
-  return JSON.parse(
-    JSON.stringify(ast, (key, value) => {
-      if ((key === 'start' || key === 'end') && typeof value === 'number') {
-        return undefined;
-      }
-      return value;
-    }),
-  );
-}
-
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
-) {
+): parser.ParseAndGenerateServicesResult<parser.TSESTreeOptions> {
   return parser.parseAndGenerateServices(code, config);
 }
 
 /**
  * Returns a function which can be used as the callback of a Jest test() block,
  * and which performs an assertion on the snapshot for the given code and config.
- * @param {string} code The source code to parse
- * @param {TSESTreeOptions} config the parser configuration
- * @param {boolean} generateServices Flag determining whether to generate ast maps and program or not
- * @returns {jest.ProvidesCallback} callback for Jest it() block
+ * @param code The source code to parse
+ * @param config the parser configuration
+ * @param generateServices Flag determining whether to generate ast maps and program or not
+ * @returns callback for Jest it() block
  */
 export function createSnapshotTestBlock(
   code: string,
   config: TSESTreeOptions,
   generateServices?: true,
-) {
+): jest.ProvidesCallback {
   /**
-   * @returns {Object} the AST object
+   * @returns the AST object
    */
-  function parse() {
+  function parse(): parser.TSESTree.Program {
     const ast = generateServices
       ? parser.parseAndGenerateServices(code, config).ast
       : parser.parse(code, config);
-    return getRaw(ast);
+    return deeplyCopy(ast);
   }
 
-  return () => {
+  return (): void => {
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
@@ -83,4 +67,85 @@ export function isJSXFileType(fileType: string): boolean {
     fileType = fileType.slice(1);
   }
   return fileType === 'js' || fileType === 'jsx' || fileType === 'tsx';
+}
+
+/**
+ * Returns a raw copy of the typescript AST
+ * @param ast the AST object
+ * @returns copy of the AST object
+ */
+export function deeplyCopy<T>(ast: T): T {
+  return omitDeep(ast) as T;
+}
+
+type UnknownObject = Record<string, unknown>;
+
+function isObjectLike(value: unknown | null): value is UnknownObject {
+  return (
+    typeof value === 'object' && !(value instanceof RegExp) && value !== null
+  );
+}
+
+/**
+ * Removes the given keys from the given AST object recursively
+ * @param root A JavaScript object to remove keys from
+ * @param keysToOmit Names and predicate functions use to determine what keys to omit from the final object
+ * @param selectors advance ast modifications
+ * @returns formatted object
+ */
+export function omitDeep<T = UnknownObject>(
+  root: T,
+  keysToOmit: { key: string; predicate: (value: unknown) => boolean }[] = [],
+  selectors: Record<
+    string,
+    (node: UnknownObject, parent: UnknownObject | null) => void
+  > = {},
+): UnknownObject {
+  function shouldOmit(keyName: string, val: unknown): boolean {
+    if (keysToOmit?.length) {
+      return keysToOmit.some(
+        keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
+      );
+    }
+    return false;
+  }
+
+  function visit(
+    oNode: UnknownObject,
+    parent: UnknownObject | null,
+  ): UnknownObject {
+    if (!Array.isArray(oNode) && !isObjectLike(oNode)) {
+      return oNode;
+    }
+
+    const node = { ...oNode };
+
+    for (const prop in node) {
+      if (Object.prototype.hasOwnProperty.call(node, prop)) {
+        if (shouldOmit(prop, node[prop]) || typeof node[prop] === 'undefined') {
+          delete node[prop];
+          continue;
+        }
+
+        const child = node[prop];
+        if (Array.isArray(child)) {
+          const value = [];
+          for (const el of child) {
+            value.push(visit(el, node));
+          }
+          node[prop] = value;
+        } else if (isObjectLike(child)) {
+          node[prop] = visit(child, node);
+        }
+      }
+    }
+
+    if (typeof node.type === 'string' && node.type in selectors) {
+      selectors[node.type](node, parent);
+    }
+
+    return node;
+  }
+
+  return visit(root as UnknownObject, null);
 }

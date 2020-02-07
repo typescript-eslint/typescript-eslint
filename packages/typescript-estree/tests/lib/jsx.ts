@@ -1,3 +1,4 @@
+import filesWithKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import { TSESTreeOptions } from '../../src/parser-options';
@@ -5,7 +6,6 @@ import {
   createSnapshotTestBlock,
   formatSnapshotName,
 } from '../../tools/test-utils';
-import filesWithKnownIssues from '../../../shared-fixtures/jsx-known-issues';
 
 const JSX_FIXTURES_DIR =
   '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/jsx';
@@ -23,11 +23,8 @@ describe('JSX', () => {
   /**
    * Test each fixture file
    */
-  function testFixture(
-    fixturesDir: string,
-    useJSXTextNode: boolean,
-  ): (filename: string) => void {
-    return filename => {
+  function testFixture(fixturesDir: string, useJSXTextNode: boolean) {
+    return (filename: string): void => {
       const code = readFileSync(filename, 'utf8');
       const config: TSESTreeOptions = {
         loc: true,
