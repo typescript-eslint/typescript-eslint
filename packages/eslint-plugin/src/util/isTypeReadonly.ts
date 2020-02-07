@@ -20,7 +20,7 @@ function isTypeReadonlyArrayOrTuple(
 ): boolean | null {
   function checkTypeArguments(arrayType: ts.TypeReference): boolean {
     const typeArguments = checker.getTypeArguments(arrayType);
-    if (typeArguments.length === 0) {
+    /* istanbul ignore if */ if (typeArguments.length === 0) {
       // this shouldn't happen in reality as:
       // - tuples require at least 1 type argument
       // - ReadonlyArray requires at least 1 type argument
@@ -145,7 +145,7 @@ function isTypeReadonly(checker: ts.TypeChecker, type: ts.Type): boolean {
   }
 
   const isReadonlyObject = isTypeReadonlyObject(checker, type);
-  if (isReadonlyObject !== null) {
+  /* istanbul ignore else */ if (isReadonlyObject !== null) {
     return isReadonlyObject;
   }
 

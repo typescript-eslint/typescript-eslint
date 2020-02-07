@@ -4,7 +4,14 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export default util.createRule({
+type Options = [
+  {
+    checkParameterProperties?: boolean;
+  },
+];
+type MessageIds = 'shouldBeReadonly';
+
+export default util.createRule<Options, MessageIds>({
   name: 'prefer-readonly-parameter-types',
   meta: {
     type: 'suggestion',
@@ -17,16 +24,25 @@ export default util.createRule({
     },
     schema: [
       {
-        type: 'string',
-        enum: ['prefer-readonly', 'prefer-mutable', 'ignore'],
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          checkParameterProperties: {
+            type: 'boolean',
+          },
+        },
       },
     ],
     messages: {
       shouldBeReadonly: 'Parameter should be a read only type',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      checkParameterProperties: true,
+    },
+  ],
+  create(context, [{ checkParameterProperties }]) {
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 
@@ -39,6 +55,13 @@ export default util.createRule({
           | TSESTree.TSEmptyBodyFunctionExpression,
       ): void {
         for (const param of node.params) {
+          if (
+            !checkParameterProperties &&
+            param.type === AST_NODE_TYPES.TSParameterProperty
+          ) {
+            continue;
+          }
+
           const actualParam =
             param.type === AST_NODE_TYPES.TSParameterProperty
               ? param.parameter
@@ -48,7 +71,7 @@ export default util.createRule({
           const isReadOnly = util.isTypeReadonly(checker, type);
 
           if (!isReadOnly) {
-            return context.report({
+            context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
             });

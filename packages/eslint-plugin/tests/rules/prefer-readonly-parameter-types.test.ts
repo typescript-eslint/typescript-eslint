@@ -1,6 +1,6 @@
-import rule from '../../src/rules/prefer-readonly-parameter-types';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import rule from '../../src/rules/prefer-readonly-parameter-types';
 import {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -101,6 +101,20 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         }
       }) {}
     `,
+    `
+      function foo(arg: {
+        readonly [k: string]: string,
+      }) {}
+    `,
+    `
+      function foo(arg: {
+        readonly [k: number]: string,
+      }) {}
+    `,
+    `
+      interface Empty {}
+      function foo(arg: Empty) {}
+    `,
 
     // weird other cases
     ...weirdIntersections.map(code => code),
@@ -141,6 +155,42 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       }
       function foo(arg: Readonly<Foo>) {}
     `,
+
+    // parameter properties should work fine
+    {
+      code: `
+        class Foo {
+          constructor(
+            private arg1: readonly string[],
+            public arg2: readonly string[],
+            protected arg3: readonly string[],
+            readonly arg4: readonly string[],
+          ) {}
+        }
+      `,
+      options: [
+        {
+          checkParameterProperties: true,
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          constructor(
+            private arg1: string[],
+            public arg2: string[],
+            protected arg3: string[],
+            readonly arg4: string[],
+          ) {}
+        }
+      `,
+      options: [
+        {
+          checkParameterProperties: false,
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -223,6 +273,39 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    // object index signatures
+    {
+      code: `
+        function foo(arg: {
+          [key: string]: string
+        }) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endLine: 4,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: {
+          [key: number]: string
+        }) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endLine: 4,
+          endColumn: 10,
+        },
+      ],
+    },
 
     // weird intersections
     ...weirdIntersections.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
@@ -241,7 +324,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         }
         function foo(arg: Test) {}
       `,
-      errors: [{ messageId: 'shouldBeReadonly' }],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 5,
+          column: 22,
+          endLine: 5,
+          endColumn: 31,
+        },
+      ],
     },
     {
       code: `
@@ -250,7 +341,91 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         }
         function foo(arg: Test) {}
       `,
-      errors: [{ messageId: 'shouldBeReadonly' }],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 5,
+          column: 22,
+          endLine: 5,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    // parameter properties should work fine
+    {
+      code: `
+        class Foo {
+          constructor(
+            private   arg1: string[],
+            public    arg2: string[],
+            protected arg3: string[],
+            readonly  arg4: string[],
+          ) {}
+        }
+      `,
+      options: [
+        {
+          checkParameterProperties: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 4,
+          column: 23,
+          endLine: 4,
+          endColumn: 37,
+        },
+        {
+          messageId: 'shouldBeReadonly',
+          line: 5,
+          column: 23,
+          endLine: 5,
+          endColumn: 37,
+        },
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 23,
+          endLine: 6,
+          endColumn: 37,
+        },
+        {
+          messageId: 'shouldBeReadonly',
+          line: 7,
+          column: 23,
+          endLine: 7,
+          endColumn: 37,
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          constructor(
+            private   arg1: readonly string[],
+            public    arg2: readonly string[],
+            protected arg3: readonly string[],
+            readonly  arg4: readonly string[],
+            arg5: string[],
+          ) {}
+        }
+      `,
+      options: [
+        {
+          checkParameterProperties: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 13,
+          endLine: 8,
+          endColumn: 27,
+        },
+      ],
     },
   ],
 });
