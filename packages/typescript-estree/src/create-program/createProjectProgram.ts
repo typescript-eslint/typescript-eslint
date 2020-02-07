@@ -13,7 +13,7 @@ function getExtension(fileName: string | undefined): string | null {
   if (!fileName) {
     return null;
   }
-  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName)
+  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName);
 }
 
 /**
