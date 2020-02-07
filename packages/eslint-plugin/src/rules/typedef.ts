@@ -12,6 +12,7 @@ const enum OptionKeys {
   Parameter = 'parameter',
   PropertyDeclaration = 'propertyDeclaration',
   VariableDeclaration = 'variableDeclaration',
+  VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
 type Options = { [k in OptionKeys]?: boolean };
@@ -41,6 +42,7 @@ export default util.createRule<[Options], MessageIds>({
           [OptionKeys.Parameter]: { type: 'boolean' },
           [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
           [OptionKeys.VariableDeclaration]: { type: 'boolean' },
+          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
         },
       },
     ],
@@ -100,6 +102,14 @@ export default util.createRule<[Options], MessageIds>({
       }
     }
 
+    function isVariableDeclarationIgnoreFunction(node: TSESTree.Node): boolean {
+      return (
+        !!options[OptionKeys.VariableDeclarationIgnoreFunction] &&
+        (node.type === AST_NODE_TYPES.FunctionExpression ||
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression)
+      );
+    }
+
     return {
       ArrayPattern(node): void {
         if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
@@ -112,6 +122,10 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ClassProperty(node): void {
+        if (node.value && isVariableDeclarationIgnoreFunction(node.value)) {
+          return;
+        }
+
         if (
           options[OptionKeys.MemberVariableDeclaration] &&
           !node.typeAnnotation
@@ -155,7 +169,8 @@ export default util.createRule<[Options], MessageIds>({
           (node.id.type === AST_NODE_TYPES.ArrayPattern &&
             !options[OptionKeys.ArrayDestructuring]) ||
           (node.id.type === AST_NODE_TYPES.ObjectPattern &&
-            !options[OptionKeys.ObjectDestructuring])
+            !options[OptionKeys.ObjectDestructuring]) ||
+          (node.init && isVariableDeclarationIgnoreFunction(node.init))
         ) {
           return;
         }
