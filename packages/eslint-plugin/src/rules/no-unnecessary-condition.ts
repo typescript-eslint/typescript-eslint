@@ -61,7 +61,6 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     ignoreRhs?: boolean;
-    checkArrayPredicates?: boolean;
   },
 ];
 
@@ -96,9 +95,6 @@ export default createRule<Options, MessageId>({
           ignoreRhs: {
             type: 'boolean',
           },
-          checkArrayPredicates: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -125,13 +121,9 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: false,
       ignoreRhs: false,
-      checkArrayPredicates: false,
     },
   ],
-  create(
-    context,
-    [{ allowConstantLoopConditions, checkArrayPredicates, ignoreRhs }],
-  ) {
+  create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
@@ -299,8 +291,6 @@ export default createRule<Options, MessageId>({
     function shouldCheckCallback(node: TSESTree.CallExpression): boolean {
       const { callee } = node;
       return (
-        // option is on
-        !!checkArrayPredicates &&
         // looks like `something.filter` or `something.find`
         callee.type === AST_NODE_TYPES.MemberExpression &&
         callee.property.type === AST_NODE_TYPES.Identifier &&
