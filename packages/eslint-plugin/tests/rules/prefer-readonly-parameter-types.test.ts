@@ -26,6 +26,7 @@ const primitives = [
   "'a'",
   'number',
   '1',
+  'symbol',
   'any',
   'unknown',
   'never',
@@ -62,11 +63,18 @@ const weirdIntersections = [
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
-    'function foo(arg: { readonly a: string }) {}',
     'function foo() {}',
 
     // primitives
     ...primitives.map(type => `function foo(arg: ${type}) {}`),
+    `
+      const symb = Symbol('a');
+      function foo(arg: typeof symb) {}
+    `,
+    `
+      enum Enum { a, b }
+      function foo(arg: Enum) {}
+    `,
 
     // arrays
     ...arrays.map(type => `function foo(arg: ${type}) {}`),

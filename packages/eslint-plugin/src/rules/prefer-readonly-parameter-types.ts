@@ -9,7 +9,8 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'TODO',
+      description:
+        'Requires that function parameters are typed as readonly to prevent accidental mutation of inputs',
       category: 'Possible Errors',
       recommended: false,
       requiresTypeChecking: true,
