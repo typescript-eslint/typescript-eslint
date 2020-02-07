@@ -143,20 +143,22 @@ export default util.createRule<Options, MessageIds>({
             name,
             customMessage,
           },
-          fix: fixWith ? fixer => fixer.replaceText(typeNode, fixWith) : null,
+          fix: fixWith
+            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+            : null,
         });
       }
     }
 
     return {
       ...(bannedTypes.has('null') && {
-        TSNullKeyword(node) {
+        TSNullKeyword(node): void {
           checkBannedTypes(node, 'null');
         },
       }),
 
       ...(bannedTypes.has('undefined') && {
-        TSUndefinedKeyword(node) {
+        TSUndefinedKeyword(node): void {
           checkBannedTypes(node, 'undefined');
         },
       }),
