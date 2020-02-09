@@ -39,7 +39,10 @@ function createDefaultProgram(
     return undefined;
   }
 
-  const compilerHost = ts.createCompilerHost(commandLine.options, true);
+  const compilerHost = ts.createCompilerHost(
+    commandLine.options,
+    /* setParentNodes */ true,
+  );
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(extra.filePath)

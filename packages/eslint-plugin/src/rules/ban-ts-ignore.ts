@@ -1,3 +1,4 @@
+import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -27,7 +28,7 @@ export default util.createRule({
         const comments = sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          if (comment.type !== 'Line') {
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
             return;
           }
           if (tsIgnoreRegExp.test(comment.value)) {

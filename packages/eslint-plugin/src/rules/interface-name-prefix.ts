@@ -103,10 +103,6 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^I[A-Z]/.test(name);
     }
 
@@ -115,10 +111,6 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithIOrUnderscoreI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^_?I[A-Z]/.test(name);
     }
 

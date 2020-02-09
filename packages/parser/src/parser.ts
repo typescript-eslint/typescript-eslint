@@ -99,7 +99,7 @@ export function parseForESLint(
     enter(node) {
       switch (node.type) {
         // Function#body cannot be null in ESTree spec.
-        case 'FunctionExpression':
+        case AST_NODE_TYPES.FunctionExpression:
           if (!node.body) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             node.type = `TSEmptyBody${node.type}` as any;
