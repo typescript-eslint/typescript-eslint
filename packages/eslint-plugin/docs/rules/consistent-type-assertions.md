@@ -32,7 +32,7 @@ This option defines the expected assertion style. Valid values for `assertionSty
 - `angle-bracket` will enforce that you always use `<foo>...`
 - `never` will enforce that you do not do any type assertions.
 
-Most codebases will want to enforce not using `angle-bracket` style because it conflicts with JSX syntax, and is confusing when paired with with generic syntax.
+Most codebases will want to enforce not using `angle-bracket` style because it conflicts with JSX syntax, and is confusing when paired with generic syntax.
 
 Some codebases like to go for an extra level of type safety, and ban assertions altogether via the `never` option.
 
