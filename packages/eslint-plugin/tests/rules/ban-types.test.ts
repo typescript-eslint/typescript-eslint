@@ -23,22 +23,22 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
     },
   },
 ];
-                                        
+
 const options2: InferOptionsTypeFromRule<typeof rule> = [
   {
     types: {
-      'null': {
+      null: {
         message: 'Use undefined instead.',
         fixWith: 'undefined',
       },
     },
   },
 ];
-                                        
+
 const options3: InferOptionsTypeFromRule<typeof rule> = [
   {
     types: {
-      'undefined': null,
+      undefined: null,
     },
   },
 ];
