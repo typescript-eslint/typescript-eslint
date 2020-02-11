@@ -1,5 +1,5 @@
 {
-  "extends": "./configs/base.json",
+  "extends": "plugin:@typescript-eslint/base",
   "rules": {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": "error",

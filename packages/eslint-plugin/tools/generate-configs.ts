@@ -143,7 +143,7 @@ console.log(
   '------------------------------------------------ all.json ------------------------------------------------',
 );
 const allConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: 'plugin:@typescript-eslint/base',
   rules: ruleEntries.reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, { errorLevel: 'error', filterDeprecated: true }),
@@ -170,7 +170,7 @@ BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
   recommendedRules[ruleName] = 'error';
 });
 const recommendedConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: 'plugin:@typescript-eslint/base',
   rules: recommendedRules,
 };
 writeConfig(
@@ -196,7 +196,7 @@ BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
   recommendedRulesRequiringProgram[ruleName] = 'error';
 });
 const recommendedRequiringTypeCheckingConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: 'plugin:@typescript-eslint/base',
   rules: recommendedRulesRequiringProgram,
 };
 writeConfig(
