@@ -100,6 +100,10 @@ Object {
 }
 `;
 
+exports[`TSX fixtures/generic-jsx-private.src 1`] = `"Identifier expected."`;
+
+exports[`TSX fixtures/generic-jsx-private-element.src 1`] = `"Identifier expected."`;
+
 exports[`TSX fixtures/react-typed-props.src 1`] = `
 Object {
   "$id": 7,

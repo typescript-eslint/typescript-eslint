@@ -187,7 +187,6 @@ export type Node =
   | JSXIdentifier
   | JSXOpeningElement
   | JSXOpeningFragment
-  | JSXPrivateIdentifier
   | JSXSpreadAttribute
   | JSXSpreadChild
   | JSXMemberExpression
@@ -383,10 +382,7 @@ export type JSXExpression =
   | JSXEmptyExpression
   | JSXSpreadChild
   | JSXExpressionContainer;
-export type JSXTagNameExpression =
-  | JSXIdentifier
-  | JSXMemberExpression
-  | JSXPrivateIdentifier;
+export type JSXTagNameExpression = JSXIdentifier | JSXMemberExpression;
 export type LeftHandSideExpression =
   | CallExpression
   | ClassExpression
@@ -1021,11 +1017,6 @@ export interface JSXFragment extends BaseNode {
 
 export interface JSXIdentifier extends BaseNode {
   type: AST_NODE_TYPES.JSXIdentifier;
-  name: string;
-}
-
-export interface JSXPrivateIdentifier extends BaseNode {
-  type: AST_NODE_TYPES.JSXPrivateIdentifier;
   name: string;
 }
 

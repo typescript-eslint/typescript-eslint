@@ -83,12 +83,14 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.JSXEmptyExpression]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXExpressionContainer]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXFragment]: ts.JsxFragment;
-  [AST_NODE_TYPES.JSXIdentifier]: ts.Identifier | ts.ThisExpression;
+  [AST_NODE_TYPES.JSXIdentifier]:
+    | ts.Identifier
+    | ts.ThisExpression
+    | ts.PrivateIdentifier;
   [AST_NODE_TYPES.JSXOpeningElement]:
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement;
   [AST_NODE_TYPES.JSXOpeningFragment]: ts.JsxOpeningFragment;
-  [AST_NODE_TYPES.JSXPrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.JSXSpreadAttribute]: ts.JsxSpreadAttribute;
   [AST_NODE_TYPES.JSXSpreadChild]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXMemberExpression]: ts.PropertyAccessExpression;

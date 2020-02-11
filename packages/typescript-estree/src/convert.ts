@@ -475,11 +475,7 @@ export class Converter {
         });
         break;
       case SyntaxKind.PrivateIdentifier:
-        result = this.createNode<TSESTree.JSXPrivateIdentifier>(node, {
-          type: AST_NODE_TYPES.JSXPrivateIdentifier,
-          name: node.text,
-        });
-        break;
+      // TODO: PrivateIdentifier is not allowed in this context, but types contains it
       case SyntaxKind.Identifier:
       default:
         result = this.createNode<TSESTree.JSXIdentifier>(node, {

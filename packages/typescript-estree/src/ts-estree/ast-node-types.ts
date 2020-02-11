@@ -50,7 +50,6 @@ export enum AST_NODE_TYPES {
   JSXMemberExpression = 'JSXMemberExpression',
   JSXOpeningElement = 'JSXOpeningElement',
   JSXOpeningFragment = 'JSXOpeningFragment',
-  JSXPrivateIdentifier = 'JSXPrivateIdentifier',
   JSXSpreadAttribute = 'JSXSpreadAttribute',
   JSXSpreadChild = 'JSXSpreadChild',
   JSXText = 'JSXText',
