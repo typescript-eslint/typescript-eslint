@@ -8152,10 +8152,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@3.8.0-dev.20200124:
-  version "3.8.0-dev.20200124"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20200124.tgz#93729dfc4fe79a214161c94a55b05fcc8b4d0d7a"
-  integrity sha512-Hz6VFBQkmF055yqWPRBeJTSfkV1qjF98SPlVmxxlkoO5uyWoxNFs50wxQ5E6SNe4iPPE66x4gHQz0mhalM37pA==
+typescript@3.8.0-dev.20200211:
+  version "3.8.0-dev.20200211"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20200211.tgz#8723bc40da40e737b01977ba543af69d7a545d94"
+  integrity sha512-1LnADJbATvC2XSPcn7NwrhidLA03jXUx1x1ZfPNaceC8SCe5KtZwihzMe7PPmP5Sy2JiXD0pYp/X4MVogV57qQ==
 
 uglify-js@^3.1.4:
   version "3.6.0"
