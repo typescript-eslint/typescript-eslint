@@ -8,7 +8,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('explicit-module-boundary-types', rule, {
   valid: [
     {
-      filename: 'test.ts',
       code: `
 function test(): void {
     return;
@@ -16,7 +15,6 @@ function test(): void {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export function test(): void {
     return;
@@ -24,7 +22,6 @@ export function test(): void {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export var fn = function(): number {
     return 1;
@@ -32,13 +29,11 @@ export var fn = function(): number {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export var arrowFn = (): string => 'test';
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor() {}
@@ -54,7 +49,6 @@ class Test {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export class Test {
   constructor() {}
@@ -70,7 +64,6 @@ export class Test {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export function test(): void {
     nested();
@@ -81,7 +74,6 @@ export function test(): void {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export function test(): string {
     const nested = () => 'value';
@@ -90,7 +82,6 @@ export function test(): string {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export function test(): string {
     class Nested {
@@ -103,7 +94,6 @@ export function test(): string {
             `,
     },
     {
-      filename: 'test.ts',
       code: `
 export var arrowFn: Foo = () => 'test';
             `,
@@ -114,7 +104,6 @@ export var arrowFn: Foo = () => 'test';
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export var funcExpr: Foo = function() { return 'test'; };
             `,
@@ -125,17 +114,14 @@ export var funcExpr: Foo = function() { return 'test'; };
       ],
     },
     {
-      filename: 'test.ts',
       code: `const x = (() => {}) as Foo`,
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `const x = <Foo>(() => {})`,
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x = {
   foo: () => {},
@@ -144,7 +130,6 @@ export const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x = <Foo>{
   foo: () => {},
@@ -153,7 +138,6 @@ export const x = <Foo>{
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x: Foo = {
   foo: () => {},
@@ -163,7 +147,6 @@ export const x: Foo = {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/484
     {
-      filename: 'test.ts',
       code: `
 type MethodType = () => void;
 
@@ -175,7 +158,6 @@ export class App {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
-      filename: 'test.ts',
       code: `
 export const myObj = {
   set myProp(val: number) {
@@ -185,49 +167,42 @@ export const myObj = {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 export default () => (): void => {};
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export default () => function (): void {};
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export default () => { return (): void => {} };
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export default () => { return function (): void {} };
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export function fn() { return (): void => {} };
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export function fn() { return function (): void {} };
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
@@ -243,14 +218,12 @@ export function FunctionDeclaration() {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export default () => () => { return (): void => { return; } };
             `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export class Accumulator {
   private count: number = 0;
@@ -269,7 +242,6 @@ new Accumulator().accumulate(() => 1);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export const func1 = (value: number) => (({ type: "X", value }) as const);
 export const func2 = (value: number) => ({ type: "X", value } as const);
@@ -283,7 +255,6 @@ export const func4 = (value: number) => x as const;
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export const func1 = (value: string) => value;
 export const func2 = (value: number) => ({ type: "X", value });
@@ -295,7 +266,6 @@ export const func2 = (value: number) => ({ type: "X", value });
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class Test {
   constructor() {}
@@ -315,10 +285,36 @@ export class Test {
         },
       ],
     },
+    {
+      code: `
+        export function foo(outer: string) {
+          return function(inner: string): void {};
+        }
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1552
+    {
+      code: `
+        export type Ensurer = (blocks: TFBlock[]) => TFBlock[];
+
+        export const myEnsurer: Ensurer = blocks => {
+          return blocks;
+        };
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
-      filename: 'test.ts',
       code: `
 export function test(
   a: number,
@@ -338,7 +334,6 @@ export function test(
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export function test() {
   return;
@@ -355,7 +350,6 @@ export function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export var fn = function() {
   return 1;
@@ -372,7 +366,6 @@ export var fn = function() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export var arrowFn = () => 'test';
       `,
@@ -387,14 +380,13 @@ export var arrowFn = () => 'test';
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class Test {
   constructor() {}
   get prop() {
       return 1;
   }
-  set prop() {}
+  set prop(value) {}
   method() {
     return;
   }
@@ -413,18 +405,18 @@ export class Test {
           endColumn: 13,
         },
         {
+          messageId: 'missingArgType',
+          line: 7,
+          endLine: 7,
+          column: 11,
+          endColumn: 21,
+        },
+        {
           messageId: 'missingReturnType',
           line: 8,
           endLine: 8,
           column: 3,
           endColumn: 11,
-        },
-        {
-          messageId: 'missingArgType',
-          line: 11,
-          endLine: 11,
-          column: 11,
-          endColumn: 27,
         },
         {
           messageId: 'missingReturnType',
@@ -433,10 +425,16 @@ export class Test {
           column: 11,
           endColumn: 19,
         },
+        {
+          messageId: 'missingArgType',
+          line: 11,
+          endLine: 11,
+          column: 11,
+          endColumn: 27,
+        },
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class Foo {
   public a = () => {};
@@ -486,7 +484,6 @@ export class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => true ? (() => {}) : ((): void => {});',
       errors: [
         {
@@ -506,7 +503,6 @@ export class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: "export var arrowFn = () => 'test';",
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
@@ -520,7 +516,6 @@ export class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: "export var funcExpr = function() { return 'test'; };",
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
@@ -534,7 +529,6 @@ export class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export const x = (() => {}) as Foo',
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
@@ -548,7 +542,6 @@ export class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 interface Foo {}
 export const x = {
@@ -567,7 +560,6 @@ export const x = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 interface Foo {}
 export const x: Foo = {
@@ -586,7 +578,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => () => {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -600,7 +591,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => function () {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -614,7 +604,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => { return () => {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -628,7 +617,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => { return function () {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -642,7 +630,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export function fn() { return () => {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -656,7 +643,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export function fn() { return function () {} };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -670,7 +656,6 @@ export const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
@@ -695,7 +680,6 @@ export function FunctionDeclaration() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => () => { return () => { return; } };',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -709,7 +693,6 @@ export function FunctionDeclaration() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default (() => true)()',
       options: [
         {
@@ -727,7 +710,6 @@ export function FunctionDeclaration() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export const func1 = (value: number) => ({ type: "X", value } as any);
 export const func2 = (value: number) => ({ type: "X", value } as Action);
@@ -755,7 +737,6 @@ export const func2 = (value: number) => ({ type: "X", value } as Action);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export const func = (value: number) => ({ type: "X", value } as const);
       `,
@@ -775,7 +756,6 @@ export const func = (value: number) => ({ type: "X", value } as const);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class Test {
   constructor() {}
@@ -805,7 +785,6 @@ export class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export const func1 = (value: number) => value;
 export const func2 = (value: number) => value;
@@ -826,7 +805,6 @@ export const func2 = (value: number) => value;
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export function fn(test): string { return "123" };',
       errors: [
         {
@@ -839,7 +817,6 @@ export const func2 = (value: number) => value;
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export const fn = (one: number, two): string => "123";',
       errors: [
         {
@@ -848,6 +825,38 @@ export const func2 = (value: number) => value;
           endLine: 1,
           column: 19,
           endColumn: 54,
+        },
+      ],
+    },
+    {
+      code: `
+        export function foo(outer) {
+          return function(inner) {};
+        }
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: 'export const baz = arg => arg as const;',
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingArgType',
+          line: 1,
         },
       ],
     },

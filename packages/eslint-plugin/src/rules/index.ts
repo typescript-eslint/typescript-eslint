@@ -23,6 +23,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noDupeClassMembers from './no-dupe-class-members';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -46,6 +47,7 @@ import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
+import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import useDefaultTypeParameter from './no-unnecessary-type-arguments';
@@ -77,6 +79,7 @@ import returnAwait from './return-await';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
@@ -109,6 +112,7 @@ export default {
   'member-ordering': memberOrdering,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-dupe-class-members': noDupeClassMembers,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -132,6 +136,7 @@ export default {
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
   'no-throw-literal': noThrowLiteral,
+  'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': useDefaultTypeParameter,
@@ -163,6 +168,7 @@ export default {
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   typedef: typedef,

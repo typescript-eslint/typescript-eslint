@@ -96,6 +96,7 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -112,6 +113,7 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -128,6 +130,7 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -172,6 +175,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -181,6 +185,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -199,6 +204,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -223,6 +229,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -232,6 +239,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -241,6 +249,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },

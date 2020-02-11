@@ -1,5 +1,8 @@
+import {
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -92,7 +95,7 @@ export default util.createRule<Options, MessageIds>({
         const commentsBefore = sourceCode.getCommentsBefore(programNode);
 
         commentsBefore.forEach(comment => {
-          if (comment.type !== 'Line') {
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
             return;
           }
           const referenceResult = referenceRegExp.exec(comment.value);
