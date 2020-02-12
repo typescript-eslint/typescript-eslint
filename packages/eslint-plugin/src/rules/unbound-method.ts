@@ -18,6 +18,105 @@ export type Options = [Config];
 
 export type MessageIds = 'unbound';
 
+/**
+ * The following is a list of exceptions to the rule
+ * Generated via the following script.
+ * This is statically defined to save making purposely invalid calls every lint run
+ * ```
+SUPPORTED_GLOBALS.flatMap(namespace => {
+  const object = window[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof object[name] === 'function',
+      )
+      .map(name => {
+        try {
+          const x = object[name];
+          x();
+        } catch (e) {
+          if (e.message.includes("called on non-object")) {
+            return `${namespace}.${name}`;
+          }
+        }
+      });
+}).filter(Boolean);
+   * ```
+ */
+const nativelyNotBoundMembers = new Set([
+  'Promise.all',
+  'Promise.race',
+  'Promise.resolve',
+  'Promise.reject',
+  'Promise.allSettled',
+  'Object.defineProperties',
+  'Object.defineProperty',
+  'Reflect.defineProperty',
+  'Reflect.deleteProperty',
+  'Reflect.get',
+  'Reflect.getOwnPropertyDescriptor',
+  'Reflect.getPrototypeOf',
+  'Reflect.has',
+  'Reflect.isExtensible',
+  'Reflect.ownKeys',
+  'Reflect.preventExtensions',
+  'Reflect.set',
+  'Reflect.setPrototypeOf',
+]);
+const SUPPORTED_GLOBALS = [
+  'Number',
+  'Object',
+  'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+  'RegExp',
+  'Symbol',
+  'Array',
+  'Proxy',
+  'Date',
+  'Infinity',
+  'Atomics',
+  'Reflect',
+  'console',
+  'Math',
+  'JSON',
+  'Intl',
+] as const;
+const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
+  const object = global[namespace];
+  return Object.getOwnPropertyNames(object)
+    .filter(
+      name =>
+        !name.startsWith('_') &&
+        typeof (object as Record<string, unknown>)[name] === 'function',
+    )
+    .map(name => `${namespace}.${name}`);
+})
+  .reduce((arr, names) => arr.concat(names), [])
+  .filter(name => !nativelyNotBoundMembers.has(name));
+
+const isMemberNotImported = (
+  symbol: ts.Symbol,
+  currentSourceFile: ts.SourceFile | undefined,
+): boolean => {
+  const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  return (
+    !!currentSourceFile &&
+    currentSourceFile !== valueDeclaration.getSourceFile()
+  );
+};
+
+const getNodeName = (node: TSESTree.Node): string | null =>
+  node.type === AST_NODE_TYPES.Identifier ? node.name : null;
+
+const getMemberFullName = (
+  node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+): string => `${getNodeName(node.object)}.${getNodeName(node.property)}`;
+
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
@@ -53,12 +152,27 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const currentSourceFile = parserServices.program.getSourceFile(
+      context.getFilename(),
+    );
 
     return {
       'MemberExpression, OptionalMemberExpression'(
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         if (isSafeUse(node)) {
+          return;
+        }
+
+        const objectSymbol = checker.getSymbolAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(node.object),
+        );
+
+        if (
+          objectSymbol &&
+          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          isMemberNotImported(objectSymbol, currentSourceFile)
+        ) {
           return;
         }
 

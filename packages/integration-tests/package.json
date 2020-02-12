@@ -12,9 +12,9 @@
     "eslint-plugin-vue": "^6.1.2",
     "execa": "^4.0.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.2",
+    "typescript": "*",
     "vue-eslint-parser": "^7.0.0",
-    "vue-property-decorator": "^8.3.0",
+    "vue-property-decorator": "^8.4.0",
     "vuex": "^3.1.2"
   },
   "dependencies": {

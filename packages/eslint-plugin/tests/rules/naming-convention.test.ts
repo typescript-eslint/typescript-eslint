@@ -80,7 +80,11 @@ const formatTestNames: Readonly<Record<
 };
 
 const REPLACE_REGEX = /%/g;
-const IGNORED_REGEX = /^.(?!gnored)/; // negative lookahead to not match `[iI]gnored`
+// filter to not match `[iI]gnored`
+const IGNORED_FILTER = {
+  match: false,
+  regex: /.gnored/.source,
+};
 
 type Cases = {
   code: string[];
@@ -100,7 +104,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -206,7 +210,7 @@ function createInvalidTestCases(
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -608,6 +612,22 @@ ruleTester.run('naming-convention', rule, {
     ...createValidTestCases(cases),
     {
       code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
         declare const string_camelCase: string;
         declare const string_camelCase: string | null;
         declare const string_camelCase: string | null | undefined;
@@ -742,6 +762,23 @@ ruleTester.run('naming-convention', rule, {
   ],
   invalid: [
     ...createInvalidTestCases(cases),
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
     {
       code: `
         declare const string_camelCase01: string;

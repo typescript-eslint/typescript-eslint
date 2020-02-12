@@ -6,6 +6,7 @@ import * as util from '../util';
 import {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
+  isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -178,7 +179,11 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isAllowedName(node.parent) || isUnexported(node)) {
+        if (
+          isAllowedName(node.parent) ||
+          isUnexported(node) ||
+          isTypedFunctionExpression(node, options)
+        ) {
           return;
         }
 
