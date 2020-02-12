@@ -8,6 +8,14 @@ const ruleTester = new RuleTester({
 ruleTester.run('class-literals-style', rule, {
   valid: [
     {
+      code: 'class Mx { readonly p1 = "hello world"; }',
+      options: [],
+    },
+    {
+      code: 'class Mx { get p1() { return "hello world"; } }',
+      options: [],
+    },
+    {
       code: 'class Mx { p1 = "hello world"; }',
       options: ['fields'],
     },

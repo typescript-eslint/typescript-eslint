@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type Options = ['any' | 'fields' | 'getters'];
+type Options = [('fields' | 'getters')?];
 type MessageIds = 'preferFieldStyle' | 'preferGetterStyle';
 
 interface NodeWithModifiers {
@@ -44,99 +44,98 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [{ enum: ['fields', 'getters'] }],
   },
-  defaultOptions: ['any'],
+  defaultOptions: [],
   create(context) {
     const [style] = context.options;
 
-    switch (style) {
-      case 'fields':
-        return {
-          MethodDefinition(node: TSESTree.MethodDefinition): void {
-            if (
-              node.kind !== 'get' ||
-              !node.value.body ||
-              !node.value.body.body.length
-            ) {
-              return;
-            }
+    if (style === 'fields') {
+      return {
+        MethodDefinition(node: TSESTree.MethodDefinition): void {
+          if (
+            node.kind !== 'get' ||
+            !node.value.body ||
+            !node.value.body.body.length
+          ) {
+            return;
+          }
 
-            const [statement] = node.value.body.body;
+          const [statement] = node.value.body.body;
 
-            if (statement.type !== AST_NODE_TYPES.ReturnStatement) {
-              return;
-            }
+          if (statement.type !== AST_NODE_TYPES.ReturnStatement) {
+            return;
+          }
 
-            const { argument } = statement;
+          const { argument } = statement;
 
-            if (!argument || !isSupportedLiteral(argument)) {
-              return;
-            }
+          if (!argument || !isSupportedLiteral(argument)) {
+            return;
+          }
 
-            context.report({
-              node: node.key,
-              messageId: 'preferFieldStyle',
-              fix(fixer) {
-                const keyOffset = node.computed ? 1 : 0;
+          context.report({
+            node: node.key,
+            messageId: 'preferFieldStyle',
+            fix(fixer) {
+              const keyOffset = node.computed ? 1 : 0;
 
-                return [
-                  // replace the start bits with the field modifiers
-                  fixer.replaceTextRange(
-                    [node.range[0], node.key.range[0] - keyOffset],
-                    printNodeModifiers(node, 'readonly'),
-                  ),
-                  // replace the middle bits with the assignment
-                  fixer.replaceTextRange(
-                    [node.value.range[0], argument.range[0]],
-                    '=',
-                  ),
-                  // remove the end bits
-                  fixer.removeRange([argument.range[1], node.range[1]]),
-                ];
-              },
-            });
-          },
-        };
-      case 'getters':
-        return {
-          ClassProperty(node: TSESTree.ClassProperty): void {
-            if (!node.readonly) {
-              return;
-            }
-
-            const { value } = node;
-
-            if (!value || !isSupportedLiteral(value)) {
-              return;
-            }
-
-            context.report({
-              node: node.key,
-              messageId: 'preferGetterStyle',
-              fix(fixer) {
-                const keyOffset = node.computed ? 1 : 0;
-
-                return [
-                  // replace the start bits with the getter modifiers
-                  fixer.replaceTextRange(
-                    [node.range[0], node.key.range[0] - keyOffset],
-                    printNodeModifiers(node, 'get'),
-                  ),
-                  // replace the middle bits with the start of the getter
-                  fixer.replaceTextRange(
-                    [node.key.range[1] + keyOffset, value.range[0]],
-                    '(){return ',
-                  ),
-                  // replace the end bits with the end of the getter
-                  fixer.replaceTextRange([value.range[1], node.range[1]], '}'),
-                ];
-              },
-            });
-          },
-        };
-      case 'any':
-      default:
-        /* istanbul ignore next */
-        return {};
+              return [
+                // replace the start bits with the field modifiers
+                fixer.replaceTextRange(
+                  [node.range[0], node.key.range[0] - keyOffset],
+                  printNodeModifiers(node, 'readonly'),
+                ),
+                // replace the middle bits with the assignment
+                fixer.replaceTextRange(
+                  [node.value.range[0], argument.range[0]],
+                  '=',
+                ),
+                // remove the end bits
+                fixer.removeRange([argument.range[1], node.range[1]]),
+              ];
+            },
+          });
+        },
+      };
     }
+
+    if (style === 'getters') {
+      return {
+        ClassProperty(node: TSESTree.ClassProperty): void {
+          if (!node.readonly) {
+            return;
+          }
+
+          const { value } = node;
+
+          if (!value || !isSupportedLiteral(value)) {
+            return;
+          }
+
+          context.report({
+            node: node.key,
+            messageId: 'preferGetterStyle',
+            fix(fixer) {
+              const keyOffset = node.computed ? 1 : 0;
+
+              return [
+                // replace the start bits with the getter modifiers
+                fixer.replaceTextRange(
+                  [node.range[0], node.key.range[0] - keyOffset],
+                  printNodeModifiers(node, 'get'),
+                ),
+                // replace the middle bits with the start of the getter
+                fixer.replaceTextRange(
+                  [node.key.range[1] + keyOffset, value.range[0]],
+                  '(){return ',
+                ),
+                // replace the end bits with the end of the getter
+                fixer.replaceTextRange([value.range[1], node.range[1]], '}'),
+              ];
+            },
+          });
+        },
+      };
+    }
+
+    return {};
   },
 });
