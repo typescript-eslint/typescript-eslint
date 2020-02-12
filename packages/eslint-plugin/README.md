@@ -10,8 +10,8 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
-**[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
+- **[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+- **[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
 
 These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
 
@@ -148,6 +148,7 @@ Pro Tip: For larger codebases you may want to consider splitting our linting int
 | [`@typescript-eslint/restrict-plus-operands`](./docs/rules/restrict-plus-operands.md)                                 | When adding two variables, operands must both be of type number or of type string                                       |                    |          | :thought_balloon: |
 | [`@typescript-eslint/restrict-template-expressions`](./docs/rules/restrict-template-expressions.md)                   | Enforce template literal expressions to be of string type                                                               |                    |          | :thought_balloon: |
 | [`@typescript-eslint/strict-boolean-expressions`](./docs/rules/strict-boolean-expressions.md)                         | Restricts the types allowed in boolean expressions                                                                      |                    |          | :thought_balloon: |
+| [`@typescript-eslint/switch-exhaustiveness-check`](./docs/rules/switch-exhaustiveness-check.md)                       | Exhaustiveness checking in switch with union type                                                                       |                    |          | :thought_balloon: |
 | [`@typescript-eslint/triple-slash-reference`](./docs/rules/triple-slash-reference.md)                                 | Sets preference level for triple slash directives versus ES6-style import declarations                                  | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/type-annotation-spacing`](./docs/rules/type-annotation-spacing.md)                               | Require consistent spacing around type annotations                                                                      | :heavy_check_mark: | :wrench: |                   |
 | [`@typescript-eslint/typedef`](./docs/rules/typedef.md)                                                               | Requires type annotations to exist                                                                                      |                    |          |                   |
@@ -173,6 +174,7 @@ In these cases, we create what we call an extension rule; a rule within our plug
 | [`@typescript-eslint/func-call-spacing`](./docs/rules/func-call-spacing.md)                     | Require or disallow spacing between function identifiers and their invocations |                    | :wrench: |                   |
 | [`@typescript-eslint/indent`](./docs/rules/indent.md)                                           | Enforce consistent indentation                                                 |                    | :wrench: |                   |
 | [`@typescript-eslint/no-array-constructor`](./docs/rules/no-array-constructor.md)               | Disallow generic `Array` constructors                                          | :heavy_check_mark: | :wrench: |                   |
+| [`@typescript-eslint/no-dupe-class-members`](./docs/rules/no-dupe-class-members.md)             | Disallow duplicate class members                                               |                    |          |                   |
 | [`@typescript-eslint/no-empty-function`](./docs/rules/no-empty-function.md)                     | Disallow empty functions                                                       | :heavy_check_mark: |          |                   |
 | [`@typescript-eslint/no-extra-parens`](./docs/rules/no-extra-parens.md)                         | Disallow unnecessary parentheses                                               |                    | :wrench: |                   |
 | [`@typescript-eslint/no-extra-semi`](./docs/rules/no-extra-semi.md)                             | Disallow unnecessary semicolons                                                |                    | :wrench: |                   |

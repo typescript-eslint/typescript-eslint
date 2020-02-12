@@ -23,6 +23,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noDupeClassMembers from './no-dupe-class-members';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -78,6 +79,7 @@ import returnAwait from './return-await';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
@@ -110,6 +112,7 @@ export default {
   'member-ordering': memberOrdering,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-dupe-class-members': noDupeClassMembers,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -165,6 +168,7 @@ export default {
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   typedef: typedef,
