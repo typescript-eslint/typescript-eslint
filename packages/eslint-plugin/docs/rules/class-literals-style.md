@@ -53,7 +53,7 @@ class Mx {
 #### The `getters` style
 
 This style checks for any `readonly` fields that are assigned literal values, and requires them to be defined as getters instead.
-This style pairs well with the [`@typescript-eslint/prefer-readonly`](member-delimiter-style.md) rule,
+This style pairs well with the [`@typescript-eslint/prefer-readonly`](prefer-readonly.md) rule,
 as it will identify fields that can be `readonly`, and thus should be made into getters.
 
 Examples of **correct** code with the `getters` style:
