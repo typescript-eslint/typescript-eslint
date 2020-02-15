@@ -18,6 +18,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
 | [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-ignore`]                 |
 | [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
+| [`invalid-void`]                  | 🛑  | N/A                                                  |
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
 | [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
 | [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
@@ -74,7 +75,10 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                  |
 | [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                 |
 | [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                      |
+| [`no-null-undefined-union`]          | 🛑  | N/A                                                                   |
 | [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                     |
+| [`no-promise-as-boolean`]            | 🛑  | N/A                                                                   |
+| [`no-restricted-globals`]            | ✅  | [`no-restricted-globals`][no-restricted-globals]                      |
 | [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                  |
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                              |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                |
@@ -82,6 +86,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                               |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                   |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                    |
+| [`no-tautology-expression`]          | 🛑  | N/A                                                                   |
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                  |
 | [`no-unbound-method`]                | ✅  | [`@typescript-eslint/unbound-method`]                                 |
 | [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                            |
@@ -96,7 +101,9 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                        |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                      |
 | [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                         |
+| [`static-this`]                      | 🛑  | N/A                                                                   |
 | [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                     |
+| [`strict-string-expressions`]        | 🛑  | N/A                                                                   |
 | [`strict-type-predicates`]           | 🛑  | N/A                                                                   |
 | [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                        |
 | [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                    |
@@ -167,6 +174,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-reference-import`]             | 🛑  | N/A                                                                                 |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
+| [`no-unnecessary-else`]             | 🌟  | [`no-else-return`][no-else-return] <sup>[2]</sup                                    |
 | [`no-unnecessary-initializer`]      | 🌟  | [`no-undef-init`][no-undef-init]                                                    |
 | [`no-unnecessary-qualifier`]        | ✅  | [`@typescript-eslint/no-unnecessary-qualifier`]                                     |
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
@@ -188,11 +196,12 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`switch-final-break`]              | 🛑  | N/A                                                                                 |
 | [`type-literal-delimiter`]          | ✅  | [`@typescript-eslint/member-delimiter-style`]                                       |
 | [`unnecessary-bind`]                | 🌟  | [`no-extra-bind`][no-extra-bind]                                                    |
-| [`variable-name`]                   | 🌟  | <sup>[2]</sup>                                                                      |
+| [`variable-name`]                   | 🌟  | <sup>[3]</sup>                                                                      |
 | [`whitespace`]                      | 🔌  | Use [Prettier]                                                                      |
 
 <sup>[1]</sup> Recommended config: `["error", { blankLine: "always", prev: "*", next: "return" }]`<br>
-<sup>[2]</sup> [`camelcase`][camelcase], [`no-underscore-dangle`][no-underscore-dangle], [`id-blacklist`][id-blacklist], and/or [`id-match`][id-match]
+<sup>[2]</sup> Doesn't check other control flow statements, such as `break` or `continue`.
+<sup>[3]</sup> [`camelcase`][camelcase], [`no-underscore-dangle`][no-underscore-dangle], [`id-blacklist`][id-blacklist], and/or [`id-match`][id-match]
 
 ## tslint-microsoft-contrib rules
 
@@ -486,6 +495,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-magic-numbers]: https://eslint.org/docs/rules/no-magic-numbers
 [no-param-reassign]: https://eslint.org/docs/rules/no-param-reassign
 [no-sequences]: https://eslint.org/docs/rules/no-sequences
+[no-restricted-globals]: https://eslint.org/docs/rules/no-restricted-globals
 [no-restricted-properties]: https://eslint.org/docs/rules/no-restricted-properties
 [no-restricted-syntax]: https://eslint.org/docs/rules/no-restricted-syntax
 [curly]: https://eslint.org/docs/rules/curly
@@ -541,6 +551,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [padding-line-between-statements]: https://eslint.org/docs/rules/padding-line-between-statements
 [newline-per-chained-call]: https://eslint.org/docs/rules/newline-per-chained-call
 [new-parens]: https://eslint.org/docs/rules/new-parens
+[no-else-return]: https://eslint.org/docs/rules/no-else-return
 [no-multiple-empty-lines]: https://eslint.org/docs/rules/no-multiple-empty-lines
 [no-irregular-whitespace]: https://eslint.org/docs/rules/no-irregular-whitespace
 [no-trailing-spaces]: https://eslint.org/docs/rules/no-trailing-spaces
