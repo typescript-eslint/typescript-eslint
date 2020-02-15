@@ -218,6 +218,8 @@ function getProgramsForProjects(
 
     // cache watch program and return current program
     knownWatchProgramMap.set(tsconfigPath, programWatch);
+    // sets parent pointers in source files
+    program.getTypeChecker();
     results.push(program);
   }
 

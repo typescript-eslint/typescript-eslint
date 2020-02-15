@@ -4,14 +4,8 @@
   "eslint.validate": [
       "javascript",
       "javascriptreact",
-      {
-          "language": "typescript",
-          "autoFix": true
-      },
-      {
-          "language": "typescriptreact",
-          "autoFix": true
-      }
+      "typescript",
+      "typescriptreact"
   ],
 
   // When enabled, will trim trailing whitespace when saving a file.

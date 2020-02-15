@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.2](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.1...v2.19.2) (2020-02-10)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+## [2.19.1](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.0...v2.19.1) (2020-02-10)
+
+
+### Bug Fixes
+
+* **typescript-estree:** ts returning wrong file with project references ([#1575](https://github.com/typescript-eslint/typescript-eslint/issues/1575)) ([4c12dac](https://github.com/typescript-eslint/typescript-eslint/commit/4c12dac075f774801a145cd29c4c7eff64f98fdc))
+
+
+
+
+
+# [2.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.18.0...v2.19.0) (2020-02-03)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix regression introduced in [#1525](https://github.com/typescript-eslint/typescript-eslint/issues/1525) ([#1543](https://github.com/typescript-eslint/typescript-eslint/issues/1543)) ([bec4572](https://github.com/typescript-eslint/typescript-eslint/commit/bec45722dfed8aeb49189d151252b83d4a34239c))
+* **typescript-estree:** persisted parse and module none ([#1516](https://github.com/typescript-eslint/typescript-eslint/issues/1516)) ([7c70323](https://github.com/typescript-eslint/typescript-eslint/commit/7c7032322f55d9492e21d3bfa5da16da1f05cbce))
+
+
+
+
+
+# [2.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.17.0...v2.18.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* improve token types and add missing type guards ([#1497](https://github.com/typescript-eslint/typescript-eslint/issues/1497)) ([ce41d7d](https://github.com/typescript-eslint/typescript-eslint/commit/ce41d7de33bcb7ccf96c03ac1438304c5a49ff54))
+* **typescript-estree:** error on unexpected jsdoc nodes ([#1525](https://github.com/typescript-eslint/typescript-eslint/issues/1525)) ([c8dfac3](https://github.com/typescript-eslint/typescript-eslint/commit/c8dfac3d2f066e50fa9d2b5a86beffdaafddb643))
+* **typescript-estree:** fix identifier tokens typed as `Keyword` ([#1487](https://github.com/typescript-eslint/typescript-eslint/issues/1487)) ([77a1caa](https://github.com/typescript-eslint/typescript-eslint/commit/77a1caa562638645b4717449800e410107d512c8))
+
+
+### Features
+
+* **eslint-plugin:** add new rule prefer-as-const ([#1431](https://github.com/typescript-eslint/typescript-eslint/issues/1431)) ([420db96](https://github.com/typescript-eslint/typescript-eslint/commit/420db96921435e8bf7fb484ae74552a912a6adde))
+
+
+
+
+
 # [2.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.16.0...v2.17.0) (2020-01-20)
 
 
