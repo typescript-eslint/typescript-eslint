@@ -5,9 +5,6 @@ import {
 import * as ts from 'typescript';
 
 import * as util from '../util';
-import { getTypeName } from '../util';
-
-type MessageIds = 'baseToString';
 
 enum Usefulness {
   Always,
@@ -15,7 +12,7 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-export default util.createRule<[], MessageIds>({
+export default util.createRule({
   name: 'base-to-string',
   meta: {
     docs: {
@@ -99,9 +96,9 @@ export default util.createRule<[], MessageIds>({
           parserServices.esTreeNodeToTSNodeMap.get(node.right),
         );
 
-        if (getTypeName(typeChecker, leftType) === 'string') {
+        if (util.getTypeName(typeChecker, leftType) === 'string') {
           checkExpression(node.right, rightType);
-        } else if (getTypeName(typeChecker, rightType) === 'string') {
+        } else if (util.getTypeName(typeChecker, rightType) === 'string') {
           checkExpression(node.left, leftType);
         }
       },

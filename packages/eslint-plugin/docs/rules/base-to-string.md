@@ -6,7 +6,7 @@ The default Object `.toString()` returns `"[object Object]"` and the default Fun
 
 ## Rule Details
 
-???????
+This rule prevents accidentally defaulting to the base Function or Object `.toString()` methods.
 
 Examples of **incorrect** code for this rule:
 
