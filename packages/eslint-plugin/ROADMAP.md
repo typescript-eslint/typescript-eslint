@@ -112,7 +112,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | TSLint rule                  |     | ESLint rule                                        |
 | ---------------------------- | :-: | -------------------------------------------------- |
 | [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                         |
-| [`deprecation`]              | 🌓  | [`import/no-deprecated`] <sup>[1]</sup>            |
+| [`deprecation`]              | 🔌  | [`deprecation/deprecation`]                        |
 | [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                             |
 | [`indent`]                   | ✅  | [`@typescript-eslint/indent`] or [Prettier]        |
 | [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier] |
