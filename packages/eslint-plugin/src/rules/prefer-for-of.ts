@@ -23,6 +23,32 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    function getTwoVariableDeclarationWithArrayLength(
+      node: TSESTree.Node | null,
+    ): [TSESTree.VariableDeclarator, TSESTree.VariableDeclarator] | undefined {
+      if (
+        node !== null &&
+        node.type === AST_NODE_TYPES.VariableDeclaration &&
+        node.kind !== 'const' &&
+        node.declarations.length === 2
+      ) {
+        const decl1 = node.declarations[0];
+        const decl2 = node.declarations[1];
+        const combi1 =
+          isZeroInitialized(decl1) && isAssigningArrayLength(decl2);
+        if (combi1) {
+          return [decl1, decl2];
+        }
+        const combi2 =
+          isZeroInitialized(decl2) && isAssigningArrayLength(decl1);
+        if (combi2) {
+          return [decl2, decl1];
+        }
+      }
+
+      return undefined;
+    }
+
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,
     ): node is TSESTree.VariableDeclaration {
@@ -31,6 +57,16 @@ export default util.createRule({
         node.type === AST_NODE_TYPES.VariableDeclaration &&
         node.kind !== 'const' &&
         node.declarations.length === 1
+      );
+    }
+
+    function isAssigningArrayLength(
+      node: TSESTree.VariableDeclarator,
+    ): boolean {
+      return (
+        node.init !== null &&
+        node.init.type === AST_NODE_TYPES.MemberExpression &&
+        isMatchingIdentifier(node.init.property, 'length')
       );
     }
 
@@ -47,6 +83,23 @@ export default util.createRule({
       name: string,
     ): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
+    }
+
+    function isLessThanLengthVariable(
+      node: TSESTree.Node | null,
+      indexName: string,
+      arrVarName: string,
+    ): boolean {
+      if (
+        node !== null &&
+        node.type === AST_NODE_TYPES.BinaryExpression &&
+        node.operator === '<' &&
+        isMatchingIdentifier(node.left, indexName) &&
+        isMatchingIdentifier(node.right, arrVarName)
+      ) {
+        return true;
+      }
+      return false;
     }
 
     function isLessThanLengthExpression(
@@ -183,6 +236,43 @@ export default util.createRule({
 
     return {
       'ForStatement:exit'(node: TSESTree.ForStatement): void {
+        const twoVarDecl = getTwoVariableDeclarationWithArrayLength(node.init);
+        if (twoVarDecl) {
+          const indexPosVar = twoVarDecl[0];
+          const arraLengthVar = twoVarDecl[1];
+          const arrayExpression =
+            arraLengthVar.init?.type === AST_NODE_TYPES.MemberExpression &&
+            arraLengthVar.init?.object;
+          if (
+            !indexPosVar ||
+            !isZeroInitialized(indexPosVar) ||
+            indexPosVar.id.type !== AST_NODE_TYPES.Identifier ||
+            arraLengthVar.id.type !== AST_NODE_TYPES.Identifier
+          ) {
+            return;
+          }
+
+          const indexName = indexPosVar.id.name;
+          const arrVarName = arraLengthVar.id.name;
+          if (!isLessThanLengthVariable(node.test, indexName, arrVarName)) {
+            return;
+          }
+          const indexVar = context
+            .getDeclaredVariables(node.init!)
+            .find(el => el.name === indexName);
+          if (
+            indexVar &&
+            arrayExpression &&
+            isIncrement(node.update, indexName) &&
+            isIndexOnlyUsedWithArray(node.body, indexVar, arrayExpression)
+          ) {
+            context.report({
+              node,
+              messageId: 'preferForOf',
+            });
+          }
+        }
+
         if (!isSingleVariableDeclaration(node.init)) {
           return;
         }

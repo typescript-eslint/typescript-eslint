@@ -42,12 +42,6 @@ for (var f = 0; f <= 40; f++) {
 for (var g = 0; g <= 40; g++) doMath(g);
 `,
     `
-for(var h=0, len=arr.length; h < len; h++) {}
-`,
-    `
-for(var i=0, len=arr.length; i < len; i++) arr[i];
-`,
-    `
 var m = 0;
 for (;;) {
   if (m > 3) break;
@@ -181,6 +175,15 @@ for (var c = 0; c < arr.length; c++) {
     `
 for (var d = 0; d < arr.length; d++) doMath?.(d);
     `,
+    `
+for (var d = 0, e=5; d < arr.length; d++) { d+e };
+    `,
+    `
+for (var d = 0, e=5, c = arr.length; d < c; d++) { d+e };
+    `,
+    `
+for(let x = arr.length, i=0; x != i; x-=1) {}
+`,
   ],
   invalid: [
     {
@@ -360,6 +363,48 @@ for (let i = 0; i < arr.length; i++) {
 for (let i = 0; i < arr.length; i++) {
   ({ foo: obj[arr[i]] }) = { foo: 1 };
 }
+        `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0, l = arr.length; i < l; i++) {
+  console.log(arr[i])
+}
+        `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for(var h=0, len=arr.length; h < len; h++) {}
+        `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for(var i=0, len=arr.length; i < len; i++) arr[i];
+        `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for(var len=arr.length, i=0; i < len; i++) arr[i];
         `,
       errors: [
         {
