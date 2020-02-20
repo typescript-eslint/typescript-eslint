@@ -114,7 +114,8 @@ export default util.createRule<Options, MessageId>({
         // `.catch()` that handles the promise.
         return (
           !isPromiseCatchCallWithHandler(node) &&
-          !isPromiseThenCallWithRejectionHandler(node)
+          !isPromiseThenCallWithRejectionHandler(node) &&
+          !isPromiseFinallyCallWithHandler(node)
         );
       } else if (ts.isConditionalExpression(node)) {
         // We must be getting the promise-like value from one of the branches of the
@@ -214,5 +215,15 @@ function isPromiseThenCallWithRejectionHandler(
     tsutils.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'then' &&
     expression.arguments.length >= 2
+  );
+}
+
+function isPromiseFinallyCallWithHandler(
+  expression: ts.CallExpression,
+): boolean {
+  return (
+    tsutils.isPropertyAccessExpression(expression.expression) &&
+    expression.expression.name.text === 'finally' &&
+    expression.arguments.length >= 1
   );
 }
