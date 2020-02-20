@@ -41,6 +41,9 @@ function foo() { throw <Foo>{ bar: 5 } }
 print?.(<Foo>{ bar: 5 })
 print?.call(<Foo>{ bar: 5 })
 `;
+const OBJECT_LITERAL_RETURN = `
+return {} as Foo
+`;
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
@@ -86,6 +89,16 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           assertionStyle: 'as',
           objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: OBJECT_LITERAL_RETURN,
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+          allowAsReturn: true,
         },
       ],
     }),
@@ -325,6 +338,22 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 7,
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: OBJECT_LITERAL_RETURN,
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+          allowAsReturn: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 2,
         },
       ],
     }),

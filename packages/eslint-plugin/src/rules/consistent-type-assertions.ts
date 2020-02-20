@@ -15,9 +15,11 @@ type OptUnion =
   | {
       assertionStyle: 'as' | 'angle-bracket';
       objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      allowAsReturn?: boolean;
     }
   | {
       assertionStyle: 'never';
+      allowAsReturn?: boolean;
     };
 type Options = [OptUnion];
 
@@ -45,6 +47,7 @@ export default util.createRule<Options, MessageIds>({
               assertionStyle: {
                 enum: ['never'],
               },
+              allowAsReturn: { type: 'boolean' },
             },
             additionalProperties: false,
             required: ['assertionStyle'],
@@ -58,6 +61,7 @@ export default util.createRule<Options, MessageIds>({
               objectLiteralTypeAssertions: {
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
+              allowAsReturn: { type: 'boolean' },
             },
             additionalProperties: false,
             required: ['assertionStyle'],
@@ -70,6 +74,7 @@ export default util.createRule<Options, MessageIds>({
     {
       assertionStyle: 'as',
       objectLiteralTypeAssertions: 'allow',
+      allowAsReturn: false,
     },
   ],
   create(context, [options]) {
@@ -127,6 +132,14 @@ export default util.createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.OptionalCallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||
           node.parent.type === AST_NODE_TYPES.AssignmentPattern)
+      ) {
+        return;
+      }
+
+      if (
+        options.allowAsReturn &&
+        node.parent &&
+        node.parent.type === AST_NODE_TYPES.ReturnStatement
       ) {
         return;
       }

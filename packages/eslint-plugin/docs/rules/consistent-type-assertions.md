@@ -12,15 +12,18 @@ Type assertions are also commonly referred as "type casting" in TypeScript (even
 type Options =
   | {
       assertionStyle: 'as' | 'angle-bracket';
-      objectLiteralTypeAssertions: 'allow' | 'allow-as-parameter' | 'never';
+      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      allowAsReturn?: boolean;
     }
   | {
       assertionStyle: 'never';
+      allowAsReturn?: boolean;
     };
 
 const defaultOptions: Options = {
   assertionStyle: 'as',
   objectLiteralTypeAssertions: 'allow',
+  allowAsReturn: false,
 };
 ```
 
@@ -44,10 +47,15 @@ The compiler will warn for excess properties with this syntax, but not missing _
 
 The const assertion `const x = { foo: 1 } as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
 
+### `allowAsReturn`
+
+Allow type assertions on object literals if they are in a return statement.
+
 Examples of **incorrect** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }` (and for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`)
 
 ```ts
 const x = { ... } as T;
+return {} as T;
 ```
 
 Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`.
@@ -67,6 +75,12 @@ const z = { ... } as unknown;
 foo({ ... } as T);
 new Clazz({ ... } as T);
 function foo() { throw { bar: 5 } as Foo }
+```
+
+Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter', allowAsReturn: true }`.
+
+```ts
+return {} as T;
 ```
 
 ## When Not To Use It
