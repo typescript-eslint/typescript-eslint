@@ -79,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.OptionalCallExpression
         | TSESTree.NewExpression,
     ): void {
-      const isOptionalCall = util.isOptionalOptionalChain(node);
+      const isOptionalCall = util.isOptionalOptionalCallExpression(node);
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(

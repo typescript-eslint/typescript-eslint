@@ -169,7 +169,8 @@ export function getTypeFlags(type: ts.Type): ts.TypeFlags {
 }
 
 /**
- * Checks if the given type is (or accepts) the given flags
+ * Checks if the given type is (or accepts) the given flags.
+ * This collects all types across a union.
  * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
 export function isTypeFlagSet(
@@ -184,6 +185,13 @@ export function isTypeFlagSet(
   }
 
   return (flags & flagsToCheck) !== 0;
+}
+
+export function isTypeFlagSetNonUnion(
+  type: ts.Type,
+  flagsToCheck: ts.TypeFlags,
+): boolean {
+  return (type.flags & flagsToCheck) !== 0;
 }
 
 /**

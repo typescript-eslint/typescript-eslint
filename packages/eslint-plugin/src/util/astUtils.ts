@@ -31,7 +31,7 @@ function isNotNonNullAssertionPunctuator(
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
-function isOptionalOptionalChain(
+function isOptionalOptionalCallExpression(
   node: TSESTree.Node,
 ): node is TSESTree.OptionalCallExpression & { optional: true } {
   return (
@@ -132,19 +132,58 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
+/**
+ * Checks if a node is the null literal
+ */
+function isNullLiteral(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.NullLiteral {
+  if (!node) {
+    return false;
+  }
+  return node.type === AST_NODE_TYPES.Literal && node.value === null;
+}
+
+/**
+ * Checks if a node is the undefined identifier
+ */
+function isUndefinedIdentifier(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.UndefinedIdentifier {
+  if (!node) {
+    return false;
+  }
+  return node.type === AST_NODE_TYPES.Identifier && node.name === 'undefined';
+}
+
+/**
+ * Checks if a node is the const identifier
+ */
+function isConstIdentifier(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.ConstIdentifier {
+  if (!node) {
+    return false;
+  }
+  return node.type === AST_NODE_TYPES.Identifier && node.name === 'const';
+}
+
 export {
   isAwaitExpression,
   isAwaitKeyword,
+  isConstIdentifier,
   isConstructor,
   isIdentifier,
   isLogicalOrOperator,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
+  isNullLiteral,
   isOptionalChainPunctuator,
-  isOptionalOptionalChain,
+  isOptionalOptionalCallExpression,
   isSetter,
   isTokenOnSameLine,
   isTypeAssertion,
+  isUndefinedIdentifier,
   LINEBREAK_MATCHER,
 };
