@@ -1,8 +1,8 @@
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
-import banTsIgnore from './ban-ts-ignore';
 import banTsComment from './ban-ts-comment';
+import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
@@ -28,10 +28,10 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
-import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
@@ -40,8 +40,8 @@ import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
-import noNonNullAssertion from './no-non-null-assertion';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
+import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noThisAlias from './no-this-alias';
@@ -50,8 +50,9 @@ import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
-import useDefaultTypeParameter from './no-unnecessary-type-arguments';
+import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
+import noUnsafeAny from './no-unsafe-any';
 import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
@@ -90,8 +91,8 @@ export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
   'array-type': arrayType,
   'await-thenable': awaitThenable,
-  'ban-ts-ignore': banTsIgnore,
   'ban-ts-comment': banTsComment,
+  'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
   'brace-style': braceStyle,
   camelcase: camelcase,
@@ -123,28 +124,29 @@ export default {
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
-  'no-inferrable-types': noInferrableTypes,
   'no-implied-eval': noImpliedEval,
+  'no-inferrable-types': noInferrableTypes,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
-  'no-non-null-assertion': noNonNullAssertion,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
+  'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-require-imports': noRequireImports,
   'no-this-alias': noThisAlias,
-  'no-type-alias': noTypeAlias,
   'no-throw-literal': noThrowLiteral,
+  'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
-  'no-unnecessary-type-arguments': useDefaultTypeParameter,
+  'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-unsafe-any': noUnsafeAny,
   'no-untyped-public-signature': noUntypedPublicSignature,
-  'no-unused-vars': noUnusedVars,
-  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-expressions': noUnusedExpressions,
+  'no-unused-vars-experimental': noUnusedVarsExperimental,
+  'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,

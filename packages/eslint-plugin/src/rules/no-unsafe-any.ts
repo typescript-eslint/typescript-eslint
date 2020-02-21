@@ -9,6 +9,8 @@ import * as util from '../util';
 type Options = [
   {
     allowVariableAnnotationFromAny?: boolean;
+    ignoreUntypedLetVariableDeclaration?: boolean;
+    ignoreUntypedVariableDeclarationWithEmptyArrayValue?: boolean;
   },
 ];
 type MessageIds =
@@ -27,6 +29,13 @@ type MessageIds =
   | 'booleanTestIsAny'
   | 'switchDiscriminantIsAny'
   | 'switchCaseTestIsAny';
+
+const booleanStatementToText = {
+  [AST_NODE_TYPES.IfStatement]: 'if',
+  [AST_NODE_TYPES.WhileStatement]: 'while',
+  [AST_NODE_TYPES.DoWhileStatement]: 'do while',
+  [AST_NODE_TYPES.ConditionalExpression]: 'ternary',
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unsafe-any',
@@ -67,7 +76,19 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          // allow a variable with an explicit type decl when the value has type `any`
+          // const x: string = returnsAny();
           allowVariableAnnotationFromAny: {
+            type: 'boolean',
+          },
+          // ignore let variable declaration without a type annotation. These are dynamically typed by TS
+          // let x;    let y = null;
+          ignoreUntypedLetVariableDeclaration: {
+            type: 'boolean',
+          },
+          // ignore variable declaration with empty array value. The array will be dynamically typed by TS
+          // let x = [];    const y = [];
+          ignoreUntypedVariableDeclarationWithEmptyArrayValue: {
             type: 'boolean',
           },
         },
@@ -77,31 +98,67 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowVariableAnnotationFromAny: false,
+      // default true because it gets dynamically typed
+      ignoreUntypedLetVariableDeclaration: true,
+      ignoreUntypedVariableDeclarationWithEmptyArrayValue: true,
     },
   ],
-  create(context, [{ allowVariableAnnotationFromAny }]) {
+  create(
+    context,
+    [
+      {
+        allowVariableAnnotationFromAny,
+        ignoreUntypedLetVariableDeclaration,
+        ignoreUntypedVariableDeclarationWithEmptyArrayValue,
+      },
+    ],
+  ) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
+    const typeCache = new Map<ts.Node, ts.Type>();
+    function memoize(
+      fn: (node: ts.Type) => boolean,
+    ): (node: ts.Node) => boolean {
+      const returnCache = new Map<ts.Node, boolean>();
+      return (node): boolean => {
+        // check the cache for a pre-computed return value
+        const cachedResult = returnCache.get(node);
+        if (cachedResult) {
+          return cachedResult;
+        }
+
+        // check the cache for a pre-computed type
+        let type = typeCache.get(node);
+        if (!type) {
+          type = checker.getTypeAtLocation(node);
+          typeCache.set(node, type);
+        }
+
+        const result = fn(type);
+        returnCache.set(node, result);
+        return result;
+      };
+    }
+
     /**
      * @returns true if the type is `any`
      */
-    function isAnyType(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+    const isAnyType = memoize((type: ts.Type): boolean => {
       return util.isTypeFlagSet(type, ts.TypeFlags.Any);
-    }
+    });
+
     /**
      * @returns true if the type is `any[]` or `readonly any[]`
      */
-    function isAnyArrayType(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+    const isAnyArrayType = memoize((type: ts.Type): boolean => {
       return (
         checker.isArrayType(type) &&
         isTypeReference(type) &&
         util.isTypeFlagSet(checker.getTypeArguments(type)[0], ts.TypeFlags.Any)
       );
-    }
+    });
 
     function isAnyOrAnyArrayType(node: ts.Node): boolean {
       return isAnyType(node) || isAnyArrayType(node);
@@ -208,6 +265,9 @@ export default util.createRule<Options, MessageIds>({
         if (node.id.typeAnnotation) {
           return;
         }
+        if (ignoreUntypedLetVariableDeclaration) {
+          return;
+        }
 
         const parent = node.parent as TSESTree.VariableDeclaration;
         context.report({
@@ -227,6 +287,9 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.VariableDeclarator,
       ): void {
         if (node.id.typeAnnotation) {
+          return;
+        }
+        if (ignoreUntypedLetVariableDeclaration) {
           return;
         }
 
@@ -249,24 +312,6 @@ export default util.createRule<Options, MessageIds>({
 
       // #region variableDeclarationInitializedToAnyWithAnnotation, variableDeclarationInitializedToAnyWithoutAnnotation, patternVariableDeclarationInitializedToAny
 
-      // const x = ...;
-      'VariableDeclaration > VariableDeclarator[init] > Identifier.id'(
-        node: TSESTree.Identifier,
-      ): void {
-        const parent = node.parent as TSESTree.VariableDeclarator;
-        /* istanbul ignore if */ if (!parent.init) {
-          return;
-        }
-
-        const tsNode = esTreeNodeToTSNodeMap.get(parent.init);
-        if (!isAnyType(tsNode) && !isAnyArrayType(tsNode)) {
-          return;
-        }
-
-        // the variable is initialized to any | any[]...
-
-        reportVariableDeclarationInitializedToAny(parent, node.name);
-      },
       // const x = [];
       // this is a special case, because the type of [] is never[], but the variable gets typed as any[].
       // this means it can't be caught by the above selector
@@ -281,15 +326,37 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
+        if (ignoreUntypedVariableDeclarationWithEmptyArrayValue) {
+          return;
+        }
+
         context.report({
           node: parent,
           messageId: 'variableDeclarationInitializedToAnyWithoutAnnotation',
         });
       },
+      // const x = ...;
+      'VariableDeclaration > VariableDeclarator[init] > Identifier.id'(
+        node: TSESTree.Identifier,
+      ): void {
+        const parent = node.parent as TSESTree.VariableDeclarator;
+        /* istanbul ignore if */ if (!parent.init) {
+          return;
+        }
+
+        const tsNode = esTreeNodeToTSNodeMap.get(parent.init);
+        if (!isAnyOrAnyArrayType(tsNode)) {
+          return;
+        }
+
+        // the variable is initialized to any | any[]...
+
+        reportVariableDeclarationInitializedToAny(parent, node.name);
+      },
       // const { x } = ...;
       // const [x] = ...;
       'VariableDeclaration > VariableDeclarator[init] > :matches(ObjectPattern, ArrayPattern).id'(
-        node: TSESTree.ObjectPattern,
+        node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
       ): void {
         const parent = node.parent as TSESTree.VariableDeclarator;
         /* istanbul ignore if */ if (!parent.init) {
@@ -340,8 +407,8 @@ export default util.createRule<Options, MessageIds>({
             AST_NODE_TYPES.ReturnStatement,
           ),
         );
-        const tsNode = esTreeNodeToTSNodeMap.get(argument);
 
+        const tsNode = esTreeNodeToTSNodeMap.get(argument);
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node,
@@ -354,7 +421,6 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.Expression,
       ): void {
         const tsNode = esTreeNodeToTSNodeMap.get(node);
-
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node,
@@ -372,7 +438,6 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         for (const argument of node.arguments) {
           const tsNode = esTreeNodeToTSNodeMap.get(argument);
-
           if (isAnyOrAnyArrayType(tsNode)) {
             context.report({
               node: argument,
@@ -388,7 +453,6 @@ export default util.createRule<Options, MessageIds>({
 
       AssignmentExpression(node): void {
         const tsNode = esTreeNodeToTSNodeMap.get(node.right);
-
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node,
@@ -403,7 +467,6 @@ export default util.createRule<Options, MessageIds>({
 
       UpdateExpression(node): void {
         const tsNode = esTreeNodeToTSNodeMap.get(node.argument);
-
         if (isAnyType(tsNode)) {
           context.report({
             node,
@@ -424,19 +487,12 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.ConditionalExpression,
       ): void {
         const tsNode = esTreeNodeToTSNodeMap.get(node.test);
-        const typeToText = {
-          [AST_NODE_TYPES.IfStatement]: 'if',
-          [AST_NODE_TYPES.WhileStatement]: 'while',
-          [AST_NODE_TYPES.DoWhileStatement]: 'do while',
-          [AST_NODE_TYPES.ConditionalExpression]: 'ternary',
-        };
-
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node: node.test,
             messageId: 'booleanTestIsAny',
             data: {
-              kind: typeToText[node.type],
+              kind: booleanStatementToText[node.type],
             },
           });
         }
@@ -448,7 +504,6 @@ export default util.createRule<Options, MessageIds>({
 
       SwitchStatement(node): void {
         const tsNode = esTreeNodeToTSNodeMap.get(node.discriminant);
-
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node: node.discriminant,
@@ -462,16 +517,15 @@ export default util.createRule<Options, MessageIds>({
       // #region switchCaseTestIsAny
 
       'SwitchCase[test]'(node: TSESTree.SwitchCase): void {
-        const tsNode = esTreeNodeToTSNodeMap.get(
-          util.nullThrows(
-            node.test,
-            util.NullThrowsReasons.MissingToken(
-              'test',
-              AST_NODE_TYPES.SwitchCase,
-            ),
+        const test = util.nullThrows(
+          node.test,
+          util.NullThrowsReasons.MissingToken(
+            'test',
+            AST_NODE_TYPES.SwitchCase,
           ),
         );
 
+        const tsNode = esTreeNodeToTSNodeMap.get(test);
         if (isAnyOrAnyArrayType(tsNode)) {
           context.report({
             node,
