@@ -13,7 +13,7 @@ enum Usefulness {
 }
 
 export default util.createRule({
-  name: 'base-to-string',
+  name: 'no-base-to-string',
   meta: {
     docs: {
       description:

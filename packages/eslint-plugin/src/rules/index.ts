@@ -4,7 +4,6 @@ import awaitThenable from './await-thenable';
 import banTsIgnore from './ban-ts-ignore';
 import banTsComment from './ban-ts-comment';
 import banTypes from './ban-types';
-import baseToString from './base-to-string';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
@@ -24,6 +23,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noBaseToString from './no-base-to-string';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -94,7 +94,7 @@ export default {
   'ban-ts-ignore': banTsIgnore,
   'ban-ts-comment': banTsComment,
   'ban-types': banTypes,
-  'base-to-string': baseToString,
+  'no-base-to-string': noBaseToString,
   'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,

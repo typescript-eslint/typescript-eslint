@@ -1,4 +1,4 @@
-import rule from '../../src/rules/base-to-string';
+import rule from '../../src/rules/no-base-to-string';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('base-to-string', rule, {
+ruleTester.run('no-base-to-string', rule, {
   valid: [
     `\`\${""}\``,
     `\`\${true}\``,
