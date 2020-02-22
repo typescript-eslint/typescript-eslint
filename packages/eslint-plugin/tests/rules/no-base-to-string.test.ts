@@ -44,6 +44,18 @@ ruleTester.run('no-base-to-string', rule, {
       toString: () => "Hello, world!",
     };
     "" + literalToString;`,
+    `let _ = {} * {}`,
+    `let _ = {} / {}`,
+    `let _ = {} *= {}`,
+    `let _ = {} /= {}`,
+    `let _ = {} = {}`,
+    `let _ = {} == {}`,
+    `let _ = {} === {}`,
+    `let _ = {} in {}`,
+    `let _ = {} & {}`,
+    `let _ = {} ^ {}`,
+    `let _ = {} << {}`,
+    `let _ = {} >> {}`,
   ],
   invalid: [
     {
@@ -72,6 +84,18 @@ ruleTester.run('no-base-to-string', rule, {
     },
     {
       code: `"" + {}`,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `"" += {}`,
       errors: [
         {
           data: {

@@ -2,11 +2,16 @@
 
 JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in <code>`${}`</code> template literals.
 
-The default Object `.toString()` returns `"[object Object]"` and the default Function `.toString()` defaults to `"[object Function]"`, so this rule requires stringified functions and objects define a more useful `.toString()` method.
+The default Object `.toString()` returns `"[object Object]"`, so this rule requires stringified objects define a more useful `.toString()` method.
+
+Note that `Function` provides its own `.toString()` that returns the function's code.
+Functions are not flagged by this rule.
+
+This rule has some overlap with with [`restrict-plus-operands`](./restrict-plus-operands.md) and [`restrict-template-expressions`](./restrict-template-expressions.md).
 
 ## Rule Details
 
-This rule prevents accidentally defaulting to the base Function or Object `.toString()` methods.
+This rule prevents accidentally defaulting to the base Object `.toString()` method.
 
 Examples of **incorrect** code for this rule:
 

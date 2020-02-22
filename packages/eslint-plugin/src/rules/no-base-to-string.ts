@@ -88,7 +88,9 @@ export default util.createRule({
     }
 
     return {
-      BinaryExpression(node: TSESTree.BinaryExpression): void {
+      'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
+        node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
+      ): void {
         const leftType = typeChecker.getTypeAtLocation(
           parserServices.esTreeNodeToTSNodeMap.get(node.left),
         );
@@ -102,22 +104,11 @@ export default util.createRule({
           checkExpression(node.left, leftType);
         }
       },
-
-      CallExpression(node: TSESTree.CallExpression): void {
-        const { callee } = node;
-        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
-          return;
-        }
-
-        const { property } = callee;
-        if (
-          property.type !== AST_NODE_TYPES.Identifier ||
-          property.name !== 'toString'
-        ) {
-          return;
-        }
-
-        checkExpression(callee.object);
+      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        checkExpression(memberExpr.object);
       },
 
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
