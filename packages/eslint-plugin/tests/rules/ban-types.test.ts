@@ -72,7 +72,7 @@ ruleTester.run('ban-types', rule, {
       code: 'let a: NS.Bad._',
       options,
     },
-    // Replace default options instead of merging
+    // Replace default options instead of merging with extendDefaults: false
     {
       code: 'let a: String;',
       options: [
@@ -83,6 +83,7 @@ ruleTester.run('ban-types', rule, {
               fixWith: 'number',
             },
           },
+          extendDefaults: false,
         },
       ],
     },

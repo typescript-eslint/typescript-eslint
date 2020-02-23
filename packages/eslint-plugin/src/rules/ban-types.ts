@@ -14,6 +14,7 @@ type Types = Record<
 type Options = [
   {
     types?: Types;
+    extendDefaults?: boolean;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
@@ -114,13 +115,22 @@ export default util.createRule<Options, MessageIds>({
               ],
             },
           },
+          extendDefaults: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
   defaultOptions: [{}],
-  create(context, [{ types = defaultTypes }]) {
+  create(context, [options]) {
+    const extendDefaults = options.extendDefaults ?? true;
+    const customTypes = options.types ?? {};
+    const types: Types = {
+      ...(extendDefaults ? defaultTypes : {}),
+      ...customTypes,
+    };
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );
