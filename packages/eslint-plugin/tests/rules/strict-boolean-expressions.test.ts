@@ -1,1225 +1,327 @@
-import rule from '../../src/rules/strict-boolean-expressions';
+import rule, {
+  Options,
+  MessageId,
+} from '../../src/rules/strict-boolean-expressions';
 import {
-  RuleTester,
-  getFixturesRootDir,
   batchedSingleLineTests,
+  getFixturesRootDir,
+  RuleTester,
 } from '../RuleTester';
-
-const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: rootPath,
+    tsconfigRootDir: getFixturesRootDir(),
     project: './tsconfig.json',
   },
 });
 
 ruleTester.run('strict-boolean-expressions', rule, {
   valid: [
-    `
-      let val = true;
-      let bool = !val;
-      let bool2 = true || val;
-      let bool3 = true && val;
-    `,
-    `
-      let a = 0;
-      let u1 = typeof a;
-      let u2 = -a;
-      let u3 = ~a;
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      if (true) {
-        return;
-      }
-
-      if (bool1) {
-        return;
-      }
-
-      if (bool1 && bool2) {
-        return;
-      }
-
-      if (bool1 || bool2) {
-        return;
-      }
-
-      if ((bool1 && bool2) || (bool1 || bool2)) {
-        return;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      const res1 = true ? true : false;
-      const res2 = bool1 && bool2 ? true : false;
-      const res3 = bool1 || bool2 ? true : false;
-      const res4 = (bool1 && bool2) || (bool1 || bool2) ? true : false;
-    `,
-    `
-      for (let i = 0; true; i++) {
-        break;
-      }
-    `,
-    `
-      const bool = true;
-      for (let i = 0; bool; i++) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      for (let i = 0; bool1 && bool2; i++) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      for (let i = 0; bool1 || bool2; i++) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      for (let i = 0; (bool1 && bool2) || (bool1 || bool2); i++) {
-        break;
-      }
-    `,
-    `
-      while (true) {
-        break;
-      }
-    `,
-    `
-      const bool = true;
-      while (bool) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      while (bool1 && bool2) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      while (bool1 || bool2) {
-        break;
-      }
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      while ((bool1 && bool2) || (bool1 || bool2)) {
-        break;
-      }
-    `,
-    `
-      do {
-        break;
-      } while (true);
-    `,
-    `
-      const bool = true;
-      do {
-        break;
-      } while (bool);
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      do {
-        break;
-      } while (bool1 && bool2);
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      do {
-        break;
-      } while (bool1 || bool2);
-    `,
-    `
-      const bool1 = true;
-      const bool2 = false;
-      do {
-        break;
-      } while ((bool1 && bool2) || (bool1 || bool2));
-    `,
-    `
-      function foo<T extends boolean>(arg: T) { return !arg; }
-    `,
-    {
-      options: [{ ignoreRhs: true }],
+    // boolean in boolean context
+    ...batchedSingleLineTests<Options>({
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
+      ],
       code: `
-        const obj = { x: 1 };
-        const bool = false;
-        const boolOrObj = bool || obj;
-        const boolAndObj = bool && obj;
-      `,
-    },
-    ...batchedSingleLineTests({
-      options: [{ allowNullable: true }],
-      code: `
-        const f1 = (x?: boolean) => x ? 1 : 0;
-        const f2 = (x: boolean | null) => x ? 1 : 0;
-        const f3 = (x?: true | null) => x ? 1 : 0;
-        const f4 = (x?: false) => x ? 1 : 0;
+        true ? "a" : "b";
+        if (false) {}
+        while (true) {}
+        for (; false;) {}
+        !true;
+        false || 123;
+        true && "foo";
+        !(false || true);
+        true && false ? true : false;
+        false && true || false;
+        false && true || [];
+        (false && 1) || (true && 2);
+        declare const x: boolean; if (x) {}
+        (x: boolean) => !x;
+        <T extends boolean>(x: T) => x ? 1 : 0;
+        declare const x: never; if (x) {}
       `,
     }),
-    `
-      declare const x: string | null;
-      y = x ?? 'foo';
-    `,
-    ...batchedSingleLineTests({
-      options: [{ allowSafe: true }],
+
+    // string in boolean context
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowNumber: false, allowNullableObject: false }],
       code: `
-        const f1 = (x: boolean | { a: string }) => x ? 1 : 0;
-        const f2 = (x: true | { a: string }) => x ? 1 : 0;
-        const f3 = (x: { a: string } | false) => x ? 1 : 0;
+        if ("") {}
+        while ("x") {}
+        for (; "";) {}
+        "" && "1" || x;
+        declare const x: string; if (x) {}
+        (x: string) => !x;
+        <T extends string>(x: T) => x ? 1 : 0;
       `,
     }),
-    ...batchedSingleLineTests({
-      options: [{ allowNullable: true, allowSafe: true }],
+
+    // number in boolean context
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowString: false, allowNullableObject: false }],
       code: `
-        const f1 = (x?: boolean | { a?: 1 }) => x ? 1 : 0;
-        const f2 = (x: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
-        const f3 = (x?: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
-        const f4 = (x?: { b?: "a" } | true) => x ? 1 : 0;
-        const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
+        if (0) {}
+        while (1n) {}
+        for (; Infinity;) {}
+        0 / 0 && 1 + 2 || x;
+        declare const x: number; if (x) {}
+        (x: bigint) => !x;
+        <T extends number>(x: T) => x ? 1 : 0;
       `,
     }),
-    ...batchedSingleLineTests({
-      options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
+
+    // nullable object in boolean context
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowString: false, allowNumber: false }],
       code: `
-        const f1 = (x?: { a: null }) => x && x.foo && x.foo.bar
-        const f2 = (g?: (x: number) => number) => g && g(1)
+        declare const x: null | object; if (x) {}
+        (x?: { a: any }) => !x;
+        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
       `,
     }),
-    `
-      declare let x: never;
-      if (x) {}
-    `,
-    ...batchedSingleLineTests({
+
+    // nullable boolean when allowNullableBoolean is true
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowNullableBoolean: true }],
       code: `
-        function f1(x: never) { return !x }
-        function f2(x: never) { return x ? 1 : 0 }
-        function f3(x: never, y: never) { return x && y }
-        function f5(x: never | boolean) { if (!x) {} }
+        declare const x: boolean | null; if (x) {}
+        (x?: boolean) => !x;
+        <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+    }),
+
+    // nullable string when allowNullableString is true
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowNullableString: true }],
+      code: `
+        declare const x: string | null; if (x) {}
+        (x?: string) => !x;
+        <T extends string | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+    }),
+
+    // nullable number when allowNullableNumber is true
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowNullableNumber: true }],
+      code: `
+        declare const x: number | null; if (x) {}
+        (x?: number) => !x;
+        <T extends number | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+    }),
+
+    // any when allowAny is true
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowAny: true }],
+      code: `
+        declare const x: any; if (x) {}
+        (x) => !x;
+        <T extends any>(x: T) => x ? 1 : 0;
       `,
     }),
   ],
 
   invalid: [
-    {
-      code: `
-        let val = "foo";
-        let bool = !val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorString',
-          line: 3,
-          column: 21,
-        },
-      ],
-    },
-    {
-      code: `
-        let val;
-        let bool = !val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 21,
-        },
-      ],
-    },
-    {
-      code: `
-        let val = 1;
-        let bool = true && val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 3,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: `
-        let val;
-        let bool = true && val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: `
-        let val = 1;
-        let bool = true || val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 3,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: `
-        let val;
-        let bool = true || val;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorAny',
-          line: 3,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: `
-        let num = 1;
-        let str = "foo"
-        let val = null;
-        let bool = true && (val || num || str);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 5,
-          column: 29,
-        },
-        {
-          messageId: 'conditionErrorNumber',
-          line: 5,
-          column: 36,
-        },
-        {
-          messageId: 'conditionErrorString',
-          line: 5,
-          column: 43,
-        },
-      ],
-    },
-    {
-      code: `
-        if (1) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 2,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        if (undefined) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 2,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item = "foo";
-        if (item) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorString',
-          line: 3,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item;
-        if (item) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2 = 1;
-        if (item1 && item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = 1;
-        let item2 = true;
-        if (item1 && item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1;
-        let item2 = true;
-        if (item1 && item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2 = 1;
-        if (item1 || item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = 1;
-        let item2 = true;
-        if (item1 || item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1;
-        let item2 = true;
-        if (item1 || item2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 13,
-        },
-      ],
-    },
-    {
-      code: `
-        const bool = "foo" ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorString',
-          line: 2,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        const bool = undefined ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 2,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item = 1;
-        const bool = item ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 3,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item;
-        const bool = item ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = 1;
-        let item2 = false;
-        const bool = item1 && item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2 = 1;
-        const bool = item1 && item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2;
-        const bool = item1 && item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = 1;
-        let item2 = false;
-        const bool = item1 || item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 22,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2 = 1;
-        const bool = item1 || item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        let item1 = true;
-        let item2;
-        const bool = item1 || item2 ? true : false;
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        for (let i = 0; 1; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 2,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        for (let i = 0; undefined; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 2,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool = 1;
-        for (let i = 0; bool; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 3,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool;
-        for (let i = 0; bool; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = "foo";
-        let bool2 = true;
-        for (let i = 0; bool1 && bool2; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorString',
-          line: 4,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        for (let i = 0; bool1 && bool2; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = 1;
-        let bool2 = true;
-        for (let i = 0; bool1 || bool2; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        for (let i = 0; bool1 || bool2; i++) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-        while (1) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 2,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        while (undefined) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 2,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool = 1;
-        while (bool) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 3,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool;
-        while (bool) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 3,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = 1;
-        let bool2 = true;
-        while (bool1 && bool2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        while (bool1 && bool2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = 1;
-        let bool2 = true;
-        while (bool1 || bool2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 4,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        while (bool1 || bool2) {
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-        do {
-          return;
-        } while ("foo");
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorString',
-          line: 4,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        do {
-          return;
-        } while (undefined);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 4,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool = 1;
-        do {
-          return;
-        } while (bool);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 5,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool;
-        do {
-          return;
-        } while (bool);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorAny',
-          line: 5,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = 1;
-        let bool2 = true;
-        do {
-          return;
-        } while (bool1 && bool2);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 6,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        do {
-          return;
-        } while (bool1 && bool2);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorAny',
-          line: 6,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1 = 1;
-        let bool2 = true;
-        do {
-          return;
-        } while (bool1 || bool2);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 6,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        let bool1;
-        let bool2 = true;
-        do {
-          return;
-        } while (bool1 || bool2);
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorAny',
-          line: 6,
-          column: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        function foo<T extends number>(arg: T) { return !arg; }
-      `,
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 2,
-          column: 58,
-        },
-      ],
-    },
-    ...batchedSingleLineTests({
-      errors: [
-        {
-          messageId: 'conditionErrorNullableBoolean',
-          line: 2,
-          column: 47,
-        },
-        {
-          messageId: 'conditionErrorNullableBoolean',
-          line: 3,
-          column: 37,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 41,
-        },
+    // non-boolean in RHS of test expression
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: `
-        const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
-        const f2 = (x?: boolean) => x ? 1 : 0;
-        const f3 = (x: boolean | {}) => x ? 1 : 0;
+        if (true && 1) {}
+        while (false || "a") {}
+        (x: object) => true || false || x ? true : false;
       `,
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 2, column: 13 },
+        { messageId: 'conditionErrorString', line: 3, column: 25 },
+        { messageId: 'conditionErrorObject', line: 4, column: 41 },
+      ],
     }),
+
+    // check if all and only the outermost operands are checked
     {
-      options: [{ ignoreRhs: true }],
-      errors: [
-        {
-          messageId: 'conditionErrorObject',
-          line: 4,
-          column: 27,
-        },
-        {
-          messageId: 'conditionErrorObject',
-          line: 5,
-          column: 28,
-        },
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: `
-        const obj = { x: 1 };
-        const bool = false;
-        const objOrBool = obj || bool;
-        const objAndBool = obj && bool;
+        if ("" && {} || 0 && void 0) {}
       `,
+      errors: [
+        { messageId: 'conditionErrorString', line: 2, column: 13 },
+        { messageId: 'conditionErrorObject', line: 2, column: 19 },
+        { messageId: 'conditionErrorNumber', line: 2, column: 25 },
+        { messageId: 'conditionErrorNullish', line: 2, column: 30 },
+      ],
     },
-    {
-      options: [{ ignoreRhs: true }],
-      errors: [
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 13,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 5,
-          column: 13,
-        },
+
+    // nullish in boolean context
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: `
-        const condition = () => false;
-        const obj = { x: 1 };
-        if (condition() || obj) {}
-        if (condition() && obj) {}
+        null || {};
+        undefined && [];
+        declare const x: null; if (x) {}
+        (x: undefined) => !x;
+        <T extends null | undefined>(x: T) => x ? 1 : 0;
       `,
-    },
-    {
-      options: [{ ignoreRhs: true }],
       errors: [
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 13,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 5,
-          column: 13,
-        },
+        { messageId: 'conditionErrorNullish', line: 2, column: 1 },
+        { messageId: 'conditionErrorNullish', line: 3, column: 9 },
+        { messageId: 'conditionErrorNullish', line: 4, column: 36 },
+        { messageId: 'conditionErrorNullish', line: 5, column: 28 },
+        { messageId: 'conditionErrorNullish', line: 6, column: 47 },
       ],
-      code: `
-        declare let condition: boolean;
-        const obj = { x: 1 };
-        if (condition || obj) {}
-        if (condition && obj) {}
-      `,
-    },
-    ...batchedSingleLineTests({
-      options: [{ allowNullable: true }],
-      errors: [
-        {
-          messageId: 'conditionErrorNullish',
-          line: 2,
-          column: 37,
-        },
-        {
-          messageId: 'conditionErrorNullableNumber',
-          line: 3,
-          column: 36,
-        },
-        {
-          messageId: 'conditionErrorNullableString',
-          line: 4,
-          column: 36,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 5,
-          column: 45,
-        },
-      ],
-      code: `
-        const f1 = (x: null | undefined) => x ? 1 : 0;
-        const f2 = (x?: number) => x ? 1 : 0;
-        const f3 = (x?: string) => x ? 1 : 0;
-        const f4 = (x?: string | number) => x ? 1 : 0;
-      `,
     }),
-    {
-      errors: [
-        {
-          messageId: 'conditionErrorOther',
-          line: 3,
-          column: 43,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 44,
-        },
+
+    // object in boolean context
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: `
-        type Type = { a: string; };
-        const f1 = (x: Type | boolean) => x ? 1 : 0;
-        const f2 = (x?: Type | boolean) => x ? 1 : 0;
+        [] || 1;
+        ({}) && "a";
+        declare const x: symbol; if (x) {}
+        (x: () => void) => !x;
+        <T extends object>(x: T) => x ? 1 : 0;
       `,
-    },
-    ...batchedSingleLineTests({
-      options: [{ allowSafe: true }],
       errors: [
-        {
-          messageId: 'conditionErrorOther',
-          line: 2,
-          column: 36,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 3,
-          column: 44,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 44,
-        },
+        { messageId: 'conditionErrorObject', line: 2, column: 1 },
+        { messageId: 'conditionErrorObject', line: 3, column: 10 },
+        { messageId: 'conditionErrorObject', line: 4, column: 38 },
+        { messageId: 'conditionErrorObject', line: 5, column: 29 },
+        { messageId: 'conditionErrorObject', line: 6, column: 37 },
       ],
-      code: `
-        const f1 = (x: object | string) => x ? 1 : 0;
-        const f2 = (x: object | number) => x ? 1 : 0;
-        const f3 = (x: number | string) => x ? 1 : 0;
-      `,
     }),
-    {
-      options: [{ allowSafe: true }],
-      errors: [
-        {
-          messageId: 'conditionErrorNumber',
-          line: 8,
-          column: 34,
-        },
-        {
-          messageId: 'conditionErrorString',
-          line: 9,
-          column: 34,
-        },
-      ],
+
+    // string in boolean context when allowString is false
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowString: false }],
       code: `
-        enum Enum1 {
-          A, B, C
-        }
-        enum Enum2 {
-          A = 'A', B = 'B', C = 'C'
-        }
-        const f1 = (x: Enum1) => x ? 1 : 0;
-        const f2 = (x: Enum2) => x ? 1 : 0;
+        while ("") {}
+        for (; "foo";) {}
+        declare const x: string; if (x) {}
+        (x: string) => !x;
+        <T extends string>(x: T) => x ? 1 : 0;
       `,
-    },
-    {
-      options: [{ allowNullable: true, allowSafe: true }],
       errors: [
-        {
-          messageId: 'conditionErrorOther',
-          line: 3,
-          column: 43,
-        },
-        {
-          messageId: 'conditionErrorOther',
-          line: 4,
-          column: 49,
-        },
+        { messageId: 'conditionErrorString', line: 2, column: 8 },
+        { messageId: 'conditionErrorString', line: 3, column: 16 },
+        { messageId: 'conditionErrorString', line: 4, column: 38 },
+        { messageId: 'conditionErrorString', line: 5, column: 25 },
+        { messageId: 'conditionErrorString', line: 6, column: 37 },
       ],
+    }),
+
+    // number in boolean context when allowNumber is false
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowNumber: false }],
       code: `
-        type Type = { a: string; };
-        const f1 = (x?: Type | string) => x ? 1 : 0;
-        const f2 = (x: Type | number | null) => x ? 1 : 0;
+        while (0n) {}
+        for (; 123;) {}
+        declare const x: number; if (x) {}
+        (x: bigint) => !x;
+        <T extends number>(x: T) => x ? 1 : 0;
       `,
-    },
-    ...batchedSingleLineTests({
       errors: [
-        {
-          messageId: 'conditionErrorObject',
-          line: 2,
-          column: 31,
-        },
-        {
-          messageId: 'conditionErrorNullableObject',
-          line: 3,
-          column: 40,
-        },
-        {
-          messageId: 'conditionErrorNullableObject',
-          line: 4,
-          column: 47,
-        },
+        { messageId: 'conditionErrorNumber', line: 2, column: 8 },
+        { messageId: 'conditionErrorNumber', line: 3, column: 16 },
+        { messageId: 'conditionErrorNumber', line: 4, column: 38 },
+        { messageId: 'conditionErrorNumber', line: 5, column: 25 },
+        { messageId: 'conditionErrorNumber', line: 6, column: 37 },
       ],
+    }),
+
+    // mixed `string | number` value in boolean context when both are allowed
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowString: true, allowNumber: true }],
       code: `
-        const f1 = (x: { x: any }) => x ? 1 : 0;
-        const f2 = (x?: { x: any }) => x ? 1 : 0;
-        const f3 = (x?: { x: any } | null) => x ? 1 : 0;
+        declare const x: string | number; if (x) {}
+        (x: bigint | string) => !x;
+        <T extends number | bigint | string>(x: T) => x ? 1 : 0;
       `,
+      errors: [
+        { messageId: 'conditionErrorOther', line: 2, column: 39 },
+        { messageId: 'conditionErrorOther', line: 3, column: 34 },
+        { messageId: 'conditionErrorOther', line: 4, column: 55 },
+      ],
+    }),
+
+    // nullable boolean in boolean context when allowNullableBoolean is false
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowNullableBoolean: false }],
+      code: `
+        declare const x: boolean | null; if (x) {}
+        (x?: boolean) => !x;
+        <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+      errors: [
+        { messageId: 'conditionErrorNullableBoolean', line: 2, column: 38 },
+        { messageId: 'conditionErrorNullableBoolean', line: 3, column: 27 },
+        { messageId: 'conditionErrorNullableBoolean', line: 4, column: 57 },
+      ],
+    }),
+
+    // nullable object in boolean context when allowNullableObject is false
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowNullableObject: false }],
+      code: `
+        declare const x: object | null; if (x) {}
+        (x?: { a: number }) => !x;
+        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+      errors: [
+        { messageId: 'conditionErrorNullableObject', line: 2, column: 37 },
+        { messageId: 'conditionErrorNullableObject', line: 3, column: 33 },
+        { messageId: 'conditionErrorNullableObject', line: 4, column: 52 },
+      ],
+    }),
+
+    // nullable string in boolean context
+    ...batchedSingleLineTests<MessageId, Options>({
+      code: `
+        declare const x: string | null; if (x) {}
+        (x?: string) => !x;
+        <T extends string | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+      errors: [
+        { messageId: 'conditionErrorNullableString', line: 2, column: 37 },
+        { messageId: 'conditionErrorNullableString', line: 3, column: 26 },
+        { messageId: 'conditionErrorNullableString', line: 4, column: 56 },
+      ],
+    }),
+
+    // nullable number in boolean context
+    ...batchedSingleLineTests<MessageId, Options>({
+      code: `
+        declare const x: number | null; if (x) {}
+        (x?: number) => !x;
+        <T extends number | null | undefined>(x: T) => x ? 1 : 0;
+      `,
+      errors: [
+        { messageId: 'conditionErrorNullableNumber', line: 2, column: 37 },
+        { messageId: 'conditionErrorNullableNumber', line: 3, column: 26 },
+        { messageId: 'conditionErrorNullableNumber', line: 4, column: 56 },
+      ],
+    }),
+
+    // any in boolean context
+    // TODO: when `T` is not `extends any` then the error is `conditionErrorObject` (says it's always truthy, which is false)
+    ...batchedSingleLineTests<MessageId, Options>({
+      code: `
+        if (x) {}
+        x => !x;
+        <T extends any>(x: T) => x ? 1 : 0;
+      `,
+      errors: [
+        { messageId: 'conditionErrorAny', line: 2, column: 5 },
+        { messageId: 'conditionErrorAny', line: 3, column: 15 },
+        { messageId: 'conditionErrorAny', line: 4, column: 34 },
+      ],
     }),
   ],
 });

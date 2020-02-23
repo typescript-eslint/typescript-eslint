@@ -6,15 +6,19 @@ import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 
-type Options = [
+export type Options = [
   {
-    ignoreRhs?: boolean;
-    allowNullable?: boolean;
-    allowSafe?: boolean;
+    allowString?: boolean;
+    allowNumber?: boolean;
+    allowNullableObject?: boolean;
+    allowNullableBoolean?: boolean;
+    allowNullableString?: boolean;
+    allowNullableNumber?: boolean;
+    allowAny?: boolean;
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'conditionErrorOther'
   | 'conditionErrorAny'
   | 'conditionErrorNullish'
@@ -40,15 +44,13 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreRhs: {
-            type: 'boolean',
-          },
-          allowNullable: {
-            type: 'boolean',
-          },
-          allowSafe: {
-            type: 'boolean',
-          },
+          allowString: { type: 'boolean' },
+          allowNumber: { type: 'boolean' },
+          allowNullableObject: { type: 'boolean' },
+          allowNullableBoolean: { type: 'boolean' },
+          allowNullableString: { type: 'boolean' },
+          allowNullableNumber: { type: 'boolean' },
+          allowAny: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -88,9 +90,9 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      ignoreRhs: false,
-      allowNullable: false,
-      allowSafe: false,
+      allowString: true,
+      allowNumber: true,
+      allowNullableObject: true,
     },
   ],
   create(context, [options]) {
@@ -109,14 +111,14 @@ export default util.createRule<Options, MessageId>({
       'UnaryExpression[operator="!"]': checkUnaryLogicalExpression,
     };
 
-    type ExpressionWithTest =
+    type TestExpression =
       | TSESTree.ConditionalExpression
       | TSESTree.DoWhileStatement
       | TSESTree.ForStatement
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function checkTestExpression(node: ExpressionWithTest): void {
+    function checkTestExpression(node: TestExpression): void {
       if (node.test == null) {
         return;
       }
@@ -128,52 +130,36 @@ export default util.createRule<Options, MessageId>({
     }
 
     /**
-     * This function analyzes the type of a boolean expression node and checks if it is allowed.
-     * It can recurse when checking nested logical operators, so that only the outermost expressions are reported.
+     * This function analyzes the type of a node and checks if it is allowed in a boolean context.
+     * It can recurse when checking nested logical operators, so that only the outermost operands are reported.
+     * The right operand of a logical expression is ignored unless it's a part of a test expression (if/while/ternary/etc).
      * @param node The AST node to check.
-     * @param isRoot Whether it is the root of a logical expression and there was no recursion yet.
-     * @returns `true` if there was an error reported.
+     * @param isTestExpr Whether the node is a descendant of a test expression.
      */
-    function checkNode(node: TSESTree.Node, isRoot = false): boolean {
+    function checkNode(node: TSESTree.Node, isTestExpr = false): void {
       // prevent checking the same node multiple times
       if (checkedNodes.has(node)) {
-        return false;
+        return;
       }
       checkedNodes.add(node);
 
-      // for logical operator, we also check its operands
+      // for logical operator, we check its operands
       if (
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        let hasError = false;
-        if (checkNode(node.left)) {
-          hasError = true;
+        checkNode(node.left, isTestExpr);
+
+        // we ignore the right operand when not in a context of a test expression
+        // because it can be used for providing a default value (`||`) or as a shorthand for ternary (`&&`)
+        if (isTestExpr) {
+          checkNode(node.right, isTestExpr);
         }
-        if (!options.ignoreRhs) {
-          if (checkNode(node.right)) {
-            hasError = true;
-          }
-        }
-        // if this logical operator is not the root of a logical expression
-        // we only check its operands and return
-        if (!isRoot) {
-          return hasError;
-        }
-        // if this is the root of a logical expression
-        // we want to check its resulting type too
-        else {
-          // ...unless there already was an error, we exit so we don't double-report
-          if (hasError) {
-            return true;
-          }
-        }
+        return;
       }
 
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
-      let messageId: MessageId | undefined;
-
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -183,79 +169,87 @@ export default util.createRule<Options, MessageId>({
       // boolean
       if (is('boolean')) {
         // boolean is always okay
-        return false;
+        return;
       }
+
       // never
       if (is('never')) {
         // never is always okay
-        return false;
-      }
-      // nullish
-      else if (is('nullish')) {
-        // condition is always false
-        messageId = 'conditionErrorNullish';
-      }
-      // nullable boolean
-      else if (is('nullish', 'boolean')) {
-        if (!options.allowNullable) {
-          messageId = 'conditionErrorNullableBoolean';
-        }
-      }
-      // string
-      else if (is('string')) {
-        messageId = 'conditionErrorString';
-      }
-      // nullable string
-      else if (is('nullish', 'string')) {
-        messageId = 'conditionErrorNullableString';
-      }
-      // number
-      else if (is('number')) {
-        messageId = 'conditionErrorNumber';
-      }
-      // nullable number
-      else if (is('nullish', 'number')) {
-        messageId = 'conditionErrorNullableNumber';
-      }
-      // object
-      else if (is('object')) {
-        // condition is always true
-        if (!options.allowSafe) {
-          messageId = 'conditionErrorObject';
-        }
-      }
-      // nullable object
-      else if (is('nullish', 'object')) {
-        if (!options.allowSafe || !options.allowNullable) {
-          messageId = 'conditionErrorNullableObject';
-        }
-      }
-      // boolean/object
-      else if (is('boolean', 'object')) {
-        if (!options.allowSafe) {
-          messageId = 'conditionErrorOther';
-        }
-      }
-      // nullable boolean/object
-      else if (is('nullish', 'boolean', 'object')) {
-        if (!options.allowSafe || !options.allowNullable) {
-          messageId = 'conditionErrorOther';
-        }
-      }
-      // any
-      else if (is('any')) {
-        messageId = 'conditionErrorAny';
-      }
-      // other
-      else {
-        messageId = 'conditionErrorOther';
+        return;
       }
 
-      if (messageId != null) {
-        context.report({ node, messageId });
-        return true;
+      // nullish
+      if (is('nullish')) {
+        // condition is always false
+        context.report({ node, messageId: 'conditionErrorNullish' });
+        return;
       }
-      return false;
+
+      // nullable boolean
+      if (is('nullish', 'boolean')) {
+        if (!options.allowNullableBoolean) {
+          context.report({ node, messageId: 'conditionErrorNullableBoolean' });
+        }
+        return;
+      }
+
+      // string
+      if (is('string')) {
+        if (!options.allowString) {
+          context.report({ node, messageId: 'conditionErrorString' });
+        }
+        return;
+      }
+
+      // nullable string
+      if (is('nullish', 'string')) {
+        if (!options.allowNullableString) {
+          context.report({ node, messageId: 'conditionErrorNullableString' });
+        }
+        return;
+      }
+
+      // number
+      if (is('number')) {
+        if (!options.allowNumber) {
+          context.report({ node, messageId: 'conditionErrorNumber' });
+        }
+        return;
+      }
+
+      // nullable number
+      if (is('nullish', 'number')) {
+        if (!options.allowNullableNumber) {
+          context.report({ node, messageId: 'conditionErrorNullableNumber' });
+        }
+        return;
+      }
+
+      // object
+      if (is('object')) {
+        // condition is always true
+        context.report({ node, messageId: 'conditionErrorObject' });
+        return;
+      }
+
+      // nullable object
+      if (is('nullish', 'object')) {
+        if (!options.allowNullableObject) {
+          context.report({ node, messageId: 'conditionErrorNullableObject' });
+        }
+        return;
+      }
+
+      // any
+      if (is('any')) {
+        if (!options.allowAny) {
+          context.report({ node, messageId: 'conditionErrorAny' });
+        }
+        return;
+      }
+
+      // other
+      context.report({ node, messageId: 'conditionErrorOther' });
     }
 
     /** The types we care about */
@@ -300,7 +294,12 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
-        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike))
+        types.some(type =>
+          tsutils.isTypeFlagSet(
+            type,
+            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+          ),
+        )
       ) {
         variantTypes.add('number');
       }
@@ -316,6 +315,7 @@ export default util.createRule<Options, MessageId>({
                 ts.TypeFlags.BooleanLike |
                 ts.TypeFlags.StringLike |
                 ts.TypeFlags.NumberLike |
+                ts.TypeFlags.BigIntLike |
                 ts.TypeFlags.Any |
                 ts.TypeFlags.Unknown |
                 ts.TypeFlags.Never,
