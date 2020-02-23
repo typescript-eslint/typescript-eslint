@@ -49,6 +49,8 @@ export default util.createRule<Options, MessageIds>({
       // https://github.com/typescript-eslint/typescript-eslint/issues/374
       recommended: 'error',
     },
+    deprecated: true,
+    replacedBy: ['naming-convention'],
     messages: {
       noPrefix: 'Interface name must not be prefixed with "I".',
       alwaysPrefix: 'Interface name must be prefixed with "I".',
@@ -101,10 +103,6 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^I[A-Z]/.test(name);
     }
 
@@ -113,10 +111,6 @@ export default util.createRule<Options, MessageIds>({
      * @param name The string to check
      */
     function isPrefixedWithIOrUnderscoreI(name: string): boolean {
-      if (typeof name !== 'string') {
-        return false;
-      }
-
       return /^_?I[A-Z]/.test(name);
     }
 

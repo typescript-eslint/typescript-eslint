@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 
@@ -74,7 +74,7 @@ export default util.createRule({
     }
 
     function qualifierIsUnnecessary(
-      qualifier: TSESTree.Node,
+      qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): boolean {
       const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
@@ -110,7 +110,7 @@ export default util.createRule({
 
     function visitNamespaceAccess(
       node: TSESTree.Node,
-      qualifier: TSESTree.Node,
+      qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): void {
       // Only look for nested qualifier errors if we didn't already fail on the outer qualifier.
@@ -132,7 +132,12 @@ export default util.createRule({
       }
     }
 
-    function enterDeclaration(node: TSESTree.Node): void {
+    function enterDeclaration(
+      node:
+        | TSESTree.TSModuleDeclaration
+        | TSESTree.TSEnumDeclaration
+        | TSESTree.ExportNamedDeclaration,
+    ): void {
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }
 
@@ -152,7 +157,9 @@ export default util.createRule({
       return node.type === AST_NODE_TYPES.MemberExpression && !node.computed;
     }
 
-    function isEntityNameExpression(node: TSESTree.Node): boolean {
+    function isEntityNameExpression(
+      node: TSESTree.Node,
+    ): node is TSESTree.Identifier | TSESTree.MemberExpression {
       return (
         node.type === AST_NODE_TYPES.Identifier ||
         (isPropertyAccessExpression(node) &&

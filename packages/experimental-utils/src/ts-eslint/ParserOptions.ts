@@ -1,3 +1,5 @@
+import { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
+
 export interface ParserOptions {
   comment?: boolean;
   ecmaFeatures?: {
@@ -9,6 +11,7 @@ export interface ParserOptions {
   errorOnUnknownASTType?: boolean;
   extraFileExtensions?: string[];
   // ts-estree specific
+  debugLevel?: TSESTreeOptions['debugLevel'];
   filePath?: string;
   loc?: boolean;
   noWatch?: boolean;

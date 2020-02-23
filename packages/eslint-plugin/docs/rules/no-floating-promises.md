@@ -1,4 +1,4 @@
-# Requires Promise-like values to be handled appropriately (no-floating-promises)
+# Requires Promise-like values to be handled appropriately (`no-floating-promises`)
 
 This rule forbids usage of Promise-like values in statements without handling
 their errors appropriately. Unhandled promises can cause several issues, such
@@ -20,6 +20,8 @@ async function returnsPromise() {
 returnsPromise().then(() => {});
 
 Promise.reject('value').catch();
+
+Promise.reject('value').finally();
 ```
 
 Examples of **correct** code for this rule:
@@ -37,6 +39,8 @@ returnsPromise().then(
 );
 
 Promise.reject('value').catch(() => {});
+
+Promise.reject('value').finally(() => {});
 ```
 
 ## Options
@@ -45,7 +49,7 @@ The rule accepts an options object with the following properties:
 
 ```ts
 type Options = {
-  // if true, checking void expresions will be skipped
+  // if true, checking void expressions will be skipped
   ignoreVoid?: boolean;
 };
 

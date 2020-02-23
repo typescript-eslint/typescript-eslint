@@ -1,7 +1,7 @@
 /* eslint-disable no-fallthrough */
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [
@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow unused variables and arguments.',
+      description: 'Disallow unused variables and arguments',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
@@ -141,6 +141,7 @@ export default util.createRule<Options, MessageIds>({
         case ts.SyntaxKind.ImportSpecifier:
         // a namespace import is NOT used, but the default import is used
         case ts.SyntaxKind.NamespaceImport:
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
           report('Import');
           break;
 
@@ -160,6 +161,7 @@ export default util.createRule<Options, MessageIds>({
           break;
 
         case ts.SyntaxKind.PropertyDeclaration:
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
           report('Property');
           break;
 
@@ -244,7 +246,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function handleDestructure(parent: ts.BindingPattern): void {
-      // the entire desctructure is unused
+      // the entire destructure is unused
       // note that this case only ever triggers for simple, single-level destructured objects
       // i.e. these will not trigger it:
       // - const {a:_a, b, c: {d}} = z;
@@ -290,7 +292,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      'Program:exit'(program: TSESTree.Node): void {
+      'Program:exit'(program: TSESTree.Program): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(program);
         const sourceFile = util.getSourceFileOfNode(tsNode);
         const diagnostics = tsProgram.getSemanticDiagnostics(sourceFile);

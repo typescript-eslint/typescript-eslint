@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [
@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      * @param node the node to be evaluated.
      */
-    function getNodeType(node: TSESTree.Node): BaseLiteral {
+    function getNodeType(node: TSESTree.Expression): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = typeChecker.getTypeAtLocation(tsNode);
 

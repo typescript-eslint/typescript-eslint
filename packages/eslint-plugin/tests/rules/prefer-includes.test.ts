@@ -1,12 +1,9 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import path from 'path';
 import rule from '../../src/rules/prefer-includes';
 import * as util from '../../src/util';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
-
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof rule>;
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -15,6 +12,8 @@ const ruleTester = new RuleTester({
     project: './tsconfig.json',
   },
 });
+
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof rule>;
 
 type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, never>;
 type ValidTestCase = TSESLint.ValidTestCase<never> | string;

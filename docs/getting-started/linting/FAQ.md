@@ -2,9 +2,10 @@
 
 ## Table of Contents
 
-- [My linting seems really slow](#my-linting-seems-really-slow)
-- [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-"the-file-must-be-included-in-at-least-one-of-the-projects-provided")
-- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](<#i-use-a-framework-(like-vue)-that-requires-custom-file-extensions,-and-i-get-errors-like-"you-should-add-`parserOptions.extraFileExtensions`-to-your-config">)
+- [My linting feels really slow](#my-linting-feels-really-slow)
+- [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided)
+- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](#i-use-a-framework-like-vue-that-requires-custom-file-extensions-and-i-get-errors-like-you-should-add-parseroptionsextrafileextensions-to-your-config)
+- [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
 
 ---
 
@@ -79,5 +80,24 @@ You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeS
 +  extraFileExtensions: ['.vue'],
  },
 ```
+
+---
+
+## I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code
+
+This is a pretty common thing because TypeScript adds new features that ESLint doesn't know about.
+
+The first step is to [check our list of "extension" rules here](../../../packages/eslint-plugin/README.md#extension-rules). An extension rule is simply a rule which extends the base ESLint rules to support TypeScript syntax. If you find it in there, give it a go to see if it works for you. You can configure it by disabling the base rule, and turning on the extension rule. Here's an example with the `semi` rule:
+
+```json
+{
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": "error"
+  }
+}
+```
+
+If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues. [The contributing guide outlines the best way to raise an issue](../../../CONTRIBUTING.md#raising-issues).
 
 ---

@@ -1,4 +1,6 @@
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
+
+export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode = ts.Node &
   (
@@ -30,7 +32,7 @@ export type TSNode = ts.Node &
     | ts.GetAccessorDeclaration
     | ts.SetAccessorDeclaration
     | ts.IndexSignatureDeclaration
-    | ts.KeywordTypeNode
+    | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
     | ts.ImportTypeNode
     | ts.ThisTypeNode
     // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode

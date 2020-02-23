@@ -33,6 +33,12 @@ interface RuleMetaDataDocs {
    * to type-check code. This is only used for documentation purposes.
    */
   requiresTypeChecking?: boolean;
+  /**
+   * Does the rule extend (or is it based off of) an ESLint code rule?
+   * Alternately accepts the name of the base rule, in case the rule has been renamed.
+   * This is only used for documentation purposes.
+   */
+  extendsBaseRule?: boolean | string;
 }
 interface RuleMetaData<TMessageIds extends string> {
   /**
@@ -40,9 +46,9 @@ interface RuleMetaData<TMessageIds extends string> {
    */
   deprecated?: boolean;
   /**
-   * Documentation for the rule
+   * Documentation for the rule, unnecessary for custom rules/plugins
    */
-  docs: RuleMetaDataDocs;
+  docs?: RuleMetaDataDocs;
   /**
    * The fixer category. Omit if there is no fixer
    */
@@ -173,7 +179,7 @@ interface RuleContext<
    * The shared settings from configuration.
    * We do not have any shared settings in this plugin.
    */
-  settings: {};
+  settings: Record<string, unknown>;
   /**
    * The name of the parser from configuration.
    */
@@ -229,7 +235,7 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
-// This isn't the correct signature, but it makes it easier to do custom unions within reusable listneers
+// This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 

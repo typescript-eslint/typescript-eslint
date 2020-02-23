@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -9,7 +9,8 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce giving `compare` argument to `Array#sort`',
+      description:
+        'Requires `Array#sort` calls to always provide a `compareFunction`',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,

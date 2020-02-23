@@ -9,11 +9,12 @@ type MessageIds = 'noReturnType' | 'untypedParameter';
 type Options = [{ ignoredMethods: string[] }];
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-unused-public-signature',
+  name: 'no-untyped-public-signature',
   meta: {
+    deprecated: true,
+    replacedBy: ['explicit-module-boundary-types'],
     docs: {
-      description:
-        'Requires that all public method arguments and return type will be explicitly typed',
+      description: 'Disallow untyped public methods',
       category: 'Best Practices',
       recommended: false,
     },

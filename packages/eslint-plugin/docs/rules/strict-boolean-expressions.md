@@ -1,4 +1,4 @@
-# Boolean expressions are limited to booleans (strict-boolean-expressions)
+# Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
 
 Requires that any boolean expression is limited to true booleans rather than
 casting another primitive to a boolean at runtime.
@@ -57,6 +57,7 @@ while (typeof str !== 'undefined') {
 Options may be provided as an object with:
 
 - `allowNullable` to allow `undefined` and `null` in addition to `boolean` as a type of all boolean expressions. (`false` by default).
+- `allowSafe` to allow non-falsy types (i.e. non string / number / boolean) in addition to `boolean` as a type of all boolean expressions. (`false` by default).
 - `ignoreRhs` to skip the check on the right hand side of expressions like `a && b` or `a || b` - allows these operators to be used for their short-circuiting behavior. (`false` by default).
 
 ## Related To

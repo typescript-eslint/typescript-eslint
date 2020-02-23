@@ -23,7 +23,11 @@ function removeSpaces(str: string): string {
 }
 
 function stringifyTypeName(
-  node: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+  node:
+    | TSESTree.EntityName
+    | TSESTree.TSTypeLiteral
+    | TSESTree.TSNullKeyword
+    | TSESTree.TSUndefinedKeyword,
   sourceCode: TSESLint.SourceCode,
 ): string {
   return removeSpaces(sourceCode.getText(node));
@@ -117,18 +121,21 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [{ types = defaultTypes }]) {
-    const bannedTypes: Types = Object.keys(types).reduce(
-      (res, type) => ({ ...res, [removeSpaces(type)]: types[type] }),
-      {},
+    const bannedTypes = new Map(
+      Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );
 
     function checkBannedTypes(
-      typeNode: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+      typeNode:
+        | TSESTree.EntityName
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSNullKeyword
+        | TSESTree.TSUndefinedKeyword,
+      name = stringifyTypeName(typeNode, context.getSourceCode()),
     ): void {
-      const name = stringifyTypeName(typeNode, context.getSourceCode());
+      const bannedType = bannedTypes.get(name);
 
-      if (name in bannedTypes) {
-        const bannedType = bannedTypes[name];
+      if (bannedType !== undefined) {
         const customMessage = getCustomMessage(bannedType);
         const fixWith =
           bannedType && typeof bannedType === 'object' && bannedType.fixWith;
@@ -148,6 +155,18 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      ...(bannedTypes.has('null') && {
+        TSNullKeyword(node): void {
+          checkBannedTypes(node, 'null');
+        },
+      }),
+
+      ...(bannedTypes.has('undefined') && {
+        TSUndefinedKeyword(node): void {
+          checkBannedTypes(node, 'undefined');
+        },
+      }),
+
       TSTypeLiteral(node): void {
         if (node.members.length) {
           return;

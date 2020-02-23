@@ -1,19 +1,26 @@
-import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-arguments';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootDir = path.join(process.cwd(), 'tests/fixtures');
+const rootPath = getFixturesRootDir();
+
 const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
+    `f<>();`,
+    `f<string>();`,
+    `expect().toBe<>();`,
+    `class Foo extends Bar<> {}`,
+    `class Foo extends Bar<string> {}`,
+    `class Foo implements Bar<> {}`,
+    `class Foo implements Bar<string> {}`,
     `function f<T = number>() { }
       f();`,
     `function f<T = number>() { }
@@ -60,6 +67,17 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
     `class Foo<T> {}
       const foo = new Foo<number>();`,
     `type Foo<T> = import('foo').Foo<T>;`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<T> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<T> {}`,
+    `class Bar<T = number> {}
+      class Foo<T = number> extends Bar<string> {}`,
+    `interface Bar<T = number> {}
+      class Foo<T = number> implements Bar<string> {}`,
+    `import { F } from './missing';
+      function bar<T = F>() {}
+      bar<F<number>>()`,
   ],
   invalid: [
     {
@@ -140,6 +158,43 @@ ruleTester.run('no-unnecessary-type-arguments', rule, {
       ],
       output: `class Foo<T = number> {}
         const foo = new Foo();`,
+    },
+    {
+      code: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `interface Bar<T = string> {}
+        class Foo<T = number> implements Bar {}`,
+    },
+    {
+      code: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar<string> {}`,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `class Bar<T = string> {}
+        class Foo<T = number> extends Bar {}`,
+    },
+    {
+      code: `import { F } from './missing';
+        function bar<T = F<string>>() {}
+        bar<F<string>>()`,
+      errors: [
+        {
+          line: 3,
+          column: 13,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `import { F } from './missing';
+        function bar<T = F<string>>() {}
+        bar()`,
     },
   ],
 });

@@ -2,25 +2,31 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-
-type ExpressionWithTest =
-  | TSESTree.ConditionalExpression
-  | TSESTree.DoWhileStatement
-  | TSESTree.ForStatement
-  | TSESTree.IfStatement
-  | TSESTree.WhileStatement;
 
 type Options = [
   {
     ignoreRhs?: boolean;
     allowNullable?: boolean;
+    allowSafe?: boolean;
   },
 ];
 
-export default util.createRule<Options, 'strictBooleanExpression'>({
+type MessageId =
+  | 'conditionErrorOther'
+  | 'conditionErrorAny'
+  | 'conditionErrorNullish'
+  | 'conditionErrorNullableBoolean'
+  | 'conditionErrorString'
+  | 'conditionErrorNullableString'
+  | 'conditionErrorNumber'
+  | 'conditionErrorNullableNumber'
+  | 'conditionErrorObject'
+  | 'conditionErrorNullableObject';
+
+export default util.createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
@@ -40,118 +46,298 @@ export default util.createRule<Options, 'strictBooleanExpression'>({
           allowNullable: {
             type: 'boolean',
           },
+          allowSafe: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
     messages: {
-      strictBooleanExpression: 'Unexpected non-boolean in conditional.',
+      conditionErrorOther:
+        'Unexpected value in conditional. ' +
+        'A boolean expression is required.',
+      conditionErrorAny:
+        'Unexpected any value in conditional. ' +
+        'An explicit comparison or type cast is required.',
+      conditionErrorNullish:
+        'Unexpected nullish value in conditional. ' +
+        'The condition is always false.',
+      conditionErrorNullableBoolean:
+        'Unexpected nullable boolean value in conditional. ' +
+        'Please handle the nullish case explicitly.',
+      conditionErrorString:
+        'Unexpected string value in conditional. ' +
+        'An explicit empty string check is required.',
+      conditionErrorNullableString:
+        'Unexpected nullable string value in conditional. ' +
+        'Please handle the nullish/empty cases explicitly.',
+      conditionErrorNumber:
+        'Unexpected number value in conditional. ' +
+        'An explicit zero/NaN check is required.',
+      conditionErrorNullableNumber:
+        'Unexpected nullable number value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
+      conditionErrorObject:
+        'Unexpected object value in conditional. ' +
+        'The condition is always true.',
+      conditionErrorNullableObject:
+        'Unexpected nullable object value in conditional. ' +
+        'An explicit null check is required.',
     },
   },
   defaultOptions: [
     {
       ignoreRhs: false,
       allowNullable: false,
+      allowSafe: false,
     },
   ],
   create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
-    /**
-     * Determines if the node has a boolean type.
-     */
-    function isBooleanType(node: TSESTree.Node): boolean {
-      const tsNode = service.esTreeNodeToTSNodeMap.get<ts.ExpressionStatement>(
-        node,
-      );
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+    const checkedNodes = new Set<TSESTree.Node>();
 
-      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)) {
+    return {
+      ConditionalExpression: checkTestExpression,
+      DoWhileStatement: checkTestExpression,
+      ForStatement: checkTestExpression,
+      IfStatement: checkTestExpression,
+      WhileStatement: checkTestExpression,
+      'LogicalExpression[operator!="??"]': checkNode,
+      'UnaryExpression[operator="!"]': checkUnaryLogicalExpression,
+    };
+
+    type ExpressionWithTest =
+      | TSESTree.ConditionalExpression
+      | TSESTree.DoWhileStatement
+      | TSESTree.ForStatement
+      | TSESTree.IfStatement
+      | TSESTree.WhileStatement;
+
+    function checkTestExpression(node: ExpressionWithTest): void {
+      if (node.test == null) {
+        return;
+      }
+      checkNode(node.test, true);
+    }
+
+    function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
+      checkNode(node.argument, true);
+    }
+
+    /**
+     * This function analyzes the type of a boolean expression node and checks if it is allowed.
+     * It can recurse when checking nested logical operators, so that only the outermost expressions are reported.
+     * @param node The AST node to check.
+     * @param isRoot Whether it is the root of a logical expression and there was no recursion yet.
+     * @returns `true` if there was an error reported.
+     */
+    function checkNode(node: TSESTree.Node, isRoot = false): boolean {
+      // prevent checking the same node multiple times
+      if (checkedNodes.has(node)) {
+        return false;
+      }
+      checkedNodes.add(node);
+
+      // for logical operator, we also check its operands
+      if (
+        node.type === AST_NODE_TYPES.LogicalExpression &&
+        node.operator !== '??'
+      ) {
+        let hasError = false;
+        if (checkNode(node.left)) {
+          hasError = true;
+        }
+        if (!options.ignoreRhs) {
+          if (checkNode(node.right)) {
+            hasError = true;
+          }
+        }
+        // if this logical operator is not the root of a logical expression
+        // we only check its operands and return
+        if (!isRoot) {
+          return hasError;
+        }
+        // if this is the root of a logical expression
+        // we want to check its resulting type too
+        else {
+          // ...unless there already was an error, we exit so we don't double-report
+          if (hasError) {
+            return true;
+          }
+        }
+      }
+
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
+      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      let messageId: MessageId | undefined;
+
+      const types = inspectVariantTypes(tsutils.unionTypeParts(type));
+
+      const is = (...wantedTypes: readonly VariantType[]): boolean =>
+        types.size === wantedTypes.length &&
+        wantedTypes.every(type => types.has(type));
+
+      // boolean
+      if (is('boolean')) {
+        // boolean is always okay
+        return false;
+      }
+      // never
+      if (is('never')) {
+        // never is always okay
+        return false;
+      }
+      // nullish
+      else if (is('nullish')) {
+        // condition is always false
+        messageId = 'conditionErrorNullish';
+      }
+      // nullable boolean
+      else if (is('nullish', 'boolean')) {
+        if (!options.allowNullable) {
+          messageId = 'conditionErrorNullableBoolean';
+        }
+      }
+      // string
+      else if (is('string')) {
+        messageId = 'conditionErrorString';
+      }
+      // nullable string
+      else if (is('nullish', 'string')) {
+        messageId = 'conditionErrorNullableString';
+      }
+      // number
+      else if (is('number')) {
+        messageId = 'conditionErrorNumber';
+      }
+      // nullable number
+      else if (is('nullish', 'number')) {
+        messageId = 'conditionErrorNullableNumber';
+      }
+      // object
+      else if (is('object')) {
+        // condition is always true
+        if (!options.allowSafe) {
+          messageId = 'conditionErrorObject';
+        }
+      }
+      // nullable object
+      else if (is('nullish', 'object')) {
+        if (!options.allowSafe || !options.allowNullable) {
+          messageId = 'conditionErrorNullableObject';
+        }
+      }
+      // boolean/object
+      else if (is('boolean', 'object')) {
+        if (!options.allowSafe) {
+          messageId = 'conditionErrorOther';
+        }
+      }
+      // nullable boolean/object
+      else if (is('nullish', 'boolean', 'object')) {
+        if (!options.allowSafe || !options.allowNullable) {
+          messageId = 'conditionErrorOther';
+        }
+      }
+      // any
+      else if (is('any')) {
+        messageId = 'conditionErrorAny';
+      }
+      // other
+      else {
+        messageId = 'conditionErrorOther';
+      }
+
+      if (messageId != null) {
+        context.report({ node, messageId });
         return true;
       }
-
-      // Check variants of union
-      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Union)) {
-        let hasBoolean = false;
-        for (const ty of (type as ts.UnionType).types) {
-          if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.BooleanLike)) {
-            hasBoolean = true;
-            continue;
-          }
-          if (options.allowNullable) {
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Null)) {
-              continue;
-            }
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Undefined)) {
-              continue;
-            }
-          }
-          // Union variant is something else
-          return false;
-        }
-        return hasBoolean;
-      }
-
       return false;
     }
 
+    /** The types we care about */
+    type VariantType =
+      | 'nullish'
+      | 'boolean'
+      | 'string'
+      | 'number'
+      | 'object'
+      | 'any'
+      | 'never';
+
     /**
-     * Asserts that a testable expression contains a boolean, reports otherwise.
-     * Filters all LogicalExpressions to prevent some duplicate reports.
+     * Check union variants for the types we care about
      */
-    function assertTestExpressionContainsBoolean(
-      node: ExpressionWithTest,
-    ): void {
+    function inspectVariantTypes(types: ts.Type[]): Set<VariantType> {
+      const variantTypes = new Set<VariantType>();
+
       if (
-        node.test !== null &&
-        node.test.type !== AST_NODE_TYPES.LogicalExpression &&
-        !isBooleanType(node.test)
+        types.some(type =>
+          tsutils.isTypeFlagSet(
+            type,
+            ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.VoidLike,
+          ),
+        )
       ) {
-        reportNode(node.test);
+        variantTypes.add('nullish');
       }
-    }
 
-    /**
-     * Asserts that a logical expression contains a boolean, reports otherwise.
-     */
-    function assertLocalExpressionContainsBoolean(
-      node: TSESTree.LogicalExpression,
-    ): void {
       if (
-        !isBooleanType(node.left) ||
-        (!options.ignoreRhs && !isBooleanType(node.right))
+        types.some(type =>
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+        )
       ) {
-        reportNode(node);
+        variantTypes.add('boolean');
       }
-    }
 
-    /**
-     * Asserts that a unary expression contains a boolean, reports otherwise.
-     */
-    function assertUnaryExpressionContainsBoolean(
-      node: TSESTree.UnaryExpression,
-    ): void {
-      if (!isBooleanType(node.argument)) {
-        reportNode(node.argument);
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike))
+      ) {
+        variantTypes.add('string');
       }
-    }
 
-    /**
-     * Reports an offending node in context.
-     */
-    function reportNode(node: TSESTree.Node): void {
-      context.report({ node, messageId: 'strictBooleanExpression' });
-    }
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike))
+      ) {
+        variantTypes.add('number');
+      }
 
-    return {
-      ConditionalExpression: assertTestExpressionContainsBoolean,
-      DoWhileStatement: assertTestExpressionContainsBoolean,
-      ForStatement: assertTestExpressionContainsBoolean,
-      IfStatement: assertTestExpressionContainsBoolean,
-      WhileStatement: assertTestExpressionContainsBoolean,
-      'LogicalExpression[operator!="??"]': assertLocalExpressionContainsBoolean,
-      'UnaryExpression[operator="!"]': assertUnaryExpressionContainsBoolean,
-    };
+      if (
+        types.some(
+          type =>
+            !tsutils.isTypeFlagSet(
+              type,
+              ts.TypeFlags.Null |
+                ts.TypeFlags.Undefined |
+                ts.TypeFlags.VoidLike |
+                ts.TypeFlags.BooleanLike |
+                ts.TypeFlags.StringLike |
+                ts.TypeFlags.NumberLike |
+                ts.TypeFlags.Any |
+                ts.TypeFlags.Unknown |
+                ts.TypeFlags.Never,
+            ),
+        )
+      ) {
+        variantTypes.add('object');
+      }
+
+      if (
+        types.some(type =>
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
+        )
+      ) {
+        variantTypes.add('any');
+      }
+
+      if (types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.Never))) {
+        variantTypes.add('never');
+      }
+
+      return variantTypes;
+    }
   },
 });

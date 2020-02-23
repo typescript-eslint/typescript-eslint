@@ -1,4 +1,4 @@
-// anys are required to work around manipulating the AST in weird ways
+// any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unnecessary parentheses',
       category: 'Possible Errors',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'code',
     schema: baseRule.meta.schema,
@@ -35,21 +36,26 @@ export default util.createRule<Options, MessageIds>({
       const rule = rules.BinaryExpression as (n: typeof node) => void;
 
       // makes the rule think it should skip the left or right
-      if (util.isTypeAssertion(node.left)) {
+      const isLeftTypeAssertion = util.isTypeAssertion(node.left);
+      const isRightTypeAssertion = util.isTypeAssertion(node.right);
+      if (isLeftTypeAssertion && isRightTypeAssertion) {
+        return; // ignore
+      }
+      if (isLeftTypeAssertion) {
         return rule({
           ...node,
           left: {
             ...node.left,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }
-      if (util.isTypeAssertion(node.right)) {
+      if (isRightTypeAssertion) {
         return rule({
           ...node,
           right: {
             ...node.right,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }

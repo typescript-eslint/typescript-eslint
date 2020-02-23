@@ -12,10 +12,11 @@ export default util.createRule({
       description: 'Disallow generic `Array` constructors',
       category: 'Stylistic Issues',
       recommended: 'error',
+      extendsBaseRule: true,
     },
     fixable: 'code',
     messages: {
-      useLiteral: 'The array literal notation [] is preferrable.',
+      useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
   },

@@ -52,6 +52,7 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
   - You can run `yarn lint` in any package or in the root.
 - If you have made changes to any markdown documentation, ensure there are no spelling errors
   - You can run `yarn check:spelling` in the root.
+  - Or if you are using vscode, you can use [`Code Spell Checker`](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) plugin.
 - If you have made changes within the `eslint-plugin` package, ensure the configs and documentation are valid.
   - You can run `yarn check:configs` and `yarn check:docs` in the root, or in the `eslint-plugin` folder.
 
@@ -75,7 +76,7 @@ And `<package>` is the name of the package you have made changes within (`eslint
 
 And `<short description>` is a succinct title for the PR.
 
-Within the body of your PR, make sure you reference the issue that you have worked on, as well as a pointing out anything of note you wish us to look at during our review.
+Within the body of your PR, make sure you reference the issue that you have worked on, as well as pointing out anything of note you wish us to look at during our review.
 
 Make sure you use the "Fixes #xxx" format to reference issues, so that GitHub automatically closes the issues when we merge the PR. Also note that if you are fixing multiple issues at once, you can only reference one issue per line, and must put one "Fixes #xxx" per issue number.
 

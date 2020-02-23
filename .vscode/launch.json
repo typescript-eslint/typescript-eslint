@@ -4,53 +4,85 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-      {
-          "type": "node",
-          "request": "launch",
-          "name": "Jest Test Current eslint-plugin Rule",
-          "cwd": "${workspaceFolder}/packages/eslint-plugin/",
-          "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
-          "args": [
-              "--runInBand",
-              "--no-coverage",
-              // needs the '' around it so that the () are properly handled
-              "'tests/(.+/)?${fileBasenameNoExtension}'"
-          ],
-          "sourceMaps": true,
-          "console": "integratedTerminal",
-          "internalConsoleOptions": "neverOpen"
-      },
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Run currently opened typescript-estree test",
-        "cwd": "${workspaceFolder}/packages/typescript-estree/",
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
-        "args": [
-            "--runInBand",
-            "--no-cache",
-            "--no-coverage",
-            "${relativeFile}"
-        ],
-        "sourceMaps": true,
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
-      },
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Run currently opened parser test",
-        "cwd": "${workspaceFolder}/packages/parser/",
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
-        "args": [
-            "--runInBand",
-            "--no-cache",
-            "--no-coverage",
-            "${relativeFile}"
-        ],
-        "sourceMaps": true,
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
-      }
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest Test Current eslint-plugin Rule",
+      "cwd": "${workspaceFolder}/packages/eslint-plugin/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasenameNoExtension}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest Test Current eslint-plugin-internal Rule",
+      "cwd": "${workspaceFolder}/packages/eslint-plugin-internal/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasenameNoExtension}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run currently opened typescript-estree test",
+      "cwd": "${workspaceFolder}/packages/typescript-estree/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasename}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run currently opened parser test",
+      "cwd": "${workspaceFolder}/packages/parser/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasename}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run currently opened experimental-utils test",
+      "cwd": "${workspaceFolder}/packages/experimental-utils/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasenameNoExtension}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
   ]
 }

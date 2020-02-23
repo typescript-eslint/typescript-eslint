@@ -44,6 +44,7 @@ class RuleTester extends TSESLint.RuleTester {
   ): void {
     const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${parser}`;
 
+    // standardize the valid tests as objects
     tests.valid = tests.valid.map(test => {
       if (typeof test === 'string') {
         return {

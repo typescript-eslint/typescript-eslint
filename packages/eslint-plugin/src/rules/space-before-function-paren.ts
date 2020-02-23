@@ -23,10 +23,10 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description:
-        'enforce consistent spacing before `function` definition opening parenthesis',
+      description: 'Enforces consistent spacing before function parenthesis',
       category: 'Stylistic Issues',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'whitespace',
     schema: [

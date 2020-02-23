@@ -245,7 +245,7 @@ type MessageIds = 'wrongIndentation';
 type AppliedOptions = ExcludeKeys<
   // slight hack to make interface work with Record<string, unknown>
   RequireKeys<Pick<IndentConfig, keyof IndentConfig>, keyof IndentConfig>,
-  'VariableDeclarator'
+  AST_NODE_TYPES.VariableDeclarator
 > & {
   VariableDeclarator: 'off' | VariableDeclaratorObj;
 };
@@ -578,7 +578,7 @@ export default createRule<Options, MessageIds>({
      * @param offset The amount that the elements should be offset
      */
     function addElementListIndent(
-      elements: TSESTree.Node[],
+      elements: (TSESTree.Node | null)[],
       startToken: TSESTree.Token,
       endToken: TSESTree.Token,
       offset: number | string,
@@ -606,7 +606,8 @@ export default createRule<Options, MessageIds>({
       offsets.setDesiredOffset(endToken, startToken, 0);
 
       // If the preference is "first" but there is no first element (e.g. sparse arrays w/ empty first slot), fall back to 1 level.
-      if (offset === 'first' && elements.length && !elements[0]) {
+      const firstElement = elements[0];
+      if (offset === 'first' && elements.length && !firstElement) {
         return;
       }
       elements.forEach((element, index) => {
@@ -628,7 +629,7 @@ export default createRule<Options, MessageIds>({
           tokenInfo.isFirstTokenOfLine(getFirstToken(element))
         ) {
           offsets.matchOffsetOf(
-            getFirstToken(elements[0]),
+            getFirstToken(firstElement!),
             getFirstToken(element),
           );
         } else {
@@ -640,6 +641,7 @@ export default createRule<Options, MessageIds>({
 
           if (
             previousElement &&
+            previousElementLastToken &&
             previousElementLastToken.loc.end.line -
               countTrailingLinebreaks(previousElementLastToken.value) >
               startToken.loc.end.line
@@ -854,7 +856,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const openingBracket = sourceCode.getFirstToken(node)!;
         const closingBracket = sourceCode.getTokenAfter(
-          node.elements[node.elements.length - 1] || openingBracket,
+          node.elements[node.elements.length - 1] ?? openingBracket,
           isClosingBracketToken,
         )!;
 

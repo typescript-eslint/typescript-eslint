@@ -125,19 +125,16 @@ jsxFilesWithKnownIssues.push('invalid-no-tag-name');
 
 tester.addFixturePatternConfig('javascript/basics');
 
-tester.addFixturePatternConfig('comments', {
-  ignore: [
-    /**
-     * Template strings seem to also be affected by the difference in opinion between different parsers in:
-     * https://github.com/babel/babel/issues/6681
-     */
-    'no-comment-template', // Purely AST diffs
-    'template-string-block', // Purely AST diffs
-  ],
-});
+tester.addFixturePatternConfig('comments');
 
 tester.addFixturePatternConfig('javascript/templateStrings', {
-  ignore: ['**/*'],
+  ignore: [
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Invalid escape sequence in template
+     */
+    'error-octal-literal',
+  ],
 });
 
 tester.addFixturePatternConfig('javascript/arrayLiteral');
@@ -189,7 +186,19 @@ tester.addFixturePatternConfig('javascript/function', {
   ],
 });
 
-tester.addFixturePatternConfig('javascript/bigIntLiterals');
+tester.addFixturePatternConfig('javascript/bigIntLiterals', {
+  ignore: [
+    /**
+     * new BigIntLiteral type
+     * @see https://github.com/estree/estree/blob/master/es2020.md#bigintliteral
+     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
+     */
+    'binary',
+    'decimal',
+    'hex',
+    'octal',
+  ],
+});
 tester.addFixturePatternConfig('javascript/binaryLiterals');
 tester.addFixturePatternConfig('javascript/blockBindings');
 
@@ -220,7 +229,16 @@ tester.addFixturePatternConfig('javascript/destructuring-and-forOf');
 tester.addFixturePatternConfig('javascript/destructuring-and-spread');
 
 tester.addFixturePatternConfig('javascript/experimentalAsyncIteration');
-tester.addFixturePatternConfig('javascript/experimentalDynamicImport');
+tester.addFixturePatternConfig('javascript/experimentalDynamicImport', {
+  ignore: [
+    /**
+     * new ImportExpression type
+     * @see https://github.com/estree/estree/blob/master/es2020.md#importexpression
+     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
+     */
+    'dynamic-import',
+  ],
+});
 tester.addFixturePatternConfig('javascript/exponentiationOperators');
 tester.addFixturePatternConfig('javascript/experimentalOptionalCatchBinding');
 
@@ -260,7 +278,7 @@ tester.addFixturePatternConfig('javascript/modules', {
     'error-delete',
     'invalid-await',
     'invalid-export-named-default',
-    // babel does not recognise these as modules
+    // babel does not recognize these as modules
     'export-named-as-default',
     'export-named-as-specifier',
     'export-named-as-specifiers',
@@ -442,19 +460,13 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * there is difference in range between babel and ts-estree
-     */
-    'tagged-template-expression-type-arguments',
-  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
   fileType: 'ts',
   ignore: [
     /**
-     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * TODO: enable error code TS1019: An index signature parameter cannot have a question mark.
      */
     'interface-with-optional-index-signature',

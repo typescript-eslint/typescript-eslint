@@ -42,6 +42,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow empty functions',
       category: 'Best Practices',
       recommended: 'error',
+      extendsBaseRule: true,
     },
     schema: [schema],
     messages: baseRule.meta.messages,

@@ -1,15 +1,14 @@
-import path from 'path';
-import rule, {
-  Options,
-  MessageId,
-} from '../../src/rules/no-unnecessary-condition';
-import { RuleTester } from '../RuleTester';
 import {
   TestCaseError,
   InvalidTestCase,
 } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import rule, {
+  Options,
+  MessageId,
+} from '../../src/rules/no-unnecessary-condition';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -88,6 +87,52 @@ function test<T>(t: T | []) {
 function test(a: string) {
   return a === "a"
 }`,
+
+    /**
+     * Predicate functions
+     **/
+    // valid, with the flag off
+    `
+[1,3,5].filter(() => true);
+[1,2,3].find(() => false);
+function truthy() {
+  return [];
+}
+function falsy() {}
+[1,3,5].filter(truthy);
+[1,2,3].find(falsy);
+`,
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+// with literal arrow function
+[0,1,2].filter(x => x);
+
+// filter with named function
+function length(x: string) {
+  return x.length;
+}
+["a", "b", ""].filter(length);
+
+// with non-literal array
+function nonEmptyStrings(x: string[]) {
+  return x.filter(length);
+}
+`,
+    },
+    // Ignores non-array methods of the same name
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+const notArray = {
+  filter: (func: () => boolean) => func(),
+  find: (func: () => boolean) => func(),
+};
+notArray.filter(() => true);
+notArray.find(() => true);
+`,
+    },
+
     // Nullish coalescing operator
     `
 function test(a: string | null) {
@@ -288,6 +333,63 @@ function test(a: never) {
 }`,
       errors: [ruleError(3, 10, 'never')],
     },
+
+    // Predicate functions
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+[1,3,5].filter(() => true);
+[1,2,3].find(() => { return false; });
+
+// with non-literal array
+function nothing(x: string[]) {
+  return x.filter(() => false);
+}
+// with readonly array
+function nothing2(x: readonly string[]) {
+  return x.filter(() => false);
+}
+// with tuple
+function nothing3(x: [string, string]) {
+  return x.filter(() => false);
+}
+`,
+      errors: [
+        ruleError(2, 22, 'alwaysTruthy'),
+        ruleError(3, 29, 'alwaysFalsy'),
+        ruleError(7, 25, 'alwaysFalsy'),
+        ruleError(11, 25, 'alwaysFalsy'),
+        ruleError(15, 25, 'alwaysFalsy'),
+      ],
+    },
+    {
+      options: [{ checkArrayPredicates: true }],
+      code: `
+function truthy() {
+  return [];
+}
+function falsy() {}
+[1,3,5].filter(truthy);
+[1,2,3].find(falsy);
+`,
+      errors: [
+        ruleError(6, 16, 'alwaysTruthyFunc'),
+        ruleError(7, 14, 'alwaysFalsyFunc'),
+      ],
+    },
+    // Supports generics
+    // TODO: fix this
+    //     {
+    //       options: [{ checkArrayPredicates: true }],
+    //       code: `
+    // const isTruthy = <T>(t: T) => T;
+    // // Valid: numbers can be truthy or falsy (0).
+    // [0,1,2,3].filter(isTruthy);
+    // // Invalid: arrays are always falsy.
+    // [[1,2], [3,4]].filter(isTruthy);
+    // `,
+    //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
+    //     },
 
     // Still errors on in the expected locations when ignoring RHS
     {

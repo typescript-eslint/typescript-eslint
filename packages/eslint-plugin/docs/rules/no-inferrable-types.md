@@ -1,4 +1,4 @@
-# Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean. (no-inferrable-types)
+# Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean (`no-inferrable-types`)
 
 Explicit types where they can be easily inferred may add unnecessary verbosity.
 

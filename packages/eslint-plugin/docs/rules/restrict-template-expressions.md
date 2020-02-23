@@ -1,4 +1,4 @@
-# Enforce template literal expressions to be of string type. (restrict-template-expressions)
+# Enforce template literal expressions to be of string type (`restrict-template-expressions`)
 
 Examples of **correct** code:
 

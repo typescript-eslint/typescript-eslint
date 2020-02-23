@@ -1,8 +1,11 @@
-import path from 'path';
 import rule from '../../src/rules/strict-boolean-expressions';
-import { RuleTester } from '../RuleTester';
+import {
+  RuleTester,
+  getFixturesRootDir,
+  batchedSingleLineTests,
+} from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -159,13 +162,13 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ ignoreRhs: true }],
       code: `
-        const obj = {};
+        const obj = { x: 1 };
         const bool = false;
         const boolOrObj = bool || obj;
         const boolAndObj = bool && obj;
       `,
     },
-    {
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true }],
       code: `
         const f1 = (x?: boolean) => x ? 1 : 0;
@@ -173,22 +176,59 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const f3 = (x?: true | null) => x ? 1 : 0;
         const f4 = (x?: false) => x ? 1 : 0;
       `,
-    },
+    }),
     `
       declare const x: string | null;
       y = x ?? 'foo';
     `,
+    ...batchedSingleLineTests({
+      options: [{ allowSafe: true }],
+      code: `
+        const f1 = (x: boolean | { a: string }) => x ? 1 : 0;
+        const f2 = (x: true | { a: string }) => x ? 1 : 0;
+        const f3 = (x: { a: string } | false) => x ? 1 : 0;
+      `,
+    }),
+    ...batchedSingleLineTests({
+      options: [{ allowNullable: true, allowSafe: true }],
+      code: `
+        const f1 = (x?: boolean | { a?: 1 }) => x ? 1 : 0;
+        const f2 = (x: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
+        const f3 = (x?: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
+        const f4 = (x?: { b?: "a" } | true) => x ? 1 : 0;
+        const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
+      `,
+    }),
+    ...batchedSingleLineTests({
+      options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
+      code: `
+        const f1 = (x?: { a: null }) => x && x.foo && x.foo.bar
+        const f2 = (g?: (x: number) => number) => g && g(1)
+      `,
+    }),
+    `
+      declare let x: never;
+      if (x) {}
+    `,
+    ...batchedSingleLineTests({
+      code: `
+        function f1(x: never) { return !x }
+        function f2(x: never) { return x ? 1 : 0 }
+        function f3(x: never, y: never) { return x && y }
+        function f5(x: never | boolean) { if (!x) {} }
+      `,
+    }),
   ],
 
   invalid: [
     {
       code: `
-        let val = 1;
+        let val = "foo";
         let bool = !val;
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorString',
           line: 3,
           column: 21,
         },
@@ -201,7 +241,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 21,
         },
@@ -214,9 +254,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -227,9 +267,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -240,9 +280,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 3,
-          column: 20,
+          column: 28,
         },
       ],
     },
@@ -253,9 +293,34 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 3,
-          column: 20,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: `
+        let num = 1;
+        let str = "foo"
+        let val = null;
+        let bool = true && (val || num || str);
+      `,
+      errors: [
+        {
+          messageId: 'conditionErrorNullish',
+          line: 5,
+          column: 29,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 5,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 5,
+          column: 43,
         },
       ],
     },
@@ -267,7 +332,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 13,
         },
@@ -281,7 +346,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 13,
         },
@@ -289,14 +354,14 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let item = 1;
+        let item = "foo";
         if (item) {
           return;
         }
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorString',
           line: 3,
           column: 13,
         },
@@ -311,7 +376,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 13,
         },
@@ -327,9 +392,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
-          column: 13,
+          column: 22,
         },
       ],
     },
@@ -343,7 +408,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 13,
         },
@@ -359,7 +424,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 13,
         },
@@ -375,9 +440,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
-          column: 13,
+          column: 22,
         },
       ],
     },
@@ -391,7 +456,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 13,
         },
@@ -407,7 +472,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 13,
         },
@@ -415,11 +480,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        const bool = 1 ? true : false;
+        const bool = "foo" ? true : false;
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorString',
           line: 2,
           column: 22,
         },
@@ -431,7 +496,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 22,
         },
@@ -444,7 +509,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 22,
         },
@@ -457,7 +522,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 22,
         },
@@ -471,7 +536,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -485,9 +550,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -499,9 +564,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -513,7 +578,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 22,
         },
@@ -527,9 +592,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -541,9 +606,9 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
-          column: 22,
+          column: 31,
         },
       ],
     },
@@ -555,7 +620,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 25,
         },
@@ -569,7 +634,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 25,
         },
@@ -584,7 +649,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 25,
         },
@@ -599,7 +664,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 25,
         },
@@ -607,7 +672,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let bool1 = 1;
+        let bool1 = "foo";
         let bool2 = true;
         for (let i = 0; bool1 && bool2; i++) {
           return;
@@ -615,7 +680,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorString',
           line: 4,
           column: 25,
         },
@@ -631,7 +696,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 25,
         },
@@ -647,7 +712,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 25,
         },
@@ -663,7 +728,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 25,
         },
@@ -677,7 +742,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 16,
         },
@@ -691,7 +756,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
           column: 16,
         },
@@ -706,7 +771,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 3,
           column: 16,
         },
@@ -721,7 +786,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 3,
           column: 16,
         },
@@ -737,7 +802,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 16,
         },
@@ -753,7 +818,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 16,
         },
@@ -769,7 +834,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 4,
           column: 16,
         },
@@ -785,7 +850,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 16,
         },
@@ -795,11 +860,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
       code: `
         do {
           return;
-        } while (1);
+        } while ("foo");
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorString',
           line: 4,
           column: 18,
         },
@@ -813,7 +878,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 4,
           column: 18,
         },
@@ -828,7 +893,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 5,
           column: 18,
         },
@@ -843,7 +908,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 5,
           column: 18,
         },
@@ -859,7 +924,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 6,
           column: 18,
         },
@@ -875,7 +940,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 6,
           column: 18,
         },
@@ -891,7 +956,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 6,
           column: 18,
         },
@@ -907,7 +972,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorAny',
           line: 6,
           column: 18,
         },
@@ -919,51 +984,242 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNumber',
           line: 2,
           column: 58,
         },
       ],
     },
+    ...batchedSingleLineTests({
+      errors: [
+        {
+          messageId: 'conditionErrorNullableBoolean',
+          line: 2,
+          column: 47,
+        },
+        {
+          messageId: 'conditionErrorNullableBoolean',
+          line: 3,
+          column: 37,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 41,
+        },
+      ],
+      code: `
+        const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
+        const f2 = (x?: boolean) => x ? 1 : 0;
+        const f3 = (x: boolean | {}) => x ? 1 : 0;
+      `,
+    }),
     {
       options: [{ ignoreRhs: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorObject',
           line: 4,
-          column: 19,
+          column: 27,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorObject',
           line: 5,
-          column: 20,
+          column: 28,
         },
       ],
       code: `
-const obj = {};
-const bool = false;
-const objOrBool = obj || bool;
-const objAndBool = obj && bool;
-`,
+        const obj = { x: 1 };
+        const bool = false;
+        const objOrBool = obj || bool;
+        const objAndBool = obj && bool;
+      `,
     },
     {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 13,
+        },
+      ],
+      code: `
+        const condition = () => false;
+        const obj = { x: 1 };
+        if (condition() || obj) {}
+        if (condition() && obj) {}
+      `,
+    },
+    {
+      options: [{ ignoreRhs: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 13,
+        },
+      ],
+      code: `
+        declare let condition: boolean;
+        const obj = { x: 1 };
+        if (condition || obj) {}
+        if (condition && obj) {}
+      `,
+    },
+    ...batchedSingleLineTests({
       options: [{ allowNullable: true }],
       errors: [
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullish',
           line: 2,
-          column: 44,
+          column: 37,
         },
         {
-          messageId: 'strictBooleanExpression',
+          messageId: 'conditionErrorNullableNumber',
           line: 3,
-          column: 35,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 5,
+          column: 45,
         },
       ],
       code: `
-        const f = (x: null | undefined) => x ? 1 : 0;
-        const f = (x?: number) => x ? 1 : 0;
+        const f1 = (x: null | undefined) => x ? 1 : 0;
+        const f2 = (x?: number) => x ? 1 : 0;
+        const f3 = (x?: string) => x ? 1 : 0;
+        const f4 = (x?: string | number) => x ? 1 : 0;
+      `,
+    }),
+    {
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 3,
+          column: 43,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 44,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x: Type | boolean) => x ? 1 : 0;
+        const f2 = (x?: Type | boolean) => x ? 1 : 0;
       `,
     },
+    ...batchedSingleLineTests({
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 2,
+          column: 36,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 3,
+          column: 44,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 44,
+        },
+      ],
+      code: `
+        const f1 = (x: object | string) => x ? 1 : 0;
+        const f2 = (x: object | number) => x ? 1 : 0;
+        const f3 = (x: number | string) => x ? 1 : 0;
+      `,
+    }),
+    {
+      options: [{ allowSafe: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorNumber',
+          line: 8,
+          column: 34,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 9,
+          column: 34,
+        },
+      ],
+      code: `
+        enum Enum1 {
+          A, B, C
+        }
+        enum Enum2 {
+          A = 'A', B = 'B', C = 'C'
+        }
+        const f1 = (x: Enum1) => x ? 1 : 0;
+        const f2 = (x: Enum2) => x ? 1 : 0;
+      `,
+    },
+    {
+      options: [{ allowNullable: true, allowSafe: true }],
+      errors: [
+        {
+          messageId: 'conditionErrorOther',
+          line: 3,
+          column: 43,
+        },
+        {
+          messageId: 'conditionErrorOther',
+          line: 4,
+          column: 49,
+        },
+      ],
+      code: `
+        type Type = { a: string; };
+        const f1 = (x?: Type | string) => x ? 1 : 0;
+        const f2 = (x: Type | number | null) => x ? 1 : 0;
+      `,
+    },
+    ...batchedSingleLineTests({
+      errors: [
+        {
+          messageId: 'conditionErrorObject',
+          line: 2,
+          column: 31,
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 3,
+          column: 40,
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 4,
+          column: 47,
+        },
+      ],
+      code: `
+        const f1 = (x: { x: any }) => x ? 1 : 0;
+        const f2 = (x?: { x: any }) => x ? 1 : 0;
+        const f3 = (x?: { x: any } | null) => x ? 1 : 0;
+      `,
+    }),
   ],
 });

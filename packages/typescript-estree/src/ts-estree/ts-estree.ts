@@ -52,19 +52,79 @@ export interface BaseNode {
  * They are not included in the `Node` union below on purpose because they
  * are not ever included as part of the standard AST tree.
  */
-
-export interface Token extends BaseNode {
-  type: AST_TOKEN_TYPES;
+interface BaseToken extends BaseNode {
   value: string;
-  regex?: {
+}
+
+export interface BooleanToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Boolean;
+}
+
+export interface IdentifierToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Identifier;
+}
+
+export interface JSXIdentifierToken extends BaseToken {
+  type: AST_TOKEN_TYPES.JSXIdentifier;
+}
+
+export interface JSXTextToken extends BaseToken {
+  type: AST_TOKEN_TYPES.JSXText;
+}
+
+export interface KeywordToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Keyword;
+}
+
+export interface NullToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Null;
+}
+
+export interface NumericToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Numeric;
+}
+
+export interface PunctuatorToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Punctuator;
+}
+
+export interface RegularExpressionToken extends BaseToken {
+  type: AST_TOKEN_TYPES.RegularExpression;
+  regex: {
     pattern: string;
     flags: string;
   };
 }
-export interface Comment extends BaseNode {
-  type: 'Line' | 'Block';
-  value: string;
+
+export interface StringToken extends BaseToken {
+  type: AST_TOKEN_TYPES.String;
 }
+
+export interface TemplateToken extends BaseToken {
+  type: AST_TOKEN_TYPES.Template;
+}
+
+export interface BlockComment extends BaseToken {
+  type: AST_TOKEN_TYPES.Block;
+}
+
+export interface LineComment extends BaseToken {
+  type: AST_TOKEN_TYPES.Line;
+}
+
+export type Comment = BlockComment | LineComment;
+export type Token =
+  | BooleanToken
+  | IdentifierToken
+  | JSXIdentifierToken
+  | JSXTextToken
+  | KeywordToken
+  | NullToken
+  | NumericToken
+  | PunctuatorToken
+  | RegularExpressionToken
+  | StringToken
+  | TemplateToken;
 
 export type OptionalRangeAndLoc<T> = Pick<
   T,
@@ -681,7 +741,7 @@ export interface ArrayExpression extends BaseNode {
 
 export interface ArrayPattern extends BaseNode {
   type: AST_NODE_TYPES.ArrayPattern;
-  elements: DestructuringPattern[];
+  elements: (DestructuringPattern | null)[];
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];

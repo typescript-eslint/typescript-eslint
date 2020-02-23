@@ -19,6 +19,7 @@ export default util.createRule<Options, MessageIds>({
         'Require or disallow spacing between function identifiers and their invocations',
       category: 'Stylistic Issues',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'whitespace',
     schema: {

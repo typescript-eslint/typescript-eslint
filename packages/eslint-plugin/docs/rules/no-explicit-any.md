@@ -1,4 +1,4 @@
-# Disallow usage of the `any` type (no-explicit-any)
+# Disallow usage of the `any` type (`no-explicit-any`)
 
 Using the `any` type defeats the purpose of using TypeScript.
 When `any` is used, all compiler type checks around that value are ignored.

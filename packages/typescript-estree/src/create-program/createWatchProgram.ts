@@ -1,14 +1,14 @@
 import debug from 'debug';
 import fs from 'fs';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import {
   canonicalDirname,
   CanonicalPath,
-  getTsconfigPath,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
+  getTsconfigPath,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -218,6 +218,8 @@ function getProgramsForProjects(
 
     // cache watch program and return current program
     knownWatchProgramMap.set(tsconfigPath, programWatch);
+    // sets parent pointers in source files
+    program.getTypeChecker();
     results.push(program);
   }
 
@@ -233,7 +235,7 @@ function createWatchProgram(
   // create compiler host
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
-    DEFAULT_COMPILER_OPTIONS,
+    createDefaultCompilerOptionsFromExtra(extra),
     ts.sys,
     ts.createSemanticDiagnosticsBuilderProgram,
     diagnosticReporter,
@@ -394,11 +396,13 @@ function maybeInvalidateProgram(
     current = next;
     const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
     if (folderWatchCallbacks) {
-      folderWatchCallbacks.forEach(cb =>
-        cb(currentDir, ts.FileWatcherEventKind.Changed),
-      );
+      folderWatchCallbacks.forEach(cb => {
+        if (currentDir !== current) {
+          cb(currentDir, ts.FileWatcherEventKind.Changed);
+        }
+        cb(current!, ts.FileWatcherEventKind.Changed);
+      });
       hasCallback = true;
-      break;
     }
 
     next = canonicalDirname(current);

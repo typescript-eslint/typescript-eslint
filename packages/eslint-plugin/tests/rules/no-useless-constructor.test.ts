@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-useless-constructor';
 import { RuleTester } from '../RuleTester';
 
@@ -13,7 +14,7 @@ const ruleTester = new RuleTester({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const error: any = {
   message: 'Useless constructor.',
-  type: 'MethodDefinition',
+  type: AST_NODE_TYPES.MethodDefinition,
 };
 
 ruleTester.run('no-useless-constructor', rule, {

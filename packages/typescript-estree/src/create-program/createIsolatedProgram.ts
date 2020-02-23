@@ -1,9 +1,9 @@
 import debug from 'debug';
-import * as ts from 'typescript'; // leave this as * as ts so people using util package don't need syntheticDefaultImports
+import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import {
   ASTAndProgram,
-  DEFAULT_COMPILER_OPTIONS,
+  createDefaultCompilerOptionsFromExtra,
   getScriptKind,
 } from './shared';
 
@@ -46,7 +46,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
         filename,
         code,
         ts.ScriptTarget.Latest,
-        true,
+        /* setParentNodes */ true,
         getScriptKind(extra, filename),
       );
     },
@@ -67,7 +67,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
-      ...DEFAULT_COMPILER_OPTIONS,
+      ...createDefaultCompilerOptionsFromExtra(extra),
     },
     compilerHost,
   );

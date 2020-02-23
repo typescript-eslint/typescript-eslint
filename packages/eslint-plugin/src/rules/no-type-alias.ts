@@ -218,8 +218,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Validates the node looking for aliases, callbacks and literals.
-     * @param node the node to be validated.
-     * @param compositionType the type of composition this alias is part of (null if not
+     * @param type the type of composition this alias is part of (null if not
      *                                  part of a composition)
      * @param isTopLevel a flag indicating this is the top level node.
      */
@@ -261,6 +260,7 @@ export default util.createRule<Options, MessageIds>({
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
       } else if (
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type)
       ) {

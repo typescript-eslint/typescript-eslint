@@ -3,13 +3,14 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import ts, { TypeFlags } from 'typescript';
+import * as ts from 'typescript';
 import {
   isTypeFlagSet,
   unionTypeParts,
   isFalsyType,
   isBooleanLiteralType,
   isLiteralType,
+  getCallSignaturesOfType,
 } from 'tsutils';
 import {
   createRule,
@@ -60,19 +61,22 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     ignoreRhs?: boolean;
+    checkArrayPredicates?: boolean;
   },
 ];
 
 export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysFalsy'
+  | 'alwaysTruthyFunc'
+  | 'alwaysFalsyFunc'
   | 'neverNullish'
   | 'alwaysNullish'
   | 'literalBooleanExpression'
   | 'never'
   | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
-  name: 'no-unnecessary-conditionals',
+  name: 'no-unnecessary-condition',
   meta: {
     type: 'suggestion',
     docs: {
@@ -92,6 +96,9 @@ export default createRule<Options, MessageId>({
           ignoreRhs: {
             type: 'boolean',
           },
+          checkArrayPredicates: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -100,6 +107,10 @@ export default createRule<Options, MessageId>({
     messages: {
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      alwaysTruthyFunc:
+        'This callback should return a conditional, but return is always truthy',
+      alwaysFalsyFunc:
+        'This callback should return a conditional, but return is always falsy',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
       alwaysNullish:
@@ -114,23 +125,32 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: false,
       ignoreRhs: false,
+      checkArrayPredicates: false,
     },
   ],
-  create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
+  create(
+    context,
+    [{ allowConstantLoopConditions, checkArrayPredicates, ignoreRhs }],
+  ) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    function getNodeType(node: TSESTree.Node): ts.Type {
+    function getNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
+    }
+
+    function nodeIsArrayType(node: TSESTree.Expression): boolean {
+      const nodeType = getNodeType(node);
+      return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
     }
 
     /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
-    function checkNode(node: TSESTree.Node): void {
+    function checkNode(node: TSESTree.Expression): void {
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
@@ -139,13 +159,15 @@ export default createRule<Options, MessageId>({
         unionTypeParts(type).some(part =>
           isTypeFlagSet(
             part,
-            TypeFlags.Any | TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+            ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown |
+              ts.TypeFlags.TypeParameter,
           ),
         )
       ) {
         return;
       }
-      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
         ? 'never'
         : !isPossiblyTruthy(type)
         ? 'alwaysFalsy'
@@ -158,13 +180,13 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkNodeForNullish(node: TSESTree.Node): void {
+    function checkNodeForNullish(node: TSESTree.Expression): void {
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeFlagSet(type, TypeFlags.Any | TypeFlags.Unknown)) {
+      if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         return;
       }
-      const messageId = isTypeFlagSet(type, TypeFlags.Never)
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
         ? 'never'
         : !isPossiblyNullish(type)
         ? 'neverNullish'
@@ -268,6 +290,77 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
+    const ARRAY_PREDICATE_FUNCTIONS = new Set([
+      'filter',
+      'find',
+      'some',
+      'every',
+    ]);
+    function shouldCheckCallback(node: TSESTree.CallExpression): boolean {
+      const { callee } = node;
+      return (
+        // option is on
+        !!checkArrayPredicates &&
+        // looks like `something.filter` or `something.find`
+        callee.type === AST_NODE_TYPES.MemberExpression &&
+        callee.property.type === AST_NODE_TYPES.Identifier &&
+        ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
+        // and the left-hand side is an array, according to the types
+        nodeIsArrayType(callee.object)
+      );
+    }
+    function checkCallExpression(node: TSESTree.CallExpression): void {
+      const {
+        arguments: [callback],
+      } = node;
+      if (callback && shouldCheckCallback(node)) {
+        // Inline defined functions
+        if (
+          (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+            callback.type === AST_NODE_TYPES.FunctionExpression) &&
+          callback.body
+        ) {
+          // Two special cases, where we can directly check the node that's returned:
+          // () => something
+          if (callback.body.type !== AST_NODE_TYPES.BlockStatement) {
+            return checkNode(callback.body);
+          }
+          // () => { return something; }
+          const callbackBody = callback.body.body;
+          if (
+            callbackBody.length === 1 &&
+            callbackBody[0].type === AST_NODE_TYPES.ReturnStatement &&
+            callbackBody[0].argument
+          ) {
+            return checkNode(callbackBody[0].argument);
+          }
+          // Potential enhancement: could use code-path analysis to check
+          //   any function with a single return statement
+          // (Value to complexity ratio is dubious however)
+        }
+        // Otherwise just do type analysis on the function as a whole.
+        const returnTypes = getCallSignaturesOfType(
+          getNodeType(callback),
+        ).map(sig => sig.getReturnType());
+        /* istanbul ignore if */ if (returnTypes.length === 0) {
+          // Not a callable function
+          return;
+        }
+        if (!returnTypes.some(isPossiblyFalsy)) {
+          return context.report({
+            node: callback,
+            messageId: 'alwaysTruthyFunc',
+          });
+        }
+        if (!returnTypes.some(isPossiblyTruthy)) {
+          return context.report({
+            node: callback,
+            messageId: 'alwaysFalsyFunc',
+          });
+        }
+      }
+    }
+
     function checkOptionalChain(
       node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
       beforeOperator: TSESTree.Node,
@@ -321,6 +414,7 @@ export default createRule<Options, MessageId>({
 
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
+      CallExpression: checkCallExpression,
       ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,

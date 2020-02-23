@@ -49,33 +49,25 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (!node.extends || node.extends.length === 0) {
+        const extend = node.extends;
+        if (!extend || extend.length === 0) {
           context.report({
             node: node.id,
             messageId: 'noEmpty',
           });
-        } else if (node.extends.length === 1) {
+        } else if (extend.length === 1) {
           // interface extends exactly 1 interface --> Report depending on rule setting
-          if (allowSingleExtends) {
-            return;
-          } else {
+          if (!allowSingleExtends) {
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
-              fix(fixer) {
-                if (node.extends && node.extends.length) {
-                  return [
-                    fixer.replaceText(
-                      node,
-                      `type ${sourceCode.getText(
-                        node.id,
-                      )} = ${sourceCode.getText(node.extends[0])}`,
-                    ),
-                  ];
-                }
-
-                return null;
-              },
+              fix: fixer =>
+                fixer.replaceText(
+                  node,
+                  `type ${sourceCode.getText(node.id)} = ${sourceCode.getText(
+                    extend[0],
+                  )}`,
+                ),
             });
           }
         }
