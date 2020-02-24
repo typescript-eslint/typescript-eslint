@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [embt] ignore JSX callbacks ([#1630](https://github.com/typescript-eslint/typescript-eslint/issues/1630)) ([4d45b33](https://github.com/typescript-eslint/typescript-eslint/commit/4d45b331b920113c97a90df7dc703f8dfbcc04f3))
+* **eslint-plugin:** [no-floating-promises] handle finally callback ([#1620](https://github.com/typescript-eslint/typescript-eslint/issues/1620)) ([1aa7135](https://github.com/typescript-eslint/typescript-eslint/commit/1aa7135bbfbf55cec52925fc0224188cd3c319e7))
+* **eslint-plugin:** [typedef] allow array/object destructuring in for/of ([#1570](https://github.com/typescript-eslint/typescript-eslint/issues/1570)) ([660bace](https://github.com/typescript-eslint/typescript-eslint/commit/660bace4c3da569d71cf1e296ac4f6ed35bdfc44))
+
+
+### Features
+
+* **eslint-plugin:** [require-await] add --fix support ([#1561](https://github.com/typescript-eslint/typescript-eslint/issues/1561)) ([9edd863](https://github.com/typescript-eslint/typescript-eslint/commit/9edd863b2a66ee44bd4a439903973e6c207480aa))
+
+
+
+
+
 # [2.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.2...v2.20.0) (2020-02-17)
 
 
