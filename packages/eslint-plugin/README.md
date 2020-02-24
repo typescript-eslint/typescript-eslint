@@ -10,8 +10,8 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
-**[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
+- **[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+- **[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
 
 These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
 
@@ -185,7 +185,7 @@ In these cases, we create what we call an extension rule; a rule within our plug
 | [`@typescript-eslint/no-useless-constructor`](./docs/rules/no-useless-constructor.md)           | Disallow unnecessary constructors                                              |                    |          |                   |
 | [`@typescript-eslint/quotes`](./docs/rules/quotes.md)                                           | Enforce the consistent use of either backticks, double, or single quotes       |                    | :wrench: |                   |
 | [`@typescript-eslint/require-await`](./docs/rules/require-await.md)                             | Disallow async functions which have no `await` expression                      | :heavy_check_mark: |          | :thought_balloon: |
-| [`@typescript-eslint/return-await`](./docs/rules/return-await.md)                               | Enforces consistent returning of awaited values                                |                    |          | :thought_balloon: |
+| [`@typescript-eslint/return-await`](./docs/rules/return-await.md)                               | Enforces consistent returning of awaited values                                |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/semi`](./docs/rules/semi.md)                                               | Require or disallow semicolons instead of ASI                                  |                    | :wrench: |                   |
 | [`@typescript-eslint/space-before-function-paren`](./docs/rules/space-before-function-paren.md) | Enforces consistent spacing before function parenthesis                        |                    | :wrench: |                   |
 

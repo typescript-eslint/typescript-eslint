@@ -77,6 +77,9 @@ Examples of **correct** code with `{ "arrayDestructuring": true }`:
 const [a]: number[] = [1];
 const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
+
+for (const [key, val] of new Map([['key', 1]])) {
+}
 ```
 
 ### `arrowParameter`
@@ -145,6 +148,9 @@ Examples of **correct** code with `{ "objectDestructuring": true }`:
 ```ts
 const { length }: { length: number } = 'text';
 const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
+
+for (const { key, val } of [{ key: 'key', val: 1 }]) {
+}
 ```
 
 ### `parameter`

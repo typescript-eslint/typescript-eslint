@@ -114,7 +114,27 @@ function isIdentifier(
   return node?.type === AST_NODE_TYPES.Identifier;
 }
 
+/**
+ * Checks if a node represents an `await …` expression.
+ */
+function isAwaitExpression(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.AwaitExpression {
+  return node?.type === AST_NODE_TYPES.AwaitExpression;
+}
+
+/**
+ * Checks if a possible token is the `await` keyword.
+ */
+function isAwaitKeyword(
+  node: TSESTree.Token | TSESTree.Comment | undefined | null,
+): node is TSESTree.KeywordToken & { value: 'await' } {
+  return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
+}
+
 export {
+  isAwaitExpression,
+  isAwaitKeyword,
   isConstructor,
   isIdentifier,
   isLogicalOrOperator,

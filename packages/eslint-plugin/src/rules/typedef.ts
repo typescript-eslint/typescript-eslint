@@ -71,6 +71,31 @@ export default util.createRule<[Options], MessageIds>({
       return node.type === AST_NODE_TYPES.Identifier ? node.name : undefined;
     }
 
+    function isForOfStatementContext(
+      node: TSESTree.ArrayPattern | TSESTree.ObjectPattern,
+    ): boolean {
+      let current: TSESTree.Node | undefined = node.parent;
+      while (current) {
+        switch (current.type) {
+          case AST_NODE_TYPES.VariableDeclarator:
+          case AST_NODE_TYPES.VariableDeclaration:
+          case AST_NODE_TYPES.ObjectPattern:
+          case AST_NODE_TYPES.ArrayPattern:
+          case AST_NODE_TYPES.Property:
+            current = current.parent;
+            break;
+
+          case AST_NODE_TYPES.ForOfStatement:
+            return true;
+
+          default:
+            current = undefined;
+        }
+      }
+
+      return false;
+    }
+
     function checkParameters(params: TSESTree.Parameter[]): void {
       for (const param of params) {
         let annotationNode: TSESTree.Node | undefined;
@@ -112,7 +137,11 @@ export default util.createRule<[Options], MessageIds>({
 
     return {
       ArrayPattern(node): void {
-        if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
+        if (
+          options[OptionKeys.ArrayDestructuring] &&
+          !node.typeAnnotation &&
+          !isForOfStatementContext(node)
+        ) {
           report(node);
         }
       },
@@ -146,7 +175,11 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ObjectPattern(node): void {
-        if (options[OptionKeys.ObjectDestructuring] && !node.typeAnnotation) {
+        if (
+          options[OptionKeys.ObjectDestructuring] &&
+          !node.typeAnnotation &&
+          !isForOfStatementContext(node)
+        ) {
           report(node);
         }
       },

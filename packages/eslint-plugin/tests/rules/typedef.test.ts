@@ -38,6 +38,30 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `for (const [key, val] of new Map([['key', 1]])) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const [[key]] of [[['key']]]) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const [[{ key }]] of [[[{ key: 'value' }]]]) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
     `let a: number;
     [a] = [1];`,
     // Arrow parameters
@@ -94,10 +118,34 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
+      code: `for (const {p1: {p2: { p3 }}} of [{p1: {p2: {p3: 'value'}}}]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const {p1: {p2: { p3: [key] }}} of [{p1: {p2: {p3: ['value']}}}]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
       code: `const { a } = { a: 1 };`,
       options: [
         {
           objectDestructuring: false,
+        },
+      ],
+    },
+    {
+      code: `for (const { key, val } of [{ key: 'key', val: 1 }]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
         },
       ],
     },
