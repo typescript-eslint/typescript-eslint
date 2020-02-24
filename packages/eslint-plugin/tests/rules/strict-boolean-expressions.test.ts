@@ -20,9 +20,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
   valid: [
     // boolean in boolean context
     ...batchedSingleLineTests<Options>({
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: `
         true ? "a" : "b";
         if (false) {}
@@ -45,7 +42,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // string in boolean context
     ...batchedSingleLineTests<Options>({
-      options: [{ allowNumber: false, allowNullableObject: false }],
       code: `
         if ("") {}
         while ("x") {}
@@ -59,7 +55,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // number in boolean context
     ...batchedSingleLineTests<Options>({
-      options: [{ allowString: false, allowNullableObject: false }],
       code: `
         if (0) {}
         while (1n) {}
@@ -73,7 +68,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // nullable object in boolean context
     ...batchedSingleLineTests<Options>({
-      options: [{ allowString: false, allowNumber: false }],
       code: `
         declare const x: null | object; if (x) {}
         (x?: { a: any }) => !x;
@@ -81,7 +75,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
 
-    // nullable boolean when allowNullableBoolean is true
+    // nullable boolean in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableBoolean: true }],
       code: `
@@ -91,7 +85,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
 
-    // nullable string when allowNullableString is true
+    // nullable string in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableString: true }],
       code: `
@@ -101,7 +95,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
 
-    // nullable number when allowNullableNumber is true
+    // nullable number in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableNumber: true }],
       code: `
@@ -111,7 +105,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
 
-    // any when allowAny is true
+    // any in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowAny: true }],
       code: `
@@ -158,9 +152,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // nullish in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: `
         null || {};
         undefined && [];
@@ -179,9 +170,6 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // object in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: `
         [] || 1;
         ({}) && "a";
@@ -198,7 +186,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     }),
 
-    // string in boolean context when allowString is false
+    // string in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowString: false }],
       code: `
@@ -217,7 +205,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     }),
 
-    // number in boolean context when allowNumber is false
+    // number in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNumber: false }],
       code: `
@@ -236,7 +224,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     }),
 
-    // mixed `string | number` value in boolean context when both are allowed
+    // mixed `string | number` value in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowString: true, allowNumber: true }],
       code: `
@@ -251,7 +239,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     }),
 
-    // nullable boolean in boolean context when allowNullableBoolean is false
+    // nullable boolean in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNullableBoolean: false }],
       code: `
@@ -266,7 +254,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     }),
 
-    // nullable object in boolean context when allowNullableObject is false
+    // nullable object in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNullableObject: false }],
       code: `

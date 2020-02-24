@@ -151,7 +151,6 @@ export default util.createRule<Options, MessageId>({
         checkNode(node.left, isTestExpr);
 
         // we ignore the right operand when not in a context of a test expression
-        // because it can be used for providing a default value (`||`) or as a shorthand for ternary (`&&`)
         if (isTestExpr) {
           checkNode(node.right, isTestExpr);
         }
