@@ -20,6 +20,8 @@ export class OffsetStorage {
   private readonly lockedFirstTokens: WeakMap<TokenOrComment, TokenOrComment>;
   private readonly desiredIndentCache: WeakMap<TokenOrComment, string>;
   private readonly ignoredTokens: WeakSet<TokenOrComment>;
+  private readonly baseIndent: number;
+
   /**
    * @param tokenInfo a TokenInfo instance
    * @param indentSize The desired size of each indentation level
@@ -29,6 +31,13 @@ export class OffsetStorage {
     this.tokenInfo = tokenInfo;
     this.indentSize = indentSize;
     this.indentType = indentType;
+
+    // Calculate the initial indentation
+    const firstToken = tokenInfo.firstTokensByLineNumber.values().next().value;
+    const tokenIndent = firstToken ? tokenInfo.getTokenIndent(firstToken) : '';
+    this.baseIndent = (
+      tokenIndent.match(indentType === ' ' ? / /g : /\t/g) || []
+    ).length;
 
     this.tree = new BinarySearchTree();
     this.tree.insert(0, { offset: 0, from: null, force: false });
@@ -252,7 +261,9 @@ export class OffsetStorage {
         this.desiredIndentCache.set(
           token,
           (offsetInfo.from ? this.getDesiredIndent(offsetInfo.from) : '') +
-            this.indentType.repeat(offset),
+            this.indentType.repeat(
+              offset + (!offsetInfo.from ? this.baseIndent : 0),
+            ),
         );
       }
     }

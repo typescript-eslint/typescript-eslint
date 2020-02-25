@@ -37,12 +37,12 @@ const ruleTester = new RuleTester({
 ruleTester.run('indent', rule, {
   valid: [
     {
-      code: unIndent`
-                bridge.callHandler(
-                  'getAppVersion', 'test23', function(responseData) {
-                    window.ah.mobileAppVersion = responseData;
-                  }
-                );
+      code: `
+bridge.callHandler(
+  'getAppVersion', 'test23', function(responseData) {
+    window.ah.mobileAppVersion = responseData;
+  }
+);
             `,
       options: [2],
     },
@@ -7330,11 +7330,6 @@ ruleTester.run('indent', rule, {
       ]),
     },
     {
-      code: '  // comment',
-      output: '// comment',
-      errors: expectedErrors([1, 0, 2, AST_TOKEN_TYPES.Line]),
-    },
-    {
       code: unIndent`
                 foo
                   // comment
@@ -7344,17 +7339,6 @@ ruleTester.run('indent', rule, {
                 // comment
             `,
       errors: expectedErrors([2, 0, 2, AST_TOKEN_TYPES.Line]),
-    },
-    {
-      code: unIndent`
-                  // comment
-                foo
-            `,
-      output: unIndent`
-                // comment
-                foo
-            `,
-      errors: expectedErrors([1, 0, 2, AST_TOKEN_TYPES.Line]),
     },
     {
       code: unIndent`
@@ -8176,11 +8160,6 @@ ruleTester.run('indent', rule, {
             `,
       options: [4, { CallExpression: { arguments: 'first' } }],
       errors: expectedErrors([[2, 4, 8, AST_TOKEN_TYPES.Identifier]]),
-    },
-    {
-      code: '  new Foo',
-      output: 'new Foo',
-      errors: expectedErrors([1, 0, 2, AST_TOKEN_TYPES.Keyword]),
     },
     {
       code: unIndent`
