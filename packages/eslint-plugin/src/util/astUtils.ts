@@ -221,6 +221,15 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
+function isMemberOrOptionalMemberExpression(
+  node: TSESTree.Node,
+): node is TSESTree.MemberExpression | TSESTree.OptionalMemberExpression {
+  return (
+    node.type === AST_NODE_TYPES.MemberExpression ||
+    node.type === AST_NODE_TYPES.OptionalMemberExpression
+  );
+}
+
 export {
   isAwaitExpression,
   isAwaitKeyword,
@@ -231,6 +240,7 @@ export {
   isFunctionType,
   isIdentifier,
   isLogicalOrOperator,
+  isMemberOrOptionalMemberExpression,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,

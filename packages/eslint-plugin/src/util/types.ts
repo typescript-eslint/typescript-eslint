@@ -290,3 +290,10 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
       return undefined;
   }
 }
+
+/**
+ * @returns true if the type is `any`
+ */
+export function isTypeAnyType(type: ts.Type): boolean {
+  return isTypeFlagSet(type, ts.TypeFlags.Any);
+}
