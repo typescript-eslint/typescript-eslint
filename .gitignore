@@ -66,3 +66,5 @@ jspm_packages/
 dist
 *.tsbuildinfo
 .watchmanconfig
+
+.vscode/numbered-bookmarks.json

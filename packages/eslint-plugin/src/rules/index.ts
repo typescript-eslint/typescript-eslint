@@ -90,6 +90,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import safeArrayDestructuring from './safe-array-destructuring';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -175,6 +176,7 @@ export default {
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
+  'safe-array-destructuring': safeArrayDestructuring,
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,

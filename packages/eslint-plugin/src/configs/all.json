@@ -98,6 +98,7 @@
     "semi": "off",
     "@typescript-eslint/semi": "error",
     "space-before-function-paren": "off",
+    "@typescript-eslint/safe-array-destructuring": "error",
     "@typescript-eslint/space-before-function-paren": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
