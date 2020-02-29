@@ -37,7 +37,8 @@ This rule has an object option that may receive any of the following as booleans
 - `"objectDestructuring"`
 - `"parameter"`: `true` by default
 - `"propertyDeclaration"`: `true` by default
-- `"variableDeclaration"`
+- `"variableDeclaration"`,
+- `"variableDeclarationIgnoreFunction"`
 
 For example, with the following configuration:
 
@@ -252,6 +253,30 @@ Examples of **correct** code with `{ "variableDeclaration": true }`:
 const text: string = 'text';
 let initialText: string = 'text';
 let delayedText: string;
+```
+
+### `variableDeclarationIgnoreFunction`
+
+Ignore variable declarations for non-arrow and arrow functions.
+
+Examples of **incorrect** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+```ts
+const text = 'text';
+```
+
+Examples of **correct** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+```ts
+const a = (): void => {};
+const b = function (): void => {};
+const c: () => void = (): void => {};
+
+class Foo {
+  a = (): void => {};
+  b = function (): void => {};
+  c = () => void = (): void => {};
+}
 ```
 
 ## When Not To Use It
