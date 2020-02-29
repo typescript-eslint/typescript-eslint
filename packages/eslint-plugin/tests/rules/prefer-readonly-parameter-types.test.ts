@@ -191,6 +191,14 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+
+    // type functions
+    'interface Foo { (arg: readonly string[]): void }', // TSCallSignatureDeclaration
+    'interface Foo { new (arg: readonly string[]): void }', // TSConstructSignatureDeclaration
+    'const x = { foo(arg: readonly string[]): void }', // TSEmptyBodyFunctionExpression
+    'function foo(arg: readonly string[]);', // TSDeclareFunction
+    'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
+    'interface Foo { foo(arg: readonly string[]): void }', // TSMethodSignature
   ],
   invalid: [
     // arrays
@@ -424,6 +432,74 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           column: 13,
           endLine: 8,
           endColumn: 27,
+        },
+      ],
+    },
+
+    // type functions
+    {
+      // TSCallSignatureDeclaration
+      code: 'interface Foo { (arg: string[]): void }',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 18,
+          endColumn: 31,
+        },
+      ],
+    },
+    {
+      // TSConstructSignatureDeclaration
+      code: 'interface Foo { new (arg: string[]): void }',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 22,
+          endColumn: 35,
+        },
+      ],
+    },
+    {
+      // TSEmptyBodyFunctionExpression
+      code: 'const x = { foo(arg: string[]): void }',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 17,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      // TSDeclareFunction
+      code: 'function foo(arg: string[]);',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 14,
+          endColumn: 27,
+        },
+      ],
+    },
+    {
+      // TSFunctionType
+      code: 'type Foo = (arg: string[]) => void',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 13,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      // TSMethodSignature
+      code: 'interface Foo { foo(arg: string[]): void }',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 21,
+          endColumn: 34,
         },
       ],
     },

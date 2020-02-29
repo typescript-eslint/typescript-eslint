@@ -41,6 +41,20 @@ interface CustomFunction {
 function custom2(arg: CustomFunction) {}
 
 function union(arg: string[] | ReadonlyArray<number[]>) {} // not all types are readonly
+
+// rule also checks function types
+interface Foo {
+  (arg: string[]): void;
+}
+interface Foo {
+  new (arg: string[]): void;
+}
+const x = { foo(arg: string[]): void; };
+function foo(arg: string[]);
+type Foo = (arg: string[]) => void;
+interface Foo {
+  foo(arg: string[]): void;
+}
 ```
 
 Examples of **correct** code for this rule:
@@ -88,4 +102,62 @@ function enum(arg: Foo) {}
 function symb1(arg: symbol) {}
 const customSymbol = Symbol('a');
 function symb2(arg: typeof customSymbol) {}
+
+// function types
+interface Foo {
+  (arg: readonly string[]): void;
+}
+interface Foo {
+  new (arg: readonly string[]): void;
+}
+const x = { foo(arg: readonly string[]): void; };
+function foo(arg: readonly string[]);
+type Foo = (arg: readonly string[]) => void;
+interface Foo {
+  foo(arg: readonly string[]): void;
+}
+```
+
+## Options
+
+```ts
+interface Options {
+  checkParameterProperties?: boolean;
+}
+
+const defaultOptions: Options = {
+  checkParameterProperties: true,
+};
+```
+
+### `checkParameterProperties`
+
+This option allows you to enable or disable the checking of parameter properties.
+Because parameter properties create properties on the class, it may be undesirable to force them to be readonly.
+
+Examples of **incorrect** code for this rule with `{checkParameterProperties: true}`:
+
+```ts
+class Foo {
+  constructor(private paramProp: string[]) {}
+}
+```
+
+Examples of **correct** code for this rule with `{checkParameterProperties: true}`:
+
+```ts
+class Foo {
+  constructor(private paramProp: readonly string[]) {}
+}
+```
+
+Examples of **correct** code for this rule with `{checkParameterProperties: false}`:
+
+```ts
+class Foo {
+  constructor(
+    private paramProp1: string[],
+    private paramProp2: readonly string[],
+  ) {}
+}
 ```

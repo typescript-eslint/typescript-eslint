@@ -47,12 +47,27 @@ export default util.createRule<Options, MessageIds>({
     const checker = program.getTypeChecker();
 
     return {
-      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression, TSEmptyBodyFunctionExpression'(
+      [[
+        AST_NODE_TYPES.ArrowFunctionExpression,
+        AST_NODE_TYPES.FunctionDeclaration,
+        AST_NODE_TYPES.FunctionExpression,
+        AST_NODE_TYPES.TSCallSignatureDeclaration,
+        AST_NODE_TYPES.TSConstructSignatureDeclaration,
+        AST_NODE_TYPES.TSDeclareFunction,
+        AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+        AST_NODE_TYPES.TSFunctionType,
+        AST_NODE_TYPES.TSMethodSignature,
+      ].join(', ')](
         node:
           | TSESTree.ArrowFunctionExpression
           | TSESTree.FunctionDeclaration
           | TSESTree.FunctionExpression
-          | TSESTree.TSEmptyBodyFunctionExpression,
+          | TSESTree.TSCallSignatureDeclaration
+          | TSESTree.TSConstructSignatureDeclaration
+          | TSESTree.TSDeclareFunction
+          | TSESTree.TSEmptyBodyFunctionExpression
+          | TSESTree.TSFunctionType
+          | TSESTree.TSMethodSignature,
       ): void {
         for (const param of node.params) {
           if (
