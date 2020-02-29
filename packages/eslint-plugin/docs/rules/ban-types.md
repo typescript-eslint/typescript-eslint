@@ -58,6 +58,23 @@ The banned type can either be a type name literal (`Foo`), a type name with gene
 }
 ```
 
+By default, this rule includes types which are likely to be mistakes, such as `String` and `Number`. If you don't want these enabled, set the `extendDefaults` option to `false`:
+
+```CJSON
+{
+    "@typescript-eslint/ban-types": ["error", {
+        "types": {
+            // add a custom message, AND tell the plugin how to fix it
+            "String": {
+                "message": "Use string instead",
+                "fixWith": "string"
+            }
+        },
+        "extendDefaults": false
+    }]
+}
+```
+
 ### Example
 
 ```json

@@ -24,6 +24,25 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
   },
 ];
 
+const options2: InferOptionsTypeFromRule<typeof rule> = [
+  {
+    types: {
+      null: {
+        message: 'Use undefined instead.',
+        fixWith: 'undefined',
+      },
+    },
+  },
+];
+
+const options3: InferOptionsTypeFromRule<typeof rule> = [
+  {
+    types: {
+      undefined: null,
+    },
+  },
+];
+
 ruleTester.run('ban-types', rule, {
   valid: [
     'let f = Object();', // Should not fail if there is no options set
@@ -53,8 +72,41 @@ ruleTester.run('ban-types', rule, {
       code: 'let a: NS.Bad._',
       options,
     },
+    // Replace default options instead of merging with extendDefaults: false
+    {
+      code: 'let a: String;',
+      options: [
+        {
+          types: {
+            Number: {
+              message: 'Use number instead.',
+              fixWith: 'number',
+            },
+          },
+          extendDefaults: false,
+        },
+      ],
+    },
+    {
+      code: 'let a: undefined',
+      options: options2,
+    },
+    {
+      code: 'let a: null',
+      options: options3,
+    },
   ],
   invalid: [
+    {
+      code: 'let a: String;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
     {
       code: 'let a: Object;',
       errors: [
@@ -69,6 +121,30 @@ ruleTester.run('ban-types', rule, {
         },
       ],
       options,
+    },
+    {
+      code: 'let a: undefined;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: { name: 'undefined', customMessage: '' },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: options3,
+    },
+    {
+      code: 'let a: null;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: { name: 'null', customMessage: ' Use undefined instead.' },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: options2,
     },
     {
       code: 'let aa: Foo;',
