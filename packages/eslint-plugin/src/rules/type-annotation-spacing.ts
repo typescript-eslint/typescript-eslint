@@ -1,8 +1,13 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import {
+  isClassOrTypeElement,
+  isFunction,
+  isFunctionOrFunctionType,
+  isIdentifier,
+  isTSFunctionType,
+  isVariableDeclarator,
+} from '../util';
 
 interface WhitespaceRule {
   readonly before?: boolean;
@@ -22,14 +27,7 @@ interface Config extends WhitespaceRule {
   readonly overrides?: WhitespaceOverride;
 }
 
-interface WhitespaceRules {
-  colon: WhitespaceRule;
-  arrow: WhitespaceRule;
-  variable: WhitespaceRule;
-  parameter: WhitespaceRule;
-  property: WhitespaceRule;
-  returnType: WhitespaceRule;
-}
+type WhitespaceRules = Required<WhitespaceOverride>;
 
 type Options = [Config?];
 type MessageIds =
@@ -74,74 +72,34 @@ function createRules(options?: Config): WhitespaceRules {
   };
 }
 
-function getNodeType(node?: TSESTree.Node): string {
-  return node?.type ?? '';
-}
-
-function typeIsArrowFunction(type: string): boolean {
-  return type === AST_NODE_TYPES.TSFunctionType;
-}
-
-function typeIsIdentifier(type: string): boolean {
-  return type === AST_NODE_TYPES.Identifier;
-}
-
-function typeIsProperty(type: string): boolean {
-  return [
-    AST_NODE_TYPES.ClassProperty,
-    AST_NODE_TYPES.FunctionExpression,
-    AST_NODE_TYPES.TSPropertySignature,
-    AST_NODE_TYPES.TSMethodSignature,
-  ].includes(type as AST_NODE_TYPES);
-}
-
-function typeIsReturnType(type: string): boolean {
-  return [
-    AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.ArrowFunctionExpression,
-  ].includes(type as AST_NODE_TYPES);
-}
-
-function typeIsVariable(type: string): boolean {
-  return type === AST_NODE_TYPES.VariableDeclarator;
-}
-
-function typeIsParameter(type: string): boolean {
-  return [
-    AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.TSFunctionType,
-    AST_NODE_TYPES.TSMethodSignature,
-    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
-  ].includes(type as AST_NODE_TYPES);
-}
-
 function getIdentifierRules(
   rules: WhitespaceRules,
-  node?: TSESTree.Node,
+  node: TSESTree.Node | undefined,
 ): WhitespaceRule {
   const scope = node?.parent;
-  const type = getNodeType(scope);
 
-  if (typeIsVariable(type)) {
+  if (isVariableDeclarator(scope)) {
     return rules.variable;
-  } else if (typeIsParameter(type)) {
+  } else if (isFunctionOrFunctionType(scope)) {
     return rules.parameter;
   } else {
     return rules.colon;
   }
 }
 
-function getRules(rules: WhitespaceRules, node: TSESTree.Node): WhitespaceRule {
+function getRules(
+  rules: WhitespaceRules,
+  node: TSESTree.TypeNode,
+): WhitespaceRule {
   const scope = node?.parent?.parent;
-  const type = getNodeType(scope);
 
-  if (typeIsArrowFunction(type)) {
+  if (isTSFunctionType(scope)) {
     return rules.arrow;
-  } else if (typeIsIdentifier(type)) {
+  } else if (isIdentifier(scope)) {
     return getIdentifierRules(rules, scope);
-  } else if (typeIsProperty(type)) {
+  } else if (isClassOrTypeElement(scope)) {
     return rules.property;
-  } else if (typeIsReturnType(type)) {
+  } else if (isFunction(scope)) {
     return rules.returnType;
   } else {
     return rules.colon;
