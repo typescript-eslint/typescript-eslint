@@ -23,6 +23,7 @@ import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noBaseToString from './no-base-to-string';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -93,6 +94,7 @@ export default {
   'ban-ts-ignore': banTsIgnore,
   'ban-ts-comment': banTsComment,
   'ban-types': banTypes,
+  'no-base-to-string': noBaseToString,
   'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
