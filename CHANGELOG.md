@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [ban-types] add option extendDefaults ([#1379](https://github.com/typescript-eslint/typescript-eslint/issues/1379)) ([ae7f7c5](https://github.com/typescript-eslint/typescript-eslint/commit/ae7f7c5637124b1167efd63755df92e219bbbb24))
+* **eslint-plugin:** [default-param-last] handle param props ([#1650](https://github.com/typescript-eslint/typescript-eslint/issues/1650)) ([3534c6e](https://github.com/typescript-eslint/typescript-eslint/commit/3534c6ea09f0cb2162017660a90c6a4ad704da6b))
+* **eslint-plugin:** [no-implied-eval] correct logic for ts3.8 ([#1652](https://github.com/typescript-eslint/typescript-eslint/issues/1652)) ([33e3e6f](https://github.com/typescript-eslint/typescript-eslint/commit/33e3e6f79ea21792ccb60b7f1ada74057ceb52e9))
+
+
+### Features
+
+* **eslint-plugin:** [explicit-member-accessibility] autofix no-public ([#1548](https://github.com/typescript-eslint/typescript-eslint/issues/1548)) ([dd233b5](https://github.com/typescript-eslint/typescript-eslint/commit/dd233b52dcd5a39d842123af6fc775574abf2bc2))
+* **eslint-plugin:** [typedef] add variable-declaration-ignore-function ([#1578](https://github.com/typescript-eslint/typescript-eslint/issues/1578)) ([fc0a55e](https://github.com/typescript-eslint/typescript-eslint/commit/fc0a55e8b78203972d01a7c9b79ed6b470c5c1a0))
+* **eslint-plugin:** add new no-base-to-string rule ([#1522](https://github.com/typescript-eslint/typescript-eslint/issues/1522)) ([8333d41](https://github.com/typescript-eslint/typescript-eslint/commit/8333d41d5d472ef338fb41a29ccbfc6b16e47627))
+* **eslint-plugin:** add prefer-readonly-parameters ([#1513](https://github.com/typescript-eslint/typescript-eslint/issues/1513)) ([3be9854](https://github.com/typescript-eslint/typescript-eslint/commit/3be98542afd7553cbbec66c4be215173d7f7ffcf))
+* **eslint-plugin:** additional annotation spacing rules for va… ([#1496](https://github.com/typescript-eslint/typescript-eslint/issues/1496)) ([b097245](https://github.com/typescript-eslint/typescript-eslint/commit/b097245df35114906b1f9c60c3ad4cd698d957b8))
+
+
+
+
+
 # [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
 
 
