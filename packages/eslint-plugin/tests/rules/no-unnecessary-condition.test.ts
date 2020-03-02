@@ -402,6 +402,7 @@ if(dict["mightNotExist"]) {}
     },
     {
       // Should still check tuples when accessed with literal numbers, since they don't have
+      //   unsound index signatures
       code: `
 const x = [{}] as [{foo: string}];
 if(x[0]) {}
