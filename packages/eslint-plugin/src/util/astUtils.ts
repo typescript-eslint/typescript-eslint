@@ -82,6 +82,95 @@ function isTypeAssertion(
   );
 }
 
+function isVariableDeclarator(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.VariableDeclarator {
+  return node?.type === AST_NODE_TYPES.VariableDeclarator;
+}
+
+function isFunction(
+  node: TSESTree.Node | undefined,
+): node is
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression {
+  if (!node) {
+    return false;
+  }
+
+  return [
+    AST_NODE_TYPES.ArrowFunctionExpression,
+    AST_NODE_TYPES.FunctionDeclaration,
+    AST_NODE_TYPES.FunctionExpression,
+  ].includes(node.type);
+}
+
+function isFunctionType(
+  node: TSESTree.Node | undefined,
+): node is
+  | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructSignatureDeclaration
+  | TSESTree.TSEmptyBodyFunctionExpression
+  | TSESTree.TSFunctionType
+  | TSESTree.TSMethodSignature {
+  if (!node) {
+    return false;
+  }
+
+  return [
+    AST_NODE_TYPES.TSCallSignatureDeclaration,
+    AST_NODE_TYPES.TSConstructSignatureDeclaration,
+    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+    AST_NODE_TYPES.TSFunctionType,
+    AST_NODE_TYPES.TSMethodSignature,
+  ].includes(node.type);
+}
+
+function isFunctionOrFunctionType(
+  node: TSESTree.Node | undefined,
+): node is
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression
+  | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructSignatureDeclaration
+  | TSESTree.TSEmptyBodyFunctionExpression
+  | TSESTree.TSFunctionType
+  | TSESTree.TSMethodSignature {
+  return isFunction(node) || isFunctionType(node);
+}
+
+function isTSFunctionType(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.TSFunctionType {
+  return node?.type === AST_NODE_TYPES.TSFunctionType;
+}
+
+function isClassOrTypeElement(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ClassElement | TSESTree.TypeElement {
+  if (!node) {
+    return false;
+  }
+
+  return [
+    // ClassElement
+    AST_NODE_TYPES.ClassProperty,
+    AST_NODE_TYPES.FunctionExpression,
+    AST_NODE_TYPES.MethodDefinition,
+    AST_NODE_TYPES.TSAbstractClassProperty,
+    AST_NODE_TYPES.TSAbstractMethodDefinition,
+    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+    AST_NODE_TYPES.TSIndexSignature,
+    // TypeElement
+    AST_NODE_TYPES.TSCallSignatureDeclaration,
+    AST_NODE_TYPES.TSConstructSignatureDeclaration,
+    // AST_NODE_TYPES.TSIndexSignature,
+    AST_NODE_TYPES.TSMethodSignature,
+    AST_NODE_TYPES.TSPropertySignature,
+  ].includes(node.type);
+}
+
 /**
  * Checks if a node is a constructor method.
  */
@@ -114,8 +203,32 @@ function isIdentifier(
   return node?.type === AST_NODE_TYPES.Identifier;
 }
 
+/**
+ * Checks if a node represents an `await …` expression.
+ */
+function isAwaitExpression(
+  node: TSESTree.Node | undefined | null,
+): node is TSESTree.AwaitExpression {
+  return node?.type === AST_NODE_TYPES.AwaitExpression;
+}
+
+/**
+ * Checks if a possible token is the `await` keyword.
+ */
+function isAwaitKeyword(
+  node: TSESTree.Token | TSESTree.Comment | undefined | null,
+): node is TSESTree.KeywordToken & { value: 'await' } {
+  return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
+}
+
 export {
+  isAwaitExpression,
+  isAwaitKeyword,
   isConstructor,
+  isClassOrTypeElement,
+  isFunction,
+  isFunctionOrFunctionType,
+  isFunctionType,
   isIdentifier,
   isLogicalOrOperator,
   isNonNullAssertionPunctuator,
@@ -125,6 +238,8 @@ export {
   isOptionalOptionalChain,
   isSetter,
   isTokenOnSameLine,
+  isTSFunctionType,
   isTypeAssertion,
+  isVariableDeclarator,
   LINEBREAK_MATCHER,
 };

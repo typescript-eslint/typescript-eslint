@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **typescript-estree:** process.stdout can be undefined ([#1619](https://github.com/typescript-eslint/typescript-eslint/issues/1619)) ([0d8e87e](https://github.com/typescript-eslint/typescript-eslint/commit/0d8e87e09704588273bc94a740279b3e8af7474f))
+
+
+
+
+
 # [2.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.2...v2.20.0) (2020-02-17)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree
