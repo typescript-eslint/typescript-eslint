@@ -173,6 +173,11 @@ const tuple = ["foo"] as const;
 declare const n: number;
 tuple[n]?.toUpperCase();
     `,
+    `if(arr?.[42]) {}`,
+    `
+declare const returnsArr: undefined | (() => string[]);
+if(returnsArr?.()[42]) {}
+returnsArr?.()[42]?.toUpperCase()`,
     // nullish + array index
     `
 declare const arr: string[][];
