@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "2.22.0",
-    "eslint-utils": "^1.4.3",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^3.0.0",
     "tsutils": "^3.17.1"

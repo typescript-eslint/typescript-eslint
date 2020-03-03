@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree, ParserServices } from '@typescript-eslint/typescript-estree';
 import { Linter as ESLintLinter } from 'eslint';
+import { TSESTree, ParserServices } from '../ts-estree';
 import { ParserOptions as TSParserOptions } from './ParserOptions';
 import { RuleModule, RuleFix } from './Rule';
 import { Scope } from './Scope';
