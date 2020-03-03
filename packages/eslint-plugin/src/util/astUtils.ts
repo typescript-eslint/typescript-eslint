@@ -109,6 +109,7 @@ function isFunctionType(
   node: TSESTree.Node | undefined,
 ): node is
   | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructorType
   | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSEmptyBodyFunctionExpression
   | TSESTree.TSFunctionType
@@ -119,6 +120,7 @@ function isFunctionType(
 
   return [
     AST_NODE_TYPES.TSCallSignatureDeclaration,
+    AST_NODE_TYPES.TSConstructorType,
     AST_NODE_TYPES.TSConstructSignatureDeclaration,
     AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     AST_NODE_TYPES.TSFunctionType,
@@ -133,6 +135,7 @@ function isFunctionOrFunctionType(
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructorType
   | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSEmptyBodyFunctionExpression
   | TSESTree.TSFunctionType
@@ -144,6 +147,12 @@ function isTSFunctionType(
   node: TSESTree.Node | undefined,
 ): node is TSESTree.TSFunctionType {
   return node?.type === AST_NODE_TYPES.TSFunctionType;
+}
+
+function isTSConstructorType(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.TSConstructorType {
+  return node?.type === AST_NODE_TYPES.TSConstructorType;
 }
 
 function isClassOrTypeElement(
@@ -248,6 +257,7 @@ export {
   isOptionalOptionalChain,
   isSetter,
   isTokenOnSameLine,
+  isTSConstructorType,
   isTSFunctionType,
   isTypeAssertion,
   isVariableDeclarator,
