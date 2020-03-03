@@ -5,6 +5,7 @@ import {
   isFunction,
   isFunctionOrFunctionType,
   isIdentifier,
+  isTSConstructorType,
   isTSFunctionType,
   isVariableDeclarator,
 } from '../util';
@@ -93,7 +94,7 @@ function getRules(
 ): WhitespaceRule {
   const scope = node?.parent?.parent;
 
-  if (isTSFunctionType(scope)) {
+  if (isTSFunctionType(scope) || isTSConstructorType(scope)) {
     return rules.arrow;
   } else if (isIdentifier(scope)) {
     return getIdentifierRules(rules, scope);

@@ -1174,6 +1174,8 @@ interface Foo {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1663
+    'type ConstructorFn = new (...args: any[]) => any;',
   ],
   invalid: [
     {
