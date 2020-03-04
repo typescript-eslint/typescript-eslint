@@ -199,6 +199,34 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
     'interface Foo { foo(arg: readonly string[]): void }', // TSMethodSignature
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1665
+    // directly recursive
+    `
+      interface Foo {
+        readonly prop: Foo;
+      }
+      function foo(arg: Foo) {}
+    `,
+    // indirectly recursive
+    `
+      interface Foo {
+        readonly prop: Bar;
+      }
+      interface Bar {
+        readonly prop: Foo;
+      }
+      function foo(arg: Foo) {}
+    `,
+    `
+      interface Foo {
+        prop: Readonly<Bar>;
+      }
+      interface Bar {
+        prop: Readonly<Foo>;
+      }
+      function foo(arg: Readonly<Foo>) {}
+    `,
   ],
   invalid: [
     // arrays
@@ -500,6 +528,99 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           messageId: 'shouldBeReadonly',
           column: 21,
           endColumn: 34,
+        },
+      ],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1665
+    // directly recursive
+    {
+      code: `
+        interface Foo {
+          prop: Foo;
+        }
+        function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 5,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: Foo;
+        }
+        function foo(arg: Readonly<Foo>) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 5,
+          column: 22,
+          endColumn: 40,
+        },
+      ],
+    },
+    // indirectly recursive
+    {
+      code: `
+        interface Foo {
+          prop: Bar;
+        }
+        interface Bar {
+          readonly prop: Foo;
+        }
+        function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: Bar;
+        }
+        interface Bar {
+          readonly prop: Foo;
+        }
+        function foo(arg: Readonly<Foo>) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 22,
+          endColumn: 40,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: Readonly<Bar>;
+        }
+        interface Bar {
+          prop: Readonly<Foo>;
+        }
+        function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 22,
+          endColumn: 30,
         },
       ],
     },

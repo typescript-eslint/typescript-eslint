@@ -8,30 +8,40 @@ import {
 import * as ts from 'typescript';
 import { nullThrows, NullThrowsReasons } from '.';
 
-/**
- * Returns:
- * - null if the type is not an array or tuple,
- * - true if the type is a readonly array or readonly tuple,
- * - false if the type is a mutable array or mutable tuple.
- */
+const enum Readonlyness {
+  /** the type cannot be handled by the function */
+  UnknownType = 1,
+  /** the type is mutable */
+  Mutable = 2,
+  /** the type is readonly */
+  Readonly = 3,
+}
+
 function isTypeReadonlyArrayOrTuple(
   checker: ts.TypeChecker,
   type: ts.Type,
-): boolean | null {
-  function checkTypeArguments(arrayType: ts.TypeReference): boolean {
+  seenTypes: Set<ts.Type>,
+): Readonlyness {
+  function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
     const typeArguments = checker.getTypeArguments(arrayType);
+    // this shouldn't happen in reality as:
+    // - tuples require at least 1 type argument
+    // - ReadonlyArray requires at least 1 type argument
     /* istanbul ignore if */ if (typeArguments.length === 0) {
-      // this shouldn't happen in reality as:
-      // - tuples require at least 1 type argument
-      // - ReadonlyArray requires at least 1 type argument
-      return true;
+      return Readonlyness.Readonly;
     }
 
     // validate the element types are also readonly
-    if (typeArguments.some(typeArg => !isTypeReadonly(checker, typeArg))) {
-      return false;
+    if (
+      typeArguments.some(
+        typeArg =>
+          isTypeReadonlyRecurser(checker, typeArg, seenTypes) ===
+          Readonlyness.Mutable,
+      )
+    ) {
+      return Readonlyness.Mutable;
     }
-    return true;
+    return Readonlyness.Readonly;
   }
 
   if (checker.isArrayType(type)) {
@@ -40,8 +50,8 @@ function isTypeReadonlyArrayOrTuple(
       NullThrowsReasons.MissingToken('symbol', 'array type'),
     );
     const escapedName = symbol.getEscapedName();
-    if (escapedName === 'Array' && escapedName !== 'ReadonlyArray') {
-      return false;
+    if (escapedName === 'Array') {
+      return Readonlyness.Mutable;
     }
 
     return checkTypeArguments(type);
@@ -49,32 +59,29 @@ function isTypeReadonlyArrayOrTuple(
 
   if (checker.isTupleType(type)) {
     if (!type.target.readonly) {
-      return false;
+      return Readonlyness.Mutable;
     }
 
     return checkTypeArguments(type);
   }
 
-  return null;
+  return Readonlyness.UnknownType;
 }
 
-/**
- * Returns:
- * - null if the type is not an object,
- * - true if the type is an object with only readonly props,
- * - false if the type is an object with at least one mutable prop.
- */
 function isTypeReadonlyObject(
   checker: ts.TypeChecker,
   type: ts.Type,
-): boolean | null {
-  function checkIndexSignature(kind: ts.IndexKind): boolean | null {
+  seenTypes: Set<ts.Type>,
+): Readonlyness {
+  function checkIndexSignature(kind: ts.IndexKind): Readonlyness {
     const indexInfo = checker.getIndexInfoOfType(type, kind);
     if (indexInfo) {
-      return indexInfo.isReadonly ? true : false;
+      return indexInfo.isReadonly
+        ? Readonlyness.Readonly
+        : Readonlyness.Mutable;
     }
 
-    return null;
+    return Readonlyness.UnknownType;
   }
 
   const properties = type.getProperties();
@@ -82,7 +89,7 @@ function isTypeReadonlyObject(
     // ensure the properties are marked as readonly
     for (const property of properties) {
       if (!isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
-        return false;
+        return Readonlyness.Mutable;
       }
     }
 
@@ -97,38 +104,56 @@ function isTypeReadonlyObject(
         checker.getTypeOfPropertyOfType(type, property.getName()),
         NullThrowsReasons.MissingToken(`property "${property.name}"`, 'type'),
       );
-      if (!isTypeReadonly(checker, propertyType)) {
-        return false;
+
+      // handle recursive types.
+      // we only need this simple check, because a mutable recursive type will break via the above prop readonly check
+      if (seenTypes.has(propertyType)) {
+        continue;
+      }
+
+      if (
+        isTypeReadonlyRecurser(checker, propertyType, seenTypes) ===
+        Readonlyness.Mutable
+      ) {
+        return Readonlyness.Mutable;
       }
     }
   }
 
   const isStringIndexSigReadonly = checkIndexSignature(ts.IndexKind.String);
-  if (isStringIndexSigReadonly === false) {
+  if (isStringIndexSigReadonly === Readonlyness.Mutable) {
     return isStringIndexSigReadonly;
   }
 
   const isNumberIndexSigReadonly = checkIndexSignature(ts.IndexKind.Number);
-  if (isNumberIndexSigReadonly === false) {
+  if (isNumberIndexSigReadonly === Readonlyness.Mutable) {
     return isNumberIndexSigReadonly;
   }
 
-  return true;
+  return Readonlyness.Readonly;
 }
 
-/**
- * Checks if the given type is readonly
- */
-function isTypeReadonly(checker: ts.TypeChecker, type: ts.Type): boolean {
+// a helper function to ensure the seenTypes map is always passed down, except by the external caller
+function isTypeReadonlyRecurser(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  seenTypes: Set<ts.Type>,
+): Readonlyness.Readonly | Readonlyness.Mutable {
+  seenTypes.add(type);
+
   if (isUnionType(type)) {
     // all types in the union must be readonly
-    return unionTypeParts(type).every(t => isTypeReadonly(checker, t));
+    const result = unionTypeParts(type).every(t =>
+      isTypeReadonlyRecurser(checker, t, seenTypes),
+    );
+    const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
+    return readonlyness;
   }
 
   // all non-object, non-intersection types are readonly.
   // this should only be primitive types
   if (!isObjectType(type) && !isUnionOrIntersectionType(type)) {
-    return true;
+    return Readonlyness.Readonly;
   }
 
   // pure function types are readonly
@@ -136,20 +161,31 @@ function isTypeReadonly(checker: ts.TypeChecker, type: ts.Type): boolean {
     type.getCallSignatures().length > 0 &&
     type.getProperties().length === 0
   ) {
-    return true;
+    return Readonlyness.Readonly;
   }
 
-  const isReadonlyArray = isTypeReadonlyArrayOrTuple(checker, type);
-  if (isReadonlyArray !== null) {
+  const isReadonlyArray = isTypeReadonlyArrayOrTuple(checker, type, seenTypes);
+  if (isReadonlyArray !== Readonlyness.UnknownType) {
     return isReadonlyArray;
   }
 
-  const isReadonlyObject = isTypeReadonlyObject(checker, type);
-  /* istanbul ignore else */ if (isReadonlyObject !== null) {
+  const isReadonlyObject = isTypeReadonlyObject(checker, type, seenTypes);
+  /* istanbul ignore else */ if (
+    isReadonlyObject !== Readonlyness.UnknownType
+  ) {
     return isReadonlyObject;
   }
 
   throw new Error('Unhandled type');
+}
+
+/**
+ * Checks if the given type is readonly
+ */
+function isTypeReadonly(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return (
+    isTypeReadonlyRecurser(checker, type, new Set()) === Readonlyness.Readonly
+  );
 }
 
 export { isTypeReadonly };
