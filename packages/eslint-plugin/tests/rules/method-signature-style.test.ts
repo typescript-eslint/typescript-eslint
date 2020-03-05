@@ -10,12 +10,12 @@ ruleTester.run('method-signature-style', rule, {
     ...batchedSingleLineTests({
       code: `
         interface Test { f: (a: string) => number }
-        interface Test { ["f"]: (a: boolean) => void }
-        interface Test { f: <T>(a: T) => T }
-        interface Test { ['f']: <T>(a: T, b: T) => T }
+        interface Test { ["f"]?: (a: boolean) => void }
+        interface Test { readonly f: <T>(a?: T) => T }
+        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
         type Test = { f: (a: string) => number }
-        type Test = { ["f"]: (a: boolean) => void }
-        type Test = { f: <T>(a: T) => T }
+        type Test = { ["f"]?: (a: boolean) => void }
+        type Test = { readonly f: <T>(a?: T) => T }
         type Test = { ['f']: <T>(a: T, b: T) => T }
       `,
     }),
@@ -23,12 +23,12 @@ ruleTester.run('method-signature-style', rule, {
       options: ['method'],
       code: `
         interface Test { f(a: string): number }
-        interface Test { ["f"](a: boolean): void }
-        interface Test { f<T>(a: T): T }
-        interface Test { ['f']<T>(a: T, b: T): T }
+        interface Test { ["f"]?(a: boolean): void }
+        interface Test { readonly f<T>(a?: T): T }
+        interface Test { ['f']<T extends {}>(a: T, b: T): T }
         type Test = { f(a: string): number }
-        type Test = { ["f"](a: boolean): void }
-        type Test = { f<T>(a: T): T }
+        type Test = { ["f"]?(a: boolean): void }
+        type Test = { readonly f<T>(a?: T): T }
         type Test = { ['f']<T>(a: T, b: T): T }
       `,
     }),
@@ -37,12 +37,12 @@ ruleTester.run('method-signature-style', rule, {
     ...batchedSingleLineTests({
       code: `
         interface Test { f(a: string): number }
-        interface Test { ["f"](a: boolean): void }
-        interface Test { f<T>(a: T): T }
-        interface Test { ['f']<T>(a: T, b: T): T }
+        interface Test { ["f"]?(a: boolean): void }
+        interface Test { readonly f<T>(a?: T): T }
+        interface Test { ['f']<T extends {}>(a: T, b: T): T }
         type Test = { f(a: string): number }
-        type Test = { ["f"](a: boolean): void }
-        type Test = { f<T>(a: T): T }
+        type Test = { ["f"]?(a: boolean): void }
+        type Test = { readonly f<T>(a?: T): T }
         type Test = { ['f']<T>(a: T, b: T): T }
       `,
       errors: [
@@ -55,17 +55,27 @@ ruleTester.run('method-signature-style', rule, {
         { messageId: 'errorMethod', line: 8 },
         { messageId: 'errorMethod', line: 9 },
       ],
+      output: `
+        interface Test { f: (a: string) => number }
+        interface Test { ["f"]?: (a: boolean) => void }
+        interface Test { readonly f: <T>(a?: T) => T }
+        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
+        type Test = { f: (a: string) => number }
+        type Test = { ["f"]?: (a: boolean) => void }
+        type Test = { readonly f: <T>(a?: T) => T }
+        type Test = { ['f']: <T>(a: T, b: T) => T }
+      `,
     }),
     ...batchedSingleLineTests({
       options: ['method'],
       code: `
         interface Test { f: (a: string) => number }
-        interface Test { ["f"]: (a: boolean) => void }
-        interface Test { f: <T>(a: T) => T }
-        interface Test { ['f']: <T>(a: T, b: T) => T }
+        interface Test { ["f"]?: (a: boolean) => void }
+        interface Test { readonly f: <T>(a?: T) => T }
+        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
         type Test = { f: (a: string) => number }
-        type Test = { ["f"]: (a: boolean) => void }
-        type Test = { f: <T>(a: T) => T }
+        type Test = { ["f"]?: (a: boolean) => void }
+        type Test = { readonly f: <T>(a?: T) => T }
         type Test = { ['f']: <T>(a: T, b: T) => T }
       `,
       errors: [
@@ -78,6 +88,16 @@ ruleTester.run('method-signature-style', rule, {
         { messageId: 'errorProperty', line: 8 },
         { messageId: 'errorProperty', line: 9 },
       ],
+      output: `
+        interface Test { f(a: string): number }
+        interface Test { ["f"]?(a: boolean): void }
+        interface Test { readonly f<T>(a?: T): T }
+        interface Test { ['f']<T extends {}>(a: T, b: T): T }
+        type Test = { f(a: string): number }
+        type Test = { ["f"]?(a: boolean): void }
+        type Test = { readonly f<T>(a?: T): T }
+        type Test = { ['f']<T>(a: T, b: T): T }
+      `,
     }),
   ],
 });

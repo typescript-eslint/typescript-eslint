@@ -1,4 +1,7 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export type Options = ['property' | 'method'];
@@ -32,19 +35,63 @@ export default util.createRule<Options, MessageId>({
   create(context, [mode]) {
     const sourceCode = context.getSourceCode();
 
+    function getMethodKey(
+      node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
+    ): string {
+      let key = sourceCode.getText(node.key);
+      if (node.computed) {
+        key = `[${key}]`;
+      }
+      if (node.optional) {
+        key = `${key}?`;
+      }
+      if (node.readonly) {
+        key = `readonly ${key}`;
+      }
+      return key;
+    }
+
+    function getMethodParams(
+      node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
+    ): string {
+      let params = node.params.map(node => sourceCode.getText(node)).join(', ');
+      params = `(${params})`;
+      if (node.typeParameters != null) {
+        const typeParams = sourceCode.getText(node.typeParameters);
+        params = `${typeParams}${params}`;
+      }
+      return params;
+    }
+
+    function getMethodReturnType(
+      node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
+    ): string {
+      return sourceCode.getText(node.returnType!.typeAnnotation);
+    }
+
     return {
-      TSMethodSignature(node): void {
+      TSMethodSignature(methodNode): void {
         if (mode === 'method') {
           return;
         }
 
-        context.report({ node, messageId: 'errorMethod' });
+        context.report({
+          node: methodNode,
+          messageId: 'errorMethod',
+          fix: fixer => {
+            const key = getMethodKey(methodNode);
+            const params = getMethodParams(methodNode);
+            const returnType = getMethodReturnType(methodNode);
+            return fixer.replaceText(
+              methodNode,
+              `${key}: ${params} => ${returnType}`,
+            );
+          },
+        });
       },
-      TSPropertySignature(node): void {
-        if (
-          node.typeAnnotation?.typeAnnotation.type !==
-          AST_NODE_TYPES.TSFunctionType
-        ) {
+      TSPropertySignature(propertyNode): void {
+        const typeNode = propertyNode.typeAnnotation?.typeAnnotation;
+        if (typeNode?.type !== AST_NODE_TYPES.TSFunctionType) {
           return;
         }
 
@@ -52,7 +99,19 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
-        context.report({ node, messageId: 'errorProperty' });
+        context.report({
+          node: propertyNode,
+          messageId: 'errorProperty',
+          fix: fixer => {
+            const key = getMethodKey(propertyNode);
+            const params = getMethodParams(typeNode);
+            const returnType = getMethodReturnType(typeNode);
+            return fixer.replaceText(
+              propertyNode,
+              `${key}${params}: ${returnType}`,
+            );
+          },
+        });
       },
     };
   },
