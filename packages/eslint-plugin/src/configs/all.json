@@ -21,6 +21,8 @@
     "@typescript-eslint/func-call-spacing": "error",
     "indent": "off",
     "@typescript-eslint/indent": "error",
+    "lines-between-class-members": "off",
+    "@typescript-eslint/lines-between-class-members": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/naming-convention": "error",
