@@ -109,6 +109,7 @@ function isFunctionType(
   node: TSESTree.Node | undefined,
 ): node is
   | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructorType
   | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSEmptyBodyFunctionExpression
   | TSESTree.TSFunctionType
@@ -119,6 +120,7 @@ function isFunctionType(
 
   return [
     AST_NODE_TYPES.TSCallSignatureDeclaration,
+    AST_NODE_TYPES.TSConstructorType,
     AST_NODE_TYPES.TSConstructSignatureDeclaration,
     AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     AST_NODE_TYPES.TSFunctionType,
@@ -133,6 +135,7 @@ function isFunctionOrFunctionType(
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.TSCallSignatureDeclaration
+  | TSESTree.TSConstructorType
   | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSEmptyBodyFunctionExpression
   | TSESTree.TSFunctionType
@@ -144,6 +147,12 @@ function isTSFunctionType(
   node: TSESTree.Node | undefined,
 ): node is TSESTree.TSFunctionType {
   return node?.type === AST_NODE_TYPES.TSFunctionType;
+}
+
+function isTSConstructorType(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.TSConstructorType {
+  return node?.type === AST_NODE_TYPES.TSConstructorType;
 }
 
 function isClassOrTypeElement(
@@ -221,6 +230,15 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
+function isMemberOrOptionalMemberExpression(
+  node: TSESTree.Node,
+): node is TSESTree.MemberExpression | TSESTree.OptionalMemberExpression {
+  return (
+    node.type === AST_NODE_TYPES.MemberExpression ||
+    node.type === AST_NODE_TYPES.OptionalMemberExpression
+  );
+}
+
 export {
   isAwaitExpression,
   isAwaitKeyword,
@@ -231,6 +249,7 @@ export {
   isFunctionType,
   isIdentifier,
   isLogicalOrOperator,
+  isMemberOrOptionalMemberExpression,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
@@ -238,6 +257,7 @@ export {
   isOptionalOptionalChain,
   isSetter,
   isTokenOnSameLine,
+  isTSConstructorType,
   isTSFunctionType,
   isTypeAssertion,
   isVariableDeclarator,

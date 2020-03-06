@@ -7,7 +7,7 @@ The default Object `.toString()` returns `"[object Object]"`, so this rule requi
 Note that `Function` provides its own `.toString()` that returns the function's code.
 Functions are not flagged by this rule.
 
-This rule has some overlap with with [`restrict-plus-operands`](./restrict-plus-operands.md) and [`restrict-template-expressions`](./restrict-template-expressions.md).
+This rule has some overlap with [`restrict-plus-operands`](./restrict-plus-operands.md) and [`restrict-template-expressions`](./restrict-template-expressions.md).
 
 ## Rule Details
 
