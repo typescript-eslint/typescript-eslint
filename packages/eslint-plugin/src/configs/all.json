@@ -23,6 +23,7 @@
     "@typescript-eslint/indent": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/method-signature-style": "error",
     "@typescript-eslint/naming-convention": "error",
     "no-array-constructor": "off",
     "@typescript-eslint/no-array-constructor": "error",
