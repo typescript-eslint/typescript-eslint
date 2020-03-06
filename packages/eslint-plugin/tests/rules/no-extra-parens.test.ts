@@ -14,6 +14,17 @@ ruleTester.run('no-extra-parens', rule, {
   valid: [
     ...batchedSingleLineTests({
       code: `
+foo<() => void>(a);
+foo<() => void>(a = b);
+foo<() => void>(a, b);
+foo<() => void>((a, b));
+foo<() => () => void>(a);
+foo<() => void>(()=> undefined);
+foo<T, () => void>(a);
+    `,
+    }),
+    ...batchedSingleLineTests({
+      code: `
 (0).toString();
 (function(){}) ? a() : b();
 (/^a$/).test(x);
@@ -53,6 +64,10 @@ for (;(a = b););
       options: ['all', { returnAssign: false }],
     },
     {
+      code: `foo<() => void>(b => (b = 1));`,
+      options: ['all', { returnAssign: false }],
+    },
+    {
       code: `b => b ? (c = d) : (c = e);`,
       options: ['all', { returnAssign: false }],
     },
@@ -61,6 +76,7 @@ for (;(a = b););
 x = a || (b && c);
 x = a + (b * c);
 x = (a * b) / c;
+foo<() => void>(x = (a * b) / c);
       `,
       options: ['all', { nestedBinaryExpressions: false }],
     }),
@@ -220,6 +236,48 @@ switch (foo) { case 1: case (<2>2): break; default: break; }
   ],
 
   invalid: [
+    ...batchedSingleLineTests({
+      code: `
+foo<() => void>((a));
+foo<() => void>((a = b));
+foo<() => void>((a), b);
+foo<() => () => void>((a));
+foo<() => void>((()=> undefined));
+foo<T, () => void>((a));
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          line: 2,
+          column: 17,
+        },
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 17,
+        },
+        {
+          messageId: 'unexpected',
+          line: 4,
+          column: 17,
+        },
+        {
+          messageId: 'unexpected',
+          line: 5,
+          column: 23,
+        },
+        {
+          messageId: 'unexpected',
+          line: 6,
+          column: 17,
+        },
+        {
+          messageId: 'unexpected',
+          line: 7,
+          column: 20,
+        },
+      ],
+    }),
     ...batchedSingleLineTests({
       code: `
 a = (b * c);

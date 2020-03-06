@@ -5,6 +5,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
   TSESLint,
+  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-extra-parens';
 import * as util from '../util';
@@ -62,10 +63,46 @@ export default util.createRule<Options, MessageIds>({
 
       return rule(node);
     }
+
+    function countsWrappingParens(node: TSESTree.Node, max: number): number {
+      const sourceCode = context.getSourceCode();
+      let count = 0;
+      let left = sourceCode.getTokenBefore(node);
+      let right = sourceCode.getTokenAfter(node);
+
+      while (
+        count < max &&
+        left?.type === AST_TOKEN_TYPES.Punctuator &&
+        left.value === '(' &&
+        right?.type === AST_TOKEN_TYPES.Punctuator &&
+        right.value === ')'
+      ) {
+        count++;
+        left = sourceCode.getTokenBefore(left);
+        right = sourceCode.getTokenAfter(right);
+      }
+
+      return count;
+    }
+
     function callExp(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
+
+      // ESLint core cannot check parens well when there is function type in type parameters with only one argument.
+      // e.g. foo<() => void>(a);
+      if (
+        node.typeParameters?.params.some(util.isTSFunctionType) &&
+        node.arguments.length === 1
+      ) {
+        if (countsWrappingParens(node.arguments[0], 2) < 2) {
+          return rule({
+            ...node,
+            arguments: [],
+          });
+        }
+      }
 
       if (util.isTypeAssertion(node.callee)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
