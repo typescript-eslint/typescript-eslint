@@ -80,10 +80,7 @@ export default util.createRule<Options, MessageIds>({
         );
         const tokenBeforeArg = sourceCode.getTokenBefore(node.arguments[0]);
 
-        if (
-          tokenAfterTypeParam === tokenBeforeArg &&
-          tokenBeforeArg?.value === '('
-        ) {
+        if (tokenAfterTypeParam === tokenBeforeArg) {
           return rule({
             ...node,
             arguments: [],
