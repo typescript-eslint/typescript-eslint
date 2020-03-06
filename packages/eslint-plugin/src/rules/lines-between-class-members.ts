@@ -8,6 +8,18 @@ import * as util from '../util';
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const schema = util.deepMerge(
+  { ...baseRule.meta.schema },
+  {
+    1: {
+      exceptAfterOverload: {
+        type: 'booleean',
+        default: true,
+      },
+    },
+  },
+);
+
 export default util.createRule<Options, MessageIds>({
   name: 'lines-between-class-members',
   meta: {
@@ -19,25 +31,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
-    schema: [
-      {
-        enum: ['always', 'never'],
-      },
-      {
-        type: 'object',
-        properties: {
-          exceptAfterSingleLine: {
-            type: 'boolean',
-            default: false,
-          },
-          exceptAfterOverload: {
-            type: 'boolean',
-            default: false,
-          },
-        },
-        additionalProperties: true,
-      },
-    ],
+    schema,
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
