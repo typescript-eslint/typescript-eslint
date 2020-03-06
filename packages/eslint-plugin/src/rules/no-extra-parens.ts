@@ -5,7 +5,6 @@ import {
   AST_NODE_TYPES,
   TSESTree,
   TSESLint,
-  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-extra-parens';
 import * as util from '../util';
@@ -68,14 +67,15 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
-      const sourceCode = context.getSourceCode();
+
+      const { getTokenBefore, getTokenAfter } = context.getSourceCode();
+
       // ESLint core cannot check parens well when there is function type in type parameters with only one argument.
       // e.g. foo<() => void>(a);
       if (
         node.typeParameters?.params.some(util.isTSFunctionType) &&
         node.arguments.length === 1 &&
-        sourceCode.getTokenAfter(node.typeParameters) ===
-          sourceCode.getTokenBefore(node.arguments[0])
+        getTokenAfter(node.typeParameters) === getTokenBefore(node.arguments[0])
       ) {
         return rule({
           ...node,
