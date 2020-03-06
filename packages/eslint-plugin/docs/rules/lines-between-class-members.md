@@ -5,7 +5,7 @@ This rule improves readability by enforcing lines between class members. It will
 ## Rule Details
 
 This rule extends the base [`eslint/lines-between-class-members`](https://eslint.org/docs/rules/lines-between-class-members) rule.
-It adds suport for ignoring overload methods in a class.
+It adds support for ignoring overload methods in a class.
 
 See the [ESLint documentation](https://eslint.org/docs/rules/lines-between-class-members) for more details on the `lines-between-class-members` rule.
 
