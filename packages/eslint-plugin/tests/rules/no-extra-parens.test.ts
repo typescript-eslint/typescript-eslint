@@ -244,6 +244,8 @@ foo<() => void>((a), b);
 foo<() => () => void>((a));
 foo<() => void>((()=> undefined));
 foo<T, () => void>((a));
+foo<T, () => void>((a),);
+foo<T, () => void>(((a)));
       `,
       errors: [
         {
@@ -275,6 +277,16 @@ foo<T, () => void>((a));
           messageId: 'unexpected',
           line: 7,
           column: 20,
+        },
+        {
+          messageId: 'unexpected',
+          line: 8,
+          column: 20,
+        },
+        {
+          messageId: 'unexpected',
+          line: 9,
+          column: 21,
         },
       ],
     }),
