@@ -68,19 +68,27 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
 
-      const { getTokenBefore, getTokenAfter } = context.getSourceCode();
-
       // ESLint core cannot check parens well when there is function type in type parameters with only one argument.
       // e.g. foo<() => void>(a);
       if (
         node.typeParameters?.params.some(util.isTSFunctionType) &&
-        node.arguments.length === 1 &&
-        getTokenAfter(node.typeParameters) === getTokenBefore(node.arguments[0])
+        node.arguments.length === 1
       ) {
-        return rule({
-          ...node,
-          arguments: [],
-        });
+        const sourceCode = context.getSourceCode();
+        const tokenAfterTypeParam = sourceCode.getTokenAfter(
+          node.typeParameters,
+        );
+        const tokenBeforeArg = sourceCode.getTokenBefore(node.arguments[0]);
+
+        if (
+          tokenAfterTypeParam === tokenBeforeArg &&
+          tokenBeforeArg?.value === '('
+        ) {
+          return rule({
+            ...node,
+            arguments: [],
+          });
+        }
       }
 
       if (util.isTypeAssertion(node.callee)) {
