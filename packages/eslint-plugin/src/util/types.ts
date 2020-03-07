@@ -304,6 +304,24 @@ export function isTypeAnyType(type: ts.Type): boolean {
   return isTypeFlagSet(type, ts.TypeFlags.Any);
 }
 
+/**
+ * @returns true if the type is `any[]`
+ */
+export function isTypeAnyArrayType(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    checker.isArrayType(type) &&
+    isTypeAnyType(
+      // getTypeArguments was only added in TS3.7
+      checker.getTypeArguments
+        ? checker.getTypeArguments(type)[0]
+        : (type.typeArguments ?? [])[0],
+    )
+  );
+}
+
 export const enum AnyType {
   Any,
   AnyArray,
@@ -321,15 +339,7 @@ export function isAnyOrAnyArrayTypeDiscriminated(
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
-  if (
-    checker.isArrayType(type) &&
-    isTypeAnyType(
-      // getTypeArguments was only added in TS3.7
-      checker.getTypeArguments
-        ? checker.getTypeArguments(type)[0]
-        : (type.typeArguments ?? [])[0],
-    )
-  ) {
+  if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
   return AnyType.Safe;
