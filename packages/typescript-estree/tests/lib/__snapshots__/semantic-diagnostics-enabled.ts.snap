@@ -1555,6 +1555,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression-private.src 1`] = `
+Object {
+  "column": 10,
+  "index": 10,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression-this.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/multiple-blank-spaces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -1627,6 +1636,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-element.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-member-expression-private.src 1`] = `
+Object {
+  "column": 22,
+  "index": 22,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-opening-element.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/react-typed-props.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -1689,7 +1707,7 @@ Object {
   "column": 14,
   "index": 31,
   "lineNumber": 2,
-  "message": "'await' expression is only allowed within an async function.",
+  "message": "'await' expressions are only allowed within async functions and at the top levels of modules.",
 }
 `;
 
