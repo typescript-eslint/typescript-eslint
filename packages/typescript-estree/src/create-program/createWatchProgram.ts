@@ -310,7 +310,7 @@ function createWatchProgram(
     oldOnDirectoryStructureHostCreate(host);
   };
 
-  // Since we dont want to asynchronously update program disable timeout methods
+  // Since we don't want to asynchronously update program disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
   watchCompilerHost.setTimeout = undefined;
   watchCompilerHost.clearTimeout = undefined;
