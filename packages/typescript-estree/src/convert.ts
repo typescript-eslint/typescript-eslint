@@ -177,6 +177,7 @@ export class Converter {
           declaration: result,
           specifiers: [],
           source: null,
+          exportKind: 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }
@@ -1529,9 +1530,14 @@ export class Converter {
           type: AST_NODE_TYPES.ImportDeclaration,
           source: this.convertChild(node.moduleSpecifier),
           specifiers: [],
+          importKind: 'value',
         });
 
         if (node.importClause) {
+          if (node.importClause.isTypeOnly) {
+            result.importKind = 'type';
+          }
+
           if (node.importClause.name) {
             result.specifiers.push(this.convertChild(node.importClause));
           }
@@ -1587,12 +1593,14 @@ export class Converter {
             specifiers: node.exportClause.elements.map(el =>
               this.convertChild(el),
             ),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
             declaration: null,
           });
         } else {
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
             type: AST_NODE_TYPES.ExportAllDeclaration,
             source: this.convertChild(node.moduleSpecifier),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
           });
         }
 

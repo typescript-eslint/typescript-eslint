@@ -938,6 +938,7 @@ exports[`TSX fixtures/react-typed-props.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 30,
