@@ -250,7 +250,7 @@ function createWatchProgram(
       filePath === currentLintOperationState.filePath
         ? currentLintOperationState.code
         : oldReadFile(filePath, encoding);
-    if (fileContent) {
+    if (fileContent !== undefined) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
     }
     return fileContent;
