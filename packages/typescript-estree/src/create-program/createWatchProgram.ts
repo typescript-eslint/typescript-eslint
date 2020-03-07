@@ -310,23 +310,10 @@ function createWatchProgram(
     oldOnDirectoryStructureHostCreate(host);
   };
 
-  /*
-   * The watch change callbacks TS provides us all have a 250ms delay before firing
-   * https://github.com/microsoft/TypeScript/blob/b845800bdfcc81c8c72e2ac6fdc2c1df0cdab6f9/src/compiler/watch.ts#L1013
-   *
-   * We live in a synchronous world, so we can't wait for that.
-   * This is a bit of a hack, but it lets us immediately force updates when we detect a tsconfig or directory change
-   */
-  const oldSetTimeout = watchCompilerHost.setTimeout;
-  watchCompilerHost.setTimeout = (cb, ms, ...args): unknown => {
-    if (ms === 250) {
-      cb();
-      return null;
-    }
-
-    return oldSetTimeout?.(cb, ms, ...args);
-  };
-
+  // Since we dont want to asynchronously update program disable timeout methods
+  // So any changes in the program will be delayed and updated when getProgram is called on watch
+  watchCompilerHost.setTimeout = undefined;
+  watchCompilerHost.clearTimeout = undefined;
   return ts.createWatchProgram(watchCompilerHost);
 }
 
