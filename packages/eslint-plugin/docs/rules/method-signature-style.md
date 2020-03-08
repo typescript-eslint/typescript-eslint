@@ -14,15 +14,21 @@ interface T2 {
 }
 ```
 
-A method and a function property of the same type behave differently.
-Methods are always bivariant in their argument, while function properties are contravariant in their argument under `strictFunctionTypes`. See the reasoning behind that [here](https://github.com/microsoft/TypeScript/pull/18654).
+A good practice is to use the TypeScript's `strict` option (which implies `strictFunctionTypes`) which enables correct typechecking for function properties only (method signatures get old behavior).
+
+TypeScript FAQ:
+
+> A method and a function property of the same type behave differently.
+> Methods are always bivariant in their argument, while function properties are contravariant in their argument under `strictFunctionTypes`.
+
+See the reasoning behind that in the [TypeScript PR for the compiler option](https://github.com/microsoft/TypeScript/pull/18654).
 
 ## Options
 
 This rule accepts one string option:
 
-- `"property"`: Enforce using property signature for functions. Use this to enforce maximum correctness.
-- `"method"`: Enforce using method signature for functions.
+- `"property"`: Enforce using property signature for functions. Use this to enforce maximum correctness together with TypeScript's strict mode.
+- `"method"`: Enforce using method signature for functions. Use this if you aren't using TypeScript's strict mode and prefer this style.
 
 The default is `"property"`.
 
@@ -74,4 +80,4 @@ type T2 = {
 
 ## When Not To Use It
 
-If you don't want to enforce a particular variance on all interface/object methods, you don't need this rule.
+If you don't want to enforce a particular style for object/interface function types, and/or if you don't use `strictFunctionTypes`, then you don't need this rule.
