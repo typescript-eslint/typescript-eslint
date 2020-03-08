@@ -77,6 +77,7 @@ import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
+import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
 import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
@@ -174,6 +175,7 @@ export default {
   'prefer-readonly': preferReadonly,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
+  'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
   quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
