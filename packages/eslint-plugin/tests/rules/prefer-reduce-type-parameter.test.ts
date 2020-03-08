@@ -136,32 +136,5 @@ names.reduce<Record<string, boolean>>(
         },
       ],
     },
-    //     {
-    //       code: `
-    // ['a', 'b']['reduce'](
-    //   (accum, name) => ({
-    //     ...accum,
-    //     [name]: true
-    //   }),
-    //   {} as Record<string, boolean>
-    // );
-    //       `,
-    //       output: `
-    // ['a', 'b']['reduce']<Record<string, boolean>>(
-    //   (accum, name) => ({
-    //     ...accum,
-    //     [name]: true
-    //   }),
-    //   {}
-    // );
-    //       `,
-    //       errors: [
-    //         {
-    //           messageId: 'preferTypeParameter',
-    //           column: 3,
-    //           line: 7,
-    //         },
-    //       ],
-    //     },
   ],
 });
