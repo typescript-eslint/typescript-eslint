@@ -75,6 +75,7 @@ import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
+import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import promiseFunctionAsync from './promise-function-async';
@@ -172,6 +173,7 @@ export default {
   'prefer-optional-chain': preferOptionalChain,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-readonly': preferReadonly,
+  'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'promise-function-async': promiseFunctionAsync,
