@@ -119,55 +119,23 @@ function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}
 function foo4(...args: ReadonlyArray<any>): void {}
 
-const bar1 = (...args: any[]): void {}
-const bar2 = (...args: readonly any[]): void {}
-const bar3 = (...args: Array<any>): void {}
-const bar4 = (...args: ReadonlyArray<any>): void {}
+declare function bar(...args: any[]): void;
 
-const baz1 = function (...args: any[]) {}
-const baz2 = function (...args: readonly any[]) {}
-const baz3 = function (...args: Array<any>) {}
-const baz4 = function (...args: ReadonlyArray<any>) {}
+const baz = (...args: any[]) => {};
+const qux = function(...args: any[]) {};
 
-interface Qux1 { (...args: any[]): void; }
-interface Qux2 { (...args: readonly any[]): void; }
-interface Qux3 { (...args: Array<any>): void; }
-interface Qux4 { (...args: ReadonlyArray<any>): void; }
+type Quux = (...args: any[]) => void;
+type Grault = new (...args: any[]) => void;
 
-function quux1(fn: (...args: any[]) => void): void {}
-function quux2(fn: (...args: readonly any[]) => void): void {}
-function quux3(fn: (...args: Array<any>) => void): void {}
-function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
-
-function quuz1(): ((...args: any[]) => void) {}
-function quuz2(): ((...args: readonly any[]) => void) {}
-function quuz3(): ((...args: Array<any>) => void) {}
-function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
-
-type Fred1 = (...args: any[]) => void;
-type Fred2 = (...args: readonly any[]) => void;
-type Fred3 = (...args: Array<any>) => void;
-type Fred4 = (...args: ReadonlyArray<any>) => void;
-
-type Corge1 = new (...args: any[]) => void;
-type Corge2 = new (...args: readonly any[]) => void;
-type Corge3 = new (...args: Array<any>) => void;
-type Corge4 = new (...args: ReadonlyArray<any>) => void;
-
-interface Grault1 { new (...args: any[]): void; }
-interface Grault2 { new (...args: readonly any[]): void; }
-interface Grault3 { new (...args: Array<any>): void; }
-interface Grault4 { new (...args: ReadonlyArray<any>): void; }
-
-interface Garply1 { f(...args: any[]): void; }
-interface Garply2 { f(...args: readonly any[]): void; }
-interface Garply3 { f(...args: Array<any>): void; }
-interface Garply4 { f(...args: ReadonlyArray<any>): void; }
-
-declare function waldo1(...args: any[]): void;
-declare function waldo2(...args: readonly any[]): void;
-declare function waldo3(...args: Array<any>): void;
-declare function waldo4(...args: ReadonlyArray<any>): void;
+interface Corge {
+  (...args: any[]): void;
+}
+interface Garply {
+  new (...args: any[]): void;
+}
+interface Fred {
+  f(...args: any[]): void;
+}
 ```
 
 Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
@@ -180,55 +148,23 @@ function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}
 function foo4(...args: ReadonlyArray<any>): void {}
 
-const bar1 = (...args: any[]): void {}
-const bar2 = (...args: readonly any[]): void {}
-const bar3 = (...args: Array<any>): void {}
-const bar4 = (...args: ReadonlyArray<any>): void {}
+declare function bar(...args: any[]): void;
 
-const baz1 = function (...args: any[]) {}
-const baz2 = function (...args: readonly any[]) {}
-const baz3 = function (...args: Array<any>) {}
-const baz4 = function (...args: ReadonlyArray<any>) {}
+const baz = (...args: any[]) => {};
+const qux = function(...args: any[]) {};
 
-interface Qux1 { (...args: any[]): void; }
-interface Qux2 { (...args: readonly any[]): void; }
-interface Qux3 { (...args: Array<any>): void; }
-interface Qux4 { (...args: ReadonlyArray<any>): void; }
+type Quux = (...args: any[]) => void;
+type Grault = new (...args: any[]) => void;
 
-function quux1(fn: (...args: any[]) => void): void {}
-function quux2(fn: (...args: readonly any[]) => void): void {}
-function quux3(fn: (...args: Array<any>) => void): void {}
-function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}
-
-function quuz1(): ((...args: any[]) => void) {}
-function quuz2(): ((...args: readonly any[]) => void) {}
-function quuz3(): ((...args: Array<any>) => void) {}
-function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
-
-type Fred1 = (...args: any[]) => void;
-type Fred2 = (...args: readonly any[]) => void;
-type Fred3 = (...args: Array<any>) => void;
-type Fred4 = (...args: ReadonlyArray<any>) => void;
-
-type Corge1 = new (...args: any[]) => void;
-type Corge2 = new (...args: readonly any[]) => void;
-type Corge3 = new (...args: Array<any>) => void;
-type Corge4 = new (...args: ReadonlyArray<any>) => void;
-
-interface Grault1 { new (...args: any[]): void; }
-interface Grault2 { new (...args: readonly any[]): void; }
-interface Grault3 { new (...args: Array<any>): void; }
-interface Grault4 { new (...args: ReadonlyArray<any>): void; }
-
-interface Garply1 { f(...args: any[]): void; }
-interface Garply2 { f(...args: readonly any[]): void; }
-interface Garply3 { f(...args: Array<any>): void; }
-interface Garply4 { f(...args: ReadonlyArray<any>): void; }
-
-declare function waldo1(...args: any[]): void;
-declare function waldo2(...args: readonly any[]): void;
-declare function waldo3(...args: Array<any>): void;
-declare function waldo4(...args: ReadonlyArray<any>): void;
+interface Corge {
+  (...args: any[]): void;
+}
+interface Garply {
+  new (...args: any[]): void;
+}
+interface Fred {
+  f(...args: any[]): void;
+}
 ```
 
 ## When Not To Use It
