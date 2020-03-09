@@ -125,15 +125,15 @@ const baz = (...args: any[]) => {};
 const qux = function(...args: any[]) {};
 
 type Quux = (...args: any[]) => void;
-type Grault = new (...args: any[]) => void;
+type Quuz = new (...args: any[]) => void;
 
-interface Corge {
+interface Grault {
   (...args: any[]): void;
 }
-interface Garply {
+interface Corge {
   new (...args: any[]): void;
 }
-interface Fred {
+interface Garply {
   f(...args: any[]): void;
 }
 ```
@@ -154,15 +154,15 @@ const baz = (...args: any[]) => {};
 const qux = function(...args: any[]) {};
 
 type Quux = (...args: any[]) => void;
-type Grault = new (...args: any[]) => void;
+type Quuz = new (...args: any[]) => void;
 
-interface Corge {
+interface Grault {
   (...args: any[]): void;
 }
-interface Garply {
+interface Corge {
   new (...args: any[]): void;
 }
-interface Fred {
+interface Garply {
   f(...args: any[]): void;
 }
 ```
