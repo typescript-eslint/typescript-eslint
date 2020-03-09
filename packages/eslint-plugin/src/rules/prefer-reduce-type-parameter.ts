@@ -4,6 +4,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type MemberExpressionWithCallExpressionParent = (
+  | TSESTree.MemberExpression
+  | TSESTree.OptionalMemberExpression
+) & { parent: TSESTree.CallExpression | TSESTree.OptionalCallExpression };
+
 const getMemberExpressionName = (
   member: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
 ): string | null => {
@@ -44,25 +49,25 @@ export default util.createRule({
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
 
-    const reportPossibleArrayReduceCasting = (
-      node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
-    ): void => {
-      {
+    return {
+      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression)'(
+        callee: MemberExpressionWithCallExpressionParent,
+      ) {
+        if (getMemberExpressionName(callee) !== 'reduce') {
+          return;
+        }
+
+        const [, secondArg] = callee.parent.arguments;
+
         if (
-          !util.isMemberOrOptionalMemberExpression(node.callee) ||
-          getMemberExpressionName(node.callee) !== 'reduce'
+          callee.parent.arguments.length < 2 ||
+          !util.isTypeAssertion(secondArg)
         ) {
           return;
         }
 
-        const [, secondArg] = node.arguments;
-
-        if (node.arguments.length < 2 || !util.isTypeAssertion(secondArg)) {
-          return;
-        }
-
         // Get the symbol of the `reduce` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(node.callee.object);
+        const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
         const calleeObjType = checker.getTypeAtLocation(tsNode);
 
         // Check the owner type of the `reduce` method.
@@ -80,7 +85,7 @@ export default util.createRule({
                 secondArg.range[1],
               ]),
               fixer.insertTextAfter(
-                node.callee,
+                callee,
                 `<${context
                   .getSourceCode()
                   .getText(secondArg.typeAnnotation)}>`,
@@ -90,12 +95,7 @@ export default util.createRule({
 
           return;
         }
-      }
-    };
-
-    return {
-      OptionalCallExpression: reportPossibleArrayReduceCasting,
-      CallExpression: reportPossibleArrayReduceCasting,
+      },
     };
   },
 });
