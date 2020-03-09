@@ -23,6 +23,11 @@ nestedAny.prop['a'];
 
 const key = 'a';
 nestedAny.prop[key];
+
+// usng an any to access a member is unsafe
+const arr = [1, 2, 3];
+arr[anyVar];
+nestedAny[anyVar];
 ```
 
 Examples of **correct** code for this rule:
@@ -35,6 +40,12 @@ nestedAny.prop['a'];
 
 const key = 'a';
 nestedAny.prop[key];
+
+const arr = [1, 2, 3];
+arr[1];
+const idx = 1;
+arr[idx];
+arr[idx++];
 ```
 
 ## Related to

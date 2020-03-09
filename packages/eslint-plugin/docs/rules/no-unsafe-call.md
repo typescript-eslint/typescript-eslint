@@ -21,6 +21,9 @@ nestedAny.prop['a']();
 
 new anyVar();
 new nestedAny.prop();
+
+anyVar`foo`;
+nestedAny.prop`foo`;
 ```
 
 Examples of **correct** code for this rule:
@@ -33,6 +36,8 @@ nestedAny.prop.a();
 (() => {})();
 
 new Map();
+
+String.raw`foo`;
 ```
 
 ## Related to

@@ -248,6 +248,48 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.asserts = false;
         }
       },
+      /**
+       * TS 3.8 import/export type
+       * babel coming soon https://github.com/babel/babel/pull/11171
+       */
+      ExportNamedDeclaration(node: any) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
+        }
+      },
+      ExportAllDeclaration(node: any) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
+        }
+      },
+      ImportDeclaration(node) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.importKind) {
+          node.importKind = 'value';
+        }
+      },
     },
   );
 }
