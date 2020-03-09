@@ -252,20 +252,34 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
        * TS 3.8 import/export type
        * babel coming soon https://github.com/babel/babel/pull/11171
        */
-      ExportNamedDeclaration(node) {
+      ExportNamedDeclaration(node: any) {
         /**
          * TS 3.8: export type
          */
         if (!node.exportKind) {
-          node.exportKind = 'value';
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
         }
       },
-      ExportAllDeclaration(node) {
+      ExportAllDeclaration(node: any) {
         /**
          * TS 3.8: export type
          */
         if (!node.exportKind) {
-          node.exportKind = 'value';
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
         }
       },
       ImportDeclaration(node) {

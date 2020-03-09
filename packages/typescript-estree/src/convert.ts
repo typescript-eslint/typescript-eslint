@@ -172,12 +172,15 @@ export class Converter {
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       } else {
+        const isType =
+          result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+          result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
           declaration: result,
           specifiers: [],
           source: null,
-          exportKind: 'value',
+          exportKind: isType ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }

@@ -4476,7 +4476,7 @@ Object {
         ],
         "type": "TSInterfaceDeclaration",
       },
-      "exportKind": "value",
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -98017,7 +98017,7 @@ Object {
           ],
         },
       },
-      "exportKind": "value",
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 40,
@@ -98346,7 +98346,7 @@ Object {
           "type": "TSFunctionType",
         },
       },
-      "exportKind": "value",
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 47,
@@ -98731,7 +98731,7 @@ Object {
           "type": "TSTypeLiteral",
         },
       },
-      "exportKind": "value",
+      "exportKind": "type",
       "loc": Object {
         "end": Object {
           "column": 2,
@@ -151165,7 +151165,7 @@ Object {
                       ],
                       "type": "TSInterfaceDeclaration",
                     },
-                    "exportKind": "value",
+                    "exportKind": "type",
                     "loc": Object {
                       "end": Object {
                         "column": 9,
