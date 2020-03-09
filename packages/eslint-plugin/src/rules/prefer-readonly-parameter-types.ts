@@ -86,15 +86,18 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type);
 
           if (!isReadOnly) {
-            const maybeName =
+            const maybeParamName =
               actualParam.type === AST_NODE_TYPES.Identifier
-                ? ` '${actualParam.name}'`
-                : '';
+                ? actualParam.name
+                : actualParam.type === AST_NODE_TYPES.RestElement &&
+                  actualParam.argument.type === AST_NODE_TYPES.Identifier
+                ? actualParam.argument.name
+                : null;
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
               data: {
-                maybeName,
+                maybeName: maybeParamName ? ` '${maybeParamName}'` : '',
               },
             });
           }
