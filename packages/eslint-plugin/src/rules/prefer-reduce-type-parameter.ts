@@ -57,11 +57,7 @@ export default util.createRule({
 
         const [, secondArg] = node.arguments;
 
-        if (
-          node.arguments.length < 2 ||
-          (secondArg.type !== AST_NODE_TYPES.TSAsExpression &&
-            secondArg.type !== AST_NODE_TYPES.TSTypeAssertion)
-        ) {
+        if (node.arguments.length < 2 || !util.isTypeAssertion(secondArg)) {
           return;
         }
 
