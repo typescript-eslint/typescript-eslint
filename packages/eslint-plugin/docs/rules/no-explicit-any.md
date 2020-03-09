@@ -143,6 +143,31 @@ function quuz1(): ((...args: any[]) => void) {}
 function quuz2(): ((...args: readonly any[]) => void) {}
 function quuz3(): ((...args: Array<any>) => void) {}
 function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
+
+type Fred1 = (...args: any[]) => void;
+type Fred2 = (...args: readonly any[]) => void;
+type Fred3 = (...args: Array<any>) => void;
+type Fred4 = (...args: ReadonlyArray<any>) => void;
+
+type Corge1 = new (...args: any[]) => void;
+type Corge2 = new (...args: readonly any[]) => void;
+type Corge3 = new (...args: Array<any>) => void;
+type Corge4 = new (...args: ReadonlyArray<any>) => void;
+
+interface Grault1 { new (...args: any[]): void; }
+interface Grault2 { new (...args: readonly any[]): void; }
+interface Grault3 { new (...args: Array<any>): void; }
+interface Grault4 { new (...args: ReadonlyArray<any>): void; }
+
+interface Garply1 { f(...args: any[]): void; }
+interface Garply2 { f(...args: readonly any[]): void; }
+interface Garply3 { f(...args: Array<any>): void; }
+interface Garply4 { f(...args: ReadonlyArray<any>): void; }
+
+declare function waldo1(...args: any[]): void;
+declare function waldo2(...args: readonly any[]): void;
+declare function waldo3(...args: Array<any>): void;
+declare function waldo4(...args: ReadonlyArray<any>): void;
 ```
 
 Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
@@ -179,6 +204,31 @@ function quuz1(): ((...args: any[]) => void) {}
 function quuz2(): ((...args: readonly any[]) => void) {}
 function quuz3(): ((...args: Array<any>) => void) {}
 function quuz4(): ((...args: ReadonlyArray<any>) => void) {}
+
+type Fred1 = (...args: any[]) => void;
+type Fred2 = (...args: readonly any[]) => void;
+type Fred3 = (...args: Array<any>) => void;
+type Fred4 = (...args: ReadonlyArray<any>) => void;
+
+type Corge1 = new (...args: any[]) => void;
+type Corge2 = new (...args: readonly any[]) => void;
+type Corge3 = new (...args: Array<any>) => void;
+type Corge4 = new (...args: ReadonlyArray<any>) => void;
+
+interface Grault1 { new (...args: any[]): void; }
+interface Grault2 { new (...args: readonly any[]): void; }
+interface Grault3 { new (...args: Array<any>): void; }
+interface Grault4 { new (...args: ReadonlyArray<any>): void; }
+
+interface Garply1 { f(...args: any[]): void; }
+interface Garply2 { f(...args: readonly any[]): void; }
+interface Garply3 { f(...args: Array<any>): void; }
+interface Garply4 { f(...args: ReadonlyArray<any>): void; }
+
+declare function waldo1(...args: any[]): void;
+declare function waldo2(...args: readonly any[]): void;
+declare function waldo3(...args: Array<any>): void;
+declare function waldo4(...args: ReadonlyArray<any>): void;
 ```
 
 ## When Not To Use It

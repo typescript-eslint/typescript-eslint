@@ -238,6 +238,86 @@ type obj = {
       code: `function quuz4(): ((...args: ReadonlyArray<any>) => void) {}`,
       options: [{ ignoreRestArgs: true }],
     },
+    {
+      code: `type Fred1 = (...args: any[]) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Fred2 = (...args: readonly any[]) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Fred3 = (...args: Array<any>) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Fred4 = (...args: ReadonlyArray<any>) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Corge1 = new (...args: any[]) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Corge2 = new (...args: readonly any[]) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Corge3 = new (...args: Array<any>) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `type Corge4 = new (...args: ReadonlyArray<any>) => void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Grault1 { new (...args: any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Grault2 { new (...args: readonly any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Grault3 { new (...args: Array<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Grault4 { new (...args: ReadonlyArray<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Garply1 { f(...args: any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Garply2 { f(...args: readonly any[]): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Garply3 { f(...args: Array<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `interface Garply4 { f(...args: ReadonlyArray<any>): void; }`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `declare function waldo1(...args: any[]): void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `declare function waldo2(...args: readonly any[]): void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `declare function waldo3(...args: Array<any>): void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `declare function waldo4(...args: ReadonlyArray<any>): void;`,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
   invalid: ([
     {
@@ -988,6 +1068,61 @@ const test = <T extends Partial<never>>() => {};
           messageId: 'unexpectedAny',
           line: 1,
           column: 30,
+        },
+      ],
+    },
+    {
+      code: `type Fred5 = (...args: any) => void;`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: `type Corge5 = new (...args: any) => void;`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 29,
+        },
+      ],
+    },
+    {
+      code: `interface Grault5 { new (...args: any): void; }`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `interface Garply5 { f(...args: any): void; }`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 32,
+        },
+      ],
+    },
+    {
+      code: `declare function waldo5(...args: any): void;`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 34,
         },
       ],
     },
