@@ -25,7 +25,6 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
 
     new Reducable().reduce(() => {}, 1 as any);
     `,
-    "[1, 2, 3]['reduce']((sum, num) => sum + num, {} as any)",
     "[1, 2, 3]['reduce']((sum, num) => sum + num, 0)",
     '[1, 2, 3][null]((sum, num) => sum + num, 0)',
     '[1, 2, 3]?.[null]((sum, num) => sum + num, 0)',
@@ -128,6 +127,33 @@ names.reduce<Record<string, boolean>>(
   {}
 );
       `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 3,
+          line: 7,
+        },
+      ],
+    },
+    {
+      code: `
+['a', 'b']['reduce'](
+  (accum, name) => ({
+    ...accum,
+    [name]: true
+  }),
+  {} as Record<string, boolean>
+);
+           `,
+      output: `
+['a', 'b']['reduce']<Record<string, boolean>>(
+  (accum, name) => ({
+    ...accum,
+    [name]: true
+  }),
+  {}
+);
+           `,
       errors: [
         {
           messageId: 'preferTypeParameter',

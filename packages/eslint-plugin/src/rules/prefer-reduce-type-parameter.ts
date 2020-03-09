@@ -2,7 +2,6 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
 import * as util from '../util';
 
 const getMemberExpressionName = (
@@ -67,43 +66,33 @@ export default util.createRule({
         }
 
         // Get the symbol of the `reduce` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(node.callee);
-        const reduceSymbol = checker.getSymbolAtLocation(tsNode);
-        if (reduceSymbol == null) {
-          return;
-        }
+        const tsNode = service.esTreeNodeToTSNodeMap.get(node.callee.object);
+        const calleeObjType = checker.getTypeAtLocation(tsNode);
 
         // Check the owner type of the `reduce` method.
-        for (const methodDecl of reduceSymbol.declarations) {
-          const typeDecl = methodDecl.parent;
-          if (
-            ts.isInterfaceDeclaration(typeDecl) &&
-            ts.isSourceFile(typeDecl.parent) &&
-            typeDecl.name.escapedText === 'Array'
-          ) {
-            context.report({
-              messageId: 'preferTypeParameter',
-              node: secondArg,
-              fix: fixer => [
-                fixer.removeRange([
-                  secondArg.range[0],
-                  secondArg.expression.range[0],
-                ]),
-                fixer.removeRange([
-                  secondArg.expression.range[1],
-                  secondArg.range[1],
-                ]),
-                fixer.insertTextAfter(
-                  node.callee,
-                  `<${context
-                    .getSourceCode()
-                    .getText(secondArg.typeAnnotation)}>`,
-                ),
-              ],
-            });
+        if (checker.isArrayType(calleeObjType)) {
+          context.report({
+            messageId: 'preferTypeParameter',
+            node: secondArg,
+            fix: fixer => [
+              fixer.removeRange([
+                secondArg.range[0],
+                secondArg.expression.range[0],
+              ]),
+              fixer.removeRange([
+                secondArg.expression.range[1],
+                secondArg.range[1],
+              ]),
+              fixer.insertTextAfter(
+                node.callee,
+                `<${context
+                  .getSourceCode()
+                  .getText(secondArg.typeAnnotation)}>`,
+              ),
+            ],
+          });
 
-            return;
-          }
+          return;
         }
       }
     };
