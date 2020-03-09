@@ -586,6 +586,18 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    {
+      // AssignmentPattern
+      code: 'function foo(arg: string[] = []) {}',
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          column: 14,
+          endColumn: 32,
+          data: { maybeName: " 'arg'" },
+        },
+      ],
+    },
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1665
     // directly recursive

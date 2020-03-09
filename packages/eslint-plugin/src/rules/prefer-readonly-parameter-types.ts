@@ -92,6 +92,9 @@ export default util.createRule<Options, MessageIds>({
                 : actualParam.type === AST_NODE_TYPES.RestElement &&
                   actualParam.argument.type === AST_NODE_TYPES.Identifier
                 ? actualParam.argument.name
+                : actualParam.type === AST_NODE_TYPES.AssignmentPattern &&
+                  actualParam.left.type === AST_NODE_TYPES.Identifier
+                ? actualParam.left.name
                 : null;
             context.report({
               node: actualParam,
