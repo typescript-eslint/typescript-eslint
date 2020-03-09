@@ -34,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
     messages: {
-      shouldBeReadonly: 'Parameter should be a read only type',
+      shouldBeReadonly: 'Parameter{{maybeName}} should be a read only type',
     },
   },
   defaultOptions: [
@@ -86,9 +86,16 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type);
 
           if (!isReadOnly) {
+            const maybeName =
+              actualParam.type === AST_NODE_TYPES.Identifier
+                ? ` '${actualParam.name}'`
+                : '';
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
+              data: {
+                maybeName,
+              },
             });
           }
         }
