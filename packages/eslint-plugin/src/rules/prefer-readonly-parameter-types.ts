@@ -86,16 +86,7 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type);
 
           if (!isReadOnly) {
-            const maybeParamName =
-              actualParam.type === AST_NODE_TYPES.Identifier
-                ? actualParam.name
-                : actualParam.type === AST_NODE_TYPES.RestElement &&
-                  actualParam.argument.type === AST_NODE_TYPES.Identifier
-                ? actualParam.argument.name
-                : actualParam.type === AST_NODE_TYPES.AssignmentPattern &&
-                  actualParam.left.type === AST_NODE_TYPES.Identifier
-                ? actualParam.left.name
-                : null;
+            const maybeParamName = getParameterName(actualParam);
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
@@ -109,3 +100,25 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
+
+function getParameterName(param: TSESTree.Node): string | null {
+  if (param.type === AST_NODE_TYPES.Identifier) {
+    return param.name;
+  }
+
+  if (
+    param.type === AST_NODE_TYPES.RestElement &&
+    param.argument.type === AST_NODE_TYPES.Identifier
+  ) {
+    return param.argument.name;
+  }
+
+  if (
+    param.type === AST_NODE_TYPES.AssignmentPattern &&
+    param.left.type === AST_NODE_TYPES.Identifier
+  ) {
+    return param.left.name;
+  }
+
+  return null;
+}

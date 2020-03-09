@@ -580,7 +580,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          column: 17,
+          column: 14,
           endColumn: 31,
           data: { maybeName: " 'args'" },
         },
