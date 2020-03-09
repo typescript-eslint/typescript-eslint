@@ -316,16 +316,19 @@ function createWatchProgram(
   // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
   // instead save it and call before getProgram is called
   let callback: (() => void) | undefined;
-  watchCompilerHost.setTimeout = (cb, _ms, ...args) => {
+  watchCompilerHost.setTimeout = (cb, _ms, ...args): unknown => {
     callback = cb.bind(/*this*/ undefined, ...args);
+    return callback;
   };
-  watchCompilerHost.clearTimeout = () => {
+  watchCompilerHost.clearTimeout = (): void => {
     callback = undefined;
   };
   const watch = ts.createWatchProgram(watchCompilerHost);
   const originalGetProgram = watch.getProgram;
-  watch.getProgram = () => {
-    if (callback) callback();
+  watch.getProgram = (): ts.SemanticDiagnosticsBuilderProgram => {
+    if (callback) {
+      callback();
+    }
     callback = undefined;
     return originalGetProgram.call(watch);
   };
