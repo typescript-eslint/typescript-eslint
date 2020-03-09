@@ -309,12 +309,27 @@ function createWatchProgram(
       );
     oldOnDirectoryStructureHostCreate(host);
   };
+  watchCompilerHost.trace = log;
 
-  // Since we don't want to asynchronously update program disable timeout methods
+  // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
-  watchCompilerHost.setTimeout = undefined;
-  watchCompilerHost.clearTimeout = undefined;
-  return ts.createWatchProgram(watchCompilerHost);
+  // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
+  // instead save it and call before getProgram is called
+  let callback: (() => void) | undefined;
+  watchCompilerHost.setTimeout = (cb, _ms, ...args) => {
+    callback = cb.bind(/*this*/ undefined, ...args);
+  };
+  watchCompilerHost.clearTimeout = () => {
+    callback = undefined;
+  };
+  const watch = ts.createWatchProgram(watchCompilerHost);
+  const originalGetProgram = watch.getProgram;
+  watch.getProgram = () => {
+    if (callback) callback();
+    callback = undefined;
+    return originalGetProgram.call(watch);
+  };
+  return watch;
 }
 
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
