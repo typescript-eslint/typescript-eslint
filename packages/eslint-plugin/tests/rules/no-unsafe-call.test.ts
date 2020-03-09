@@ -19,6 +19,7 @@ ruleTester.run('no-unsafe-call', rule, {
     'function foo(x?: { a: () => void }) { x?.a() }',
     'function foo(x: { a?: () => void }) { x.a?.() }',
     'new Map()',
+    'String.raw`foo`',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -99,6 +100,26 @@ function foo(x: { a: any }) { new x.a() }
           line: 3,
           column: 31,
           endColumn: 40,
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: `
+function foo(x: any) { x\`foo\` }
+function foo(x: { tag: any }) { x.tag\`foo\` }
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 2,
+          column: 24,
+          endColumn: 25,
+        },
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 3,
+          column: 33,
+          endColumn: 38,
         },
       ],
     }),
