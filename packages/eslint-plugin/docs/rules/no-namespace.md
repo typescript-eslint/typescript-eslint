@@ -16,7 +16,7 @@ or more of the following you may pass an object with the options set as follows:
 
 - `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
 - `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
-  inside definition files (Default: `false`).
+  inside definition files (Default: `true`).
 
 Examples of **incorrect** code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": false }` options:
 
