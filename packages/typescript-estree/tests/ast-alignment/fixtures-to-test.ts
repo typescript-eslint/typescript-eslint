@@ -429,6 +429,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-type-as',
     'export-type-from-as',
     'export-type-from',
+    'export-type-star-from',
     'export-type',
     'import-type-default',
     'import-type-error',
