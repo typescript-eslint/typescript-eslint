@@ -75,10 +75,27 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
 
+    function isConst(node: TSESTree.TypeNode): boolean {
+      if (node.type !== AST_NODE_TYPES.TSTypeReference) {
+        return false;
+      }
+
+      return (
+        node.typeName.type === AST_NODE_TYPES.Identifier &&
+        node.typeName.name === 'const'
+      );
+    }
+
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
+      // If this node is `as const`, then don't report an error.
+      if (isConst(node.typeAnnotation)) {
+        return;
+      }
+
       const messageId = options.assertionStyle;
+
       context.report({
         node,
         messageId,
@@ -97,8 +114,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeReference:
           return (
             // Ignore `as const` and `<const>`
-            (node.typeName.type === AST_NODE_TYPES.Identifier &&
-              node.typeName.name !== 'const') ||
+            !isConst(node) ||
             // Allow qualified names which have dots between identifiers, `Foo.Bar`
             node.typeName.type === AST_NODE_TYPES.TSQualifiedName
           );

@@ -9,14 +9,12 @@ const ANGLE_BRACKET_TESTS = `
 const x = <Foo>new Generic<int>();
 const x = <A>b;
 const x = <readonly number[]>[1];
-const x = <const>[1];
 const x = <a | b>('string');
 `;
 const AS_TESTS = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
 const x = [1] as readonly number[];
-const x = [1] as const;
 const x = ('string') as a | b;
 `;
 const OBJECT_LITERAL_AS_CASTS = `
@@ -98,6 +96,22 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
+    {
+      code: 'const x = <const>[1];',
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    },
+    {
+      code: 'const x = [1] as const;',
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({

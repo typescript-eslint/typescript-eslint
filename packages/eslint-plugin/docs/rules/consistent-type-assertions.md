@@ -8,6 +8,8 @@ Type assertions are also commonly referred as "type casting" in TypeScript (even
 
 In addition to ensuring that type assertions are written in a consistent way, this rule also helps make your codebase more type-safe.
 
+`const` assertions, [introduced in TypeScript 3.4](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions), is always allowed by this rule. Examples of it include `let x = "hello" as const;` and `let x = <const>"hello";`.
+
 ## Options
 
 ```ts
