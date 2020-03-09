@@ -222,6 +222,7 @@ anyValue?.();
 let unknownValue: unknown;
 unknownValue?.();
 `,
+    'const foo = [1, 2, 3][0];',
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -572,6 +573,19 @@ foo
           column: 3,
           endLine: 8,
           endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: 'const foo = [1, 2, 3]?.[0];',
+      output: 'const foo = [1, 2, 3][0];',
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
         },
       ],
     },

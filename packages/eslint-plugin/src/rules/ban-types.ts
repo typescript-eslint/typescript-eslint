@@ -13,7 +13,8 @@ type Types = Record<
 
 type Options = [
   {
-    types: Types;
+    types?: Types;
+    extendDefaults?: boolean;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
@@ -51,6 +52,35 @@ function getCustomMessage(
   return '';
 }
 
+/*
+  Defaults for this rule should be treated as an "all or nothing"
+  merge, so we need special handling here.
+
+  See: https://github.com/typescript-eslint/typescript-eslint/issues/686
+ */
+const defaultTypes = {
+  String: {
+    message: 'Use string instead',
+    fixWith: 'string',
+  },
+  Boolean: {
+    message: 'Use boolean instead',
+    fixWith: 'boolean',
+  },
+  Number: {
+    message: 'Use number instead',
+    fixWith: 'number',
+  },
+  Object: {
+    message: 'Use Record<string, any> instead',
+    fixWith: 'Record<string, any>',
+  },
+  Symbol: {
+    message: 'Use symbol instead',
+    fixWith: 'symbol',
+  },
+};
+
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
   meta: {
@@ -85,38 +115,22 @@ export default util.createRule<Options, MessageIds>({
               ],
             },
           },
+          extendDefaults: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [
-    {
-      types: {
-        String: {
-          message: 'Use string instead',
-          fixWith: 'string',
-        },
-        Boolean: {
-          message: 'Use boolean instead',
-          fixWith: 'boolean',
-        },
-        Number: {
-          message: 'Use number instead',
-          fixWith: 'number',
-        },
-        Object: {
-          message: 'Use Record<string, any> instead',
-          fixWith: 'Record<string, any>',
-        },
-        Symbol: {
-          message: 'Use symbol instead',
-          fixWith: 'symbol',
-        },
-      },
-    },
-  ],
-  create(context, [{ types }]) {
+  defaultOptions: [{}],
+  create(context, [options]) {
+    const extendDefaults = options.extendDefaults ?? true;
+    const customTypes = options.types ?? {};
+    const types: Types = {
+      ...(extendDefaults ? defaultTypes : {}),
+      ...customTypes,
+    };
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );

@@ -42,6 +42,51 @@ ruleTester.run('default-param-last', rule, {
     'const foo = (a: number, b = 1, c?: number) => {}',
     'const foo = (a: number, b?: number, c = 1) => {}',
     'const foo = (a: number, b = 1, ...c) => {}',
+    `
+class Foo {
+  constructor(a: number, b: number, c: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, b?: number, c = 1) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, b = 1, c?: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(public a: number, protected b: number, private c: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(public a: number, protected b?: number, private c = 10) {}
+}
+    `,
+    `
+class Foo {
+  constructor(public a: number, protected b = 10, private c?: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, protected b?: number, private c = 0) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, b?: number, private c = 0) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, private b?: number, c = 0) {}
+}
+    `,
   ],
   invalid: [
     {
@@ -524,6 +569,96 @@ ruleTester.run('default-param-last', rule, {
           line: 1,
           column: 14,
           endColumn: 29,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a: number, protected b?: number, private c: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 33,
+          endColumn: 53,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a: number, protected b = 0, private c: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 33,
+          endColumn: 48,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a?: number, private b: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 15,
+          endColumn: 32,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a = 0, private b: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 15,
+          endColumn: 27,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(a = 0, b: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 15,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(a?: number, b: number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeLast',
+          line: 3,
+          column: 15,
+          endColumn: 25,
         },
       ],
     },

@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [ban-types] add option extendDefaults ([#1379](https://github.com/typescript-eslint/typescript-eslint/issues/1379)) ([ae7f7c5](https://github.com/typescript-eslint/typescript-eslint/commit/ae7f7c5637124b1167efd63755df92e219bbbb24))
+* **eslint-plugin:** [default-param-last] handle param props ([#1650](https://github.com/typescript-eslint/typescript-eslint/issues/1650)) ([3534c6e](https://github.com/typescript-eslint/typescript-eslint/commit/3534c6ea09f0cb2162017660a90c6a4ad704da6b))
+* **eslint-plugin:** [no-implied-eval] correct logic for ts3.8 ([#1652](https://github.com/typescript-eslint/typescript-eslint/issues/1652)) ([33e3e6f](https://github.com/typescript-eslint/typescript-eslint/commit/33e3e6f79ea21792ccb60b7f1ada74057ceb52e9))
+
+
+### Features
+
+* **eslint-plugin:** [explicit-member-accessibility] autofix no-public ([#1548](https://github.com/typescript-eslint/typescript-eslint/issues/1548)) ([dd233b5](https://github.com/typescript-eslint/typescript-eslint/commit/dd233b52dcd5a39d842123af6fc775574abf2bc2))
+* **eslint-plugin:** [typedef] add variable-declaration-ignore-function ([#1578](https://github.com/typescript-eslint/typescript-eslint/issues/1578)) ([fc0a55e](https://github.com/typescript-eslint/typescript-eslint/commit/fc0a55e8b78203972d01a7c9b79ed6b470c5c1a0))
+* **eslint-plugin:** add new no-base-to-string rule ([#1522](https://github.com/typescript-eslint/typescript-eslint/issues/1522)) ([8333d41](https://github.com/typescript-eslint/typescript-eslint/commit/8333d41d5d472ef338fb41a29ccbfc6b16e47627))
+* **eslint-plugin:** add prefer-readonly-parameters ([#1513](https://github.com/typescript-eslint/typescript-eslint/issues/1513)) ([3be9854](https://github.com/typescript-eslint/typescript-eslint/commit/3be98542afd7553cbbec66c4be215173d7f7ffcf))
+* **eslint-plugin:** additional annotation spacing rules for va… ([#1496](https://github.com/typescript-eslint/typescript-eslint/issues/1496)) ([b097245](https://github.com/typescript-eslint/typescript-eslint/commit/b097245df35114906b1f9c60c3ad4cd698d957b8))
+
+
+
+
+
+# [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [embt] ignore JSX callbacks ([#1630](https://github.com/typescript-eslint/typescript-eslint/issues/1630)) ([4d45b33](https://github.com/typescript-eslint/typescript-eslint/commit/4d45b331b920113c97a90df7dc703f8dfbcc04f3))
+* **eslint-plugin:** [no-floating-promises] handle finally callback ([#1620](https://github.com/typescript-eslint/typescript-eslint/issues/1620)) ([1aa7135](https://github.com/typescript-eslint/typescript-eslint/commit/1aa7135bbfbf55cec52925fc0224188cd3c319e7))
+* **eslint-plugin:** [typedef] allow array/object destructuring in for/of ([#1570](https://github.com/typescript-eslint/typescript-eslint/issues/1570)) ([660bace](https://github.com/typescript-eslint/typescript-eslint/commit/660bace4c3da569d71cf1e296ac4f6ed35bdfc44))
+
+
+### Features
+
+* **eslint-plugin:** [require-await] add --fix support ([#1561](https://github.com/typescript-eslint/typescript-eslint/issues/1561)) ([9edd863](https://github.com/typescript-eslint/typescript-eslint/commit/9edd863b2a66ee44bd4a439903973e6c207480aa))
+
+
+
+
+
+# [2.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.2...v2.20.0) (2020-02-17)
+
+
+### Features
+
+* **eslint-plugin:** [ban-types] allow banning null and undefined ([#821](https://github.com/typescript-eslint/typescript-eslint/issues/821)) ([0b2b887](https://github.com/typescript-eslint/typescript-eslint/commit/0b2b887c06f2582d812a45f7a8deb82f52d82a84))
+* **eslint-plugin:** [strict-boolean-expressions] refactor, add clearer error messages ([#1480](https://github.com/typescript-eslint/typescript-eslint/issues/1480)) ([db4b530](https://github.com/typescript-eslint/typescript-eslint/commit/db4b530f3f049267d679e89d9e75acfcb86faaf2))
+
+
+
+
+
 ## [2.19.2](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.1...v2.19.2) (2020-02-10)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

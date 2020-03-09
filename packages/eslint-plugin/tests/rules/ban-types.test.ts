@@ -72,6 +72,21 @@ ruleTester.run('ban-types', rule, {
       code: 'let a: NS.Bad._',
       options,
     },
+    // Replace default options instead of merging with extendDefaults: false
+    {
+      code: 'let a: String;',
+      options: [
+        {
+          types: {
+            Number: {
+              message: 'Use number instead.',
+              fixWith: 'number',
+            },
+          },
+          extendDefaults: false,
+        },
+      ],
+    },
     {
       code: 'let a: undefined',
       options: options2,
@@ -82,6 +97,16 @@ ruleTester.run('ban-types', rule, {
     },
   ],
   invalid: [
+    {
+      code: 'let a: String;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
     {
       code: 'let a: Object;',
       errors: [
