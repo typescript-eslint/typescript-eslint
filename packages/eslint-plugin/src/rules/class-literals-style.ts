@@ -98,7 +98,7 @@ export default util.createRule<Options, MessageIds>({
     if (style === 'getters') {
       return {
         ClassProperty(node: TSESTree.ClassProperty): void {
-          if (!node.readonly) {
+          if (!node.readonly || node.declare) {
             return;
           }
 

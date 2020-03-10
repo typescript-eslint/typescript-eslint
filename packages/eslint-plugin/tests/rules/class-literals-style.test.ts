@@ -7,6 +7,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('class-literals-style', rule, {
   valid: [
+    'class Mx { declare readonly p1 = 1; }',
     'class Mx { readonly p1 = "hello world"; }',
     'class Mx { p1 = "hello world"; }',
     'class Mx { static p1 = "hello world"; }',
@@ -42,6 +43,10 @@ ruleTester.run('class-literals-style', rule, {
         }
       }
     `,
+    {
+      code: 'class Mx { declare public readonly foo = 1; }',
+      options: ['getters'],
+    },
     {
       code: 'class Mx { get p1() { return "hello world"; } }',
       options: ['getters'],
