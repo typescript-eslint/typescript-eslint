@@ -8,7 +8,7 @@ When writing TypeScript libraries that could be used by Javascript users however
 This rule aims to ensure that literals exposed by classes are done so consistently, in one of the two style described above.
 Since both styles have their place, this rule by default does nothing - you must provide it with your desired style: either `fields` or `getters`.
 
-Note that this rule only checks for _literal_ values, and so not objects, arrays, or functions.
+Note that this rule only checks for constant _literal_ values (string, template string, number, bigint, boolean, regexp, null). It does not check objects or arrays, because a readonly field behaves differently to a getter in those cases. It also does not check functions, as it is a common pattern to use readonly fields with arrow function values as auto-bound methods.
 This is because these types can be mutated and carry with them more complex implications about their usage.
 
 #### The `fields` style
