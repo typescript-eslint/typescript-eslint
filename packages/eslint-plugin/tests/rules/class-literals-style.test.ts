@@ -7,71 +7,44 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('class-literals-style', rule, {
   valid: [
-    {
-      code: 'class Mx { readonly p1 = "hello world"; }',
-      options: [],
-    },
+    'class Mx { readonly p1 = "hello world"; }',
+    'class Mx { p1 = "hello world"; }',
+    'class Mx { static p1 = "hello world"; }',
+    'class Mx { readonly p1 = "hello world"; }',
+    'class Mx { p1: string; }',
+    'abstract class Mx { abstract get p1(): string }',
+    `
+      class Mx {
+        get mySetting() {
+          if(this._aValue) {
+            return 'on';
+          }
+
+          return 'off';
+        }
+      }
+    `,
+    `
+      class Mx {
+        get mySetting() {
+          return \`build-\${process.env.build}\`
+        }
+      }
+    `,
+    `
+      class Mx {
+        getMySetting() {
+          if(this._aValue) {
+            return 'on';
+          }
+
+          return 'off';
+        }
+      }
+    `,
     {
       code: 'class Mx { get p1() { return "hello world"; } }',
-      options: [],
-    },
-    {
-      code: 'class Mx { p1 = "hello world"; }',
-      options: ['fields'],
-    },
-    {
-      code: 'class Mx { static p1 = "hello world"; }',
-      options: ['fields'],
-    },
-    {
-      code: 'class Mx { readonly p1 = "hello world"; }',
-      options: ['fields'],
-    },
-    {
-      code: 'class Mx { p1: string; }',
-      options: ['fields'],
-    },
-    {
-      code: 'abstract class Mx { abstract get p1(): string }',
-      options: ['fields'],
-    },
-    {
-      code: `
-        class Mx {
-          get mySetting() {
-            if(this._aValue) {
-              return 'on';
-            }
-
-            return 'off';
-          }
-        }
-      `,
-      options: ['fields'],
-    },
-    {
-      code: `
-        class Mx {
-          get mySetting() {
-            return \`build-\${process.env.build}\`
-          }
-        }
-      `,
-      options: ['fields'],
-    },
-    {
-      code: `
-        class Mx {
-          getMySetting() {
-            if(this._aValue) {
-              return 'on';
-            }
-
-            return 'off';
-          }
-        }
-      `,
-      options: ['fields'],
+      options: ['getters'],
     },
     {
       code: 'class Mx { p1 = "hello world"; }',
@@ -107,7 +80,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: 'class Mx { get p1() { return `hello world`; } }',
@@ -117,7 +89,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: 'class Mx { static get p1() { return "hello world"; } }',
@@ -127,7 +98,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: `
@@ -147,7 +117,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: `
@@ -167,7 +136,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: `
@@ -245,7 +213,6 @@ ruleTester.run('class-literals-style', rule, {
           messageId: 'preferFieldStyle',
         },
       ],
-      options: ['fields'],
     },
     {
       code: 'class Mx { public static readonly p1 = "hello world"; }',

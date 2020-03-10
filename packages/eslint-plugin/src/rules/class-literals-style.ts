@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type Options = [('fields' | 'getters')?];
+type Options = ['fields' | 'getters'];
 type MessageIds = 'preferFieldStyle' | 'preferGetterStyle';
 
 interface NodeWithModifiers {
@@ -44,10 +44,8 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [{ enum: ['fields', 'getters'] }],
   },
-  defaultOptions: [],
-  create(context) {
-    const [style] = context.options;
-
+  defaultOptions: ['fields'],
+  create(context, [style]) {
     if (style === 'fields') {
       return {
         MethodDefinition(node: TSESTree.MethodDefinition): void {
