@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
                 // replace the middle bits with the assignment
                 fixer.replaceTextRange(
                   [node.value.range[0], argument.range[0]],
-                  '=',
+                  ' = ',
                 ),
                 // remove the end bits
                 fixer.removeRange([argument.range[1], node.range[1]]),
