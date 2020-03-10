@@ -18,7 +18,7 @@ const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
  */
 const knownWatchProgramMap = new Map<
   CanonicalPath,
-  ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>
+  ts.WatchOfConfigFile<ts.BuilderProgram>
 >();
 
 /**
@@ -229,7 +229,7 @@ function getProgramsForProjects(
 function createWatchProgram(
   tsconfigPath: string,
   extra: Extra,
-): ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram> {
+): ts.WatchOfConfigFile<ts.BuilderProgram> {
   log('Creating watch program for %s.', tsconfigPath);
 
   // create compiler host
@@ -237,10 +237,10 @@ function createWatchProgram(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(extra),
     ts.sys,
-    ts.createSemanticDiagnosticsBuilderProgram,
+    ts.createAbstractBuilder,
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
-  ) as WatchCompilerHostOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>;
+  ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
@@ -325,7 +325,7 @@ function createWatchProgram(
   };
   const watch = ts.createWatchProgram(watchCompilerHost);
   const originalGetProgram = watch.getProgram;
-  watch.getProgram = (): ts.SemanticDiagnosticsBuilderProgram => {
+  watch.getProgram = (): ts.BuilderProgram => {
     if (callback) {
       callback();
     }
@@ -352,7 +352,7 @@ function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
 }
 
 function maybeInvalidateProgram(
-  existingWatch: ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>,
+  existingWatch: ts.WatchOfConfigFile<ts.BuilderProgram>,
   filePath: CanonicalPath,
   tsconfigPath: CanonicalPath,
 ): ts.Program | null {
