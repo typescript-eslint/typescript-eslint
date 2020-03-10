@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.22.0...v2.23.0) (2020-03-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-readonly-parameter-types] handle recursive types ([#1672](https://github.com/typescript-eslint/typescript-eslint/issues/1672)) ([e5db36f](https://github.com/typescript-eslint/typescript-eslint/commit/e5db36f140b6463965858ad4ed77f71a9a00c5a7)), closes [#1665](https://github.com/typescript-eslint/typescript-eslint/issues/1665)
+* **eslint-plugin:** [type-annotation-spacing] handle constructor types ([#1664](https://github.com/typescript-eslint/typescript-eslint/issues/1664)) ([fbf1640](https://github.com/typescript-eslint/typescript-eslint/commit/fbf1640c5ab67770a1ace5a9bad2bddfa35bd88d)), closes [#1663](https://github.com/typescript-eslint/typescript-eslint/issues/1663)
+* **eslint-plugin:** fix autofixer for computed properties ([#1662](https://github.com/typescript-eslint/typescript-eslint/issues/1662)) ([ba22ea7](https://github.com/typescript-eslint/typescript-eslint/commit/ba22ea7f604b236828ce4dcff75831ec1da01ec1))
+* **eslint-plugin:** fix placeholder in `ban-ts-comment` ([#1703](https://github.com/typescript-eslint/typescript-eslint/issues/1703)) ([144345c](https://github.com/typescript-eslint/typescript-eslint/commit/144345c4774c0664752116ef2cf28f46cf52052f))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-call] support tagged templates ([#1680](https://github.com/typescript-eslint/typescript-eslint/issues/1680)) ([55a58ff](https://github.com/typescript-eslint/typescript-eslint/commit/55a58ff0ae0434970537657ec2cb0bc7ab64c13d))
+* **eslint-plugin:** [no-unsafe-member-access] report any typed… ([#1683](https://github.com/typescript-eslint/typescript-eslint/issues/1683)) ([1543117](https://github.com/typescript-eslint/typescript-eslint/commit/1543117874047726a6bc1b71bd2f68779f266591))
+* **eslint-plugin:** add rule no-unsafe-call ([#1647](https://github.com/typescript-eslint/typescript-eslint/issues/1647)) ([91423e4](https://github.com/typescript-eslint/typescript-eslint/commit/91423e49d19163fae7b03cbc79bb3cd3db8c2c6d))
+* **eslint-plugin:** add rule no-unsafe-member-access ([#1643](https://github.com/typescript-eslint/typescript-eslint/issues/1643)) ([608a750](https://github.com/typescript-eslint/typescript-eslint/commit/608a750d53c39e892fdb982aeea9e4f9c5e2382d))
+* **eslint-plugin:** add rule no-unsafe-return ([#1644](https://github.com/typescript-eslint/typescript-eslint/issues/1644)) ([cfc3ef1](https://github.com/typescript-eslint/typescript-eslint/commit/cfc3ef10941f46cdbc084e99e1d48d6d3a928903))
+
+
+
+
+
 # [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
 
 
