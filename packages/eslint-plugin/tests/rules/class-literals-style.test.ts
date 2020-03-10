@@ -107,6 +107,16 @@ ruleTester.run('class-literals-style', rule, {
       ],
     },
     {
+      code:
+        'class Mx { public static readonly static private public protected get foo() { return 1; } }',
+      output: 'class Mx { public static readonly foo=1 }',
+      errors: [
+        {
+          messageId: 'preferFieldStyle',
+        },
+      ],
+    },
+    {
       code: `
         class Mx {
           public get [myValue]() {
