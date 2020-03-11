@@ -22,10 +22,23 @@ const printNodeModifiers = (
 
 const isSupportedLiteral = (
   node: TSESTree.Node,
-): node is TSESTree.LiteralExpression =>
-  node.type === AST_NODE_TYPES.Literal ||
-  node.type === AST_NODE_TYPES.BigIntLiteral ||
-  (node.type === AST_NODE_TYPES.TemplateLiteral && node.quasis.length === 1);
+): node is TSESTree.LiteralExpression => {
+  if (
+    node.type === AST_NODE_TYPES.Literal ||
+    node.type === AST_NODE_TYPES.BigIntLiteral
+  ) {
+    return true;
+  }
+
+  if (
+    node.type === AST_NODE_TYPES.TaggedTemplateExpression ||
+    node.type === AST_NODE_TYPES.TemplateLiteral
+  ) {
+    return ('quasi' in node ? node.quasi.quasis : node.quasis).length === 1;
+  }
+
+  return false;
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'class-literals-style',

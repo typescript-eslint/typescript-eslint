@@ -44,6 +44,25 @@ ruleTester.run('class-literals-style', rule, {
         }
       }
     `,
+    `
+      class Mx {
+        public readonly myButton = styled.button\`
+          color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+        \`;
+      }
+    `,
+    {
+      code: `
+        class Mx {
+          public get myButton() {
+            return styled.button\`
+              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+            \`;
+          }
+        }
+      `,
+      options: ['fields'],
+    },
     {
       code: 'class Mx { declare public readonly foo = 1; }',
       options: ['getters'],
@@ -70,6 +89,28 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { static get p1() { return "hello world"; } }',
+      options: ['getters'],
+    },
+    {
+      code: `
+        class Mx {
+          public readonly myButton = styled.button\`
+            color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+          \`;
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class Mx {
+          public get myButton() {
+            return styled.button\`
+              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+            \`;
+          }
+        }
+      `,
       options: ['getters'],
     },
   ],
@@ -229,6 +270,71 @@ ruleTester.run('class-literals-style', rule, {
     {
       code: 'class Mx { public static readonly p1 = "hello world"; }',
       output: 'class Mx { public static get p1() { return "hello world"; } }',
+      errors: [
+        {
+          messageId: 'preferGetterStyle',
+        },
+      ],
+      options: ['getters'],
+    },
+    {
+      code: `
+        class Mx {
+          public get myValue() {
+            return gql\`
+              {
+                user(id: 5) {
+                  firstName
+                  lastName
+                }
+              }
+            \`;
+          }
+        }
+      `,
+      output: `
+        class Mx {
+          public readonly myValue = gql\`
+              {
+                user(id: 5) {
+                  firstName
+                  lastName
+                }
+              }
+            \`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'preferFieldStyle',
+        },
+      ],
+    },
+    {
+      code: `
+        class Mx {
+          public readonly myValue = gql\`
+            {
+              user(id: 5) {
+                firstName
+                lastName
+              }
+            }
+          \`;
+        }
+      `,
+      output: `
+        class Mx {
+          public get myValue() { return gql\`
+            {
+              user(id: 5) {
+                firstName
+                lastName
+              }
+            }
+          \`; }
+        }
+      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
