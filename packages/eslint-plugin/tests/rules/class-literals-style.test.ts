@@ -11,7 +11,6 @@ ruleTester.run('class-literals-style', rule, {
     'class Mx { readonly p1 = "hello world"; }',
     'class Mx { p1 = "hello world"; }',
     'class Mx { static p1 = "hello world"; }',
-    'class Mx { readonly p1 = "hello world"; }',
     'class Mx { p1: string; }',
     'class Mx { get p1(); }',
     'class Mx { get p1() {} }',
@@ -67,10 +66,6 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { static p1: string; }',
-      options: ['getters'],
-    },
-    {
-      code: 'class Mx { get p1() { return "hello world"; } }',
       options: ['getters'],
     },
     {
