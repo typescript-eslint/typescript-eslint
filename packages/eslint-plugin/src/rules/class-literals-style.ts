@@ -102,39 +102,35 @@ export default util.createRule<Options, MessageIds>({
       };
     }
 
-    if (style === 'getters') {
-      return {
-        ClassProperty(node: TSESTree.ClassProperty): void {
-          if (!node.readonly || node.declare) {
-            return;
-          }
+    return {
+      ClassProperty(node: TSESTree.ClassProperty): void {
+        if (!node.readonly || node.declare) {
+          return;
+        }
 
-          const { value } = node;
+        const { value } = node;
 
-          if (!value || !isSupportedLiteral(value)) {
-            return;
-          }
+        if (!value || !isSupportedLiteral(value)) {
+          return;
+        }
 
-          context.report({
-            node: node.key,
-            messageId: 'preferGetterStyle',
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const name = sourceCode.getText(node.key);
+        context.report({
+          node: node.key,
+          messageId: 'preferGetterStyle',
+          fix(fixer) {
+            const sourceCode = context.getSourceCode();
+            const name = sourceCode.getText(node.key);
 
-              let text = '';
+            let text = '';
 
-              text += printNodeModifiers(node, 'get');
-              text += node.computed ? `[${name}]` : name;
-              text += `() { return ${sourceCode.getText(value)}; }`;
+            text += printNodeModifiers(node, 'get');
+            text += node.computed ? `[${name}]` : name;
+            text += `() { return ${sourceCode.getText(value)}; }`;
 
-              return fixer.replaceText(node, text);
-            },
-          });
-        },
-      };
-    }
-
-    return {};
+            return fixer.replaceText(node, text);
+          },
+        });
+      },
+    };
   },
 });
