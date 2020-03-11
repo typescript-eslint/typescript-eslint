@@ -755,7 +755,6 @@ function parseOptions(context: Context): ParsedOptions {
   const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
-    // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
   }, {} as ParsedOptions);
 
   return parsedOptions;

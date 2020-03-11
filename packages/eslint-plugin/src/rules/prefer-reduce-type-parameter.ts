@@ -52,7 +52,7 @@ export default util.createRule({
     return {
       ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression)'(
         callee: MemberExpressionWithCallExpressionParent,
-      ) {
+      ): void {
         if (getMemberExpressionName(callee) !== 'reduce') {
           return;
         }
