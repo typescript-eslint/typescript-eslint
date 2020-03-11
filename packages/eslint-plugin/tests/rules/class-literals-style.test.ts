@@ -121,6 +121,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 16,
+          line: 1,
         },
       ],
     },
@@ -130,6 +132,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 16,
+          line: 1,
         },
       ],
     },
@@ -139,6 +143,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 23,
+          line: 1,
         },
       ],
     },
@@ -149,6 +155,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 71,
+          line: 1,
         },
       ],
     },
@@ -168,6 +176,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 23,
+          line: 3,
         },
       ],
     },
@@ -187,6 +197,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 23,
+          line: 3,
         },
       ],
     },
@@ -204,6 +216,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 28,
+          line: 3,
         },
       ],
       options: ['getters'],
@@ -214,6 +228,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 21,
+          line: 1,
         },
       ],
       options: ['getters'],
@@ -224,6 +240,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 21,
+          line: 1,
         },
       ],
       options: ['getters'],
@@ -234,6 +252,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 28,
+          line: 1,
         },
       ],
       options: ['getters'],
@@ -244,6 +264,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 26,
+          line: 1,
         },
       ],
       options: ['fields'],
@@ -254,6 +276,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 31,
+          line: 1,
         },
       ],
       options: ['getters'],
@@ -264,6 +288,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 30,
+          line: 1,
         },
       ],
     },
@@ -273,6 +299,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 35,
+          line: 1,
         },
       ],
       options: ['getters'],
@@ -307,6 +335,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferFieldStyle',
+          column: 22,
+          line: 3,
         },
       ],
     },
@@ -338,6 +368,8 @@ ruleTester.run('class-literals-style', rule, {
       errors: [
         {
           messageId: 'preferGetterStyle',
+          column: 27,
+          line: 3,
         },
       ],
       options: ['getters'],
