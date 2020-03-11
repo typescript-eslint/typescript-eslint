@@ -297,6 +297,18 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
   }
 }
 
+export function getTypeArguments(
+  type: ts.TypeReference,
+  checker: ts.TypeChecker,
+): readonly ts.Type[] {
+  // getTypeArguments was only added in TS3.7
+  if (checker.getTypeArguments) {
+    return checker.getTypeArguments(type);
+  }
+
+  return type.typeArguments ?? [];
+}
+
 /**
  * @returns true if the type is `any`
  */
@@ -315,9 +327,7 @@ export function isTypeAnyArrayType(
     checker.isArrayType(type) &&
     isTypeAnyType(
       // getTypeArguments was only added in TS3.7
-      checker.getTypeArguments
-        ? checker.getTypeArguments(type)[0]
-        : (type.typeArguments ?? [])[0],
+      getTypeArguments(type, checker)[0],
     )
   );
 }

@@ -15,6 +15,8 @@ const x = 1 as any,
   y = 1 as any;
 const [x] = 1 as any;
 const [x] = [] as any[];
+const [x] = [1 as any];
+[x] = [1] as [any];
 
 function foo(a = 1 as any) {}
 class Foo {
@@ -37,6 +39,7 @@ Examples of **correct** code for this rule:
 const x = 1,
   y = 1;
 const [x] = [1];
+[x] = [1] as [number];
 
 function foo(a = 1) {}
 class Foo {
