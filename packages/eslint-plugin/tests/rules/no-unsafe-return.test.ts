@@ -73,6 +73,20 @@ function foo(): Set<number> {
     `,
   ],
   invalid: [
+    {
+      code: 'function fn<T extends any>(x: T) { return x };',
+      errors: [
+        {
+          messageId: 'unsafeReturnAssignment',
+          data: {
+            sender: 'any',
+            receiver: 'T',
+          },
+          line: 1,
+          column: 36,
+        },
+      ],
+    },
     ...batchedSingleLineTests({
       code: noFormat`
 function foo() { return (1 as any); }
