@@ -68,7 +68,10 @@ export default util.createRule({
 
         // Get the symbol of the `reduce` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
-        const calleeObjType = checker.getTypeAtLocation(tsNode);
+        const calleeObjType = util.getConstrainedTypeAtLocation(
+          checker,
+          tsNode,
+        );
 
         // Check the owner type of the `reduce` method.
         if (checker.isArrayType(calleeObjType)) {

@@ -162,5 +162,24 @@ names.reduce<Record<string, boolean>>(
         },
       ],
     },
+    {
+      code: `
+function f<T, U extends T[]>(a: U) {
+  return a.reduce(() => {}, {} as Record<string, boolean>);
+}
+`,
+      output: `
+function f<T, U extends T[]>(a: U) {
+  return a.reduce<Record<string, boolean>>(() => {}, {});
+}
+`,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 29,
+          line: 3,
+        },
+      ],
+    },
   ],
 });
