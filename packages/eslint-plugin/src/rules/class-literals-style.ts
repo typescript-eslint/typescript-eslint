@@ -73,22 +73,16 @@ export default util.createRule<Options, MessageIds>({
             node: node.key,
             messageId: 'preferFieldStyle',
             fix(fixer) {
-              const keyOffset = node.computed ? 1 : 0;
+              const sourceCode = context.getSourceCode();
+              const name = sourceCode.getText(node.key);
 
-              return [
-                // replace the start bits with the field modifiers
-                fixer.replaceTextRange(
-                  [node.range[0], node.key.range[0] - keyOffset],
-                  printNodeModifiers(node, 'readonly'),
-                ),
-                // replace the middle bits with the assignment
-                fixer.replaceTextRange(
-                  [node.value.range[0], argument.range[0]],
-                  ' = ',
-                ),
-                // remove the end bits
-                fixer.removeRange([argument.range[1], node.range[1]]),
-              ];
+              let text = '';
+
+              text += printNodeModifiers(node, 'readonly');
+              text += node.computed ? `[${name}]` : name;
+              text += ` = ${sourceCode.getText(argument)};`;
+
+              return fixer.replaceText(node, text);
             },
           });
         },
@@ -112,22 +106,16 @@ export default util.createRule<Options, MessageIds>({
             node: node.key,
             messageId: 'preferGetterStyle',
             fix(fixer) {
-              const keyOffset = node.computed ? 1 : 0;
+              const sourceCode = context.getSourceCode();
+              const name = sourceCode.getText(node.key);
 
-              return [
-                // replace the start bits with the getter modifiers
-                fixer.replaceTextRange(
-                  [node.range[0], node.key.range[0] - keyOffset],
-                  printNodeModifiers(node, 'get'),
-                ),
-                // replace the middle bits with the start of the getter
-                fixer.replaceTextRange(
-                  [node.key.range[1] + keyOffset, value.range[0]],
-                  '(){return ',
-                ),
-                // replace the end bits with the end of the getter
-                fixer.replaceTextRange([value.range[1], node.range[1]], '}'),
-              ];
+              let text = '';
+
+              text += printNodeModifiers(node, 'get');
+              text += node.computed ? `[${name}]` : name;
+              text += `() { return ${sourceCode.getText(value)}; }`;
+
+              return fixer.replaceText(node, text);
             },
           });
         },

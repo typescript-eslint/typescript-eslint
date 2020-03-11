@@ -76,7 +76,7 @@ ruleTester.run('class-literals-style', rule, {
   invalid: [
     {
       code: 'class Mx { get p1() { return "hello world"; } }',
-      output: 'class Mx { readonly p1 = "hello world" }',
+      output: 'class Mx { readonly p1 = "hello world"; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -85,7 +85,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { get p1() { return `hello world`; } }',
-      output: 'class Mx { readonly p1 = `hello world` }',
+      output: 'class Mx { readonly p1 = `hello world`; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -94,7 +94,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { static get p1() { return "hello world"; } }',
-      output: 'class Mx { static readonly p1 = "hello world" }',
+      output: 'class Mx { static readonly p1 = "hello world"; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -104,7 +104,7 @@ ruleTester.run('class-literals-style', rule, {
     {
       code:
         'class Mx { public static readonly static private public protected get foo() { return 1; } }',
-      output: 'class Mx { public static readonly foo = 1 }',
+      output: 'class Mx { public static readonly foo = 1; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -121,7 +121,7 @@ ruleTester.run('class-literals-style', rule, {
       `,
       output: `
         class Mx {
-          public readonly [myValue] = 'a literal value'
+          public readonly [myValue] = 'a literal value';
         }
       `,
       errors: [
@@ -140,7 +140,7 @@ ruleTester.run('class-literals-style', rule, {
       `,
       output: `
         class Mx {
-          public readonly [myValue] = 12345n
+          public readonly [myValue] = 12345n;
         }
       `,
       errors: [
@@ -157,7 +157,7 @@ ruleTester.run('class-literals-style', rule, {
       `,
       output: `
         class Mx {
-          public get [myValue](){return 'a literal value'}
+          public get [myValue]() { return 'a literal value'; }
         }
       `,
       errors: [
@@ -169,7 +169,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { readonly p1 = "hello world"; }',
-      output: 'class Mx { get p1(){return "hello world"} }',
+      output: 'class Mx { get p1() { return "hello world"; } }',
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -179,7 +179,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { readonly p1 = `hello world`; }',
-      output: 'class Mx { get p1(){return `hello world`} }',
+      output: 'class Mx { get p1() { return `hello world`; } }',
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -189,7 +189,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { static readonly p1 = "hello world"; }',
-      output: 'class Mx { static get p1(){return "hello world"} }',
+      output: 'class Mx { static get p1() { return "hello world"; } }',
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -199,7 +199,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { protected get p1() { return "hello world"; } }',
-      output: 'class Mx { protected readonly p1 = "hello world" }',
+      output: 'class Mx { protected readonly p1 = "hello world"; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -209,7 +209,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { protected readonly p1 = "hello world"; }',
-      output: 'class Mx { protected get p1(){return "hello world"} }',
+      output: 'class Mx { protected get p1() { return "hello world"; } }',
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -219,7 +219,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { public static get p1() { return "hello world"; } }',
-      output: 'class Mx { public static readonly p1 = "hello world" }',
+      output: 'class Mx { public static readonly p1 = "hello world"; }',
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -228,7 +228,7 @@ ruleTester.run('class-literals-style', rule, {
     },
     {
       code: 'class Mx { public static readonly p1 = "hello world"; }',
-      output: 'class Mx { public static get p1(){return "hello world"} }',
+      output: 'class Mx { public static get p1() { return "hello world"; } }',
       errors: [
         {
           messageId: 'preferGetterStyle',
