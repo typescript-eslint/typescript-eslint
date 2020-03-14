@@ -260,21 +260,13 @@ TypeScript ESLint inherits from the the original TypeScript ESLint Parser licens
 
 This project exists thanks to every one of the awesome people who contribute code and documentation:
 
-<br>
-
 <a href="https://github.com/typescript-eslint/typescript-eslint/graphs/contributors"><img src="https://opencollective.com/typescript-eslint/contributors.svg?width=890&button=false" /></a>
 
-<br>
-
 🙏 An extra special thanks goes out to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS.md)
-
-<br>
 
 ## Financial Contributors
 
 In addition to submitting code and documentation updates, you can help us sustain our community by becoming a financial contributor [[Click here to contribute - every little bit helps!](https://opencollective.com/typescript-eslint/contribute)]
-
-<br>
 
 ### Individuals
 
@@ -296,6 +288,10 @@ Support this project with your organization. Your logo will show up here with a 
 <a href="https://opencollective.com/typescript-eslint/organization/9/website"><img src="https://opencollective.com/typescript-eslint/organization/9/avatar.svg"></a>
 
 <br>
+
+<a href="https://www.netlify.com">
+  <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
+</a>
 
 ## Contributing
 
