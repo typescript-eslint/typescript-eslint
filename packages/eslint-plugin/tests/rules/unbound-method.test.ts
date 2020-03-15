@@ -346,5 +346,24 @@ const x = CommunicationError.prototype.foo;
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  unbound() {}
+}
+const instance = new Foo();
+
+let x;
+
+x = instance.unbound; // THIS SHOULD ERROR
+instance.unbound = x; // THIS SHOULD NOT
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'unbound',
+        },
+      ],
+    },
   ],
 });
