@@ -147,6 +147,9 @@ ruleTester.run('unbound-method', rule, {
 
       "typeof ContainsMethods.boundStatic === 'function';",
       "typeof ContainsMethods.unboundStatic === 'function';",
+
+      'instance.unbound = () => {};',
+      'instance.unbound = instance.unbound.bind(instance);',
     ].map(addContainsMethodsClass),
     `
 interface RecordA {
@@ -210,6 +213,15 @@ declare const myCondition: boolean;
 if(myCondition || x.mightBeDefined) {
   console.log('hello world')
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1256
+    `
+    class A {
+      unbound(): void {
+        this.unbound = undefined;
+        this.unbound = this.unbound.bind(this);
+      }
+    }
     `,
   ],
   invalid: [

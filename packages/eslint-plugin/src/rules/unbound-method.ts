@@ -241,6 +241,9 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.BinaryExpression:
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
+    case AST_NODE_TYPES.AssignmentExpression:
+      return parent.operator === '=';
+
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
