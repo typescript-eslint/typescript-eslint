@@ -1,9 +1,10 @@
-import keywords from 'eslint/lib/rules/utils/keywords';
-import * as util from '../util';
+import baseRule from 'eslint/lib/rules/keyword-spacing';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { JSONSchema4 } from 'json-schema';
-import { isTokenOnSameLine, isKeywordToken } from '../util/astUtils';
-import { isNotOpeningParenToken } from 'eslint-utils';
+import { isTokenOnSameLine } from '../util/astUtils';
+import keywords from 'eslint/lib/rules/utils/keywords';
+
+import * as util from '../util';
+
 
 export type Option = Partial<{
   before: boolean;
@@ -14,21 +15,11 @@ export type RootOption = Option & {
   overrides?: { [keywordName: string]: Option };
 };
 
-export type Options = [RootOption];
-export type MessageIds =
-  | 'expectedBefore'
-  | 'expectedAfter'
-  | 'unexpectedBefore'
-  | 'unexpectedAfter';
+export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-//------------------------------------------------------------------------------
-// Constants
-//------------------------------------------------------------------------------
 
 const PREV_TOKEN = /^[)\]}>]$/u;
 const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;
-const PREV_TOKEN_M = /^[)\]}>*]$/u;
-const NEXT_TOKEN_M = /^[{*]$/u;
 const TEMPLATE_OPEN_PAREN = /\$\{$/u;
 const TEMPLATE_CLOSE_PAREN = /^\}/u;
 const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
@@ -43,16 +34,6 @@ const KEYS = keywords.concat([
   'set',
   'yield',
 ]);
-
-// check duplications.
-(function() {
-  KEYS.sort();
-  for (let i = 1; i < KEYS.length; ++i) {
-    if (KEYS[i] === KEYS[i - 1]) {
-      throw new Error(`Duplication was found in the keyword list: ${KEYS[i]}`);
-    }
-  }
-})();
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -87,42 +68,15 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          before: { type: 'boolean', default: true },
-          after: { type: 'boolean', default: true },
-          overrides: {
-            type: 'object',
-            properties: KEYS.reduce((retv: JSONSchema4, key) => {
-              retv[key] = {
-                type: 'object',
-                properties: {
-                  before: { type: 'boolean' },
-                  after: { type: 'boolean' },
-                },
-                additionalProperties: false,
-              };
-              return retv;
-            }, {}),
-            additionalProperties: false,
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      expectedBefore: 'Expected space(s) before "{{value}}".',
-      expectedAfter: 'Expected space(s) after "{{value}}".',
-      unexpectedBefore: 'Unexpected space(s) before "{{value}}".',
-      unexpectedAfter: 'Unexpected space(s) after "{{value}}".',
-    },
+    schema: baseRule.meta.schema,
+    messages: baseRule.meta.messages,
   },
-  defaultOptions: [{ before: true, after: true }],
+  defaultOptions: [],
 
   create(context) {
     const sourceCode = context.getSourceCode();
+    const baseRules = baseRule.create(context);
+
     /**
      * Reports a given token if there are not space(s) before the token.
      * @param token A token to report.
@@ -235,6 +189,7 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+
     /**
      * Parses the option object and determines check methods for each keyword.
      * @param options The option object to parse.
@@ -303,238 +258,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Reports the first token of a given node if the first token is a keyword
-     * and usage of spacing around the token is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingAroundFirstToken(node: TSESTree.Node) {
-      const firstToken = node && sourceCode.getFirstToken(node);
-
-      if (firstToken && firstToken.type === 'Keyword') {
-        checkSpacingAround(firstToken);
-      }
-    }
-
-    /**
-     * Reports the first token of a given node if the first token is a keyword
-     * and usage of spacing followed by the token is invalid.
-     *
-     * This is used for unary operators (e.g. `typeof`), `function`, and `super`.
-     * Other rules are handling usage of spacing preceded by those keywords.
-     * @param node A node to report.
-     */
-    function checkSpacingBeforeFirstToken(
-      node:
-        | TSESTree.NewExpression
-        | TSESTree.Super
-        | TSESTree.ThisExpression
-        | TSESTree.UnaryExpression
-        | TSESTree.YieldExpression,
-    ) {
-      const firstToken = node && sourceCode.getFirstToken(node);
-
-      if (firstToken && firstToken.type === 'Keyword') {
-        checkSpacingBefore(firstToken);
-      }
-    }
-
-    /**
-     * Reports the previous token of a given node if the token is a keyword and
-     * usage of spacing around the token is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingAroundTokenBefore(node: TSESTree.Node) {
-      if (node) {
-        const token = sourceCode.getTokenBefore(node, isKeywordToken)!;
-
-        checkSpacingAround(token);
-      }
-    }
-
-    /**
-     * Reports `async` or `function` keywords of a given node if usage of
-     * spacing around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForFunction(
-      node:
-        | TSESTree.FunctionDeclaration
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression,
-    ) {
-      const firstToken = node && sourceCode.getFirstToken(node);
-
-      if (
-        firstToken &&
-        ((firstToken.type === 'Keyword' && firstToken.value === 'function') ||
-          firstToken.value === 'async')
-      ) {
-        checkSpacingBefore(firstToken);
-      }
-    }
-
-    /**
-     * Reports `class` and `extends` keywords of a given node if usage of
-     * spacing around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForClass(
-      node: TSESTree.ClassExpression | TSESTree.ClassDeclaration,
-    ) {
-      checkSpacingAroundFirstToken(node);
-      checkSpacingAroundTokenBefore(node.superClass!);
-    }
-
-    /**
-     * Reports `if` and `else` keywords of a given node if usage of spacing
-     * around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForIfStatement(node: TSESTree.IfStatement) {
-      checkSpacingAroundFirstToken(node);
-      checkSpacingAroundTokenBefore(node.alternate!);
-    }
-
-    /**
-     * Reports `try`, `catch`, and `finally` keywords of a given node if usage
-     * of spacing around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForTryStatement(node: TSESTree.TryStatement) {
-      checkSpacingAroundFirstToken(node);
-      checkSpacingAroundFirstToken(node.handler!);
-      checkSpacingAroundTokenBefore(node.finalizer);
-    }
-
-    /**
-     * Reports `do` and `while` keywords of a given node if usage of spacing
-     * around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForDoWhileStatement(node: TSESTree.DoWhileStatement) {
-      checkSpacingAroundFirstToken(node);
-      checkSpacingAroundTokenBefore(node.test);
-    }
-
-    /**
-     * Reports `for` and `in` keywords of a given node if usage of spacing
-     * around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForForInStatement(node: TSESTree.ForInStatement) {
-      checkSpacingAroundFirstToken(node);
-      checkSpacingAroundTokenBefore(node.right);
-    }
-
-    /**
-     * Reports `for` and `of` keywords of a given node if usage of spacing
-     * around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForForOfStatement(node: TSESTree.ForOfStatement) {
-      if (node.await) {
-        checkSpacingBefore(sourceCode.getFirstToken(node, 0)!);
-        checkSpacingAfter(sourceCode.getFirstToken(node, 1)!);
-      } else {
-        checkSpacingAroundFirstToken(node);
-      }
-      checkSpacingAround(
-        sourceCode.getTokenBefore(node.right, isNotOpeningParenToken)!,
-      );
-    }
-
-    /**
-     * Reports `import`, `export`, `as`, and `from` keywords of a given node if
-     * usage of spacing around those keywords is invalid.
-     *
-     * This rule handles the `*` token in module declarations.
-     *
-     *     import*as A from "./a"; /*error Expected space(s) after "import".
-     *                               error Expected space(s) before "as".
-     * @param node A node to report.
-     */
-    function checkSpacingForModuleDeclaration(
-      node:
-        | TSESTree.ExportNamedDeclaration
-        | TSESTree.ExportDefaultDeclaration
-        | TSESTree.ExportAllDeclaration
-        | TSESTree.ImportDeclaration,
-    ) {
-      const firstToken = sourceCode.getFirstToken(node)!;
-
-      checkSpacingBefore(firstToken, PREV_TOKEN_M);
-      checkSpacingAfter(firstToken, NEXT_TOKEN_M);
-
-      if (node.type === 'ExportDefaultDeclaration') {
-        checkSpacingAround(sourceCode.getTokenAfter(firstToken)!);
-      }
-
-      if ((node as any).source) {
-        const fromToken = sourceCode.getTokenBefore((node as any).source)!;
-
-        checkSpacingBefore(fromToken, PREV_TOKEN_M);
-        checkSpacingAfter(fromToken, NEXT_TOKEN_M);
-      }
-    }
-
-    /**
-     * Reports `as` keyword of a given node if usage of spacing around this
-     * keyword is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForImportNamespaceSpecifier(node: TSESTree.Node) {
-      const asToken = sourceCode.getFirstToken(node, 1)!;
-
-      checkSpacingBefore(asToken, PREV_TOKEN_M);
-    }
-    /**
-     * Reports `static`, `get`, and `set` keywords of a given node if usage of
-     * spacing around those keywords is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForProperty(
-      node: TSESTree.MethodDefinition | TSESTree.Property,
-    ) {
-      if ((node as any).static) {
-        checkSpacingAroundFirstToken(node);
-      }
-      if (
-        node.kind === 'get' ||
-        node.kind === 'set' ||
-        (((node as any).method || node.type === 'MethodDefinition') &&
-          (node as any).value.async)
-      ) {
-        const token = sourceCode.getTokenBefore(node.key, tok => {
-          switch (tok.value) {
-            case 'get':
-            case 'set':
-            case 'async':
-              return true;
-            default:
-              return false;
-          }
-        });
-
-        if (!token) {
-          throw new Error(
-            'Failed to find token get, set, or async beside method name',
-          );
-        }
-
-        checkSpacingAround(token);
-      }
-    }
-
-    /**
-     * Reports `await` keyword of a given node if usage of spacing before
-     * this keyword is invalid.
-     * @param node A node to report.
-     */
-    function checkSpacingForAwaitExpression(node: TSESTree.AwaitExpression) {
-      checkSpacingBefore(sourceCode.getFirstToken(node)!);
-    }
-
-    /**
      * Reports `as` keyword of a given node if usage of spacing before
      * this keyword is invalid.
      * @param node A node to report.
@@ -545,53 +268,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      // Statements
-      DebuggerStatement: checkSpacingAroundFirstToken,
-      WithStatement: checkSpacingAroundFirstToken,
-
-      // Statements - Control flow
-      BreakStatement: checkSpacingAroundFirstToken,
-      ContinueStatement: checkSpacingAroundFirstToken,
-      ReturnStatement: checkSpacingAroundFirstToken,
-      ThrowStatement: checkSpacingAroundFirstToken,
-      TryStatement: checkSpacingForTryStatement,
-
-      // Statements - Choice
-      IfStatement: checkSpacingForIfStatement,
-      SwitchStatement: checkSpacingAroundFirstToken,
-      SwitchCase: checkSpacingAroundFirstToken,
-
-      // Statements - Loops
-      DoWhileStatement: checkSpacingForDoWhileStatement,
-      ForInStatement: checkSpacingForForInStatement,
-      ForOfStatement: checkSpacingForForOfStatement,
-      ForStatement: checkSpacingAroundFirstToken,
-      WhileStatement: checkSpacingAroundFirstToken,
-
-      // Statements - Declarations
-      ClassDeclaration: checkSpacingForClass,
-      ExportNamedDeclaration: checkSpacingForModuleDeclaration,
-      ExportDefaultDeclaration: checkSpacingForModuleDeclaration,
-      ExportAllDeclaration: checkSpacingForModuleDeclaration,
-      FunctionDeclaration: checkSpacingForFunction,
-      ImportDeclaration: checkSpacingForModuleDeclaration,
-      VariableDeclaration: checkSpacingAroundFirstToken,
-
-      // Expressions
-      ArrowFunctionExpression: checkSpacingForFunction,
-      AwaitExpression: checkSpacingForAwaitExpression,
-      ClassExpression: checkSpacingForClass,
-      FunctionExpression: checkSpacingForFunction,
-      NewExpression: checkSpacingBeforeFirstToken,
-      Super: checkSpacingBeforeFirstToken,
-      ThisExpression: checkSpacingBeforeFirstToken,
-      UnaryExpression: checkSpacingBeforeFirstToken,
-      YieldExpression: checkSpacingBeforeFirstToken,
-
-      // Others
-      ImportNamespaceSpecifier: checkSpacingForImportNamespaceSpecifier,
-      MethodDefinition: checkSpacingForProperty,
-      Property: checkSpacingForProperty,
+      ...baseRules,
       TSAsExpression: checkSpacingForAsExpression,
     };
   },

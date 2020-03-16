@@ -142,6 +142,67 @@ declare module 'eslint/lib/rules/indent' {
   export = rule;
 }
 
+
+declare module 'eslint/lib/rules/keyword-spacing' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'expectedBefore' | 'expectedAfter' | 'unexpectedBefore' | 'unexpectedAfter',
+    [],
+    {
+      // Statements
+      DebuggerStatement: (node: TSESTree.DebuggerStatement) => void,
+      WithStatement: (node: TSESTree.WithStatement) => void,
+
+      // Statements - Control flow
+      BreakStatement: (node: TSESTree.BreakStatement) => void,
+      ContinueStatement: (node: TSESTree.ContinueStatement) => void,
+      ReturnStatement: (node: TSESTree.ReturnStatement) => void,
+      ThrowStatement: (node: TSESTree.ThrowStatement) => void,
+      TryStatement: (node: TSESTree.TryStatement) => void,
+
+      // Statements - Choice
+      IfStatement: (node: TSESTree.IfStatement) => void,
+      SwitchStatement: (node: TSESTree.Node) => void,
+      SwitchCase: (node: TSESTree.Node) => void,
+
+      // Statements - Loops
+      DoWhileStatement: (node: TSESTree.DoWhileStatement) => void,
+      ForInStatement: (node: TSESTree.ForInStatement) => void,
+      ForOfStatement: (node: TSESTree.ForOfStatement) => void,
+      ForStatement: (node: TSESTree.ForStatement) => void,
+      WhileStatement: (node: TSESTree.WhileStatement) => void,
+
+      // Statements - Declarations
+      ClassDeclaration: (node: TSESTree.ClassDeclaration) => void,
+      ExportNamedDeclaration: (node: TSESTree.ExportNamedDeclaration) => void,
+      ExportDefaultDeclaration: (node: TSESTree.ExportDefaultDeclaration) => void,
+      ExportAllDeclaration: (node: TSESTree.ExportAllDeclaration) => void,
+      FunctionDeclaration: (node: TSESTree.FunctionDeclaration) => void,
+      ImportDeclaration: (node: TSESTree.ImportDeclaration) => void,
+      VariableDeclaration: (node: TSESTree.VariableDeclaration) => void,
+
+      // Expressions
+      ArrowFunctionExpression: (node: TSESTree.ArrowFunctionExpression) => void,
+      AwaitExpression: (node: TSESTree.AwaitExpression) => void,
+      ClassExpression: (node: TSESTree.ClassExpression) => void,
+      FunctionExpression: (node: TSESTree.FunctionExpression) => void,
+      NewExpression: (node: TSESTree.NewExpression) => void,
+      Super: (node: TSESTree.Super) => void,
+      ThisExpression: (node: TSESTree.ThisExpression) => void,
+      UnaryExpression: (node: TSESTree.UnaryExpression) => void,
+      YieldExpression: (node: TSESTree.YieldExpression) => void,
+
+      // Others
+      ImportNamespaceSpecifier: (node: TSESTree.ImportNamespaceSpecifier) => void,
+      MethodDefinition: (node: TSESTree.MethodDefinition) => void,
+      Property: (node: TSESTree.Property) => void,
+    }
+  >;
+  export = rule;
+}
+
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
