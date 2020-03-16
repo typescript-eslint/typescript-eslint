@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'enforce consistent spacing before and after keywords',
+      description: 'Enforce consistent spacing before and after keywords',
       category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
