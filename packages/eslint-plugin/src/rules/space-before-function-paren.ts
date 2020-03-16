@@ -68,8 +68,8 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Determines whether a function has a name.
-     * @param node The function node.
-     * @returns Whether the function has a name.
+     * @param {ASTNode} node The function node.
+     * @returns {boolean} Whether the function has a name.
      */
     function isNamedFunction(
       node:
@@ -92,7 +92,8 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @param node The function node
+     * @param {ASTNode} node The function node
+     * @returns {string} "always", "never", or "ignore"
      */
     function getConfigForFunction(
       node:
@@ -121,7 +122,8 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks the parens of a function node
-     * @param node A function node
+     * @param {ASTNode} node A function node
+     * @returns {void}
      */
     function checkFunction(
       node:

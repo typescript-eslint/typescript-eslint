@@ -5,8 +5,8 @@ import { JSONSchema4 } from 'json-schema';
 import {
   isTokenOnSameLine,
   isKeywordToken,
-  isNotOpeningParenToken,
 } from '../util/astUtils';
+import { isNotOpeningParenToken } from 'eslint-utils';
 
 export type Option = Partial<{
   before: boolean;
