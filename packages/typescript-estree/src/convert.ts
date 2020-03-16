@@ -172,11 +172,15 @@ export class Converter {
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       } else {
+        const isType =
+          result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+          result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
           declaration: result,
           specifiers: [],
           source: null,
+          exportKind: isType ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }
@@ -458,6 +462,12 @@ export class Converter {
     let result: TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier;
     switch (node.kind) {
       case SyntaxKind.PropertyAccessExpression:
+        if (node.name.kind === SyntaxKind.PrivateIdentifier) {
+          // This is one of the few times where TS explicitly errors, and doesn't even gracefully handle the syntax.
+          // So we shouldn't ever get into this state to begin with.
+          throw new Error('Non-private identifier expected.');
+        }
+
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
@@ -467,12 +477,14 @@ export class Converter {
           ) as TSESTree.JSXIdentifier,
         });
         break;
+
       case SyntaxKind.ThisKeyword:
         result = this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,
           name: 'this',
         });
         break;
+
       case SyntaxKind.Identifier:
       default:
         result = this.createNode<TSESTree.JSXIdentifier>(node, {
@@ -1521,9 +1533,14 @@ export class Converter {
           type: AST_NODE_TYPES.ImportDeclaration,
           source: this.convertChild(node.moduleSpecifier),
           specifiers: [],
+          importKind: 'value',
         });
 
         if (node.importClause) {
+          if (node.importClause.isTypeOnly) {
+            result.importKind = 'type';
+          }
+
           if (node.importClause.name) {
             result.specifiers.push(this.convertChild(node.importClause));
           }
@@ -1569,19 +1586,25 @@ export class Converter {
         });
 
       case SyntaxKind.ExportDeclaration:
-        if (node.exportClause) {
+        if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
             source: this.convertChild(node.moduleSpecifier),
             specifiers: node.exportClause.elements.map(el =>
               this.convertChild(el),
             ),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
             declaration: null,
           });
         } else {
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
             type: AST_NODE_TYPES.ExportAllDeclaration,
             source: this.convertChild(node.moduleSpecifier),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
+            exported:
+              node.exportClause?.kind === SyntaxKind.NamespaceExport
+                ? this.convertChild(node.exportClause.name)
+                : null,
           });
         }
 
