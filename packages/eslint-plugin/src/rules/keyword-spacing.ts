@@ -392,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkSpacingForIfStatement(node: TSESTree.IfStatement) {
       checkSpacingAroundFirstToken(node);
-      checkSpacingAroundTokenBefore((node as any).alternate);
+      checkSpacingAroundTokenBefore(node.alternate!);
     }
 
     /**
