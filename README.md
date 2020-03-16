@@ -3,8 +3,8 @@
 <p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
 
 <p align="center">
-    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
-    <a href="https://opencollective.com/typescript-eslint" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/typescript-eslint/all/badge.svg?label=financial+contributors&style=flat-square" /></a>
+    <a href="https://github.com/typescript-eslint/typescript-eslint/actions"><img src="https://img.shields.io/github/workflow/status/typescript-eslint/typescript-eslint/CI?style=flat-square" alt="GitHub Workflow Status" /></a>
+    <a href="https://opencollective.com/typescript-eslint"><img src="https://opencollective.com/typescript-eslint/all/badge.svg?label=financial+contributors&style=flat-square" alt="Financial Contributors on Open Collective" /></a>
     <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
@@ -260,21 +260,13 @@ TypeScript ESLint inherits from the the original TypeScript ESLint Parser licens
 
 This project exists thanks to every one of the awesome people who contribute code and documentation:
 
-<br>
-
 <a href="https://github.com/typescript-eslint/typescript-eslint/graphs/contributors"><img src="https://opencollective.com/typescript-eslint/contributors.svg?width=890&button=false" /></a>
 
-<br>
-
 🙏 An extra special thanks goes out to the wonderful people listed in [`CONTRIBUTORS.md`](./CONTRIBUTORS.md)
-
-<br>
 
 ## Financial Contributors
 
 In addition to submitting code and documentation updates, you can help us sustain our community by becoming a financial contributor [[Click here to contribute - every little bit helps!](https://opencollective.com/typescript-eslint/contribute)]
-
-<br>
 
 ### Individuals
 
@@ -296,6 +288,10 @@ Support this project with your organization. Your logo will show up here with a 
 <a href="https://opencollective.com/typescript-eslint/organization/9/website"><img src="https://opencollective.com/typescript-eslint/organization/9/avatar.svg"></a>
 
 <br>
+
+<a href="https://www.netlify.com">
+  <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
+</a>
 
 ## Contributing
 

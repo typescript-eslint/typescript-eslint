@@ -249,8 +249,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * TS 3.8 import/export type
-       * babel coming soon https://github.com/babel/babel/pull/11171
+       * TS 3.8 features
        */
       ExportNamedDeclaration(node: any) {
         /**
@@ -281,10 +280,17 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             node.exportKind = 'value';
           }
         }
+        /**
+         * TS 3.8 export * as namespace
+         * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
+         */
+        if (!node.exported) {
+          node.exported = null;
+        }
       },
       ImportDeclaration(node) {
         /**
-         * TS 3.8: export type
+         * TS 3.8: import type
          */
         if (!node.importKind) {
           node.importKind = 'value';
