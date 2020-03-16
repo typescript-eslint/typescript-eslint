@@ -19,6 +19,7 @@ import funcCallSpacing from './func-call-spacing';
 import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
 import interfaceNamePrefix from './interface-name-prefix';
+import keywordSpacing from './keyword-spacing';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
@@ -118,6 +119,7 @@ export default {
   'generic-type-naming': genericTypeNaming,
   indent: indent,
   'interface-name-prefix': interfaceNamePrefix,
+  'keyword-spacing': keywordSpacing,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
