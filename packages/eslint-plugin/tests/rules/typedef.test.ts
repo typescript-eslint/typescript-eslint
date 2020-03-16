@@ -38,6 +38,30 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `for (const [key, val] of new Map([['key', 1]])) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const [[key]] of [[['key']]]) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const [[{ key }]] of [[[{ key: 'value' }]]]) {}`,
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
     `let a: number;
     [a] = [1];`,
     // Arrow parameters
@@ -94,10 +118,34 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
+      code: `for (const {p1: {p2: { p3 }}} of [{p1: {p2: {p3: 'value'}}}]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `for (const {p1: {p2: { p3: [key] }}} of [{p1: {p2: {p3: ['value']}}}]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
       code: `const { a } = { a: 1 };`,
       options: [
         {
           objectDestructuring: false,
+        },
+      ],
+    },
+    {
+      code: `for (const { key, val } of [{ key: 'key', val: 1 }]) {}`,
+      options: [
+        {
+          objectDestructuring: true,
         },
       ],
     },
@@ -251,6 +299,57 @@ ruleTester.run('typedef', rule, {
       options: [
         {
           variableDeclaration: true,
+        },
+      ],
+    },
+    // variable declaration ignore function
+    {
+      code: `const foo = function(): void {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = (): void => {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo: () => void = (): void => {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo: () => void = function (): void {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+}
+      `,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
         },
       ],
     },
@@ -601,6 +700,75 @@ ruleTester.run('typedef', rule, {
       options: [
         {
           variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = 'foo'`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = function(): void {};`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    {
+      code: `const foo = (): void => {};`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'a' },
+        },
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'b' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
         },
       ],
     },
