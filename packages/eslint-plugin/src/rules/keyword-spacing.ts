@@ -5,7 +5,6 @@ import keywords from 'eslint/lib/rules/utils/keywords';
 
 import * as util from '../util';
 
-
 export type Option = Partial<{
   before: boolean;
   after: boolean;
@@ -16,7 +15,6 @@ export type RootOption = Option & {
 };
 
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
-
 
 const PREV_TOKEN = /^[)\]}>]$/u;
 const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;
@@ -188,7 +186,6 @@ export default util.createRule<Options, MessageIds>({
         });
       }
     }
-
 
     /**
      * Parses the option object and determines check methods for each keyword.
