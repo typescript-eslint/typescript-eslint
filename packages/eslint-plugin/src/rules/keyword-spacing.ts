@@ -2,10 +2,7 @@ import keywords from 'eslint/lib/rules/utils/keywords';
 import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { JSONSchema4 } from 'json-schema';
-import {
-  isTokenOnSameLine,
-  isKeywordToken,
-} from '../util/astUtils';
+import { isTokenOnSameLine, isKeywordToken } from '../util/astUtils';
 import { isNotOpeningParenToken } from 'eslint-utils';
 
 export type Option = Partial<{
