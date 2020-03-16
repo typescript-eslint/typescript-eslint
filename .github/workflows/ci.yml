@@ -22,6 +22,18 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       # This also runs a build as part of the postinstall bootstrap
       - name: Install dependencies and build
         run: |
@@ -47,11 +59,6 @@ jobs:
         env:
           CI: true
 
-      - name: Run integrations tests
-        run: yarn integration-tests
-        env:
-          CI: true
-
       - name: Publish code coverage report
         uses: codecov/codecov-action@v1
         with:
@@ -59,6 +66,39 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittest
           name: codecov
+
+  integration_tests:
+    name: Run integration tests on primary Node.js version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # This also runs a build as part of the postinstall bootstrap
+      - name: Install dependencies and build
+        run: |
+          yarn --ignore-engines --frozen-lockfile
+          yarn check-clean-workspace-after-install
+
+      - name: Run integrations tests
+        run: yarn integration-tests
+        env:
+          CI: true
 
   unit_tests_on_other_node_versions:
     name: Run unit tests on other Node.js versions
@@ -73,8 +113,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       # This also runs a build as part of the postinstall bootstrap
-      - name: install and build
+      - name: Install dependencies and build
         run: |
           yarn --ignore-engines --frozen-lockfile
           yarn check-clean-workspace-after-install
@@ -97,8 +149,20 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
           registry-url: https://registry.npmjs.org/
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       # This also runs a build as part of the postinstall bootstrap
-      - name: install and build
+      - name: Install dependencies and build
         run: |
           yarn --ignore-engines --frozen-lockfile
           yarn check-clean-workspace-after-install
