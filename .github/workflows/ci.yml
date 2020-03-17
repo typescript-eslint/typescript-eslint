@@ -17,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: echo github.ref
+        run: echo ${{ github.ref }}
+
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
@@ -139,10 +143,10 @@ jobs:
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
-    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions]
-    if: github.event_name == 'push' && github.ref == 'refs/head/master'
+    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions, integration_tests]
+    if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
