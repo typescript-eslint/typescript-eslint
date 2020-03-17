@@ -66,7 +66,6 @@ ruleTester.run('keyword-spacing', rule, {
     //----------------------------------------------------------------------
     // as (typing)
     //----------------------------------------------------------------------
-
     {
       code: 'const foo = {} as {}',
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
@@ -86,13 +85,11 @@ ruleTester.run('keyword-spacing', rule, {
       options: [override('as', NEITHER)],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
-  ] as TSESLint.ValidTestCase<Options>[],
-
+  ],
   invalid: [
     //----------------------------------------------------------------------
     // as (typing)
     //----------------------------------------------------------------------
-
     {
       code: 'const foo = {}as {}',
       output: 'const foo = {} as {}',
@@ -106,5 +103,5 @@ ruleTester.run('keyword-spacing', rule, {
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: unexpectedBefore('as'),
     },
-  ] as TSESLint.InvalidTestCase<MessageIds, Options>[],
+  ],
 });

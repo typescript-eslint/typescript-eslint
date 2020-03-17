@@ -1,80 +1,9 @@
-// import keywords from 'eslint/lib/rules/utils/keywords';
-
 // don't provide a general import case so that people have to strictly type out a declaration
 // declare module 'eslint/lib/rules/*' TSESLint, {
 //   const rule: TSESLint.RuleModule<any, any[]>;
 //   export = rule;
 // }
 
-declare type Keyword =
-  | 'abstract'
-  | 'boolean'
-  | 'break'
-  | 'byte'
-  | 'case'
-  | 'catch'
-  | 'char'
-  | 'class'
-  | 'const'
-  | 'continue'
-  | 'debugger'
-  | 'default'
-  | 'delete'
-  | 'do'
-  | 'double'
-  | 'else'
-  | 'enum'
-  | 'export'
-  | 'extends'
-  | 'false'
-  | 'final'
-  | 'finally'
-  | 'float'
-  | 'for'
-  | 'function'
-  | 'goto'
-  | 'if'
-  | 'implements'
-  | 'import'
-  | 'in'
-  | 'instanceof'
-  | 'int'
-  | 'interface'
-  | 'long'
-  | 'native'
-  | 'new'
-  | 'null'
-  | 'package'
-  | 'private'
-  | 'protected'
-  | 'public'
-  | 'return'
-  | 'short'
-  | 'static'
-  | 'super'
-  | 'switch'
-  | 'synchronized'
-  | 'this'
-  | 'throw'
-  | 'throws'
-  | 'transient'
-  | 'true'
-  | 'try'
-  | 'typeof'
-  | 'var'
-  | 'void'
-  | 'volatile'
-  | 'while'
-  | 'with'
-  | 'as'
-  | 'async'
-  | 'await'
-  | 'from'
-  | 'get'
-  | 'let'
-  | 'of'
-  | 'set'
-  | 'yield';
 
 declare module 'eslint/lib/rules/arrow-parens' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
@@ -216,6 +145,7 @@ declare module 'eslint/lib/rules/indent' {
 
 declare module 'eslint/lib/rules/keyword-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+  import { RuleFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
   export type Option = Partial<{
     before: boolean;
     after: boolean;
@@ -233,56 +163,52 @@ declare module 'eslint/lib/rules/keyword-spacing' {
     Options,
     {
       // Statements
-      DebuggerStatement: (node: TSESTree.DebuggerStatement) => void;
-      WithStatement: (node: TSESTree.WithStatement) => void;
+      DebuggerStatement: RuleFunction<TSESTree.DebuggerStatement>;
+      WithStatement: RuleFunction<TSESTree.WithStatement>;
 
       // Statements - Control flow
-      BreakStatement: (node: TSESTree.BreakStatement) => void;
-      ContinueStatement: (node: TSESTree.ContinueStatement) => void;
-      ReturnStatement: (node: TSESTree.ReturnStatement) => void;
-      ThrowStatement: (node: TSESTree.ThrowStatement) => void;
-      TryStatement: (node: TSESTree.TryStatement) => void;
+      BreakStatement: RuleFunction<TSESTree.BreakStatement>;
+      ContinueStatement: RuleFunction<TSESTree.ContinueStatement>;
+      ReturnStatement: RuleFunction<TSESTree.ReturnStatement>;
+      ThrowStatement: RuleFunction<TSESTree.ThrowStatement>;
+      TryStatement: RuleFunction<TSESTree.TryStatement>;
 
       // Statements - Choice
-      IfStatement: (node: TSESTree.IfStatement) => void;
-      SwitchStatement: (node: TSESTree.Node) => void;
-      SwitchCase: (node: TSESTree.Node) => void;
+      IfStatement: RuleFunction<TSESTree.IfStatement>;
+      SwitchStatement: RuleFunction<TSESTree.Node>;
+      SwitchCase: RuleFunction<TSESTree.Node>;
 
       // Statements - Loops
-      DoWhileStatement: (node: TSESTree.DoWhileStatement) => void;
-      ForInStatement: (node: TSESTree.ForInStatement) => void;
-      ForOfStatement: (node: TSESTree.ForOfStatement) => void;
-      ForStatement: (node: TSESTree.ForStatement) => void;
-      WhileStatement: (node: TSESTree.WhileStatement) => void;
+      DoWhileStatement: RuleFunction<TSESTree.DoWhileStatement>;
+      ForInStatement: RuleFunction<TSESTree.ForInStatement>;
+      ForOfStatement: RuleFunction<TSESTree.ForOfStatement>;
+      ForStatement: RuleFunction<TSESTree.ForStatement>;
+      WhileStatement: RuleFunction<TSESTree.WhileStatement>;
 
       // Statements - Declarations
-      ClassDeclaration: (node: TSESTree.ClassDeclaration) => void;
-      ExportNamedDeclaration: (node: TSESTree.ExportNamedDeclaration) => void;
-      ExportDefaultDeclaration: (
-        node: TSESTree.ExportDefaultDeclaration,
-      ) => void;
-      ExportAllDeclaration: (node: TSESTree.ExportAllDeclaration) => void;
-      FunctionDeclaration: (node: TSESTree.FunctionDeclaration) => void;
-      ImportDeclaration: (node: TSESTree.ImportDeclaration) => void;
-      VariableDeclaration: (node: TSESTree.VariableDeclaration) => void;
+      ClassDeclaration: RuleFunction<TSESTree.ClassDeclaration>;
+      ExportNamedDeclaration: RuleFunction<TSESTree.ExportNamedDeclaration>;
+      ExportDefaultDeclaration: RuleFunction<TSESTree.ExportDefaultDeclaration>;
+      ExportAllDeclaration: RuleFunction<TSESTree.ExportAllDeclaration>;
+      FunctionDeclaration: RuleFunction<TSESTree.FunctionDeclaration>;
+      ImportDeclaration: RuleFunction<TSESTree.ImportDeclaration>;
+      VariableDeclaration: RuleFunction<TSESTree.VariableDeclaration>;
 
       // Expressions
-      ArrowFunctionExpression: (node: TSESTree.ArrowFunctionExpression) => void;
-      AwaitExpression: (node: TSESTree.AwaitExpression) => void;
-      ClassExpression: (node: TSESTree.ClassExpression) => void;
-      FunctionExpression: (node: TSESTree.FunctionExpression) => void;
-      NewExpression: (node: TSESTree.NewExpression) => void;
-      Super: (node: TSESTree.Super) => void;
-      ThisExpression: (node: TSESTree.ThisExpression) => void;
-      UnaryExpression: (node: TSESTree.UnaryExpression) => void;
-      YieldExpression: (node: TSESTree.YieldExpression) => void;
+      ArrowFunctionExpression: RuleFunction<TSESTree.ArrowFunctionExpression>;
+      AwaitExpression: RuleFunction<TSESTree.AwaitExpression>;
+      ClassExpression: RuleFunction<TSESTree.ClassExpression>;
+      FunctionExpression: RuleFunction<TSESTree.FunctionExpression>;
+      NewExpression: RuleFunction<TSESTree.NewExpression>;
+      Super: RuleFunction<TSESTree.Super>;
+      ThisExpression: RuleFunction<TSESTree.ThisExpression>;
+      UnaryExpression: RuleFunction<TSESTree.UnaryExpression>;
+      YieldExpression: RuleFunction<TSESTree.YieldExpression>;
 
       // Others
-      ImportNamespaceSpecifier: (
-        node: TSESTree.ImportNamespaceSpecifier,
-      ) => void;
-      MethodDefinition: (node: TSESTree.MethodDefinition) => void;
-      Property: (node: TSESTree.Property) => void;
+      ImportNamespaceSpecifier: RuleFunction<TSESTree.ImportNamespaceSpecifier>;
+      MethodDefinition: RuleFunction<TSESTree.MethodDefinition>;
+      Property: RuleFunction<TSESTree.Property>;
     }
   >;
   export default rule;
