@@ -1,11 +1,10 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule from '../../src/rules/keyword-spacing';
-import { RuleTester } from '../RuleTester';
-import {
-  MessageIds,
+import rule, {
   Option,
   RootOption,
-} from 'eslint/lib/rules/keyword-spacing';
+  MessageIds,
+} from '../../src/rules/keyword-spacing';
+import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Helpers

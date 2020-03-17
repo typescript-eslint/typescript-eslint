@@ -6,12 +6,12 @@ import {
 import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
 import * as util from '../util';
 
-type Option = Partial<{
+export type Option = Partial<{
   before: boolean;
   after: boolean;
 }>;
-type OverrideOptions = Partial<Record<Keyword, Option>>;
-type RootOption = Option & { overrides?: OverrideOptions };
+export type OverrideOptions = Partial<Record<Keyword, Option>>;
+export type RootOption = Option & { overrides?: OverrideOptions };
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
