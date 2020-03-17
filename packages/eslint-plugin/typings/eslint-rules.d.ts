@@ -146,18 +146,19 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
   import { RuleFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
-  export type Option = Partial<{
+  type Option = Partial<{
     before: boolean;
     after: boolean;
   }>;
-  export type OverrideOptions = Partial<Record<Keyword, Option>>;
-  export type RootOption = Option & { overrides?: OverrideOptions };
-  export type Options = [RootOption];
-  export type MessageIds =
+  type OverrideOptions = Partial<Record<Keyword, Option>>;
+  type RootOption = Option & { overrides?: OverrideOptions };
+  type Options = [RootOption];
+  type MessageIds =
     | 'expectedBefore'
     | 'expectedAfter'
     | 'unexpectedBefore'
     | 'unexpectedAfter';
+
   const rule: TSESLint.RuleModule<
     MessageIds,
     Options,
@@ -211,7 +212,7 @@ declare module 'eslint/lib/rules/keyword-spacing' {
       Property: RuleFunction<TSESTree.Property>;
     }
   >;
-  export default rule;
+  export = rule;
 }
 
 declare module 'eslint/lib/rules/no-dupe-class-members' {

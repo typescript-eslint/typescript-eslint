@@ -1,7 +1,4 @@
-import baseRule, {
-  RootOption,
-  OverrideOptions,
-} from 'eslint/lib/rules/keyword-spacing';
+import baseRule from 'eslint/lib/rules/keyword-spacing';
 import {
   TSESTree,
   AST_TOKEN_TYPES,
@@ -9,13 +6,20 @@ import {
 import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
 import * as util from '../util';
 
+type Option = Partial<{
+  before: boolean;
+  after: boolean;
+}>;
+type OverrideOptions = Partial<Record<Keyword, Option>>;
+type RootOption = Option & { overrides?: OverrideOptions };
+
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const PREV_TOKEN = /^[)\]}>]$/u;
 const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;
-const TEMPLATE_OPEN_PAREN = /\$\{$/u;
-const TEMPLATE_CLOSE_PAREN = /^\}/u;
+const TEMPLATE_OPEN_PAREN = '${';
+const TEMPLATE_CLOSE_PAREN = '}';
 const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
 //------------------------------------------------------------------------------
 // Helpers
@@ -29,7 +33,7 @@ const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
 function isOpenParenOfTemplate(token: TSESTree.Token): boolean {
   return (
     token.type === AST_TOKEN_TYPES.Template &&
-    TEMPLATE_OPEN_PAREN.test(token.value)
+    token.value.startsWith(TEMPLATE_OPEN_PAREN)
   );
 }
 
@@ -41,7 +45,7 @@ function isOpenParenOfTemplate(token: TSESTree.Token): boolean {
 function isCloseParenOfTemplate(token: TSESTree.Token): boolean {
   return (
     token.type === AST_TOKEN_TYPES.Template &&
-    TEMPLATE_CLOSE_PAREN.test(token.value)
+    token.value.endsWith(TEMPLATE_CLOSE_PAREN)
   );
 }
 
@@ -193,7 +197,7 @@ export default util.createRule<Options, MessageIds>({
         before: before ? expectSpaceBefore : unexpectSpaceBefore,
         after: after ? expectSpaceAfter : unexpectSpaceAfter,
       };
-      const overrides: OverrideOptions = options?.overrides || {};
+      const overrides: OverrideOptions = options?.overrides ?? {};
       const retv = Object.create(null);
 
       for (let i = 0; i < KEYWORDS.length; ++i) {
