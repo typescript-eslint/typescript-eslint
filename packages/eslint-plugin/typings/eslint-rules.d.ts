@@ -145,6 +145,7 @@ declare module 'eslint/lib/rules/indent' {
 declare module 'eslint/lib/rules/keyword-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
   import { RuleFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+
   export type Option = Partial<{
     before: boolean;
     after: boolean;

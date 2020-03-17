@@ -2,7 +2,7 @@ import baseRule, {
   RootOption,
   OverrideOptions,
 } from 'eslint/lib/rules/keyword-spacing';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
 import * as util from '../util';
 
@@ -23,8 +23,8 @@ const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
  * @param token A token to check.
  * @returns `true` if the token is a "Template" token ends with "${".
  */
-function isOpenParenOfTemplate(token: TSESTree.Token) {
-  return token.type === 'Template' && TEMPLATE_OPEN_PAREN.test(token.value);
+function isOpenParenOfTemplate(token: TSESTree.Token): boolean {
+  return token.type === AST_TOKEN_TYPES.Template && TEMPLATE_OPEN_PAREN.test(token.value);
 }
 
 /**
@@ -32,8 +32,8 @@ function isOpenParenOfTemplate(token: TSESTree.Token) {
  * @param token A token to check.
  * @returns `true` if the token is a "Template" token starts with "}".
  */
-function isCloseParenOfTemplate(token: TSESTree.Token) {
-  return token.type === 'Template' && TEMPLATE_CLOSE_PAREN.test(token.value);
+function isCloseParenOfTemplate(token: TSESTree.Token): boolean {
+  return token.type === AST_TOKEN_TYPES.Template && TEMPLATE_CLOSE_PAREN.test(token.value);
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the previous token to check.
      */
-    function expectSpaceBefore(token: TSESTree.Token, pattern: RegExp) {
+    function expectSpaceBefore(token: TSESTree.Token, pattern: RegExp): void {
       const prevToken = sourceCode.getTokenBefore(token);
 
       if (
@@ -89,7 +89,7 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the previous token to check.
      */
-    function unexpectSpaceBefore(token: TSESTree.Token, pattern: RegExp) {
+    function unexpectSpaceBefore(token: TSESTree.Token, pattern: RegExp): void {
       const prevToken = sourceCode.getTokenBefore(token);
 
       if (
@@ -117,7 +117,7 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the next token to check.
      */
-    function expectSpaceAfter(token: TSESTree.Token, pattern: RegExp) {
+    function expectSpaceAfter(token: TSESTree.Token, pattern: RegExp): void {
       const nextToken = sourceCode.getTokenAfter(token);
 
       if (
@@ -145,7 +145,7 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the next token to check.
      */
-    function unexpectSpaceAfter(token: TSESTree.Token, pattern: RegExp) {
+    function unexpectSpaceAfter(token: TSESTree.Token, pattern: RegExp): void {
       const nextToken = sourceCode.getTokenAfter(token);
 
       if (
@@ -184,7 +184,7 @@ export default util.createRule<Options, MessageIds>({
         before: before ? expectSpaceBefore : unexpectSpaceBefore,
         after: after ? expectSpaceAfter : unexpectSpaceAfter,
       };
-      const overrides: OverrideOptions = (options && options.overrides) || {};
+      const overrides: OverrideOptions = options?.overrides || {};
       const retv = Object.create(null);
 
       for (let i = 0; i < KEYWORDS.length; ++i) {
@@ -213,8 +213,8 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the previous token to check.
      */
-    function checkSpacingBefore(token: TSESTree.Token, pattern?: RegExp) {
-      checkMethodMap[token.value].before(token, pattern || PREV_TOKEN);
+    function checkSpacingBefore(token: TSESTree.Token, pattern?: RegExp): void {
+      checkMethodMap[token.value].before(token, pattern ?? PREV_TOKEN);
     }
 
     /**
@@ -222,15 +222,15 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the next token to check.
      */
-    function checkSpacingAfter(token: TSESTree.Token, pattern?: RegExp) {
-      checkMethodMap[token.value].after(token, pattern || NEXT_TOKEN);
+    function checkSpacingAfter(token: TSESTree.Token, pattern?: RegExp): void {
+      checkMethodMap[token.value].after(token, pattern ?? NEXT_TOKEN);
     }
 
     /**
      * Reports a given token if usage of spacing around the token is invalid.
      * @param token A token to report.
      */
-    function checkSpacingAround(token: TSESTree.Token) {
+    function checkSpacingAround(token: TSESTree.Token): void {
       checkSpacingBefore(token);
       checkSpacingAfter(token);
     }
@@ -240,7 +240,7 @@ export default util.createRule<Options, MessageIds>({
      * this keyword is invalid.
      * @param node A node to report.
      */
-    function checkSpacingForAsExpression(node: TSESTree.TSAsExpression) {
+    function checkSpacingForAsExpression(node: TSESTree.TSAsExpression): void {
       const token = sourceCode.getTokenAfter(node.expression)!; // get the `as` identifier.
       checkSpacingAround(token);
     }
