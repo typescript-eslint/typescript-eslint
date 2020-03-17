@@ -1,8 +1,80 @@
+// import keywords from 'eslint/lib/rules/utils/keywords';
+
 // don't provide a general import case so that people have to strictly type out a declaration
 // declare module 'eslint/lib/rules/*' TSESLint, {
 //   const rule: TSESLint.RuleModule<any, any[]>;
 //   export = rule;
 // }
+
+declare type Keyword =
+  | 'abstract'
+  | 'boolean'
+  | 'break'
+  | 'byte'
+  | 'case'
+  | 'catch'
+  | 'char'
+  | 'class'
+  | 'const'
+  | 'continue'
+  | 'debugger'
+  | 'default'
+  | 'delete'
+  | 'do'
+  | 'double'
+  | 'else'
+  | 'enum'
+  | 'export'
+  | 'extends'
+  | 'false'
+  | 'final'
+  | 'finally'
+  | 'float'
+  | 'for'
+  | 'function'
+  | 'goto'
+  | 'if'
+  | 'implements'
+  | 'import'
+  | 'in'
+  | 'instanceof'
+  | 'int'
+  | 'interface'
+  | 'long'
+  | 'native'
+  | 'new'
+  | 'null'
+  | 'package'
+  | 'private'
+  | 'protected'
+  | 'public'
+  | 'return'
+  | 'short'
+  | 'static'
+  | 'super'
+  | 'switch'
+  | 'synchronized'
+  | 'this'
+  | 'throw'
+  | 'throws'
+  | 'transient'
+  | 'true'
+  | 'try'
+  | 'typeof'
+  | 'var'
+  | 'void'
+  | 'volatile'
+  | 'while'
+  | 'with'
+  | 'as'
+  | 'async'
+  | 'await'
+  | 'from'
+  | 'get'
+  | 'let'
+  | 'of'
+  | 'set'
+  | 'yield';
 
 declare module 'eslint/lib/rules/arrow-parens' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
@@ -144,10 +216,21 @@ declare module 'eslint/lib/rules/indent' {
 
 declare module 'eslint/lib/rules/keyword-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-
+  export type Option = Partial<{
+    before: boolean;
+    after: boolean;
+  }>;
+  export type OverrideOptions = Partial<Record<Keyword, Option>>;
+  export type RootOption = Option & { overrides?: OverrideOptions };
+  export type Options = [RootOption];
+  export type MessageIds =
+    | 'expectedBefore'
+    | 'expectedAfter'
+    | 'unexpectedBefore'
+    | 'unexpectedAfter';
   const rule: TSESLint.RuleModule<
-    'expectedBefore' | 'expectedAfter' | 'unexpectedBefore' | 'unexpectedAfter',
-    [],
+    MessageIds,
+    Options,
     {
       // Statements
       DebuggerStatement: (node: TSESTree.DebuggerStatement) => void;
@@ -202,7 +285,7 @@ declare module 'eslint/lib/rules/keyword-spacing' {
       Property: (node: TSESTree.Property) => void;
     }
   >;
-  export = rule;
+  export default rule;
 }
 
 declare module 'eslint/lib/rules/no-dupe-class-members' {

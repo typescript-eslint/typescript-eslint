@@ -1,38 +1,19 @@
-import baseRule from 'eslint/lib/rules/keyword-spacing';
+import baseRule, {
+  Options,
+  RootOption,
+  OverrideOptions,
+  MessageIds,
+} from 'eslint/lib/rules/keyword-spacing';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { isTokenOnSameLine } from '../util/astUtils';
-import keywords from 'eslint/lib/rules/utils/keywords';
+import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
 
 import * as util from '../util';
-
-export type Option = Partial<{
-  before: boolean;
-  after: boolean;
-}>;
-
-export type RootOption = Option & {
-  overrides?: { [keywordName: string]: Option };
-};
-
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const PREV_TOKEN = /^[)\]}>]$/u;
 const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;
 const TEMPLATE_OPEN_PAREN = /\$\{$/u;
 const TEMPLATE_CLOSE_PAREN = /^\}/u;
 const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
-const KEYS = keywords.concat([
-  'as',
-  'async',
-  'await',
-  'from',
-  'get',
-  'let',
-  'of',
-  'set',
-  'yield',
-]);
-
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
@@ -69,7 +50,7 @@ export default util.createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
-  defaultOptions: [],
+  defaultOptions: [{}],
 
   create(context) {
     const sourceCode = context.getSourceCode();
@@ -203,11 +184,11 @@ export default util.createRule<Options, MessageIds>({
         before: before ? expectSpaceBefore : unexpectSpaceBefore,
         after: after ? expectSpaceAfter : unexpectSpaceAfter,
       };
-      const overrides = (options && options.overrides) || {};
+      const overrides: OverrideOptions = (options && options.overrides) || {};
       const retv = Object.create(null);
 
-      for (let i = 0; i < KEYS.length; ++i) {
-        const key = KEYS[i];
+      for (let i = 0; i < KEYWORDS.length; ++i) {
+        const key = KEYWORDS[i] as Keyword;
         const override = overrides[key];
 
         if (override) {
