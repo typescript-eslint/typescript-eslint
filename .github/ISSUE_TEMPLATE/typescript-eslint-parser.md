@@ -13,6 +13,11 @@ If you ignore it, we're just going to respond asking you to fill it out, which w
 The more relevant information you can include, the faster we can find the issue and fix it without asking you for more info.
 -->
 
+<!--
+Make sure you read through our FAQ before posting.
+https://github.com/typescript-eslint/typescript-eslint/blob/issue-template-update/docs/getting-started/linting/FAQ.md
+-->
+
 **Repro**
 
 <!--
