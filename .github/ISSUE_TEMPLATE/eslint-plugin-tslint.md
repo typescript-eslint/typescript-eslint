@@ -29,7 +29,6 @@ The more irrelevant code/config you give, the harder it is for us to investigate
 {
   "rules": {
     "@typescript-eslint/tslint/config": ["warn", {
-      "lintFile": "", // path to tslint.json of your project
       "rules": {
         "rule": "setting",
       },
