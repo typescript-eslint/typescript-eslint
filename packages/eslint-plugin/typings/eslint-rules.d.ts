@@ -4,7 +4,6 @@
 //   export = rule;
 // }
 
-
 declare module 'eslint/lib/rules/arrow-parens' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 

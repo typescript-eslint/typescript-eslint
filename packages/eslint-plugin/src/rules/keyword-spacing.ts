@@ -1,13 +1,13 @@
 import baseRule, {
-  Options,
   RootOption,
   OverrideOptions,
-  MessageIds,
 } from 'eslint/lib/rules/keyword-spacing';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
-
 import * as util from '../util';
+
+export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const PREV_TOKEN = /^[)\]}>]$/u;
 const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;

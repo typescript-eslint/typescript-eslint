@@ -56,7 +56,6 @@ function unexpectedBefore(
   return [{ messageId: 'unexpectedBefore', data: { value: keyword } }];
 }
 
-
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
