@@ -6,15 +6,44 @@ labels: 'package: parser, triage'
 assignees: ''
 ---
 
-**What code were you trying to parse?**
+<!--
+Please don't ignore this template.
 
-```ts
-// Please put code here
+If you ignore it, we're just going to respond asking you to fill it out, which wastes everyone's time.
+The more relevant information you can include, the faster we can find the issue and fix it without asking you for more info.
+-->
+
+**Repro**
+
+<!--
+Include a ***minimal*** reproduction case.
+The more irrelevant code/config you give, the harder it is for us to investigate.
+-->
+
+```JSON
+{
+  "rules": {
+    "@typescript-eslint/<rule>": ["<setting>"]
+  }
+}
 ```
 
-**What did you expect to happen?**
+```TS
+// your repro code case
+```
 
-**What actually happened?**
+**Expected Result**
+
+**Actual Result**
+
+**Additional Info**
+
+<!--
+Did eslint throw an exception?
+
+Please run your lint again with the --debug flag, and dump the output below.
+i.e. eslint --ext ".ts,.js" src --debug
+-->
 
 **Versions**
 
