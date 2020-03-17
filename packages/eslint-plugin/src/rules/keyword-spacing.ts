@@ -2,7 +2,10 @@ import baseRule, {
   RootOption,
   OverrideOptions,
 } from 'eslint/lib/rules/keyword-spacing';
-import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
 import * as util from '../util';
 
@@ -24,7 +27,10 @@ const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
  * @returns `true` if the token is a "Template" token ends with "${".
  */
 function isOpenParenOfTemplate(token: TSESTree.Token): boolean {
-  return token.type === AST_TOKEN_TYPES.Template && TEMPLATE_OPEN_PAREN.test(token.value);
+  return (
+    token.type === AST_TOKEN_TYPES.Template &&
+    TEMPLATE_OPEN_PAREN.test(token.value)
+  );
 }
 
 /**
@@ -33,7 +39,10 @@ function isOpenParenOfTemplate(token: TSESTree.Token): boolean {
  * @returns `true` if the token is a "Template" token starts with "}".
  */
 function isCloseParenOfTemplate(token: TSESTree.Token): boolean {
-  return token.type === AST_TOKEN_TYPES.Template && TEMPLATE_CLOSE_PAREN.test(token.value);
+  return (
+    token.type === AST_TOKEN_TYPES.Template &&
+    TEMPLATE_CLOSE_PAREN.test(token.value)
+  );
 }
 
 export default util.createRule<Options, MessageIds>({
