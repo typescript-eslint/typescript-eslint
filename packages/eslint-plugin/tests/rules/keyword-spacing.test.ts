@@ -49,6 +49,15 @@ function expectedBefore(keyword: string): TSESLint.TestCaseError<MessageIds>[] {
 }
 
 /**
+ * Gets an error message that expected space(s) after a specified keyword.
+ * @param keyword A keyword.
+ * @returns An error message.
+ */
+function expectedAfter(keyword: string): TSESLint.TestCaseError<MessageIds>[] {
+  return [{ messageId: 'expectedAfter', data: { value: keyword } }];
+}
+
+/**
  * Gets an error message that unexpected space(s) before a specified keyword.
  * @param keyword A keyword.
  * @returns An error message.
@@ -57,6 +66,17 @@ function unexpectedBefore(
   keyword: string,
 ): TSESLint.TestCaseError<MessageIds>[] {
   return [{ messageId: 'unexpectedBefore', data: { value: keyword } }];
+}
+
+/**
+ * Gets an error message that unexpected space(s) after a specified keyword.
+ * @param keyword A keyword.
+ * @returns An error message.
+ */
+function unexpectedAfter(
+  keyword: string,
+): TSESLint.TestCaseError<MessageIds>[] {
+  return [{ messageId: 'unexpectedAfter', data: { value: keyword } }];
 }
 
 const ruleTester = new RuleTester({
@@ -104,6 +124,19 @@ ruleTester.run('keyword-spacing', rule, {
       options: [NEITHER],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: unexpectedBefore('as'),
+    },
+    {
+      code: 'const foo = {} as{}',
+      output: 'const foo = {} as {}',
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: expectedAfter('as'),
+    },
+    {
+      code: 'const foo = {}as {}',
+      output: 'const foo = {}as{}',
+      options: [NEITHER],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: unexpectedAfter('as'),
     },
   ],
 });
