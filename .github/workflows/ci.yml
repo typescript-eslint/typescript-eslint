@@ -147,6 +147,12 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history for this job, because lerna needs it
+      - run: |
+          git status
+          git log -n 2
+
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
