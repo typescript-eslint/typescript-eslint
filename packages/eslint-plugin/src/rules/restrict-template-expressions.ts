@@ -10,6 +10,7 @@ type Options = [
     allowNullable?: boolean;
     allowNumber?: boolean;
     allowBoolean?: boolean;
+    allowAny?: boolean;
   },
 ];
 
@@ -32,6 +33,7 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
+          allowAny: { type: 'boolean' },
           allowBoolean: { type: 'boolean' },
           allowNullable: { type: 'boolean' },
           allowNumber: { type: 'boolean' },
@@ -51,6 +53,7 @@ export default util.createRule<Options, MessageId>({
       | 'boolean'
       | 'null'
       | 'undefined'
+      | 'any'
       | 'other';
 
     const allowedTypes: BaseType[] = [
@@ -58,6 +61,7 @@ export default util.createRule<Options, MessageId>({
       ...(options.allowNumber ? (['number', 'bigint'] as const) : []),
       ...(options.allowBoolean ? (['boolean'] as const) : []),
       ...(options.allowNullable ? (['null', 'undefined'] as const) : []),
+      ...(options.allowAny ? (['any'] as const) : []),
     ];
 
     function isAllowedType(types: BaseType[]): boolean {
@@ -127,6 +131,9 @@ export default util.createRule<Options, MessageId>({
       if (type.flags & ts.TypeFlags.Undefined) {
         return ['undefined'];
       }
+      if (type.flags & ts.TypeFlags.Any) {
+        return ['any'];
+      }
 
       if (type.isUnion()) {
         return type.types
@@ -139,7 +146,8 @@ export default util.createRule<Options, MessageId>({
         stringType === 'string' ||
         stringType === 'number' ||
         stringType === 'bigint' ||
-        stringType === 'boolean'
+        stringType === 'boolean' ||
+        stringType === 'any'
       ) {
         return [stringType];
       }

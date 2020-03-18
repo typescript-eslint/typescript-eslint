@@ -59,6 +59,16 @@ const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'not truthy'}`;
 ```
 
+### `allowAny`
+
+Examples of additional **correct** code for this rule with `{ allowAny: true }`:
+
+```ts
+const user = JSON.parse('{ "name": "foo" }');
+const msg1 = `arg = ${user.name}`;
+const msg2 = `arg = ${user.name || 'the user with no name'}`;
+```
+
 ### `allowNullable`
 
 Examples of additional **correct** code for this rule with `{ allowNullable: true }`:
