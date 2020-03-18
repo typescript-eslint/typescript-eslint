@@ -1,16 +1,17 @@
 import baseRule from 'eslint/lib/rules/keyword-spacing';
+import ESLINT_UTILS_KEYWORDS from 'eslint/lib/rules/utils/keywords';
 import {
   TSESTree,
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { isTokenOnSameLine, KEYWORDS } from '../util/astUtils';
+import { isTokenOnSameLine } from '../util/astUtils';
 import * as util from '../util';
 
 export type Option = Partial<{
   before: boolean;
   after: boolean;
 }>;
-export type OverrideOptions = Partial<Record<Keyword, Option>>;
+export type OverrideOptions = Partial<Record<string, Option>>;
 export type RootOption = Option & { overrides?: OverrideOptions };
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
@@ -21,6 +22,32 @@ const NEXT_TOKEN = /^(?:[([{<~!]|\+\+?|--?)$/u;
 const TEMPLATE_OPEN_PAREN = '${';
 const TEMPLATE_CLOSE_PAREN = '}';
 const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
+
+const KEYWORDS = ESLINT_UTILS_KEYWORDS.concat([
+  // Eslint Utils does no provide all keywords, so we complete the list here.
+  'as',
+  'async',
+  'await',
+  'from',
+  'get',
+  'let',
+  'of',
+  'set',
+  'yield',
+]);
+
+// Check duplications.
+(function() {
+  KEYWORDS.sort();
+  for (let i = 1; i < KEYWORDS.length; ++i) {
+    if (KEYWORDS[i] === KEYWORDS[i - 1]) {
+      throw new Error(
+        `Duplication was found in the keyword list: ${KEYWORDS[i]}`,
+      );
+    }
+  }
+})();
+
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
@@ -201,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
       const retv = Object.create(null);
 
       for (let i = 0; i < KEYWORDS.length; ++i) {
-        const key = KEYWORDS[i] as Keyword;
+        const key = KEYWORDS[i];
         const override = overrides[key];
 
         if (override) {

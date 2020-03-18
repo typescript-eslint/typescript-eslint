@@ -150,7 +150,7 @@ declare module 'eslint/lib/rules/keyword-spacing' {
     before: boolean;
     after: boolean;
   }>;
-  type OverrideOptions = Partial<Record<Keyword, Option>>;
+  type OverrideOptions = Partial<Record<string, Option>>;
   type RootOption = Option & { overrides?: OverrideOptions };
   type Options = [RootOption];
   type MessageIds =
