@@ -30,8 +30,8 @@ variable that will be imported into the local module scope.
 
 This rule has an object option:
 
-- `"properties": "never"` (default) does not check property names
-- `"properties": "always"` enforces camelCase style for property names
+- `"properties": "never"` does not check property names
+- `"properties": "always"` (default) enforces camelCase style for property names
 - `"genericType": "never"` (default) does not check generic identifiers
 - `"genericType": "always"` enforces camelCase style for generic identifiers
 - `"ignoreDestructuring": false` (default) enforces camelCase style for destructured identifiers
