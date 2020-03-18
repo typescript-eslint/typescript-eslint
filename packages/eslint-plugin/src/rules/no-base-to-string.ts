@@ -26,10 +26,21 @@ export default util.createRule({
       baseToString:
         "'{{name}} {{certainty}} evaluate to '[Object object]' when stringified.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreTaggedTemplateExpressions: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     type: 'suggestion',
   },
-  defaultOptions: [],
+  defaultOptions: [{ ignoreTaggedTemplateExpressions: false }],
   create(context) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
