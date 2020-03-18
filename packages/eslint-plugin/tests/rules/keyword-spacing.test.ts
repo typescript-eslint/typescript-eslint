@@ -31,7 +31,7 @@ const NEITHER = { before: false, after: false };
  * @param value A value to override.
  * @returns An option object to test an 'overrides' option.
  */
-function override(keyword: string, value: Option): RootOption {
+function overrides(keyword: string, value: Option): RootOption {
   return {
     before: value.before === false,
     after: value.after === false,
@@ -99,12 +99,17 @@ ruleTester.run('keyword-spacing', rule, {
     },
     {
       code: 'const foo = {} as {}',
-      options: [override('as', BOTH)],
+      options: [overrides('as', BOTH)],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
       code: 'const foo = {}as{}',
-      options: [override('as', NEITHER)],
+      options: [overrides('as', NEITHER)],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: 'const foo = {} as {}',
+      options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
   ],
@@ -137,6 +142,12 @@ ruleTester.run('keyword-spacing', rule, {
       options: [NEITHER],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: unexpectedAfter('as'),
+    },
+    {
+      code: 'const foo = {} as{}',
+      options: [{ overrides: { as: {} } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: expectedAfter('as'),
     },
   ],
 });

@@ -253,8 +253,8 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the previous token to check.
      */
-    function checkSpacingBefore(token: TSESTree.Token, pattern?: RegExp): void {
-      checkMethodMap[token.value].before(token, pattern ?? PREV_TOKEN);
+    function checkSpacingBefore(token: TSESTree.Token): void {
+      checkMethodMap[token.value].before(token, PREV_TOKEN);
     }
 
     /**
@@ -262,8 +262,8 @@ export default util.createRule<Options, MessageIds>({
      * @param token A token to report.
      * @param pattern A pattern of the next token to check.
      */
-    function checkSpacingAfter(token: TSESTree.Token, pattern?: RegExp): void {
-      checkMethodMap[token.value].after(token, pattern ?? NEXT_TOKEN);
+    function checkSpacingAfter(token: TSESTree.Token): void {
+      checkMethodMap[token.value].after(token, NEXT_TOKEN);
     }
 
     /**
