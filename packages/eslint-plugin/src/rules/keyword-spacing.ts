@@ -37,7 +37,7 @@ const KEYWORDS = ESLINT_UTILS_KEYWORDS.concat([
 ]);
 
 // Check duplications.
-(function() {
+(function(): void {
   KEYWORDS.sort();
   for (let i = 1; i < KEYWORDS.length; ++i) {
     if (KEYWORDS[i] === KEYWORDS[i - 1]) {
