@@ -12,7 +12,14 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-export default util.createRule({
+type Options = [
+  {
+    ignoreTaggedTemplateExpressions?: boolean;
+  },
+];
+type MessageIds = 'baseToString';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
     docs: {
