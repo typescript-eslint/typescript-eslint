@@ -41,7 +41,7 @@ export default util.createRule({
     type: 'suggestion',
   },
   defaultOptions: [{ ignoreTaggedTemplateExpressions: false }],
-  create(context) {
+  create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
@@ -121,8 +121,14 @@ export default util.createRule({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
-
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
+        if (
+          options.ignoreTaggedTemplateExpressions &&
+          node.parent &&
+          node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
+          return;
+        }
         for (const expression of node.expressions) {
           checkExpression(expression);
         }
