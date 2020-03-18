@@ -150,14 +150,6 @@ jobs:
       # Fetch all history for all tags and branches in this job because lerna needs it
       - run: |
           git fetch --prune --unshallow
-          echo "fetched"
-          git status
-          echo "end status 1"
-          git checkout master
-          git status
-          echo "end status 2"
-          echo "git log:"
-          git log -n 2
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
@@ -184,6 +176,6 @@ jobs:
           yarn check-clean-workspace-after-install
 
       - name: Publish all packages to npm
-        run: npx lerna publish --log-level=verbose --canary --exact --force-publish --yes
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
