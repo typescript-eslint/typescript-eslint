@@ -1,4 +1,3 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-unused-expressions';
 import { RuleTester } from '../RuleTester';
 
@@ -10,20 +9,6 @@ const ruleTester = new RuleTester({
   },
   parser: '@typescript-eslint/parser',
 });
-
-type TestCaseError = Omit<TSESLint.TestCaseError<string>, 'messageId'>;
-
-// the base rule doesn't have messageIds
-function error(
-  messages: TestCaseError[],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] {
-  return messages.map(message => ({
-    ...message,
-    message:
-      'Expected an assignment or function call and instead saw an expression.',
-  }));
-}
 
 ruleTester.run('no-unused-expressions', rule, {
   valid: [
@@ -70,134 +55,146 @@ ruleTester.run('no-unused-expressions', rule, {
     {
       code: `
 if(0) 0
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 7,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 f(0), {}
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 a, b()
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 a() && function namedFunctionInExpressionContext () {f();}
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 a?.b
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 (a?.b).c
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 a?.['b']
-        `,
-      errors: error([
+      `,
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 (a?.['b']).c
         `,
-      errors: error([
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 a?.b()?.c
         `,
-      errors: error([
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 (a?.b()).c
         `,
-      errors: error([
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 one[2]?.[3][4];
         `,
-      errors: error([
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 one.two?.three.four;
         `,
-      errors: error([
+      errors: [
         {
           line: 2,
           column: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -206,14 +203,15 @@ module Foo {
   'use strict';
 }
       `,
-      errors: error([
+      errors: [
         {
           line: 4,
           endLine: 4,
           column: 3,
           endColumn: 16,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -224,14 +222,15 @@ namespace Foo {
   'use strict';
 }
       `,
-      errors: error([
+      errors: [
         {
           line: 6,
           endLine: 6,
           column: 3,
           endColumn: 16,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -241,14 +240,15 @@ function foo() {
   'use strict';
 }
       `,
-      errors: error([
+      errors: [
         {
           line: 5,
           endLine: 5,
           column: 3,
           endColumn: 16,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
   ],
 });

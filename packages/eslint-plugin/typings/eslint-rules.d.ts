@@ -331,7 +331,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    'expected',
+    'unusedExpression',
     (
       | 'all'
       | 'local'
