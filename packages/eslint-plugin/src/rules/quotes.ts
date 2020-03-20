@@ -42,6 +42,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSPropertySignature:
         case AST_NODE_TYPES.TSModuleDeclaration:
         case AST_NODE_TYPES.TSLiteralType:
+        case AST_NODE_TYPES.TSExternalModuleReference:
           return true;
 
         case AST_NODE_TYPES.TSEnumMember:

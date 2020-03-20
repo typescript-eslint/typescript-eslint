@@ -1,5 +1,5 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintPatternVisitor from 'eslint-scope/lib/pattern-visitor';
+import { TSESTree } from '../ts-estree';
 import { ScopeManager } from './ScopeManager';
 import {
   PatternVisitorCallback,
