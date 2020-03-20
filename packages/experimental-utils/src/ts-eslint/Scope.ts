@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '../ts-estree';
 
 namespace Scope {
   export interface ScopeManager {

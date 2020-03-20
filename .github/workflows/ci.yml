@@ -147,6 +147,10 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
@@ -172,6 +176,6 @@ jobs:
           yarn check-clean-workspace-after-install
 
       - name: Publish all packages to npm
-        run: npx lerna publish --canary --exact --force-publish --yes
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
