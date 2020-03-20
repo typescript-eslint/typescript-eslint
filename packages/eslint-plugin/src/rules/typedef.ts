@@ -12,6 +12,7 @@ const enum OptionKeys {
   Parameter = 'parameter',
   PropertyDeclaration = 'propertyDeclaration',
   VariableDeclaration = 'variableDeclaration',
+  VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
 type Options = { [k in OptionKeys]?: boolean };
@@ -41,6 +42,7 @@ export default util.createRule<[Options], MessageIds>({
           [OptionKeys.Parameter]: { type: 'boolean' },
           [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
           [OptionKeys.VariableDeclaration]: { type: 'boolean' },
+          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
         },
       },
     ],
@@ -67,6 +69,31 @@ export default util.createRule<[Options], MessageIds>({
       node: TSESTree.Parameter | TSESTree.PropertyName,
     ): string | undefined {
       return node.type === AST_NODE_TYPES.Identifier ? node.name : undefined;
+    }
+
+    function isForOfStatementContext(
+      node: TSESTree.ArrayPattern | TSESTree.ObjectPattern,
+    ): boolean {
+      let current: TSESTree.Node | undefined = node.parent;
+      while (current) {
+        switch (current.type) {
+          case AST_NODE_TYPES.VariableDeclarator:
+          case AST_NODE_TYPES.VariableDeclaration:
+          case AST_NODE_TYPES.ObjectPattern:
+          case AST_NODE_TYPES.ArrayPattern:
+          case AST_NODE_TYPES.Property:
+            current = current.parent;
+            break;
+
+          case AST_NODE_TYPES.ForOfStatement:
+            return true;
+
+          default:
+            current = undefined;
+        }
+      }
+
+      return false;
     }
 
     function checkParameters(params: TSESTree.Parameter[]): void {
@@ -100,9 +127,21 @@ export default util.createRule<[Options], MessageIds>({
       }
     }
 
+    function isVariableDeclarationIgnoreFunction(node: TSESTree.Node): boolean {
+      return (
+        !!options[OptionKeys.VariableDeclarationIgnoreFunction] &&
+        (node.type === AST_NODE_TYPES.FunctionExpression ||
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression)
+      );
+    }
+
     return {
       ArrayPattern(node): void {
-        if (options[OptionKeys.ArrayDestructuring] && !node.typeAnnotation) {
+        if (
+          options[OptionKeys.ArrayDestructuring] &&
+          !node.typeAnnotation &&
+          !isForOfStatementContext(node)
+        ) {
           report(node);
         }
       },
@@ -112,6 +151,10 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ClassProperty(node): void {
+        if (node.value && isVariableDeclarationIgnoreFunction(node.value)) {
+          return;
+        }
+
         if (
           options[OptionKeys.MemberVariableDeclaration] &&
           !node.typeAnnotation
@@ -132,7 +175,11 @@ export default util.createRule<[Options], MessageIds>({
         }
       },
       ObjectPattern(node): void {
-        if (options[OptionKeys.ObjectDestructuring] && !node.typeAnnotation) {
+        if (
+          options[OptionKeys.ObjectDestructuring] &&
+          !node.typeAnnotation &&
+          !isForOfStatementContext(node)
+        ) {
           report(node);
         }
       },
@@ -155,7 +202,8 @@ export default util.createRule<[Options], MessageIds>({
           (node.id.type === AST_NODE_TYPES.ArrayPattern &&
             !options[OptionKeys.ArrayDestructuring]) ||
           (node.id.type === AST_NODE_TYPES.ObjectPattern &&
-            !options[OptionKeys.ObjectDestructuring])
+            !options[OptionKeys.ObjectDestructuring]) ||
+          (node.init && isVariableDeclarationIgnoreFunction(node.init))
         ) {
           return;
         }

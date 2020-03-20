@@ -36,38 +36,31 @@ ruleTester.run('no-implied-eval', rule, {
     `window.execScript(() => {});`,
     `window['execScript'](() => {});`,
 
-    {
-      code: `
+    `
 const foo = () => {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
 setImmediate(foo);
 execScript(foo);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = function () {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
 setImmediate(foo);
 execScript(foo);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 function foo() {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
 setImmediate(foo);
 execScript(foo);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn: () => {},
 }
@@ -76,10 +69,8 @@ setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
 setImmediate(foo.fn);
 execScript(foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn: function () {},
 }
@@ -88,10 +79,8 @@ setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
 setImmediate(foo.fn);
 execScript(foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn: function foo() {},
 }
@@ -100,10 +89,8 @@ setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
 setImmediate(foo.fn);
 execScript(foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn() {},
 }
@@ -112,10 +99,8 @@ setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
 setImmediate(foo.fn);
 execScript(foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn: () => {},
 }
@@ -125,10 +110,8 @@ setTimeout(foo[fn], 0);
 setInterval(foo[fn], 0);
 setImmediate(foo[fn]);
 execScript(foo[fn]);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = {
   fn: () => {},
 }
@@ -137,10 +120,8 @@ setTimeout(foo['fn'], 0);
 setInterval(foo['fn'], 0);
 setImmediate(foo['fn']);
 execScript(foo['fn']);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo: () => void = () => {
 };
 
@@ -148,10 +129,8 @@ setTimeout(foo, 0);
 setInterval(foo, 0);
 setImmediate(foo);
 execScript(foo);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo: (() => () => void) = () => {
   return () => {};
 }
@@ -160,30 +139,24 @@ setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo: (() => () => void) = () => () => {};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = () => () => {};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = function foo () {
   return function foo() {}
 }
@@ -192,10 +165,8 @@ setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo = function () {
   return function () {
     return '';
@@ -206,10 +177,8 @@ setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const foo: (() => () => void) = function foo () {
   return function foo() {}
 }
@@ -218,10 +187,8 @@ setTimeout(foo(), 0);
 setInterval(foo(), 0);
 setImmediate(foo());
 execScript(foo());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 function foo() {
   return function foo() {
     return () => {};
@@ -232,10 +199,8 @@ setTimeout(foo()(), 0);
 setInterval(foo()(), 0);
 setImmediate(foo()());
 execScript(foo()());
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 class Foo {
   static fn = () => {};
 }
@@ -244,10 +209,8 @@ setTimeout(Foo.fn, 0);
 setInterval(Foo.fn, 0);
 setImmediate(Foo.fn);
 execScript(Foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 class Foo {
   fn() {}
 }
@@ -258,10 +221,8 @@ setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
 setImmediate(foo.fn);
 execScript(foo.fn);
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 class Foo {
   fn() {}
 }
@@ -272,18 +233,15 @@ setTimeout(fn.bind(null), 0);
 setInterval(fn.bind(null), 0);
 setImmediate(fn.bind(null));
 execScript(fn.bind(null));
-      `,
-    },
-    {
-      code: `
+    `,
+    `
 const fn = (foo: () => void) => {
   setTimeout(foo, 0);
   setInterval(foo, 0);
   setImmediate(foo);
   execScript(foo);
 }
-      `,
-    },
+    `,
   ],
 
   invalid: [

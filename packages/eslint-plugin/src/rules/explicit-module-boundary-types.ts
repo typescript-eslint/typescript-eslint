@@ -6,6 +6,7 @@ import * as util from '../util';
 import {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
+  isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -76,6 +77,10 @@ export default util.createRule<Options, MessageIds>({
           node.type === AST_NODE_TYPES.ExportSpecifier
         ) {
           return false;
+        }
+
+        if (node.type === AST_NODE_TYPES.JSXExpressionContainer) {
+          return true;
         }
 
         if (node.type === AST_NODE_TYPES.ReturnStatement) {
@@ -178,7 +183,11 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isAllowedName(node.parent) || isUnexported(node)) {
+        if (
+          isAllowedName(node.parent) ||
+          isUnexported(node) ||
+          isTypedFunctionExpression(node, options)
+        ) {
           return;
         }
 

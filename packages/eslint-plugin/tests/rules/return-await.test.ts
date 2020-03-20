@@ -164,6 +164,9 @@ ruleTester.run('return-await', rule, {
       code: `async function test() {
         return await 1;
       }`,
+      output: `async function test() {
+        return 1;
+      }`,
       errors: [
         {
           line: 2,
@@ -172,7 +175,51 @@ ruleTester.run('return-await', rule, {
       ],
     },
     {
+      code: `async function test() {
+        const foo = 1;
+        return await{foo};
+      }`,
+      output: `async function test() {
+        const foo = 1;
+        return {foo};
+      }`,
+      errors: [
+        {
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `async function test() {
+        const foo = 1;
+        return await
+          foo;
+      }`,
+      output: `async function test() {
+        const foo = 1;
+        return foo;
+      }`,
+      errors: [
+        {
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
       code: `const test = async () => await 1;`,
+      output: `const test = async () => 1;`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `const test = async () => await/* comment */1;`,
+      output: `const test = async () => /* comment */1;`,
       errors: [
         {
           line: 1,
@@ -182,6 +229,7 @@ ruleTester.run('return-await', rule, {
     },
     {
       code: `const test = async () => await Promise.resolve(1);`,
+      output: `const test = async () => Promise.resolve(1);`,
       errors: [
         {
           line: 1,
@@ -195,6 +243,15 @@ ruleTester.run('return-await', rule, {
           return Promise.resolve(1);
         } catch (e) {
           return Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }`,
+      output: `async function test() {
+        try {
+          return await Promise.resolve(1);
+        } catch (e) {
+          return await Promise.resolve(2);
         } finally {
           console.log('cleanup');
         }
@@ -213,6 +270,9 @@ ruleTester.run('return-await', rule, {
     {
       code: `async function test() {
         return await Promise.resolve(1);
+      }`,
+      output: `async function test() {
+        return Promise.resolve(1);
       }`,
       errors: [
         {
@@ -226,6 +286,9 @@ ruleTester.run('return-await', rule, {
       code: `async function test() {
         return await 1;
       }`,
+      output: `async function test() {
+        return 1;
+      }`,
       errors: [
         {
           line: 2,
@@ -236,6 +299,7 @@ ruleTester.run('return-await', rule, {
     {
       options: ['in-try-catch'],
       code: `const test = async () => await 1;`,
+      output: `const test = async () => 1;`,
       errors: [
         {
           line: 1,
@@ -246,6 +310,7 @@ ruleTester.run('return-await', rule, {
     {
       options: ['in-try-catch'],
       code: `const test = async () => await Promise.resolve(1);`,
+      output: `const test = async () => Promise.resolve(1);`,
       errors: [
         {
           line: 1,
@@ -260,6 +325,15 @@ ruleTester.run('return-await', rule, {
           return Promise.resolve(1);
         } catch (e) {
           return Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }`,
+      output: `async function test() {
+        try {
+          return await Promise.resolve(1);
+        } catch (e) {
+          return await Promise.resolve(2);
         } finally {
           console.log('cleanup');
         }
@@ -279,6 +353,9 @@ ruleTester.run('return-await', rule, {
       options: ['in-try-catch'],
       code: `async function test() {
         return await Promise.resolve(1);
+      }`,
+      output: `async function test() {
+        return Promise.resolve(1);
       }`,
       errors: [
         {
@@ -291,6 +368,9 @@ ruleTester.run('return-await', rule, {
       options: ['never'],
       code: `async function test() {
         return await 1;
+      }`,
+      output: `async function test() {
+        return 1;
       }`,
       errors: [
         {
@@ -310,6 +390,15 @@ ruleTester.run('return-await', rule, {
           console.log('cleanup');
         }
       }`,
+      output: `async function test() {
+        try {
+          return Promise.resolve(1);
+        } catch (e) {
+          return Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }`,
       errors: [
         {
           line: 3,
@@ -326,6 +415,9 @@ ruleTester.run('return-await', rule, {
       code: `async function test() {
         return await Promise.resolve(1);
       }`,
+      output: `async function test() {
+        return Promise.resolve(1);
+      }`,
       errors: [
         {
           line: 2,
@@ -337,6 +429,9 @@ ruleTester.run('return-await', rule, {
       options: ['always'],
       code: `async function test() {
         return await 1;
+      }`,
+      output: `async function test() {
+        return 1;
       }`,
       errors: [
         {
@@ -356,6 +451,15 @@ ruleTester.run('return-await', rule, {
           console.log('cleanup');
         }
       }`,
+      output: `async function test() {
+        try {
+          return await Promise.resolve(1);
+        } catch (e) {
+          return await Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }`,
       errors: [
         {
           line: 3,
@@ -371,6 +475,9 @@ ruleTester.run('return-await', rule, {
       options: ['always'],
       code: `async function test() {
         return Promise.resolve(1);
+      }`,
+      output: `async function test() {
+        return await Promise.resolve(1);
       }`,
       errors: [
         {

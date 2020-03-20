@@ -6,6 +6,8 @@ This rule aims to standardize the use of type assertion style across the codebas
 
 Type assertions are also commonly referred as "type casting" in TypeScript (even though it is technically slightly different to what is understood by type casting in other languages), so you can think of type assertions and type casting referring to the same thing. It is essentially you saying to the TypeScript compiler, "in this case, I know better than you!".
 
+In addition to ensuring that type assertions are written in a consistent way, this rule also helps make your codebase more type-safe.
+
 ## Options
 
 ```ts
@@ -32,7 +34,7 @@ This option defines the expected assertion style. Valid values for `assertionSty
 - `angle-bracket` will enforce that you always use `<foo>...`
 - `never` will enforce that you do not do any type assertions.
 
-Most codebases will want to enforce not using `angle-bracket` style because it conflicts with JSX syntax, and is confusing when paired with with generic syntax.
+Most codebases will want to enforce not using `angle-bracket` style because it conflicts with JSX syntax, and is confusing when paired with generic syntax.
 
 Some codebases like to go for an extra level of type safety, and ban assertions altogether via the `never` option.
 
@@ -44,10 +46,16 @@ The compiler will warn for excess properties with this syntax, but not missing _
 
 The const assertion `const x = { foo: 1 } as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
 
+Assertions to `any` are also ignored by this option.
+
 Examples of **incorrect** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }` (and for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`)
 
 ```ts
 const x = { ... } as T;
+
+function foo() {
+  return { ... } as T;
+}
 ```
 
 Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`.
@@ -56,6 +64,10 @@ Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAsser
 const x: T = { ... };
 const y = { ... } as any;
 const z = { ... } as unknown;
+
+function foo(): T {
+  return { ... };
+}
 ```
 
 Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`.

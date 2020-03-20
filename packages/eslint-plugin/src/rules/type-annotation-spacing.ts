@@ -1,22 +1,36 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import {
+  isClassOrTypeElement,
+  isFunction,
+  isFunctionOrFunctionType,
+  isIdentifier,
+  isTSConstructorType,
+  isTSFunctionType,
+  isVariableDeclarator,
+} from '../util';
 
-type Options = [
-  {
-    before?: boolean;
-    after?: boolean;
-    overrides?: {
-      colon?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      arrow?: {
-        before?: boolean;
-        after?: boolean;
-      };
-    };
-  }?,
-];
+interface WhitespaceRule {
+  readonly before?: boolean;
+  readonly after?: boolean;
+}
+
+interface WhitespaceOverride {
+  readonly colon?: WhitespaceRule;
+  readonly arrow?: WhitespaceRule;
+  readonly variable?: WhitespaceRule;
+  readonly property?: WhitespaceRule;
+  readonly parameter?: WhitespaceRule;
+  readonly returnType?: WhitespaceRule;
+}
+
+interface Config extends WhitespaceRule {
+  readonly overrides?: WhitespaceOverride;
+}
+
+type WhitespaceRules = Required<WhitespaceOverride>;
+
+type Options = [Config?];
 type MessageIds =
   | 'expectedSpaceAfter'
   | 'expectedSpaceBefore'
@@ -31,6 +45,67 @@ const definition = {
   },
   additionalProperties: false,
 };
+
+function createRules(options?: Config): WhitespaceRules {
+  const globals = {
+    ...(options?.before !== undefined ? { before: options.before } : {}),
+    ...(options?.after !== undefined ? { after: options.after } : {}),
+  };
+  const override = options?.overrides ?? {};
+  const colon = {
+    ...{ before: false, after: true },
+    ...globals,
+    ...override?.colon,
+  };
+  const arrow = {
+    ...{ before: true, after: true },
+    ...globals,
+    ...override?.arrow,
+  };
+
+  return {
+    colon: colon,
+    arrow: arrow,
+    variable: { ...colon, ...override?.variable },
+    property: { ...colon, ...override?.property },
+    parameter: { ...colon, ...override?.parameter },
+    returnType: { ...colon, ...override?.returnType },
+  };
+}
+
+function getIdentifierRules(
+  rules: WhitespaceRules,
+  node: TSESTree.Node | undefined,
+): WhitespaceRule {
+  const scope = node?.parent;
+
+  if (isVariableDeclarator(scope)) {
+    return rules.variable;
+  } else if (isFunctionOrFunctionType(scope)) {
+    return rules.parameter;
+  } else {
+    return rules.colon;
+  }
+}
+
+function getRules(
+  rules: WhitespaceRules,
+  node: TSESTree.TypeNode,
+): WhitespaceRule {
+  const scope = node?.parent?.parent;
+
+  if (isTSFunctionType(scope) || isTSConstructorType(scope)) {
+    return rules.arrow;
+  } else if (isIdentifier(scope)) {
+    return getIdentifierRules(rules, scope);
+  } else if (isClassOrTypeElement(scope)) {
+    return rules.property;
+  } else if (isFunction(scope)) {
+    return rules.returnType;
+  } else {
+    return rules.colon;
+  }
+}
 
 export default util.createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
@@ -59,6 +134,10 @@ export default util.createRule<Options, MessageIds>({
             properties: {
               colon: definition,
               arrow: definition,
+              variable: definition,
+              parameter: definition,
+              property: definition,
+              returnType: definition,
             },
             additionalProperties: false,
           },
@@ -76,20 +155,7 @@ export default util.createRule<Options, MessageIds>({
     const punctuators = [':', '=>'];
     const sourceCode = context.getSourceCode();
 
-    const overrides = options?.overrides ?? { colon: {}, arrow: {} };
-
-    const colonOptions = Object.assign(
-      {},
-      { before: false, after: true },
-      options,
-      overrides.colon,
-    );
-    const arrowOptions = Object.assign(
-      {},
-      { before: true, after: true },
-      options,
-      overrides.arrow,
-    );
+    const ruleSet = createRules(options);
 
     /**
      * Checks if there's proper spacing around type annotations (no space
@@ -108,8 +174,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const before = type === ':' ? colonOptions.before : arrowOptions.before;
-      const after = type === ':' ? colonOptions.after : arrowOptions.after;
+      const { before, after } = getRules(ruleSet, typeAnnotation);
 
       if (type === ':' && previousToken.value === '?') {
         // shift the start to the ?

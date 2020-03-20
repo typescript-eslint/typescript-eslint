@@ -468,7 +468,7 @@ export default createRule<Options, MessageId>({
     function checkOptionalMemberExpression(
       node: TSESTree.OptionalMemberExpression,
     ): void {
-      checkOptionalChain(node, node.object, '.');
+      checkOptionalChain(node, node.object, node.computed ? '' : '.');
     }
 
     function checkOptionalCallExpression(

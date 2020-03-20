@@ -10,6 +10,7 @@ export default util.createRule({
       category: 'Stylistic Issues',
       recommended: false,
     },
+    fixable: 'code',
     schema: [],
     messages: {
       noExtraNonNullAssertion: 'Forbidden extra non-null assertion.',
@@ -20,12 +21,19 @@ export default util.createRule({
     function checkExtraNonNullAssertion(
       node: TSESTree.TSNonNullExpression,
     ): void {
-      context.report({ messageId: 'noExtraNonNullAssertion', node });
+      context.report({
+        node,
+        messageId: 'noExtraNonNullAssertion',
+        fix(fixer) {
+          return fixer.removeRange([node.range[1] - 1, node.range[1]]);
+        },
+      });
     }
 
     return {
       'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
       'OptionalMemberExpression > TSNonNullExpression': checkExtraNonNullAssertion,
+      'OptionalCallExpression > TSNonNullExpression.callee': checkExtraNonNullAssertion,
     };
   },
 });

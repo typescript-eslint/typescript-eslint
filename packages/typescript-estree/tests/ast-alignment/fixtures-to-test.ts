@@ -379,8 +379,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      * But not fixed in Babel 7.3
      * TODO: Investigate differences
      */
-    'import-type',
-    'import-type-with-type-parameters-in-type-reference',
+    'type-import-type',
+    'type-import-type-with-type-parameters-in-type-reference',
     /**
      * Not yet supported in Babel https://github.com/babel/babel/issues/9228
      * Directive field is not added to module and namespace
@@ -422,6 +422,25 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'abstract-class-with-declare-properties',
     'class-with-declare-properties',
+    /**
+     * TS 3.8 import/export type
+     * babel coming soon https://github.com/babel/babel/pull/11171
+     */
+    'export-type-as',
+    'export-type-from-as',
+    'export-type-from',
+    'export-type-star-from',
+    'export-type',
+    'import-type-default',
+    'import-type-error',
+    'import-type-named-as',
+    'import-type-named',
+    'import-type-star-as-ns',
+    /**
+     * TS 3.8 export * as namespace
+     * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
+     */
+    'export-star-as-ns-from',
   ],
   ignoreSourceType: [
     /**

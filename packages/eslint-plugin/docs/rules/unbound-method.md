@@ -43,8 +43,8 @@ const { logBound } = instance;
 logBound();
 
 // .bind and lambdas will also add a correct scope
-const dotBindLog = instance.log.bind(instance);
-const innerLog = () => instance.log();
+const dotBindLog = instance.logBound.bind(instance);
+const innerLog = () => instance.logBound();
 ```
 
 ## Options

@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -16,6 +17,7 @@ export default util.createRule({
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
     },
+    fixable: 'code',
     type: 'problem',
     messages: {
       nonPromiseAwait:
@@ -36,6 +38,7 @@ export default util.createRule({
   create(context, [option]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function inTryCatch(node: ts.Node): boolean {
       let ancestor = node.parent;
@@ -54,13 +57,66 @@ export default util.createRule({
       return false;
     }
 
+    // function findTokensToRemove()
+
+    function removeAwait(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
+    ): TSESLint.RuleFix | null {
+      const awaitNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? node.argument
+          : node.body;
+      // Should always be an await node; but let's be safe.
+      /* istanbul ignore if */ if (!util.isAwaitExpression(awaitNode)) {
+        return null;
+      }
+
+      const awaitToken = sourceCode.getFirstToken(
+        awaitNode,
+        util.isAwaitKeyword,
+      );
+      // Should always be the case; but let's be safe.
+      /* istanbul ignore if */ if (!awaitToken) {
+        return null;
+      }
+
+      const startAt = awaitToken.range[0];
+      let endAt = awaitToken.range[1];
+      // Also remove any extraneous whitespace after `await`, if there is any.
+      const nextToken = sourceCode.getTokenAfter(awaitToken, {
+        includeComments: true,
+      });
+      if (nextToken) {
+        endAt = nextToken.range[0];
+      }
+
+      return fixer.removeRange([startAt, endAt]);
+    }
+
+    function insertAwait(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
+    ): TSESLint.RuleFix | null {
+      const targetNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? node.argument
+          : node.body;
+      // There should always be a target node; but let's be safe.
+      /* istanbul ignore if */ if (!targetNode) {
+        return null;
+      }
+
+      return fixer.insertTextBefore(targetNode, 'await ');
+    }
+
     function test(
       node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
       expression: ts.Node,
     ): void {
       let child: ts.Node;
 
-      const isAwait = expression.kind === ts.SyntaxKind.AwaitExpression;
+      const isAwait = tsutils.isAwaitExpression(expression);
 
       if (isAwait) {
         child = expression.getChildAt(1);
@@ -79,6 +135,7 @@ export default util.createRule({
         context.report({
           messageId: 'nonPromiseAwait',
           node,
+          fix: fixer => removeAwait(fixer, node),
         });
         return;
       }
@@ -88,6 +145,7 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
+            fix: fixer => insertAwait(fixer, node),
           });
         }
 
@@ -99,6 +157,7 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
+            fix: fixer => removeAwait(fixer, node),
           });
         }
 
@@ -111,11 +170,13 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
+            fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && isInTryCatch) {
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
+            fix: fixer => insertAwait(fixer, node),
           });
         }
 

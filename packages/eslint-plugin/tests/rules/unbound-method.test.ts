@@ -7,6 +7,7 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
@@ -43,6 +44,10 @@ function addContainsMethodsClassInvalid(
 
 ruleTester.run('unbound-method', rule, {
   valid: [
+    'Promise.resolve().then(console.log)',
+    '["1", "2", "3"].map(Number.parseInt)',
+    '[5.2, 7.1, 3.6].map(Math.floor);',
+    'const x = console.log',
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -209,6 +214,37 @@ if(myCondition || x.mightBeDefined) {
   ],
   invalid: [
     {
+      code: `
+class Console {
+  log(str) {
+    process.stdout.write(str);
+  }
+}
+
+const console = new Console();
+
+Promise.resolve().then(console.log);
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+import { console } from './class';
+const x = console.log;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
       code: addContainsMethodsClass(`
 function foo(arg: ContainsMethods | null) {
   const unbound = arg?.unbound;
@@ -284,6 +320,16 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      // Promise.all is not auto-bound to Promise
+      code: 'const x = Promise.all',
+      errors: [
+        {
+          line: 1,
           messageId: 'unbound',
         },
       ],
