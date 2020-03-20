@@ -1,7 +1,7 @@
 ---
 name: '@typescript-eslint/eslint-plugin'
 about: Report an issue with the '@typescript-eslint/eslint-plugin' package
-title: '[rulename] <issue title>'
+title: '[rulename] issue title'
 labels: 'package: eslint-plugin, triage'
 assignees: ''
 ---
@@ -24,6 +24,11 @@ Are you opening an issue because the rule you're trying to use is not found?
 2) Try installing the `canary` tag: `npm i @typescript-eslint/eslint-plugin@canary`.
     - The canary tag is built for every commit to master, so it contains the bleeding edge build.
 3) If ESLint still can't find the rule, then consider reporting an issue.
+-->
+
+<!--
+Make sure you read through our FAQ before posting.
+https://github.com/typescript-eslint/typescript-eslint/blob/issue-template-update/docs/getting-started/linting/FAQ.md
 -->
 
 **Repro**
