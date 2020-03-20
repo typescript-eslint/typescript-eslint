@@ -248,6 +248,54 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.asserts = false;
         }
       },
+      /**
+       * TS 3.8 features
+       */
+      ExportNamedDeclaration(node: any) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
+        }
+      },
+      ExportAllDeclaration(node: any) {
+        /**
+         * TS 3.8: export type
+         */
+        if (!node.exportKind) {
+          if (
+            node.declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+            node.declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+          ) {
+            node.exportKind = 'type';
+          } else {
+            node.exportKind = 'value';
+          }
+        }
+        /**
+         * TS 3.8 export * as namespace
+         * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
+         */
+        if (!node.exported) {
+          node.exported = null;
+        }
+      },
+      ImportDeclaration(node) {
+        /**
+         * TS 3.8: import type
+         */
+        if (!node.importKind) {
+          node.importKind = 'value';
+        }
+      },
     },
   );
 }

@@ -1,7 +1,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MessageIds = 'unsafeCall' | 'unsafeNew';
+type MessageIds = 'unsafeCall' | 'unsafeNew' | 'unsafeTemplateTag';
 
 export default util.createRule<[], MessageIds>({
   name: 'no-unsafe-call',
@@ -16,6 +16,7 @@ export default util.createRule<[], MessageIds>({
     messages: {
       unsafeCall: 'Unsafe call of an any typed value',
       unsafeNew: 'Unsafe construction of an any type value',
+      unsafeTemplateTag: 'Unsafe any typed template tag',
     },
     schema: [],
   },
@@ -25,14 +26,11 @@ export default util.createRule<[], MessageIds>({
     const checker = program.getTypeChecker();
 
     function checkCall(
-      node:
-        | TSESTree.CallExpression
-        | TSESTree.OptionalCallExpression
-        | TSESTree.NewExpression,
-      reportingNode: TSESTree.Expression = node.callee,
-      messageId: MessageIds = 'unsafeCall',
+      node: TSESTree.Node,
+      reportingNode: TSESTree.Node,
+      messageId: MessageIds,
     ): void {
-      const tsNode = esTreeNodeToTSNodeMap.get(node.callee);
+      const tsNode = esTreeNodeToTSNodeMap.get(node);
       const type = checker.getTypeAtLocation(tsNode);
       if (util.isTypeAnyType(type)) {
         context.report({
@@ -43,9 +41,16 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      'CallExpression, OptionalCallExpression': checkCall,
+      'CallExpression, OptionalCallExpression'(
+        node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
+      ): void {
+        checkCall(node.callee, node.callee, 'unsafeCall');
+      },
       NewExpression(node): void {
-        checkCall(node, node, 'unsafeNew');
+        checkCall(node.callee, node, 'unsafeNew');
+      },
+      'TaggedTemplateExpression > *.tag'(node: TSESTree.Node): void {
+        checkCall(node, node, 'unsafeTemplateTag');
       },
     };
   },

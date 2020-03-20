@@ -303,6 +303,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 36,
