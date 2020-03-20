@@ -48,16 +48,16 @@
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
-    "@types/marked": "^0.7.2",
+    "@types/marked": "^0.7.3",
     "@types/prettier": "^1.19.0",
     "chalk": "^3.0.0",
-    "marked": "^0.8.0",
+    "marked": "^0.8.1",
     "prettier": "*",
     "typescript": "*"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^2.0.0",
-    "eslint": "^5.0.0 || ^6.0.0"
+    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0-alpha.2"
   },
   "peerDependenciesMeta": {
     "typescript": {
