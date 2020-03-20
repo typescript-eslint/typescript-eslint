@@ -17,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: echo github.ref
+        run: echo ${{ github.ref }}
+
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
@@ -139,10 +143,14 @@ jobs:
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
-    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions]
-    if: github.event_name == 'push' && github.ref == 'refs/head/master'
+    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions, integration_tests]
+    if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
@@ -168,6 +176,6 @@ jobs:
           yarn check-clean-workspace-after-install
 
       - name: Publish all packages to npm
-        run: npx lerna publish --canary --exact --force-publish --yes
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
