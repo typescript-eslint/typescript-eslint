@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import {
   isObjectType,
   isObjectFlagSet,
@@ -122,6 +125,14 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    function isConstAssertion(node: TSESTree.TypeNode): boolean {
+      return (
+        node.type === AST_NODE_TYPES.TSTypeReference &&
+        node.typeName.type === AST_NODE_TYPES.Identifier &&
+        node.typeName.name === 'const'
+      );
+    }
+
     return {
       TSNonNullExpression(node): void {
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
@@ -201,7 +212,8 @@ export default util.createRule<Options, MessageIds>({
         if (
           options.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
-          )
+          ) ||
+          isConstAssertion(node.typeAnnotation)
         ) {
           return;
         }
