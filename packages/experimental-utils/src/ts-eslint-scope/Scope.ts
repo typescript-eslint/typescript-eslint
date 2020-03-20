@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/no-explicit-any */
 
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import {
   Scope as ESLintScope,
   GlobalScope as ESLintGlobalScope,
@@ -14,6 +13,7 @@ import {
   ForScope as ESLintForScope,
   ClassScope as ESLintClassScope,
 } from 'eslint-scope/lib/scope';
+import { TSESTree } from '../ts-estree';
 import { Definition } from './Definition';
 import { Reference, ReferenceFlag } from './Reference';
 import { ScopeManager } from './ScopeManager';

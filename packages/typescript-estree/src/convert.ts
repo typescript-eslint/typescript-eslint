@@ -1586,10 +1586,7 @@ export class Converter {
         });
 
       case SyntaxKind.ExportDeclaration:
-        if (node.exportClause) {
-          if (node.exportClause.kind !== SyntaxKind.NamedExports) {
-            throw new Error('`export * as ns` is not yet supported.');
-          }
+        if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
             source: this.convertChild(node.moduleSpecifier),
@@ -1604,6 +1601,15 @@ export class Converter {
             type: AST_NODE_TYPES.ExportAllDeclaration,
             source: this.convertChild(node.moduleSpecifier),
             exportKind: node.isTypeOnly ? 'type' : 'value',
+            exported:
+              // note - for compat with 3.7.x, where node.exportClause is always undefined and
+              //        SyntaxKind.NamespaceExport does not exist yet (i.e. is undefined), this
+              //        cannot be shortened to an optional chain, or else you end up with
+              //        undefined === undefined, and the true path will hard error at runtime
+              node.exportClause &&
+              node.exportClause.kind === SyntaxKind.NamespaceExport
+                ? this.convertChild(node.exportClause.name)
+                : null,
           });
         }
 
