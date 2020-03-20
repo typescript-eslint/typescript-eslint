@@ -310,7 +310,11 @@ ruleTester.run('quotes', rule, {
       code: `export * from "a"; export * from 'b';`,
       options: ['backtick'],
     },
-
+    // `backtick` should not warn import with require.
+    {
+      code: `import moment = require('moment');`,
+      options: ['backtick'],
+    },
     // `backtick` should not warn property/method names (not computed).
     {
       code: `var obj = {"key0": 0, 'key1': 1};`,

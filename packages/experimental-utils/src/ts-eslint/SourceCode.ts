@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { ParserServices, TSESTree } from '@typescript-eslint/typescript-estree';
 import { SourceCode as ESLintSourceCode } from 'eslint';
+import { ParserServices, TSESTree } from '../ts-estree';
 import { Scope } from './Scope';
 
-declare interface SourceCode {
+interface SourceCode {
   text: string;
   ast: SourceCode.Program;
   lines: string[];
