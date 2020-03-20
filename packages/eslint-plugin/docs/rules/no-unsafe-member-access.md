@@ -24,7 +24,7 @@ nestedAny.prop['a'];
 const key = 'a';
 nestedAny.prop[key];
 
-// usng an any to access a member is unsafe
+// Using an any to access a member is unsafe
 const arr = [1, 2, 3];
 arr[anyVar];
 nestedAny[anyVar];

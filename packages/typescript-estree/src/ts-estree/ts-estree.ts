@@ -869,6 +869,7 @@ export interface ExportAllDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ExportAllDeclaration;
   source: Expression | null;
   exportKind: 'type' | 'value';
+  exported: Identifier | null;
 }
 
 export interface ExportDefaultDeclaration extends BaseNode {

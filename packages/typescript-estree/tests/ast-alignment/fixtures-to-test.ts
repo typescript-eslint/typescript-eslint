@@ -436,6 +436,11 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-named-as',
     'import-type-named',
     'import-type-star-as-ns',
+    /**
+     * TS 3.8 export * as namespace
+     * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
+     */
+    'export-star-as-ns-from',
   ],
   ignoreSourceType: [
     /**
