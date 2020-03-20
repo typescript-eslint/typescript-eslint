@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+# [2.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.22.0...v2.23.0) (2020-03-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-readonly-parameter-types] handle recursive types ([#1672](https://github.com/typescript-eslint/typescript-eslint/issues/1672)) ([e5db36f](https://github.com/typescript-eslint/typescript-eslint/commit/e5db36f140b6463965858ad4ed77f71a9a00c5a7)), closes [#1665](https://github.com/typescript-eslint/typescript-eslint/issues/1665)
+* **eslint-plugin:** [type-annotation-spacing] handle constructor types ([#1664](https://github.com/typescript-eslint/typescript-eslint/issues/1664)) ([fbf1640](https://github.com/typescript-eslint/typescript-eslint/commit/fbf1640c5ab67770a1ace5a9bad2bddfa35bd88d)), closes [#1663](https://github.com/typescript-eslint/typescript-eslint/issues/1663)
+* **eslint-plugin:** fix autofixer for computed properties ([#1662](https://github.com/typescript-eslint/typescript-eslint/issues/1662)) ([ba22ea7](https://github.com/typescript-eslint/typescript-eslint/commit/ba22ea7f604b236828ce4dcff75831ec1da01ec1))
+* **eslint-plugin:** fix placeholder in `ban-ts-comment` ([#1703](https://github.com/typescript-eslint/typescript-eslint/issues/1703)) ([144345c](https://github.com/typescript-eslint/typescript-eslint/commit/144345c4774c0664752116ef2cf28f46cf52052f))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-call] support tagged templates ([#1680](https://github.com/typescript-eslint/typescript-eslint/issues/1680)) ([55a58ff](https://github.com/typescript-eslint/typescript-eslint/commit/55a58ff0ae0434970537657ec2cb0bc7ab64c13d))
+* **eslint-plugin:** [no-unsafe-member-access] report any typed… ([#1683](https://github.com/typescript-eslint/typescript-eslint/issues/1683)) ([1543117](https://github.com/typescript-eslint/typescript-eslint/commit/1543117874047726a6bc1b71bd2f68779f266591))
+* **eslint-plugin:** add rule no-unsafe-call ([#1647](https://github.com/typescript-eslint/typescript-eslint/issues/1647)) ([91423e4](https://github.com/typescript-eslint/typescript-eslint/commit/91423e49d19163fae7b03cbc79bb3cd3db8c2c6d))
+* **eslint-plugin:** add rule no-unsafe-member-access ([#1643](https://github.com/typescript-eslint/typescript-eslint/issues/1643)) ([608a750](https://github.com/typescript-eslint/typescript-eslint/commit/608a750d53c39e892fdb982aeea9e4f9c5e2382d))
+* **eslint-plugin:** add rule no-unsafe-return ([#1644](https://github.com/typescript-eslint/typescript-eslint/issues/1644)) ([cfc3ef1](https://github.com/typescript-eslint/typescript-eslint/commit/cfc3ef10941f46cdbc084e99e1d48d6d3a928903))
+
+
+
+
+
+# [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [ban-types] add option extendDefaults ([#1379](https://github.com/typescript-eslint/typescript-eslint/issues/1379)) ([ae7f7c5](https://github.com/typescript-eslint/typescript-eslint/commit/ae7f7c5637124b1167efd63755df92e219bbbb24))
+* **eslint-plugin:** [default-param-last] handle param props ([#1650](https://github.com/typescript-eslint/typescript-eslint/issues/1650)) ([3534c6e](https://github.com/typescript-eslint/typescript-eslint/commit/3534c6ea09f0cb2162017660a90c6a4ad704da6b))
+* **eslint-plugin:** [no-implied-eval] correct logic for ts3.8 ([#1652](https://github.com/typescript-eslint/typescript-eslint/issues/1652)) ([33e3e6f](https://github.com/typescript-eslint/typescript-eslint/commit/33e3e6f79ea21792ccb60b7f1ada74057ceb52e9))
+
+
+### Features
+
+* **eslint-plugin:** [explicit-member-accessibility] autofix no-public ([#1548](https://github.com/typescript-eslint/typescript-eslint/issues/1548)) ([dd233b5](https://github.com/typescript-eslint/typescript-eslint/commit/dd233b52dcd5a39d842123af6fc775574abf2bc2))
+* **eslint-plugin:** [typedef] add variable-declaration-ignore-function ([#1578](https://github.com/typescript-eslint/typescript-eslint/issues/1578)) ([fc0a55e](https://github.com/typescript-eslint/typescript-eslint/commit/fc0a55e8b78203972d01a7c9b79ed6b470c5c1a0))
+* **eslint-plugin:** add new no-base-to-string rule ([#1522](https://github.com/typescript-eslint/typescript-eslint/issues/1522)) ([8333d41](https://github.com/typescript-eslint/typescript-eslint/commit/8333d41d5d472ef338fb41a29ccbfc6b16e47627))
+* **eslint-plugin:** add prefer-readonly-parameters ([#1513](https://github.com/typescript-eslint/typescript-eslint/issues/1513)) ([3be9854](https://github.com/typescript-eslint/typescript-eslint/commit/3be98542afd7553cbbec66c4be215173d7f7ffcf))
+* **eslint-plugin:** additional annotation spacing rules for va… ([#1496](https://github.com/typescript-eslint/typescript-eslint/issues/1496)) ([b097245](https://github.com/typescript-eslint/typescript-eslint/commit/b097245df35114906b1f9c60c3ad4cd698d957b8))
+
+
+
+
+
+# [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [embt] ignore JSX callbacks ([#1630](https://github.com/typescript-eslint/typescript-eslint/issues/1630)) ([4d45b33](https://github.com/typescript-eslint/typescript-eslint/commit/4d45b331b920113c97a90df7dc703f8dfbcc04f3))
+* **eslint-plugin:** [no-floating-promises] handle finally callback ([#1620](https://github.com/typescript-eslint/typescript-eslint/issues/1620)) ([1aa7135](https://github.com/typescript-eslint/typescript-eslint/commit/1aa7135bbfbf55cec52925fc0224188cd3c319e7))
+* **eslint-plugin:** [typedef] allow array/object destructuring in for/of ([#1570](https://github.com/typescript-eslint/typescript-eslint/issues/1570)) ([660bace](https://github.com/typescript-eslint/typescript-eslint/commit/660bace4c3da569d71cf1e296ac4f6ed35bdfc44))
+
+
+### Features
+
+* **eslint-plugin:** [require-await] add --fix support ([#1561](https://github.com/typescript-eslint/typescript-eslint/issues/1561)) ([9edd863](https://github.com/typescript-eslint/typescript-eslint/commit/9edd863b2a66ee44bd4a439903973e6c207480aa))
+
+
+
+
+
 # [2.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.2...v2.20.0) (2020-02-17)
 
 

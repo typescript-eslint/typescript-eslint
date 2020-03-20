@@ -28,7 +28,7 @@ export default util.createRule<[Options], MessageIds>({
     },
     messages: {
       tsDirectiveComment:
-        'Do not use "// @ts-{directive}" because it alters compilation errors.',
+        'Do not use "// @ts-{{directive}}" because it alters compilation errors.',
     },
     schema: [
       {

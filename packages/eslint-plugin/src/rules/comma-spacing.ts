@@ -2,8 +2,12 @@ import {
   TSESTree,
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { isClosingParenToken, isCommaToken } from 'eslint-utils';
-import { isTokenOnSameLine, createRule } from '../util';
+import {
+  isClosingParenToken,
+  isCommaToken,
+  isTokenOnSameLine,
+  createRule,
+} from '../util';
 
 type Options = [
   {

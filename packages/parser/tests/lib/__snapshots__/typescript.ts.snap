@@ -16384,13 +16384,13 @@ Object {
 }
 `;
 
-exports[`typescript fixtures/basics/export-type-alias-declaration.src 1`] = `
+exports[`typescript fixtures/basics/export-star-as-ns-from.src 1`] = `
 Object {
   "$id": 1,
   "block": Object {
     "range": Array [
       0,
-      40,
+      28,
     ],
     "type": "Program",
   },
@@ -16400,7 +16400,7 @@ Object {
       "block": Object {
         "range": Array [
           0,
-          40,
+          28,
         ],
         "type": "Program",
       },
@@ -16434,13 +16434,165 @@ Object {
 }
 `;
 
-exports[`typescript fixtures/basics/export-type-class-declaration.src 1`] = `
+exports[`typescript fixtures/basics/export-type.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      21,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          21,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 0,
+          "from": Object {
+            "$ref": 1,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              14,
+              17,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 0,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/export-type-as.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      24,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          24,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [
+        Object {
+          "$id": 0,
+          "from": Object {
+            "$ref": 1,
+          },
+          "identifier": Object {
+            "name": "A",
+            "range": Array [
+              14,
+              15,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 0,
+        },
+      ],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+  ],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/export-type-from.src 1`] = `
 Object {
   "$id": 1,
   "block": Object {
     "range": Array [
       0,
-      51,
+      32,
     ],
     "type": "Program",
   },
@@ -16450,7 +16602,7 @@ Object {
       "block": Object {
         "range": Array [
           0,
-          51,
+          32,
         ],
         "type": "Program",
       },
@@ -16484,13 +16636,13 @@ Object {
 }
 `;
 
-exports[`typescript fixtures/basics/export-type-function-declaration.src 1`] = `
+exports[`typescript fixtures/basics/export-type-from-as.src 1`] = `
 Object {
   "$id": 1,
   "block": Object {
     "range": Array [
       0,
-      47,
+      35,
     ],
     "type": "Program",
   },
@@ -16500,7 +16652,57 @@ Object {
       "block": Object {
         "range": Array [
           0,
-          47,
+          35,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/export-type-star-from.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      26,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          26,
         ],
         "type": "Program",
       },
@@ -19443,23 +19645,23 @@ Object {
 }
 `;
 
-exports[`typescript fixtures/basics/import-type.src 1`] = `
+exports[`typescript fixtures/basics/import-type-default.src 1`] = `
 Object {
-  "$id": 1,
+  "$id": 2,
   "block": Object {
     "range": Array [
       0,
-      56,
+      28,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 0,
+      "$id": 1,
       "block": Object {
         "range": Array [
           0,
-          56,
+          28,
         ],
         "type": "Program",
       },
@@ -19470,13 +19672,64 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
         "$ref": 1,
       },
-      "variableMap": Object {},
-      "variableScope": Object {
-        "$ref": 0,
-      },
-      "variables": Array [],
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  12,
+                  15,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  7,
+                  15,
+                ],
+                "type": "ImportDefaultSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  27,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                12,
+                15,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
     },
   ],
   "functionExpressionScope": false,
@@ -19487,29 +19740,29 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 1,
+    "$ref": 2,
   },
   "variables": Array [],
 }
 `;
 
-exports[`typescript fixtures/basics/import-type-with-type-parameters-in-type-reference.src 1`] = `
+exports[`typescript fixtures/basics/import-type-empty.src 1`] = `
 Object {
-  "$id": 1,
+  "$id": 2,
   "block": Object {
     "range": Array [
-      0,
-      31,
+      55,
+      81,
     ],
     "type": "Program",
   },
   "childScopes": Array [
     Object {
-      "$id": 0,
+      "$id": 1,
       "block": Object {
         "range": Array [
-          0,
-          31,
+          55,
+          81,
         ],
         "type": "Program",
       },
@@ -19520,13 +19773,64 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "type": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
         "$ref": 1,
       },
-      "variableMap": Object {},
-      "variableScope": Object {
-        "$ref": 0,
-      },
-      "variables": Array [],
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "type",
+                "range": Array [
+                  62,
+                  66,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  62,
+                  66,
+                ],
+                "type": "ImportDefaultSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  55,
+                  80,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "type",
+              "range": Array [
+                62,
+                66,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "type",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
     },
   ],
   "functionExpressionScope": false,
@@ -19537,7 +19841,509 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 1,
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/import-type-error.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      37,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          37,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "bar": Object {
+          "$ref": 1,
+        },
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  12,
+                  15,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  7,
+                  15,
+                ],
+                "type": "ImportDefaultSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  36,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                12,
+                15,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+        Object {
+          "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "bar",
+                "range": Array [
+                  19,
+                  22,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  19,
+                  22,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  36,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "bar",
+              "range": Array [
+                19,
+                22,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "bar",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/import-type-named.src 1`] = `
+Object {
+  "$id": 3,
+  "block": Object {
+    "range": Array [
+      0,
+      37,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 2,
+      "block": Object {
+        "range": Array [
+          0,
+          37,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 3,
+      },
+      "variableMap": Object {
+        "bar": Object {
+          "$ref": 1,
+        },
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 2,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  14,
+                  17,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  14,
+                  17,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  36,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                14,
+                17,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+        Object {
+          "$id": 1,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "bar",
+                "range": Array [
+                  19,
+                  22,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  19,
+                  22,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  36,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "bar",
+              "range": Array [
+                19,
+                22,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "bar",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 2,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 3,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/import-type-named-as.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      39,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          39,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "bar": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "bar",
+                "range": Array [
+                  21,
+                  24,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  14,
+                  24,
+                ],
+                "type": "ImportSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  38,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "bar",
+              "range": Array [
+                21,
+                24,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "bar",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/import-type-star-as-ns.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      35,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          35,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "foo": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "foo",
+                "range": Array [
+                  17,
+                  20,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  12,
+                  20,
+                ],
+                "type": "ImportNamespaceSpecifier",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  34,
+                ],
+                "type": "ImportDeclaration",
+              },
+              "type": "ImportBinding",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "foo",
+              "range": Array [
+                17,
+                20,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "foo",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
   },
   "variables": Array [],
 }
@@ -29223,6 +30029,156 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/type-alias-declaration-export.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      40,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          40,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/type-alias-declaration-export-function-type.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      47,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          47,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/type-alias-declaration-export-object-type.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      51,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          51,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`typescript fixtures/basics/type-alias-declaration-with-constrained-type-parameter.src 1`] = `
 Object {
   "$id": 1,
@@ -31401,6 +32357,106 @@ Object {
   "variableMap": Object {},
   "variableScope": Object {
     "$ref": 9,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/type-import-type.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      56,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          56,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/type-import-type-with-type-parameters-in-type-reference.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      31,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          31,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
   },
   "variables": Array [],
 }

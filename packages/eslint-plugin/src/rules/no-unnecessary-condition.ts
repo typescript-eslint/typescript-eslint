@@ -143,7 +143,25 @@ export default createRule<Options, MessageId>({
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
-      return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
+      return checker.isArrayType(nodeType);
+    }
+    function nodeIsTupleType(node: TSESTree.Expression): boolean {
+      const nodeType = getNodeType(node);
+      return checker.isTupleType(nodeType);
+    }
+
+    function isArrayIndexExpression(node: TSESTree.Expression): boolean {
+      return (
+        // Is an index signature
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        node.computed &&
+        // ...into an array type
+        (nodeIsArrayType(node.object) ||
+          // ... or a tuple type
+          (nodeIsTupleType(node.object) &&
+            // Exception: literal index into a tuple - will have a sound type
+            node.property.type !== AST_NODE_TYPES.Literal))
+      );
     }
 
     /**
@@ -151,6 +169,13 @@ export default createRule<Options, MessageId>({
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(node: TSESTree.Expression): void {
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (isArrayIndexExpression(node)) {
+        return;
+      }
+
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
@@ -181,6 +206,12 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (isArrayIndexExpression(node)) {
+        return;
+      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
@@ -306,7 +337,7 @@ export default createRule<Options, MessageId>({
         callee.property.type === AST_NODE_TYPES.Identifier &&
         ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
         // and the left-hand side is an array, according to the types
-        nodeIsArrayType(callee.object)
+        (nodeIsArrayType(callee.object) || nodeIsTupleType(callee.object))
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {
@@ -361,6 +392,33 @@ export default createRule<Options, MessageId>({
       }
     }
 
+    // Recursively searches an optional chain for an array index expression
+    //  Has to search the entire chain, because an array index will "infect" the rest of the types
+    //  Example:
+    //  ```
+    //  [{x: {y: "z"} }][n] // type is {x: {y: "z"}}
+    //    ?.x // type is {y: "z"}
+    //    ?.y // This access is considered "unnecessary" according to the types
+    //  ```
+    function optionChainContainsArrayIndex(
+      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+    ): boolean {
+      const lhsNode =
+        node.type === AST_NODE_TYPES.OptionalCallExpression
+          ? node.callee
+          : node.object;
+      if (isArrayIndexExpression(lhsNode)) {
+        return true;
+      }
+      if (
+        lhsNode.type === AST_NODE_TYPES.OptionalMemberExpression ||
+        lhsNode.type === AST_NODE_TYPES.OptionalCallExpression
+      ) {
+        return optionChainContainsArrayIndex(lhsNode);
+      }
+      return false;
+    }
+
     function checkOptionalChain(
       node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
       beforeOperator: TSESTree.Node,
@@ -369,6 +427,13 @@ export default createRule<Options, MessageId>({
       // We only care if this step in the chain is optional. If just descend
       // from an optional chain, then that's fine.
       if (!node.optional) {
+        return;
+      }
+
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (optionChainContainsArrayIndex(node)) {
         return;
       }
 
@@ -403,7 +468,7 @@ export default createRule<Options, MessageId>({
     function checkOptionalMemberExpression(
       node: TSESTree.OptionalMemberExpression,
     ): void {
-      checkOptionalChain(node, node.object, '.');
+      checkOptionalChain(node, node.object, node.computed ? '' : '.');
     }
 
     function checkOptionalCallExpression(
