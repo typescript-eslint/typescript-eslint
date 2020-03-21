@@ -130,6 +130,38 @@ function Test(props: {
       `,
       filename: 'react.tsx',
     },
+    {
+      code: `
+const a = [1, 2];
+const b = [3, 4];
+const c = [...a, ...b] as const;
+      `,
+    },
+    {
+      code: `const a = [1, 2] as const;`,
+    },
+    {
+      code: `const a = 'a' as const;`,
+    },
+    {
+      code: `const a = { foo: 'foo' } as const`,
+    },
+    {
+      code: `
+const a = [1, 2];
+const b = [3, 4];
+const c = <const>[...a, ...b];
+      `,
+    },
+    {
+      code: `const a = <const>[1, 2];`,
+    },
+    {
+      code: `const a = <const>'a';`,
+    },
+    {
+      code: `const a = <const>{ foo: 'foo' };`,
+    },
   ],
 
   invalid: [

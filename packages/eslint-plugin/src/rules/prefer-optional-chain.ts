@@ -2,7 +2,6 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
 type ValidChainTarget =
@@ -203,7 +202,7 @@ export default util.createRule({
           sourceCode.getFirstTokenBetween(
             node.callee,
             closingParenToken,
-            isOpeningParenToken,
+            util.isOpeningParenToken,
           ),
           util.NullThrowsReasons.MissingToken('opening parenthesis', node.type),
         );

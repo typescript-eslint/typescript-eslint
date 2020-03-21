@@ -7,7 +7,7 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  * @param userOptions the user opts
  * @returns the options with defaults
  */
-export function applyDefault<TUser extends unknown[], TDefault extends TUser>(
+function applyDefault<TUser extends unknown[], TDefault extends TUser>(
   defaultOptions: TDefault,
   userOptions: TUser | null,
 ): TDefault {
@@ -32,3 +32,5 @@ export function applyDefault<TUser extends unknown[], TDefault extends TUser>(
 
   return options;
 }
+
+export { applyDefault };

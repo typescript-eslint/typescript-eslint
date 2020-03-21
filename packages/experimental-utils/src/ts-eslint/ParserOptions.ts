@@ -1,6 +1,6 @@
 import { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 
-export interface ParserOptions {
+interface ParserOptions {
   comment?: boolean;
   ecmaFeatures?: {
     globalReturn?: boolean;
@@ -23,3 +23,5 @@ export interface ParserOptions {
   useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
+
+export { ParserOptions };

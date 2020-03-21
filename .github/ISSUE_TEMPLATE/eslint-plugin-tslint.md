@@ -6,15 +6,60 @@ labels: 'package: eslint-plugin-tslint, triage'
 assignees: ''
 ---
 
-**What code were you trying to parse?**
+<!--
+Please don't ignore this template.
 
-```ts
-// Please put code here
+If you ignore it, we're just going to respond asking you to fill it out, which wastes everyone's time.
+The more relevant information you can include, the faster we can find the issue and fix it without asking you for more info.
+-->
+
+<!--
+Make sure you read through our FAQ before posting.
+https://github.com/typescript-eslint/typescript-eslint/blob/issue-template-update/docs/getting-started/linting/FAQ.md
+-->
+
+**Repro**
+
+<!--
+Include a ***minimal*** reproduction case.
+The more irrelevant code/config you give, the harder it is for us to investigate.
+-->
+
+```JSON
+{
+  "rules": {
+    "@typescript-eslint/tslint/config": ["warn", {
+      "rules": {
+        "rule": "setting",
+      },
+      "rulesDirectory": [
+        "node_modules/foo"
+      ]
+    }],
+  }
+}
 ```
 
-**What did you expect to happen?**
+<!--
+Also include your tslint config, if you're using a separate file.
+-->
 
-**What actually happened?**
+```TS
+// your repro code case
+```
+
+**Expected Result**
+
+**Actual Result**
+
+**Additional Info**
+
+<!--
+Did eslint throw an exception?
+
+Please run your lint again with the --debug flag, and dump the output below.
+i.e. eslint --ext ".ts,.js" src --debug
+-->
 
 **Versions**
 

@@ -1,8 +1,5 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/typescript-estree';
 import { RuleTester as ESLintRuleTester } from 'eslint';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 

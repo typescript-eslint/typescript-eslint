@@ -3,13 +3,15 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import {
+  createRule,
+  getParserServices,
   getPropertyName,
   getStaticValue,
+  getTypeName,
   isNotClosingParenToken,
-} from 'eslint-utils';
-import { AST as RegExpAST, RegExpParser } from 'regexpp';
-import { createRule, getParserServices, getTypeName } from '../util';
+} from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();

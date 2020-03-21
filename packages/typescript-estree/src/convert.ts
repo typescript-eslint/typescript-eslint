@@ -1602,7 +1602,12 @@ export class Converter {
             source: this.convertChild(node.moduleSpecifier),
             exportKind: node.isTypeOnly ? 'type' : 'value',
             exported:
-              node.exportClause?.kind === SyntaxKind.NamespaceExport
+              // note - for compat with 3.7.x, where node.exportClause is always undefined and
+              //        SyntaxKind.NamespaceExport does not exist yet (i.e. is undefined), this
+              //        cannot be shortened to an optional chain, or else you end up with
+              //        undefined === undefined, and the true path will hard error at runtime
+              node.exportClause &&
+              node.exportClause.kind === SyntaxKind.NamespaceExport
                 ? this.convertChild(node.exportClause.name)
                 : null,
           });

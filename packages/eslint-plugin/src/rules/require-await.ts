@@ -3,11 +3,6 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import {
-  isArrowToken,
-  getFunctionNameWithKind,
-  isOpeningParenToken,
-} from 'eslint-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -73,7 +68,7 @@ export default util.createRule({
           loc: getFunctionHeadLoc(node, sourceCode),
           messageId: 'missingAwait',
           data: {
-            name: util.upperCaseFirst(getFunctionNameWithKind(node)),
+            name: util.upperCaseFirst(util.getFunctionNameWithKind(node)),
           },
         });
       }
@@ -157,8 +152,8 @@ function getOpeningParenOfParams(
 ): TSESTree.Token {
   return util.nullThrows(
     node.id
-      ? sourceCode.getTokenAfter(node.id, isOpeningParenToken)
-      : sourceCode.getFirstToken(node, isOpeningParenToken),
+      ? sourceCode.getTokenAfter(node.id, util.isOpeningParenToken)
+      : sourceCode.getFirstToken(node, util.isOpeningParenToken),
     util.NullThrowsReasons.MissingToken('(', node.type),
   );
 }
@@ -180,7 +175,7 @@ function getFunctionHeadLoc(
 
   if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
     const arrowToken = util.nullThrows(
-      sourceCode.getTokenBefore(node.body, isArrowToken),
+      sourceCode.getTokenBefore(node.body, util.isArrowToken),
       util.NullThrowsReasons.MissingToken('=>', node.type),
     );
 
