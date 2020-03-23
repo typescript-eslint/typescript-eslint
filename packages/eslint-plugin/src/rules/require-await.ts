@@ -62,7 +62,12 @@ export default util.createRule({
         return;
       }
 
-      if (node.async && !scopeInfo.hasAwait && !isEmptyFunction(node)) {
+      if (
+        !node.generator &&
+        node.async &&
+        !scopeInfo.hasAwait &&
+        !isEmptyFunction(node)
+      ) {
         context.report({
           node,
           loc: getFunctionHeadLoc(node, sourceCode),

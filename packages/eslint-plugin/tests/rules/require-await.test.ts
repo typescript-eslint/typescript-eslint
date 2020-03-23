@@ -104,6 +104,25 @@ async function testFunction(): Promise<void> {
   ))
 }
     `,
+    'async function* run() { yield * anotherAsyncGenerator() }',
+    `async function* foo() {
+        await Promise.resolve()
+        yield 1
+      }
+      async function* bar() {
+        yield* foo()
+      }`,
+    `
+    async function* run() {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      yield 'Hello';
+      console.log('World');
+    }
+    `,
+    'async function* run() { }',
+    'const foo : () => void = async function *(){}',
+    'const foo = async function *(){ console.log("bar") }',
+    'async function* run() { console.log("bar") }',
   ],
 
   invalid: [
