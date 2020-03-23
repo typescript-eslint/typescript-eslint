@@ -32,7 +32,7 @@
 - [Contributors](#contributors)
 - [Contributing Guide](#contributing-guide)
 
-## Getting Started
+## Getting Started / Installation
 
 - **[You can find our Getting Started docs here](./docs/getting-started/README.md)**
 - **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
