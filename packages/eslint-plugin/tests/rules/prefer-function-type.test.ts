@@ -38,6 +38,9 @@ interface Foo {
 interface Bar extends Function, Foo {
   (): void;
 }`,
+    'interface Interface {(): this}',
+    'interface Interface {(arg: this): this}',
+    'interface Interface {(arg: this): this, [key : number] : string}',
   ],
 
   invalid: [
@@ -128,6 +131,16 @@ interface Foo<T> {
       ],
       output: `
 type Foo<T> = (bar: T) => string;`,
+    },
+    {
+      code: 'interface Foo { (): () => this; }',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `type Foo = () => () => this;`,
     },
   ],
 });

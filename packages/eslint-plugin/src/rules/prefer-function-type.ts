@@ -109,7 +109,8 @@ export default util.createRule({
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
-        typeof member.returnType !== 'undefined'
+        typeof member.returnType !== 'undefined' &&
+        member.returnType?.typeAnnotation?.type !== AST_NODE_TYPES.TSThisType
       ) {
         const suggestion = renderSuggestion(member, node);
         const fixStart =
