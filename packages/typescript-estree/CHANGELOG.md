@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Bug Fixes
+
+* **typescript-estree:** export * regression from 133f622f ([#1751](https://github.com/typescript-eslint/typescript-eslint/issues/1751)) ([09d8afc](https://github.com/typescript-eslint/typescript-eslint/commit/09d8afca684635b5ac604bc1794240484a70ce91))
+
+
+
+
+
 # [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
 
 
