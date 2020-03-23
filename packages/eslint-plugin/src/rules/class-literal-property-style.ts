@@ -41,7 +41,7 @@ const isSupportedLiteral = (
 };
 
 export default util.createRule<Options, MessageIds>({
-  name: 'class-literals-style',
+  name: 'class-literal-property-style',
   meta: {
     type: 'problem',
     docs: {

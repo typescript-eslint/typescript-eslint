@@ -1,4 +1,4 @@
-# Ensures that literals on classes are exposed in a consistent style (`class-literals-style`)
+# Ensures that literals on classes are exposed in a consistent style (`class-literal-property-style`)
 
 When writing TypeScript applications, it's typically safe to store literal values on classes using fields with the `readonly` modifier to prevent them from being reassigned.
 When writing TypeScript libraries that could be used by Javascript users however, it's typically safer to expose these literals using `getter`s, since the `readonly` modifier is enforced at compile type.
@@ -18,7 +18,7 @@ This style checks for any getter methods that return literal values, and require
 Examples of **correct** code with the `fields` style:
 
 ```ts
-/* eslint @typescript-eslint/class-literals-style: ["error", "fields"] */
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
 
 class Mx {
   public readonly myField1 = 1;
@@ -37,7 +37,7 @@ class Mx {
 Examples of **incorrect** code with the `fields` style:
 
 ```ts
-/* eslint @typescript-eslint/class-literals-style: ["error", "fields"] */
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
 
 class Mx {
   public static get myField1() {
@@ -59,7 +59,7 @@ as it will identify fields that can be `readonly`, and thus should be made into 
 Examples of **correct** code with the `getters` style:
 
 ```ts
-/* eslint @typescript-eslint/class-literals-style: ["error", "getters"] */
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
 
 class Mx {
   // no readonly modifier
@@ -81,7 +81,7 @@ class Mx {
 Examples of **incorrect** code with the `getters` style:
 
 ```ts
-/* eslint @typescript-eslint/class-literals-style: ["error", "getters"] */
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
 
 class Mx {
   readonly myField1 = 1;

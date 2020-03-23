@@ -1,11 +1,11 @@
-import rule from '../../src/rules/class-literals-style';
+import rule from '../../src/rules/class-literal-property-style';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('class-literals-style', rule, {
+ruleTester.run('class-literal-property-style', rule, {
   valid: [
     'class Mx { declare readonly p1 = 1; }',
     'class Mx { readonly p1 = "hello world"; }',
