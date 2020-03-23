@@ -54,8 +54,14 @@ export default util.createRule<Options, MessageId>({
     function getMethodParams(
       node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
     ): string {
-      let params = node.params.map(node => sourceCode.getText(node)).join(', ');
-      params = `(${params})`;
+      let params = '()';
+      if (node.params.length > 0) {
+        params = sourceCode.text.substring(
+          sourceCode.getTokenBefore(node.params[0])!.range[0],
+          sourceCode.getTokenAfter(node.params[node.params.length - 1])!
+            .range[1],
+        );
+      }
       if (node.typeParameters != null) {
         const typeParams = sourceCode.getText(node.typeParameters);
         params = `${typeParams}${params}`;
