@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Features
+
+* **experimental-utils:** expose ast utility functions ([#1670](https://github.com/typescript-eslint/typescript-eslint/issues/1670)) ([3eb5d45](https://github.com/typescript-eslint/typescript-eslint/commit/3eb5d4525e95c8ab990f55588b8d830a02ce5a9c))
+
+
+
+
+
 # [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
