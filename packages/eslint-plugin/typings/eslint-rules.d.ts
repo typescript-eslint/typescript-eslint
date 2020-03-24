@@ -203,6 +203,28 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-invalid-this' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'noInvalidThis',
+    [
+      {
+        capIsConstructor?: boolean;
+      },
+    ],
+    {
+      Program(node: TSESTree.Program): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      'Program:exit'(): void;
+      'FunctionDeclaration:exit'(): void;
+      'FunctionExpression:exit'(): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-magic-numbers' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -542,4 +564,14 @@ declare module 'eslint/lib/rules/no-extra-semi' {
     }
   >;
   export = rule;
+}
+
+declare module 'eslint/lib/rules/utils/ast-utils' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  export function isDefaultThisBinding(
+    node: TSESTree.Node,
+    sourceCode: TSESLint.SourceCode,
+    options?: { capIsConstructor: boolean },
+  ): boolean;
 }
