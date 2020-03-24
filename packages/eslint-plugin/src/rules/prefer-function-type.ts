@@ -5,6 +5,13 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+const possibleReturnThisTypeHolders = new Set([
+  AST_NODE_TYPES.TSTypeReference,
+  AST_NODE_TYPES.TSThisType,
+  AST_NODE_TYPES.TSFunctionType,
+  AST_NODE_TYPES.TSTypeAnnotation,
+]);
+
 export default util.createRule({
   name: 'prefer-function-type',
   meta: {
@@ -25,6 +32,35 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
+
+    /**
+     * Get the range of the `this` which is being used as a type annotation else returns null
+     * @param node The node being checked
+     * @returns {Array<number> | null} the range or null if no `this` type annotation are found
+     */
+    function getReturnType(
+      node: TSESTree.TSTypeAnnotation,
+    ): Array<number> | null {
+      if (!possibleReturnThisTypeHolders.has(node.type)) {
+        return null;
+      }
+
+      if (node.type === AST_NODE_TYPES.TSThisType) {
+        return node.range;
+      }
+
+      if (node.type === AST_NODE_TYPES.TSTypeAnnotation) {
+        if (node.typeAnnotation.type === AST_NODE_TYPES.TSThisType) {
+          return node.typeAnnotation.range;
+        }
+      }
+
+      if (node.type === AST_NODE_TYPES.TSFunctionType) {
+        return getReturnType(node?.returnType);
+      }
+
+      return null;
+    }
 
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
@@ -76,11 +112,32 @@ export default util.createRule({
       const start = call.range[0];
       const colonPos = call.returnType!.range[0] - start;
       const text = sourceCode.getText().slice(start, call.range[1]);
+      const returnType = getReturnType(call.returnType?.typeAnnotation);
+      let lhs = text.slice(0, colonPos);
+      let rhs = text.slice(colonPos + 1);
 
-      let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
-        colonPos + 1,
-      )}`;
+      if (returnType !== null && returnType.length === 2) {
+        if (
+          sourceCode.getText().slice(returnType[0], returnType[1]) === 'this'
+        ) {
+          // safe to change
+          rhs = rhs.replace('this', parent.id.name);
+        }
+      }
 
+      if (call.params.length > 0) {
+        call.params.forEach(param => {
+          if (
+            param.typeAnnotation?.typeAnnotation?.type ===
+            AST_NODE_TYPES.TSThisType
+          ) {
+            // replacing each first occurance of `this`
+            lhs = lhs.replace('this', parent.id.name);
+          }
+        });
+      }
+
+      let suggestion = `${lhs} =>${rhs}`;
       if (shouldWrapSuggestion(parent.parent)) {
         suggestion = `(${suggestion})`;
       }
@@ -109,8 +166,7 @@ export default util.createRule({
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
-        typeof member.returnType !== 'undefined' &&
-        member.returnType?.typeAnnotation?.type !== AST_NODE_TYPES.TSThisType
+        typeof member.returnType !== 'undefined'
       ) {
         const suggestion = renderSuggestion(member, node);
         const fixStart =

@@ -38,8 +38,6 @@ interface Foo {
 interface Bar extends Function, Foo {
   (): void;
 }`,
-    'interface Interface {(): this}',
-    'interface Interface {(arg: this): this}',
     'interface Interface {(arg: this): this, [key : number] : string}',
   ],
 
@@ -140,7 +138,57 @@ type Foo<T> = (bar: T) => string;`,
           tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
         },
       ],
+      output: `type Foo = () => () => Foo;`,
+    },
+    {
+      code: 'interface Foo { (): () => string; }',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `type Foo = () => () => string;`,
+    },
+    {
+      code: 'interface Interface {(): this}',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `type Interface = () => Interface`,
+    },
+    {
+      code: 'interface Interface {(): Object<this>}',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
       output: `type Foo = () => () => this;`,
+    },
+    {
+      code: 'interface Interface {() : string}',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `type Interface = ()  => string`,
+    },
+    {
+      code: 'interface Interface {(arg: this): this}',
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          tyoe: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `type Interface = (arg: Interface) => Interface`,
     },
   ],
 });
