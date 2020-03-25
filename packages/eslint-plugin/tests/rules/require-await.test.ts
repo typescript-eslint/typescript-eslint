@@ -120,9 +120,21 @@ async function testFunction(): Promise<void> {
     }
     `,
     'async function* run() { }',
+    'async function* run() { yield* 1 }',
+    'async function* asyncGenerator() { await Promise.resolve(); yield 1 }',
+    'function* test6() { yield* syncGenerator() }',
+    'function* test8() { yield syncGenerator() }',
+    'function* syncGenerator() { yield 1 }',
+    // FIXME
+    `
+    async function* asyncGenerator() {
+      await Promise.resolve()
+      yield 1
+    }
+    async function* test1() {yield* asyncGenerator() }
+    `,
     'const foo : () => void = async function *(){}',
-    'const foo = async function *(){ console.log("bar") }',
-    'async function* run() { console.log("bar") }',
+    'async function* foo() : Promise<string> { return new Promise((res) => res(`hello`)) }',
   ],
 
   invalid: [
@@ -175,6 +187,83 @@ async function testFunction(): Promise<void> {
           messageId: 'missingAwait',
           data: {
             name: "Async function 'foo'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* foo() : void { doSomething() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'foo'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* foo() { yield 1 }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'foo'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* run() { console.log("bar") }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'run'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'const foo = async function *(){ console.log("bar") }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: 'Async generator function',
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* syncGenerator() { yield 1 }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'syncGenerator'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* test3() { yield asyncGenerator() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'test3'",
+          },
+        },
+      ],
+    },
+    {
+      code: 'async function* test7() { yield syncGenerator() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'test7'",
           },
         },
       ],

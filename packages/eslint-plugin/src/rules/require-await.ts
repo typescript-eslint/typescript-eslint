@@ -11,6 +11,9 @@ interface ScopeInfo {
   upper: ScopeInfo | null;
   hasAwait: boolean;
   hasAsync: boolean;
+  isGen: boolean;
+  hasDelegateGen: boolean;
+  isAsyncYield: boolean;
 }
 type FunctionNode =
   | TSESTree.FunctionDeclaration
@@ -49,7 +52,27 @@ export default util.createRule({
         upper: scopeInfo,
         hasAwait: false,
         hasAsync: node.async,
+        isGen: node.generator || false,
+        hasDelegateGen: false,
+        isAsyncYield: false,
       };
+    }
+
+    /**
+     * Returns `true` if the node is asycn, generator and returnType is Promise
+     */
+    function isValidAsyncGenerator(node: FunctionNode): Boolean {
+      const { async, generator, returnType } = node;
+      if (async && generator && returnType) {
+        if (
+          !!~['Promise'].indexOf(
+            node.returnType?.typeAnnotation?.typeName?.name,
+          )
+        ) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /**
@@ -63,10 +86,15 @@ export default util.createRule({
       }
 
       if (
-        !node.generator &&
+        !isValidAsyncGenerator(node) &&
         node.async &&
         !scopeInfo.hasAwait &&
-        !isEmptyFunction(node)
+        !isEmptyFunction(node) &&
+        !(
+          scopeInfo.isGen &&
+          scopeInfo.hasDelegateGen &&
+          !scopeInfo.isAsyncYield
+        )
       ) {
         context.report({
           node,
@@ -97,8 +125,26 @@ export default util.createRule({
       if (!scopeInfo) {
         return;
       }
-
       scopeInfo.hasAwait = true;
+    }
+
+    /**
+     * mark `scopeInfo.hasDelegateGen` to `true` if its a generator
+     * function and the delegate is `true`
+     */
+    function markAsHasDelegateGen(node: FunctionNode): void {
+      if (!scopeInfo || !scopeInfo.isGen) {
+        return;
+      }
+
+      if (node?.argument?.type === AST_NODE_TYPES.TSLiteralType) {
+        // making this `true` as for literals we dont need to check the defination
+        // eg : async function* run() { yield* 1 }
+        scopeInfo.isAsyncYield = true;
+      }
+
+      // TODO : async function* test1() {yield* asyncGenerator() }
+      scopeInfo.hasDelegateGen = true;
     }
 
     return {
@@ -111,6 +157,7 @@ export default util.createRule({
 
       AwaitExpression: markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
+      'FunctionDeclaration[generator = true] > BlockStatement > ExpressionStatement > YieldExpression[delegate = true]': markAsHasDelegateGen,
 
       // check body-less async arrow function.
       // ignore `async () => await foo` because it's obviously correct
