@@ -7,6 +7,7 @@ import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import camelcase from './camelcase';
 import classNameCasing from './class-name-casing';
+import classLiteralPropertyStyle from './class-literal-property-style';
 import commaSpacing from './comma-spacing';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
@@ -102,6 +103,7 @@ export default {
   'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
+  'class-literal-property-style': classLiteralPropertyStyle,
   'comma-spacing': commaSpacing,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,

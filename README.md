@@ -15,7 +15,7 @@
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
+- [Getting Started / Installation](#getting-started--installation)
 - [What are ESLint and TypeScript, and how do they compare?](#what-are-eslint-and-typescript-and-how-do-they-compare)
 - [Why does this project exist?](#why-does-this-project-exist)
 - [What about TSLint?](#what-about-tslint)
@@ -32,7 +32,7 @@
 - [Contributors](#contributors)
 - [Contributing Guide](#contributing-guide)
 
-## Getting Started
+## Getting Started / Installation
 
 - **[You can find our Getting Started docs here](./docs/getting-started/README.md)**
 - **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
