@@ -302,6 +302,57 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    // variable declaration ignore function
+    {
+      code: `const foo = function(): void {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = (): void => {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo: () => void = (): void => {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo: () => void = function (): void {};`,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+}
+      `,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // Array destructuring
@@ -649,6 +700,75 @@ ruleTester.run('typedef', rule, {
       options: [
         {
           variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = 'foo'`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `const foo = function(): void {};`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    {
+      code: `const foo = (): void => {};`,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'a' },
+        },
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'b' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
         },
       ],
     },

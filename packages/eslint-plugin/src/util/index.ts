@@ -2,6 +2,7 @@ import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 
 export * from './astUtils';
 export * from './createRule';
+export * from './isTypeReadonly';
 export * from './misc';
 export * from './nullThrows';
 export * from './types';

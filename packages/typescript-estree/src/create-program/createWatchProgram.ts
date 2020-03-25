@@ -1,5 +1,6 @@
 import debug from 'debug';
 import fs from 'fs';
+import semver from 'semver';
 import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
@@ -18,7 +19,7 @@ const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
  */
 const knownWatchProgramMap = new Map<
   CanonicalPath,
-  ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>
+  ts.WatchOfConfigFile<ts.BuilderProgram>
 >();
 
 /**
@@ -226,10 +227,14 @@ function getProgramsForProjects(
   return results;
 }
 
+const isRunningNoTimeoutFix = semver.satisfies(ts.version, '>=3.9.0-beta', {
+  includePrerelease: true,
+});
+
 function createWatchProgram(
   tsconfigPath: string,
   extra: Extra,
-): ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram> {
+): ts.WatchOfConfigFile<ts.BuilderProgram> {
   log('Creating watch program for %s.', tsconfigPath);
 
   // create compiler host
@@ -237,10 +242,10 @@ function createWatchProgram(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(extra),
     ts.sys,
-    ts.createSemanticDiagnosticsBuilderProgram,
+    ts.createAbstractBuilder,
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
-  ) as WatchCompilerHostOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>;
+  ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
@@ -250,7 +255,7 @@ function createWatchProgram(
       filePath === currentLintOperationState.filePath
         ? currentLintOperationState.code
         : oldReadFile(filePath, encoding);
-    if (fileContent) {
+    if (fileContent !== undefined) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
     }
     return fileContent;
@@ -309,25 +314,38 @@ function createWatchProgram(
       );
     oldOnDirectoryStructureHostCreate(host);
   };
+  watchCompilerHost.trace = log;
 
-  /*
-   * The watch change callbacks TS provides us all have a 250ms delay before firing
-   * https://github.com/microsoft/TypeScript/blob/b845800bdfcc81c8c72e2ac6fdc2c1df0cdab6f9/src/compiler/watch.ts#L1013
-   *
-   * We live in a synchronous world, so we can't wait for that.
-   * This is a bit of a hack, but it lets us immediately force updates when we detect a tsconfig or directory change
-   */
-  const oldSetTimeout = watchCompilerHost.setTimeout;
-  watchCompilerHost.setTimeout = (cb, ms, ...args): unknown => {
-    if (ms === 250) {
-      cb();
-      return null;
-    }
-
-    return oldSetTimeout?.(cb, ms, ...args);
-  };
-
-  return ts.createWatchProgram(watchCompilerHost);
+  // Since we don't want to asynchronously update program we want to disable timeout methods
+  // So any changes in the program will be delayed and updated when getProgram is called on watch
+  let callback: (() => void) | undefined;
+  if (isRunningNoTimeoutFix) {
+    watchCompilerHost.setTimeout = undefined;
+    watchCompilerHost.clearTimeout = undefined;
+  } else {
+    log('Running without timeout fix');
+    // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
+    // instead save it and call before getProgram is called
+    watchCompilerHost.setTimeout = (cb, _ms, ...args): unknown => {
+      callback = cb.bind(/*this*/ undefined, ...args);
+      return callback;
+    };
+    watchCompilerHost.clearTimeout = (): void => {
+      callback = undefined;
+    };
+  }
+  const watch = ts.createWatchProgram(watchCompilerHost);
+  if (!isRunningNoTimeoutFix) {
+    const originalGetProgram = watch.getProgram;
+    watch.getProgram = (): ts.BuilderProgram => {
+      if (callback) {
+        callback();
+      }
+      callback = undefined;
+      return originalGetProgram.call(watch);
+    };
+  }
+  return watch;
 }
 
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
@@ -347,7 +365,7 @@ function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
 }
 
 function maybeInvalidateProgram(
-  existingWatch: ts.WatchOfConfigFile<ts.SemanticDiagnosticsBuilderProgram>,
+  existingWatch: ts.WatchOfConfigFile<ts.BuilderProgram>,
   filePath: CanonicalPath,
   tsconfigPath: CanonicalPath,
 ): ts.Program | null {

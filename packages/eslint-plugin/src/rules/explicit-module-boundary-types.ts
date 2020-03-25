@@ -79,6 +79,10 @@ export default util.createRule<Options, MessageIds>({
           return false;
         }
 
+        if (node.type === AST_NODE_TYPES.JSXExpressionContainer) {
+          return true;
+        }
+
         if (node.type === AST_NODE_TYPES.ReturnStatement) {
           isReturnedValue = true;
         }

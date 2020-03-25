@@ -10,7 +10,8 @@
     "**/**/CONTRIBUTORS.md",
     "**/**/ROADMAP.md",
     "**/*.{json,snap}",
-    ".cspell.json"
+    ".cspell.json",
+    "yarn.lock"
   ],
   "dictionaries": [
     "typescript",

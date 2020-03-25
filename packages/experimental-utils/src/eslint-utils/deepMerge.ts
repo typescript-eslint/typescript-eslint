@@ -5,7 +5,7 @@ type ObjectLike<T = unknown> = Record<string, T>;
  * @param obj an object
  * @returns `true` if obj is an object
  */
-export function isObjectNotArray<T extends ObjectLike>(
+function isObjectNotArray<T extends ObjectLike>(
   obj: unknown | unknown[],
 ): obj is T {
   return typeof obj === 'object' && !Array.isArray(obj);
@@ -48,3 +48,5 @@ export function deepMerge(
     return acc;
   }, {} as ObjectLike);
 }
+
+export { isObjectNotArray };

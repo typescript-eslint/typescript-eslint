@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Bug Fixes
+
+* **eslint-plugin-tslint:** fix tslintConfig memoization key ([#1719](https://github.com/typescript-eslint/typescript-eslint/issues/1719)) ([abf1a2f](https://github.com/typescript-eslint/typescript-eslint/commit/abf1a2fa5574e41af8070be3d79a886ea2f989cc)), closes [typescript-eslint#1692](https://github.com/typescript-eslint/issues/1692)
+
+
+
+
+
+# [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.22.0...v2.23.0) (2020-03-09)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
+# [2.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.20.0...v2.21.0) (2020-02-24)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
 # [2.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.19.2...v2.20.0) (2020-02-17)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint

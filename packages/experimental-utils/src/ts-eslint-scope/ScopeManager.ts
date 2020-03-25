@@ -1,5 +1,5 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintScopeManager from 'eslint-scope/lib/scope-manager';
+import { TSESTree } from '../ts-estree';
 import { Scope } from './Scope';
 import { Variable } from './Variable';
 

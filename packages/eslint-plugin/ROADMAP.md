@@ -90,7 +90,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                                                 |
 | [`no-unbound-method`]                | ✅  | [`@typescript-eslint/unbound-method`]                                                                |
 | [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                                                           |
-| [`no-unsafe-any`]                    | 🛑  | N/A                                                                                                  |
+| [`no-unsafe-any`]                    | 🌓  | [`@typescript-eslint/no-unsafe-member-access`]<sup>[2]</sup>                                         |
 | [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                                                             |
 | [`no-unused-expression`]             | 🌟  | [`no-unused-expressions`][no-unused-expressions]                                                     |
 | [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                                                |
@@ -113,6 +113,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                                                             |
 
 <sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
+<sup>[2]</sup> Only checks member expressions
 
 ### Maintainability
 
@@ -136,7 +137,6 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`prefer-readonly`]          | ✅  | [`@typescript-eslint/prefer-readonly`]             |
 | [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
 
-<sup>[1]</sup> Only warns when importing deprecated symbols<br>
 <sup>[2]</sup> Missing support for blank-line-delimited sections
 
 ### Style
@@ -174,7 +174,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-reference-import`]             | ✅  | [`@typescript-eslint/triple-slash-reference`]                                       |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
 | [`no-unnecessary-callback-wrapper`] | 🛑  | N/A and this might be unsafe (i.e. with `forEach`)                                  |
-| [`no-unnecessary-else`]             | 🌟  | [`no-else-return`][no-else-return] <sup>[2]</sup                                    |
+| [`no-unnecessary-else`]             | 🌟  | [`no-else-return`][no-else-return] <sup>[2]</sup>                                   |
 | [`no-unnecessary-initializer`]      | 🌟  | [`no-undef-init`][no-undef-init]                                                    |
 | [`no-unnecessary-qualifier`]        | ✅  | [`@typescript-eslint/no-unnecessary-qualifier`]                                     |
 | [`number-literal-format`]           | 🛑  | N/A                                                                                 |
@@ -640,6 +640,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
 [`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
 [`@typescript-eslint/no-magic-numbers`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-magic-numbers.md
+[`@typescript-eslint/no-unsafe-member-access`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-member-access.md
 
 <!-- eslint-plugin-import -->
 

@@ -113,7 +113,7 @@ ruleTester.run('ts-nocheck', rule, {
       code: '// @ts-nocheck',
       errors: [
         {
-          data: { directive: 'check' },
+          data: { directive: 'nocheck' },
           messageId: 'tsDirectiveComment',
           line: 1,
           column: 1,
@@ -124,7 +124,7 @@ ruleTester.run('ts-nocheck', rule, {
       code: '// @ts-nocheck: Suppress next line',
       errors: [
         {
-          data: { directive: 'check' },
+          data: { directive: 'nocheck' },
           messageId: 'tsDirectiveComment',
           line: 1,
           column: 1,
@@ -135,7 +135,7 @@ ruleTester.run('ts-nocheck', rule, {
       code: '/////@ts-nocheck: Suppress next line',
       errors: [
         {
-          data: { directive: 'check' },
+          data: { directive: 'nocheck' },
           messageId: 'tsDirectiveComment',
           line: 1,
           column: 1,
@@ -151,7 +151,7 @@ if (false) {
             `,
       errors: [
         {
-          data: { directive: 'check' },
+          data: { directive: 'nocheck' },
           messageId: 'tsDirectiveComment',
           line: 3,
           column: 3,

@@ -48,10 +48,12 @@ const tslintConfig = memoize(
       rulesDirectory: tslintRulesDirectory ?? [],
     });
   },
-  (lintFile: string | undefined, tslintRules = {}, tslintRulesDirectory = []) =>
-    `${lintFile}_${Object.keys(tslintRules).join(',')}_${
-      tslintRulesDirectory.length
-    }`,
+  (
+    lintFile: string | undefined,
+    tslintRules = {},
+    tslintRulesDirectory: string[] = [],
+  ) =>
+    `${lintFile}_${JSON.stringify(tslintRules)}_${tslintRulesDirectory.join()}`,
 );
 
 export default createRule<Options, MessageIds>({

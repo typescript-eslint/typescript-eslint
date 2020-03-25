@@ -344,6 +344,11 @@ export class XXXX {
           line: 3,
         },
       ],
+      output: `
+export class XXXX {
+  public constructor(readonly value: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -354,6 +359,11 @@ export class WithParameterProperty {
       `,
       options: [{ accessibility: 'explicit' }],
       errors: [{ messageId: 'missingAccessibility' }],
+      output: `
+export class WithParameterProperty {
+  public constructor(readonly value: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -372,6 +382,11 @@ export class XXXX {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
+      output: `
+export class XXXX {
+  public constructor(readonly samosa: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -387,6 +402,11 @@ class Test {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
+      output: `
+class Test {
+  public constructor(readonly foo: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -409,6 +429,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  x: number
+  public getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -431,6 +459,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  private x: number
+  getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -462,6 +498,14 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  x?: number
+  getX? () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -486,6 +530,15 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  protected name: string
+  protected foo?: string
+  getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -510,6 +563,15 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  protected name: string
+  foo?: string
+  getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -534,6 +596,14 @@ class Test {
         },
       ],
       options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x: number
+  getX () {
+    return this.x
+  }
+}
+            `,
     },
     {
       filename: 'test.ts',
@@ -564,6 +634,20 @@ class Test {
         },
       ],
       options: [{ overrides: { constructors: 'no-public' } }],
+      output: `
+class Test {
+  private x: number;
+  constructor (x: number) {
+    this.x = x;
+  }
+  get internalValue() {
+    return this.x;
+  }
+  set internalValue(value: number) {
+    this.x = value;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -598,6 +682,20 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  private x: number;
+  constructor (x: number) {
+    this.x = x;
+  }
+  get internalValue() {
+    return this.x;
+  }
+  set internalValue(value: number) {
+    this.x = value;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -621,6 +719,14 @@ class Test {
           overrides: { parameterProperties: 'no-public' },
         },
       ],
+      output: `
+class Test {
+  constructor(public x: number){}
+  public foo(): string {
+    return 'foo';
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -636,6 +742,11 @@ class Test {
           column: 3,
         },
       ],
+      output: `
+class Test {
+  constructor(public x: number){}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -657,6 +768,11 @@ class Test {
           column: 15,
         },
       ],
+      output: `
+class Test {
+  constructor(readonly x: number){}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -674,6 +790,7 @@ class Test {
           column: 14,
         },
       ],
+      output: 'class Test { x = 2 }',
     },
     {
       filename: 'test.ts',
@@ -694,6 +811,10 @@ class Test {
           column: 9,
         },
       ],
+      output: `class Test {
+        x = 2
+        private x = 2
+      }`,
     },
     {
       code: 'class Test { constructor(public ...x: any[]) { }}',
@@ -705,6 +826,224 @@ class Test {
           column: 14,
         },
       ],
+      output: 'class Test { constructor(public ...x: any[]) { }}',
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public /*public*/constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  /*public*/constructor(private foo: string) {}
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public foo() {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  foo() {}
+}
+      `,
+    },
+
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  @public
+  public foo;
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  @public
+  foo;
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  public foo = "";
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+class Test {
+  foo = "";
+}
+      `,
+    },
+
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  contructor(public/* Hi there */ readonly foo)
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 14,
+        },
+      ],
+      output: `
+class Test {
+  contructor(/* Hi there */ readonly foo)
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  contructor(public readonly foo: string)
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 14,
+        },
+      ],
+      output: `
+class Test {
+  contructor(readonly foo: string)
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code:
+        'class EnsureWhiteSPaceSpan { public              constructor() {}}',
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 1,
+          column: 30,
+        },
+      ],
+      output: 'class EnsureWhiteSPaceSpan { constructor() {}}',
+    },
+    {
+      filename: 'test.ts',
+      code:
+        'class EnsureWhiteSPaceSpan { public /* */              constructor() {}}',
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 1,
+          column: 30,
+        },
+      ],
+      output:
+        'class EnsureWhiteSPaceSpan { /* */              constructor() {}}',
+    },
+    {
+      filename: 'test.ts',
+      code:
+        'class EnsureWhiteSPaceSpan { public              /* */ constructor() {}}',
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 1,
+          column: 30,
+        },
+      ],
+      output: 'class EnsureWhiteSPaceSpan { /* */ constructor() {}}',
     },
   ],
 });

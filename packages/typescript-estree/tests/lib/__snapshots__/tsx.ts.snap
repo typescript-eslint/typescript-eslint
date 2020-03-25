@@ -422,6 +422,8 @@ Object {
 }
 `;
 
+exports[`TSX fixtures/generic-jsx-member-expression-private.src 1`] = `"Identifier expected."`;
+
 exports[`TSX fixtures/generic-jsx-opening-element.src 1`] = `
 Object {
   "body": Array [
@@ -936,6 +938,7 @@ exports[`TSX fixtures/react-typed-props.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 30,

@@ -2,10 +2,9 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, getStaticValue } from '../util';
 
 export default createRule({
   name: 'prefer-includes',

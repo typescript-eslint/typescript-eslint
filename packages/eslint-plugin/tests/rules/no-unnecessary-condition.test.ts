@@ -150,6 +150,39 @@ function test(a: string | null | undefined) {
 function test(a: unknown) {
   return a ?? "default";
 }`,
+    // Indexing cases
+    `
+declare const arr: object[];
+if(arr[42]) {} // looks unnecessary from the types, but isn't
+
+const tuple = [{}] as [object];
+declare const n: number;
+if(tuple[n]) {}
+`,
+    // Optional-chaining indexing
+    `
+declare const arr: Array<{value: string} & (() => void)>;
+if(arr[42]?.value) {}
+arr[41]?.();
+
+// An array access can "infect" deeper into the chain
+declare const arr2: Array<{x: {y: {z: object}}}>;
+arr2[42]?.x?.y?.z;
+
+const tuple = ["foo"] as const;
+declare const n: number;
+tuple[n]?.toUpperCase();
+    `,
+    `if(arr?.[42]) {}`,
+    `
+declare const returnsArr: undefined | (() => string[]);
+if(returnsArr?.()[42]) {}
+returnsArr?.()[42]?.toUpperCase()`,
+    // nullish + array index
+    `
+declare const arr: string[][];
+arr[x] ?? [];
+`,
     // Supports ignoring the RHS
     {
       code: `
@@ -222,6 +255,7 @@ anyValue?.();
 let unknownValue: unknown;
 unknownValue?.();
 `,
+    'const foo = [1, 2, 3][0];',
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -361,6 +395,37 @@ function nothing3(x: [string, string]) {
         ruleError(11, 25, 'alwaysFalsy'),
         ruleError(15, 25, 'alwaysFalsy'),
       ],
+    },
+    // Indexing cases
+    {
+      // This is an error because 'dict' doesn't represent
+      //  the potential for undefined in its types
+      code: `
+declare const dict: Record<string, object>;
+if(dict["mightNotExist"]) {}
+`,
+      errors: [ruleError(3, 4, 'alwaysTruthy')],
+    },
+    {
+      // Should still check tuples when accessed with literal numbers, since they don't have
+      //   unsound index signatures
+      code: `
+const x = [{}] as [{foo: string}];
+if(x[0]) {}
+if(x[0]?.foo) {}
+`,
+      errors: [
+        ruleError(3, 4, 'alwaysTruthy'),
+        ruleError(4, 8, 'neverOptionalChain'),
+      ],
+    },
+    {
+      // Shouldn't mistake this for an array indexing case
+      code: `
+declare const arr: object[];
+if(arr.filter) {}
+`,
+      errors: [ruleError(3, 4, 'alwaysTruthy')],
     },
     {
       options: [{ checkArrayPredicates: true }],
@@ -572,6 +637,19 @@ foo
           column: 3,
           endLine: 8,
           endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: 'const foo = [1, 2, 3]?.[0];',
+      output: 'const foo = [1, 2, 3][0];',
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
         },
       ],
     },
