@@ -429,10 +429,6 @@ async function test() {
       `,
       errors: [
         {
-          line: 3,
-          messageId: 'floating',
-        },
-        {
           line: 4,
           messageId: 'floating',
         },

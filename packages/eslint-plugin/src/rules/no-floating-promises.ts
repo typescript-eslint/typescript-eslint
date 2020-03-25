@@ -12,6 +12,11 @@ type Options = [
 
 type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
 
+const possibleIifeCalleType = new Set([
+  'FunctionExpression',
+  'ArrowFunctionExpression',
+]);
+
 export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
@@ -54,6 +59,10 @@ export default util.createRule<Options, MessageId>({
       ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
 
+        if (isIife(node)) {
+          return;
+        }
+
         if (isUnhandledPromise(checker, expression)) {
           if (options.ignoreVoid) {
             context.report({
@@ -79,6 +88,15 @@ export default util.createRule<Options, MessageId>({
         }
       },
     };
+
+    function isIife(node: ts.Node): Boolean {
+      if (node?.expression.type === 'CallExpression') {
+        if (possibleIifeCalleType.has(node?.expression?.callee.type)) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     function isUnhandledPromise(
       checker: ts.TypeChecker,
