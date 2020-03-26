@@ -51,6 +51,8 @@ The rule accepts an options object with the following properties:
 type Options = {
   // if true, checking void expressions will be skipped
   ignoreVoid?: boolean;
+  // if true, checking for async iife will be skipped
+  ignoreIIFE?: boolean;
 };
 
 const defaults = {
@@ -71,6 +73,33 @@ async function returnsPromise() {
 void returnsPromise();
 
 void Promise.reject('value');
+```
+
+### `ignoreIIFE`
+
+This allows to skip checking of async iife
+
+Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
+
+```ts
+(async function() {
+  await res(1);
+})();
+
+const foo = () =>
+  new Promise(res => {
+    (async function() {
+      await res(1);
+    })();
+  });
+```
+
+Examples of **incorrect** code for this rule with `{ ignoreIIFE: true }`:
+
+```ts
+(async function() {
+  Promise.resolve();
+})();
 ```
 
 ## When Not To Use It
