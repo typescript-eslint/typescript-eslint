@@ -20,6 +20,7 @@ ruleTester.run('no-unsafe-call', rule, {
     'function foo(x: { a?: () => void }) { x.a?.() }',
     'new Map()',
     'String.raw`foo`',
+    'const x = import("./foo");',
   ],
   invalid: [
     ...batchedSingleLineTests({
