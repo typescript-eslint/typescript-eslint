@@ -41,10 +41,10 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      'CallExpression, OptionalCallExpression'(
-        node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
+      ':matches(CallExpression, OptionalCallExpression) > :not(Import)'(
+        node: Exclude<TSESTree.LeftHandSideExpression, TSESTree.Import>,
       ): void {
-        checkCall(node.callee, node.callee, 'unsafeCall');
+        checkCall(node, node, 'unsafeCall');
       },
       NewExpression(node): void {
         checkCall(node.callee, node, 'unsafeNew');
