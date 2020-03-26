@@ -30,6 +30,12 @@ ruleTester.run('restrict-template-expressions', rule, {
         return \`arg = \${arg}\`;
       }
     `,
+    // Base case - intersection type
+    `
+      function test<T extends string & { _kind: "MyBrandedString" }>(arg: T) {
+        return \`arg = \${arg}\`;
+      }
+    `,
     // Base case - don't check tagged templates
     `
       tag\`arg = \${null}\`;
@@ -67,6 +73,14 @@ ruleTester.run('restrict-template-expressions', rule, {
           return \`arg = \${arg}\`;
         }
       `,
+    },
+    {
+      options: [{ allowNumber: true }],
+      code: `
+      function test<T extends number & { _kind: "MyBrandedNumber" }>(arg: T) {
+        return \`arg = \${arg}\`;
+      }
+    `,
     },
     {
       options: [{ allowNumber: true }],
@@ -195,6 +209,13 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
       code: `
         const arg = {};
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+    },
+    {
+      code: `
+        declare const arg: { a: string } & { b: string };
         const msg = \`arg = \${arg}\`;
       `,
       errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
