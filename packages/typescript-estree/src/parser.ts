@@ -111,6 +111,70 @@ function resetExtra(): void {
   };
 }
 
+/**
+ * Normalizes, sanitizes, resolves and filters the provided
+ * @internal
+ */
+function prepareAndTransformProjects(
+  projectsInput: string | string[] | undefined,
+  ignoreListInput: (string | RegExp)[] | undefined,
+): string[] {
+  let projects: string[] = [];
+
+  // Normalize and sanitize the project paths
+  if (typeof projectsInput === 'string') {
+    projects.push(projectsInput);
+  } else if (Array.isArray(projectsInput)) {
+    for (const project of projectsInput) {
+      if (typeof project === 'string') {
+        projects.push(project);
+      }
+    }
+  }
+
+  if (projects.length === 0) {
+    return projects;
+  }
+
+  // Transform glob patterns into paths
+  projects = projects.reduce<string[]>(
+    (projects, project) =>
+      projects.concat(
+        isGlob(project)
+          ? globSync(project, {
+              cwd: extra.tsconfigRootDir,
+            })
+          : project,
+      ),
+    [],
+  );
+
+  // Normalize and sanitize the ignore regex list
+  const ignoreRegexes: RegExp[] = [];
+  if (Array.isArray(ignoreListInput)) {
+    for (const ignore of ignoreListInput) {
+      if (ignore instanceof RegExp) {
+        ignoreRegexes.push(ignore);
+      } else if (typeof ignore === 'string') {
+        ignoreRegexes.push(new RegExp(ignore));
+      }
+    }
+  } else {
+    ignoreRegexes.push(/\/node_modules\//);
+  }
+
+  // Remove any paths that match the ignore list
+  return projects.filter(project => {
+    for (const ignore of ignoreRegexes) {
+      if (ignore.test(project)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+}
+
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Configure Debug logging
@@ -205,34 +269,18 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     extra.log = Function.prototype;
   }
 
-  if (typeof options.project === 'string') {
-    extra.projects = [options.project];
-  } else if (
-    Array.isArray(options.project) &&
-    options.project.every(projectPath => typeof projectPath === 'string')
-  ) {
-    extra.projects = options.project;
-  }
-
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
+
+  // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  // Transform glob patterns into paths
-  if (extra.projects) {
-    extra.projects = extra.projects.reduce<string[]>(
-      (projects, project) =>
-        projects.concat(
-          isGlob(project)
-            ? globSync(project, {
-                cwd: extra.tsconfigRootDir || process.cwd(),
-              })
-            : project,
-        ),
-      [],
-    );
-  }
+  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
+  extra.projects = prepareAndTransformProjects(
+    options.project,
+    options.projectFolderIgnoreList,
+  );
 
   if (
     Array.isArray(options.extraFileExtensions) &&
@@ -444,6 +492,7 @@ export {
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
   version,
+  prepareAndTransformProjects,
 };
 export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
