@@ -578,19 +578,11 @@ describe('parse()', () => {
       filePath: 'ignoreme' | 'includeme',
       projectFolderIgnoreList: TSESTreeOptions['projectFolderIgnoreList'] = [],
     ) => (): void => {
-      try {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          projectFolderIgnoreList,
-          filePath: join(PROJECT_DIR, filePath, './file.ts'),
-        });
-      } catch (error) {
-        /**
-         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-         */
-        error.message = error.message.replace(/\\(?!["])/gm, '/');
-        throw error;
-      }
+      parser.parseAndGenerateServices(code, {
+        ...config,
+        projectFolderIgnoreList,
+        filePath: join(PROJECT_DIR, filePath, './file.ts'),
+      });
     };
 
     it('ignores nothing when given nothing', () => {

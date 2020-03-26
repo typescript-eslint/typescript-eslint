@@ -14,6 +14,8 @@ import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors
 import { TSESTree } from './ts-estree';
 import { ensureAbsolutePath } from './create-program/shared';
 
+const log = debug('typescript-eslint:typescript-estree:parser');
+
 /**
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
@@ -113,7 +115,6 @@ function resetExtra(): void {
 
 /**
  * Normalizes, sanitizes, resolves and filters the provided
- * @internal
  */
 function prepareAndTransformProjects(
   projectsInput: string | string[] | undefined,
@@ -164,7 +165,7 @@ function prepareAndTransformProjects(
   }
 
   // Remove any paths that match the ignore list
-  return projects.filter(project => {
+  const filtered = projects.filter(project => {
     for (const ignore of ignoreRegexes) {
       if (ignore.test(project)) {
         return false;
@@ -173,6 +174,11 @@ function prepareAndTransformProjects(
 
     return true;
   });
+
+  log('parserOptions.project matched projects: %s', projects);
+  log('ignore list applied to parserOptions.project: %s', filtered);
+
+  return filtered;
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
@@ -492,7 +498,6 @@ export {
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
   version,
-  prepareAndTransformProjects,
 };
 export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
