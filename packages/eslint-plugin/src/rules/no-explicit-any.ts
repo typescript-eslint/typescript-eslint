@@ -144,10 +144,8 @@ export default util.createRule<Options, MessageIds>({
      */
     function isGreatGreatGrandparentRestElement(node: TSESTree.Node): boolean {
       return (
-        node.parent?.parent != null &&
+        node.parent?.parent?.parent?.parent != null &&
         isNodeValidTSType(node.parent.parent) &&
-        node.parent.parent.parent != null &&
-        node.parent.parent.parent.parent != null &&
         isNodeRestElementInFunction(node.parent.parent.parent.parent)
       );
     }
