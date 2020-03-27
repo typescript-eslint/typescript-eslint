@@ -926,6 +926,17 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
+      code: `type Any = any;`,
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
       code: `function foo5(...args: any) {}`,
       options: [{ ignoreRestArgs: true }],
       errors: [
