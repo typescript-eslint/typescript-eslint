@@ -16,6 +16,7 @@ interface ParserOptions {
   loc?: boolean;
   noWatch?: boolean;
   project?: string | string[];
+  projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
   sourceType?: 'script' | 'module';
   tokens?: boolean;
