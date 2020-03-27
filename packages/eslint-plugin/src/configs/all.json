@@ -22,6 +22,8 @@
     "@typescript-eslint/func-call-spacing": "error",
     "indent": "off",
     "@typescript-eslint/indent": "error",
+    "init-declarations": "off",
+    "@typescript-eslint/init-declarations": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/naming-convention": "error",

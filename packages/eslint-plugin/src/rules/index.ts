@@ -82,6 +82,7 @@ import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
+import initDeclarations from './init-declarations';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -114,6 +115,7 @@ export default {
   'func-call-spacing': funcCallSpacing,
   'generic-type-naming': genericTypeNaming,
   indent: indent,
+  'init-declarations': initDeclarations,
   'interface-name-prefix': interfaceNamePrefix,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
