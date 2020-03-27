@@ -82,7 +82,7 @@ This allows to skip checking of async iife
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
 ```ts
-(async function() {
+await(async function() {
   await res(1);
 })();
 
@@ -98,7 +98,7 @@ Examples of **incorrect** code for this rule with `{ ignoreIIFE: true }`:
 
 ```ts
 (async function() {
-  Promise.resolve();
+  await Promise.resolve();
 })();
 ```
 

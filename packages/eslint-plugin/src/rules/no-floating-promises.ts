@@ -91,9 +91,7 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
-    function isAsyncIife(
-      node: TSESTree.ExpressionStatement | TSESTree.ArrowFunctionExpression,
-    ): boolean {
+    function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
       if (node.expression.type !== AST_NODE_TYPES.CallExpression) {
         return false;
       }
