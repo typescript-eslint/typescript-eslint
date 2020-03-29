@@ -339,18 +339,18 @@ async function test() {
     // ignoreIIFE
     {
       code: `
-      (async () => {
-        await something();
-      })();
+        (async () => {
+          await something();
+        })();
       `,
       options: [{ ignoreIIFE: true }],
     },
     {
       code: `
-    (async () => {
-      something();
-    })();
-    `,
+        (async () => {
+          something();
+        })();
+      `,
       options: [{ ignoreIIFE: true }],
     },
     {
@@ -359,26 +359,28 @@ async function test() {
     },
     {
       code: `
-      function foo(){
-        (async function bar() {
-        })()
-      }
-    `,
+        function foo(){
+          (async function bar() {})()
+        }
+      `,
       options: [{ ignoreIIFE: true }],
     },
     {
-      code: `const foo = () => new Promise((res) => {
+      code: `
+        const foo = () => new Promise((res) => {
           (async function(){
               await res(1)
-            })()
+          })()
         })
-        `,
+      `,
       options: [{ ignoreIIFE: true }],
     },
     {
-      code: `(async function(){
+      code: `
+        (async function(){
               await res(1)
-            })()`,
+        })()
+      `,
       options: [{ ignoreIIFE: true }],
     },
   ],
@@ -774,9 +776,9 @@ async function test() {
     },
     {
       code: `
-      (async () => {
-        await something();
-      })();
+        (async () => {
+          await something();
+        })();
       `,
       errors: [
         {
@@ -787,10 +789,10 @@ async function test() {
     },
     {
       code: `
-    (async () => {
-      something();
-    })();
-    `,
+        (async () => {
+          something();
+        })();
+      `,
       errors: [
         {
           line: 2,
@@ -809,11 +811,10 @@ async function test() {
     },
     {
       code: `
-      function foo(){
-        (async function bar() {
-        })()
-      }
-    `,
+        function foo(){
+          (async function bar() {})()
+        }
+      `,
       errors: [
         {
           line: 3,
@@ -822,11 +823,12 @@ async function test() {
       ],
     },
     {
-      code: `const foo = () => new Promise((res) => {
-        (async function(){
+      code: `
+        const foo = () => new Promise((res) => {
+          (async function(){
             await res(1)
           })()
-      })
+        })
       `,
       errors: [
         {
@@ -836,9 +838,11 @@ async function test() {
       ],
     },
     {
-      code: `(async function(){
-              await res(1)
-            })()`,
+      code: `
+        (async function(){
+          await res(1)
+        })()
+      `,
       errors: [
         {
           line: 1,
@@ -847,9 +851,11 @@ async function test() {
       ],
     },
     {
-      code: `(async function(){
+      code: `
+        (async function(){
           Promise.resolve();
-    })()`,
+        })()
+      `,
       options: [{ ignoreIIFE: true }],
       errors: [
         {
@@ -859,13 +865,15 @@ async function test() {
       ],
     },
     {
-      code: `(async function(){
+      code: `
+        (async function(){
           const promiseIntersection: Promise<number> & number;
           promiseIntersection;
           promiseIntersection.then(() => {})
           promiseIntersection.catch();
           promiseIntersection.finally();
-    })()`,
+        })()
+      `,
       options: [{ ignoreIIFE: true }],
       errors: [
         {
