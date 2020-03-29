@@ -548,7 +548,7 @@ declare module 'eslint/lib/rulesinit-declarations' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    never,
+    'initialized' | 'notInitialized',
     [
       'always' | 'never',
       {
