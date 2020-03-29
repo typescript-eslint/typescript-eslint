@@ -97,7 +97,7 @@ const foo = () =>
 Examples of **incorrect** code for this rule with `{ ignoreIIFE: true }`:
 
 ```ts
-(async function() {
+await(async function() {
   await Promise.resolve();
 })();
 ```
