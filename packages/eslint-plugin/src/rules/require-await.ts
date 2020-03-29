@@ -57,23 +57,6 @@ export default util.createRule({
     }
 
     /**
-     * Returns `true` if the node is asycn, generator and returnType is Promise
-     */
-    function isValidAsyncGenerator(node: FunctionNode): Boolean {
-      const { async, generator, returnType } = node;
-      if (async && generator && returnType) {
-        if (
-          !!~['Promise'].indexOf(
-            node.returnType?.typeAnnotation?.typeName?.name,
-          )
-        ) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    /**
      * Pop the top scope info object from the stack.
      * Also, it reports the function if needed.
      */
@@ -84,7 +67,6 @@ export default util.createRule({
       }
 
       if (
-        !isValidAsyncGenerator(node) &&
         node.async &&
         !scopeInfo.hasAwait &&
         !isEmptyFunction(node) &&
@@ -126,8 +108,8 @@ export default util.createRule({
      * mark `scopeInfo.isAsyncYield` to `true` if its a generator
      * function and the delegate is `true`
      */
-    function markAsHasDelegateGen(node: FunctionNode): void {
-      if (!scopeInfo || !scopeInfo.isGen) {
+    function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
+      if (!scopeInfo || !scopeInfo.isGen || !node.argument) {
         return;
       }
 
