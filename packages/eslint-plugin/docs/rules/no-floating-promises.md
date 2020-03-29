@@ -82,7 +82,7 @@ This allows to skip checking of async iife
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
 ```ts
-await(async function() {
+await (async function() {
   await res(1);
 })();
 
