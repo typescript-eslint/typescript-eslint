@@ -71,6 +71,7 @@ const a = 1;
 ${PARENT_INDENT}\``,
     wrap`noFormat\`const a = 1;\``,
     // sanity check suggestion validation
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
       ruleTester.run({
         invalid: [
