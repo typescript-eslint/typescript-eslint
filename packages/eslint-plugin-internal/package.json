@@ -12,6 +12,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "2.25.0"
+    "@typescript-eslint/experimental-utils": "2.25.0",
+    "prettier": "*"
   }
 }
