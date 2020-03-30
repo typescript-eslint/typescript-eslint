@@ -557,7 +557,7 @@ declare module 'eslint/lib/rules/init-declarations' {
     ],
     {
       'VariableDeclaration:exit'(
-        node: TSESTree.VariableDeclaration | TSESTree.Node,
+        node: TSESTree.VariableDeclaration,
       ): void;
     }
   >;
