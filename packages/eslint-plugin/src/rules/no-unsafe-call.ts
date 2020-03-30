@@ -41,7 +41,7 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      ':matches(CallExpression, OptionalCallExpression) > :not(Import)'(
+      ':matches(CallExpression, OptionalCallExpression) > :not(Import).callee'(
         node: Exclude<TSESTree.LeftHandSideExpression, TSESTree.Import>,
       ): void {
         checkCall(node, node, 'unsafeCall');
