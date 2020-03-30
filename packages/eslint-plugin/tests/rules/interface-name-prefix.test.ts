@@ -30,55 +30,55 @@ ruleTester.run('interface-name-prefix', rule, {
   valid: [
     `
 interface Animal {
-    name: string;
+  name: string;
 }
-        `,
+    `,
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
     },
     {
       code: `
 interface _IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: [{ prefixWithI: 'always', allowUnderscorePrefix: true }],
     },
     {
       code: `
 interface IIguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
     },
     {
       code: `
 interface Iguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
     {
       code: `
 interface I18n {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
   ],
@@ -86,9 +86,9 @@ interface I18n {
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'noPrefix',
@@ -100,9 +100,9 @@ interface IAnimal {
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
       errors: [
         {
@@ -115,9 +115,9 @@ interface Animal {
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: [{ prefixWithI: 'always', allowUnderscorePrefix: true }],
       errors: [
         {
@@ -130,9 +130,9 @@ interface Animal {
     {
       code: `
 interface Iguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
       errors: [
         {
@@ -145,9 +145,9 @@ interface Iguana {
     {
       code: `
 interface IIguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {
@@ -160,9 +160,9 @@ interface IIguana {
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {
@@ -175,9 +175,9 @@ interface IAnimal {
     {
       code: `
 interface _IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {
