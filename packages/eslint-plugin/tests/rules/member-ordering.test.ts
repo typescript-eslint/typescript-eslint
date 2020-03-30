@@ -1,3 +1,6 @@
+// TODO - migrate this test to the rule
+/* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+
 import rule from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
 
