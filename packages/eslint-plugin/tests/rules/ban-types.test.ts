@@ -1,5 +1,5 @@
 import rule from '../../src/rules/ban-types';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 import { InferOptionsTypeFromRule } from '../../src/util';
 
 const ruleTester = new RuleTester({
@@ -47,7 +47,7 @@ ruleTester.run('ban-types', rule, {
   valid: [
     'let f = Object();', // Should not fail if there is no options set
     'let f: {} = {};',
-    'let f: { x: number, y: number } = { x: 1, y: 1 };',
+    'let f: { x: number; y: number } = { x: 1, y: 1 };',
     {
       code: 'let f = Object();',
       options,
@@ -65,11 +65,11 @@ ruleTester.run('ban-types', rule, {
       options,
     },
     {
-      code: 'let a: _.NS.Bad',
+      code: 'let a: _.NS.Bad;',
       options,
     },
     {
-      code: 'let a: NS.Bad._',
+      code: 'let a: NS.Bad._;',
       options,
     },
     // Replace default options instead of merging with extendDefaults: false
@@ -88,11 +88,11 @@ ruleTester.run('ban-types', rule, {
       ],
     },
     {
-      code: 'let a: undefined',
+      code: 'let a: undefined;',
       options: options2,
     },
     {
-      code: 'let a: null',
+      code: 'let a: null;',
       options: options3,
     },
   ],
@@ -166,8 +166,8 @@ ruleTester.run('ban-types', rule, {
       ],
     },
     {
-      code: 'let b: {c: String};',
-      output: 'let b: {c: string};',
+      code: 'let b: { c: String };',
+      output: 'let b: { c: string };',
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -177,7 +177,7 @@ ruleTester.run('ban-types', rule, {
             customMessage: ' Use string instead.',
           },
           line: 1,
-          column: 12,
+          column: 13,
         },
       ],
       options,
@@ -231,22 +231,22 @@ ruleTester.run('ban-types', rule, {
     {
       code: `
 class Foo<F = String> extends Bar<String> implements Baz<Object> {
-  constructor (foo: String | Object) {}
+  constructor(foo: String | Object) {}
 
-  exit() : Array<String> {
-    const foo: String = 1 as String
+  exit(): Array<String> {
+    const foo: String = 1 as String;
   }
 }
-            `,
+      `,
       output: `
 class Foo<F = string> extends Bar<string> implements Baz<Object> {
-  constructor (foo: string | Object) {}
+  constructor(foo: string | Object) {}
 
-  exit() : Array<string> {
-    const foo: string = 1 as string
+  exit(): Array<string> {
+    const foo: string = 1 as string;
   }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -285,7 +285,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
             customMessage: ' Use string instead.',
           },
           line: 3,
-          column: 21,
+          column: 20,
         },
         {
           messageId: 'bannedTypeMessage',
@@ -294,13 +294,13 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
             customMessage: " Use '{}' instead.",
           },
           line: 3,
-          column: 30,
+          column: 29,
         },
         {
           messageId: 'bannedTypeMessage',
           data: { name: 'Array', customMessage: '' },
           line: 5,
-          column: 12,
+          column: 11,
         },
         {
           messageId: 'bannedTypeMessage',
@@ -310,7 +310,7 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
             customMessage: ' Use string instead.',
           },
           line: 5,
-          column: 18,
+          column: 17,
         },
         {
           messageId: 'bannedTypeMessage',
@@ -383,8 +383,8 @@ let b: Foo<NS.Good>;
       options,
     },
     {
-      code: `let foo: {} = {};`,
-      output: `let foo: object = {};`,
+      code: 'let foo: {} = {};',
+      output: 'let foo: object = {};',
       options: [
         {
           types: {
@@ -408,7 +408,7 @@ let b: Foo<NS.Good>;
       ],
     },
     {
-      code: `
+      code: noFormat`
 let foo: {} = {};
 let bar: {     } = {};
       `,
@@ -473,8 +473,8 @@ let bar: object = {};
       ],
     },
     {
-      code: 'let a: Foo<   F   >;',
-      output: 'let a: Foo<   T   >;',
+      code: noFormat`let a: Foo<   F   >;`,
+      output: noFormat`let a: Foo<   T   >;`,
       errors: [
         {
           messageId: 'bannedTypeMessage',
