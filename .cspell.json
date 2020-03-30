@@ -11,7 +11,8 @@
     "**/**/ROADMAP.md",
     "**/*.{json,snap}",
     ".cspell.json",
-    "yarn.lock"
+    "yarn.lock",
+    ".github/workflows/**"
   ],
   "dictionaries": [
     "typescript",
