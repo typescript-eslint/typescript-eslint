@@ -14,8 +14,8 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-throw-literal', rule, {
   valid: [
     'throw new Error();',
-    'throw new Error("error");',
-    'throw Error("error");',
+    "throw new Error('error');",
+    "throw Error('error');",
     `
 const e = new Error();
 throw e;
@@ -35,27 +35,27 @@ throw foo();
     `,
     `
 const foo = {
-  bar: new Error()
-}
+  bar: new Error(),
+};
 throw foo.bar;
     `,
     `
 const foo = {
-  bar: new Error()
-}
+  bar: new Error(),
+};
 
 throw foo['bar'];
     `,
     `
 const foo = {
-  bar: new Error()
-}
+  bar: new Error(),
+};
 
 const bar = 'bar';
 throw foo[bar];
     `,
     `
-class CustomError extends Error {};
+class CustomError extends Error {}
 throw new CustomError();
     `,
     `
@@ -63,14 +63,23 @@ class CustomError1 extends Error {}
 class CustomError2 extends CustomError1 {}
 throw new CustomError();
     `,
-    'throw foo = new Error();',
-    'throw 1, 2, new Error();',
-    'throw "literal" && new Error();',
-    'throw new Error() || "literal"',
-    'throw foo ? new Error() : "literal";',
-    'throw foo ? "literal" : new Error();',
-    'function* foo() { let index = 0; throw yield index++; }',
-    'async function foo() { throw await bar; }',
+    'throw (foo = new Error());',
+    'throw (1, 2, new Error());',
+    "throw 'literal' && new Error();",
+    "throw new Error() || 'literal';",
+    "throw foo ? new Error() : 'literal';",
+    "throw foo ? 'literal' : new Error();",
+    `
+function* foo() {
+  let index = 0;
+  throw yield index++;
+}
+    `,
+    `
+async function foo() {
+  throw await bar;
+}
+    `,
     `
 import { Error } from './missing';
 throw Error;
@@ -98,7 +107,7 @@ throw new CustomError();
       ],
     },
     {
-      code: 'throw new String("");',
+      code: "throw new String('');",
       errors: [
         {
           messageId: 'object',
@@ -106,7 +115,7 @@ throw new CustomError();
       ],
     },
     {
-      code: 'throw "error";',
+      code: "throw 'error';",
       errors: [
         {
           messageId: 'object',
@@ -146,7 +155,7 @@ throw new CustomError();
       ],
     },
     {
-      code: 'throw "a" + "b";',
+      code: "throw 'a' + 'b';",
       errors: [
         {
           messageId: 'object',
@@ -165,7 +174,7 @@ throw a + 'b';
       ],
     },
     {
-      code: 'throw foo = "error";',
+      code: "throw (foo = 'error');",
       errors: [
         {
           messageId: 'object',
@@ -173,7 +182,7 @@ throw a + 'b';
       ],
     },
     {
-      code: 'throw new Error(), 1, 2, 3;',
+      code: 'throw (new Error(), 1, 2, 3);',
       errors: [
         {
           messageId: 'object',
@@ -181,7 +190,7 @@ throw a + 'b';
       ],
     },
     {
-      code: 'throw "literal" && "not an Error";',
+      code: "throw 'literal' && 'not an Error';",
       errors: [
         {
           messageId: 'object',
@@ -189,7 +198,7 @@ throw a + 'b';
       ],
     },
     {
-      code: 'throw foo ? "not an Error" : "literal";',
+      code: "throw foo ? 'not an Error' : 'literal';",
       errors: [
         {
           messageId: 'object',
@@ -197,7 +206,7 @@ throw a + 'b';
       ],
     },
     {
-      code: 'throw `${err}`',
+      code: 'throw `${err}`;',
       errors: [
         {
           messageId: 'object',
@@ -217,8 +226,7 @@ throw err;
     },
     {
       code: `
-function foo(msg) {
-}
+function foo(msg) {}
 throw foo('error');
       `,
       errors: [
@@ -230,7 +238,7 @@ throw foo('error');
     {
       code: `
 const foo = {
-  msg: 'error'
+  msg: 'error',
 };
 throw foo.msg;
       `,
@@ -243,7 +251,7 @@ throw foo.msg;
     {
       code: `
 const foo = {
-  msg: undefined
+  msg: undefined,
 };
 throw foo.msg;
       `,
