@@ -8,28 +8,36 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-empty-function', rule, {
   valid: [
     {
-      code: `class Person {
-        private name: string
-        constructor(name: string) {
-          this.name = name;
-        }
-      }`,
+      code: `
+class Person {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+      `,
     },
     {
-      code: `class Person {
-        constructor(private name: string) {}
-      }`,
+      code: `
+class Person {
+  constructor(private name: string) {}
+}
+      `,
     },
     {
-      code: `class Person {
-        constructor(name: string) {}
-      }`,
+      code: `
+class Person {
+  constructor(name: string) {}
+}
+      `,
       options: [{ allow: ['constructors'] }],
     },
     {
-      code: `class Person {
-        otherMethod(name: string) {}
-      }`,
+      code: `
+class Person {
+  otherMethod(name: string) {}
+}
+      `,
       options: [{ allow: ['methods'] }],
     },
     {
