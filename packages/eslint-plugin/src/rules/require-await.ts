@@ -114,7 +114,7 @@ export default util.createRule({
       }
 
       if (node?.argument?.type === AST_NODE_TYPES.Literal) {
-        // making this `false` as for literals we dont need to check the defination
+        // making this `false` as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
         scopeInfo.isAsyncYield = false;
       }
