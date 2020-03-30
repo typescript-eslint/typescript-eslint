@@ -9,7 +9,6 @@ import {
   createRule,
   deepMerge,
 } from '../util';
-import * as ts from 'typescript';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -38,18 +37,17 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     const mode = context.options[0] || 'always';
-    const ignoreForLoopInit = context.options[1]?.ignoreForLoopInit || false;
 
     return {
       'VariableDeclaration:exit'(
-        node: TSESTree.VariableDeclaration | ts.Node,
+        node: TSESTree.VariableDeclaration | TSESTree.Node,
       ): void {
         if (mode === 'always') {
           if (node?.declare) {
             return;
           }
           if (
-            node?.parent.type === AST_NODE_TYPES.TSModuleBlock &&
+            node?.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
             node?.parent?.parent?.declare
           ) {
             return;
