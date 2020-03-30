@@ -3,18 +3,24 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/init-declarations';
-import * as util from '../util';
+import {
+  InferOptionsTypeFromRule,
+  InferMessageIdsTypeFromRule,
+  createRule,
+  deepMerge,
+} from '../util';
+import * as ts from 'typescript';
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const schema = util.deepMerge(
+const schema = deepMerge(
   Array.isArray(baseRule.meta.schema)
     ? baseRule.meta.schema[0]
     : baseRule.meta.schema,
 );
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'init-declarations',
   meta: {
     type: 'suggestion',
@@ -29,13 +35,15 @@ export default util.createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],
-  create(context, [options]) {
+  create(context) {
     const rules = baseRule.create(context);
     const mode = context.options[0] || 'always';
     const ignoreForLoopInit = context.options[1]?.ignoreForLoopInit || false;
 
     return {
-      'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
+      'VariableDeclaration:exit'(
+        node: TSESTree.VariableDeclaration | ts.Node,
+      ): void {
         if (mode === 'always') {
           if (node?.declare) {
             return;

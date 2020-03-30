@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/init-declarations';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
@@ -165,7 +166,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -176,7 +177,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -187,12 +188,12 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
         {
           messageId: 'initialized',
           data: { idName: 'baz' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -203,7 +204,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'bar' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -214,7 +215,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -225,7 +226,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'a' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -236,7 +237,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'b' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -247,12 +248,12 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'a' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
         {
           messageId: 'initialized',
           data: { idName: 'c' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -263,7 +264,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -274,7 +275,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -285,12 +286,12 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'bar' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
         {
           messageId: 'notInitialized',
           data: { idName: 'baz' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -302,7 +303,7 @@ ruleTester.run('init-declarations', rule, {
           messageId: 'notInitialized',
           data: { idName: 'bar' },
 
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -313,7 +314,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'a' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -324,7 +325,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'a' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -335,7 +336,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'c' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -346,7 +347,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'i' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -357,7 +358,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -368,7 +369,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'foo' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -381,7 +382,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'initialized',
           data: { idName: 'bar' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
@@ -394,7 +395,7 @@ ruleTester.run('init-declarations', rule, {
         {
           messageId: 'notInitialized',
           data: { idName: 'arr' },
-          type: 'VariableDeclarator',
+          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
     },
