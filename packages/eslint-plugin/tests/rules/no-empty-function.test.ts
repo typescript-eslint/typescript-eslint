@@ -59,32 +59,36 @@ function foo() {
 
   invalid: [
     {
-      code: `class Person {
-        constructor(name: string) {}
-      }`,
+      code: `
+class Person {
+  constructor(name: string) {}
+}
+      `,
       errors: [
         {
           messageId: 'unexpected',
           data: {
             name: 'constructor',
           },
-          line: 2,
-          column: 35,
+          line: 3,
+          column: 29,
         },
       ],
     },
     {
-      code: `class Person {
-        otherMethod(name: string) {}
-      }`,
+      code: `
+class Person {
+  otherMethod(name: string) {}
+}
+      `,
       errors: [
         {
           messageId: 'unexpected',
           data: {
             name: "method 'otherMethod'",
           },
-          line: 2,
-          column: 35,
+          line: 3,
+          column: 29,
         },
       ],
     },
@@ -124,8 +128,7 @@ class Foo {
     },
     {
       code: `
-function foo() {
-}
+function foo() {}
       `,
       errors: [
         {
