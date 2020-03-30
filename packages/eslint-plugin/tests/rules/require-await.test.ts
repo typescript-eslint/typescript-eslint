@@ -112,7 +112,6 @@ ruleTester.run('require-await', rule, {
         }
         `,
     'async function* run() { }',
-    'async function* run() { yield* 1 }',
     'async function* asyncGenerator() { await Promise.resolve(); yield 1 }',
     'function* test6() { yield* syncGenerator() }',
     'function* test8() { yield syncGenerator() }',
@@ -392,6 +391,15 @@ ruleTester.run('require-await', rule, {
     },
     {
       code: 'async function* run() { yield * anotherAsyncGenerator() }',
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async generator function 'run'" },
+        },
+      ],
+    },
+    {
+      code: 'async function* run() { yield* 1 }',
       errors: [
         {
           messageId: 'missingAwait',

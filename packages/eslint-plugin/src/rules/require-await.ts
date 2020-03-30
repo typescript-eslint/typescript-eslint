@@ -114,9 +114,9 @@ export default util.createRule({
       }
 
       if (node?.argument?.type === AST_NODE_TYPES.Literal) {
-        // making this `true` as for literals we dont need to check the defination
+        // making this `false` as for literals we dont need to check the defination
         // eg : async function* run() { yield* 1 }
-        scopeInfo.isAsyncYield = true;
+        scopeInfo.isAsyncYield = false;
       }
 
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node?.argument);
