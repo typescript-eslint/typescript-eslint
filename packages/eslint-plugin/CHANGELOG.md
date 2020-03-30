@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-explicit-any] error with ignoreRestArgs ([#1796](https://github.com/typescript-eslint/typescript-eslint/issues/1796)) ([638d84d](https://github.com/typescript-eslint/typescript-eslint/commit/638d84ddd77d07117b3ec7c5431f3b0e44b1995d))
+* **eslint-plugin:** [no-unsafe-call] allow import expressions ([#1800](https://github.com/typescript-eslint/typescript-eslint/issues/1800)) ([4fa7107](https://github.com/typescript-eslint/typescript-eslint/commit/4fa710754ecc412b65ac3864fe0c7857c254ac1b))
+* **eslint-plugin:** [no-unsafe-return] error with <TS3.7 ([#1815](https://github.com/typescript-eslint/typescript-eslint/issues/1815)) ([f3160b4](https://github.com/typescript-eslint/typescript-eslint/commit/f3160b471f8247e157555b6cf5b40a1f6ccdc233))
+
+
+
+
+
 # [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
 
 
