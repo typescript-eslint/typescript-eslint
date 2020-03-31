@@ -166,8 +166,10 @@ The default configuration looks as follows:
 ```json5
 {
   default: [
+    // Index signature
     'signature',
 
+    // Fields
     'public-static-field',
     'protected-static-field',
     'private-static-field',
@@ -481,7 +483,7 @@ const foo = class {
 };
 ```
 
-Issue: Public static fields should come first, followed by static fields and instance fields.
+Note: Public static fields should come first, followed by static fields and instance fields.
 
 ##### Correct examples
 
@@ -575,21 +577,19 @@ class Foo {
 
 ##### Correct example
 
-Examples of **correct** code for `{ "classes": [...] }` option:
-
 ```ts
 class Foo {
   private C: string; // (irrelevant)
 
   public D: string; // (irrelevant)
 
-  public static E: string; // -> public static field
+  public B(): void {} // -> public instance method
 
   constructor() {} // (irrelevant)
 
   public static A(): void {} // (irrelevant)
 
-  public B(): void {} // -> public instance method
+  public static E: string; // -> public static field
 }
 ```
 
@@ -749,7 +749,7 @@ type Foo = {
 
 It is possible to sort all members within a group alphabetically.
 
-#### Configuration: `{ default: { order: 'alphabetically' } }`
+#### Configuration: `{ default: { memberTypes: <Default Order>, order: 'alphabetically' } }`
 
 This will apply the default order (see above) and enforce an alphabetic order within each group.
 
@@ -761,37 +761,35 @@ interface Foo {
   b: x;
   c: x;
 
+  new (): Bar;
+  (): Baz;
+
   a(): void;
   b(): void;
   c(): void;
 
+  // Wrong group order, should be placed before all field definitions
   [a: string]: number;
-  (): Baz;
-
-  new (): Bar;
 }
 ```
 
-Note: Wrong group order for `new () : Bar`.
-
 ```ts
 interface Foo {
+  [a: string]: number;
+
   a: x;
   b: x;
   c: x;
 
   new (): Bar;
+  (): Baz;
 
+  // Wrong alphabetic order within group
   c(): void;
   b(): void;
   a(): void;
-
-  [a: string]: number;
-  (): Baz;
 }
 ```
-
-Note: Wrong alphabetic order (should be `a(): void` --> `b(): void` --> `c(): void`).
 
 ### Sorting alphabetically while ignoring member groups
 

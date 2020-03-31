@@ -1,6 +1,3 @@
-// TODO - migrate this test to the rule
-/* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
-
 import rule, {
   defaultOrder,
   MessageIds,
@@ -3629,14 +3626,14 @@ const sortedWithoutGroupingDefaultOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
-  a : b;
-  [a: string] : number;
-  b() : void;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  a(): Foo;
+  (): Foo;
+  b(): Foo;
 }
             `,
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
 
     // default option + interface + lower/upper case
@@ -3668,8 +3665,8 @@ type Foo = {
   a : b;
   [a: string] : number;
   b() : void;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -3704,7 +3701,7 @@ class Foo {
   public static a : string;
   protected static b : string = "";
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -3742,7 +3739,7 @@ const foo = class Foo {
   public static a : string;
   protected static b : string = "";
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -3781,8 +3778,8 @@ interface Foo {
   b() : void;
   a : b;
   [a: string] : number;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
           `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -3832,8 +3829,8 @@ type Foo = {
   b() : void;
   a : b;
   [a: string] : number;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
           `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -3883,7 +3880,7 @@ class Foo {
   protected static b : string = "";
   public static a : string;
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -3936,7 +3933,7 @@ const foo = class Foo {
   protected static b : string = "";
   public static a : string;
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -4068,7 +4065,7 @@ class Foo {
   public static a : string;
   protected static b : string = "";
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -4145,7 +4142,7 @@ class Foo {
   protected static b : string = "";
   public static a : string;
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -4333,7 +4330,7 @@ const foo = class Foo {
   public static a : string;
   protected static b : string = "";
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -4378,7 +4375,7 @@ const foo = class Foo {
   protected static b : string = "";
   public static a : string;
   private static c : string = "";
-  constructor() {} // Will be ignored (no sortable identifier)
+  constructor() {}
   public d : string = "";
   protected e : string = "";
   private f : string = "";
@@ -4442,8 +4439,8 @@ interface Foo {
   [a: string] : number;
   a : b;
   b() : void;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
             `,
       options: [
@@ -4615,8 +4612,8 @@ interface Foo {
   b() : void;
   a : b;
   [a: string] : number;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
           `,
       options: [
@@ -4719,8 +4716,8 @@ type Foo = {
   [a: string] : number;
   a : b;
   b() : void;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
             `,
       options: [
@@ -4850,8 +4847,8 @@ type Foo = {
   b() : void;
   a : b;
   [a: string] : number;
-  new () : Bar; // Will be ignored (no sortable identifier)
-  () : Baz; // Will be ignored (no sortable identifier)
+  new () : Bar;
+  () : Baz;
 }
           `,
       options: [
@@ -4921,7 +4918,7 @@ interface Foo {
   b() : void;
   c() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -4944,7 +4941,7 @@ interface Foo {
   c : x;
 
   [a: string] : number;
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -4973,7 +4970,7 @@ type Foo = {
   b() : void;
   c() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -4997,7 +4994,7 @@ type Foo = {
   b : x;
   c : x;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -5115,7 +5112,7 @@ interface Foo {
   b() : void;
   a() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 
   new () : Bar;
 }
@@ -5148,7 +5145,7 @@ type Foo = {
   b() : void;
   a() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 
   new () : Bar;
 }
@@ -5533,7 +5530,7 @@ interface Foo {
 
   new () : Bar;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -5561,7 +5558,7 @@ interface Foo {
   c : x;
 
   [a: string] : number;
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -5647,7 +5644,7 @@ interface Foo {
   b() : void;
   a() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 
   new () : Bar;
 }
@@ -5739,7 +5736,7 @@ type Foo = {
   c : x;
 
   [a: string] : number;
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 }
             `,
       options: [
@@ -5803,7 +5800,7 @@ type Foo = {
   b() : void;
   a() : void;
 
-  () : Baz; // Will be ignored (no sortable identifier)
+  () : Baz;
 
   new () : Bar;
 }
