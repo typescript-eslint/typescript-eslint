@@ -3,6 +3,7 @@ import {
   RuleTester,
   getFixturesRootDir,
   batchedSingleLineTests,
+  noFormat,
 } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
@@ -48,7 +49,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
         return;
       }
 
-      if ((bool1 && bool2) || (bool1 || bool2)) {
+      if ((bool1 && bool2) || bool1 || bool2) {
         return;
       }
     `,
@@ -58,7 +59,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       const res1 = true ? true : false;
       const res2 = bool1 && bool2 ? true : false;
       const res3 = bool1 || bool2 ? true : false;
-      const res4 = (bool1 && bool2) || (bool1 || bool2) ? true : false;
+      const res4 = (bool1 && bool2) || bool1 || bool2 ? true : false;
     `,
     `
       for (let i = 0; true; i++) {
@@ -88,7 +89,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     `
       const bool1 = true;
       const bool2 = false;
-      for (let i = 0; (bool1 && bool2) || (bool1 || bool2); i++) {
+      for (let i = 0; (bool1 && bool2) || bool1 || bool2; i++) {
         break;
       }
     `,
@@ -120,7 +121,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     `
       const bool1 = true;
       const bool2 = false;
-      while ((bool1 && bool2) || (bool1 || bool2)) {
+      while ((bool1 && bool2) || bool1 || bool2) {
         break;
       }
     `,
@@ -154,10 +155,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
       const bool2 = false;
       do {
         break;
-      } while ((bool1 && bool2) || (bool1 || bool2));
+      } while ((bool1 && bool2) || bool1 || bool2);
     `,
     `
-      function foo<T extends boolean>(arg: T) { return !arg; }
+      function foo<T extends boolean>(arg: T) {
+        return !arg;
+      }
     `,
     {
       options: [{ ignoreRhs: true }],
@@ -171,10 +174,10 @@ ruleTester.run('strict-boolean-expressions', rule, {
     ...batchedSingleLineTests({
       options: [{ allowNullable: true }],
       code: `
-        const f1 = (x?: boolean) => x ? 1 : 0;
-        const f2 = (x: boolean | null) => x ? 1 : 0;
-        const f3 = (x?: true | null) => x ? 1 : 0;
-        const f4 = (x?: false) => x ? 1 : 0;
+        const f1 = (x?: boolean) => (x ? 1 : 0);
+        const f2 = (x: boolean | null) => (x ? 1 : 0);
+        const f3 = (x?: true | null) => (x ? 1 : 0);
+        const f4 = (x?: false) => (x ? 1 : 0);
       `,
     }),
     `
@@ -184,38 +187,39 @@ ruleTester.run('strict-boolean-expressions', rule, {
     ...batchedSingleLineTests({
       options: [{ allowSafe: true }],
       code: `
-        const f1 = (x: boolean | { a: string }) => x ? 1 : 0;
-        const f2 = (x: true | { a: string }) => x ? 1 : 0;
-        const f3 = (x: { a: string } | false) => x ? 1 : 0;
+        const f1 = (x: boolean | { a: string }) => (x ? 1 : 0);
+        const f2 = (x: true | { a: string }) => (x ? 1 : 0);
+        const f3 = (x: { a: string } | false) => (x ? 1 : 0);
       `,
     }),
     ...batchedSingleLineTests({
       options: [{ allowNullable: true, allowSafe: true }],
       code: `
-        const f1 = (x?: boolean | { a?: 1 }) => x ? 1 : 0;
-        const f2 = (x: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
-        const f3 = (x?: { a?: 1 } | { b?: "a" } | null) => x ? 1 : 0;
-        const f4 = (x?: { b?: "a" } | true) => x ? 1 : 0;
-        const f5 = (g?: (x: number) => number) => g ? g(1) : 0;
+        const f1 = (x?: boolean | { a?: 1 }) => (x ? 1 : 0);
+        const f2 = (x: { a?: 1 } | { b?: 'a' } | null) => (x ? 1 : 0);
+        const f3 = (x?: { a?: 1 } | { b?: 'a' } | null) => (x ? 1 : 0);
+        const f4 = (x?: { b?: 'a' } | true) => (x ? 1 : 0);
+        const f5 = (g?: (x: number) => number) => (g ? g(1) : 0);
       `,
     }),
     ...batchedSingleLineTests({
       options: [{ allowNullable: true, allowSafe: true, ignoreRhs: true }],
       code: `
-        const f1 = (x?: { a: null }) => x && x.foo && x.foo.bar
-        const f2 = (g?: (x: number) => number) => g && g(1)
+        const f1 = (x?: { a: null }) => x && x.foo && x.foo.bar;
+        const f2 = (g?: (x: number) => number) => g && g(1);
       `,
     }),
     `
       declare let x: never;
-      if (x) {}
+      if (x) {
+      }
     `,
     ...batchedSingleLineTests({
-      code: `
-        function f1(x: never) { return !x }
-        function f2(x: never) { return x ? 1 : 0 }
-        function f3(x: never, y: never) { return x && y }
-        function f5(x: never | boolean) { if (!x) {} }
+      code: noFormat`
+        function f1(x: never) { return !x; }
+        function f2(x: never) { return x ? 1 : 0; }
+        function f3(x: never, y: never) { return x && y; }
+        function f5(x: never | boolean) { if (!x) { } }
       `,
     }),
   ],
@@ -223,7 +227,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
   invalid: [
     {
       code: `
-        let val = "foo";
+        let val = 'foo';
         let bool = !val;
       `,
       errors: [
@@ -302,7 +306,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       code: `
         let num = 1;
-        let str = "foo"
+        let str = 'foo';
         let val = null;
         let bool = true && (val || num || str);
       `,
@@ -354,7 +358,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let item = "foo";
+        let item = 'foo';
         if (item) {
           return;
         }
@@ -480,7 +484,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        const bool = "foo" ? true : false;
+        const bool = 'foo' ? true : false;
       `,
       errors: [
         {
@@ -672,7 +676,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        let bool1 = "foo";
+        let bool1 = 'foo';
         let bool2 = true;
         for (let i = 0; bool1 && bool2; i++) {
           return;
@@ -860,7 +864,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       code: `
         do {
           return;
-        } while ("foo");
+        } while ('foo');
       `,
       errors: [
         {
@@ -980,13 +984,15 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        function foo<T extends number>(arg: T) { return !arg; }
+        function foo<T extends number>(arg: T) {
+          return !arg;
+        }
       `,
       errors: [
         {
           messageId: 'conditionErrorNumber',
-          line: 2,
-          column: 58,
+          line: 3,
+          column: 19,
         },
       ],
     },
@@ -995,23 +1001,23 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorNullableBoolean',
           line: 2,
-          column: 47,
+          column: 48,
         },
         {
           messageId: 'conditionErrorNullableBoolean',
           line: 3,
-          column: 37,
+          column: 38,
         },
         {
           messageId: 'conditionErrorOther',
           line: 4,
-          column: 41,
+          column: 42,
         },
       ],
       code: `
-        const f1 = (x: boolean | null | undefined) => x ? 1 : 0;
-        const f2 = (x?: boolean) => x ? 1 : 0;
-        const f3 = (x: boolean | {}) => x ? 1 : 0;
+        const f1 = (x: boolean | null | undefined) => (x ? 1 : 0);
+        const f2 = (x?: boolean) => (x ? 1 : 0);
+        const f3 = (x: boolean | {}) => (x ? 1 : 0);
       `,
     }),
     {
@@ -1045,15 +1051,17 @@ ruleTester.run('strict-boolean-expressions', rule, {
         },
         {
           messageId: 'conditionErrorOther',
-          line: 5,
+          line: 6,
           column: 13,
         },
       ],
       code: `
         const condition = () => false;
         const obj = { x: 1 };
-        if (condition() || obj) {}
-        if (condition() && obj) {}
+        if (condition() || obj) {
+        }
+        if (condition() && obj) {
+        }
       `,
     },
     {
@@ -1066,15 +1074,17 @@ ruleTester.run('strict-boolean-expressions', rule, {
         },
         {
           messageId: 'conditionErrorOther',
-          line: 5,
+          line: 6,
           column: 13,
         },
       ],
       code: `
         declare let condition: boolean;
         const obj = { x: 1 };
-        if (condition || obj) {}
-        if (condition && obj) {}
+        if (condition || obj) {
+        }
+        if (condition && obj) {
+        }
       `,
     },
     ...batchedSingleLineTests({
@@ -1083,29 +1093,29 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorNullish',
           line: 2,
-          column: 37,
+          column: 38,
         },
         {
           messageId: 'conditionErrorNullableNumber',
           line: 3,
-          column: 36,
+          column: 37,
         },
         {
           messageId: 'conditionErrorNullableString',
           line: 4,
-          column: 36,
+          column: 37,
         },
         {
           messageId: 'conditionErrorOther',
           line: 5,
-          column: 45,
+          column: 46,
         },
       ],
       code: `
-        const f1 = (x: null | undefined) => x ? 1 : 0;
-        const f2 = (x?: number) => x ? 1 : 0;
-        const f3 = (x?: string) => x ? 1 : 0;
-        const f4 = (x?: string | number) => x ? 1 : 0;
+        const f1 = (x: null | undefined) => (x ? 1 : 0);
+        const f2 = (x?: number) => (x ? 1 : 0);
+        const f3 = (x?: string) => (x ? 1 : 0);
+        const f4 = (x?: string | number) => (x ? 1 : 0);
       `,
     }),
     {
@@ -1113,18 +1123,18 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorOther',
           line: 3,
-          column: 43,
+          column: 44,
         },
         {
           messageId: 'conditionErrorOther',
           line: 4,
-          column: 44,
+          column: 45,
         },
       ],
       code: `
-        type Type = { a: string; };
-        const f1 = (x: Type | boolean) => x ? 1 : 0;
-        const f2 = (x?: Type | boolean) => x ? 1 : 0;
+        type Type = { a: string };
+        const f1 = (x: Type | boolean) => (x ? 1 : 0);
+        const f2 = (x?: Type | boolean) => (x ? 1 : 0);
       `,
     },
     ...batchedSingleLineTests({
@@ -1133,23 +1143,23 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorOther',
           line: 2,
-          column: 36,
+          column: 37,
         },
         {
           messageId: 'conditionErrorOther',
           line: 3,
-          column: 44,
+          column: 45,
         },
         {
           messageId: 'conditionErrorOther',
           line: 4,
-          column: 44,
+          column: 45,
         },
       ],
       code: `
-        const f1 = (x: object | string) => x ? 1 : 0;
-        const f2 = (x: object | number) => x ? 1 : 0;
-        const f3 = (x: number | string) => x ? 1 : 0;
+        const f1 = (x: object | string) => (x ? 1 : 0);
+        const f2 = (x: object | number) => (x ? 1 : 0);
+        const f3 = (x: number | string) => (x ? 1 : 0);
       `,
     }),
     {
@@ -1157,24 +1167,28 @@ ruleTester.run('strict-boolean-expressions', rule, {
       errors: [
         {
           messageId: 'conditionErrorNumber',
-          line: 8,
-          column: 34,
+          line: 12,
+          column: 35,
         },
         {
           messageId: 'conditionErrorString',
-          line: 9,
-          column: 34,
+          line: 13,
+          column: 35,
         },
       ],
       code: `
         enum Enum1 {
-          A, B, C
+          A,
+          B,
+          C,
         }
         enum Enum2 {
-          A = 'A', B = 'B', C = 'C'
+          A = 'A',
+          B = 'B',
+          C = 'C',
         }
-        const f1 = (x: Enum1) => x ? 1 : 0;
-        const f2 = (x: Enum2) => x ? 1 : 0;
+        const f1 = (x: Enum1) => (x ? 1 : 0);
+        const f2 = (x: Enum2) => (x ? 1 : 0);
       `,
     },
     {
@@ -1183,18 +1197,18 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorOther',
           line: 3,
-          column: 43,
+          column: 44,
         },
         {
           messageId: 'conditionErrorOther',
           line: 4,
-          column: 49,
+          column: 50,
         },
       ],
       code: `
-        type Type = { a: string; };
-        const f1 = (x?: Type | string) => x ? 1 : 0;
-        const f2 = (x: Type | number | null) => x ? 1 : 0;
+        type Type = { a: string };
+        const f1 = (x?: Type | string) => (x ? 1 : 0);
+        const f2 = (x: Type | number | null) => (x ? 1 : 0);
       `,
     },
     ...batchedSingleLineTests({
@@ -1202,23 +1216,23 @@ ruleTester.run('strict-boolean-expressions', rule, {
         {
           messageId: 'conditionErrorObject',
           line: 2,
-          column: 31,
+          column: 32,
         },
         {
           messageId: 'conditionErrorNullableObject',
           line: 3,
-          column: 40,
+          column: 41,
         },
         {
           messageId: 'conditionErrorNullableObject',
           line: 4,
-          column: 47,
+          column: 48,
         },
       ],
       code: `
-        const f1 = (x: { x: any }) => x ? 1 : 0;
-        const f2 = (x?: { x: any }) => x ? 1 : 0;
-        const f3 = (x?: { x: any } | null) => x ? 1 : 0;
+        const f1 = (x: { x: any }) => (x ? 1 : 0);
+        const f2 = (x?: { x: any }) => (x ? 1 : 0);
+        const f3 = (x?: { x: any } | null) => (x ? 1 : 0);
       `,
     }),
   ],

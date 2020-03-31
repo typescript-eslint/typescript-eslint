@@ -19,29 +19,29 @@ ruleTester.run('default-param-last', rule, {
     'function foo(a: number, b?: number, c = 1) {}',
     'function foo(a: number, b = 1, ...c) {}',
 
-    'const foo = function () {}',
-    'const foo = function (a: number) {}',
-    'const foo = function (a = 1) {}',
-    'const foo = function (a?: number) {}',
-    'const foo = function (a: number, b: number) {}',
-    'const foo = function (a: number, b: number, c?: number) {}',
-    'const foo = function (a: number, b = 1) {}',
-    'const foo = function (a: number, b = 1, c = 1) {}',
-    'const foo = function (a: number, b = 1, c?: number) {}',
-    'const foo = function (a: number, b?: number, c = 1) {}',
-    'const foo = function (a: number, b = 1, ...c) {}',
+    'const foo = function() {};',
+    'const foo = function(a: number) {};',
+    'const foo = function(a = 1) {};',
+    'const foo = function(a?: number) {};',
+    'const foo = function(a: number, b: number) {};',
+    'const foo = function(a: number, b: number, c?: number) {};',
+    'const foo = function(a: number, b = 1) {};',
+    'const foo = function(a: number, b = 1, c = 1) {};',
+    'const foo = function(a: number, b = 1, c?: number) {};',
+    'const foo = function(a: number, b?: number, c = 1) {};',
+    'const foo = function(a: number, b = 1, ...c) {};',
 
-    'const foo = () => {}',
-    'const foo = (a: number) => {}',
-    'const foo = (a = 1) => {}',
-    'const foo = (a?: number) => {}',
-    'const foo = (a: number, b: number) => {}',
-    'const foo = (a: number, b: number, c?: number) => {}',
-    'const foo = (a: number, b = 1) => {}',
-    'const foo = (a: number, b = 1, c = 1) => {}',
-    'const foo = (a: number, b = 1, c?: number) => {}',
-    'const foo = (a: number, b?: number, c = 1) => {}',
-    'const foo = (a: number, b = 1, ...c) => {}',
+    'const foo = () => {};',
+    'const foo = (a: number) => {};',
+    'const foo = (a = 1) => {};',
+    'const foo = (a?: number) => {};',
+    'const foo = (a: number, b: number) => {};',
+    'const foo = (a: number, b: number, c?: number) => {};',
+    'const foo = (a: number, b = 1) => {};',
+    'const foo = (a: number, b = 1, c = 1) => {};',
+    'const foo = (a: number, b = 1, c?: number) => {};',
+    'const foo = (a: number, b?: number, c = 1) => {};',
+    'const foo = (a: number, b = 1, ...c) => {};',
     `
 class Foo {
   constructor(a: number, b: number, c: number) {}
@@ -251,7 +251,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b: number) {}',
+      code: 'const foo = function(a = 1, b: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -262,7 +262,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b = 2, c: number) {}',
+      code: 'const foo = function(a = 1, b = 2, c: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -279,7 +279,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b: number, c = 2, d: number) {}',
+      code: 'const foo = function(a = 1, b: number, c = 2, d: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -296,7 +296,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b: number, c = 2) {}',
+      code: 'const foo = function(a = 1, b: number, c = 2) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -307,7 +307,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b: number, ...c) {}',
+      code: 'const foo = function(a = 1, b: number, ...c) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -318,7 +318,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a?: number, b: number) {}',
+      code: 'const foo = function(a?: number, b: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -329,7 +329,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a: number, b?: number, c: number) {}',
+      code: 'const foo = function(a: number, b?: number, c: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -340,7 +340,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, b?: number, c: number) {}',
+      code: 'const foo = function(a = 1, b?: number, c: number) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -357,7 +357,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(a = 1, { b }) {}',
+      code: 'const foo = function(a = 1, { b }) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -368,7 +368,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function({ a } = {}, b) {}',
+      code: 'const foo = function({ a } = {}, b) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -379,7 +379,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function({ a, b } = { a: 1, b: 2 }, c) {}',
+      code: 'const foo = function({ a, b } = { a: 1, b: 2 }, c) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -390,7 +390,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function([a] = [], b) {}',
+      code: 'const foo = function([a] = [], b) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -401,7 +401,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function([a, b] = [1, 2], c) {}',
+      code: 'const foo = function([a, b] = [1, 2], c) {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -412,7 +412,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b: number) => {}',
+      code: 'const foo = (a = 1, b: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -423,7 +423,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b = 2, c: number) => {}',
+      code: 'const foo = (a = 1, b = 2, c: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -440,7 +440,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b: number, c = 2, d: number) => {}',
+      code: 'const foo = (a = 1, b: number, c = 2, d: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -457,7 +457,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b: number, c = 2) => {}',
+      code: 'const foo = (a = 1, b: number, c = 2) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -468,7 +468,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b: number, ...c) => {}',
+      code: 'const foo = (a = 1, b: number, ...c) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -479,7 +479,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a?: number, b: number) => {}',
+      code: 'const foo = (a?: number, b: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -490,7 +490,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a: number, b?: number, c: number) => {}',
+      code: 'const foo = (a: number, b?: number, c: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -501,7 +501,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, b?: number, c: number) => {}',
+      code: 'const foo = (a = 1, b?: number, c: number) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -518,7 +518,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (a = 1, { b }) => {}',
+      code: 'const foo = (a = 1, { b }) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -529,7 +529,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = ({ a } = {}, b) => {}',
+      code: 'const foo = ({ a } = {}, b) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -540,7 +540,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = ({ a, b } = { a: 1, b: 2 }, c) => {}',
+      code: 'const foo = ({ a, b } = { a: 1, b: 2 }, c) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -551,7 +551,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = ([a] = [], b) => {}',
+      code: 'const foo = ([a] = [], b) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',
@@ -562,7 +562,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = ([a, b] = [1, 2], c) => {}',
+      code: 'const foo = ([a, b] = [1, 2], c) => {};',
       errors: [
         {
           messageId: 'shouldBeLast',

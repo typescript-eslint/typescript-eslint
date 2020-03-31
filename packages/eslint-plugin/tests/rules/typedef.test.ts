@@ -15,7 +15,7 @@ ruleTester.run('typedef', rule, {
   valid: [
     // Array destructuring
     {
-      code: `const [a]: [number] = [1]`,
+      code: 'const [a]: [number] = [1];',
       options: [
         {
           arrayDestructuring: true,
@@ -23,7 +23,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const [a, b]: [number, number] = [1, 2]`,
+      code: 'const [a, b]: [number, number] = [1, 2];',
       options: [
         {
           arrayDestructuring: true,
@@ -31,7 +31,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const [a] = 1;`,
+      code: 'const [a] = 1;',
       options: [
         {
           arrayDestructuring: false,
@@ -39,7 +39,10 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const [key, val] of new Map([['key', 1]])) {}`,
+      code: `
+        for (const [key, val] of new Map([['key', 1]])) {
+        }
+      `,
       options: [
         {
           arrayDestructuring: true,
@@ -47,7 +50,10 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const [[key]] of [[['key']]]) {}`,
+      code: `
+        for (const [[key]] of [[['key']]]) {
+        }
+      `,
       options: [
         {
           arrayDestructuring: true,
@@ -55,20 +61,25 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const [[{ key }]] of [[[{ key: 'value' }]]]) {}`,
+      code: `
+        for (const [[{ key }]] of [[[{ key: 'value' }]]]) {
+        }
+      `,
       options: [
         {
           arrayDestructuring: true,
         },
       ],
     },
-    `let a: number;
-    [a] = [1];`,
+    `
+      let a: number;
+      [a] = [1];
+    `,
     // Arrow parameters
-    `((a: number): void => {})()`,
-    `((a: string, b: string): void => {})()`,
+    '((a: number): void => {})();',
+    '((a: string, b: string): void => {})();',
     {
-      code: `((a: number): void => { })()`,
+      code: '((a: number): void => {})();',
       options: [
         {
           arrowParameter: false,
@@ -76,7 +87,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `((a: string, b: string): void => { })()`,
+      code: '((a: string, b: string): void => {})();',
       options: [
         {
           arrowParameter: false,
@@ -84,16 +95,22 @@ ruleTester.run('typedef', rule, {
       ],
     },
     // Member variable declarations
-    `class Test {
-      state: number;
-    }`,
-    `class Test {
-      state: number = 1;
-    }`,
+    `
+      class Test {
+        state: number;
+      }
+    `,
+    `
+      class Test {
+        state: number = 1;
+      }
+    `,
     {
-      code: `class Test {
-        state = 1;
-      }`,
+      code: `
+        class Test {
+          state = 1;
+        }
+      `,
       options: [
         {
           memberVariableDeclaration: false,
@@ -102,7 +119,7 @@ ruleTester.run('typedef', rule, {
     },
     // Object destructuring
     {
-      code: `const { a }: { a: number } = { a: 1 }`,
+      code: 'const { a }: { a: number } = { a: 1 };',
       options: [
         {
           objectDestructuring: true,
@@ -110,7 +127,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const { a, b }: { [i: string]: number } = { a: 1, b: 2 }`,
+      code: 'const { a, b }: { [i: string]: number } = { a: 1, b: 2 };',
       options: [
         {
           objectDestructuring: true,
@@ -118,7 +135,14 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const {p1: {p2: { p3 }}} of [{p1: {p2: {p3: 'value'}}}]) {}`,
+      code: `
+        for (const {
+          p1: {
+            p2: { p3 },
+          },
+        } of [{ p1: { p2: { p3: 'value' } } }]) {
+        }
+      `,
       options: [
         {
           objectDestructuring: true,
@@ -126,7 +150,16 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const {p1: {p2: { p3: [key] }}} of [{p1: {p2: {p3: ['value']}}}]) {}`,
+      code: `
+        for (const {
+          p1: {
+            p2: {
+              p3: [key],
+            },
+          },
+        } of [{ p1: { p2: { p3: ['value'] } } }]) {
+        }
+      `,
       options: [
         {
           objectDestructuring: true,
@@ -134,7 +167,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const { a } = { a: 1 };`,
+      code: 'const { a } = { a: 1 };',
       options: [
         {
           objectDestructuring: false,
@@ -142,7 +175,10 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const { key, val } of [{ key: 'key', val: 1 }]) {}`,
+      code: `
+        for (const { key, val } of [{ key: 'key', val: 1 }]) {
+        }
+      `,
       options: [
         {
           objectDestructuring: true,
@@ -150,50 +186,76 @@ ruleTester.run('typedef', rule, {
       ],
     },
     // Function parameters
-    `function receivesNumber(a: number): void { }`,
-    `function receivesStrings(a: string, b: string): void { }`,
-    `function receivesNumber([a]: [number]): void { }`,
-    `function receivesNumbers([a, b]: number[]): void { }`,
-    `function receivesString({ a }: { a: string }): void { }`,
-    `function receivesStrings({ a, b }: { [i: string ]: string }): void { }`,
-    `function receivesNumber(a: number = 123): void { }`,
+    'function receivesNumber(a: number): void {}',
+    'function receivesStrings(a: string, b: string): void {}',
+    'function receivesNumber([a]: [number]): void {}',
+    'function receivesNumbers([a, b]: number[]): void {}',
+    'function receivesString({ a }: { a: string }): void {}',
+    'function receivesStrings({ a, b }: { [i: string]: string }): void {}',
+    'function receivesNumber(a: number = 123): void {}',
     // Constructor parameters
-    `class Test {
-      constructor() {}
-    }`,
-    `class Test {
-      constructor(param: string) {}
-    }`,
-    `class Test {
-      constructor(param: string = 'something') {}
-    }`,
-    `class Test {
-      constructor(private param: string = 'something') {}
-    }`,
+    `
+      class Test {
+        constructor() {}
+      }
+    `,
+    `
+      class Test {
+        constructor(param: string) {}
+      }
+    `,
+    `
+      class Test {
+        constructor(param: string = 'something') {}
+      }
+    `,
+    `
+      class Test {
+        constructor(private param: string = 'something') {}
+      }
+    `,
     // Method parameters
-    `class Test {
-      public method(x: number): number { return x; }
-    }`,
-    `class Test {
-      public method(x: number = 123): number { return x; }
-    }`,
+    `
+      class Test {
+        public method(x: number): number {
+          return x;
+        }
+      }
+    `,
+    `
+      class Test {
+        public method(x: number = 123): number {
+          return x;
+        }
+      }
+    `,
     // Property declarations
-    `type Test = {
-       member: number;
-     };`,
-    `type Test = {
-       [i: string]: number;
-     };`,
-    `interface Test {
-      member: string;
-     };`,
-    `interface Test {
-      [i: number]: string;
-     };`,
+    `
+      type Test = {
+        member: number;
+      };
+    `,
+    `
+      type Test = {
+        [i: string]: number;
+      };
+    `,
+    `
+      interface Test {
+        member: string;
+      }
+    `,
+    `
+      interface Test {
+        [i: number]: string;
+      }
+    `,
     {
-      code: `type Test = {
-        member;
-      };`,
+      code: `
+        type Test = {
+          member;
+        };
+      `,
       options: [
         {
           propertyDeclaration: false,
@@ -201,9 +263,12 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `type Test = {
-        [i: string];
-      };`,
+      code: `
+        type Test = {
+          // prettier-ignore
+          [i: string];
+        };
+      `,
       options: [
         {
           propertyDeclaration: false,
@@ -212,7 +277,7 @@ ruleTester.run('typedef', rule, {
     },
     // Variable declarations
     {
-      code: `const x: string = "";`,
+      code: "const x: string = '';",
       options: [
         {
           variableDeclaration: true,
@@ -220,7 +285,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `let x: string = "";`,
+      code: "let x: string = '';",
       options: [
         {
           variableDeclaration: true,
@@ -228,7 +293,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `let x: string;`,
+      code: 'let x: string;',
       options: [
         {
           variableDeclaration: true,
@@ -236,7 +301,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const a = 1;`,
+      code: 'const a = 1;',
       options: [
         {
           variableDeclaration: false,
@@ -244,7 +309,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `let a;`,
+      code: 'let a;',
       options: [
         {
           variableDeclaration: false,
@@ -252,7 +317,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `let a = 1;`,
+      code: 'let a = 1;',
       options: [
         {
           variableDeclaration: false,
@@ -260,7 +325,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const [a, b] = [1, 2];`,
+      code: 'const [a, b] = [1, 2];',
       options: [
         {
           objectDestructuring: false,
@@ -269,7 +334,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const { a, b } = { a: '', b: '' };`,
+      code: "const { a, b } = { a: '', b: '' };",
       options: [
         {
           objectDestructuring: false,
@@ -279,7 +344,10 @@ ruleTester.run('typedef', rule, {
     },
     // Contexts where TypeScript doesn't allow annotations
     {
-      code: `for (x of [1, 2, 3]) { }`,
+      code: `
+        for (x of [1, 2, 3]) {
+        }
+      `,
       options: [
         {
           variableDeclaration: true,
@@ -287,7 +355,10 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `for (const x in {}) { }`,
+      code: `
+        for (const x in {}) {
+        }
+      `,
       options: [
         {
           variableDeclaration: true,
@@ -295,7 +366,10 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `try { } catch (e) { }`,
+      code: `
+        try {
+        } catch (e) {}
+      `,
       options: [
         {
           variableDeclaration: true,
@@ -304,7 +378,7 @@ ruleTester.run('typedef', rule, {
     },
     // variable declaration ignore function
     {
-      code: `const foo = function(): void {};`,
+      code: 'const foo = function(): void {};',
       options: [
         {
           variableDeclaration: true,
@@ -313,7 +387,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const foo = (): void => {};`,
+      code: 'const foo = (): void => {};',
       options: [
         {
           variableDeclaration: true,
@@ -322,7 +396,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const foo: () => void = (): void => {};`,
+      code: 'const foo: () => void = (): void => {};',
       options: [
         {
           variableDeclaration: true,
@@ -331,7 +405,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `const foo: () => void = function (): void {};`,
+      code: 'const foo: () => void = function(): void {};',
       options: [
         {
           variableDeclaration: true,
@@ -343,7 +417,7 @@ ruleTester.run('typedef', rule, {
       code: `
 class Foo {
   a = (): void => {};
-  b = function (): void {};
+  b = function(): void {};
 }
       `,
       options: [
@@ -357,7 +431,7 @@ class Foo {
   invalid: [
     // Array destructuring
     {
-      code: `const [a] = [1]`,
+      code: 'const [a] = [1];',
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -370,7 +444,7 @@ class Foo {
       ],
     },
     {
-      code: `const [a, b] = [1, 2]`,
+      code: 'const [a, b] = [1, 2];',
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -384,7 +458,7 @@ class Foo {
     },
     // Object destructuring
     {
-      code: `const { a } = { a: 1 }`,
+      code: 'const { a } = { a: 1 };',
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -397,7 +471,7 @@ class Foo {
       ],
     },
     {
-      code: `const { a, b } = { a: 1, b: 2 }`,
+      code: 'const { a, b } = { a: 1, b: 2 };',
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -411,7 +485,7 @@ class Foo {
     },
     // Arrow parameters
     {
-      code: `const receivesNumber = (a): void => { }`,
+      code: 'const receivesNumber = (a): void => {};',
       errors: [
         {
           data: { name: 'a' },
@@ -420,7 +494,7 @@ class Foo {
       ],
     },
     {
-      code: `const receivesStrings = (a, b): void => { }`,
+      code: 'const receivesStrings = (a, b): void => {};',
       errors: [
         {
           data: { name: 'a' },
@@ -434,9 +508,11 @@ class Foo {
     },
     // Member variable declarations
     {
-      code: `class Test {
-        state = 1;
-      }`,
+      code: `
+        class Test {
+          state = 1;
+        }
+      `,
       errors: [
         {
           data: { name: 'state' },
@@ -445,9 +521,11 @@ class Foo {
       ],
     },
     {
-      code: `class Test {
-        ["state"] = 1;
-      }`,
+      code: `
+        class Test {
+          ['state'] = 1;
+        }
+      `,
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -456,7 +534,7 @@ class Foo {
     },
     // Function parameters
     {
-      code: `function receivesNumber(a): void { }`,
+      code: 'function receivesNumber(a): void {}',
       errors: [
         {
           data: { name: 'a' },
@@ -465,7 +543,7 @@ class Foo {
       ],
     },
     {
-      code: `function receivesStrings(a, b): void { }`,
+      code: 'function receivesStrings(a, b): void {}',
       errors: [
         {
           data: { name: 'a' },
@@ -478,7 +556,7 @@ class Foo {
       ],
     },
     {
-      code: `function receivesNumber([a]): void { }`,
+      code: 'function receivesNumber([a]): void {}',
       errors: [
         {
           column: 25,
@@ -487,7 +565,7 @@ class Foo {
       ],
     },
     {
-      code: `function receivesNumbers([a, b]): void { }`,
+      code: 'function receivesNumbers([a, b]): void {}',
       errors: [
         {
           column: 26,
@@ -496,7 +574,7 @@ class Foo {
       ],
     },
     {
-      code: `function receivesString({ a }): void { }`,
+      code: 'function receivesString({ a }): void {}',
       errors: [
         {
           column: 25,
@@ -505,7 +583,7 @@ class Foo {
       ],
     },
     {
-      code: `function receivesStrings({ a, b }): void { }`,
+      code: 'function receivesStrings({ a, b }): void {}',
       errors: [
         {
           column: 26,
@@ -515,77 +593,95 @@ class Foo {
     },
     // Constructor parameters
     {
-      code: `class Test {
-        constructor(param) {}
-      }`,
+      code: `
+        class Test {
+          constructor(param) {}
+        }
+      `,
       errors: [
         {
-          column: 21,
+          column: 23,
           messageId: 'expectedTypedefNamed',
         },
       ],
     },
     {
-      code: `class Test {
-        constructor(param = 'something') {}
-      }`,
+      code: `
+        class Test {
+          constructor(param = 'something') {}
+        }
+      `,
       errors: [
         {
-          column: 21,
+          column: 23,
           messageId: 'expectedTypedef',
         },
       ],
     },
     {
-      code: `class Test {
-        constructor(private param = 'something') {}
-      }`,
+      code: `
+        class Test {
+          constructor(private param = 'something') {}
+        }
+      `,
       errors: [
         {
-          column: 21,
+          column: 23,
           messageId: 'expectedTypedef',
         },
       ],
     },
     // Method parameters
     {
-      code: `class Test {
-        public method(x): number { return x; }
-      }`,
+      code: `
+        class Test {
+          public method(x): number {
+            return x;
+          }
+        }
+      `,
       errors: [
         {
-          column: 23,
+          column: 25,
           messageId: 'expectedTypedefNamed',
         },
       ],
     },
     {
-      code: `class Test {
-        public method(x = 123): number { return x; }
-      }`,
+      code: `
+        class Test {
+          public method(x = 123): number {
+            return x;
+          }
+        }
+      `,
       errors: [
         {
-          column: 23,
+          column: 25,
           messageId: 'expectedTypedef',
         },
       ],
     },
     {
-      code: `class Test {
-        public constructor(public x) { }
-      }`,
+      code: `
+        class Test {
+          public constructor(public x) {}
+        }
+      `,
       errors: [
         {
-          column: 28,
+          column: 30,
           messageId: 'expectedTypedef',
         },
       ],
     },
     // Property declarations
     {
-      code: `type Test = {
-        member;
-      };`,
+      code: `
+        type Test = {
+          member;
+        };
+      `,
       errors: [
         {
           data: { name: 'member' },
@@ -594,9 +690,12 @@ class Foo {
       ],
     },
     {
-      code: `type Test = {
-        [i: string];
-      };`,
+      code: `
+        type Test = {
+          // prettier-ignore
+          [i: string];
+        };
+      `,
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -604,9 +703,11 @@ class Foo {
       ],
     },
     {
-      code: `interface Test {
-        member;
-      };`,
+      code: `
+        interface Test {
+          member;
+        }
+      `,
       errors: [
         {
           data: { name: 'member' },
@@ -615,9 +716,12 @@ class Foo {
       ],
     },
     {
-      code: `interface Test {
-        [i: string];
-      };`,
+      code: `
+        interface Test {
+          // prettier-ignore
+          [i: string];
+        }
+      `,
       errors: [
         {
           messageId: 'expectedTypedef',
@@ -626,7 +730,7 @@ class Foo {
     },
     // Variable declarations
     {
-      code: `const a = 1;`,
+      code: 'const a = 1;',
       errors: [
         {
           data: { name: 'a' },
@@ -640,53 +744,11 @@ class Foo {
       ],
     },
     {
-      code: `const a = 1, b: number = 2, c = 3;`,
-      errors: [
-        {
-          data: { name: 'a' },
-          messageId: 'expectedTypedefNamed',
-        },
-        {
-          data: { name: 'c' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-      options: [
-        {
-          variableDeclaration: true,
-        },
-      ],
-    },
-    {
-      code: `let a;`,
-      errors: [
-        {
-          data: { name: 'a' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-      options: [
-        {
-          variableDeclaration: true,
-        },
-      ],
-    },
-    {
-      code: `let a = 1;`,
-      errors: [
-        {
-          data: { name: 'a' },
-          messageId: 'expectedTypedefNamed',
-        },
-      ],
-      options: [
-        {
-          variableDeclaration: true,
-        },
-      ],
-    },
-    {
-      code: `let a = 1, b: number, c = 2;`,
+      code: `
+        const a = 1,
+          b: number = 2,
+          c = 3;
+      `,
       errors: [
         {
           data: { name: 'a' },
@@ -704,7 +766,57 @@ class Foo {
       ],
     },
     {
-      code: `const foo = 'foo'`,
+      code: 'let a;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: 'let a = 1;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: `
+        let a = 1,
+          b: number,
+          c = 2;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
+        },
+        {
+          data: { name: 'c' },
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+        },
+      ],
+    },
+    {
+      code: "const foo = 'foo';",
       errors: [
         {
           messageId: 'expectedTypedefNamed',
@@ -719,7 +831,7 @@ class Foo {
       ],
     },
     {
-      code: `const foo = function(): void {};`,
+      code: 'const foo = function(): void {};',
       errors: [
         {
           messageId: 'expectedTypedefNamed',
@@ -734,7 +846,7 @@ class Foo {
       ],
     },
     {
-      code: `const foo = (): void => {};`,
+      code: 'const foo = (): void => {};',
       errors: [
         {
           messageId: 'expectedTypedefNamed',
@@ -752,7 +864,7 @@ class Foo {
       code: `
 class Foo {
   a = (): void => {};
-  b = function (): void {};
+  b = function(): void {};
 }
       `,
       errors: [
