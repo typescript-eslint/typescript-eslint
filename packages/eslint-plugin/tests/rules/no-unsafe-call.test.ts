@@ -21,6 +21,11 @@ ruleTester.run('no-unsafe-call', rule, {
     'new Map()',
     'String.raw`foo`',
     'const x = import("./foo");',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
+    `
+      let foo: any = 23;
+      String(foo); // ERROR: Unsafe call of an any typed value
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
