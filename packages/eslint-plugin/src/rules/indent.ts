@@ -340,7 +340,26 @@ export default util.createRule<Options, MessageIds>({
           loc: node.loc,
         });
       },
+      'FunctionDeclaration, FunctionExpression'(
+        node: TSESTree.FunctionDeclaration,
+      ) {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/1649
+        if (node.params) {
+          for (const p of node.params) {
+            if (p.type !== 'Identifier') {
+              continue;
+            }
 
+            if (p.decorators && p.decorators.length) {
+              p.loc.start = p.decorators[0].loc.start;
+              p.range[0] = p.decorators[0].range[0];
+              p.decorators = [];
+            }
+          }
+        }
+
+        return rules['FunctionDeclaration, FunctionExpression'](node);
+      },
       'TSInterfaceDeclaration[extends.length > 0]'(
         node: TSESTree.TSInterfaceDeclaration,
       ) {
