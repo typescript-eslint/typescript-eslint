@@ -346,7 +346,7 @@ export default util.createRule<Options, MessageIds>({
         // https://github.com/typescript-eslint/typescript-eslint/issues/1649
         if (node.params) {
           for (const p of node.params) {
-            if (p.type !== 'Identifier') {
+            if (p.type !== AST_NODE_TYPES.Identifier) {
               continue;
             }
 
