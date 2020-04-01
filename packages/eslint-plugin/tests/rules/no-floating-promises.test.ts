@@ -832,7 +832,7 @@ async function test() {
       `,
       errors: [
         {
-          line: 2,
+          line: 3,
           messageId: 'floating',
         },
       ],
@@ -845,7 +845,7 @@ async function test() {
       `,
       errors: [
         {
-          line: 1,
+          line: 2,
           messageId: 'floating',
         },
       ],
@@ -859,7 +859,7 @@ async function test() {
       options: [{ ignoreIIFE: true }],
       errors: [
         {
-          line: 2,
+          line: 3,
           messageId: 'floating',
         },
       ],
@@ -877,10 +877,6 @@ async function test() {
       options: [{ ignoreIIFE: true }],
       errors: [
         {
-          line: 3,
-          messageId: 'floating',
-        },
-        {
           line: 4,
           messageId: 'floating',
         },
@@ -890,6 +886,10 @@ async function test() {
         },
         {
           line: 6,
+          messageId: 'floating',
+        },
+        {
+          line: 7,
           messageId: 'floating',
         },
       ],

@@ -97,9 +97,10 @@ export default util.createRule<Options, MessageId>({
       }
 
       return (
-        node.expression.callee.type ===
+        node.expression.type === AST_NODE_TYPES.CallExpression &&
+        (node.expression.callee.type ===
           AST_NODE_TYPES.ArrowFunctionExpression ||
-        node.expression.callee.type === AST_NODE_TYPES.FunctionExpression
+          node.expression.callee.type === AST_NODE_TYPES.FunctionExpression)
       );
     }
 
