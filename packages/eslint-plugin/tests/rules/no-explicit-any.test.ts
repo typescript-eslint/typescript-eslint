@@ -288,35 +288,67 @@ interface Qux4 {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Grault1 { new (...args: any[]): void; }',
+      code: `
+interface Grault1 {
+  new (...args: any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Grault2 { new (...args: readonly any[]): void; }',
+      code: `
+interface Grault2 {
+  new (...args: readonly any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Grault3 { new (...args: Array<any>): void; }',
+      code: `
+interface Grault3 {
+  new (...args: Array<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Grault4 { new (...args: ReadonlyArray<any>): void; }',
+      code: `
+interface Grault4 {
+  new (...args: ReadonlyArray<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Garply1 { f(...args: any[]): void; }',
+      code: `
+interface Garply1 {
+  f(...args: any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Garply2 { f(...args: readonly any[]): void; }',
+      code: `
+interface Garply2 {
+  f(...args: readonly any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Garply3 { f(...args: Array<any>): void; }',
+      code: `
+interface Garply3 {
+  f(...args: Array<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'interface Garply4 { f(...args: ReadonlyArray<any>): void; }',
+      code: `
+interface Garply4 {
+  f(...args: ReadonlyArray<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
