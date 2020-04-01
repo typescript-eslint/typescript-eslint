@@ -314,6 +314,10 @@ function createWatchProgram(
       );
     oldOnDirectoryStructureHostCreate(host);
   };
+  // This works only on 3.9
+  (watchCompilerHost as any).extraFileExtensions = extra.extraFileExtensions.map(
+    extension => ({ extension, scriptKind: ts.ScriptKind.Deferred }),
+  );
   watchCompilerHost.trace = log;
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
