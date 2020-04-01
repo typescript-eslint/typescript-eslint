@@ -646,7 +646,11 @@ declare module 'eslint/lib/rules/no-invalid-this' {
 
   const rule: TSESLint.RuleModule<
     'unexpectedThis',
-    [{ capIsConstructor?: boolean }?],
+    [
+      {
+        capIsConstructor?: boolean;
+      }?,
+    ],
     {
       Program(node: TSESTree.Program): void;
       'Program:exit'(node: TSESTree.Program): void;
