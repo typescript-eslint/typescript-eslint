@@ -321,5 +321,36 @@ throw new CustomError();
         },
       ],
     },
+    {
+      code: `
+function foo<T>() {
+  const res: T;
+  throw res;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+          line: 4,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T>(fn: () => Promise<T>) {
+  const promise = fn();
+  const res = promise.then(() => {}).catch(() => {});
+  throw res;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+          line: 5,
+          column: 9,
+        },
+      ],
+    },
   ],
 });
