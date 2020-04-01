@@ -39,16 +39,15 @@ export default createRule<Options, MessageIds>({
     const mode = context.options[0] || 'always';
 
     return {
-      'VariableDeclaration:exit'(
-        node: TSESTree.VariableDeclaration,
-      ): void {
+      'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
         if (mode === 'always') {
           if (node?.declare) {
             return;
           }
           if (
-            node?.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
-            node?.parent?.parent?.declare
+            node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
+            node.parent?.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            node.parent?.parent?.declare
           ) {
             return;
           }
