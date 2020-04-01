@@ -136,9 +136,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isGreatGrandparentRestElement(node: TSESTree.Node): boolean {
       return (
-        typeof node.parent !== 'undefined' &&
-        typeof node.parent.parent !== 'undefined' &&
-        typeof node.parent.parent.parent !== 'undefined' &&
+        node?.parent?.parent?.parent != null &&
         isNodeRestElementInFunction(node.parent.parent.parent)
       );
     }
@@ -151,11 +149,8 @@ export default util.createRule<Options, MessageIds>({
      */
     function isGreatGreatGrandparentRestElement(node: TSESTree.Node): boolean {
       return (
-        typeof node.parent !== 'undefined' &&
-        typeof node.parent.parent !== 'undefined' &&
+        node.parent?.parent?.parent?.parent != null &&
         isNodeValidTSType(node.parent.parent) &&
-        typeof node.parent.parent.parent !== 'undefined' &&
-        typeof node.parent.parent.parent.parent !== 'undefined' &&
         isNodeRestElementInFunction(node.parent.parent.parent.parent)
       );
     }

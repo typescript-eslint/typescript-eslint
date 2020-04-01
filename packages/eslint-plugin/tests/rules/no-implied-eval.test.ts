@@ -13,28 +13,28 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-implied-eval', rule, {
   valid: [
-    `foo.setImmediate(null);`,
-    `foo.setInterval(null);`,
-    `foo.execScript(null);`,
-    `foo.setTimeout(null);`,
-    `foo()`,
-    `(function(){ })()`,
+    'foo.setImmediate(null);',
+    'foo.setInterval(null);',
+    'foo.execScript(null);',
+    'foo.setTimeout(null);',
+    'foo();',
+    '(function() {})();',
 
-    `setTimeout(() => {}, 0);`,
-    `window.setTimeout(() => {}, 0);`,
-    `window['setTimeout'](() => {}, 0);`,
+    'setTimeout(() => {}, 0);',
+    'window.setTimeout(() => {}, 0);',
+    "window['setTimeout'](() => {}, 0);",
 
-    `setInterval(() => {}, 0);`,
-    `window.setInterval(() => {}, 0);`,
-    `window['setInterval'](() => {}, 0);`,
+    'setInterval(() => {}, 0);',
+    'window.setInterval(() => {}, 0);',
+    "window['setInterval'](() => {}, 0);",
 
-    `setImmediate(() => {});`,
-    `window.setImmediate(() => {});`,
-    `window['setImmediate'](() => {});`,
+    'setImmediate(() => {});',
+    'window.setImmediate(() => {});',
+    "window['setImmediate'](() => {});",
 
-    `execScript(() => {});`,
-    `window.execScript(() => {});`,
-    `window['execScript'](() => {});`,
+    'execScript(() => {});',
+    'window.execScript(() => {});',
+    "window['execScript'](() => {});",
 
     `
 const foo = () => {};
@@ -45,7 +45,7 @@ setImmediate(foo);
 execScript(foo);
     `,
     `
-const foo = function () {};
+const foo = function() {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
@@ -53,7 +53,7 @@ setImmediate(foo);
 execScript(foo);
     `,
     `
-function foo() {};
+function foo() {}
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
@@ -63,7 +63,7 @@ execScript(foo);
     `
 const foo = {
   fn: () => {},
-}
+};
 
 setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
@@ -72,8 +72,8 @@ execScript(foo.fn);
     `,
     `
 const foo = {
-  fn: function () {},
-}
+  fn: function() {},
+};
 
 setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
@@ -83,7 +83,7 @@ execScript(foo.fn);
     `
 const foo = {
   fn: function foo() {},
-}
+};
 
 setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
@@ -93,7 +93,7 @@ execScript(foo.fn);
     `
 const foo = {
   fn() {},
-}
+};
 
 setTimeout(foo.fn, 0);
 setInterval(foo.fn, 0);
@@ -103,7 +103,7 @@ execScript(foo.fn);
     `
 const foo = {
   fn: () => {},
-}
+};
 const fn = 'fn';
 
 setTimeout(foo[fn], 0);
@@ -114,7 +114,7 @@ execScript(foo[fn]);
     `
 const foo = {
   fn: () => {},
-}
+};
 
 setTimeout(foo['fn'], 0);
 setInterval(foo['fn'], 0);
@@ -122,8 +122,7 @@ setImmediate(foo['fn']);
 execScript(foo['fn']);
     `,
     `
-const foo: () => void = () => {
-};
+const foo: () => void = () => {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
@@ -131,9 +130,9 @@ setImmediate(foo);
 execScript(foo);
     `,
     `
-const foo: (() => () => void) = () => {
+const foo: () => () => void = () => {
   return () => {};
-}
+};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
@@ -141,7 +140,7 @@ setImmediate(foo());
 execScript(foo());
     `,
     `
-const foo: (() => () => void) = () => () => {};
+const foo: () => () => void = () => () => {};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
@@ -157,9 +156,9 @@ setImmediate(foo());
 execScript(foo());
     `,
     `
-const foo = function foo () {
-  return function foo() {}
-}
+const foo = function foo() {
+  return function foo() {};
+};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
@@ -167,11 +166,11 @@ setImmediate(foo());
 execScript(foo());
     `,
     `
-const foo = function () {
-  return function () {
+const foo = function() {
+  return function() {
     return '';
-  }
-}
+  };
+};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
@@ -179,9 +178,9 @@ setImmediate(foo());
 execScript(foo());
     `,
     `
-const foo: (() => () => void) = function foo () {
-  return function foo() {}
-}
+const foo: () => () => void = function foo() {
+  return function foo() {};
+};
 
 setTimeout(foo(), 0);
 setInterval(foo(), 0);
@@ -240,7 +239,7 @@ const fn = (foo: () => void) => {
   setInterval(foo, 0);
   setImmediate(foo);
   execScript(foo);
-}
+};
     `,
   ],
 
@@ -369,7 +368,7 @@ execScript(foo);
     },
     {
       code: `
-const foo = function () {
+const foo = function() {
   return 'x + 1';
 };
 
@@ -403,7 +402,7 @@ execScript(foo());
     },
     {
       code: `
-const foo = function () {
+const foo = function() {
   return () => 'x + 1';
 };
 
@@ -437,7 +436,7 @@ execScript(foo()());
     },
     {
       code: `
-const fn = function () {}
+const fn = function() {};
 
 setTimeout(fn + '', 0);
 setInterval(fn + '', 0);
@@ -570,7 +569,7 @@ const fn = (foo: string | any) => {
   setInterval(foo, 0);
   setImmediate(foo);
   execScript(foo);
-}
+};
       `,
       errors: [
         {
@@ -653,7 +652,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = Function()`,
+      code: 'const fn = Function();',
       errors: [
         {
           messageId: 'noFunctionConstructor',
@@ -663,7 +662,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = new Function('a', 'b', 'return a + b');`,
+      code: "const fn = new Function('a', 'b', 'return a + b');",
       errors: [
         {
           messageId: 'noFunctionConstructor',
@@ -673,7 +672,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = window.Function();`,
+      code: 'const fn = window.Function();',
       errors: [
         {
           messageId: 'noFunctionConstructor',
@@ -683,7 +682,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = new window.Function();`,
+      code: 'const fn = new window.Function();',
       errors: [
         {
           messageId: 'noFunctionConstructor',
@@ -693,7 +692,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = window['Function']();`,
+      code: "const fn = window['Function']();",
       errors: [
         {
           messageId: 'noFunctionConstructor',
@@ -703,7 +702,7 @@ window['execScript'](\`\`);
       ],
     },
     {
-      code: `const fn = new window['Function']();`,
+      code: "const fn = new window['Function']();",
       errors: [
         {
           messageId: 'noFunctionConstructor',

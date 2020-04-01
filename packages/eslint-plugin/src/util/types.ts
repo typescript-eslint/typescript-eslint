@@ -323,7 +323,12 @@ export function isAnyOrAnyArrayTypeDiscriminated(
   }
   if (
     checker.isArrayType(type) &&
-    isTypeAnyType(checker.getTypeArguments(type)[0])
+    isTypeAnyType(
+      // getTypeArguments was only added in TS3.7
+      checker.getTypeArguments
+        ? checker.getTypeArguments(type)[0]
+        : (type.typeArguments ?? [])[0],
+    )
   ) {
     return AnyType.AnyArray;
   }

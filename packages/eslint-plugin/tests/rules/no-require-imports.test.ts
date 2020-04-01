@@ -10,17 +10,17 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-require-imports', rule, {
   valid: [
-    "import {l} from 'lib'",
-    "var lib3 = load('not_an_import')",
-    'var lib4 = lib2.subImport',
-    'var lib7 = 700',
-    'import lib9 = lib2.anotherSubImport',
-    "import lib10 from 'lib10'",
-    "var lib3 = load?.('not_an_import')",
+    "import { l } from 'lib';",
+    "var lib3 = load('not_an_import');",
+    'var lib4 = lib2.subImport;',
+    'var lib7 = 700;',
+    'import lib9 = lib2.anotherSubImport;',
+    "import lib10 from 'lib10';",
+    "var lib3 = load?.('not_an_import');",
   ],
   invalid: [
     {
-      code: "var lib = require('lib')",
+      code: "var lib = require('lib');",
       errors: [
         {
           messageId: 'noRequireImports',
@@ -30,7 +30,7 @@ ruleTester.run('no-require-imports', rule, {
       ],
     },
     {
-      code: "let lib2 = require('lib2')",
+      code: "let lib2 = require('lib2');",
       errors: [
         {
           messageId: 'noRequireImports',
@@ -40,22 +40,25 @@ ruleTester.run('no-require-imports', rule, {
       ],
     },
     {
-      code: "var lib5 = require('lib5'), lib6 = require('lib6')",
+      code: `
+var lib5 = require('lib5'),
+  lib6 = require('lib6');
+      `,
       errors: [
         {
           messageId: 'noRequireImports',
-          line: 1,
+          line: 2,
           column: 12,
         },
         {
           messageId: 'noRequireImports',
-          line: 1,
-          column: 36,
+          line: 3,
+          column: 10,
         },
       ],
     },
     {
-      code: "import lib8 = require('lib8')",
+      code: "import lib8 = require('lib8');",
       errors: [
         {
           messageId: 'noRequireImports',
@@ -65,7 +68,7 @@ ruleTester.run('no-require-imports', rule, {
       ],
     },
     {
-      code: "var lib = require?.('lib')",
+      code: "var lib = require?.('lib');",
       errors: [
         {
           messageId: 'noRequireImports',
@@ -75,7 +78,7 @@ ruleTester.run('no-require-imports', rule, {
       ],
     },
     {
-      code: "let lib2 = require?.('lib2')",
+      code: "let lib2 = require?.('lib2');",
       errors: [
         {
           messageId: 'noRequireImports',
@@ -85,17 +88,20 @@ ruleTester.run('no-require-imports', rule, {
       ],
     },
     {
-      code: "var lib5 = require?.('lib5'), lib6 = require?.('lib6')",
+      code: `
+var lib5 = require?.('lib5'),
+  lib6 = require?.('lib6');
+      `,
       errors: [
         {
           messageId: 'noRequireImports',
-          line: 1,
+          line: 2,
           column: 12,
         },
         {
           messageId: 'noRequireImports',
-          line: 1,
-          column: 38,
+          line: 3,
+          column: 10,
         },
       ],
     },
