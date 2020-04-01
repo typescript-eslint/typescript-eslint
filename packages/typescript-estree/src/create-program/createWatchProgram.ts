@@ -315,8 +315,12 @@ function createWatchProgram(
     oldOnDirectoryStructureHostCreate(host);
   };
   // This works only on 3.9
-  (watchCompilerHost as any).extraFileExtensions = extra.extraFileExtensions.map(
-    extension => ({ extension, scriptKind: ts.ScriptKind.Deferred }),
+  watchCompilerHost.extraFileExtensions = extra.extraFileExtensions.map(
+    extension => ({
+      extension,
+      isMixedContent: true,
+      scriptKind: ts.ScriptKind.Deferred,
+    }),
   );
   watchCompilerHost.trace = log;
 
