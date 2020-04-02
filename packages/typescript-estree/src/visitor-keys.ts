@@ -38,7 +38,7 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
     'attributes',
     'openingElement',
     'children',
-    'closingElement'
+    'closingElement',
     'typeParameters',
   ],
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
