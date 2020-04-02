@@ -370,6 +370,10 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
 ): false | { sender: ts.Type; receiver: ts.Type } {
+  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
+    return { sender: type, receiver };
+  }
+
   if (isTypeReference(type) && isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
@@ -406,9 +410,6 @@ export function isUnsafeAssignment(
     return false;
   }
 
-  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
-    return { sender: type, receiver };
-  }
   return false;
 }
 

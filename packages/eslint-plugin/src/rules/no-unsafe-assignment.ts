@@ -39,25 +39,26 @@ export default util.createRule({
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 
+    // returns true if the assignment reported
     function checkArrayDestructureHelper(
       receiverNode: TSESTree.Node,
       senderNode: TSESTree.Node,
     ): boolean {
       if (receiverNode.type !== AST_NODE_TYPES.ArrayPattern) {
-        return true;
+        return false;
       }
 
-      const senderType = checker.getTypeAtLocation(
-        esTreeNodeToTSNodeMap.get(senderNode),
-      );
+      const senderTsNode = esTreeNodeToTSNodeMap.get(senderNode);
+      const senderType = checker.getTypeAtLocation(senderTsNode);
 
-      return checkArrayDestructure(receiverNode, senderType);
+      return checkArrayDestructure(receiverNode, senderType, senderTsNode);
     }
 
-    // returns true if the assignment is safe
+    // returns true if the assignment reported
     function checkArrayDestructure(
       receiverNode: TSESTree.ArrayPattern,
       senderType: ts.Type,
+      senderNode: ts.Node,
     ): boolean {
       // any array
       // const [x] = ([] as any[]);
@@ -89,45 +90,136 @@ export default util.createRule({
         }
 
         if (receiverElement.type === AST_NODE_TYPES.RestElement) {
-          // const [...x] = [1, 2, 3 as any];
-          // check the remaining elements to see if one of them is typed as any
-          for (
-            let senderIndex = receiverIndex;
-            senderIndex < tupleElements.length;
-            senderIndex += 1
-          ) {
-            const senderType = tupleElements[senderIndex];
-            if (senderType && util.isTypeAnyType(senderType)) {
-              context.report({
-                node: receiverElement,
-                messageId: 'unsafeArrayPatternFromTuple',
-              });
-              return false;
-            }
-          }
-          // rest element must be the last one in a destructure
-          return true;
+          // don't handle rests as they're not a 1:1 assignment
+          continue;
         }
 
-        const senderType = tupleElements[receiverIndex];
-        if (receiverElement.type === AST_NODE_TYPES.ArrayPattern) {
-          didReport = checkArrayDestructure(receiverElement, senderType);
-        } else {
-          if (senderType && util.isTypeAnyType(senderType)) {
-            context.report({
-              node: receiverElement,
-              messageId: 'unsafeArrayPatternFromTuple',
-            });
-            // we want to report on every invalid element in the tuple
-            didReport = true;
-          }
+        const senderType = tupleElements[receiverIndex] as ts.Type | undefined;
+        if (!senderType) {
+          continue;
+        }
+
+        // check for the any type first so we can handle [[[x]]] = [any]
+        if (util.isTypeAnyType(senderType)) {
+          context.report({
+            node: receiverElement,
+            messageId: 'unsafeArrayPatternFromTuple',
+          });
+          // we want to report on every invalid element in the tuple
+          didReport = true;
+        } else if (receiverElement.type === AST_NODE_TYPES.ArrayPattern) {
+          didReport = checkArrayDestructure(
+            receiverElement,
+            senderType,
+            senderNode,
+          );
+        } else if (receiverElement.type === AST_NODE_TYPES.ObjectPattern) {
+          didReport = checkObjectDestructure(
+            receiverElement,
+            senderType,
+            senderNode,
+          );
         }
       }
 
       return didReport;
     }
 
-    // returns true if the assignment is safe
+    // returns true if the assignment reported
+    function checkObjectDestructureHelper(
+      receiverNode: TSESTree.Node,
+      senderNode: TSESTree.Node,
+    ): boolean {
+      if (receiverNode.type !== AST_NODE_TYPES.ObjectPattern) {
+        return false;
+      }
+
+      const senderTsNode = esTreeNodeToTSNodeMap.get(senderNode);
+      const senderType = checker.getTypeAtLocation(senderTsNode);
+
+      return checkObjectDestructure(receiverNode, senderType, senderTsNode);
+    }
+
+    // returns true if the assignment reported
+    function checkObjectDestructure(
+      receiverNode: TSESTree.ObjectPattern,
+      senderType: ts.Type,
+      senderNode: ts.Node,
+    ): boolean {
+      const properties = new Map(
+        senderType
+          .getProperties()
+          .map(property => [
+            property.getName(),
+            checker.getTypeOfSymbolAtLocation(property, senderNode),
+          ]),
+      );
+
+      let didReport = false;
+      for (
+        let receiverIndex = 0;
+        receiverIndex < receiverNode.properties.length;
+        receiverIndex += 1
+      ) {
+        const receiverProperty = receiverNode.properties[receiverIndex];
+        if (receiverProperty.type === AST_NODE_TYPES.RestElement) {
+          // don't bother checking rest
+          continue;
+        }
+
+        let key: string;
+        if (receiverProperty.computed === false) {
+          key =
+            receiverProperty.key.type === AST_NODE_TYPES.Identifier
+              ? receiverProperty.key.name
+              : String(receiverProperty.key.value);
+        } else if (receiverProperty.key.type === AST_NODE_TYPES.Literal) {
+          key = String(receiverProperty.key.value);
+        } else if (
+          receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
+          receiverProperty.key.quasis.length === 1
+        ) {
+          key = String(receiverProperty.key.quasis[0].value.cooked);
+        } else {
+          // can't figure out the name, so skip it
+          continue;
+        }
+
+        const senderType = properties.get(key);
+        if (!senderType) {
+          continue;
+        }
+
+        // check for the any type first so we can handle {x: {y: z}} = {x: any}
+        if (util.isTypeAnyType(senderType)) {
+          context.report({
+            node: receiverProperty.value,
+            messageId: 'unsafeArrayPatternFromTuple',
+          });
+          didReport = true;
+        } else if (
+          receiverProperty.value.type === AST_NODE_TYPES.ArrayPattern
+        ) {
+          didReport = checkArrayDestructure(
+            receiverProperty.value,
+            senderType,
+            senderNode,
+          );
+        } else if (
+          receiverProperty.value.type === AST_NODE_TYPES.ObjectPattern
+        ) {
+          didReport = checkObjectDestructure(
+            receiverProperty.value,
+            senderType,
+            senderNode,
+          );
+        }
+      }
+
+      return didReport;
+    }
+
+    // returns true if the assignment reported
     function checkAssignment(
       receiverNode: TSESTree.Node,
       senderNode: TSESTree.Node,
@@ -146,16 +238,16 @@ export default util.createRule({
           node: reportingNode,
           messageId: 'anyAssignment',
         });
-        return false;
+        return true;
       }
 
       if (comparisonType === ComparisonType.None) {
-        return true;
+        return false;
       }
 
       const result = util.isUnsafeAssignment(senderType, receiverType, checker);
       if (!result) {
-        return true;
+        return false;
       }
 
       const { sender, receiver } = result;
@@ -167,7 +259,7 @@ export default util.createRule({
           receiver: checker.typeToString(receiver),
         },
       });
-      return false;
+      return true;
     }
 
     function getComparisonType(
@@ -184,15 +276,22 @@ export default util.createRule({
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator,
       ): void {
-        const isSafe = checkAssignment(
+        const init = util.nullThrows(
+          node.init,
+          util.NullThrowsReasons.MissingToken(node.type, 'init'),
+        );
+        let didReport = checkAssignment(
           node.id,
-          node.init!,
+          init,
           node,
           getComparisonType(node.id.typeAnnotation),
         );
 
-        if (isSafe) {
-          checkArrayDestructureHelper(node.id, node.init!);
+        if (!didReport) {
+          didReport = checkArrayDestructureHelper(node.id, init);
+        }
+        if (!didReport) {
+          checkObjectDestructureHelper(node.id, init);
         }
       },
       'ClassProperty[value != null]'(node: TSESTree.ClassProperty): void {
@@ -206,7 +305,7 @@ export default util.createRule({
       'AssignmentExpression[operator = "="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {
-        const isSafe = checkAssignment(
+        let didReport = checkAssignment(
           node.left,
           node.right,
           node,
@@ -214,8 +313,11 @@ export default util.createRule({
           ComparisonType.Basic,
         );
 
-        if (isSafe) {
-          checkArrayDestructureHelper(node.left, node.right);
+        if (!didReport) {
+          didReport = checkArrayDestructureHelper(node.left, node.right);
+        }
+        if (!didReport) {
+          checkObjectDestructureHelper(node.left, node.right);
         }
       },
       // Property(node): void {

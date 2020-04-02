@@ -1,3 +1,4 @@
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-unsafe-assignment';
 import {
   RuleTester,
@@ -5,6 +6,64 @@ import {
   getFixturesRootDir,
   noFormat,
 } from '../RuleTester';
+import {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../../src/util';
+
+type Options = InferOptionsTypeFromRule<typeof rule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
+type InvalidTest = TSESLint.InvalidTestCase<MessageIds, Options>;
+
+function assignmentTest(
+  tests: [string, number, number, boolean?][],
+): InvalidTest[] {
+  return tests.reduce<InvalidTest[]>(
+    (acc, [assignment, column, endColumn, skipAssignmentExpression]) => {
+      // VariableDeclaration
+      acc.push({
+        code: `const ${assignment}`,
+        errors: [
+          {
+            messageId: 'unsafeArrayPatternFromTuple',
+            line: 1,
+            column: column + 6,
+            endColumn: endColumn + 6,
+          },
+        ],
+      });
+      // AssignmentPattern
+      acc.push({
+        code: `function foo(${assignment}) {}`,
+        errors: [
+          {
+            messageId: 'unsafeArrayPatternFromTuple',
+            line: 1,
+            column: column + 13,
+            endColumn: endColumn + 13,
+          },
+        ],
+      });
+      // AssignmentExpression
+      if (skipAssignmentExpression !== true) {
+        acc.push({
+          code: `(${assignment})`,
+          errors: [
+            {
+              messageId: 'unsafeArrayPatternFromTuple',
+              line: 1,
+              column: column + 1,
+              endColumn: endColumn + 1,
+            },
+          ],
+        });
+      }
+
+      return acc;
+    },
+    [],
+  );
+}
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -154,146 +213,26 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
         },
       ],
     }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-const [x] = [1 as any];
-const [x, ...y] = [1, 2 as any];
-const [x, y, ...z] = [1, 2 as any, 3 as any];
-const [x, ...y] = [1, 2, 3, 4 as any];
-const [[[[x]]]] = [[[[1 as any]]]];
-      `,
+    ...assignmentTest([
+      ['[x] = [1] as [any]', 2, 3],
+      ['[[[[x]]]] = [[[[1 as any]]]]', 5, 6],
+      ['[[[[x]]]] = [1 as any]', 2, 9, true],
+      ['[{x}] = [{x: 1}] as [{x: any}]', 3, 4],
+    ]),
+    {
+      // TS treats the assignment pattern weirdly in this case
+      code: '[[[[x]]]] = [1 as any];',
       errors: [
         {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 2,
-          column: 8,
-          endColumn: 9,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 3,
-          column: 11,
-          endColumn: 15,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 11,
-          endColumn: 12,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 14,
-          endColumn: 18,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 5,
-          column: 11,
-          endColumn: 15,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 6,
-          column: 11,
-          endColumn: 12,
+          messageId: 'unsafeAssignment',
         },
       ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-[x] = [1] as [any];
-[x, ...y] = [1, 2] as [1, any];
-[x, y, ...z] = [1, 2, 3] as [1, any, any];
-[x, ...y] = [1, 2, 3, 4] as [1, 2, 3, any];
-[[[[x]]]] = [[[[1 as any]]]];
-      `,
-      errors: [
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 2,
-          column: 2,
-          endColumn: 3,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 3,
-          column: 5,
-          endColumn: 9,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 5,
-          endColumn: 6,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 8,
-          endColumn: 12,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 5,
-          column: 5,
-          endColumn: 9,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 6,
-          column: 5,
-          endColumn: 6,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo([x] = [1] as [any]) {}
-function foo([x, ...y] = [1, 2] as [1, any]) {}
-function foo([x, y, ...z] = [1, 2, 3] as [1, any, any]) {}
-function foo([x, ...y] = [1, 2, 3, 4] as [1, 2, 3, any]) {}
-function foo([[[[x]]]] = [[[[1 as any]]]]) {}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 2,
-          column: 15,
-          endColumn: 16,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 3,
-          column: 18,
-          endColumn: 22,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 18,
-          endColumn: 19,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 4,
-          column: 21,
-          endColumn: 25,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 5,
-          column: 18,
-          endColumn: 22,
-        },
-        {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 6,
-          column: 18,
-          endColumn: 19,
-        },
-      ],
-    }),
+    },
+    ...assignmentTest([
+      ['{x} = {x: 1} as {x: any}', 2, 3],
+      ['{x: y} = {x: 1} as {x: any}', 5, 6],
+      ['{x: {y}} = {x: {y: 1}} as {x: {y: any}}', 6, 7],
+      ['{x: [y]} = {x: {y: 1}} as {x: [any]}', 6, 7],
+    ]),
   ],
 });
