@@ -40,10 +40,10 @@ This rule has an object option:
 
 ### properties: "always"
 
-Examples of **incorrect** code for this rule with the default `{ "properties": "always" }` option:
+Examples of **incorrect** code for this rule with the `{ "properties": "always" }` option:
 
 ```js
-/*eslint @typescript-eslint/camelcase: "error"*/
+/*eslint @typescript-eslint/camelcase: ["error", { "properties": "always" }] */
 
 import { no_camelcased } from 'external-module';
 
@@ -80,10 +80,10 @@ var { foo: no_camelcased } = bar;
 var { foo: bar_baz = 1 } = quz;
 ```
 
-Examples of **correct** code for this rule with the default `{ "properties": "always" }` option:
+Examples of **correct** code for this rule with the `{ "properties": "always" }` option:
 
 ```js
-/*eslint @typescript-eslint/camelcase: "error"*/
+/*eslint @typescript-eslint/camelcase: ["error", { "properties": "always" }] */
 
 import { no_camelcased as camelCased } from 'external-module';
 
@@ -121,10 +121,10 @@ var { foo: isCamelCased = 1 } = quz;
 
 ### `properties: "never"`
 
-Examples of **correct** code for this rule with the `{ "properties": "never" }` option:
+Examples of **correct** code for this rule with the default `{ "properties": "never" }` option:
 
 ```js
-/*eslint @typescript-eslint/camelcase: ["error", {properties: "never"}]*/
+/*eslint @typescript-eslint/camelcase: "error" */
 
 var obj = {
   my_pref: 1,
@@ -133,7 +133,7 @@ var obj = {
 
 ### `genericType: "always"`
 
-Examples of **incorrect** code for this rule with the default `{ "genericType": "always" }` option:
+Examples of **incorrect** code for this rule with the `{ "genericType": "always" }` option:
 
 ```typescript
 /* eslint @typescript-eslint/camelcase: ["error", { "genericType": "always" }] */
@@ -163,7 +163,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule with the default `{ "genericType": "always" }` option:
+Examples of **correct** code for this rule with the `{ "genericType": "always" }` option:
 
 ```typescript
 /* eslint @typescript-eslint/camelcase: ["error", { "genericType": "always" }] */
@@ -195,7 +195,7 @@ class Foo {
 
 ### `genericType: "never"`
 
-Examples of **correct** code for this rule with the `{ "genericType": "never" }` option:
+Examples of **correct** code for this rule with the default `{ "genericType": "never" }` option:
 
 ```typescript
 /* eslint @typescript-eslint/camelcase: ["error", { "genericType": "never" }] */
