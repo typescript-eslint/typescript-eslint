@@ -108,6 +108,8 @@ class Foo {
     'function foo([x, ...y] = [1]) {}',
     // this is not checked, because there's no annotation to compare it with
     'const x = new Set<any>();',
+    'const x = { y: 1 };',
+    'const x: { y: number } = { y: 1 };',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -152,8 +154,8 @@ class Foo { private a = (1 as any) }
       ],
     }),
     ...batchedSingleLineTests({
-      code: noFormat`
-const [x] = (1 as any);
+      code: `
+const [x] = 1 as any;
 const [x] = [] as any[];
       `,
       errors: [
@@ -161,7 +163,7 @@ const [x] = [] as any[];
           messageId: 'anyAssignment',
           line: 2,
           column: 7,
-          endColumn: 23,
+          endColumn: 21,
         },
         {
           messageId: 'unsafeArrayPattern',
@@ -234,5 +236,35 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
       ['{x: {y}} = {x: {y: 1}} as {x: {y: any}}', 6, 7],
       ['{x: [y]} = {x: {y: 1}} as {x: [any]}', 6, 7],
     ]),
+    ...batchedSingleLineTests({
+      code: `
+const x = { y: 1 as any };
+const x = { y: { z: 1 as any } };
+const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };
+const x = { ...(1 as any) };
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 2,
+        },
+        {
+          messageId: 'anyAssignment',
+          line: 3,
+        },
+        {
+          messageId: 'unsafeAssignment',
+          line: 4,
+          data: {
+            sender: 'Set<Set<Set<any>>>',
+            receiver: 'Set<Set<Set<string>>>',
+          },
+        },
+        {
+          messageId: 'unsafeObjectSpread',
+          line: 5,
+        },
+      ],
+    }),
   ],
 });

@@ -222,13 +222,16 @@ export default util.createRule({
     // returns true if the assignment reported
     function checkAssignment(
       receiverNode: TSESTree.Node,
-      senderNode: TSESTree.Node,
+      senderNode: TSESTree.Expression,
       reportingNode: TSESTree.Node,
       comparisonType: ComparisonType,
     ): boolean {
-      const receiverType = checker.getTypeAtLocation(
-        esTreeNodeToTSNodeMap.get(receiverNode),
-      );
+      const receiverTsNode = esTreeNodeToTSNodeMap.get(receiverNode);
+      const receiverType =
+        comparisonType === ComparisonType.Contextual
+          ? util.getContextualType(checker, receiverTsNode as ts.Expression) ??
+            checker.getTypeAtLocation(receiverTsNode)
+          : checker.getTypeAtLocation(receiverTsNode);
       const senderType = checker.getTypeAtLocation(
         esTreeNodeToTSNodeMap.get(senderNode),
       );
@@ -320,14 +323,15 @@ export default util.createRule({
           checkObjectDestructureHelper(node.left, node.right);
         }
       },
-      // Property(node): void {
-      //   checkAssignment(
-      //     node.key,
-      //     node.value,
-      //     node,
-      //     ComparisonType.Contextual, // TODO - is this required???
-      //   );
-      // },
+      // object pattern props are checked via assignments
+      ':not(ObjectPattern) > Property'(node: TSESTree.Property): void {
+        if (node.value.type === AST_NODE_TYPES.AssignmentPattern) {
+          // handled by other selector
+          return;
+        }
+
+        checkAssignment(node.key, node.value, node, ComparisonType.Contextual);
+      },
       // 'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
       //   if (!node.value) {
       //     return;
@@ -336,7 +340,7 @@ export default util.createRule({
       //     node.name,
       //     node.value,
       //     node,
-      //     ComparisonType.Basic, // TODO
+      //     ComparisonType.Contextual, // TODO
       //   );
       // },
     };

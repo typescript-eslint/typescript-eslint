@@ -1,6 +1,7 @@
 import {
   isCallExpression,
   isJsxExpression,
+  isIdentifier,
   isNewExpression,
   isParameterDeclaration,
   isPropertyDeclaration,
@@ -8,6 +9,7 @@ import {
   isUnionOrIntersectionType,
   isVariableDeclaration,
   unionTypeParts,
+  isPropertyAssignment,
 } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -440,6 +442,8 @@ export function getContextualType(
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
   } else if (isJsxExpression(parent)) {
     return checker.getContextualType(parent);
+  } else if (isPropertyAssignment(parent) && isIdentifier(node)) {
+    return checker.getContextualType(node);
   } else if (
     ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
       parent.kind,
