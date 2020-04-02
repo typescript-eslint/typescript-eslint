@@ -40,7 +40,7 @@ for (var foo in []) {
       code: `
 for (var foo of []) {
 }
-    `,
+      `,
       parserOptions: { ecmaVersion: 6 },
     },
     {
@@ -63,7 +63,7 @@ function foo() {
       d = null;
   }
 }
-        `,
+      `,
       options: ['always'],
       parserOptions: { ecmaVersion: 6 },
     },
@@ -77,7 +77,7 @@ function foo() {
       d = null;
   }
 }
-        `,
+      `,
       options: ['always'],
       parserOptions: { ecmaVersion: 6 },
     },
@@ -144,7 +144,7 @@ function foo() {
       d = null;
   }
 }
-        `,
+      `,
       options: ['never'],
       parserOptions: { ecmaVersion: 6 },
     },
