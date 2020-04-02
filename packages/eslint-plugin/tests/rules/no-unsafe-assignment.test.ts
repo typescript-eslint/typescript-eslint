@@ -43,6 +43,10 @@ class Foo {
     'const [x] = [1];',
     'const [x, ...y] = [1, 2, 3, 4, 5];',
     'const [x, ...y] = [1];',
+    'function foo(x = 1) {}',
+    'function foo([x] = [1]) {}',
+    'function foo([x, ...y] = [1, 2, 3, 4, 5]) {}',
+    'function foo([x, ...y] = [1]) {}',
     // this is not checked, because there's no annotation to compare it with
     'const x = new Set<any>();',
   ],
@@ -241,6 +245,53 @@ const [[[[x]]]] = [[[[1 as any]]]];
           line: 6,
           column: 5,
           endColumn: 6,
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: noFormat`
+function foo([x] = [1] as [any]) {}
+function foo([x, ...y] = [1, 2] as [1, any]) {}
+function foo([x, y, ...z] = [1, 2, 3] as [1, any, any]) {}
+function foo([x, ...y] = [1, 2, 3, 4] as [1, 2, 3, any]) {}
+function foo([[[[x]]]] = [[[[1 as any]]]]) {}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 2,
+          column: 15,
+          endColumn: 16,
+        },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 3,
+          column: 18,
+          endColumn: 22,
+        },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 4,
+          column: 18,
+          endColumn: 19,
+        },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 4,
+          column: 21,
+          endColumn: 25,
+        },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 5,
+          column: 18,
+          endColumn: 22,
+        },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 6,
+          column: 18,
+          endColumn: 19,
         },
       ],
     }),
