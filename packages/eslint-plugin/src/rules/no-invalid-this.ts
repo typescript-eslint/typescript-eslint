@@ -47,7 +47,7 @@ export default createRule<Options, MessageIds>({
       ...rules,
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
         const names = node?.params.map(
-          (param: TSESTree.Parameter) => param?.name,
+          (param: TSESTree.Identifier) => param?.name,
         );
         argList.push(names);
         // baseRule's work
@@ -60,7 +60,7 @@ export default createRule<Options, MessageIds>({
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         const names = node?.params.map(
-          (param: TSESTree.Parameter) => param?.name,
+          (param: TSESTree.Identifier) => param.name,
         );
         argList.push(names);
         // baseRule's work

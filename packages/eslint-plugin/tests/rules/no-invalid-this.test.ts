@@ -1,4 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-invalid-this';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
@@ -12,10 +11,6 @@ const ruleTester = new RuleTester({
     project: './tsconfig.json',
   },
 });
-
-const error = {
-  messageId: 'unexpectedThis',
-};
 
 ruleTester.run('no-invalid-this', rule, {
   valid: [
@@ -172,20 +167,38 @@ ruleTester.run('no-invalid-this', rule, {
       function foo() {
         this.prop;
       }`,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     // Global.
     {
       code: 'console.log(this); z(x => console.log(x, this));',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: 'console.log(this); z(x => console.log(x, this));',
       parserOptions: {
         ecmaFeatures: { globalReturn: true },
       },
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // IIFE.
@@ -193,7 +206,14 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         '(function() { console.log(this); z(x => console.log(x, this)); })();',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Just functions.
@@ -201,34 +221,69 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'function foo() { console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'function foo() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'function Foo() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'function foo() { "use strict"; console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'function Foo() { "use strict"; console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
@@ -236,13 +291,27 @@ ruleTester.run('no-invalid-this', rule, {
       parserOptions: {
         ecmaFeatures: { globalReturn: true },
       },
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var foo = (function() { console.log(this); z(x => console.log(x, this)); }).bar(obj);',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Functions in methods.
@@ -250,43 +319,92 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'var obj = {foo: function() { function foo() { console.log(this); z(x => console.log(x, this)); } foo(); }};',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var obj = {foo() { function foo() { console.log(this); z(x => console.log(x, this)); } foo(); }};',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var obj = {foo: function() { return function() { console.log(this); z(x => console.log(x, this)); }; }};',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var obj = {foo: function() { "use strict"; return function() { console.log(this); z(x => console.log(x, this)); }; }};',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'obj.foo = function() { return function() { console.log(this); z(x => console.log(x, this)); }; };',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'obj.foo = function() { "use strict"; return function() { console.log(this); z(x => console.log(x, this)); }; };',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'class A { foo() { return function() { console.log(this); z(x => console.log(x, this)); }; } }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Class Static methods.
@@ -295,13 +413,27 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'obj.foo = (function() { return () => { console.log(this); z(x => console.log(x, this)); }; })();',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'obj.foo = (() => () => { console.log(this); z(x => console.log(x, this)); })();',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     // Bind/Call/Apply
 
@@ -309,21 +441,42 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'var foo = function() { console.log(this); z(x => console.log(x, this)); }.bind(null);',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
       code:
         '(function() { console.log(this); z(x => console.log(x, this)); }).call(undefined);',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
       code:
         '(function() { console.log(this); z(x => console.log(x, this)); }).apply(void 0);',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Array methods.
@@ -331,56 +484,119 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'Array.from([], function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.every(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.filter(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.find(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.findIndex(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.forEach(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.map(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'foo.some(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
       code:
         'foo.forEach(function() { console.log(this); z(x => console.log(x, this)); }, null);',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // @this tag.
@@ -389,13 +605,27 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         '/** @returns {void} */ function foo() { console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         '/** @this Obj */ foo(function() { console.log(this); z(x => console.log(x, this)); });',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // https://github.com/eslint/eslint/issues/3254
@@ -403,7 +633,14 @@ ruleTester.run('no-invalid-this', rule, {
       code:
         'function foo() { console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -411,20 +648,41 @@ ruleTester.run('no-invalid-this', rule, {
         'var Ctor = function() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var func = function() { console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'var func = function() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -432,34 +690,69 @@ ruleTester.run('no-invalid-this', rule, {
         'Ctor = function() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'func = function() { console.log(this); z(x => console.log(x, this)); }',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code:
         'func = function() { console.log(this); z(x => console.log(x, this)); }',
 
       options: [{ capIsConstructor: false }],
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
       code:
         'function foo(func = function() { console.log(this); z(x => console.log(x, this)); }) {}',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
       code:
         '[func = function() { console.log(this); z(x => console.log(x, this)); }] = a',
 
-      errors: [error, error],
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
   ],
 });
