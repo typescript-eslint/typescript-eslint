@@ -238,6 +238,38 @@ interface GreetingSettings {
       code: 'type GreetingLike = string | (() => string) | Greeter;',
       options: ['never'],
     },
+    {
+      code: `
+function foo() {
+  var bar: string;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: 'var bar: string;',
+      options: ['never'],
+    },
+    {
+      code: `
+var bar: string = function(): string {
+  return 'string';
+};
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+var bar: string = function(arg1: stirng): string {
+  return 'string';
+};
+      `,
+      options: ['always'],
+    },
+    {
+      code: "function foo(arg1: string = 'string'): void {}",
+      options: ['never'],
+    },
   ],
   invalid: [
     // checking compatibility with base rule
@@ -536,6 +568,28 @@ function foo() {
       errors: [
         {
           messageId: 'notInitialized',
+          data: { idName: 'arr' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: 'let arr: string = function() {};',
+      options: ['never'],
+      errors: [
+        {
+          messageId: 'notInitialized',
+          data: { idName: 'arr' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: 'let arr: string;',
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'initialized',
           data: { idName: 'arr' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
