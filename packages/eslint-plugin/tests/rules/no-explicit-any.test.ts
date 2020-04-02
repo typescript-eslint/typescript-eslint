@@ -1211,7 +1211,7 @@ const test = <T extends Partial<never>>() => {};
       })),
     });
     const options = testCase.options ?? [];
-    const code = '// fixToUnknown: true\n${testCase.code}';
+    const code = `// fixToUnknown: true\n${testCase.code}`;
     acc.push({
       code,
       output: code.replace(/any/g, 'unknown'),
@@ -1228,7 +1228,7 @@ const test = <T extends Partial<never>>() => {};
             err.suggestions?.map(
               (s): SuggestionOutput => ({
                 ...s,
-                output: '// fixToUnknown: true\n${s.output}',
+                output: `// fixToUnknown: true\n${s.output}`,
               }),
             ) ?? suggestions(code),
         };
