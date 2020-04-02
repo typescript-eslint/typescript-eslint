@@ -270,6 +270,55 @@ var bar: string = function(arg1: stirng): string {
       code: "function foo(arg1: string = 'string'): void {}",
       options: ['never'],
     },
+    {
+      code: "const foo: string = 'hello';",
+      options: ['never'],
+    },
+    {
+      code: `
+const class1 = class NAME {
+  constructor() {
+    var name1: string = 'hello';
+  }
+};
+      `,
+    },
+    {
+      code: `
+const class1 = class NAME {
+  static pi: number = 3.14;
+};
+      `,
+    },
+    {
+      code: `
+const class1 = class NAME {
+  static pi: number = 3.14;
+};
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+interface IEmployee {
+  empCode: number;
+  empName: string;
+  getSalary: (number) => number; // arrow function
+  getManagerName(number): string;
+}
+      `,
+    },
+    {
+      code: `
+interface IEmployee {
+  empCode: number;
+  empName: string;
+  getSalary: (number) => number; // arrow function
+  getManagerName(number): string;
+}
+      `,
+      options: ['never'],
+    },
   ],
   invalid: [
     // checking compatibility with base rule
@@ -580,6 +629,23 @@ function foo() {
         {
           messageId: 'notInitialized',
           data: { idName: 'arr' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+const class1 = class NAME {
+  constructor() {
+    var name1: string = 'hello';
+  }
+};
+      `,
+      options: ['never'],
+      errors: [
+        {
+          messageId: 'notInitialized',
+          data: { idName: 'name1' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
