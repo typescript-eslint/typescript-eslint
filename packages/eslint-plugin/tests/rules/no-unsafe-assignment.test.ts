@@ -111,6 +111,14 @@ class Foo {
     'const x = { y: 1 };',
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
+    {
+      code: `
+type Props = { a: string };
+declare function Foo(props: Props): never;
+<Foo a={'foo'} />;
+      `,
+      filename: 'react.tsx',
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -228,6 +236,9 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
       errors: [
         {
           messageId: 'unsafeAssignment',
+          line: 1,
+          column: 1,
+          endColumn: 23,
         },
       ],
     },
@@ -240,10 +251,14 @@ const x = [...([] as any[])];
         {
           messageId: 'unsafeArraySpread',
           line: 2,
+          column: 12,
+          endColumn: 25,
         },
         {
           messageId: 'unsafeArraySpread',
           line: 3,
+          column: 12,
+          endColumn: 28,
         },
       ],
     }),
@@ -264,14 +279,20 @@ const x = { ...(1 as any) };
         {
           messageId: 'anyAssignment',
           line: 2,
+          column: 13,
+          endColumn: 24,
         },
         {
           messageId: 'anyAssignment',
           line: 3,
+          column: 18,
+          endColumn: 29,
         },
         {
           messageId: 'unsafeAssignment',
           line: 4,
+          column: 43,
+          endColumn: 70,
           data: {
             sender: 'Set<Set<Set<any>>>',
             receiver: 'Set<Set<Set<string>>>',
@@ -281,8 +302,26 @@ const x = { ...(1 as any) };
           // spreading an any widens the object type to any
           messageId: 'anyAssignment',
           line: 5,
+          column: 7,
+          endColumn: 28,
         },
       ],
     }),
+    {
+      code: `
+type Props = { a: string };
+declare function Foo(props: Props): never;
+<Foo a={1 as any} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 4,
+          column: 9,
+          endColumn: 17,
+        },
+      ],
+    },
   ],
 });

@@ -346,17 +346,25 @@ export default util.createRule({
           });
         }
       },
-      // 'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
-      //   if (!node.value) {
-      //     return;
-      //   }
-      //   checkAssignment(
-      //     node.name,
-      //     node.value,
-      //     node,
-      //     ComparisonType.Contextual, // TODO
-      //   );
-      // },
+      'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
+        const value = util.nullThrows(
+          node.value,
+          util.NullThrowsReasons.MissingToken(node.type, 'value'),
+        );
+        if (
+          value.type !== AST_NODE_TYPES.JSXExpressionContainer ||
+          value.expression.type === AST_NODE_TYPES.JSXEmptyExpression
+        ) {
+          return;
+        }
+
+        checkAssignment(
+          node.name,
+          value.expression,
+          value.expression,
+          ComparisonType.Contextual,
+        );
+      },
     };
   },
 });
