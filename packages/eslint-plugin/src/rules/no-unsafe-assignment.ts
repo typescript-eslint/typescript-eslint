@@ -31,6 +31,7 @@ export default util.createRule({
         'Unsafe array destructuring of a tuple element with an any value',
       unsafeAssignment:
         'Unsafe asignment of type {{sender}} to a variable of type {{receiver}}',
+      unsafeArraySpread: 'Unsafe spread of an any value in an array',
     },
     schema: [],
   },
@@ -331,6 +332,19 @@ export default util.createRule({
         }
 
         checkAssignment(node.key, node.value, node, ComparisonType.Contextual);
+      },
+      'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
+        const resetNode = esTreeNodeToTSNodeMap.get(node.argument);
+        const restType = checker.getTypeAtLocation(resetNode);
+        if (
+          util.isTypeAnyType(restType) ||
+          util.isTypeAnyArrayType(restType, checker)
+        ) {
+          context.report({
+            node: node,
+            messageId: 'unsafeArraySpread',
+          });
+        }
       },
       // 'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
       //   if (!node.value) {

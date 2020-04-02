@@ -110,6 +110,7 @@ class Foo {
     'const x = new Set<any>();',
     'const x = { y: 1 };',
     'const x: { y: number } = { y: 1 };',
+    'const x = [...[1, 2, 3]];',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -230,6 +231,22 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
         },
       ],
     },
+    ...batchedSingleLineTests({
+      code: `
+const x = [...(1 as any)];
+const x = [...([] as any[])];
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArraySpread',
+          line: 2,
+        },
+        {
+          messageId: 'unsafeArraySpread',
+          line: 3,
+        },
+      ],
+    }),
     ...assignmentTest([
       ['{x} = {x: 1} as {x: any}', 2, 3],
       ['{x: y} = {x: 1} as {x: any}', 5, 6],
@@ -261,7 +278,8 @@ const x = { ...(1 as any) };
           },
         },
         {
-          messageId: 'unsafeObjectSpread',
+          // spreading an any widens the object type to any
+          messageId: 'anyAssignment',
           line: 5,
         },
       ],
