@@ -28,7 +28,7 @@ Are you opening an issue because the rule you're trying to use is not found?
 
 <!--
 Make sure you read through our FAQ before posting.
-https://github.com/typescript-eslint/typescript-eslint/blob/issue-template-update/docs/getting-started/linting/FAQ.md
+https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md
 -->
 
 **Repro**
