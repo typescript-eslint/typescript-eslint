@@ -35,7 +35,6 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   CallExpression: ['callee', 'typeParameters', 'arguments'],
   // JSX
   JSXElement: [
-    'attributes',
     'openingElement',
     'children',
     'closingElement',
