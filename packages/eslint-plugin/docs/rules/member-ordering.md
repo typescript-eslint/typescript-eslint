@@ -1,28 +1,53 @@
 # Require a consistent member declaration order (`member-ordering`)
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class
-expressions easier to read, navigate and edit.
+A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate and edit.
 
 ## Rule Details
 
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured.
+This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
 
-It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...). By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
+### Grouping and sorting member groups
+
+It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...) and enforce a certain order for these groups. By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
+
+### Sorting members
+
+Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves (e.g. `a`, `b`, `c`, ...). You have 2 options: Sort all of them while ignoring their type or sort them while respecting their types (e.g. sort all fields in an interface alphabetically).
 
 ## Options
 
-```ts
-{
-  default?: Array<MemberType> | never
-  classes?: Array<MemberType> | never
-  classExpressions?: Array<MemberType> | never
+These options allow to specify how to group the members and sort their groups.
 
-  interfaces?: ['signature' | 'field' | 'method' | 'constructor'] | never
-  typeLiterals?: ['signature' | 'field' | 'method' | 'constructor'] | never
+- Sort groups, don't enforce member order: Use `memberTypes`
+- Sort members, don't enforce group order: Use `order`
+- Sort members within groups: Use `memberTypes` and `order`
+
+```ts
+type TypeOptions<T> =
+  | {
+    memberTypes: Array<T> | 'never',
+    order?: 'alphabetically' | 'as-written',
+  }
+  | {
+    order: 'alphabetically',
+  };
+
+{
+  default?: TypeOptions<MemberTypes>,
+
+  classes?: TypeOptions<MemberTypes>,
+  classExpressions?: TypeOptions<MemberTypes>,
+
+  interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
+  typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
 }
 ```
 
 See below for the possible definitions of `MemberType`.
+
+### Deprecated syntax
+
+Note: There is a deprecated syntax to specify the member types as an array.
 
 ### Member types (granular form)
 
@@ -138,61 +163,71 @@ The third grouping option is to ignore both scope and accessibility.
 
 The default configuration looks as follows:
 
-```json
+```json5
 {
-  "default": [
-    "signature",
+  default: [
+    // Index signature
+    'signature',
 
-    "public-static-field",
-    "protected-static-field",
-    "private-static-field",
+    // Fields
+    'public-static-field',
+    'protected-static-field',
+    'private-static-field',
 
-    "public-instance-field",
-    "protected-instance-field",
-    "private-instance-field",
+    'public-instance-field',
+    'protected-instance-field',
+    'private-instance-field',
 
-    "public-abstract-field",
-    "protected-abstract-field",
-    "private-abstract-field",
+    'public-abstract-field',
+    'protected-abstract-field',
+    'private-abstract-field',
 
-    "public-field",
-    "protected-field",
-    "private-field",
+    'public-field',
+    'protected-field',
+    'private-field',
 
-    "static-field",
-    "instance-field",
-    "abstract-field",
+    'static-field',
+    'instance-field',
+    'abstract-field',
 
-    "field",
+    'field',
 
-    "constructor",
+    // Constructors
+    'public-constructor',
+    'protected-constructor',
+    'private-constructor',
 
-    "public-static-method",
-    "protected-static-method",
-    "private-static-method",
+    'constructor',
 
-    "public-instance-method",
-    "protected-instance-method",
-    "private-instance-method",
+    // Methods
+    'public-static-method',
+    'protected-static-method',
+    'private-static-method',
 
-    "public-abstract-method",
-    "protected-abstract-method",
-    "private-abstract-method",
+    'public-instance-method',
+    'protected-instance-method',
+    'private-instance-method',
 
-    "public-method",
-    "protected-method",
-    "private-method",
+    'public-abstract-method',
+    'protected-abstract-method',
+    'private-abstract-method',
 
-    "static-method",
-    "instance-method",
-    "abstract-method",
+    'public-method',
+    'protected-method',
+    'private-method',
 
-    "method"
-  ]
+    'static-method',
+    'instance-method',
+    'abstract-method',
+
+    'method',
+  ],
 }
 ```
 
 Note: The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+
+Note: By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
 
 ## Examples
 
@@ -448,7 +483,7 @@ const foo = class {
 };
 ```
 
-Issue: Public static fields should come first, followed by static fields and instance fields.
+Note: Public static fields should come first, followed by static fields and instance fields.
 
 ##### Correct examples
 
@@ -542,21 +577,19 @@ class Foo {
 
 ##### Correct example
 
-Examples of **correct** code for `{ "classes": [...] }` option:
-
 ```ts
 class Foo {
   private C: string; // (irrelevant)
 
   public D: string; // (irrelevant)
 
-  public static E: string; // -> public static field
+  public B(): void {} // -> public instance method
 
   constructor() {} // (irrelevant)
 
   public static A(): void {} // (irrelevant)
 
-  public B(): void {} // -> public instance method
+  public static E: string; // -> public static field
 }
 ```
 
@@ -711,6 +744,73 @@ type Foo = {
   B: string; // -> field
 };
 ```
+
+### Sorting alphabetically within member groups
+
+It is possible to sort all members within a group alphabetically.
+
+#### Configuration: `{ default: { memberTypes: <Default Order>, order: 'alphabetically' } }`
+
+This will apply the default order (see above) and enforce an alphabetic order within each group.
+
+##### Incorrect examples
+
+```ts
+interface Foo {
+  a: x;
+  b: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  a(): void;
+  b(): void;
+  c(): void;
+
+  // Wrong group order, should be placed before all field definitions
+  [a: string]: number;
+}
+```
+
+```ts
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  b: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  // Wrong alphabetic order within group
+  c(): void;
+  b(): void;
+  a(): void;
+}
+```
+
+### Sorting alphabetically while ignoring member groups
+
+It is also possible to sort all members and ignore the member groups completely.
+
+#### Configuration: `{ default: { memberTypes: 'never', order: 'alphabetically' } }`
+
+##### Incorrect example
+
+```ts
+interface Foo {
+  b(): void;
+  a: b;
+
+  [a: string]: number; // Order doesn't matter (no sortable identifier)
+  new (): Bar; // Order doesn't matter (no sortable identifier)
+  (): Baz; // Order doesn't matter (no sortable identifier)
+}
+```
+
+Note: Wrong alphabetic order `b(): void` should come after `a: b`.
 
 ## When Not To Use It
 

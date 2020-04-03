@@ -338,6 +338,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`adjacent-overload-signatures`]: https://palantir.github.io/tslint/rules/adjacent-overload-signatures
 [`ban-ts-ignore`]: https://palantir.github.io/tslint/rules/ban-ts-ignore/
 [`ban-types`]: https://palantir.github.io/tslint/rules/ban-types
+[`invalid-void`]: https://palantir.github.io/tslint/rules/invalid-void
 [`member-access`]: https://palantir.github.io/tslint/rules/member-access
 [`member-ordering`]: https://palantir.github.io/tslint/rules/member-ordering
 [`no-any`]: https://palantir.github.io/tslint/rules/no-any

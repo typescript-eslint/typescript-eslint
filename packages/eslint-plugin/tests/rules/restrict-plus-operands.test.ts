@@ -13,20 +13,25 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('restrict-plus-operands', rule, {
   valid: [
-    `var x = 5;`,
-    `var y = "10";`,
-    `var z = 8.2;`,
-    `var w = "6.5";`,
-    `var foo = 5 + 10;`,
-    `var foo = "5.5" + "10";`,
-    `var foo = parseInt("5.5", 10) + 10;`,
-    `var foo = parseFloat("5.5", 10) + 10;`,
-    `var foo = 1n + 1n;`,
-    `var foo = BigInt(1) + 1n`,
-    `var foo = 1n; foo + 2n`,
+    'var x = 5;',
+    "var y = '10';",
+    'var z = 8.2;',
+    "var w = '6.5';",
+    'var foo = 5 + 10;',
+    "var foo = '5.5' + '10';",
+    "var foo = parseInt('5.5', 10) + 10;",
+    "var foo = parseFloat('5.5', 10) + 10;",
+    'var foo = 1n + 1n;',
+    'var foo = BigInt(1) + 1n;',
     `
-function test(s: string, n: number) : number { return 2; }
-var foo = test("5.5", 10) + 10;
+      var foo = 1n;
+      foo + 2n;
+    `,
+    `
+function test(s: string, n: number): number {
+  return 2;
+}
+var foo = test('5.5', 10) + 10;
     `,
     `
 var x = 5;
@@ -34,57 +39,63 @@ var z = 8.2;
 var foo = x + z;
     `,
     `
-var w = "6.5";
-var y = "10";
+var w = '6.5';
+var y = '10';
 var foo = y + w;
     `,
     'var foo = 1 + 1;',
     "var foo = '1' + '1';",
     `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
+var pair: { first: number; second: string } = { first: 5, second: '10' };
 var foo = pair.first + 10;
     `,
     `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
+var pair: { first: number; second: string } = { first: 5, second: '10' };
 var foo = pair.first + (10 as number);
     `,
     `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
-var foo = "5.5" + pair.second;
+var pair: { first: number; second: string } = { first: 5, second: '10' };
+var foo = '5.5' + pair.second;
     `,
     `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
-var foo = ("5.5" as string) + pair.second;
+var pair: { first: number; second: string } = { first: 5, second: '10' };
+var foo = ('5.5' as string) + pair.second;
     `,
-    `const foo = 'hello' + (someBoolean ? 'a' : 'b') + (() => someBoolean ? 'c' : 'd')() + 'e';`,
-    `const balls = true;`,
-    `balls === true;`,
+    `
+      const foo =
+        'hello' +
+        (someBoolean ? 'a' : 'b') +
+        (() => (someBoolean ? 'c' : 'd'))() +
+        'e';
+    `,
+    'const balls = true;',
+    'balls === true;',
     // https://github.com/typescript-eslint/typescript-eslint/issues/230
     `
 function foo<T extends string>(a: T) {
-    return a + "";
+  return a + '';
 }
     `,
     `
-function foo<T extends "a" | "b">(a: T) {
-    return a + "";
+function foo<T extends 'a' | 'b'>(a: T) {
+  return a + '';
 }
     `,
     `
 function foo<T extends number>(a: T) {
-    return a + 1;
+  return a + 1;
 }
     `,
     `
 function foo<T extends 1>(a: T) {
-    return a + 1;
+  return a + 1;
 }
     `,
     {
       code: `
 let foo: number = 0;
 foo += 1;
-    `,
+      `,
       options: [
         {
           checkCompoundAssignments: false,
@@ -94,8 +105,8 @@ foo += 1;
     {
       code: `
 let foo: number = 0;
-foo += "string";
-    `,
+foo += 'string';
+      `,
       options: [
         {
           checkCompoundAssignments: false,
@@ -125,7 +136,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = 5 + "10";`,
+      code: "var foo = 5 + '10';",
       errors: [
         {
           messageId: 'notStrings',
@@ -135,7 +146,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = [] + 5;`,
+      code: 'var foo = [] + 5;',
       errors: [
         {
           messageId: 'notNumbers',
@@ -145,7 +156,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = [] + {};`,
+      code: 'var foo = [] + [];',
       errors: [
         {
           messageId: 'notNumbers',
@@ -155,7 +166,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = [] + [];`,
+      code: 'var foo = 5 + [];',
       errors: [
         {
           messageId: 'notNumbers',
@@ -165,17 +176,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = 5 + [];`,
-      errors: [
-        {
-          messageId: 'notNumbers',
-          line: 1,
-          column: 11,
-        },
-      ],
-    },
-    {
-      code: `var foo = "5" + {};`,
+      code: "var foo = '5' + {};",
       errors: [
         {
           messageId: 'notStrings',
@@ -185,7 +186,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = 5.5 + "5";`,
+      code: "var foo = 5.5 + '5';",
       errors: [
         {
           messageId: 'notStrings',
@@ -195,7 +196,7 @@ foo += "string";
       ],
     },
     {
-      code: `var foo = "5.5" + 5;`,
+      code: "var foo = '5.5' + 5;",
       errors: [
         {
           messageId: 'notStrings',
@@ -207,9 +208,9 @@ foo += "string";
     {
       code: `
 var x = 5;
-var y = "10";
+var y = '10';
 var foo = x + y;
-            `,
+      `,
       errors: [
         {
           messageId: 'notStrings',
@@ -221,9 +222,9 @@ var foo = x + y;
     {
       code: `
 var x = 5;
-var y = "10";
+var y = '10';
 var foo = y + x;
-            `,
+      `,
       errors: [
         {
           messageId: 'notStrings',
@@ -236,7 +237,7 @@ var foo = y + x;
       code: `
 var x = 5;
 var foo = x + {};
-            `,
+      `,
       errors: [
         {
           messageId: 'notNumbers',
@@ -247,9 +248,9 @@ var foo = x + {};
     },
     {
       code: `
-var y = "10";
+var y = '10';
 var foo = [] + y;
-            `,
+      `,
       errors: [
         {
           messageId: 'notStrings',
@@ -260,9 +261,9 @@ var foo = [] + y;
     },
     {
       code: `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
-var foo = pair.first + "10";
-            `,
+var pair: { first: number; second: string } = { first: 5, second: '10' };
+var foo = pair.first + '10';
+      `,
       errors: [
         {
           messageId: 'notStrings',
@@ -273,9 +274,9 @@ var foo = pair.first + "10";
     },
     {
       code: `
-var pair: { first: number, second: string } = { first: 5, second: "10" };
+var pair: { first: number; second: string } = { first: 5, second: '10' };
 var foo = 5 + pair.second;
-            `,
+      `,
       errors: [
         {
           messageId: 'notStrings',
@@ -285,7 +286,7 @@ var foo = 5 + pair.second;
       ],
     },
     {
-      code: `var foo = parseInt("5.5", 10) + "10";`,
+      code: "var foo = parseInt('5.5', 10) + '10';",
       errors: [
         {
           messageId: 'notStrings',
@@ -296,9 +297,9 @@ var foo = 5 + pair.second;
     },
     {
       code: `
-var pair = { first: 5, second: "10" };
+var pair = { first: 5, second: '10' };
 var foo = pair + pair;
-            `,
+      `,
       errors: [
         {
           messageId: 'notNumbers',
@@ -308,7 +309,7 @@ var foo = pair + pair;
       ],
     },
     {
-      code: `var foo = 1n + 1`,
+      code: 'var foo = 1n + 1;',
       errors: [
         {
           messageId: 'notBigInts',
@@ -318,7 +319,7 @@ var foo = pair + pair;
       ],
     },
     {
-      code: `var foo = 1 + 1n`,
+      code: 'var foo = 1 + 1n;',
       errors: [
         {
           messageId: 'notBigInts',
@@ -328,22 +329,28 @@ var foo = pair + pair;
       ],
     },
     {
-      code: `var foo = 1n; foo + 1`,
+      code: `
+        var foo = 1n;
+        foo + 1;
+      `,
       errors: [
         {
           messageId: 'notBigInts',
-          line: 1,
-          column: 15,
+          line: 3,
+          column: 9,
         },
       ],
     },
     {
-      code: `var foo = 1; foo + 1n`,
+      code: `
+        var foo = 1;
+        foo + 1n;
+      `,
       errors: [
         {
           messageId: 'notBigInts',
-          line: 1,
-          column: 14,
+          line: 3,
+          column: 9,
         },
       ],
     },
@@ -351,63 +358,63 @@ var foo = pair + pair;
     {
       code: `
 function foo<T extends string>(a: T) {
-    return a + 1;
+  return a + 1;
 }
       `,
       errors: [
         {
           messageId: 'notStrings',
           line: 3,
-          column: 12,
+          column: 10,
         },
       ],
     },
     {
       code: `
-function foo<T extends "a" | "b">(a: T) {
-    return a + 1;
+function foo<T extends 'a' | 'b'>(a: T) {
+  return a + 1;
 }
       `,
       errors: [
         {
           messageId: 'notStrings',
           line: 3,
-          column: 12,
+          column: 10,
         },
       ],
     },
     {
       code: `
 function foo<T extends number>(a: T) {
-    return a + "";
+  return a + '';
 }
       `,
       errors: [
         {
           messageId: 'notStrings',
           line: 3,
-          column: 12,
+          column: 10,
         },
       ],
     },
     {
       code: `
 function foo<T extends 1>(a: T) {
-    return a + "";
+  return a + '';
 }
       `,
       errors: [
         {
           messageId: 'notStrings',
           line: 3,
-          column: 12,
+          column: 10,
         },
       ],
     },
     {
       code: `
 let foo: string | undefined;
-foo += "some data";
+foo += 'some data';
       `,
       options: [
         {
