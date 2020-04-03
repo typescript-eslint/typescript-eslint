@@ -53,18 +53,23 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreRestArgs, fixToUnknown }]) {
     /**
-     * Checks if the node is an arrow function, function declaration or function expression
+     * Checks if the node is an arrow function, function/constructor declaration or function expression
      * @param node the node to be validated.
-     * @returns true if the node is an arrow function, function declaration, function expression, function type, or call signature
+     * @returns true if the node is any kind of function declaration or expression
      * @private
      */
     function isNodeValidFunction(node: TSESTree.Node): boolean {
       return [
-        AST_NODE_TYPES.ArrowFunctionExpression,
-        AST_NODE_TYPES.FunctionDeclaration,
-        AST_NODE_TYPES.FunctionExpression,
-        AST_NODE_TYPES.TSFunctionType,
-        AST_NODE_TYPES.TSCallSignatureDeclaration,
+        AST_NODE_TYPES.ArrowFunctionExpression, // const x = (...args: any[]) => {};
+        AST_NODE_TYPES.FunctionDeclaration, // function f(...args: any[]) {}
+        AST_NODE_TYPES.FunctionExpression, // const x = function(...args: any[]) {};
+        AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
+        AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
+        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
+        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
+        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
+        AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
+        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
       ].includes(node.type);
     }
 
