@@ -1,5 +1,5 @@
 import rule from '../../src/rules/method-signature-style';
-import { batchedSingleLineTests, RuleTester } from '../RuleTester';
+import { batchedSingleLineTests, noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,7 +8,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('method-signature-style', rule, {
   valid: [
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
         interface Test { f: (a: string) => number }
         interface Test { ['f']: (a: boolean) => void }
         interface Test { f: <T>(a: T) => T }
@@ -22,7 +22,7 @@ ruleTester.run('method-signature-style', rule, {
     }),
     ...batchedSingleLineTests({
       options: ['method'],
-      code: `
+      code: noFormat`
         interface Test { f(a: string): number }
         interface Test { ['f'](a: boolean): void }
         interface Test { f<T>(a: T): T }
@@ -37,7 +37,7 @@ ruleTester.run('method-signature-style', rule, {
   ],
   invalid: [
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
         interface Test { f(a: string): number }
         interface Test { ['f'](a: boolean): void }
         interface Test { f<T>(a: T): T }
@@ -59,7 +59,7 @@ ruleTester.run('method-signature-style', rule, {
         { messageId: 'errorMethod', line: 9 },
         { messageId: 'errorMethod', line: 10 },
       ],
-      output: `
+      output: noFormat`
         interface Test { f: (a: string) => number }
         interface Test { ['f']: (a: boolean) => void }
         interface Test { f: <T>(a: T) => T }
@@ -73,7 +73,7 @@ ruleTester.run('method-signature-style', rule, {
     }),
     ...batchedSingleLineTests({
       options: ['method'],
-      code: `
+      code: noFormat`
         interface Test { f: (a: string) => number }
         interface Test { ['f']: (a: boolean) => void }
         interface Test { f: <T>(a: T) => T }
@@ -95,7 +95,7 @@ ruleTester.run('method-signature-style', rule, {
         { messageId: 'errorProperty', line: 9 },
         { messageId: 'errorProperty', line: 10 },
       ],
-      output: `
+      output: noFormat`
         interface Test { f(a: string): number }
         interface Test { ['f'](a: boolean): void }
         interface Test { f<T>(a: T): T }
