@@ -22,6 +22,7 @@ import interfaceNamePrefix from './interface-name-prefix';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
+import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noBaseToString from './no-base-to-string';
@@ -30,10 +31,10 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
-import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
+import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
@@ -99,7 +100,6 @@ export default {
   'ban-ts-comment': banTsComment,
   'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
-  'no-base-to-string': noBaseToString,
   'brace-style': braceStyle,
   camelcase: camelcase,
   'class-name-casing': classNameCasing,
@@ -118,8 +118,10 @@ export default {
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
+  'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-base-to-string': noBaseToString,
   'no-dupe-class-members': noDupeClassMembers,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,

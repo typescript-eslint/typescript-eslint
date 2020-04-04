@@ -308,11 +308,9 @@ export type BindingPattern = ArrayPattern | ObjectPattern;
 export type BindingName = BindingPattern | Identifier;
 export type ClassElement =
   | ClassProperty
-  | FunctionExpression
   | MethodDefinition
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
-  | TSEmptyBodyFunctionExpression
   | TSIndexSignature;
 export type ClassProperty =
   | ClassPropertyComputedName
