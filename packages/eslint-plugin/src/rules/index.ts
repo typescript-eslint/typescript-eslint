@@ -20,6 +20,7 @@ import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
 import interfaceNamePrefix from './interface-name-prefix';
 import keywordSpacing from './keyword-spacing';
+import invalidVoid from './invalid-void';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
@@ -122,6 +123,7 @@ export default {
   'init-declarations': initDeclarations,
   'interface-name-prefix': interfaceNamePrefix,
   'keyword-spacing': keywordSpacing,
+  'invalid-void': invalidVoid,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,

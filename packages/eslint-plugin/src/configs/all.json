@@ -27,6 +27,7 @@
     "keyword-spacing": "off",
     "@typescript-eslint/keyword-spacing": "error",
     "@typescript-eslint/member-delimiter-style": "error",
+    "@typescript-eslint/invalid-void": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/method-signature-style": "error",
     "@typescript-eslint/naming-convention": "error",
