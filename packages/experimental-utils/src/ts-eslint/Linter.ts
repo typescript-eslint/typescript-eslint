@@ -81,6 +81,12 @@ namespace Linter {
     reportUnusedDisableDirectives?: boolean;
   }
 
+  export interface LintSuggestion {
+    desc: string;
+    fix: RuleFix;
+    messageId?: string;
+  }
+
   export interface LintMessage {
     column: number;
     line: number;
@@ -88,11 +94,13 @@ namespace Linter {
     endLine?: number;
     ruleId: string | null;
     message: string;
+    messageId?: string;
     nodeType: string;
     fatal?: true;
     severity: Severity;
     fix?: RuleFix;
     source: string | null;
+    suggestions?: LintSuggestion[];
   }
 
   export interface FixOptions extends LintOptions {

@@ -43,10 +43,11 @@ export default util.createRule({
         }
       }
 
-      const baseTypes = checker.getBaseTypes(type as ts.InterfaceType);
-      for (const baseType of baseTypes) {
-        if (isErrorLike(baseType)) {
-          return true;
+      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
+        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
+          if (isErrorLike(baseType)) {
+            return true;
+          }
         }
       }
 

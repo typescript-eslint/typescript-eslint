@@ -15,7 +15,7 @@ The more relevant information you can include, the faster we can find the issue 
 
 <!--
 Make sure you read through our FAQ before posting.
-https://github.com/typescript-eslint/typescript-eslint/blob/issue-template-update/docs/getting-started/linting/FAQ.md
+https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md
 -->
 
 **Repro**
