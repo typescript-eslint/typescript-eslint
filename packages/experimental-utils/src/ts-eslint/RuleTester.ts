@@ -24,6 +24,8 @@ interface SuggestionOutput<TMessageIds extends string> {
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
    */
   output: string;
+  // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
+  // desc?: string;
 }
 
 interface InvalidTestCase<
@@ -36,6 +38,8 @@ interface InvalidTestCase<
 
 interface TestCaseError<TMessageIds extends string> {
   messageId: TMessageIds;
+  // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
+  // message?: string;
   data?: Record<string, unknown>;
   type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
   line?: number;
