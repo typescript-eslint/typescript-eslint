@@ -20,7 +20,6 @@ import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
 import interfaceNamePrefix from './interface-name-prefix';
 import keywordSpacing from './keyword-spacing';
-import invalidVoid from './invalid-void';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
@@ -41,6 +40,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
+import noInvalidVoidType from './no-invalid-void-type';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -123,7 +123,6 @@ export default {
   'init-declarations': initDeclarations,
   'interface-name-prefix': interfaceNamePrefix,
   'keyword-spacing': keywordSpacing,
-  'invalid-void': invalidVoid,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
@@ -144,6 +143,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
   'no-inferrable-types': noInferrableTypes,
+  'no-invalid-void-type': noInvalidVoidType,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,

@@ -1,4 +1,4 @@
-import rule from '../../src/rules/invalid-void';
+import rule from '../../src/rules/no-invalid-void-type';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({

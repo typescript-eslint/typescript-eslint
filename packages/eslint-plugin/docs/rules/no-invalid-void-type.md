@@ -1,4 +1,4 @@
-# Disallows usage of `void` type outside of generic or return types (`invalid-void`)
+# Disallows usage of `void` type outside of generic or return types (`no-invalid-void-type`)
 
 Disallows usage of `void` type outside of generic or return types.
 If `void` is used as return type, it shouldn’t be a part of intersection/union type.

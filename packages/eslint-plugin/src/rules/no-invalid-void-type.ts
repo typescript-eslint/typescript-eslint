@@ -22,7 +22,7 @@ type MessageIds =
   | 'invalidVoidNotReturn';
 
 export default util.createRule<[Options], MessageIds>({
-  name: 'invalid-void',
+  name: 'no-invalid-void-type',
   meta: {
     type: 'problem',
     docs: {
