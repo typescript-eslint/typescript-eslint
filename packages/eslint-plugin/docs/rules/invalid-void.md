@@ -1,17 +1,17 @@
 # Disallows usage of `void` type outside of generic or return types (`invalid-void`)
 
-Disallows usage of void type outside of generic or return types.
-If void is used as return type, it shouldn’t be a part of intersection/union type.
+Disallows usage of `void` type outside of generic or return types.
+If `void` is used as return type, it shouldn’t be a part of intersection/union type.
 
 ## Rationale
 
-The void type means “nothing” or that a function does not return any value,
-in contra with implicit undefined type which means that a function returns a value undefined.
+The `void` type means “nothing” or that a function does not return any value,
+in contra with implicit undefined type which means that a function returns a value `undefined`.
 So “nothing” cannot be mixed with any other types. If you need this - use `undefined` type instead.
 
 ## Rule Details
 
-This rule aims to ensure `void` is only used in valid places.
+This rule aims to ensure that the `void` type is only used in valid places.
 
 The following patterns are considered warnings:
 
@@ -41,7 +41,7 @@ type NoOp = () => void;
 
 function noop(): void {}
 
-let truelyUndefined = void 0;
+let trulyUndefined = void 0;
 
 async function promiseMeSomething(): Promise<void> {}
 ```
@@ -68,7 +68,7 @@ let voidMap: Map<string, void> = new Map<string, void>();
 
 The following patterns are considered warnings with `{ allowGenerics: ['Ex.Mx.Tx'] }`:
 
-```
+```ts
 logAndReturn<void>(undefined);
 
 type NotAllowedVoid1 = Mx.Tx<void>;
@@ -78,7 +78,7 @@ type NotAllowedVoid3 = Promise<void>;
 
 The following patterns are not considered warnings with `{ allowGenerics: ['Ex.Mx.Tx'] }`:
 
-```
+```ts
 type AllowedVoid = Ex.MX.Tx<void>;
 ```
 
