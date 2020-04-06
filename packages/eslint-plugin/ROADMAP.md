@@ -117,25 +117,25 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 
 ### Maintainability
 
-| TSLint rule                  |     | ESLint rule                                        |
-| ---------------------------- | :-: | -------------------------------------------------- |
-| [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                         |
-| [`deprecation`]              | 🔌  | [`deprecation/deprecation`]                        |
-| [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                             |
-| [`indent`]                   | ✅  | [`@typescript-eslint/indent`] or [Prettier]        |
-| [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier] |
-| [`max-classes-per-file`]     | 🌟  | [`max-classes-per-file`][max-classes-per-file]     |
-| [`max-file-line-count`]      | 🌟  | [`max-lines`][max-lines]                           |
-| [`max-line-length`]          | 🌟  | [`max-len`][max-len] or [Prettier]                 |
-| [`no-default-export`]        | 🔌  | [`import/no-default-export`]                       |
-| [`no-default-import`]        | 🛑  | N/A                                                |
-| [`no-duplicate-imports`]     | 🔌  | [`import/no-duplicates`]                           |
-| [`no-mergeable-namespace`]   | 🛑  | N/A                                                |
-| [`no-require-imports`]       | ✅  | [`@typescript-eslint/no-require-imports`]          |
-| [`object-literal-sort-keys`] | 🌓  | [`sort-keys`][sort-keys] <sup>[2]</sup>            |
-| [`prefer-const`]             | 🌟  | [`prefer-const`][prefer-const]                     |
-| [`prefer-readonly`]          | ✅  | [`@typescript-eslint/prefer-readonly`]             |
-| [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]       |
+| TSLint rule                  |     | ESLint rule                                             |
+| ---------------------------- | :-: | ------------------------------------------------------- |
+| [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                              |
+| [`deprecation`]              | 🔌  | [`deprecation/deprecation`] or [`import/no-deprecated`] |
+| [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                                  |
+| [`indent`]                   | ✅  | [`@typescript-eslint/indent`] or [Prettier]             |
+| [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier]      |
+| [`max-classes-per-file`]     | 🌟  | [`max-classes-per-file`][max-classes-per-file]          |
+| [`max-file-line-count`]      | 🌟  | [`max-lines`][max-lines]                                |
+| [`max-line-length`]          | 🌟  | [`max-len`][max-len] or [Prettier]                      |
+| [`no-default-export`]        | 🔌  | [`import/no-default-export`]                            |
+| [`no-default-import`]        | 🛑  | N/A                                                     |
+| [`no-duplicate-imports`]     | 🔌  | [`import/no-duplicates`]                                |
+| [`no-mergeable-namespace`]   | 🛑  | N/A                                                     |
+| [`no-require-imports`]       | ✅  | [`@typescript-eslint/no-require-imports`]               |
+| [`object-literal-sort-keys`] | 🌓  | [`sort-keys`][sort-keys] <sup>[2]</sup>                 |
+| [`prefer-const`]             | 🌟  | [`prefer-const`][prefer-const]                          |
+| [`prefer-readonly`]          | ✅  | [`@typescript-eslint/prefer-readonly`]                  |
+| [`trailing-comma`]           | 🌓  | [`comma-dangle`][comma-dangle] or [Prettier]            |
 
 <sup>[2]</sup> Missing support for blank-line-delimited sections
 
