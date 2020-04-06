@@ -60,15 +60,35 @@ namespace Linter {
 
   export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
 
-  export interface Config {
-    rules?: {
-      [name: string]: RuleLevel | RuleLevelAndOptions;
-    };
+  export type RuleEntry = RuleLevel | RuleLevelAndOptions;
+  export type RulesRecord = Partial<Record<string, RuleEntry>>;
+
+  // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
+  interface BaseConfig {
+    $schema?: string;
+    env?: { [name: string]: boolean };
+    extends?: string | string[];
+    globals?: { [name: string]: boolean };
+    noInlineConfig?: boolean;
+    overrides?: ConfigOverride[];
     parser?: string;
     parserOptions?: ParserOptions;
+    plugins?: string[];
+    processor?: string;
+    reportUnusedDisableDirectives?: boolean;
     settings?: { [name: string]: unknown };
-    env?: { [name: string]: boolean };
-    globals?: { [name: string]: boolean };
+    rules?: RulesRecord;
+  }
+
+  export interface ConfigOverride extends BaseConfig {
+    excludedFiles?: string | string[];
+    files: string | string[];
+  }
+  export type RuleOverride = ConfigOverride; // TODO - delete this next major
+
+  export interface Config extends BaseConfig {
+    ignorePatterns?: string | string[];
+    root?: boolean;
   }
 
   export type ParserOptions = TSParserOptions;

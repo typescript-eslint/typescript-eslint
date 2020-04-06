@@ -128,6 +128,7 @@ interface ReportDescriptorBase<TMessageIds extends string> {
    * The messageId which is being reported.
    */
   messageId: TMessageIds;
+
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // desc?: string;
 }
