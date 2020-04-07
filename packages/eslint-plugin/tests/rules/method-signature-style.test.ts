@@ -7,19 +7,36 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('method-signature-style', rule, {
   valid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-        interface Test { f: (a: string) => number }
-        interface Test { ['f']: (a: boolean) => void }
-        interface Test { f: <T>(a: T) => T }
-        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
-        interface Test { 'f!': </* a */>(/* b */ x: any /* c */) => void }
-        type Test = { readonly f: (a: string) => number }
-        type Test = { ['f']?: (a: boolean) => void }
-        type Test = { readonly f?: <T>(a?: T) => T }
-        type Test = { readonly ['f']?: <T>(a: T, b: T) => T }
-      `,
-    }),
+    `
+interface Test {
+  f: (a: string) => number;
+}
+    `,
+    `
+interface Test {
+  ['f']: (a: boolean) => void;
+}
+    `,
+    `
+interface Test {
+  f: <T>(a: T) => T;
+}
+    `,
+    `
+interface Test {
+  ['f']: <T extends {}>(a: T, b: T) => T;
+}
+    `,
+    // TODO - requires prettier2 to format correctly
+    noFormat`
+interface Test {
+  'f!': </* a */>(/* b */ x: any /* c */) => void;
+}
+    `,
+    'type Test = { readonly f: (a: string) => number };',
+    "type Test = { ['f']?: (a: boolean) => void };",
+    'type Test = { readonly f?: <T>(a?: T) => T };',
+    "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
     ...batchedSingleLineTests({
       options: ['method'],
       code: noFormat`
@@ -107,5 +124,107 @@ ruleTester.run('method-signature-style', rule, {
         type Test = { readonly ['f']?<T>(a: T, b: T): T }
       `,
     }),
+    {
+      code: noFormat`
+interface Foo {
+  semi(arg: string): void;
+  comma(arg: string): void,
+  none(arg: string): void
+}
+      `,
+      output: noFormat`
+interface Foo {
+  semi: (arg: string) => void;
+  comma: (arg: string) => void,
+  none: (arg: string) => void
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface Foo {
+  semi: (arg: string) => void;
+  comma: (arg: string) => void,
+  none: (arg: string) => void
+}
+      `,
+      output: noFormat`
+interface Foo {
+  semi(arg: string): void;
+  comma(arg: string): void,
+  none(arg: string): void
+}
+      `,
+      options: ['method'],
+      errors: [
+        {
+          messageId: 'errorProperty',
+          line: 3,
+        },
+        {
+          messageId: 'errorProperty',
+          line: 4,
+        },
+        {
+          messageId: 'errorProperty',
+          line: 5,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1857
+    {
+      code: noFormat`
+interface Foo {
+  x(
+    args: Pick<
+      Bar,
+      'one' | 'two' | 'three'
+    >,
+  ): Baz;
+  y(
+    foo: string,
+    bar: number,
+  ): void;
+}
+      `,
+      output: noFormat`
+interface Foo {
+  x: (
+    args: Pick<
+      Bar,
+      'one' | 'two' | 'three'
+    >,
+  ) => Baz;
+  y: (
+    foo: string,
+    bar: number,
+  ) => void;
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 9,
+        },
+      ],
+    },
   ],
 });

@@ -4,11 +4,10 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export type Options = ['property' | 'method'];
+export type Options = [('property' | 'method')?];
+export type MessageIds = 'errorMethod' | 'errorProperty';
 
-export type MessageId = 'errorMethod' | 'errorProperty';
-
-export default util.createRule<Options, MessageId>({
+export default util.createRule<Options, MessageIds>({
   name: 'method-signature-style',
   meta: {
     type: 'suggestion',
@@ -56,10 +55,21 @@ export default util.createRule<Options, MessageId>({
     ): string {
       let params = '()';
       if (node.params.length > 0) {
+        const openingParen = util.nullThrows(
+          sourceCode.getTokenBefore(node.params[0], util.isOpeningParenToken),
+          'Missing opening paren before first parameter',
+        );
+        const closingParen = util.nullThrows(
+          sourceCode.getTokenAfter(
+            node.params[node.params.length - 1],
+            util.isClosingParenToken,
+          ),
+          'Missing closing paren after last parameter',
+        );
+
         params = sourceCode.text.substring(
-          sourceCode.getTokenBefore(node.params[0])!.range[0],
-          sourceCode.getTokenAfter(node.params[node.params.length - 1])!
-            .range[1],
+          openingParen.range[0],
+          closingParen.range[1],
         );
       }
       if (node.typeParameters != null) {
@@ -75,6 +85,18 @@ export default util.createRule<Options, MessageId>({
       return sourceCode.getText(node.returnType!.typeAnnotation);
     }
 
+    function getDelimiter(node: TSESTree.Node): string {
+      const lastToken = sourceCode.getLastToken(node);
+      if (
+        lastToken &&
+        (util.isSemicolonToken(lastToken) || util.isCommaToken(lastToken))
+      ) {
+        return lastToken.value;
+      }
+
+      return '';
+    }
+
     return {
       TSMethodSignature(methodNode): void {
         if (mode === 'method') {
@@ -88,9 +110,10 @@ export default util.createRule<Options, MessageId>({
             const key = getMethodKey(methodNode);
             const params = getMethodParams(methodNode);
             const returnType = getMethodReturnType(methodNode);
+            const delimiter = getDelimiter(methodNode);
             return fixer.replaceText(
               methodNode,
-              `${key}: ${params} => ${returnType}`,
+              `${key}: ${params} => ${returnType}${delimiter}`,
             );
           },
         });
@@ -112,9 +135,10 @@ export default util.createRule<Options, MessageId>({
             const key = getMethodKey(propertyNode);
             const params = getMethodParams(typeNode);
             const returnType = getMethodReturnType(typeNode);
+            const delimiter = getDelimiter(propertyNode);
             return fixer.replaceText(
               propertyNode,
-              `${key}${params}: ${returnType}`,
+              `${key}${params}: ${returnType}${delimiter}`,
             );
           },
         });
