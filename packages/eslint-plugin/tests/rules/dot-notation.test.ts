@@ -31,7 +31,7 @@ const x = new X();
 x['priv_prop'] = 123;
     `,
 
-    //  baserule
+    //  baseRule
 
     'a.b;',
     'a.b.c;',
