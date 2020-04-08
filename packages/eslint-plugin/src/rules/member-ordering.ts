@@ -174,9 +174,6 @@ function getNodeType(node: Member): string | null {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind;
-    // return node.decorators && node.decorators.length > 0
-    //   ? `decorated-${node.kind}`
-    //   : node.kind;
     case AST_NODE_TYPES.TSMethodSignature:
       return 'method';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
@@ -186,10 +183,6 @@ function getNodeType(node: Member): string | null {
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : 'field';
-    // ? 'method'
-    // : node.decorators && node.decorators.length > 0
-    // ? 'decorated-field'
-    // : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
       return 'field';
     case AST_NODE_TYPES.TSIndexSignature:
