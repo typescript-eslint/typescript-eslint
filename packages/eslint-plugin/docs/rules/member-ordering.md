@@ -62,6 +62,9 @@ There are multiple ways to specify the member types. The most explicit and granu
   'public-static-field',
   'protected-static-field',
   'private-static-field',
+  'public-decorated-field',
+  'protected-decorated-field',
+  'private-decorated-field',
   'public-instance-field',
   'protected-instance-field',
   'private-instance-field',
@@ -78,6 +81,9 @@ There are multiple ways to specify the member types. The most explicit and granu
   'public-static-method',
   'protected-static-method',
   'private-static-method',
+  'public-decorated-method',
+  'protected-decorated-method',
+  'private-decorated-method',
   'public-instance-method',
   'protected-instance-method',
   'private-instance-method',
@@ -99,17 +105,45 @@ It is also possible to group member types by their accessibility (`static`, `ins
   // No accessibility for index signature. See above.
 
   // Fields
-  'public-field', // = ['public-static-field', 'public-instance-field'])
-  'protected-field', // = ['protected-static-field', 'protected-instance-field'])
-  'private-field', // = ['private-static-field', 'private-instance-field'])
+  'public-field', // = ['public-static-field', 'public-instance-field']
+  'protected-field', // = ['protected-static-field', 'protected-instance-field']
+  'private-field', // = ['private-static-field', 'private-instance-field']
 
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
 
   // Methods
-  'public-method', // = ['public-static-method', 'public-instance-method'])
-  'protected-method', // = ['protected-static-method', 'protected-instance-method'])
-  'private-method', // = ['private-static-method', 'private-instance-method'])
+  'public-method', // = ['public-static-method', 'public-instance-method']
+  'protected-method', // = ['protected-static-method', 'protected-instance-method']
+  'private-method', // = ['private-static-method', 'private-instance-method']
+]
+```
+
+### Member group types (with accessibility and a decorator)
+
+It is also possible to group methods or fields with a decorator separately, optionally specifying
+their accessibility.
+
+```json5
+[
+  // Index signature
+  // No decorators for index signature.
+
+  // Fields
+  'public-decorated-field',
+  'protected-decorated-field',
+  'private-decorated-field',
+
+  'decorated-field', // = ['public-decorated-field', 'protected-decorated-field', private-decorated-field]
+
+  // Constructors
+  // There are no decorators for constructors.
+
+  'public-decorated-method',
+  'protected-decorated-method',
+  'private-decorated-method',
+
+  'decorated-method', // = ['public-decorated-method', 'protected-decorated-method', 'private-decorated-method']
 ]
 ```
 
@@ -174,6 +208,10 @@ The default configuration looks as follows:
     'protected-static-field',
     'private-static-field',
 
+    'public-decorated-field',
+    'protected-decorated-field',
+    'private-decorated-field',
+
     'public-instance-field',
     'protected-instance-field',
     'private-instance-field',
@@ -190,6 +228,8 @@ The default configuration looks as follows:
     'instance-field',
     'abstract-field',
 
+    'decorated-field',
+
     'field',
 
     // Constructors
@@ -203,6 +243,10 @@ The default configuration looks as follows:
     'public-static-method',
     'protected-static-method',
     'private-static-method',
+
+    'public-decorated-method',
+    'protected-decorated-method',
+    'private-decorated-method',
 
     'public-instance-method',
     'protected-instance-method',
@@ -219,6 +263,8 @@ The default configuration looks as follows:
     'static-method',
     'instance-method',
     'abstract-method',
+
+    'decorated-method',
 
     'method',
   ],
