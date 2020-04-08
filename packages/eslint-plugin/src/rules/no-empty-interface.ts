@@ -64,10 +64,7 @@ export default util.createRule<Options, MessageIds>({
               fix: fixer => {
                 let typeParam = '';
                 if (node.typeParameters) {
-                  typeParam = sourceCode.text.substring(
-                    node.typeParameters.range[0],
-                    node.typeParameters.range[1],
-                  );
+                  typeParam = sourceCode.getText(node.typeParameters);
                 }
                 return fixer.replaceText(
                   node,
