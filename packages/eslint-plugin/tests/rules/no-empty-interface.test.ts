@@ -133,5 +133,20 @@ type Foo = R
         },
       ],
     },
+    {
+      code: `
+interface Foo<T> extends Bar<T> {}
+      `,
+      output: noFormat`
+type Foo<T> = Bar<T>
+      `,
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
   ],
 });

@@ -1,6 +1,7 @@
 import {
   isCallExpression,
   isJsxExpression,
+  isIdentifier,
   isNewExpression,
   isParameterDeclaration,
   isPropertyDeclaration,
@@ -8,6 +9,7 @@ import {
   isUnionOrIntersectionType,
   isVariableDeclaration,
   unionTypeParts,
+  isPropertyAssignment,
 } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -297,11 +299,39 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
   }
 }
 
+export function getTypeArguments(
+  type: ts.TypeReference,
+  checker: ts.TypeChecker,
+): readonly ts.Type[] {
+  // getTypeArguments was only added in TS3.7
+  if (checker.getTypeArguments) {
+    return checker.getTypeArguments(type);
+  }
+
+  return type.typeArguments ?? [];
+}
+
 /**
  * @returns true if the type is `any`
  */
 export function isTypeAnyType(type: ts.Type): boolean {
   return isTypeFlagSet(type, ts.TypeFlags.Any);
+}
+
+/**
+ * @returns true if the type is `any[]`
+ */
+export function isTypeAnyArrayType(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    checker.isArrayType(type) &&
+    isTypeAnyType(
+      // getTypeArguments was only added in TS3.7
+      getTypeArguments(type, checker)[0],
+    )
+  );
 }
 
 export const enum AnyType {
@@ -321,15 +351,7 @@ export function isAnyOrAnyArrayTypeDiscriminated(
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
-  if (
-    checker.isArrayType(type) &&
-    isTypeAnyType(
-      // getTypeArguments was only added in TS3.7
-      checker.getTypeArguments
-        ? checker.getTypeArguments(type)[0]
-        : (type.typeArguments ?? [])[0],
-    )
-  ) {
+  if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
   return AnyType.Safe;
@@ -350,6 +372,10 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
 ): false | { sender: ts.Type; receiver: ts.Type } {
+  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
+    return { sender: type, receiver };
+  }
+
   if (isTypeReference(type) && isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
@@ -386,9 +412,6 @@ export function isUnsafeAssignment(
     return false;
   }
 
-  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
-    return { sender: type, receiver };
-  }
   return false;
 }
 
@@ -419,6 +442,8 @@ export function getContextualType(
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
   } else if (isJsxExpression(parent)) {
     return checker.getContextualType(parent);
+  } else if (isPropertyAssignment(parent) && isIdentifier(node)) {
+    return checker.getContextualType(node);
   } else if (
     ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
       parent.kind,

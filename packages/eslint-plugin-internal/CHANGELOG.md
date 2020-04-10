@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Features
+
+* **eslint-plugin-internal:** add plugin-test-formatting rule ([#1821](https://github.com/typescript-eslint/typescript-eslint/issues/1821)) ([9b0023a](https://github.com/typescript-eslint/typescript-eslint/commit/9b0023a4996ecdd7dfcb30abd1678091a78f3064))
+
+
+
+
+
 # [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal

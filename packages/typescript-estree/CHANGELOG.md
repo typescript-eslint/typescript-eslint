@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Bug Fixes
+
+* **typescript-estree:** add support for TS3.9 extra file extensions ([#1833](https://github.com/typescript-eslint/typescript-eslint/issues/1833)) ([1f0ff41](https://github.com/typescript-eslint/typescript-eslint/commit/1f0ff41aa1bc3b7c5330b2f5fe22e24bf578a6b2))
+
+
+### Features
+
+* **eslint-plugin:** sort members alphabetically ([#263](https://github.com/typescript-eslint/typescript-eslint/issues/263)) ([485e902](https://github.com/typescript-eslint/typescript-eslint/commit/485e90213a0f8baac0587f7d56925448883fc5bd))
+
+
+
+
+
 # [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
 
 

@@ -184,7 +184,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
-| [`prefer-method-signature`]         | 🛑  | N/A                                                                                 |
+| [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
 | [`prefer-template`]                 | 🌟  | [`prefer-template`][prefer-template]                                                |
 | [`prefer-while`]                    | 🛑  | N/A                                                                                 |
@@ -597,6 +597,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
 [`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
+[`@typescript-eslint/method-signature-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/method-signature-style.md
 [`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
 [`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-interface.md
 [`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-inferrable-types.md

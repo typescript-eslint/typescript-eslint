@@ -61,13 +61,18 @@ export default util.createRule<Options, MessageIds>({
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
-              fix: fixer =>
-                fixer.replaceText(
+              fix: fixer => {
+                let typeParam = '';
+                if (node.typeParameters) {
+                  typeParam = sourceCode.getText(node.typeParameters);
+                }
+                return fixer.replaceText(
                   node,
-                  `type ${sourceCode.getText(node.id)} = ${sourceCode.getText(
-                    extend[0],
-                  )}`,
-                ),
+                  `type ${sourceCode.getText(
+                    node.id,
+                  )}${typeParam} = ${sourceCode.getText(extend[0])}`,
+                );
+              },
             });
           }
         }
