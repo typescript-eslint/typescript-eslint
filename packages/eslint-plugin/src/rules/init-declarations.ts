@@ -46,8 +46,8 @@ export default createRule<Options, MessageIds>({
           }
           if (
             node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
-            node.parent?.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.parent?.parent?.declare
+            node.parent.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            node.parent.parent?.declare
           ) {
             return;
           }
