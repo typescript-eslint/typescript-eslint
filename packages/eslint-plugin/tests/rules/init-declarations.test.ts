@@ -313,7 +313,7 @@ interface IEmployee {
       options: ['never'],
     },
     {
-      code: 'declare const foo: number = "asd";',
+      code: "declare const foo: number = 'asd';",
       options: ['always'],
     },
   ],
@@ -659,7 +659,7 @@ const class1 = class NAME {
       ],
     },
     {
-      code: 'declare var foo: number = "asd";',
+      code: "declare var foo: number = 'asd';",
       options: ['never'],
       errors: [
         {
