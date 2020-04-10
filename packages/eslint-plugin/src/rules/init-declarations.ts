@@ -7,17 +7,10 @@ import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
-  deepMerge,
 } from '../util';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
-
-const schema = deepMerge(
-  Array.isArray(baseRule.meta.schema)
-    ? baseRule.meta.schema[0]
-    : baseRule.meta.schema,
-);
 
 export default createRule<Options, MessageIds>({
   name: 'init-declarations',
@@ -30,7 +23,7 @@ export default createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    schema,
+    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],

@@ -316,6 +316,15 @@ interface IEmployee {
       code: "declare const foo: number = 'asd';",
       options: ['always'],
     },
+
+    {
+      code: "const foo: number = 'asd';",
+      options: ['always'],
+    },
+    {
+      code: 'const foo: number;',
+      options: ['never'],
+    },
     {
       code: `
 namespace myLib {
