@@ -316,6 +316,22 @@ interface IEmployee {
       code: "declare const foo: number = 'asd';",
       options: ['always'],
     },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number = 2;
+}
+      `,
+      options: ['always'],
+    },
   ],
   invalid: [
     // checking compatibility with base rule
@@ -665,6 +681,36 @@ const class1 = class NAME {
         {
           messageId: 'notInitialized',
           data: { idName: 'foo' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'initialized',
+          data: { idName: 'numberOfGreetings' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number = 2;
+}
+      `,
+      options: ['never'],
+      errors: [
+        {
+          messageId: 'notInitialized',
+          data: { idName: 'numberOfGreetings' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
