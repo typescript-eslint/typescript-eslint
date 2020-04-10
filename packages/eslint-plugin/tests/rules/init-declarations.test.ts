@@ -1,15 +1,8 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/init-declarations';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    project: './tsconfig.json',
-    tsconfigRootDir: rootDir,
-  },
   parser: '@typescript-eslint/parser',
 });
 

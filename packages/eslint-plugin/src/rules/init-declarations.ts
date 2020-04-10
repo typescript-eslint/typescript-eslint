@@ -41,7 +41,7 @@ export default createRule<Options, MessageIds>({
     return {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
         if (mode === 'always') {
-          if (node?.declare) {
+          if (node.declare) {
             return;
           }
           if (
