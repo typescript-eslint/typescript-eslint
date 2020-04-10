@@ -312,6 +312,10 @@ interface IEmployee {
       `,
       options: ['never'],
     },
+    {
+      code: 'declare const foo: number = "asd";',
+      options: ['always'],
+    },
   ],
   invalid: [
     // checking compatibility with base rule
@@ -650,6 +654,17 @@ const class1 = class NAME {
         {
           messageId: 'initialized',
           data: { idName: 'arr' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: 'declare var foo: number = "asd";',
+      options: ['never'],
+      errors: [
+        {
+          messageId: 'notInitialized',
+          data: { idName: 'foo' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
