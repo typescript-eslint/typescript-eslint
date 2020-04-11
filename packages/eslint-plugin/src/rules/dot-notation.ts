@@ -63,13 +63,12 @@ export default createRule<Options, MessageIds>({
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
         const objectSymbol = typeChecker.getSymbolAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(node?.property),
+          parserServices.esTreeNodeToTSNodeMap.get(node.property),
         );
 
         if (
           allowPrivateClassPropertyAccess &&
-          objectSymbol?.declarations[0]?.modifiers &&
-          objectSymbol?.declarations[0]?.modifiers[0]?.kind ===
+          objectSymbol?.declarations[0]?.modifiers?.[0].kind ===
             ts.SyntaxKind.PrivateKeyword
         ) {
           return;
