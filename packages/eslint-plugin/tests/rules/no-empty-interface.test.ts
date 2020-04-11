@@ -148,5 +148,27 @@ type Foo<T> = Bar<T>
         },
       ],
     },
+    {
+      filename: 'test.d.ts',
+      code: `
+declare module FooBar {
+  type Baz = typeof baz;
+  export interface Bar extends Baz {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 4,
+        },
+      ],
+      // output matches input because a suggestion was made
+      output: `
+declare module FooBar {
+  type Baz = typeof baz;
+  export interface Bar extends Baz {}
+}
+      `,
+    },
   ],
 });
