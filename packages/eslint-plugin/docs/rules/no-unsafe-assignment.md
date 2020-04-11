@@ -1,12 +1,12 @@
 # Disallows assigning any to variables and properties (`no-unsafe-assignment`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library. Operations on the variable will not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library. Operations on the variable will not be checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
 
 ## Rule Details
 
-This rule disallows the assigning `any` to a variable, and assigning `any[]` to an array destructuring.
-This rule also compares the assigned type to the variable's declared/inferred return type to ensure you don't return an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
+This rule disallows assigning `any` to a variable, and assigning `any[]` to an array destructuring.
+This rule also compares the assigned type to the variable's type to ensure you don't assign an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to a variable declared as `Set<string>`.
 
 Examples of **incorrect** code for this rule:
 
