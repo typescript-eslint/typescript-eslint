@@ -543,3 +543,28 @@ declare module 'eslint/lib/rules/no-extra-semi' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/object-curly-spacing' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'requireSpaceBefore'
+    | 'requireSpaceAfter'
+    | 'unexpectedSpaceBefore'
+    | 'unexpectedSpaceAfter',
+    [
+      'always' | 'never',
+      {
+        arraysInObjects?: boolean;
+        objectsInObjects?: boolean;
+      }?,
+    ],
+    {
+      ObjectPattern(node: TSESTree.ObjectPattern): void;
+      ObjectExpression(node: TSESTree.ObjectExpression): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+    }
+  >;
+  export = rule;
+}
