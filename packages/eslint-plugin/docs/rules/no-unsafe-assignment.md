@@ -6,7 +6,7 @@ Assigning an `any` typed value to a variable can be hard to pick up on, particul
 ## Rule Details
 
 This rule disallows assigning `any` to a variable, and assigning `any[]` to an array destructuring.
-This rule also compares the assigned type to the variable's declared/inferred return type to ensure you don't return an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
+This rule also compares the assigned type to the variable's type to ensure you don't assign an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to a variable declared as `Set<string>`.
 
 Examples of **incorrect** code for this rule:
 
