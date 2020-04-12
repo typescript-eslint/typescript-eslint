@@ -155,11 +155,25 @@ declare module FooBar {
   type Baz = typeof baz;
   export interface Bar extends Baz {}
 }
-      `,
+      `.trimRight(),
       errors: [
         {
           messageId: 'noEmptyWithSuper',
           line: 4,
+          column: 20,
+          endLine: 4,
+          endColumn: 23,
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: noFormat`
+declare module FooBar {
+  type Baz = typeof baz;
+  export type Bar = Baz
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
       // output matches input because a suggestion was made
@@ -168,7 +182,7 @@ declare module FooBar {
   type Baz = typeof baz;
   export interface Bar extends Baz {}
 }
-      `,
+      `.trimRight(),
     },
   ],
 });
