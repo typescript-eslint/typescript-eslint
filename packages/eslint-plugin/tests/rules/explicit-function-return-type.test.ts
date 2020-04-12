@@ -1060,15 +1060,19 @@ const func = (value: number) => ({ type: 'X', value } as const);
     },
     {
       filename: 'test.ts',
-      code: 'const log = (message: string) => { void console.log(message); }',
+      code: `
+        const log = (message: string) => {
+          void console.log(message);
+        };
+      `,
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 13,
-          endColumn: 33,
+          line: 2,
+          endLine: 2,
+          column: 21,
+          endColumn: 41,
         },
       ],
     },
