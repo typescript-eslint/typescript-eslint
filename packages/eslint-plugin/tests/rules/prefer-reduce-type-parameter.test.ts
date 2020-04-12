@@ -14,28 +14,34 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
   valid: [
-    '(new class Mine { reduce() {} }).reduce(() => {}, 1 as any);',
     `
-    class Mine { reduce() {} }
-
-    new Mine().reduce(() => {}, 1 as any);
+      new (class Mine {
+        reduce() {}
+      })().reduce(() => {}, 1 as any);
     `,
     `
-    import { Reducable } from './class';
+      class Mine {
+        reduce() {}
+      }
 
-    new Reducable().reduce(() => {}, 1 as any);
+      new Mine().reduce(() => {}, 1 as any);
     `,
-    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0)",
-    '[1, 2, 3][null]((sum, num) => sum + num, 0)',
-    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0)',
-    '[1, 2, 3].reduce((sum, num) => sum + num, 0)',
-    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), [])',
-    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), [])',
+    `
+      import { Reducable } from './class';
+
+      new Reducable().reduce(() => {}, 1 as any);
+    `,
+    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0);",
+    '[1, 2, 3][null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
   ],
   invalid: [
     {
-      code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), [] as number[],)',
-      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), [],)',
+      code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), [] as number[]);',
+      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
           messageId: 'preferTypeParameter',
@@ -45,8 +51,8 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
       ],
     },
     {
-      code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), <number[]>[],)',
-      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), [],)',
+      code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), <number[]>[]);',
+      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
           messageId: 'preferTypeParameter',
@@ -56,8 +62,8 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
       ],
     },
     {
-      code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), [] as number[])',
-      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), [])',
+      code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), [] as number[]);',
+      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
           messageId: 'preferTypeParameter',
@@ -67,8 +73,8 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
       ],
     },
     {
-      code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), <number[]>[])',
-      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), [])',
+      code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), <number[]>[]);',
+      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
           messageId: 'preferTypeParameter',
@@ -86,7 +92,7 @@ names.reduce(
     ...accum,
     [name]: true,
   }),
-  {} as Record<string, boolean>
+  {} as Record<string, boolean>,
 );
       `,
       output: `
@@ -97,7 +103,7 @@ names.reduce<Record<string, boolean>>(
     ...accum,
     [name]: true,
   }),
-  {}
+  {},
 );
       `,
       errors: [
@@ -115,7 +121,7 @@ names.reduce<Record<string, boolean>>(
     ...accum,
     [name]: true,
   }),
-  <Record<string, boolean>>{}
+  <Record<string, boolean>>{},
 );
       `,
       output: `
@@ -124,7 +130,7 @@ names.reduce<Record<string, boolean>>(
     ...accum,
     [name]: true,
   }),
-  {}
+  {},
 );
       `,
       errors: [
@@ -140,20 +146,20 @@ names.reduce<Record<string, boolean>>(
 ['a', 'b']['reduce'](
   (accum, name) => ({
     ...accum,
-    [name]: true
+    [name]: true,
   }),
-  {} as Record<string, boolean>
+  {} as Record<string, boolean>,
 );
-           `,
+      `,
       output: `
 ['a', 'b']['reduce']<Record<string, boolean>>(
   (accum, name) => ({
     ...accum,
-    [name]: true
+    [name]: true,
   }),
-  {}
+  {},
 );
-           `,
+      `,
       errors: [
         {
           messageId: 'preferTypeParameter',
@@ -167,12 +173,12 @@ names.reduce<Record<string, boolean>>(
 function f<T, U extends T[]>(a: U) {
   return a.reduce(() => {}, {} as Record<string, boolean>);
 }
-`,
+      `,
       output: `
 function f<T, U extends T[]>(a: U) {
   return a.reduce<Record<string, boolean>>(() => {}, {});
 }
-`,
+      `,
       errors: [
         {
           messageId: 'preferTypeParameter',
