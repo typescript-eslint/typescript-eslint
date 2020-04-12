@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
-      shouldTrackReferences: false,
+      shouldTrackReferences: true,
     },
   ],
   create(context, [options]) {

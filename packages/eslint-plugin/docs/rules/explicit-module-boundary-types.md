@@ -96,7 +96,7 @@ const defaults = {
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
   allowedNames: [],
-  shouldTrackReferences: false,
+  shouldTrackReferences: true,
 };
 ```
 
