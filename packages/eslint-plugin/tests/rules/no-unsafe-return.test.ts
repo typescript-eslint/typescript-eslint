@@ -74,7 +74,11 @@ function foo(): Set<number> {
   ],
   invalid: [
     {
-      code: 'function fn<T extends any>(x: T) { return x };',
+      code: `
+function fn<T extends any>(x: T) {
+  return x;
+}
+      `,
       errors: [
         {
           messageId: 'unsafeReturnAssignment',
@@ -82,8 +86,8 @@ function foo(): Set<number> {
             sender: 'any',
             receiver: 'T',
           },
-          line: 1,
-          column: 36,
+          line: 3,
+          column: 3,
         },
       ],
     },

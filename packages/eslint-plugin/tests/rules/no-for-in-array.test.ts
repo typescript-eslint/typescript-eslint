@@ -60,7 +60,8 @@ const fn = (arr: number[]) => {
   for (const x in arr) {
     console.log(x);
   }
-}`,
+};
+      `,
       errors: [
         {
           messageId: 'forInViolation',
@@ -74,7 +75,8 @@ const fn = (arr: number[] | string[]) => {
   for (const x in arr) {
     console.log(x);
   }
-}`,
+};
+      `,
       errors: [
         {
           messageId: 'forInViolation',
@@ -88,7 +90,8 @@ const fn = <T extends any[]>(arr: T) => {
   for (const x in arr) {
     console.log(x);
   }
-}`,
+};
+      `,
       errors: [
         {
           messageId: 'forInViolation',
