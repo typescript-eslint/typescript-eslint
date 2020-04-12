@@ -218,12 +218,12 @@ if (myCondition || x.mightBeDefined) {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/1256
     `
-    class A {
-      unbound(): void {
-        this.unbound = undefined;
-        this.unbound = this.unbound.bind(this);
-      }
-    }
+class A {
+  unbound(): void {
+    this.unbound = undefined;
+    this.unbound = this.unbound.bind(this);
+  }
+}
     `,
   ],
   invalid: [
