@@ -10,7 +10,7 @@ interface Options {
 
 const defaultOptions: [Options] = [
   {
-    'ts-expect-error': false,
+    'ts-expect-error': true,
     'ts-ignore': true,
     'ts-nocheck': true,
     'ts-check': false,
@@ -38,7 +38,7 @@ export default util.createRule<[Options], MessageIds>({
         properties: {
           'ts-expect-error': {
             type: 'boolean',
-            default: false,
+            default: true,
           },
           'ts-ignore': {
             type: 'boolean',
