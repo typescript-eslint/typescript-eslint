@@ -93,15 +93,16 @@ export default util.createRule<Options, MessageIds>({
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
-              fix: useAutoFix ? fix : undefined,
-              suggest: useAutoFix
-                ? undefined
-                : [
-                    {
-                      messageId: 'noEmptyWithSuper',
-                      fix,
-                    },
-                  ],
+              ...(useAutoFix
+                ? { fix }
+                : {
+                    suggest: [
+                      {
+                        messageId: 'noEmptyWithSuper',
+                        fix,
+                      },
+                    ],
+                  }),
             });
           }
         }
