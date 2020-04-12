@@ -146,13 +146,16 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
   import { RuleFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
-  type Option = Partial<{
-    before: boolean;
-    after: boolean;
-  }>;
-  type OverrideOptions = Partial<Record<string, Option>>;
-  type RootOption = Option & { overrides?: OverrideOptions };
-  type Options = [RootOption];
+  type Options = [
+  	{
+	  before?: boolean;
+	  after?: boolean;
+	  overrides?: Record<string, {
+	    before?: boolean;
+	    after?: boolean;
+	  }>;
+	}
+  ];
   type MessageIds =
     | 'expectedBefore'
     | 'expectedAfter'
