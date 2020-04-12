@@ -50,7 +50,7 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression)'(
+      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
         if (getMemberExpressionName(callee) !== 'reduce') {
