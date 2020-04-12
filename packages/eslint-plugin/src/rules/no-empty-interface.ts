@@ -1,9 +1,5 @@
 import * as util from '../util';
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import {
-  RuleFix,
-  RuleFixer,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import { AST_NODE_TYPES, TSESLint  } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
