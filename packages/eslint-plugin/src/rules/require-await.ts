@@ -11,6 +11,8 @@ interface ScopeInfo {
   upper: ScopeInfo | null;
   hasAwait: boolean;
   hasAsync: boolean;
+  isGen: boolean;
+  isAsyncYield: boolean;
 }
 type FunctionNode =
   | TSESTree.FunctionDeclaration
@@ -49,6 +51,8 @@ export default util.createRule({
         upper: scopeInfo,
         hasAwait: false,
         hasAsync: node.async,
+        isGen: node.generator || false,
+        isAsyncYield: false,
       };
     }
 
@@ -62,7 +66,12 @@ export default util.createRule({
         return;
       }
 
-      if (node.async && !scopeInfo.hasAwait && !isEmptyFunction(node)) {
+      if (
+        node.async &&
+        !scopeInfo.hasAwait &&
+        !isEmptyFunction(node) &&
+        !(scopeInfo.isGen && scopeInfo.isAsyncYield)
+      ) {
         context.report({
           node,
           loc: getFunctionHeadLoc(node, sourceCode),
@@ -92,8 +101,32 @@ export default util.createRule({
       if (!scopeInfo) {
         return;
       }
-
       scopeInfo.hasAwait = true;
+    }
+
+    /**
+     * mark `scopeInfo.isAsyncYield` to `true` if its a generator
+     * function and the delegate is `true`
+     */
+    function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
+      if (!scopeInfo || !scopeInfo.isGen || !node.argument) {
+        return;
+      }
+
+      if (node?.argument?.type === AST_NODE_TYPES.Literal) {
+        // making this `false` as for literals we don't need to check the definition
+        // eg : async function* run() { yield* 1 }
+        scopeInfo.isAsyncYield = false;
+      }
+
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node?.argument);
+      const type = checker.getTypeAtLocation(tsNode);
+      const symbol = type.getSymbol();
+
+      // async function* test1() {yield* asyncGenerator() }
+      if (symbol?.getName() === 'AsyncGenerator') {
+        scopeInfo.isAsyncYield = true;
+      }
     }
 
     return {
@@ -106,6 +139,7 @@ export default util.createRule({
 
       AwaitExpression: markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
+      'YieldExpression[delegate = true]': markAsHasDelegateGen,
 
       // check body-less async arrow function.
       // ignore `async () => await foo` because it's obviously correct

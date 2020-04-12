@@ -15,27 +15,34 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     'const foo = 3 as number;',
-    'const foo = <number> 3;',
+    'const foo = <number>3;',
     'const foo = <3>3;',
     'const foo = 3 as 3;',
     `
-type Tuple = [3, "hi", "bye"];
-const foo = ([3, "hi", "bye"]) as Tuple;`,
+type Tuple = [3, 'hi', 'bye'];
+const foo = [3, 'hi', 'bye'] as Tuple;
+    `,
     `
 type PossibleTuple = {};
-const foo = ({}) as PossibleTuple;`,
+const foo = {} as PossibleTuple;
+    `,
     `
-type PossibleTuple = { hello: "hello" };
-const foo = ({ hello: "hello" }) as PossibleTuple;`,
+type PossibleTuple = { hello: 'hello' };
+const foo = { hello: 'hello' } as PossibleTuple;
+    `,
     `
-type PossibleTuple = { 0: "hello", 5: "hello" };
-const foo = ({ 0: "hello", 5: "hello" }) as PossibleTuple;`,
-    `let bar: number | undefined = x;
-      let foo: number = bar!;`,
+type PossibleTuple = { 0: 'hello'; 5: 'hello' };
+const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
+    `,
+    `
+let bar: number | undefined = x;
+let foo: number = bar!;
+    `,
     {
       code: `
 type Foo = number;
-const foo = (3 + 5) as Foo;`,
+const foo = (3 + 5) as Foo;
+      `,
       options: [{ typesToIgnore: ['Foo'] }],
     },
     {
@@ -43,7 +50,7 @@ const foo = (3 + 5) as Foo;`,
       options: [{ typesToIgnore: ['any'] }],
     },
     {
-      code: "((Syntax as any).ArrayExpression = 'foo')",
+      code: "(Syntax as any).ArrayExpression = 'foo';",
       options: [{ typesToIgnore: ['any'] }],
     },
     {
@@ -53,26 +60,27 @@ const foo = (3 + 5) as Foo;`,
     {
       code: `
 type Foo = number;
-const foo = <Foo>(3 + 5);`,
+const foo = <Foo>(3 + 5);
+      `,
       options: [{ typesToIgnore: ['Foo'] }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/453
     // the ol' use-before-assign-is-okay-trust-me assertion
     `
-let bar: number
-bar! + 1
+let bar: number;
+bar! + 1;
     `,
     `
-let bar: undefined | number
-bar! + 1
+let bar: undefined | number;
+bar! + 1;
     `,
     `
-let bar: number, baz: number
-bar! + 1
+let bar: number, baz: number;
+bar! + 1;
     `,
     `
 function foo<T extends string | undefined>(bar: T) {
-  return bar!
+  return bar!;
 }
     `,
     `
@@ -108,23 +116,29 @@ class Mx {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/1199
     `
-function testFunction(_param: string | undefined): void { /* noop */ }
-const value = 'test' as string | null | undefined
-testFunction(value!)
+function testFunction(_param: string | undefined): void {
+  /* noop */
+}
+const value = 'test' as string | null | undefined;
+testFunction(value!);
     `,
     `
-function testFunction(_param: string | null): void { /* noop */ }
-const value = 'test' as string | null | undefined
-testFunction(value!)
+function testFunction(_param: string | null): void {
+  /* noop */
+}
+const value = 'test' as string | null | undefined;
+testFunction(value!);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/982
     {
       code: `
-declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+declare namespace JSX {
+  interface IntrinsicElements {
+    div: { key?: string | number };
+  }
+}
 
-function Test(props: {
-  id?: null | string | number;
-}) {
+function Test(props: { id?: null | string | number }) {
   return <div key={props.id!} />;
 }
       `,
@@ -138,13 +152,13 @@ const c = [...a, ...b] as const;
       `,
     },
     {
-      code: `const a = [1, 2] as const;`,
+      code: 'const a = [1, 2] as const;',
     },
     {
-      code: `const a = 'a' as const;`,
+      code: "const a = 'a' as const;",
     },
     {
-      code: `const a = { foo: 'foo' } as const`,
+      code: "const a = { foo: 'foo' } as const;",
     },
     {
       code: `
@@ -154,13 +168,13 @@ const c = <const>[...a, ...b];
       `,
     },
     {
-      code: `const a = <const>[1, 2];`,
+      code: 'const a = <const>[1, 2];',
     },
     {
-      code: `const a = <const>'a';`,
+      code: "const a = <const>'a';",
     },
     {
-      code: `const a = <const>{ foo: 'foo' };`,
+      code: "const a = <const>{ foo: 'foo' };",
     },
   ],
 
@@ -168,7 +182,8 @@ const c = <const>[...a, ...b];
     {
       code: `
 const foo = 3;
-const bar = foo!;`,
+const bar = foo!;
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -179,7 +194,8 @@ const bar = foo!;`,
     },
     {
       code: `
-const foo = (3 + 5) as number;`,
+const foo = (3 + 5) as number;
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -190,7 +206,8 @@ const foo = (3 + 5) as number;`,
     },
     {
       code: `
-const foo = <number>(3 + 5);`,
+const foo = <number>(3 + 5);
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -202,7 +219,8 @@ const foo = <number>(3 + 5);`,
     {
       code: `
 type Foo = number;
-const foo = (3 + 5) as Foo;`,
+const foo = (3 + 5) as Foo;
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -214,7 +232,8 @@ const foo = (3 + 5) as Foo;`,
     {
       code: `
 type Foo = number;
-const foo = <Foo>(3 + 5);`,
+const foo = <Foo>(3 + 5);
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -226,12 +245,12 @@ const foo = <Foo>(3 + 5);`,
     // https://github.com/typescript-eslint/typescript-eslint/issues/453
     {
       code: `
-let bar: number = 1
-bar! + 1
+let bar: number = 1;
+bar! + 1;
       `,
       output: `
-let bar: number = 1
-bar + 1
+let bar: number = 1;
+bar + 1;
       `,
       errors: [
         {
@@ -243,12 +262,12 @@ bar + 1
     {
       // definite declaration operator
       code: `
-let bar!: number
-bar! + 1
+let bar!: number;
+bar! + 1;
       `,
       output: `
-let bar!: number
-bar + 1
+let bar!: number;
+bar + 1;
       `,
       errors: [
         {
@@ -259,14 +278,14 @@ bar + 1
     },
     {
       code: `
-let bar: number | undefined
+let bar: number | undefined;
 bar = 1;
-bar! + 1
+bar! + 1;
       `,
       output: `
-let bar: number | undefined
+let bar: number | undefined;
 bar = 1;
-bar + 1
+bar + 1;
       `,
       errors: [
         {
@@ -278,12 +297,12 @@ bar + 1
     {
       code: `
 function foo<T extends string>(bar: T) {
-  return bar!
+  return bar!;
 }
       `,
       output: `
 function foo<T extends string>(bar: T) {
-  return bar
+  return bar;
 }
       `,
       errors: [
@@ -375,27 +394,31 @@ class Mx {
     // https://github.com/typescript-eslint/typescript-eslint/issues/982
     {
       code: `
-declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+declare namespace JSX {
+  interface IntrinsicElements {
+    div: { key?: string | number };
+  }
+}
 
-function Test(props: {
-  id?: string | number;
-}) {
+function Test(props: { id?: string | number }) {
   return <div key={props.id!} />;
 }
       `,
       output: `
-declare namespace JSX { interface IntrinsicElements { div: { key?: string | number } } }
+declare namespace JSX {
+  interface IntrinsicElements {
+    div: { key?: string | number };
+  }
+}
 
-function Test(props: {
-  id?: string | number;
-}) {
+function Test(props: { id?: string | number }) {
   return <div key={props.id} />;
 }
       `,
       errors: [
         {
           messageId: 'contextuallyUnnecessary',
-          line: 7,
+          line: 9,
         },
       ],
       filename: 'react.tsx',

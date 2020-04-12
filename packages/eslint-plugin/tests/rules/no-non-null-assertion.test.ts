@@ -8,16 +8,16 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-non-null-assertion', rule, {
   valid: [
     //
-    'x',
-    'x.y',
-    'x.y.z',
-    'x?.y.z',
-    'x?.y?.z',
-    '!x',
+    'x;',
+    'x.y;',
+    'x.y.z;',
+    'x?.y.z;',
+    'x?.y?.z;',
+    '!x;',
   ],
   invalid: [
     {
-      code: 'x!',
+      code: 'x!;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -28,7 +28,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: 'x!.y',
+      code: 'x!.y;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -37,14 +37,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.y',
+              output: 'x?.y;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x.y!',
+      code: 'x.y!;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -55,7 +55,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: '!x!.y',
+      code: '!x!.y;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -64,14 +64,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: '!x?.y',
+              output: '!x?.y;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x!.y?.z',
+      code: 'x!.y?.z;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -80,14 +80,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.y?.z',
+              output: 'x?.y?.z;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x![y]',
+      code: 'x![y];',
       errors: [
         {
           messageId: 'noNonNull',
@@ -96,14 +96,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.[y]',
+              output: 'x?.[y];',
             },
           ],
         },
       ],
     },
     {
-      code: 'x![y]?.z',
+      code: 'x![y]?.z;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -112,14 +112,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.[y]?.z',
+              output: 'x?.[y]?.z;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x.y.z!()',
+      code: 'x.y.z!();',
       errors: [
         {
           messageId: 'noNonNull',
@@ -128,14 +128,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x.y.z?.()',
+              output: 'x.y.z?.();',
             },
           ],
         },
       ],
     },
     {
-      code: 'x.y?.z!()',
+      code: 'x.y?.z!();',
       errors: [
         {
           messageId: 'noNonNull',
@@ -144,7 +144,7 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x.y?.z?.()',
+              output: 'x.y?.z?.();',
             },
           ],
         },
@@ -152,7 +152,7 @@ ruleTester.run('no-non-null-assertion', rule, {
     },
     // some weirder cases that are stupid but valid
     {
-      code: 'x!!!',
+      code: 'x!!!;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -178,7 +178,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: 'x!!.y',
+      code: 'x!!.y;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -188,7 +188,7 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x!?.y',
+              output: 'x!?.y;',
             },
           ],
         },
@@ -202,7 +202,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: 'x.y!!',
+      code: 'x.y!!;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -221,7 +221,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: 'x.y.z!!()',
+      code: 'x.y.z!!();',
       errors: [
         {
           messageId: 'noNonNull',
@@ -231,7 +231,7 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x.y.z!?.()',
+              output: 'x.y.z!?.();',
             },
           ],
         },
@@ -245,7 +245,7 @@ ruleTester.run('no-non-null-assertion', rule, {
       ],
     },
     {
-      code: 'x!?.[y].z',
+      code: 'x!?.[y].z;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -254,14 +254,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.[y].z',
+              output: 'x?.[y].z;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x!?.y.z',
+      code: 'x!?.y.z;',
       errors: [
         {
           messageId: 'noNonNull',
@@ -270,14 +270,14 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x?.y.z',
+              output: 'x?.y.z;',
             },
           ],
         },
       ],
     },
     {
-      code: 'x.y.z!?.()',
+      code: 'x.y.z!?.();',
       errors: [
         {
           messageId: 'noNonNull',
@@ -286,7 +286,7 @@ ruleTester.run('no-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
-              output: 'x.y.z?.()',
+              output: 'x.y.z?.();',
             },
           ],
         },

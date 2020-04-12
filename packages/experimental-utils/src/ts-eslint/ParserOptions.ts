@@ -1,12 +1,28 @@
 import { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 
+type EcmaVersion =
+  | 3
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 2015
+  | 2016
+  | 2017
+  | 2018
+  | 2019
+  | 2020;
+
 interface ParserOptions {
   comment?: boolean;
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
   };
-  ecmaVersion?: 3 | 5 | 6 | 7 | 8 | 9 | 10 | 2015 | 2016 | 2017 | 2018 | 2019;
+  ecmaVersion?: EcmaVersion;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
   extraFileExtensions?: string[];
@@ -16,6 +32,7 @@ interface ParserOptions {
   loc?: boolean;
   noWatch?: boolean;
   project?: string | string[];
+  projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
   sourceType?: 'script' | 'module';
   tokens?: boolean;
@@ -24,4 +41,4 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 
-export { ParserOptions };
+export { EcmaVersion, ParserOptions };

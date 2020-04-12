@@ -174,7 +174,7 @@ module.exports = {
         '@typescript-eslint/internal/no-typescript-estree-import': 'error',
       },
     },
-    // rule source files
+    // plugin rule source files
     {
       files: [
         'packages/eslint-plugin-internal/src/rules/**/*.ts',
@@ -185,6 +185,17 @@ module.exports = {
       rules: {
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+      },
+    },
+    // plugin rule tests
+    {
+      files: [
+        'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin/tests/rules/**/*.test.ts',
+      ],
+      rules: {
+        '@typescript-eslint/internal/plugin-test-formatting': 'error',
       },
     },
     // tools and tests

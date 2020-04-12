@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Features
+
+* **experimental-utils:** add types for suggestions from CLIEngine ([#1844](https://github.com/typescript-eslint/typescript-eslint/issues/1844)) ([7c11bd6](https://github.com/typescript-eslint/typescript-eslint/commit/7c11bd66f2d0e5ea9d3943e6b8c66e6ddff50862))
+* **experimental-utils:** update eslint types to match v6.8 ([#1846](https://github.com/typescript-eslint/typescript-eslint/issues/1846)) ([16ce74d](https://github.com/typescript-eslint/typescript-eslint/commit/16ce74d247781ac890dc0baa30c384f97e581b6b))
+
+
+
+
+
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+
+### Features
+
+* **typescript-estree:** add option to ignore certain folders from glob resolution ([#1802](https://github.com/typescript-eslint/typescript-eslint/issues/1802)) ([1e29e69](https://github.com/typescript-eslint/typescript-eslint/commit/1e29e69b289d61107a7de67592beae331ba50222))
+
+
+
+
+
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Features
+
+* **experimental-utils:** expose ast utility functions ([#1670](https://github.com/typescript-eslint/typescript-eslint/issues/1670)) ([3eb5d45](https://github.com/typescript-eslint/typescript-eslint/commit/3eb5d4525e95c8ab990f55588b8d830a02ce5a9c))
+
+
+
+
+
 # [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

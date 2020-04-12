@@ -72,7 +72,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       function foo(arg: typeof symb) {}
     `,
     `
-      enum Enum { a, b }
+      enum Enum {
+        a,
+        b,
+      }
       function foo(arg: Enum) {}
     `,
 
@@ -97,19 +100,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     `
       function foo(arg: {
         readonly foo: {
-          readonly bar: string
-        }
+          readonly bar: string;
+        };
       }) {}
     `,
     `
-      function foo(arg: {
-        readonly [k: string]: string,
-      }) {}
+      function foo(arg: { readonly [k: string]: string }) {}
     `,
     `
-      function foo(arg: {
-        readonly [k: number]: string,
-      }) {}
+      function foo(arg: { readonly [k: number]: string }) {}
     `,
     `
       interface Empty {}
@@ -120,13 +119,13 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     ...weirdIntersections.map(code => code),
     `
       interface Test extends ReadonlyArray<string> {
-        readonly property: boolean
+        readonly property: boolean;
       }
       function foo(arg: Readonly<Test>) {}
     `,
     `
-      type Test = (readonly string[]) & {
-        readonly property: boolean
+      type Test = readonly string[] & {
+        readonly property: boolean;
       };
       function foo(arg: Readonly<Test>) {}
     `,
@@ -193,12 +192,24 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // type functions
-    'interface Foo { (arg: readonly string[]): void }', // TSCallSignatureDeclaration
-    'interface Foo { new (arg: readonly string[]): void }', // TSConstructSignatureDeclaration
-    'const x = { foo(arg: readonly string[]): void }', // TSEmptyBodyFunctionExpression
+    `
+      interface Foo {
+        (arg: readonly string[]): void;
+      }
+    `, // TSCallSignatureDeclaration
+    `
+      interface Foo {
+        new (arg: readonly string[]): void;
+      }
+    `, // TSConstructSignatureDeclaration
+    'const x = { foo(arg: readonly string[]): void; };', // TSEmptyBodyFunctionExpression
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
-    'interface Foo { foo(arg: readonly string[]): void }', // TSMethodSignature
+    `
+      interface Foo {
+        foo(arg: readonly string[]): void;
+      }
+    `, // TSMethodSignature
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1665
     // directly recursive
@@ -248,12 +259,12 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     }),
     // nested arrays
     {
-      code: 'function foo(arg: readonly (string[])[]) {}',
+      code: 'function foo(arg: readonly string[][]) {}',
       errors: [
         {
           messageId: 'shouldBeReadonly',
           column: 14,
-          endColumn: 40,
+          endColumn: 38,
         },
       ],
     },
@@ -295,8 +306,8 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: `
         function foo(arg: {
           readonly foo: {
-            bar: string
-          }
+            bar: string;
+          };
         }) {}
       `,
       errors: [
@@ -312,33 +323,29 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     // object index signatures
     {
       code: `
-        function foo(arg: {
-          [key: string]: string
-        }) {}
+        function foo(arg: { [key: string]: string }) {}
       `,
       errors: [
         {
           messageId: 'shouldBeReadonly',
           line: 2,
           column: 22,
-          endLine: 4,
-          endColumn: 10,
+          endLine: 2,
+          endColumn: 52,
         },
       ],
     },
     {
       code: `
-        function foo(arg: {
-          [key: number]: string
-        }) {}
+        function foo(arg: { [key: number]: string }) {}
       `,
       errors: [
         {
           messageId: 'shouldBeReadonly',
           line: 2,
           column: 22,
-          endLine: 4,
-          endColumn: 10,
+          endLine: 2,
+          endColumn: 52,
         },
       ],
     },
@@ -356,7 +363,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     {
       code: `
         interface Test extends Array<string> {
-          readonly property: boolean
+          readonly property: boolean;
         }
         function foo(arg: Test) {}
       `,
@@ -373,7 +380,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     {
       code: `
         interface Test extends Array<string> {
-          property: boolean
+          property: boolean;
         }
         function foo(arg: Test) {}
       `,
@@ -393,10 +400,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: `
         class Foo {
           constructor(
-            private   arg1: string[],
-            public    arg2: string[],
+            private arg1: string[],
+            public arg2: string[],
             protected arg3: string[],
-            readonly  arg4: string[],
+            readonly arg4: string[],
           ) {}
         }
       `,
@@ -409,16 +416,16 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         {
           messageId: 'shouldBeReadonly',
           line: 4,
-          column: 23,
+          column: 21,
           endLine: 4,
-          endColumn: 37,
+          endColumn: 35,
         },
         {
           messageId: 'shouldBeReadonly',
           line: 5,
-          column: 23,
+          column: 20,
           endLine: 5,
-          endColumn: 37,
+          endColumn: 34,
         },
         {
           messageId: 'shouldBeReadonly',
@@ -430,9 +437,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         {
           messageId: 'shouldBeReadonly',
           line: 7,
-          column: 23,
+          column: 22,
           endLine: 7,
-          endColumn: 37,
+          endColumn: 36,
         },
       ],
     },
@@ -440,10 +447,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: `
         class Foo {
           constructor(
-            private   arg1: readonly string[],
-            public    arg2: readonly string[],
+            private arg1: readonly string[],
+            public arg2: readonly string[],
             protected arg3: readonly string[],
-            readonly  arg4: readonly string[],
+            readonly arg4: readonly string[],
             arg5: string[],
           ) {}
         }
@@ -467,29 +474,37 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     // type functions
     {
       // TSCallSignatureDeclaration
-      code: 'interface Foo { (arg: string[]): void }',
+      code: `
+        interface Foo {
+          (arg: string[]): void;
+        }
+      `,
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          column: 18,
-          endColumn: 31,
+          column: 12,
+          endColumn: 25,
         },
       ],
     },
     {
       // TSConstructSignatureDeclaration
-      code: 'interface Foo { new (arg: string[]): void }',
+      code: `
+        interface Foo {
+          new (arg: string[]): void;
+        }
+      `,
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          column: 22,
-          endColumn: 35,
+          column: 16,
+          endColumn: 29,
         },
       ],
     },
     {
       // TSEmptyBodyFunctionExpression
-      code: 'const x = { foo(arg: string[]): void }',
+      code: 'const x = { foo(arg: string[]): void; };',
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -511,7 +526,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       // TSFunctionType
-      code: 'type Foo = (arg: string[]) => void',
+      code: 'type Foo = (arg: string[]) => void;',
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -522,12 +537,16 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       // TSMethodSignature
-      code: 'interface Foo { foo(arg: string[]): void }',
+      code: `
+        interface Foo {
+          foo(arg: string[]): void;
+        }
+      `,
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          column: 21,
-          endColumn: 34,
+          column: 15,
+          endColumn: 28,
         },
       ],
     },

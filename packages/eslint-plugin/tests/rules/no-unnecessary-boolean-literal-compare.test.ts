@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('boolean-literal-compare', rule, {
+ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
   valid: [
     `
       declare const varAny: any;
@@ -49,33 +49,34 @@ ruleTester.run('boolean-literal-compare', rule, {
       declare const varBooleanOrUndefined: boolean | undefined;
       varBooleanOrUndefined === true;
     `,
-    `'false' === true;`,
-    `'true' === false;`,
+    "'false' === true;",
+    "'true' === false;",
   ],
 
   invalid: [
     {
-      code: `true === true`,
+      code: 'true === true;',
       errors: [
         {
           messageId: 'direct',
         },
       ],
-      output: `true`,
+      output: 'true;',
     },
     {
-      code: `false !== true`,
+      code: 'false !== true;',
       errors: [
         {
           messageId: 'negated',
         },
       ],
-      output: `!false`,
+      output: '!false;',
     },
     {
       code: `
         declare const varBoolean: boolean;
-        if (varBoolean !== false) { }
+        if (varBoolean !== false) {
+        }
       `,
       errors: [
         {
@@ -84,13 +85,15 @@ ruleTester.run('boolean-literal-compare', rule, {
       ],
       output: `
         declare const varBoolean: boolean;
-        if (varBoolean) { }
+        if (varBoolean) {
+        }
       `,
     },
     {
       code: `
         declare const varTrue: true;
-        if (varTrue !== true) { }
+        if (varTrue !== true) {
+        }
       `,
       errors: [
         {
@@ -99,7 +102,8 @@ ruleTester.run('boolean-literal-compare', rule, {
       ],
       output: `
         declare const varTrue: true;
-        if (!varTrue) { }
+        if (!varTrue) {
+        }
       `,
     },
   ],
