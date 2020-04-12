@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-throw-literal] fix crash caused by getBaseTypes ([#1830](https://github.com/typescript-eslint/typescript-eslint/issues/1830)) ([9d53c76](https://github.com/typescript-eslint/typescript-eslint/commit/9d53c761983dd964109b9f13eb9bfe20caf9defb))
+* **eslint-plugin:** [no-unsafe-call] fix incorrect selector ([#1826](https://github.com/typescript-eslint/typescript-eslint/issues/1826)) ([8ec53a3](https://github.com/typescript-eslint/typescript-eslint/commit/8ec53a3579fcb59cdffea0c60fbb755d056f4c8a))
+* **eslint-plugin:** [require-await] handle async generators ([#1782](https://github.com/typescript-eslint/typescript-eslint/issues/1782)) ([9642d9d](https://github.com/typescript-eslint/typescript-eslint/commit/9642d9dce693befac89a4e9d8bf8dd18f4361e2a))
+* **eslint-plugin:** no-explicit-any constructor functions (& mo… ([#1711](https://github.com/typescript-eslint/typescript-eslint/issues/1711)) ([ab8572e](https://github.com/typescript-eslint/typescript-eslint/commit/ab8572e30e14ebda91c8437be5ee35e7dc9add2e))
+* **typescript-estree:** add support for TS3.9 extra file extensions ([#1833](https://github.com/typescript-eslint/typescript-eslint/issues/1833)) ([1f0ff41](https://github.com/typescript-eslint/typescript-eslint/commit/1f0ff41aa1bc3b7c5330b2f5fe22e24bf578a6b2))
+
+
+### Features
+
+* **eslint-plugin:** new rule method-signature-style ([#1685](https://github.com/typescript-eslint/typescript-eslint/issues/1685)) ([c49d771](https://github.com/typescript-eslint/typescript-eslint/commit/c49d771ba62f1a21d3c1aec106341daddfcd3c9a))
+* **eslint-plugin:** sort members alphabetically ([#263](https://github.com/typescript-eslint/typescript-eslint/issues/263)) ([485e902](https://github.com/typescript-eslint/typescript-eslint/commit/485e90213a0f8baac0587f7d56925448883fc5bd))
+* **eslint-plugin-internal:** add plugin-test-formatting rule ([#1821](https://github.com/typescript-eslint/typescript-eslint/issues/1821)) ([9b0023a](https://github.com/typescript-eslint/typescript-eslint/commit/9b0023a4996ecdd7dfcb30abd1678091a78f3064))
+* **experimental-utils:** add types for suggestions from CLIEngine ([#1844](https://github.com/typescript-eslint/typescript-eslint/issues/1844)) ([7c11bd6](https://github.com/typescript-eslint/typescript-eslint/commit/7c11bd66f2d0e5ea9d3943e6b8c66e6ddff50862))
+* **experimental-utils:** update eslint types to match v6.8 ([#1846](https://github.com/typescript-eslint/typescript-eslint/issues/1846)) ([16ce74d](https://github.com/typescript-eslint/typescript-eslint/commit/16ce74d247781ac890dc0baa30c384f97e581b6b))
+
+
+
+
+
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-explicit-any] error with ignoreRestArgs ([#1796](https://github.com/typescript-eslint/typescript-eslint/issues/1796)) ([638d84d](https://github.com/typescript-eslint/typescript-eslint/commit/638d84ddd77d07117b3ec7c5431f3b0e44b1995d))
+* **eslint-plugin:** [no-unsafe-call] allow import expressions ([#1800](https://github.com/typescript-eslint/typescript-eslint/issues/1800)) ([4fa7107](https://github.com/typescript-eslint/typescript-eslint/commit/4fa710754ecc412b65ac3864fe0c7857c254ac1b))
+* **eslint-plugin:** [no-unsafe-return] error with <TS3.7 ([#1815](https://github.com/typescript-eslint/typescript-eslint/issues/1815)) ([f3160b4](https://github.com/typescript-eslint/typescript-eslint/commit/f3160b471f8247e157555b6cf5b40a1f6ccdc233))
+
+
+### Features
+
+* **eslint-plugin-tslint:** support tslint 6 ([#1809](https://github.com/typescript-eslint/typescript-eslint/issues/1809)) ([7d963fd](https://github.com/typescript-eslint/typescript-eslint/commit/7d963fd846935acd91b7b0cd31c56a70a2b994d1))
+* **typescript-estree:** add option to ignore certain folders from glob resolution ([#1802](https://github.com/typescript-eslint/typescript-eslint/issues/1802)) ([1e29e69](https://github.com/typescript-eslint/typescript-eslint/commit/1e29e69b289d61107a7de67592beae331ba50222))
+
+
+
+
+
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Bug Fixes
+
+* only run publish_canary_version on master ([3814d4e](https://github.com/typescript-eslint/typescript-eslint/commit/3814d4e3b3c1552c7601b5d722b2a37c5a570841))
+* **eslint-plugin:** [quotes] false positive with backtick in import equals statement ([#1769](https://github.com/typescript-eslint/typescript-eslint/issues/1769)) ([199863d](https://github.com/typescript-eslint/typescript-eslint/commit/199863d35cb36bdb7178b8116d146258506644c7))
+* **eslint-plugin:** fix message of no-base-to-string ([#1755](https://github.com/typescript-eslint/typescript-eslint/issues/1755)) ([6646959](https://github.com/typescript-eslint/typescript-eslint/commit/6646959b255b08afe5175bba6621bad11b9e1d5e))
+* **eslint-plugin-tslint:** fix tslintConfig memoization key ([#1719](https://github.com/typescript-eslint/typescript-eslint/issues/1719)) ([abf1a2f](https://github.com/typescript-eslint/typescript-eslint/commit/abf1a2fa5574e41af8070be3d79a886ea2f989cc)), closes [typescript-eslint#1692](https://github.com/typescript-eslint/issues/1692)
+* **typescript-estree:** export * regression from 133f622f ([#1751](https://github.com/typescript-eslint/typescript-eslint/issues/1751)) ([09d8afc](https://github.com/typescript-eslint/typescript-eslint/commit/09d8afca684635b5ac604bc1794240484a70ce91))
+
+
+### Features
+
+* **eslint-plugin:** [no-unnec-type-assertion] allow const assertions ([#1741](https://github.com/typescript-eslint/typescript-eslint/issues/1741)) ([f76a1b3](https://github.com/typescript-eslint/typescript-eslint/commit/f76a1b3e63afda9f239e46f4ad5b36c1d7a6e8da))
+* **eslint-plugin:** [no-unnecessary-condition] ignore basic array indexing false positives ([#1534](https://github.com/typescript-eslint/typescript-eslint/issues/1534)) ([2b9603d](https://github.com/typescript-eslint/typescript-eslint/commit/2b9603d868c57556d8cd6087685e798d74cb6f26))
+* **eslint-plugin:** add `class-literal-property-style` rule ([#1582](https://github.com/typescript-eslint/typescript-eslint/issues/1582)) ([b2dbd89](https://github.com/typescript-eslint/typescript-eslint/commit/b2dbd890a5bef81aa6978d68c166457838ee04a1))
+* **experimental-utils:** expose ast utility functions ([#1670](https://github.com/typescript-eslint/typescript-eslint/issues/1670)) ([3eb5d45](https://github.com/typescript-eslint/typescript-eslint/commit/3eb5d4525e95c8ab990f55588b8d830a02ce5a9c))
+
+
+
+
+
 # [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
 
 

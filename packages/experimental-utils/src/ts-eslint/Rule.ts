@@ -128,9 +128,8 @@ interface ReportDescriptorBase<TMessageIds extends string> {
    * The messageId which is being reported.
    */
   messageId: TMessageIds;
+
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
-  // message?: string;
-  // suggestions instead have this property that works the same, but again it's much better to use messageIds
   // desc?: string;
 }
 interface ReportDescriptorWithSuggestion<TMessageIds extends string>

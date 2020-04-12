@@ -3,6 +3,7 @@ import {
   RuleTester,
   batchedSingleLineTests,
   getFixturesRootDir,
+  noFormat,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -15,20 +16,60 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unsafe-member-access', rule, {
   valid: [
-    'function foo(x: { a: number }, y: any) { x[y++] }',
-    'function foo(x: { a: number }) { x.a }',
-    'function foo(x?: { a: number }) { x?.a }',
-    'function foo(x: { a: number }) { x["a"] }',
-    'function foo(x?: { a: number }) { x?.["a"] }',
-    'function foo(x: { a: number }, y: string) { x[y] }',
-    'function foo(x?: { a: number }, y: string) { x?.[y] }',
-    'function foo(x: string[]) { x[1] }',
-    'function foo(x?: string[]) { x?.[1++] }',
-    'function foo(x?: string[]) { x?.[(1 as any)++] }',
+    `
+function foo(x: { a: number }, y: any) {
+  x[y++];
+}
+    `,
+    `
+function foo(x: { a: number }) {
+  x.a;
+}
+    `,
+    `
+function foo(x?: { a: number }) {
+  x?.a;
+}
+    `,
+    `
+function foo(x: { a: number }) {
+  x['a'];
+}
+    `,
+    `
+function foo(x?: { a: number }) {
+  x?.['a'];
+}
+    `,
+    `
+function foo(x: { a: number }, y: string) {
+  x[y];
+}
+    `,
+    `
+function foo(x?: { a: number }, y: string) {
+  x?.[y];
+}
+    `,
+    `
+function foo(x: string[]) {
+  x[1];
+}
+    `,
+    `
+function foo(x?: string[]) {
+  x?.[1++];
+}
+    `,
+    `
+function foo(x?: string[]) {
+  x?.[(1 as any)++];
+}
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: any) { x.a }
 function foo(x: any) { x.a.b.c.d.e.f.g }
 function foo(x: { a: any }) { x.a.b.c.d.e.f.g }
@@ -64,7 +105,7 @@ function foo(x: { a: any }) { x.a.b.c.d.e.f.g }
       ],
     }),
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: any) { x['a'] }
 function foo(x: any) { x['a']['b']['c'] }
       `,
@@ -90,7 +131,7 @@ function foo(x: any) { x['a']['b']['c'] }
       ],
     }),
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: { a: number }, y: any) { x[y] }
 function foo(x?: { a: number }, y: any) { x?.[y] }
 function foo(x: { a: number }, y: any) { x[y += 1] }

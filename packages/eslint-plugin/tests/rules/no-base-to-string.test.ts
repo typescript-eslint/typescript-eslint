@@ -13,53 +13,67 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-base-to-string', rule, {
   valid: [
-    `\`\${""}\``,
-    `\`\${true}\``,
-    `\`\${[]}\``,
-    `\`\${function () {}}\``,
-    `"" + ""`,
-    `"" + true`,
-    `"" + []`,
-    `true + true`,
-    `true + ""`,
-    `true + []`,
-    `[] + []`,
-    `[] + true`,
-    `[] + ""`,
-    `({}).constructor()`,
-    `"text".toString()`,
-    `false.toString()`,
-    `let value = 1;
-        value.toString()`,
-    `let value = 1n;
-        value.toString()`,
-    `function someFunction() { }
-        someFunction.toString();`,
-    'unknownObject.toString()',
-    'unknownObject.someOtherMethod()',
+    "`${''}`;",
+    '`${true}`;',
+    '`${[]}`;',
+    '`${function() {}}`;',
+    "'' + '';",
+    "'' + true;",
+    "'' + [];",
+    'true + true;',
+    "true + '';",
+    'true + [];',
+    '[] + [];',
+    '[] + true;',
+    "[] + '';",
+    '({}.constructor());',
+    "'text'.toString();",
+    'false.toString();',
+    `
+let value = 1;
+value.toString();
+    `,
+    `
+let value = 1n;
+value.toString();
+    `,
+    `
+function someFunction() {}
+someFunction.toString();
+    `,
+    'unknownObject.toString();',
+    'unknownObject.someOtherMethod();',
     '(() => {}).toString();',
-    `class CustomToString { toString() { return "Hello, world!"; } }
-      "" + (new CustomToString());`,
-    `const literalWithToString = {
-      toString: () => "Hello, world!",
-    };
-    "" + literalToString;`,
-    `let _ = {} * {}`,
-    `let _ = {} / {}`,
-    `let _ = {} *= {}`,
-    `let _ = {} /= {}`,
-    `let _ = {} = {}`,
-    `let _ = {} == {}`,
-    `let _ = {} === {}`,
-    `let _ = {} in {}`,
-    `let _ = {} & {}`,
-    `let _ = {} ^ {}`,
-    `let _ = {} << {}`,
-    `let _ = {} >> {}`,
+    `
+class CustomToString {
+  toString() {
+    return 'Hello, world!';
+  }
+}
+'' + new CustomToString();
+    `,
+    `
+const literalWithToString = {
+  toString: () => 'Hello, world!',
+};
+'' + literalToString;
+    `,
+    'let _ = {} * {};',
+    'let _ = {} / {};',
+    'let _ = ({} *= {});',
+    'let _ = ({} /= {});',
+    'let _ = ({} = {});',
+    'let _ = {} == {};',
+    'let _ = {} === {};',
+    'let _ = {} in {};',
+    'let _ = {} & {};',
+    'let _ = {} ^ {};',
+    'let _ = {} << {};',
+    'let _ = {} >> {};',
   ],
   invalid: [
     {
-      code: `\`\${{}})\``,
+      code: '`${{}})`;',
       errors: [
         {
           data: {
@@ -71,7 +85,7 @@ ruleTester.run('no-base-to-string', rule, {
       ],
     },
     {
-      code: `({}).toString()`,
+      code: '({}.toString());',
       errors: [
         {
           data: {
@@ -83,7 +97,7 @@ ruleTester.run('no-base-to-string', rule, {
       ],
     },
     {
-      code: `"" + {}`,
+      code: "'' + {};",
       errors: [
         {
           data: {
@@ -95,7 +109,7 @@ ruleTester.run('no-base-to-string', rule, {
       ],
     },
     {
-      code: `"" += {}`,
+      code: "'' += {};",
       errors: [
         {
           data: {
@@ -108,7 +122,7 @@ ruleTester.run('no-base-to-string', rule, {
     },
     {
       code: `
-        let someObjectOrString = Math.random() ? { a: true } : "text";
+        let someObjectOrString = Math.random() ? { a: true } : 'text';
         someObjectOrString.toString();
       `,
       errors: [
@@ -123,8 +137,8 @@ ruleTester.run('no-base-to-string', rule, {
     },
     {
       code: `
-        let someObjectOrString = Math.random() ? { a: true } : "text";
-        someObjectOrString + "";
+        let someObjectOrString = Math.random() ? { a: true } : 'text';
+        someObjectOrString + '';
       `,
       errors: [
         {
@@ -154,7 +168,7 @@ ruleTester.run('no-base-to-string', rule, {
     {
       code: `
         let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
-        someObjectOrObject + "";
+        someObjectOrObject + '';
       `,
       errors: [
         {

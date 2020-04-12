@@ -1,5 +1,6 @@
 import ESLintScopeManager from 'eslint-scope/lib/scope-manager';
 import { TSESTree } from '../ts-estree';
+import { EcmaVersion } from '../ts-eslint';
 import { Scope } from './Scope';
 import { Variable } from './Variable';
 
@@ -10,7 +11,7 @@ interface ScopeManagerOptions {
   nodejsScope?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: number;
+  ecmaVersion?: EcmaVersion;
 }
 
 interface ScopeManager {

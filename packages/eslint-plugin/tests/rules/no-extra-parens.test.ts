@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests extra parens, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import rule from '../../src/rules/no-extra-parens';
 import { RuleTester, batchedSingleLineTests } from '../RuleTester';
 
@@ -49,11 +54,11 @@ for (;(a = b););
       options: ['all', { returnAssign: false }],
     },
     {
-      code: `b => (b = 1);`,
+      code: 'b => (b = 1);',
       options: ['all', { returnAssign: false }],
     },
     {
-      code: `b => b ? (c = d) : (c = e);`,
+      code: 'b => b ? (c = d) : (c = e);',
       options: ['all', { returnAssign: false }],
     },
     ...batchedSingleLineTests({

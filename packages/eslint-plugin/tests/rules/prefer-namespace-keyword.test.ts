@@ -7,16 +7,16 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-namespace-keyword', rule, {
   valid: [
-    "declare module 'foo'",
-    "declare module 'foo' { }",
-    'namespace foo { }',
-    'declare namespace foo { }',
-    'declare global { }',
+    "declare module 'foo';",
+    "declare module 'foo' {}",
+    'namespace foo {}',
+    'declare namespace foo {}',
+    'declare global {}',
   ],
   invalid: [
     {
-      code: 'module foo { }',
-      output: 'namespace foo { }',
+      code: 'module foo {}',
+      output: 'namespace foo {}',
       errors: [
         {
           messageId: 'useNamespace',
@@ -26,8 +26,8 @@ ruleTester.run('prefer-namespace-keyword', rule, {
       ],
     },
     {
-      code: 'declare module foo { }',
-      output: 'declare namespace foo { }',
+      code: 'declare module foo {}',
+      output: 'declare namespace foo {}',
       errors: [
         {
           messageId: 'useNamespace',
@@ -39,14 +39,14 @@ ruleTester.run('prefer-namespace-keyword', rule, {
     {
       code: `
 declare module foo {
-    declare module bar { }
+  declare module bar {}
 }
-            `,
+      `,
       output: `
 declare namespace foo {
-    declare namespace bar { }
+  declare namespace bar {}
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'useNamespace',
@@ -56,7 +56,7 @@ declare namespace foo {
         {
           messageId: 'useNamespace',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },

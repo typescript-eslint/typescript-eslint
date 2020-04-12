@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import {
   AST_NODE_TYPES,
   TSESLint,
@@ -704,7 +709,7 @@ export default class App extends Vue
         return this.$store.state.errorHandler.error
     }
 }
-        `,
+    `,
     // https://github.com/eslint/typescript-eslint-parser/issues/474
     `
 /**
@@ -713,7 +718,7 @@ export default class App extends Vue
  * @returns {string}
  */
 function foo(name: string, age: number): string {}
-        `,
+    `,
     `
 const firebaseApp = firebase.apps.length
     ? firebase.app()
@@ -725,7 +730,7 @@ const firebaseApp = firebase.apps.length
         storageBucket: __FIREBASE_STORAGE_BUCKET__,
         messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
     })
-        `,
+    `,
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/271
     {
       code: `
@@ -734,7 +739,7 @@ const foo = {
                 b: 2
             },
             bar = 1;
-            `,
+      `,
       options: [4, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -744,7 +749,7 @@ const foo : Foo = {
                 b: 2
             },
             bar = 1;
-            `,
+      `,
       options: [4, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -756,7 +761,7 @@ const name: string = '  Typescript  '
       greeting: string = (" Hello " + name)
         .toUpperCase()
         .trim();
-            `,
+      `,
       options: [2, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -768,15 +773,15 @@ const div: JQuery<HTMLElement> = $('<div>')
       button: JQuery<HTMLElement> = $('<button>')
         .text('Cancel')
         .appendTo(div);
-            `,
+      `,
       options: [2, { VariableDeclarator: { const: 3 } }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/441
-    `const;`,
+    'const;',
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1115
     {
-      code: `const foo = function<> (): void {}`,
+      code: 'const foo = function<> (): void {}',
     },
   ],
   invalid: [
@@ -787,13 +792,13 @@ type Foo = {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -829,7 +834,7 @@ new(
 asdf: string,
 ): Foo,
 }
-            `,
+      `,
       output: `
 interface Foo {
     bar : string,
@@ -843,7 +848,7 @@ interface Foo {
         asdf: string,
     ): Foo,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -945,7 +950,7 @@ baz : string,
 },
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     bar : {
@@ -953,7 +958,7 @@ interface Foo {
     },
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -999,13 +1004,13 @@ interface Foo extends Bar {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo extends Bar {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1036,14 +1041,14 @@ extends Bar {
 bar : string = "asdf";
 age : number = 1;
 }
-            `,
+      `,
       output: `
 class Foo
     extends Bar {
     bar : string = "asdf";
     age : number = 1;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1081,14 +1086,14 @@ extends Bar {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo
     extends Bar {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1125,13 +1130,13 @@ const foo : Foo<{
 bar : string,
 age : number,
 }>
-            `,
+      `,
       output: `
 const foo : Foo<{
     bar : string,
     age : number,
 }>
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1162,7 +1167,7 @@ age : number,
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 type T = {
     bar : string,
@@ -1171,7 +1176,7 @@ type T = {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1222,7 +1227,7 @@ age : number,
     bar : string,
     age : number,
 }
-            `,
+      `,
       output: `
 type T =
     | {
@@ -1233,7 +1238,7 @@ type T =
         bar : string,
         age : number,
     }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1292,12 +1297,13 @@ type T =
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     import Dialogs = require("widgets/Dialogs");
-            `,
+      `,
       output: `
 import Dialogs = require("widgets/Dialogs");
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1326,7 +1332,7 @@ asdf : number,
 private test : boolean,
 ) {}
 }
-            `,
+      `,
       output: `
 class Foo {
     public bar : string;
@@ -1342,7 +1348,7 @@ class Foo {
         private test : boolean,
     ) {}
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1455,14 +1461,15 @@ class Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     abstract class Foo {}
     class Foo {}
-            `,
+      `,
       output: `
 abstract class Foo {}
 class Foo {}
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1491,14 +1498,14 @@ bar,
 baz = 1,
 buzz = '',
 }
-            `,
+      `,
       output: `
 enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1536,14 +1543,14 @@ bar,
 baz = 1,
 buzz = '',
 }
-            `,
+      `,
       output: `
 const enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1575,12 +1582,13 @@ const enum Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     export = Foo;
-            `,
+      `,
       output: `
 export = Foo;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1594,12 +1602,13 @@ export = Foo;
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     declare function h(x: number): number;
-            `,
+      `,
       output: `
 declare function h(x: number): number;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1617,12 +1626,12 @@ declare function h(x: number): number;
 declare function h(
 x: number,
 ): number;
-            `,
+      `,
       output: `
 declare function h(
     x: number,
 ): number;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1642,14 +1651,14 @@ export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
-            `,
+      `,
       output: `
 namespace Validation {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1687,14 +1696,14 @@ export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
-            `,
+      `,
       output: `
 declare module "Validation" {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1726,14 +1735,15 @@ declare module "Validation" {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     @Decorator()
 class Foo {}
-            `,
+      `,
       output: `
 @Decorator()
 class Foo {}
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
