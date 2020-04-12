@@ -29,28 +29,23 @@ export interface Extra {
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
 ////////////////////////////////////////////////////
 
-export interface TSESTreeOptions {
+interface ParseOptions {
   /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
 
   /**
-   * For convenience:
-   * - true === ['typescript-eslint']
-   * - false === []
-   *
    * An array of modules to turn explicit debugging on for.
    * - 'typescript-eslint' is the same as setting the env var `DEBUG=typescript-eslint:*`
    * - 'eslint' is the same as setting the env var `DEBUG=eslint:*`
    * - 'typescript' is the same as setting `extendedDiagnostics: true` in your tsconfig compilerOptions
+   *
+   * For convenience, also supports a boolean:
+   * - true === ['typescript-eslint']
+   * - false === []
    */
-  debugLevel?: boolean | DebugModule[];
-
-  /**
-   * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
-   */
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  debugLevel?: boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).
@@ -59,14 +54,7 @@ export interface TSESTreeOptions {
   errorOnUnknownASTType?: boolean;
 
   /**
-   * When `project` is provided, this controls the non-standard file extensions which will be parsed.
-   * It accepts an array of file extensions, each preceded by a `.`.
-   */
-  extraFileExtensions?: string[];
-
-  /**
-   * Absolute (or relative to `tsconfigRootDir`) path to the file being parsed.
-   * When `project` is provided, this is required, as it is used to fetch the file from the TypeScript compiler's cache.
+   * Absolute (or relative to `cwd`) path to the file being parsed.
    */
   filePath?: string;
 
@@ -96,6 +84,45 @@ export interface TSESTreeOptions {
   loggerFn?: Function | false;
 
   /**
+   * Controls whether the `range` property is included on AST nodes.
+   * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
+   * This is similar to the `loc` property, except this is the absolute index.
+   */
+  range?: boolean;
+
+  /**
+   * Set to true to create a top-level array containing all tokens from the file.
+   */
+  tokens?: boolean;
+
+  /*
+   * The JSX AST changed the node type for string literals
+   * inside a JSX Element from `Literal` to `JSXText`.
+   * When value is `true`, these nodes will be parsed as type `JSXText`.
+   * When value is `false`, these nodes will be parsed as type `Literal`.
+   */
+  useJSXTextNode?: boolean;
+}
+
+interface ParseAndGenerateServicesOptions extends ParseOptions {
+  /**
+   * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
+   */
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+
+  /**
+   * When `project` is provided, this controls the non-standard file extensions which will be parsed.
+   * It accepts an array of file extensions, each preceded by a `.`.
+   */
+  extraFileExtensions?: string[];
+
+  /**
+   * Absolute (or relative to `tsconfigRootDir`) path to the file being parsed.
+   * When `project` is provided, this is required, as it is used to fetch the file from the TypeScript compiler's cache.
+   */
+  filePath?: string;
+
+  /**
    * Allows the user to control whether or not two-way AST node maps are preserved
    * during the AST conversion process.
    *
@@ -114,29 +141,19 @@ export interface TSESTreeOptions {
   project?: string | string[];
 
   /**
-   * Controls whether the `range` property is included on AST nodes.
-   * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
-   * This is similar to the `loc` property, except this is the absolute index.
+   * If you provide a glob (or globs) to the project option, you can use this option to blacklist
+   * certain folders from being matched by the globs.
+   * Any project path that matches one or more of the provided regular expressions will be removed from the list.
+   *
+   * Accepts an array of strings that are passed to new RegExp(), or an array of regular expressions.
+   * By default, this is set to ["/node_modules/"]
    */
-  range?: boolean;
-
-  /**
-   * Set to true to create a top-level array containing all tokens from the file.
-   */
-  tokens?: boolean;
+  projectFolderIgnoreList?: (string | RegExp)[];
 
   /**
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir?: string;
-
-  /*
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  useJSXTextNode?: boolean;
 
   /**
    ***************************************************************************************
@@ -149,6 +166,8 @@ export interface TSESTreeOptions {
    */
   createDefaultProgram?: boolean;
 }
+
+export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method

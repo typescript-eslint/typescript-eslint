@@ -14,29 +14,29 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-ast-types-enum', rule, {
   valid: [
-    'node.type === "constructor"',
-    'node.type === AST_NODE_TYPES.Literal',
-    'node.type === AST_TOKEN_TYPES.Keyword',
-    'node.type === 1',
+    "node.type === 'constructor';",
+    'node.type === AST_NODE_TYPES.Literal;',
+    'node.type === AST_TOKEN_TYPES.Keyword;',
+    'node.type === 1;',
     `
-    enum MY_ENUM {
-      Literal = 1
-    }
+      enum MY_ENUM {
+        Literal = 1,
+      }
     `,
     `
-    enum AST_NODE_TYPES {
-      Literal = 'Literal'
-    }
+      enum AST_NODE_TYPES {
+        Literal = 'Literal',
+      }
     `,
   ],
   invalid: batchedSingleLineTests({
     code: `
-node.type === 'Literal'
-node.type === 'Keyword'
+node.type === 'Literal';
+node.type === 'Keyword';
     `,
     output: `
-node.type === AST_NODE_TYPES.Literal
-node.type === AST_TOKEN_TYPES.Keyword
+node.type === AST_NODE_TYPES.Literal;
+node.type === AST_TOKEN_TYPES.Keyword;
     `,
     errors: [
       {

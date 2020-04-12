@@ -10,38 +10,38 @@ const messageId = 'useLiteral' as const;
 
 ruleTester.run('no-array-constructor', rule, {
   valid: [
-    'new Array(x)',
-    'Array(x)',
-    'new Array(9)',
-    'Array(9)',
-    'new foo.Array()',
-    'foo.Array()',
-    'new Array.foo',
-    'Array.foo()',
+    'new Array(x);',
+    'Array(x);',
+    'new Array(9);',
+    'Array(9);',
+    'new foo.Array();',
+    'foo.Array();',
+    'new Array.foo();',
+    'Array.foo();',
 
     // TypeScript
-    'new Array<Foo>(1, 2, 3)',
-    'new Array<Foo>()',
-    'Array<Foo>(1, 2, 3)',
-    'Array<Foo>()',
+    'new Array<Foo>(1, 2, 3);',
+    'new Array<Foo>();',
+    'Array<Foo>(1, 2, 3);',
+    'Array<Foo>();',
 
     // optional chain
-    'Array?.(x)',
-    'Array?.(9)',
-    'foo?.Array()',
-    'Array?.foo()',
-    'foo.Array?.()',
-    'Array.foo?.()',
-    'Array?.<Foo>(1, 2, 3)',
-    'Array?.<Foo>()',
-    'Array?.(0, 1, 2)',
-    'Array?.(x, y)',
+    'Array?.(x);',
+    'Array?.(9);',
+    'foo?.Array();',
+    'Array?.foo();',
+    'foo.Array?.();',
+    'Array.foo?.();',
+    'Array?.<Foo>(1, 2, 3);',
+    'Array?.<Foo>();',
+    'Array?.(0, 1, 2);',
+    'Array?.(x, y);',
   ],
 
   invalid: [
     {
-      code: 'new Array()',
-      output: '[]',
+      code: 'new Array();',
+      output: '[];',
       errors: [
         {
           messageId,
@@ -50,8 +50,8 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: 'Array()',
-      output: '[]',
+      code: 'Array();',
+      output: '[];',
       errors: [
         {
           messageId,
@@ -60,8 +60,8 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: 'new Array',
-      output: '[]',
+      code: 'new Array(x, y);',
+      output: '[x, y];',
       errors: [
         {
           messageId,
@@ -70,18 +70,8 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: 'new Array(x, y)',
-      output: '[x, y]',
-      errors: [
-        {
-          messageId,
-          type: AST_NODE_TYPES.NewExpression,
-        },
-      ],
-    },
-    {
-      code: 'Array(x, y)',
-      output: '[x, y]',
+      code: 'Array(x, y);',
+      output: '[x, y];',
       errors: [
         {
           messageId,
@@ -90,8 +80,8 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: 'new Array(0, 1, 2)',
-      output: '[0, 1, 2]',
+      code: 'new Array(0, 1, 2);',
+      output: '[0, 1, 2];',
       errors: [
         {
           messageId,
@@ -100,8 +90,8 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: 'Array(0, 1, 2)',
-      output: '[0, 1, 2]',
+      code: 'Array(0, 1, 2);',
+      output: '[0, 1, 2];',
       errors: [
         {
           messageId,
@@ -110,16 +100,12 @@ ruleTester.run('no-array-constructor', rule, {
       ],
     },
     {
-      code: `new Array(
-                0,
-                1,
-                2
-            )`,
-      output: `[
-                0,
-                1,
-                2
-            ]`,
+      code: `
+new Array(0, 1, 2);
+      `,
+      output: `
+[0, 1, 2];
+      `,
       errors: [
         {
           messageId,

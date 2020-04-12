@@ -19,13 +19,19 @@ ruleTester.run('promise-function-async', rule, {
 const nonAsyncNonPromiseArrowFunction = (n: number) => n;
     `,
     `
-function nonAsyncNonPromiseFunctionDeclaration(n: number) { return n; }
+function nonAsyncNonPromiseFunctionDeclaration(n: number) {
+  return n;
+}
     `,
     `
-const asyncPromiseFunctionExpressionA = async function(p: Promise<void>) { return p; };
+const asyncPromiseFunctionExpressionA = async function(p: Promise<void>) {
+  return p;
+};
     `,
     `
-const asyncPromiseFunctionExpressionB = async function() { return new Promise<void>(); };
+const asyncPromiseFunctionExpressionB = async function() {
+  return new Promise<void>();
+};
     `,
     `
 class Test {
@@ -75,13 +81,25 @@ const invalidAsyncModifiers = {
   },
   set asyncGetterFunc(p: () => Promise<void>) {
     return p;
-  }
-}
+  },
+};
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/227
-    `export function valid(n: number) { return n; }`,
-    `export default function invalid(n: number) { return n; }`,
-    `class Foo { constructor() { } }`,
+    `
+      export function valid(n: number) {
+        return n;
+      }
+    `,
+    `
+      export default function invalid(n: number) {
+        return n;
+      }
+    `,
+    `
+      class Foo {
+        constructor() {}
+      }
+    `,
     {
       code: `
 function returnsAny(): any {
@@ -116,7 +134,7 @@ interface Options {
 type Return = ReadableStream | Promise<void>;
 const foo = (options: Options): Return => {
   return options.stream ? asStream(options) : asPromise(options);
-}
+};
       `,
     },
     {
@@ -164,8 +182,10 @@ function returnsUnknown(): unknown {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) { return p; };
-            `,
+const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) {
+  return p;
+};
+      `,
       errors: [
         {
           messageId,
@@ -174,8 +194,10 @@ const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) { return p
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpressionB = function() { return new Promise<void>(); };
-            `,
+const nonAsyncPromiseFunctionExpressionB = function() {
+  return new Promise<void>();
+};
+      `,
       errors: [
         {
           messageId,
@@ -184,8 +206,10 @@ const nonAsyncPromiseFunctionExpressionB = function() { return new Promise<void>
     },
     {
       code: `
-function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) { return p; }
-            `,
+function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
+  return p;
+}
+      `,
       errors: [
         {
           messageId,
@@ -194,8 +218,10 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) { return p; }
     },
     {
       code: `
-function nonAsyncPromiseFunctionDeclarationB() { return new Promise<void>(); }
-            `,
+function nonAsyncPromiseFunctionDeclarationB() {
+  return new Promise<void>();
+}
+      `,
       errors: [
         {
           messageId,
@@ -205,7 +231,7 @@ function nonAsyncPromiseFunctionDeclarationB() { return new Promise<void>(); }
     {
       code: `
 const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
-            `,
+      `,
       errors: [
         {
           messageId,
@@ -215,7 +241,7 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
     {
       code: `
 const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
-            `,
+      `,
       errors: [
         {
           messageId,
@@ -233,7 +259,7 @@ class Test {
     return new Promise<void>();
   }
 }
-          `,
+      `,
       errors: [
         {
           line: 3,
@@ -247,9 +273,13 @@ class Test {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) { return p; };
+const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+  return p;
+};
 
-function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) { return p; }
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
@@ -258,7 +288,7 @@ class Test {
     return p;
   }
 }
-`,
+      `,
       options: [
         {
           checkArrowFunctions: false,
@@ -270,20 +300,24 @@ class Test {
           messageId,
         },
         {
-          line: 4,
+          line: 6,
           messageId,
         },
         {
-          line: 9,
+          line: 13,
           messageId,
         },
       ],
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) { return p; };
+const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+  return p;
+};
 
-function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) { return p; }
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
@@ -292,7 +326,7 @@ class Test {
     return p;
   }
 }
-`,
+      `,
       options: [
         {
           checkFunctionDeclarations: false,
@@ -304,20 +338,24 @@ class Test {
           messageId,
         },
         {
-          line: 6,
+          line: 10,
           messageId,
         },
         {
-          line: 9,
+          line: 13,
           messageId,
         },
       ],
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) { return p; };
+const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+  return p;
+};
 
-function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) { return p; }
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
@@ -326,7 +364,7 @@ class Test {
     return p;
   }
 }
-`,
+      `,
       options: [
         {
           checkFunctionExpressions: false,
@@ -334,24 +372,28 @@ class Test {
       ],
       errors: [
         {
-          line: 4,
-          messageId,
-        },
-        {
           line: 6,
           messageId,
         },
         {
-          line: 9,
+          line: 10,
+          messageId,
+        },
+        {
+          line: 13,
           messageId,
         },
       ],
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) { return p; };
+const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+  return p;
+};
 
-function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) { return p; }
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
@@ -360,7 +402,7 @@ class Test {
     return p;
   }
 }
-`,
+      `,
       options: [
         {
           checkMethodDeclarations: false,
@@ -372,21 +414,21 @@ class Test {
           messageId,
         },
         {
-          line: 4,
+          line: 6,
           messageId,
         },
         {
-          line: 6,
+          line: 10,
           messageId,
         },
       ],
     },
     {
       code: `
-class PromiseType { }
+class PromiseType {}
 
 const returnAllowedType = () => new PromiseType();
-`,
+      `,
       options: [
         {
           allowedPromiseNames: ['PromiseType'],
@@ -403,7 +445,9 @@ const returnAllowedType = () => new PromiseType();
       code: `
 interface SPromise<T> extends Promise<T> {}
 function foo(): Promise<string> | SPromise<boolean> {
-  return Math.random() > 0.5 ? Promise.resolve('value') : Promise.resolve(false);
+  return Math.random() > 0.5
+    ? Promise.resolve('value')
+    : Promise.resolve(false);
 }
       `,
       options: [
