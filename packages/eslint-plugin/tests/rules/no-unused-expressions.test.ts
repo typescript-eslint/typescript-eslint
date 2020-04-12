@@ -69,30 +69,19 @@ ruleTester.run('no-unused-expressions', rule, {
   invalid: [
     {
       code: `
-if(0) 0
-        `,
+if (0) 0;
+      `,
       errors: error([
         {
           line: 2,
-          column: 7,
+          column: 8,
         },
       ]),
     },
     {
       code: `
-f(0), {}
-        `,
-      errors: error([
-        {
-          line: 2,
-          column: 1,
-        },
-      ]),
-    },
-    {
-      code: `
-a, b()
-        `,
+f(0), {};
+      `,
       errors: error([
         {
           line: 2,
@@ -102,8 +91,8 @@ a, b()
     },
     {
       code: `
-a() && function namedFunctionInExpressionContext () {f();}
-        `,
+a, b();
+      `,
       errors: error([
         {
           line: 2,
@@ -113,8 +102,11 @@ a() && function namedFunctionInExpressionContext () {f();}
     },
     {
       code: `
-a?.b
-        `,
+a() &&
+  function namedFunctionInExpressionContext() {
+    f();
+  };
+      `,
       errors: error([
         {
           line: 2,
@@ -124,8 +116,8 @@ a?.b
     },
     {
       code: `
-(a?.b).c
-        `,
+a?.b;
+      `,
       errors: error([
         {
           line: 2,
@@ -135,8 +127,8 @@ a?.b
     },
     {
       code: `
-a?.['b']
-        `,
+(a?.b).c;
+      `,
       errors: error([
         {
           line: 2,
@@ -146,8 +138,8 @@ a?.['b']
     },
     {
       code: `
-(a?.['b']).c
-        `,
+a?.['b'];
+      `,
       errors: error([
         {
           line: 2,
@@ -157,8 +149,8 @@ a?.['b']
     },
     {
       code: `
-a?.b()?.c
-        `,
+(a?.['b']).c;
+      `,
       errors: error([
         {
           line: 2,
@@ -168,8 +160,19 @@ a?.b()?.c
     },
     {
       code: `
-(a?.b()).c
-        `,
+a?.b()?.c;
+      `,
+      errors: error([
+        {
+          line: 2,
+          column: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+(a?.b()).c;
+      `,
       errors: error([
         {
           line: 2,
@@ -180,7 +183,7 @@ a?.b()?.c
     {
       code: `
 one[2]?.[3][4];
-        `,
+      `,
       errors: error([
         {
           line: 2,
@@ -191,7 +194,7 @@ one[2]?.[3][4];
     {
       code: `
 one.two?.three.four;
-        `,
+      `,
       errors: error([
         {
           line: 2,

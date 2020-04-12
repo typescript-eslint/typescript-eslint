@@ -15,15 +15,15 @@ ruleTester.run('restrict-template-expressions', rule, {
   valid: [
     // Base case
     `
-      const msg = \`arg = \${"foo"}\`;
+      const msg = \`arg = \${'foo'}\`;
     `,
     `
-      const arg = "foo";
+      const arg = 'foo';
       const msg = \`arg = \${arg}\`;
     `,
     `
-      const arg = "foo";
-      const msg = \`arg = \${arg || "default"}\`;
+      const arg = 'foo';
+      const msg = \`arg = \${arg || 'default'}\`;
     `,
     `
       function test<T extends string>(arg: T) {
@@ -50,14 +50,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowNumber: true }],
       code: `
         const arg = 123;
-        const msg = \`arg = \${arg || "default"}\`;
+        const msg = \`arg = \${arg || 'default'}\`;
       `,
     },
     {
       options: [{ allowNumber: true }],
       code: `
         const arg = 123n;
-        const msg = \`arg = \${arg || "default"}\`;
+        const msg = \`arg = \${arg || 'default'}\`;
       `,
     },
     {
@@ -96,7 +96,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowBoolean: true }],
       code: `
         const arg = true;
-        const msg = \`arg = \${arg || "default"}\`;
+        const msg = \`arg = \${arg || 'default'}\`;
       `,
     },
     {
@@ -111,6 +111,43 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowBoolean: true }],
       code: `
         function test<T extends string | boolean>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    // allowAny
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = 123;
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = undefined;
+        const msg = \`arg = \${arg || 'some-default'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name || 'the user with no name'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        function test<T extends any>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
@@ -150,7 +187,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
       code: `
-        type All = string | number | boolean | null | undefined
+        type All = string | number | boolean | null | undefined;
         function test<T extends All>(arg: T) {
           return \`arg = \${arg}\`;
         }
@@ -203,6 +240,15 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
       code: `
         function test<T extends {}>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+    },
+    {
+      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      code: `
+        function test(arg: any) {
           return \`arg = \${arg}\`;
         }
       `,

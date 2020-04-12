@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-explicit-any', rule, {
   valid: [
-    'const number: number = 1',
+    'const number: number = 1;',
     'function greet(): string {}',
     'function greet(): Array<string> {}',
     'function greet(): string[] {}',
@@ -20,119 +20,119 @@ ruleTester.run('no-explicit-any', rule, {
     'function greet(param: Array<string>): Array<string> {}',
     `
 class Greeter {
-    message: string;
+  message: string;
 }
-        `,
+    `,
     `
 class Greeter {
-    message: Array<string>;
+  message: Array<string>;
 }
-        `,
+    `,
     `
 class Greeter {
-    message: string[];
+  message: string[];
 }
-        `,
+    `,
     `
 class Greeter {
-    message: Array<Array<string>>;
+  message: Array<Array<string>>;
 }
-        `,
+    `,
     `
 class Greeter {
-    message: Array<string[]>;
+  message: Array<string[]>;
 }
-        `,
+    `,
     `
 interface Greeter {
-    message: string;
+  message: string;
 }
-        `,
+    `,
     `
 interface Greeter {
-    message: Array<string>;
+  message: Array<string>;
 }
-        `,
+    `,
     `
 interface Greeter {
-    message: string[];
+  message: string[];
 }
-        `,
+    `,
     `
 interface Greeter {
-    message: Array<Array<string>>;
+  message: Array<Array<string>>;
 }
-        `,
+    `,
     `
 interface Greeter {
-    message: Array<string[]>;
+  message: Array<string[]>;
 }
-        `,
+    `,
     `
 type obj = {
-    message: string;
-}
-        `,
+  message: string;
+};
+    `,
     `
 type obj = {
-    message: Array<string>;
-}
-        `,
+  message: Array<string>;
+};
+    `,
     `
 type obj = {
-    message: string[];
-}
-        `,
+  message: string[];
+};
+    `,
     `
 type obj = {
-    message: Array<Array<string>>;
-}
-        `,
+  message: Array<Array<string>>;
+};
+    `,
     `
 type obj = {
-    message: Array<string[]>;
-}
-        `,
+  message: Array<string[]>;
+};
+    `,
     `
 type obj = {
-    message: string | number;
-}
-        `,
+  message: string | number;
+};
+    `,
     `
 type obj = {
-    message: string | Array<string>;
-}
-        `,
+  message: string | Array<string>;
+};
+    `,
     `
 type obj = {
-    message: string | string[];
-}
-        `,
+  message: string | string[];
+};
+    `,
     `
 type obj = {
-    message: string | Array<Array<string>>;
-}
-        `,
+  message: string | Array<Array<string>>;
+};
+    `,
     `
 type obj = {
-    message: string & number;
-}
-        `,
+  message: string & number;
+};
+    `,
     `
 type obj = {
-    message: string & Array<string>;
-}
-        `,
+  message: string & Array<string>;
+};
+    `,
     `
 type obj = {
-    message: string & string[];
-}
-        `,
+  message: string & string[];
+};
+    `,
     `
 type obj = {
-    message: string & Array<Array<string>>;
-}
-        `,
+  message: string & Array<Array<string>>;
+};
+    `,
     // https://github.com/eslint/typescript-eslint-parser/issues/397
     {
       code: `
@@ -143,99 +143,228 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function foo1(...args: any[]) {}`,
+      code: 'function foo1(...args: any[]) {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const bar1 = function (...args: any[]) {}`,
+      code: 'const bar1 = function(...args: any[]) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const baz1 = (...args: any[]) => {}`,
+      code: 'const baz1 = (...args: any[]) => {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function foo2(...args: readonly any[]) {}`,
+      code: 'function foo2(...args: readonly any[]) {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const bar2 = function (...args: readonly any[]) {}`,
+      code: 'const bar2 = function(...args: readonly any[]) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const baz2 = (...args: readonly any[]) => {}`,
+      code: 'const baz2 = (...args: readonly any[]) => {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function foo3(...args: Array<any>) {}`,
+      code: 'function foo3(...args: Array<any>) {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const bar3 = function (...args: Array<any>) {}`,
+      code: 'const bar3 = function(...args: Array<any>) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const baz3 = (...args: Array<any>) => {}`,
+      code: 'const baz3 = (...args: Array<any>) => {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function foo4(...args: ReadonlyArray<any>) {}`,
+      code: 'function foo4(...args: ReadonlyArray<any>) {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const bar4 = function (...args: ReadonlyArray<any>) {}`,
+      code: 'const bar4 = function(...args: ReadonlyArray<any>) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `const baz4 = (...args: ReadonlyArray<any>) => {}`,
+      code: 'const baz4 = (...args: ReadonlyArray<any>) => {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `interface Qux1 { (...args: any[]): void; }`,
+      code: `
+interface Qux1 {
+  (...args: any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `interface Qux2 { (...args: readonly any[]): void; }`,
+      code: `
+interface Qux2 {
+  (...args: readonly any[]): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `interface Qux3 { (...args: Array<any>): void; }`,
+      code: `
+interface Qux3 {
+  (...args: Array<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `interface Qux4 { (...args: ReadonlyArray<any>): void; }`,
+      code: `
+interface Qux4 {
+  (...args: ReadonlyArray<any>): void;
+}
+      `,
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quux1(fn: (...args: any[]) => void): void {}`,
+      code: 'function quux1(fn: (...args: any[]) => void): void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quux2(fn: (...args: readonly any[]) => void): void {}`,
+      code: 'function quux2(fn: (...args: readonly any[]) => void): void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quux3(fn: (...args: Array<any>) => void): void {}`,
+      code: 'function quux3(fn: (...args: Array<any>) => void): void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}`,
+      code:
+        'function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quuz1(): ((...args: any[]) => void) {}`,
+      code: 'function quuz1(): (...args: any[]) => void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quuz2(): ((...args: readonly any[]) => void) {}`,
+      code: 'function quuz2(): (...args: readonly any[]) => void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quuz3(): ((...args: Array<any>) => void) {}`,
+      code: 'function quuz3(): (...args: Array<any>) => void {}',
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: `function quuz4(): ((...args: ReadonlyArray<any>) => void) {}`,
+      code: 'function quuz4(): (...args: ReadonlyArray<any>) => void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred1 = (...args: any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred2 = (...args: readonly any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred3 = (...args: Array<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred4 = (...args: ReadonlyArray<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge1 = new (...args: any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge2 = new (...args: readonly any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge3 = new (...args: Array<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge4 = new (...args: ReadonlyArray<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault1 {
+  new (...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault2 {
+  new (...args: readonly any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault3 {
+  new (...args: Array<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault4 {
+  new (...args: ReadonlyArray<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply1 {
+  f(...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply2 {
+  f(...args: readonly any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply3 {
+  f(...args: Array<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply4 {
+  f(...args: ReadonlyArray<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo1(...args: any[]): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo2(...args: readonly any[]): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo3(...args: Array<any>): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo4(...args: ReadonlyArray<any>): void;',
       options: [{ ignoreRestArgs: true }],
     },
   ],
@@ -720,7 +849,7 @@ type obj = {
       ],
     },
     {
-      code: `class Foo<t = any> extends Bar<any> {}`,
+      code: 'class Foo<t = any> extends Bar<any> {}',
       errors: [
         {
           messageId: 'unexpectedAny',
@@ -729,11 +858,11 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `class Foo<t = unknown> extends Bar<any> {}`,
+              output: 'class Foo<t = unknown> extends Bar<any> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `class Foo<t = never> extends Bar<any> {}`,
+              output: 'class Foo<t = never> extends Bar<any> {}',
             },
           ],
         },
@@ -744,18 +873,18 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `class Foo<t = any> extends Bar<unknown> {}`,
+              output: 'class Foo<t = any> extends Bar<unknown> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `class Foo<t = any> extends Bar<never> {}`,
+              output: 'class Foo<t = any> extends Bar<never> {}',
             },
           ],
         },
       ],
     },
     {
-      code: `abstract class Foo<t = any> extends Bar<any> {}`,
+      code: 'abstract class Foo<t = any> extends Bar<any> {}',
       errors: [
         {
           messageId: 'unexpectedAny',
@@ -764,11 +893,11 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `abstract class Foo<t = unknown> extends Bar<any> {}`,
+              output: 'abstract class Foo<t = unknown> extends Bar<any> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `abstract class Foo<t = never> extends Bar<any> {}`,
+              output: 'abstract class Foo<t = never> extends Bar<any> {}',
             },
           ],
         },
@@ -779,18 +908,18 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `abstract class Foo<t = any> extends Bar<unknown> {}`,
+              output: 'abstract class Foo<t = any> extends Bar<unknown> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `abstract class Foo<t = any> extends Bar<never> {}`,
+              output: 'abstract class Foo<t = any> extends Bar<never> {}',
             },
           ],
         },
       ],
     },
     {
-      code: `abstract class Foo<t = any> implements Bar<any>, Baz<any> {}`,
+      code: 'abstract class Foo<t = any> implements Bar<any>, Baz<any> {}',
       errors: [
         {
           messageId: 'unexpectedAny',
@@ -799,11 +928,13 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `abstract class Foo<t = unknown> implements Bar<any>, Baz<any> {}`,
+              output:
+                'abstract class Foo<t = unknown> implements Bar<any>, Baz<any> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `abstract class Foo<t = never> implements Bar<any>, Baz<any> {}`,
+              output:
+                'abstract class Foo<t = never> implements Bar<any>, Baz<any> {}',
             },
           ],
         },
@@ -814,11 +945,13 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `abstract class Foo<t = any> implements Bar<unknown>, Baz<any> {}`,
+              output:
+                'abstract class Foo<t = any> implements Bar<unknown>, Baz<any> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `abstract class Foo<t = any> implements Bar<never>, Baz<any> {}`,
+              output:
+                'abstract class Foo<t = any> implements Bar<never>, Baz<any> {}',
             },
           ],
         },
@@ -829,18 +962,20 @@ type obj = {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: `abstract class Foo<t = any> implements Bar<any>, Baz<unknown> {}`,
+              output:
+                'abstract class Foo<t = any> implements Bar<any>, Baz<unknown> {}',
             },
             {
               messageId: 'suggestNever',
-              output: `abstract class Foo<t = any> implements Bar<any>, Baz<never> {}`,
+              output:
+                'abstract class Foo<t = any> implements Bar<any>, Baz<never> {}',
             },
           ],
         },
       ],
     },
     {
-      code: `new Foo<any>()`,
+      code: 'new Foo<any>()',
       errors: [
         {
           messageId: 'unexpectedAny',
@@ -850,7 +985,7 @@ type obj = {
       ],
     },
     {
-      code: `Foo<any>()`,
+      code: 'Foo<any>()',
       errors: [
         {
           messageId: 'unexpectedAny',
@@ -926,7 +1061,18 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `function foo5(...args: any) {}`,
+      code: 'type Any = any;',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'function foo5(...args: any) {}',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
@@ -937,7 +1083,7 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `const bar5 = function (...args: any) {}`,
+      code: 'const bar5 = function (...args: any) {}',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
@@ -948,7 +1094,7 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `const baz5 = (...args: any) => {}`,
+      code: 'const baz5 = (...args: any) => {}',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
@@ -959,7 +1105,7 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `interface Qux5 { (...args: any): void; }`,
+      code: 'interface Qux5 { (...args: any): void; }',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
@@ -970,7 +1116,7 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `function quux5(fn: (...args: any) => void): void {}`,
+      code: 'function quux5(fn: (...args: any) => void): void {}',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
@@ -981,13 +1127,68 @@ const test = <T extends Partial<never>>() => {};
       ],
     },
     {
-      code: `function quuz5(): ((...args: any) => void) {}`,
+      code: 'function quuz5(): ((...args: any) => void) {}',
       options: [{ ignoreRestArgs: true }],
       errors: [
         {
           messageId: 'unexpectedAny',
           line: 1,
           column: 30,
+        },
+      ],
+    },
+    {
+      code: 'type Fred5 = (...args: any) => void;',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: 'type Corge5 = new (...args: any) => void;',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 29,
+        },
+      ],
+    },
+    {
+      code: 'interface Grault5 { new (...args: any): void; }',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: 'interface Garply5 { f(...args: any): void; }',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 32,
+        },
+      ],
+    },
+    {
+      code: 'declare function waldo5(...args: any): void;',
+      options: [{ ignoreRestArgs: true }],
+      errors: [
+        {
+          messageId: 'unexpectedAny',
+          line: 1,
+          column: 34,
         },
       ],
     },

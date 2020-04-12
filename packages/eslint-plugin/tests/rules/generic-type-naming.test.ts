@@ -7,35 +7,60 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('generic-type-naming', rule, {
   valid: [
-    { code: 'class<T1,T2,T3> { }', options: [] },
-    { code: 'type ReadOnly<T extends object> = {}', options: [] },
-    { code: 'interface SimpleMap<TFoo> { }', options: [] },
-    { code: 'function get<T>() {}', options: [] },
-    { code: 'interface GenericIdentityFn { <T>(arg: T): T }', options: [] },
-    { code: 'class<x> { }', options: ['^x+$'] },
-    { code: 'class<A> { }', options: ['^[A-Z]$'] },
     {
-      code: 'class<A> extends B<Test> implements Foo<Test> { }',
+      code: 'class<T1, T2, T3> {}',
+      options: [],
+    },
+    {
+      code: 'type ReadOnly<T extends object> = {};',
+      options: [],
+    },
+    {
+      code: 'interface SimpleMap<TFoo> {}',
+      options: [],
+    },
+    {
+      code: 'function get<T>() {}',
+      options: [],
+    },
+    {
+      code: `
+interface GenericIdentityFn {
+  <T>(arg: T): T;
+}
+      `,
+      options: [],
+    },
+    {
+      code: 'class<x> {}',
+      options: ['^x+$'],
+    },
+    {
+      code: 'class<A> {}',
+      options: ['^[A-Z]$'],
+    },
+    {
+      code: 'class<A> extends B<Test> implements Foo<Test> {}',
       options: ['^[A-Z]$'],
     },
     {
       code: `
 class<A> extends B<Test> implements Foo<Test> {
-    test<Z> () {
-        type Foo = Bar<Test>
-    }
+  test<Z>() {
+    type Foo = Bar<Test>;
+  }
 }
-            `,
+      `,
       options: ['^[A-Z]$'],
     },
     {
-      code: 'class CounterContainer extends Container<Counter> { }',
+      code: 'class CounterContainer extends Container<Counter> {}',
       options: ['^T$'],
     },
   ],
   invalid: [
     {
-      code: 'class<T,U,V> { }',
+      code: 'class<T, U, V> {}',
       options: [],
       errors: [
         {
@@ -49,7 +74,7 @@ class<A> extends B<Test> implements Foo<Test> {
       ],
     },
     {
-      code: 'class<x> { }',
+      code: 'class<x> {}',
       options: ['^[A-Z]+$'],
       errors: [
         {
@@ -61,7 +86,7 @@ class<A> extends B<Test> implements Foo<Test> {
       ],
     },
     {
-      code: 'interface SimpleMap<x> { }',
+      code: 'interface SimpleMap<x> {}',
       options: ['^[A-Z]+$'],
       errors: [
         {
@@ -73,7 +98,7 @@ class<A> extends B<Test> implements Foo<Test> {
       ],
     },
     {
-      code: 'type R<x> = {}',
+      code: 'type R<x> = {};',
       options: ['^[A-Z]+$'],
       errors: [
         {
@@ -97,25 +122,29 @@ class<A> extends B<Test> implements Foo<Test> {
       ],
     },
     {
-      code: 'interface GenericIdentityFn { <x>(arg: x): x }',
+      code: `
+interface GenericIdentityFn {
+  <x>(arg: x): x;
+}
+      `,
       options: ['^[A-Z]+$'],
       errors: [
         {
           messageId: 'paramNotMatchRule',
           data: { name: 'x', rule: '^[A-Z]+$' },
-          line: 1,
-          column: 32,
+          line: 3,
+          column: 4,
         },
       ],
     },
     {
       code: `
 class<A> extends B<Test> implements Foo<Test> {
-    test<Z> () {
-        type Foo<T> = Bar<Test>
-    }
+  test<Z>() {
+    type Foo<T> = Bar<Test>;
+  }
 }
-            `,
+      `,
       options: ['^[A-Z][0-9]$'],
       errors: [
         {
@@ -128,24 +157,24 @@ class<A> extends B<Test> implements Foo<Test> {
           messageId: 'paramNotMatchRule',
           data: { name: 'Z', rule: '^[A-Z][0-9]$' },
           line: 3,
-          column: 10,
+          column: 8,
         },
         {
           messageId: 'paramNotMatchRule',
           data: { name: 'T', rule: '^[A-Z][0-9]$' },
           line: 4,
-          column: 18,
+          column: 14,
         },
       ],
     },
     {
       code: `
 abstract class<A, B> extends B<Test> implements Foo<Test> {
-    test<Z> () {
-        type Foo<T> = Bar<Test>
-    }
+  test<Z>() {
+    type Foo<T> = Bar<Test>;
+  }
 }
-            `,
+      `,
       options: ['^[A-Z][0-9]$'],
       errors: [
         {
@@ -164,13 +193,13 @@ abstract class<A, B> extends B<Test> implements Foo<Test> {
           messageId: 'paramNotMatchRule',
           data: { name: 'Z', rule: '^[A-Z][0-9]$' },
           line: 3,
-          column: 10,
+          column: 8,
         },
         {
           messageId: 'paramNotMatchRule',
           data: { name: 'T', rule: '^[A-Z][0-9]$' },
           line: 4,
-          column: 18,
+          column: 14,
         },
       ],
     },
