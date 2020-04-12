@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-optional-chain';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import {
   InferMessageIdsTypeFromRule,
@@ -116,23 +116,23 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
-    'foo && bar',
-    'foo && foo',
-    'foo || bar',
-    'foo ?? bar',
-    'foo || foo.bar',
-    'foo ?? foo.bar',
-    "file !== 'index.ts' && file.endsWith('.ts')",
-    'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)',
-    'result && this.options.shouldPreserveNodeMaps',
-    'foo && fooBar.baz',
-    'match && match$1 !== undefined',
-    'foo !== null && foo !== undefined',
-    'x["y"] !== undefined && x["y"] !== null',
+    'foo && bar;',
+    'foo && foo;',
+    'foo || bar;',
+    'foo ?? bar;',
+    'foo || foo.bar;',
+    'foo ?? foo.bar;',
+    "file !== 'index.ts' && file.endsWith('.ts');",
+    'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken);',
+    'result && this.options.shouldPreserveNodeMaps;',
+    'foo && fooBar.baz;',
+    'match && match$1 !== undefined;',
+    'foo !== null && foo !== undefined;',
+    "x['y'] !== undefined && x['y'] !== null;",
     // currently do not handle complex computed properties
-    'foo && foo[bar as string] && foo[bar as string].baz',
-    'foo && foo[1 + 2] && foo[1 + 2].baz',
-    'foo && foo[typeof bar] && foo[typeof bar].baz',
+    'foo && foo[bar as string] && foo[bar as string].baz;',
+    'foo && foo[1 + 2] && foo[1 + 2].baz;',
+    'foo && foo[typeof bar] && foo[typeof bar].baz;',
   ],
   invalid: [
     ...baseCases,
@@ -176,8 +176,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     {
       // case with inconsistent checks
       code:
-        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz',
-      output: 'foo?.bar?.baz?.buzz',
+        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+      output: 'foo?.bar?.baz?.buzz;',
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -186,8 +186,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     // ensure essential whitespace isn't removed
     {
-      code: 'foo && foo.bar(baz => (<This Requires Spaces />));',
-      output: 'foo?.bar(baz => (<This Requires Spaces />));',
+      code: 'foo && foo.bar(baz => <This Requires Spaces />);',
+      output: 'foo?.bar(baz => <This Requires Spaces />);',
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -209,8 +209,8 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     },
     {
-      code: 'foo && foo["some long string"] && foo["some long string"].baz',
-      output: 'foo?.["some long string"]?.baz',
+      code: noFormat`foo && foo["some long string"] && foo["some long string"].baz`,
+      output: noFormat`foo?.["some long string"]?.baz`,
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -218,8 +218,8 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     },
     {
-      code: 'foo && foo[`some long string`] && foo[`some long string`].baz',
-      output: 'foo?.[`some long string`]?.baz',
+      code: noFormat`foo && foo[\`some long string\`] && foo[\`some long string\`].baz`,
+      output: noFormat`foo?.[\`some long string\`]?.baz`,
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -227,8 +227,8 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     },
     {
-      code: "foo && foo['some long string'] && foo['some long string'].baz",
-      output: "foo?.['some long string']?.baz",
+      code: "foo && foo['some long string'] && foo['some long string'].baz;",
+      output: "foo?.['some long string']?.baz;",
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -237,12 +237,12 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     // should preserve comments in a call expression
     {
-      code: `
+      code: noFormat`
         foo && foo.bar(/* comment */a,
           // comment2
           b, );
       `,
-      output: `
+      output: noFormat`
         foo?.bar(/* comment */a,
           // comment2
           b, );
@@ -255,8 +255,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     // ensure binary expressions that are the last expression do not get removed
     {
-      code: 'foo && foo.bar != null',
-      output: 'foo?.bar != null',
+      code: 'foo && foo.bar != null;',
+      output: 'foo?.bar != null;',
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -264,8 +264,8 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     },
     {
-      code: 'foo && foo.bar != undefined',
-      output: 'foo?.bar != undefined',
+      code: 'foo && foo.bar != undefined;',
+      output: 'foo?.bar != undefined;',
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -273,8 +273,8 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     },
     {
-      code: 'foo && foo.bar != null && baz',
-      output: 'foo?.bar != null && baz',
+      code: 'foo && foo.bar != null && baz;',
+      output: 'foo?.bar != null && baz;',
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -283,8 +283,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     // other weird cases
     {
-      code: 'foo && foo?.()',
-      output: 'foo?.()',
+      code: 'foo && foo?.();',
+      output: 'foo?.();',
       errors: [
         {
           messageId: 'preferOptionalChain',

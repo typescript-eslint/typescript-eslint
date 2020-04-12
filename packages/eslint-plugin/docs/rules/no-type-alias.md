@@ -69,7 +69,7 @@ On the other hand, using a type alias as an interface can limit your ability to:
 - Debug your code: interfaces create a new name, so is easy to identify the base type of an object
   while debugging the application.
 
-Finally, mapping types is an advance technique, leaving it open can quickly become a pain point
+Finally, mapping types is an advanced technique and leaving it open can quickly become a pain point
 in your application.
 
 ## Rule Details

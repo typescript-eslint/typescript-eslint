@@ -5,7 +5,7 @@ import path from 'path';
 import { format, resolveConfig } from 'prettier';
 import rules from '../src/rules';
 
-const prettierConfig = resolveConfig(__dirname);
+const prettierConfig = resolveConfig.sync(__dirname);
 
 interface LinterConfigRules {
   [name: string]:

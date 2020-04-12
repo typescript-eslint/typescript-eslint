@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/func-call-spacing';
 import { RuleTester } from '../RuleTester';
@@ -180,7 +185,7 @@ ruleTester.run('func-call-spacing', rule, {
 this.cancelled.add(request)
 this.decrement(request)
 (request.reject(new api.Cancel()))
-      `,
+        `,
         output: null, // no change
         errors: [
           {
@@ -208,7 +213,7 @@ var a = foo
         code: `
 var a = foo
 (baz())
-      `,
+        `,
         output: null, // no change
         errors: [
           {
