@@ -23,7 +23,7 @@ const TEMPLATE_OPEN_PAREN = '${';
 const TEMPLATE_CLOSE_PAREN = '}';
 const CHECK_TYPE = /^(?:JSXElement|RegularExpression|String|Template)$/u;
 
-const KEYWORDS = ESLINT_UTILS_KEYWORDS.concat([
+const KEYWORDS = new Set(ESLINT_UTILS_KEYWORDS.concat([
   // Eslint Utils does no provide all keywords, so we complete the list here.
   'as',
   'async',
@@ -34,19 +34,7 @@ const KEYWORDS = ESLINT_UTILS_KEYWORDS.concat([
   'of',
   'set',
   'yield',
-]);
-
-// Check duplications.
-(function(): void {
-  KEYWORDS.sort();
-  for (let i = 1; i < KEYWORDS.length; ++i) {
-    if (KEYWORDS[i] === KEYWORDS[i - 1]) {
-      throw new Error(
-        `Duplication was found in the keyword list: ${KEYWORDS[i]}`,
-      );
-    }
-  }
-})();
+]));
 
 //------------------------------------------------------------------------------
 // Helpers
