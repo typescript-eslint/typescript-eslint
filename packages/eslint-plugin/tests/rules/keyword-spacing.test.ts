@@ -1,9 +1,9 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, {
-  Option,
-  RootOption,
-  MessageIds,
-} from '../../src/rules/keyword-spacing';
+import rule, { MessageIds, Options } from '../../src/rules/keyword-spacing';
 import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ const NEITHER = { before: false, after: false };
  * @param value A value to override.
  * @returns An option object to test an 'overrides' option.
  */
-function overrides(keyword: string, value: Option): RootOption {
+function overrides(keyword: string, value: Options[0]): Options[0] {
   return {
     before: value.before === false,
     after: value.after === false,
@@ -89,26 +89,26 @@ ruleTester.run('keyword-spacing', rule, {
     // as (typing)
     //----------------------------------------------------------------------
     {
-      code: 'const foo = {} as {}',
+      code: 'const foo = {} as {};',
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
-      code: 'const foo = {}as{}',
+      code: 'const foo = {}as{};',
       options: [NEITHER],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
-      code: 'const foo = {} as {}',
+      code: 'const foo = {} as {};',
       options: [overrides('as', BOTH)],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
-      code: 'const foo = {}as{}',
+      code: 'const foo = {}as{};',
       options: [overrides('as', NEITHER)],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
-      code: 'const foo = {} as {}',
+      code: 'const foo = {} as {};',
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
@@ -118,33 +118,33 @@ ruleTester.run('keyword-spacing', rule, {
     // as (typing)
     //----------------------------------------------------------------------
     {
-      code: 'const foo = {}as {}',
-      output: 'const foo = {} as {}',
+      code: 'const foo = {}as {};',
+      output: 'const foo = {} as {};',
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedBefore('as'),
     },
     {
-      code: 'const foo = {} as{}',
-      output: 'const foo = {}as{}',
+      code: 'const foo = {} as{};',
+      output: 'const foo = {}as{};',
       options: [NEITHER],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: unexpectedBefore('as'),
     },
     {
-      code: 'const foo = {} as{}',
-      output: 'const foo = {} as {}',
+      code: 'const foo = {} as{};',
+      output: 'const foo = {} as {};',
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedAfter('as'),
     },
     {
-      code: 'const foo = {}as {}',
-      output: 'const foo = {}as{}',
+      code: 'const foo = {}as {};',
+      output: 'const foo = {}as{};',
       options: [NEITHER],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: unexpectedAfter('as'),
     },
     {
-      code: 'const foo = {} as{}',
+      code: 'const foo = {} as{};',
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedAfter('as'),
