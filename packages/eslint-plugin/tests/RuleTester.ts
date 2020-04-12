@@ -89,4 +89,16 @@ afterAll(() => {
   clearCaches();
 });
 
-export { RuleTester, getFixturesRootDir, batchedSingleLineTests };
+/**
+ * Simple no-op tag to mark code samples as "should not format with prettier"
+ *   for the internal/plugin-test-formatting lint rule
+ */
+function noFormat(strings: TemplateStringsArray, ...keys: string[]): string {
+  const lastIndex = strings.length - 1;
+  return (
+    strings.slice(0, lastIndex).reduce((p, s, i) => p + s + keys[i], '') +
+    strings[lastIndex]
+  );
+}
+
+export { batchedSingleLineTests, getFixturesRootDir, noFormat, RuleTester };

@@ -14,66 +14,81 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-misused-promises', rule, {
   valid: [
-    `if (true) {}`,
-    {
-      code: `if (Promise.resolve()) {}`,
-      options: [{ checksConditionals: false }],
-    },
     `
-if (true) {}
-else if (false) {}
-else {}
-`,
+if (true) {
+}
+    `,
     {
       code: `
-if (Promise.resolve()) {}
-else if (Promise.resolve()) {}
-else {}
-`,
+if (Promise.resolve()) {
+}
+      `,
       options: [{ checksConditionals: false }],
     },
-    `for (;;) {}`,
-    `for (let i; i < 10; i++) {}`,
+    `
+if (true) {
+} else if (false) {
+} else {
+}
+    `,
     {
-      code: `for (let i; Promise.resolve(); i++) {}`,
+      code: `
+if (Promise.resolve()) {
+} else if (Promise.resolve()) {
+} else {
+}
+      `,
       options: [{ checksConditionals: false }],
     },
-    `do {} while (true);`,
+    'for (;;) {}',
+    'for (let i; i < 10; i++) {}',
     {
-      code: `do {} while (Promise.resolve())`,
+      code: 'for (let i; Promise.resolve(); i++) {}',
       options: [{ checksConditionals: false }],
     },
-    `while (true) {}`,
+    'do {} while (true);',
     {
-      code: `while (Promise.resolve()) {}`,
+      code: 'do {} while (Promise.resolve());',
       options: [{ checksConditionals: false }],
     },
-    `true ? 123 : 456`,
+    'while (true) {}',
     {
-      code: `Promise.resolve() ? 123 : 456`,
+      code: 'while (Promise.resolve()) {}',
       options: [{ checksConditionals: false }],
     },
-    `if (!true) {}`,
+    'true ? 123 : 456;',
     {
-      code: `if (!Promise.resolve()) {}`,
+      code: 'Promise.resolve() ? 123 : 456;',
       options: [{ checksConditionals: false }],
     },
-    `(await Promise.resolve()) || false`,
+    `
+if (!true) {
+}
+    `,
     {
-      code: `Promise.resolve() || false`,
+      code: `
+if (!Promise.resolve()) {
+}
+      `,
       options: [{ checksConditionals: false }],
     },
-    `(true && await Promise.resolve()) || false`,
+    '(await Promise.resolve()) || false;',
     {
-      code: `(true && Promise.resolve()) || false`,
+      code: 'Promise.resolve() || false;',
       options: [{ checksConditionals: false }],
     },
-    `false || (true && Promise.resolve())`,
+    '(true && (await Promise.resolve())) || false;',
+    {
+      code: '(true && Promise.resolve()) || false;',
+      options: [{ checksConditionals: false }],
+    },
+    'false || (true && Promise.resolve());',
     `
 async function test() {
-  if (await Promise.resolve()) {}
+  if (await Promise.resolve()) {
+  }
 }
-`,
+    `,
     `
 async function test() {
   const mixed: Promise | undefined = Promise.resolve();
@@ -81,57 +96,73 @@ async function test() {
     await mixed;
   }
 }
-`,
-    `if (~Promise.resolve()) {}`,
+    `,
+    `
+if (~Promise.resolve()) {
+}
+    `,
     `
 interface NotQuiteThenable {
   then(param: string): void;
   then(): void;
 }
 const value: NotQuiteThenable = { then() {} };
-if (value) {}
-`,
-    `[1, 2, 3].forEach(val => {});`,
+if (value) {
+}
+    `,
+    '[1, 2, 3].forEach(val => {});',
     {
-      code: `[1, 2, 3].forEach(async val => {});`,
+      code: '[1, 2, 3].forEach(async val => {});',
       options: [{ checksVoidReturn: false }],
     },
-    `new Promise((resolve, reject) => resolve());`,
+    'new Promise((resolve, reject) => resolve());',
     {
-      code: `new Promise(async (resolve, reject) => resolve());`,
+      code: 'new Promise(async (resolve, reject) => resolve());',
       options: [{ checksVoidReturn: false }],
     },
-    `Promise.all(['abc', 'def'].map(async val => { await val; }))`,
+    `
+Promise.all(
+  ['abc', 'def'].map(async val => {
+    await val;
+  }),
+);
+    `,
     `
 const fn: (arg: () => Promise<void> | void) => void = () => {};
 fn(() => Promise.resolve());
     `,
     `
-declare const returnsPromise : (() => Promise<void>) | null;
-if (returnsPromise?.()) {}
+declare const returnsPromise: (() => Promise<void>) | null;
+if (returnsPromise?.()) {
+}
     `,
     `
-declare const returnsPromise : { call: (() => Promise<void>) } | null;
-if (returnsPromise?.call()) {}
+declare const returnsPromise: { call: () => Promise<void> } | null;
+if (returnsPromise?.call()) {
+}
     `,
   ],
 
   invalid: [
     {
-      code: `if (Promise.resolve()) {}`,
+      code: `
+if (Promise.resolve()) {
+}
+      `,
       errors: [
         {
-          line: 1,
+          line: 2,
           messageId: 'conditional',
         },
       ],
     },
     {
       code: `
-if (Promise.resolve()) {}
-else if (Promise.resolve()) {}
-else {}
-`,
+if (Promise.resolve()) {
+} else if (Promise.resolve()) {
+} else {
+}
+      `,
       errors: [
         {
           line: 2,
@@ -144,7 +175,7 @@ else {}
       ],
     },
     {
-      code: `for (let i; Promise.resolve(); i++) {}`,
+      code: 'for (let i; Promise.resolve(); i++) {}',
       errors: [
         {
           line: 1,
@@ -153,7 +184,7 @@ else {}
       ],
     },
     {
-      code: `do {} while (Promise.resolve())`,
+      code: 'do {} while (Promise.resolve());',
       errors: [
         {
           line: 1,
@@ -162,7 +193,7 @@ else {}
       ],
     },
     {
-      code: `while (Promise.resolve()) {}`,
+      code: 'while (Promise.resolve()) {}',
       errors: [
         {
           line: 1,
@@ -171,34 +202,7 @@ else {}
       ],
     },
     {
-      code: `Promise.resolve() ? 123 : 456`,
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `if (!Promise.resolve()) {}`,
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `Promise.resolve() || false`,
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `(true && Promise.resolve()) || false`,
+      code: 'Promise.resolve() ? 123 : 456;',
       errors: [
         {
           line: 1,
@@ -208,13 +212,43 @@ else {}
     },
     {
       code: `
-[Promise.resolve(), Promise.reject()].forEach(
-  async val => { await val; }
-);
-`,
+if (!Promise.resolve()) {
+}
+      `,
       errors: [
         {
-          line: 3,
+          line: 2,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'Promise.resolve() || false;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: '(true && Promise.resolve()) || false;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+[Promise.resolve(), Promise.reject()].forEach(async val => {
+  await val;
+});
+      `,
+      errors: [
+        {
+          line: 2,
           messageId: 'voidReturn',
         },
       ],
@@ -225,7 +259,7 @@ new Promise(async (resolve, reject) => {
   await Promise.resolve();
   resolve();
 });
-`,
+      `,
       errors: [
         {
           line: 2,
@@ -242,7 +276,7 @@ const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
 fnWithCallback('val', async (err, res) => {
   await res;
 });
-`,
+      `,
       errors: [
         {
           line: 6,
@@ -257,7 +291,7 @@ const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
 };
 
 fnWithCallback('val', (err, res) => Promise.resolve(res));
-`,
+      `,
       errors: [
         {
           line: 6,
@@ -278,7 +312,7 @@ fnWithCallback('val', (err, res) => {
     return Promise.resolve(res);
   }
 });
-`,
+      `,
       errors: [
         {
           line: 6,
@@ -288,22 +322,26 @@ fnWithCallback('val', (err, res) => {
     },
     {
       code: `
-const fnWithCallback: ((arg: string, cb: (err: any, res: string) => void) => void) | null = (arg, cb) => {
+const fnWithCallback:
+  | ((arg: string, cb: (err: any, res: string) => void) => void)
+  | null = (arg, cb) => {
   cb(null, arg);
 };
 
 fnWithCallback?.('val', (err, res) => Promise.resolve(res));
-`,
+      `,
       errors: [
         {
-          line: 6,
+          line: 8,
           messageId: 'voidReturn',
         },
       ],
     },
     {
       code: `
-const fnWithCallback: ((arg: string, cb: (err: any, res: string) => void) => void) | null = (arg, cb) => {
+const fnWithCallback:
+  | ((arg: string, cb: (err: any, res: string) => void) => void)
+  | null = (arg, cb) => {
   cb(null, arg);
 };
 
@@ -314,10 +352,10 @@ fnWithCallback('val', (err, res) => {
     return Promise.resolve(res);
   }
 });
-`,
+      `,
       errors: [
         {
-          line: 6,
+          line: 8,
           messageId: 'voidReturn',
         },
       ],

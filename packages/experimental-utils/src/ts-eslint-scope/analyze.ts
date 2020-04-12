@@ -1,4 +1,5 @@
 import { analyze as ESLintAnalyze } from 'eslint-scope';
+import { EcmaVersion } from '../ts-eslint';
 import { ScopeManager } from './ScopeManager';
 
 interface AnalysisOptions {
@@ -9,7 +10,7 @@ interface AnalysisOptions {
   impliedStrict?: boolean;
   fallback?: string | ((node: {}) => string[]);
   sourceType?: 'script' | 'module';
-  ecmaVersion?: number;
+  ecmaVersion?: EcmaVersion;
 }
 const analyze = ESLintAnalyze as (
   ast: {},

@@ -13,71 +13,65 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-untyped-public-signature', rule, {
   valid: [
     {
-      code: `class A {
-                  private a(c) {
-                  }
-                }`,
-    },
-    {
-      code: `class A {
-                  private async a(c) {
-                  }
-                }`,
+      code: `
+class A {
+  private a(c) {}
+}
+      `,
     },
     {
       code: `
-            class A {
-                public b(c: string):void {
-
-                }
-            }`,
+class A {
+  private async a(c) {}
+}
+      `,
     },
     {
       code: `
-             class A {
-                public b(...c):void {
-
-                }
-            }`,
+class A {
+  public b(c: string): void {}
+}
+      `,
     },
     {
       code: `
-             class A {
-                b(c):void {
-
-                }
-            }`,
+class A {
+  public b(...c): void {}
+}
+      `,
+    },
+    {
+      code: `
+class A {
+  b(c): void {}
+}
+      `,
       options: [{ ignoredMethods: ['b'] }],
     },
     {
       code: `
-             class A {
-                ['b'](c):void {
-
-                }
-            }`,
+class A {
+  ['b'](c): void {}
+}
+      `,
       options: [{ ignoredMethods: ['b'] }],
     },
     {
       code: `
-             class A {
-                [\`b\`](c):void {
-
-                }
-            }`,
+class A {
+  [\`b\`](c): void {}
+}
+      `,
       options: [{ ignoredMethods: ['b'] }],
     },
     {
       code: `
-             class A {
-                b(...c):void {
+class A {
+  b(...c): void {}
 
-                }
-
-                d(c):void {
-
-                }
-            }`,
+  d(c): void {}
+}
+      `,
       options: [{ ignoredMethods: ['b', 'd'] }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/1229
@@ -133,54 +127,56 @@ class Foo {
   invalid: [
     //untyped parameter
     {
-      code: `class A {
-                public b(c):void {
-
-                }
-            }`,
+      code: `
+class A {
+  public b(c): void {}
+}
+      `,
       errors: [{ messageId: 'untypedParameter' }],
     },
     //untyped parameter (any)
     {
-      code: `class A {
-                public b(c: any):void {
-
-                }
-            }`,
+      code: `
+class A {
+  public b(c: any): void {}
+}
+      `,
       errors: [{ messageId: 'untypedParameter' }],
     },
     //implicit public method
     {
-      code: `class A {
-                b(c):void {
-
-                }
-            }`,
+      code: `
+class A {
+  b(c): void {}
+}
+      `,
       errors: [{ messageId: 'untypedParameter' }],
     },
     //implicit async public method
     {
-      code: `class A {
-                  async a(c): void {
-                  }
-                }`,
+      code: `
+class A {
+  async a(c): void {}
+}
+      `,
       errors: [{ messageId: 'untypedParameter' }],
     },
     //no return type
     {
-      code: `class A {
-                  public a(c: number) {
-                  }
-                }`,
+      code: `
+class A {
+  public a(c: number) {}
+}
+      `,
       errors: [{ messageId: 'noReturnType' }],
     },
     //no return type + untyped parameter
     {
-      code: `class A {
-                public b(c) {
-
-                }
-            }`,
+      code: `
+class A {
+  public b(c) {}
+}
+      `,
       errors: [
         { messageId: 'untypedParameter' },
         { messageId: 'noReturnType' },
@@ -188,71 +184,70 @@ class Foo {
     },
     //any return type
     {
-      code: `class A {
-                public b(c: number): any {
-
-                }
-            }`,
+      code: `
+class A {
+  public b(c: number): any {}
+}
+      `,
       errors: [{ messageId: 'noReturnType' }],
     },
     //with ignored methods
     {
-      code: `class A {
-                public b(c: number): any {
+      code: `
+class A {
+  public b(c: number): any {}
 
-                }
-
-                c() {
-                }
-            }`,
+  c() {}
+}
+      `,
       options: [{ ignoredMethods: ['c'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
     {
       code: `
-          let c = 'd';
-          class A {
-                [methodName]() {
-                }
-            }`,
+let c = 'd';
+class A {
+  [methodName]() {}
+}
+      `,
       options: [{ ignoredMethods: ['methodName'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
     {
       code: `
-          class A {
-                [1]() {
-                }
-            }`,
+class A {
+  [1]() {}
+}
+      `,
       options: [{ ignoredMethods: ['1'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
     {
       code: `
-          let c = 'C';
-          class A {
-                [\`methodName\${c}\`]() {
-                }
-            }`,
+let c = 'C';
+class A {
+  [\`methodName\${c}\`]() {}
+}
+      `,
       options: [{ ignoredMethods: ['methodNameC', 'methodNamec'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
     {
       code: `
-          let c = '1';
-          class A {
-                [(c as number)]() {
-                }
-            }`,
+let c = '1';
+class A {
+  [c as number]() {}
+}
+      `,
       options: [{ ignoredMethods: ['1'] }],
       errors: [{ messageId: 'noReturnType' }],
     },
     {
       code: `
-          class A {
-                abstract c() {
-                }
-            }`,
+class A {
+  abstract c() {}
+}
+      `,
       errors: [{ messageId: 'noReturnType' }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/1229
