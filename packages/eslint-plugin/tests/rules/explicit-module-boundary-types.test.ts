@@ -351,62 +351,62 @@ export const Foo: JSX.Element = (
     {
       code: `
 const test = (): void => {
-    return;
-}
+  return;
+};
 export default test;
-            `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 function test(): void {
-    return;
+  return;
 }
 export default test;
-            `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 const test = (): void => {
-    return;
-}
-export default [ test ];
-            `,
+  return;
+};
+export default [test];
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 function test(): void {
-    return;
+  return;
 }
-export default [ test ];
-            `,
+export default [test];
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 const test = (): void => {
-    return;
-}
+  return;
+};
 export default { test };
-            `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 function test(): void {
-    return;
+  return;
 }
 export default { test };
-            `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
       code: `
 const foo = (arg => arg) as Foo;
 export default foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
@@ -414,7 +414,7 @@ export default foo;
 let foo = (arg => arg) as Foo;
 foo = 3;
 export default foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
     },
     {
@@ -422,7 +422,7 @@ export default foo;
 class Foo {
   bar = (arg: string): string => arg;
 }
-export default { Foo }
+export default { Foo };
       `,
       options: [{ shouldTrackReferences: true }],
     },
@@ -433,7 +433,7 @@ class Foo {
     return;
   }
 }
-export default { Foo }
+export default { Foo };
       `,
       options: [{ shouldTrackReferences: true }],
     },
@@ -1018,7 +1018,7 @@ export function fn(test): string {
       code: `
 const foo = arg => arg;
 export default foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1035,7 +1035,7 @@ export default foo;
       code: `
 const foo = arg => arg;
 export = foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1053,7 +1053,7 @@ export = foo;
 let foo = (arg: number): number => arg;
 foo = arg => arg;
 export default foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1069,8 +1069,8 @@ export default foo;
     {
       code: `
 const foo = arg => arg;
-export default [ foo ];
-          `,
+export default [foo];
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1087,7 +1087,7 @@ export default [ foo ];
       code: `
 const foo = arg => arg;
 export default { foo };
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1102,9 +1102,11 @@ export default { foo };
     },
     {
       code: `
-function foo(arg) { return arg; }
+function foo(arg) {
+  return arg;
+}
 export default foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1119,9 +1121,11 @@ export default foo;
     },
     {
       code: `
-function foo(arg) { return arg; }
-export default [ foo ];
-          `,
+function foo(arg) {
+  return arg;
+}
+export default [foo];
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1136,9 +1140,11 @@ export default [ foo ];
     },
     {
       code: `
-function foo(arg) { return arg; }
+function foo(arg) {
+  return arg;
+}
 export default { foo };
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1153,9 +1159,11 @@ export default { foo };
     },
     {
       code: `
-const bar = function foo(arg) { return arg; }
+const bar = function foo(arg) {
+  return arg;
+};
 export default { bar };
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1176,7 +1184,7 @@ class Foo {
   }
 }
 export default Foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1192,12 +1200,12 @@ export default Foo;
     {
       code: `
 class Foo {
-  bool = (arg) => {
+  bool = arg => {
     return arg;
-  }
+  };
 }
 export default Foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1215,10 +1223,10 @@ export default Foo;
 class Foo {
   bool = function(arg) {
     return arg;
-  }
+  };
 }
 export default Foo;
-          `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1236,10 +1244,10 @@ export default Foo;
 class Foo {
   bool = function(arg) {
     return arg;
-  }
+  };
 }
-export default [ Foo ];
-          `,
+export default [Foo];
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {
@@ -1254,12 +1262,12 @@ export default [ Foo ];
     },
     {
       code: `
-let test = arg => argl
+let test = arg => argl;
 test = (): void => {
   return;
 };
 export default test;
-            `,
+      `,
       options: [{ shouldTrackReferences: true }],
       errors: [
         {

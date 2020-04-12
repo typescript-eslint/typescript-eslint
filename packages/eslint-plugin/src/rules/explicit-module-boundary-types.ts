@@ -204,18 +204,15 @@ export default util.createRule<Options, MessageIds>({
      * Finds a function node referred by a variable passed from parameters
      */
     function findFunctionInScope(
-      varibale: TSESLint.Scope.Variable,
+      variable: TSESLint.Scope.Variable,
     ): TSESTree.FunctionDeclaration | undefined {
-      if (varibale.defs[0].type !== 'FunctionName') {
+      if (variable.defs[0].type !== 'FunctionName') {
         return;
       }
 
-      const functionNode = varibale.defs[0].node;
+      const functionNode = variable.defs[0].node;
 
-      if (
-        functionNode &&
-        functionNode.type !== AST_NODE_TYPES.FunctionDeclaration
-      ) {
+      if (functionNode?.type !== AST_NODE_TYPES.FunctionDeclaration) {
         return;
       }
 
@@ -226,10 +223,6 @@ export default util.createRule<Options, MessageIds>({
      * Checks if a function referred by the identifier passed from parameters follow the rule
      */
     function checkWithTrackingReferences(node: TSESTree.Identifier): void {
-      if (!options.shouldTrackReferences) {
-        return;
-      }
-
       const scope = context.getScope();
       const variable = scope.set.get(node.name);
 
@@ -342,6 +335,10 @@ export default util.createRule<Options, MessageIds>({
       'ExportDefaultDeclaration, TSExportAssignment'(
         node: TSESTree.ExportDefaultDeclaration | TSESTree.TSExportAssignment,
       ): void {
+        if (!options.shouldTrackReferences) {
+          return;
+        }
+
         let exported: TSESTree.Node;
 
         if (node.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
