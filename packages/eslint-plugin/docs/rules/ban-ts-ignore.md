@@ -4,6 +4,11 @@ This rule has been deprecated in favor of [`ban-ts-comment`](./ban-ts-comment.md
 
 Suppressing TypeScript Compiler Errors can be hard to discover.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`ban-ts-comment`](./ban-ts-comment.md) rule.
+It will be removed in a future version of this plugin.
+
 ## Rule Details
 
 Does not allow the use of `// @ts-ignore` comments.

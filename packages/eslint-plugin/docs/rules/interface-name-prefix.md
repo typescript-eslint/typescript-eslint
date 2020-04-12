@@ -5,6 +5,11 @@ The unprefixed name is then available for a class that provides a standard imple
 Alternatively, the contributor guidelines for the TypeScript repo suggest
 [never prefixing](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#names) interfaces with `I`.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.
+It will be removed in a future version of this plugin.
+
 ## Rule Details
 
 This rule enforces whether or not the `I` prefix is required for interface names.

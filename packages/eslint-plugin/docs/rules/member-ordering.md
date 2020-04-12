@@ -53,37 +53,37 @@ Note: There is a deprecated syntax to specify the member types as an array.
 
 There are multiple ways to specify the member types. The most explicit and granular form is the following:
 
-```json5
+```jsonc
 [
   // Index signature
-  'signature',
+  "signature",
 
   // Fields
-  'public-static-field',
-  'protected-static-field',
-  'private-static-field',
-  'public-instance-field',
-  'protected-instance-field',
-  'private-instance-field',
-  'public-abstract-field',
-  'protected-abstract-field',
-  'private-abstract-field',
+  "public-static-field",
+  "protected-static-field",
+  "private-static-field",
+  "public-instance-field",
+  "protected-instance-field",
+  "private-instance-field",
+  "public-abstract-field",
+  "protected-abstract-field",
+  "private-abstract-field",
 
   // Constructors
-  'public-constructor',
-  'protected-constructor',
-  'private-constructor',
+  "public-constructor",
+  "protected-constructor",
+  "private-constructor",
 
   // Methods
-  'public-static-method',
-  'protected-static-method',
-  'private-static-method',
-  'public-instance-method',
-  'protected-instance-method',
-  'private-instance-method',
-  'public-abstract-method',
-  'protected-abstract-method',
-  'private-abstract-method',
+  "public-static-method",
+  "protected-static-method",
+  "private-static-method",
+  "public-instance-method",
+  "protected-instance-method",
+  "private-instance-method",
+  "public-abstract-method",
+  "protected-abstract-method",
+  "private-abstract-method"
 ]
 ```
 
@@ -93,23 +93,23 @@ Note: If you only specify some of the possible types, the non-specified ones can
 
 It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
 
-```json5
+```jsonc
 [
   // Index signature
   // No accessibility for index signature. See above.
 
   // Fields
-  'public-field', // = ['public-static-field', 'public-instance-field'])
-  'protected-field', // = ['protected-static-field', 'protected-instance-field'])
-  'private-field', // = ['private-static-field', 'private-instance-field'])
+  "public-field", // = ["public-static-field", "public-instance-field"])
+  "protected-field", // = ["protected-static-field", "protected-instance-field"])
+  "private-field", // = ["private-static-field", "private-instance-field"])
 
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
 
   // Methods
-  'public-method', // = ['public-static-method', 'public-instance-method'])
-  'protected-method', // = ['protected-static-method', 'protected-instance-method'])
-  'private-method', // = ['private-static-method', 'private-instance-method'])
+  "public-method", // = ["public-static-method", "public-instance-method"])
+  "protected-method", // = ["protected-static-method", "protected-instance-method"])
+  "private-method" // = ["private-static-method", "private-instance-method"])
 ]
 ```
 
@@ -117,23 +117,23 @@ It is also possible to group member types by their accessibility (`static`, `ins
 
 Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
 
-```json5
+```jsonc
 [
   // Index signature
   // No scope for index signature. See above.
 
   // Fields
-  'static-field', // = ['public-static-field', 'protected-static-field', 'private-static-field'])
-  'instance-field', // = ['public-instance-field', 'protected-instance-field', 'private-instance-field'])
-  'abstract-field', // = ['public-abstract-field', 'protected-abstract-field', 'private-abstract-field'])
+  "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"])
+  "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"])
+  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"])
 
   // Constructors
-  'constructor', // = ['public-constructor', 'protected-constructor', 'private-constructor'])
+  "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"])
 
   // Methods
-  'static-method', // = ['public-static-method', 'protected-static-method', 'private-static-method'])
-  'instance-method', // = ['public-instance-method', 'protected-instance-method', 'private-instance-method'])
-  'abstract-method', // = ['public-abstract-method', 'protected-abstract-method', 'private-abstract-method'])
+  "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"])
+  "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"])
+  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"])
 ]
 ```
 
@@ -141,21 +141,21 @@ Another option is to group the member types by their scope (`public`, `protected
 
 The third grouping option is to ignore both scope and accessibility.
 
-```json5
+```jsonc
 [
   // Index signature
   // No grouping for index signature. See above.
 
   // Fields
-  'field', // = ['public-static-field', 'protected-static-field', 'private-static-field', 'public-instance-field', 'protected-instance-field', 'private-instance-field',
-  //              'public-abstract-field', 'protected-abstract-field', private-abstract-field'])
+  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
+  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"])
 
   // Constructors
   // Only the accessibility of constructors is configurable. See above.
 
   // Methods
-  'method', // = ['public-static-method', 'protected-static-method', 'private-static-method', 'public-instance-method', 'protected-instance-method', 'private-instance-method',
-  //                'public-abstract-method', 'protected-abstract-method', 'private-abstract-method'])
+  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
+  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"])
 ]
 ```
 
@@ -163,65 +163,65 @@ The third grouping option is to ignore both scope and accessibility.
 
 The default configuration looks as follows:
 
-```json5
+```jsonc
 {
-  default: [
+  "default": [
     // Index signature
-    'signature',
+    "signature",
 
     // Fields
-    'public-static-field',
-    'protected-static-field',
-    'private-static-field',
+    "public-static-field",
+    "protected-static-field",
+    "private-static-field",
 
-    'public-instance-field',
-    'protected-instance-field',
-    'private-instance-field',
+    "public-instance-field",
+    "protected-instance-field",
+    "private-instance-field",
 
-    'public-abstract-field',
-    'protected-abstract-field',
-    'private-abstract-field',
+    "public-abstract-field",
+    "protected-abstract-field",
+    "private-abstract-field",
 
-    'public-field',
-    'protected-field',
-    'private-field',
+    "public-field",
+    "protected-field",
+    "private-field",
 
-    'static-field',
-    'instance-field',
-    'abstract-field',
+    "static-field",
+    "instance-field",
+    "abstract-field",
 
-    'field',
+    "field",
 
     // Constructors
-    'public-constructor',
-    'protected-constructor',
-    'private-constructor',
+    "public-constructor",
+    "protected-constructor",
+    "private-constructor",
 
-    'constructor',
+    "constructor",
 
     // Methods
-    'public-static-method',
-    'protected-static-method',
-    'private-static-method',
+    "public-static-method",
+    "protected-static-method",
+    "private-static-method",
 
-    'public-instance-method',
-    'protected-instance-method',
-    'private-instance-method',
+    "public-instance-method",
+    "protected-instance-method",
+    "private-instance-method",
 
-    'public-abstract-method',
-    'protected-abstract-method',
-    'private-abstract-method',
+    "public-abstract-method",
+    "protected-abstract-method",
+    "private-abstract-method",
 
-    'public-method',
-    'protected-method',
-    'private-method',
+    "public-method",
+    "protected-method",
+    "private-method",
 
-    'static-method',
-    'instance-method',
-    'abstract-method',
+    "static-method",
+    "instance-method",
+    "abstract-method",
 
-    'method',
-  ],
+    "method"
+  ]
 }
 ```
 
@@ -749,7 +749,7 @@ type Foo = {
 
 It is possible to sort all members within a group alphabetically.
 
-#### Configuration: `{ default: { memberTypes: <Default Order>, order: 'alphabetically' } }`
+#### Configuration: `{ default: { memberTypes: <Default Order>, order: "alphabetically" } }`
 
 This will apply the default order (see above) and enforce an alphabetic order within each group.
 
@@ -795,7 +795,7 @@ interface Foo {
 
 It is also possible to sort all members and ignore the member groups completely.
 
-#### Configuration: `{ default: { memberTypes: 'never', order: 'alphabetically' } }`
+#### Configuration: `{ default: { memberTypes: "never", order: "alphabetically" } }`
 
 ##### Incorrect example
 
