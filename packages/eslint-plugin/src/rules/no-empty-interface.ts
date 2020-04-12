@@ -1,5 +1,8 @@
 import * as util from '../util';
-import { AST_NODE_TYPES, TSESLint  } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -60,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
         } else if (extend.length === 1) {
           // interface extends exactly 1 interface --> Report depending on rule setting
           if (!allowSingleExtends) {
-            const fix = (fixer: RuleFixer): RuleFix => {
+            const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
               let typeParam = '';
               if (node.typeParameters) {
                 typeParam = sourceCode.getText(node.typeParameters);
