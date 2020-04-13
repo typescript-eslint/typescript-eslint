@@ -98,21 +98,12 @@ export default util.createRule<Options, MessageId>({
      */
     function getNodeType(node: TSESTree.Expression): BaseType[] {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = typeChecker.getTypeAtLocation(tsNode);
+      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 
       return getBaseType(type);
     }
 
     function getBaseType(type: ts.Type): BaseType[] {
-      const constraint = type.getConstraint();
-      if (
-        constraint &&
-        // for generic types with union constraints, it will return itself
-        constraint !== type
-      ) {
-        return getBaseType(constraint);
-      }
-
       if (type.isStringLiteral()) {
         return ['string'];
       }

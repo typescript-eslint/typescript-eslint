@@ -1,5 +1,4 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -27,26 +26,16 @@ export default util.createRule({
 
     return {
       ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
-        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+        callee: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        // Get the symbol of the `sort` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-        const sortSymbol = checker.getSymbolAtLocation(tsNode);
-        if (sortSymbol == null) {
-          return;
-        }
+        const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
+        const calleeObjType = util.getConstrainedTypeAtLocation(
+          checker,
+          tsNode,
+        );
 
-        // Check the owner type of the `sort` method.
-        for (const methodDecl of sortSymbol.declarations) {
-          const typeDecl = methodDecl.parent;
-          if (
-            ts.isInterfaceDeclaration(typeDecl) &&
-            ts.isSourceFile(typeDecl.parent) &&
-            typeDecl.name.escapedText === 'Array'
-          ) {
-            context.report({ node: node.parent!, messageId: 'requireCompare' });
-            return;
-          }
+        if (util.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+          context.report({ node: callee.parent!, messageId: 'requireCompare' });
         }
       },
     };

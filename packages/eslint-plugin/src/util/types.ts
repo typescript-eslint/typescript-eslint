@@ -14,6 +14,23 @@ import {
 import * as ts from 'typescript';
 
 /**
+ * Checks if the given type is either an array type,
+ * or a union made up solely of array types.
+ */
+export function isTypeArrayTypeOrUnionOfArrayTypes(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  for (const t of unionTypeParts(type)) {
+    if (!checker.isArrayType(t)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * @param type Type being checked by name.
  * @param allowedNames Symbol names checking on the type.
  * @returns Whether the type is, extends, or contains all of the allowed names.
