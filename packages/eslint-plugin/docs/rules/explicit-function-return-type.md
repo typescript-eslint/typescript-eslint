@@ -69,6 +69,8 @@ type Options = {
   allowTypedFunctionExpressions?: boolean;
   // if true, functions immediately returning another function expression will not be checked
   allowHigherOrderFunctions?: boolean;
+  // if true, concise arrow functions that start with the void keyword will not be checked
+  allowConciseArrowFunctionExpressionStartingWithVoid?: boolean;
 };
 
 const defaults = {
@@ -196,6 +198,24 @@ var arrowFn = () => (): void => {};
 function fn() {
   return function(): void {};
 }
+```
+
+### `allowConciseArrowFunctionExpressionsStartingWithVoid`
+
+Examples of **incorrect** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+
+```ts
+var join = (a: string, b: string) => `${a}${b}`;
+
+const log = (message: string) => {
+  console.log(message);
+};
+```
+
+Examples of **correct** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+
+```ts
+var log = (message: string) => void console.log(message);
 ```
 
 ## When Not To Use It
