@@ -9,17 +9,19 @@ ruleTester.run('prefer-ts-expect-error', rule, {
   valid: [
     '// @ts-nocheck',
     '// @ts-check',
-    `// just a comment containing @ts-ignore somewhere`,
-    `/* @ts-ignore */`,
-    `/** @ts-ignore */`,
-    `/*
+    '// just a comment containing @ts-ignore somewhere',
+    '/* @ts-ignore */',
+    '/** @ts-ignore */',
+    `
+/*
 // @ts-ignore in a block
-*/`,
+*/
+    `,
     '// @ts-expect-error',
     `
 if (false) {
   // @ts-expect-error: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
     `,
   ],
@@ -62,15 +64,15 @@ if (false) {
       code: `
 if (false) {
   // @ts-ignore: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       output: `
 if (false) {
   // @ts-expect-error: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'preferExpectErrorComment',
