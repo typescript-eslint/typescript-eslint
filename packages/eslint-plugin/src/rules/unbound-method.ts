@@ -197,6 +197,16 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
     return false;
   }
 
+  if (valueDeclaration.kind === ts.SyntaxKind.PropertyDeclaration) {
+    const propertyDeclaration = valueDeclaration as ts.PropertyDeclaration;
+    if (
+      propertyDeclaration.initializer &&
+      propertyDeclaration.initializer.kind === ts.SyntaxKind.FunctionExpression
+    ) {
+      return true;
+    }
+  }
+
   switch (valueDeclaration.kind) {
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature:
