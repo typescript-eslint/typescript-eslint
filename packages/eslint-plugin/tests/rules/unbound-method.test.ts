@@ -367,5 +367,19 @@ instance.unbound = x; // THIS SHOULD NOT
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  unbound = function() {};
+}
+const unbound = new Foo().unbound;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
   ],
 });
