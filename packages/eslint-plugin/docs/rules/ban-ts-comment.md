@@ -6,6 +6,7 @@ Using these to suppress TypeScript Compiler Errors reduces the effectiveness of 
 The directive comments supported by TypeScript are:
 
 ```
+// @ts-expect-error
 // @ts-ignore
 // @ts-nocheck
 // @ts-check
@@ -14,18 +15,20 @@ The directive comments supported by TypeScript are:
 ## Rule Details
 
 This rule lets you set which directive comments you want to allow in your codebase.
-By default, only `@ts-check` is allowed, as it enables rather then suppresses errors.
+By default, only `@ts-check` is allowed, as it enables rather than suppresses errors.
 
 The configuration looks like this:
 
 ```
 interface Options {
+  'ts-expect-error'?: boolean;
   'ts-ignore'?: boolean;
   'ts-nocheck'?: boolean;
   'ts-check'?: boolean;
 }
 
 const defaultOptions: Options = {
+  'ts-expect-error': true,
   'ts-ignore': true,
   'ts-nocheck': true,
   'ts-check': false
