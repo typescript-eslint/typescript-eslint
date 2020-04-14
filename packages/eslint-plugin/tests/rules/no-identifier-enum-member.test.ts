@@ -24,7 +24,7 @@ enum Valid {
   invalid: [
     {
       code: `
-const variable = 'Test',
+const variable = 'Test';
 enum Foo {
   A = 'TestStr',
   B = 2,
