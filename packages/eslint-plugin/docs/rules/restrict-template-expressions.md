@@ -28,6 +28,8 @@ type Options = {
   allowNumber?: boolean;
   // if true, also allow boolean type in template expressions
   allowBoolean?: boolean;
+  // if true, also allow any in template expressions
+  allowAny?: boolean;
   // if true, also allow null and undefined in template expressions
   allowNullable?: boolean;
 };

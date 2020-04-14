@@ -7,10 +7,10 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowNullable?: boolean;
     allowNumber?: boolean;
     allowBoolean?: boolean;
     allowAny?: boolean;
+    allowNullable?: boolean;
   },
 ];
 
@@ -33,10 +33,10 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowAny: { type: 'boolean' },
-          allowBoolean: { type: 'boolean' },
-          allowNullable: { type: 'boolean' },
           allowNumber: { type: 'boolean' },
+          allowBoolean: { type: 'boolean' },
+          allowAny: { type: 'boolean' },
+          allowNullable: { type: 'boolean' },
         },
       },
     ],
@@ -48,13 +48,6 @@ export default util.createRule<Options, MessageId>({
 
     function isUnderlyingTypePrimitive(type: ts.Type): boolean {
       if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
-        return true;
-      }
-
-      if (
-        options.allowNullable &&
-        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
-      ) {
         return true;
       }
 
@@ -76,6 +69,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (options.allowAny && util.isTypeFlagSet(type, ts.TypeFlags.Any)) {
+        return true;
+      }
+
+      if (
+        options.allowNullable &&
+        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
+      ) {
         return true;
       }
 
