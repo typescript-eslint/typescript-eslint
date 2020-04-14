@@ -52,30 +52,30 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
+        options.allowNullable &&
+        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
+      ) {
+        return true;
+      }
+
+      if (
+        options.allowNumber &&
         util.isTypeFlagSet(
           type,
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
-        ) &&
-        options.allowNumber
+        )
       ) {
         return true;
       }
 
       if (
-        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike) &&
-        options.allowBoolean
+        options.allowBoolean &&
+        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
       ) {
         return true;
       }
 
-      if (
-        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined) &&
-        options.allowNullable
-      ) {
-        return true;
-      }
-
-      if (util.isTypeFlagSet(type, ts.TypeFlags.Any) && options.allowAny) {
+      if (options.allowAny && util.isTypeFlagSet(type, ts.TypeFlags.Any)) {
         return true;
       }
 
