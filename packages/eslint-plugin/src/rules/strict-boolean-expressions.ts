@@ -11,6 +11,7 @@ type Options = [
     ignoreRhs?: boolean;
     allowNullable?: boolean;
     allowSafe?: boolean;
+    allowExplicitAny?: boolean;
   },
 ];
 
@@ -47,6 +48,9 @@ export default util.createRule<Options, MessageId>({
             type: 'boolean',
           },
           allowSafe: {
+            type: 'boolean',
+          },
+          allowExplicitAny: {
             type: 'boolean',
           },
         },
@@ -91,12 +95,13 @@ export default util.createRule<Options, MessageId>({
       ignoreRhs: false,
       allowNullable: false,
       allowSafe: false,
+      allowExplicitAny: false,
     },
   ],
   create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
-
+    const { allowExplicitAny } = options;
     const checkedNodes = new Set<TSESTree.Node>();
 
     return {
@@ -172,9 +177,13 @@ export default util.createRule<Options, MessageId>({
 
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+
       let messageId: MessageId | undefined;
 
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
+      if (allowExplicitAny && types.has('any')) {
+        return false;
+      }
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
         types.size === wantedTypes.length &&

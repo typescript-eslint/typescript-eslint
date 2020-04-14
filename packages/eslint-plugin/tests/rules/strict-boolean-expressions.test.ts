@@ -222,6 +222,21 @@ ruleTester.run('strict-boolean-expressions', rule, {
         function f5(x: never | boolean) { if (!x) { } }
       `,
     }),
+    {
+      code: `const x: any;
+    if (x) {}`,
+      options: [{ allowExplicitAny: true }],
+    },
+    {
+      code: `
+        let bool1: any;
+        let bool2 = true;
+        while (bool1 && bool2) {
+          return;
+        }
+      `,
+      options: [{ allowExplicitAny: true }],
+    },
   ],
 
   invalid: [
@@ -1235,5 +1250,52 @@ ruleTester.run('strict-boolean-expressions', rule, {
         const f3 = (x?: { x: any } | null) => (x ? 1 : 0);
       `,
     }),
+    {
+      code: `
+        let bool1: any;
+        let bool2: boolean = true;
+        let bool3;
+        while (bool3 && bool2) {
+          return;
+        }
+      `,
+      options: [{ allowExplicitAny: true }],
+      errors: [
+        {
+          line: 5,
+          column: 16,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: `const x: any;
+    if (x) {}`,
+      options: [{ allowExplicitAny: false }],
+      errors: [
+        {
+          line: 2,
+          column: 9,
+          messageId: 'conditionErrorAny',
+        },
+      ],
+    },
+    {
+      code: `
+        let bool1: any;
+        let bool2 = true;
+        while (bool1 && bool2) {
+          return;
+        }
+      `,
+      options: [{ allowExplicitAny: false }],
+      errors: [
+        {
+          line: 4,
+          column: 16,
+          messageId: 'conditionErrorAny',
+        },
+      ],
+    },
   ],
 });
