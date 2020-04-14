@@ -32,7 +32,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     `,
     // Base case - intersection type
     `
-      function test<T extends string & { _kind: "MyBrandedString" }>(arg: T) {
+      function test<T extends string & { _kind: 'MyBrandedString' }>(arg: T) {
         return \`arg = \${arg}\`;
       }
     `,
@@ -77,10 +77,10 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowNumber: true }],
       code: `
-      function test<T extends number & { _kind: "MyBrandedNumber" }>(arg: T) {
-        return \`arg = \${arg}\`;
-      }
-    `,
+        function test<T extends number & { _kind: 'MyBrandedNumber' }>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
     },
     {
       options: [{ allowNumber: true }],
