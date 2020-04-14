@@ -10,6 +10,7 @@ type Options = [
     allowNullable?: boolean;
     allowNumber?: boolean;
     allowBoolean?: boolean;
+    allowAny?: boolean;
   },
 ];
 
@@ -32,6 +33,7 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
+          allowAny: { type: 'boolean' },
           allowBoolean: { type: 'boolean' },
           allowNullable: { type: 'boolean' },
           allowNumber: { type: 'boolean' },

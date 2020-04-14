@@ -1,6 +1,6 @@
 # Requires that `.toString()` is only called on objects which provide useful information when stringified (`no-base-to-string`)
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in <code>`${}`</code> template literals.
+JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
 
 The default Object `.toString()` returns `"[object Object]"`, so this rule requires stringified objects define a more useful `.toString()` method.
 
@@ -50,6 +50,32 @@ const literalWithToString = {
 };
 
 `Value: ${literalWithToString}`;
+```
+
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, interpolated expressions in tagged templates will not be checked
+  ignoreTaggedTemplateExpressions?: boolean;
+};
+
+const defaults = {
+  ignoreTaggedTemplateExpressions: false,
+};
+```
+
+### `ignoreTaggedTemplateExpressions`
+
+This allows to skip checking tagged templates, for cases where the tags do not necessarily stringify interpolated values.
+
+Examples of additional **correct** code for this rule with `{ ignoreTaggedTemplateExpressions: true }`:
+
+```ts
+function tag() {}
+tag`${{}}`;
 ```
 
 ## When Not To Use It

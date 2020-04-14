@@ -115,6 +115,7 @@ export interface LineComment extends BaseToken {
 export type Comment = BlockComment | LineComment;
 export type Token =
   | BooleanToken
+  | Comment
   | IdentifierToken
   | JSXIdentifierToken
   | JSXTextToken
@@ -308,11 +309,9 @@ export type BindingPattern = ArrayPattern | ObjectPattern;
 export type BindingName = BindingPattern | Identifier;
 export type ClassElement =
   | ClassProperty
-  | FunctionExpression
   | MethodDefinition
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
-  | TSEmptyBodyFunctionExpression
   | TSIndexSignature;
 export type ClassProperty =
   | ClassPropertyComputedName
@@ -766,7 +765,7 @@ export interface AssignmentExpression extends BinaryExpressionBase {
 export interface AssignmentPattern extends BaseNode {
   type: AST_NODE_TYPES.AssignmentPattern;
   left: BindingName;
-  right?: Expression;
+  right: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
