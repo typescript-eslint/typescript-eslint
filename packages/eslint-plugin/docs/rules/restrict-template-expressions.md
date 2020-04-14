@@ -6,6 +6,9 @@ Examples of **correct** code:
 const arg = 'foo';
 const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'default'}`;
+
+const stringWithKind: string & { _kind?: 'MyString' } = 'foo';
+const msg1 = `arg = ${stringWithKind}`;
 ```
 
 Examples of **incorrect** code:
