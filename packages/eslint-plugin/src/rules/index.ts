@@ -39,6 +39,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
+import noIdentifierEnumMember from './no-identifier-enum-member';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -169,6 +170,7 @@ export default {
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
+  'no-identifier-enum-member': noIdentifierEnumMember,
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
