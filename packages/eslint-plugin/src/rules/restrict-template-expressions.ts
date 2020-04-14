@@ -109,12 +109,7 @@ export default util.createRule<Options, MessageId>({
       expression: TSESTree.Expression,
       predicate: (underlyingType: ts.Type) => boolean,
     ): boolean {
-      const expressionType = getExpressionNodeType(expression);
-
-      return rec(
-        // "Extracts" generic constraint, indexed access and conditional types:
-        typeChecker.getBaseConstraintOfType(expressionType) ?? expressionType,
-      );
+      return rec(getExpressionNodeType(expression));
 
       function rec(type: ts.Type): boolean {
         if (type.isUnion()) {
@@ -134,7 +129,7 @@ export default util.createRule<Options, MessageId>({
      */
     function getExpressionNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return typeChecker.getTypeAtLocation(tsNode);
+      return util.getConstrainedTypeAtLocation(typeChecker, tsNode);
     }
   },
 });
