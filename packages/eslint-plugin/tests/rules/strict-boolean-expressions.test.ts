@@ -1280,8 +1280,8 @@ if (x) {
       options: [{ allowExplicitAny: false }],
       errors: [
         {
-          line: 2,
-          column: 9,
+          line: 3,
+          column: 5,
           messageId: 'conditionErrorAny',
         },
       ],
