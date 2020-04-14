@@ -86,12 +86,17 @@ type Options = {
    * An array of function/method names that will not have their arguments or their return values checked.
    */
   allowedNames?: string[];
+  /**
+   * If true, track references to exported variables as well as direct exports.
+   */
+  shouldTrackReferences?: boolean;
 };
 
 const defaults = {
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
   allowedNames: [],
+  shouldTrackReferences: true,
 };
 ```
 
@@ -236,6 +241,28 @@ You may pass function/method names you would like this rule to ignore, like so:
     }
   ]
 }
+```
+
+### `shouldTrackReferences`
+
+Examples of **incorrect** code for this rule with `{ shouldTrackReferences: true }`:
+
+```ts
+function foo(bar) {
+  return bar;
+}
+
+export default foo;
+```
+
+Examples of **correct** code for this rule with `{ shouldTrackReferences: true }`:
+
+```ts
+function foo(bar: string): string {
+  return bar;
+}
+
+export default foo;
 ```
 
 ## When Not To Use It

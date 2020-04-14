@@ -12,7 +12,14 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-export default util.createRule({
+type Options = [
+  {
+    ignoreTaggedTemplateExpressions?: boolean;
+  },
+];
+type MessageIds = 'baseToString';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
     docs: {
@@ -26,11 +33,22 @@ export default util.createRule({
       baseToString:
         "'{{name}} {{certainty}} evaluate to '[object Object]' when stringified.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreTaggedTemplateExpressions: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     type: 'suggestion',
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ ignoreTaggedTemplateExpressions: false }],
+  create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
@@ -110,8 +128,14 @@ export default util.createRule({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
-
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
+        if (
+          options.ignoreTaggedTemplateExpressions &&
+          node.parent &&
+          node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
+          return;
+        }
         for (const expression of node.expressions) {
           checkExpression(expression);
         }

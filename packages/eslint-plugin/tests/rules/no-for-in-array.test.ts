@@ -54,5 +54,50 @@ for (const x in z) {
         },
       ],
     },
+    {
+      code: `
+const fn = (arr: number[]) => {
+  for (const x in arr) {
+    console.log(x);
+  }
+};
+      `,
+      errors: [
+        {
+          messageId: 'forInViolation',
+          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
+    },
+    {
+      code: `
+const fn = (arr: number[] | string[]) => {
+  for (const x in arr) {
+    console.log(x);
+  }
+};
+      `,
+      errors: [
+        {
+          messageId: 'forInViolation',
+          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
+    },
+    {
+      code: `
+const fn = <T extends any[]>(arr: T) => {
+  for (const x in arr) {
+    console.log(x);
+  }
+};
+      `,
+      errors: [
+        {
+          messageId: 'forInViolation',
+          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
+    },
   ],
 });

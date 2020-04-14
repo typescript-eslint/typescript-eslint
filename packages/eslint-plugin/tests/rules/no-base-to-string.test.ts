@@ -70,10 +70,36 @@ const literalWithToString = {
     'let _ = {} ^ {};',
     'let _ = {} << {};',
     'let _ = {} >> {};',
+    {
+      code: `
+        function tag() {}
+        tag\`\${{}}\`;
+      `,
+      options: [
+        {
+          ignoreTaggedTemplateExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
       code: '`${{}})`;',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function tag() {}
+        tag\`\${{}}\`;
+      `,
       errors: [
         {
           data: {

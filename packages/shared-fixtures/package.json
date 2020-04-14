@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/shared-fixtures",
-  "version": "2.27.0",
+  "version": "2.28.0",
   "private": true,
   "scripts": {
     "build": "tsc -b tsconfig.build.json",

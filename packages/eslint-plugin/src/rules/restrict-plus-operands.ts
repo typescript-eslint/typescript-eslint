@@ -54,16 +54,6 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      */
     function getBaseTypeOfLiteralType(type: ts.Type): BaseLiteral {
-      const constraint = type.getConstraint();
-      if (
-        constraint &&
-        // for generic types with union constraints, it will return itself from getConstraint
-        // so we have to guard against infinite recursion...
-        constraint !== type
-      ) {
-        return getBaseTypeOfLiteralType(constraint);
-      }
-
       if (type.isNumberLiteral()) {
         return 'number';
       }
@@ -98,7 +88,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getNodeType(node: TSESTree.Expression): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = typeChecker.getTypeAtLocation(tsNode);
+      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 
       return getBaseTypeOfLiteralType(type);
     }

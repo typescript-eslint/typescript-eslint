@@ -115,6 +115,43 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allowAny
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = 123;
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = undefined;
+        const msg = \`arg = \${arg || 'some-default'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name || 'the user with no name'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        function test<T extends any>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
     // allowNullable
     {
       options: [{ allowNullable: true }],
@@ -203,6 +240,15 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
       code: `
         function test<T extends {}>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+    },
+    {
+      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      code: `
+        function test(arg: any) {
           return \`arg = \${arg}\`;
         }
       `,
