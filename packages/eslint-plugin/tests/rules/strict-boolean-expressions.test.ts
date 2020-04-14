@@ -223,8 +223,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
     {
-      code: `const x: any;
-    if (x) {}`,
+      code: `
+const x: any;
+if (x) {
+}
+      `,
       options: [{ allowExplicitAny: true }],
     },
     {
@@ -1269,8 +1272,11 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     },
     {
-      code: `const x: any;
-    if (x) {}`,
+      code: `
+const x: any;
+if (x) {
+}
+      `,
       options: [{ allowExplicitAny: false }],
       errors: [
         {
