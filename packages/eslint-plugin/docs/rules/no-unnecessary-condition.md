@@ -87,6 +87,37 @@ do {} while (true);
 ].filter(t => t);
 ```
 
+- `allowEqualLiteralsIfElseBranchThrows` (default: `false`) - allows to compare equal literals if "else" branch of such comparison throws. It allows to explicitly check all possible value for union type.
+
+```ts
+/**
+ *  https://www.typescriptlang.org/docs/handbook/advanced-types.html
+ */
+function assertNever(x: never): never {
+  throw new Error(`Unexpected object: ${x}`);
+}
+
+declare const position: 'left' | 'right';
+
+// Narrow union in "if-else" branches until "never" is reached
+if (position === 'left') {
+  doSomethingLeft();
+} else if (position === 'right') {
+  doSomethingRight();
+} else {
+  // This will never happen.
+  // But if someone adds new case into position type,
+  //  then it will be a compilation error
+  assertNever(position);
+}
+
+// Or in ternary operator
+const angle =
+  position === 'left' ? 45 : position === 'right' ? -45 : assertNever(position);
+```
+
+return value from certain array method callbacks (`filter`, `find`, `some`, `every`) is necessarily conditional.
+
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.

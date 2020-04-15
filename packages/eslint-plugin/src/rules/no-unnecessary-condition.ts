@@ -62,6 +62,7 @@ export type Options = [
     allowConstantLoopConditions?: boolean;
     ignoreRhs?: boolean;
     checkArrayPredicates?: boolean;
+    allowEqualLiteralsIfElseBranchThrows?: boolean;
   },
 ];
 
@@ -99,6 +100,9 @@ export default createRule<Options, MessageId>({
           checkArrayPredicates: {
             type: 'boolean',
           },
+          allowEqualLiteralsIfElseBranchThrows: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -126,11 +130,19 @@ export default createRule<Options, MessageId>({
       allowConstantLoopConditions: false,
       ignoreRhs: false,
       checkArrayPredicates: false,
+      allowEqualLiteralsIfElseBranchThrows: false,
     },
   ],
   create(
     context,
-    [{ allowConstantLoopConditions, checkArrayPredicates, ignoreRhs }],
+    [
+      {
+        allowConstantLoopConditions,
+        checkArrayPredicates,
+        ignoreRhs,
+        allowEqualLiteralsIfElseBranchThrows,
+      },
+    ],
   ) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
@@ -162,6 +174,55 @@ export default createRule<Options, MessageId>({
             // Exception: literal index into a tuple - will have a sound type
             node.property.type !== AST_NODE_TYPES.Literal))
       );
+    }
+
+    function checkForUnconditionalThrowStatementOrNeverType(
+      node: ts.Node,
+    ): boolean {
+      if (ts.isThrowStatement(node)) {
+        return true;
+      } else if (ts.isBlock(node)) {
+        const throwIsFound = node.forEachChild(child => {
+          // Iterate until throw is found
+          return checkForUnconditionalThrowStatementOrNeverType(child);
+        });
+        return throwIsFound ?? false;
+      } else if (ts.isExpressionStatement(node)) {
+        return checkForUnconditionalThrowStatementOrNeverType(node.expression);
+      } else if (ts.isCallExpression(node)) {
+        const type = getConstrainedTypeAtLocation(checker, node);
+        return type.getFlags() === ts.TypeFlags.Never;
+      } else {
+        return false;
+      }
+    }
+
+    function isExpressionUnderIfStatementAndHaveElseBranchWithNever(
+      node: TSESTree.Node,
+    ): boolean {
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
+
+      const parent = tsNode?.parent;
+      if (!parent) {
+        return false;
+      }
+
+      if (ts.isIfStatement(parent)) {
+        if (!parent.elseStatement) {
+          return false;
+        }
+        return checkForUnconditionalThrowStatementOrNeverType(
+          parent.elseStatement,
+        );
+      } else if (ts.isConditionalExpression(parent)) {
+        if (!parent.whenFalse) {
+          return false;
+        }
+        const type = getConstrainedTypeAtLocation(checker, parent.whenFalse);
+        return type.getFlags() === ts.TypeFlags.Never;
+      } else {
+        return false;
+      }
     }
 
     /**
@@ -255,7 +316,16 @@ export default createRule<Options, MessageId>({
         isLiteral(getNodeType(node.left)) &&
         isLiteral(getNodeType(node.right))
       ) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
+        if (
+          allowEqualLiteralsIfElseBranchThrows &&
+          (node.operator === '==' || node.operator === '===') &&
+          getNodeType(node.left) === getNodeType(node.right) &&
+          isExpressionUnderIfStatementAndHaveElseBranchWithNever(node)
+        ) {
+          // A special case, no report here
+        } else {
+          context.report({ node, messageId: 'literalBooleanExpression' });
+        }
       }
     }
 

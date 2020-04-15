@@ -278,6 +278,82 @@ let unknownValue: unknown;
 unknownValue?.();
     `,
     'const foo = [1, 2, 3][0];',
+    {
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+      code: `
+function assertNever(x: never): never {
+  throw new Error(\`Unexpected object: \${x}\`);
+}
+declare const x: 'a';
+const myValue = x === 'a' ? 'a' : assertNever(x);
+      `,
+    },
+    {
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+      code: `
+let i = 1;
+
+function assertNever(x: never): never {
+  throw new Error(\`Unexpected object: \${x}\`);
+}
+
+const myValue = i === 0 ? assertNever(i) : 'ok';
+      `,
+    },
+    {
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+      code: `
+declare const x: 'a' | 'b';
+if (x === 'a') {
+  console.info('A');
+} else if (x === 'b') {
+  console.info('B');
+} else {
+  console.info('Unknown value!');
+  throw new Error('Unknown value');
+}
+      `,
+    },
+    {
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+      code: `
+function assertNever(x: never): never {
+  throw new Error(\`Unexpected object: \${x}\`);
+}
+declare const x: 'a';
+if (x === 'a') {
+  console.info('ok');
+} else {
+  assertNever(a);
+}
+      `,
+    },
+    {
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+      code: `
+function assertNever(x: never): never {
+  throw new Error(\`Unexpected object: \${x}\`);
+}
+
+type MyMessage =
+  | {
+      type: 'status';
+      status: 'ok';
+    }
+  | {
+      type: 'status';
+      status: 'fail';
+    };
+
+function parseMessage(msg: MyMessage) {
+  if (msg.type === 'status') {
+    console.info('Got status ' + msg.status);
+  } else {
+    assertNever(msg.type);
+  }
+}
+      `,
+    },
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -698,6 +774,28 @@ foo
           endColumn: 24,
         },
       ],
+    },
+    {
+      code: `
+declare const x: 'a';
+
+if (x === 'b') {
+  console.info('Never branch with no crash');
+} else {
+  throw new Error('Value is expected');
+}
+
+if (x === 'a') {
+  throw new Error('Totally expected value');
+} else {
+  console.info('Unknown value but no crash');
+}
+      `,
+      errors: [
+        ruleError(4, 5, 'literalBooleanExpression'),
+        ruleError(10, 5, 'literalBooleanExpression'),
+      ],
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
     },
   ],
 });
