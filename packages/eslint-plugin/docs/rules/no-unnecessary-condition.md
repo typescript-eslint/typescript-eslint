@@ -116,8 +116,6 @@ const angle =
   position === 'left' ? 45 : position === 'right' ? -45 : assertNever(position);
 ```
 
-return value from certain array method callbacks (`filter`, `find`, `some`, `every`) is necessarily conditional.
-
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.
