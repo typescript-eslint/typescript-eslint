@@ -807,8 +807,7 @@ if (x === 'a') {
   console.info('Do b');
 }
 
-const y = x === 'a' ? "A" : x == 'b' ? "B" : "";
-
+const y = x === 'a' ? 'A' : x == 'b' ? 'B' : '';
       `,
       errors: [
         ruleError(6, 12, 'literalBooleanExpression'),
@@ -823,7 +822,6 @@ declare const x: 'a';
 x === 'a';
 
 const y = 'a' == x;
-
       `,
       errors: [
         ruleError(4, 1, 'literalBooleanExpression'),
