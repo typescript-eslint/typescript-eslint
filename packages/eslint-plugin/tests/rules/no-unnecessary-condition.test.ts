@@ -797,5 +797,24 @@ if (x === 'a') {
       ],
       options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
     },
+    {
+      code: `
+declare const x: 'a' | 'b';
+
+if (x === 'a') {
+  console.info('Do a');
+} else if (x === 'b') {
+  console.info('Do b');
+}
+
+const y = x === 'a' ? "A" : x == 'b' ? "B" : "";
+
+      `,
+      errors: [
+        ruleError(6, 12, 'literalBooleanExpression'),
+        ruleError(10, 29, 'literalBooleanExpression'),
+      ],
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+    },
   ],
 });
