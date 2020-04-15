@@ -310,6 +310,9 @@ if (x === 'a') {
   console.info('B');
 } else {
   console.info('Unknown value!');
+  if (1 + 1 == 2) {
+    console.info('Debug output');
+  }
   throw new Error('Unknown value');
 }
       `,
