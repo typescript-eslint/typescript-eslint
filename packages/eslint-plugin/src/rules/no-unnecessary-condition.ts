@@ -202,10 +202,7 @@ export default createRule<Options, MessageId>({
     ): boolean {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
 
-      const parent = tsNode?.parent;
-      if (!parent) {
-        return false;
-      }
+      const parent = tsNode.parent;
 
       if (ts.isIfStatement(parent)) {
         if (!parent.elseStatement) {
@@ -215,9 +212,6 @@ export default createRule<Options, MessageId>({
           parent.elseStatement,
         );
       } else if (ts.isConditionalExpression(parent)) {
-        if (!parent.whenFalse) {
-          return false;
-        }
         const type = getConstrainedTypeAtLocation(checker, parent.whenFalse);
         return type.getFlags() === ts.TypeFlags.Never;
       } else {
