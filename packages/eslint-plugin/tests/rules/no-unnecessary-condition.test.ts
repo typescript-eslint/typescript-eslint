@@ -816,5 +816,20 @@ const y = x === 'a' ? "A" : x == 'b' ? "B" : "";
       ],
       options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
     },
+    {
+      code: `
+declare const x: 'a';
+
+x === 'a';
+
+const y = 'a' == x;
+
+      `,
+      errors: [
+        ruleError(4, 1, 'literalBooleanExpression'),
+        ruleError(6, 11, 'literalBooleanExpression'),
+      ],
+      options: [{ allowEqualLiteralsIfElseBranchThrows: true }],
+    },
   ],
 });
