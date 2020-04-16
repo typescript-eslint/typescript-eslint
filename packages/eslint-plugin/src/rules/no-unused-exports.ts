@@ -34,7 +34,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows exporting values that are unused',
+      description: 'Disallows exporting values that are never imported',
       category: 'Possible Errors',
       recommended: false,
       requiresTypeChecking: true,
