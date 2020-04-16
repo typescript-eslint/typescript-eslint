@@ -6,6 +6,12 @@ import {
 import * as ts from 'typescript';
 import * as util from '../util';
 
+export type Options = [];
+export type MessageIds =
+  | 'unusedNamedExport'
+  | 'unusedDefaultExport'
+  | 'unusedExportDeclaration';
+
 const cancellationTokenShim: ts.CancellationToken = {
   isCancellationRequested: () => false,
   throwIfCancellationRequested: () => {},
@@ -17,10 +23,6 @@ type CheckedExport =
   | Exclude<TSESTree.ExportDeclaration, TSESTree.VariableDeclaration>
   | TSESTree.Identifier;
 
-type MessageIds =
-  | 'unusedNamedExport'
-  | 'unusedDefaultExport'
-  | 'unusedExportDeclaration';
 interface ExportName {
   messageId: MessageIds;
   data?: {
@@ -29,7 +31,7 @@ interface ExportName {
   };
 }
 
-export default util.createRule<[], MessageIds>({
+export default util.createRule<Options, MessageIds>({
   name: 'no-unused-exports',
   meta: {
     type: 'problem',
@@ -178,12 +180,23 @@ export default util.createRule<[], MessageIds>({
 
     function getNameFromExport(node: CheckedExport): ExportName {
       if (node.type === AST_NODE_TYPES.ExportSpecifier) {
-        return {
-          messageId: 'unusedNamedExport',
-          data: {
-            name: node.exported.name,
-          },
-        };
+        if (
+          node.exported.name === 'default' &&
+          node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+          node.parent?.source?.type === AST_NODE_TYPES.Literal
+        ) {
+          // export { default } from 'foo';
+          return {
+            messageId: 'unusedDefaultExport',
+          };
+        } else {
+          return {
+            messageId: 'unusedNamedExport',
+            data: {
+              name: node.exported.name,
+            },
+          };
+        }
       }
 
       if (node.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
