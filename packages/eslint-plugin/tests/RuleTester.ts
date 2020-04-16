@@ -78,7 +78,7 @@ class RuleTester extends TSESLint.RuleTester {
 }
 
 function getFixturesRootDir(): string {
-  return path.join(process.cwd(), 'tests/fixtures/');
+  return path.join(process.cwd(), 'tests', 'fixtures');
 }
 
 const { batchedSingleLineTests } = ESLintUtils;

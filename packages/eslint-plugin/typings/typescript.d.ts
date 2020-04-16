@@ -23,4 +23,14 @@ declare module 'typescript' {
      */
     getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
   }
+
+  namespace FindAllReferences {
+    export function findReferencedSymbols(
+      program: Program,
+      cancellationToken: CancellationToken,
+      sourceFiles: readonly SourceFile[],
+      sourceFile: SourceFile,
+      position: number,
+    ): ReferencedSymbol[] | undefined;
+  }
 }
