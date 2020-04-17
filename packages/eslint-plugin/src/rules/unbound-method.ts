@@ -305,7 +305,10 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
     case AST_NODE_TYPES.AssignmentExpression:
-      return parent.operator === '=' && node === parent.left;
+      return (
+        parent.operator === '=' &&
+        (node === parent.left || node.object.type === AST_NODE_TYPES.Super)
+      );
 
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
