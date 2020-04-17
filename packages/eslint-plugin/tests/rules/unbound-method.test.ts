@@ -48,6 +48,25 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
+    `
+class BaseClass {
+  x: number = 42;
+  logThis() {
+    console.log('x is ');
+  }
+}
+
+class OtherClass extends BaseClass {
+  superLogThis: any;
+  constructor() {
+    super();
+    this.superLogThis = super.logThis; // X - Incorrect eslint error
+  }
+}
+
+const oc = new OtherClass();
+oc.superLogThis();
+    `,
     ...[
       'instance.bound();',
       'instance.unbound();',
