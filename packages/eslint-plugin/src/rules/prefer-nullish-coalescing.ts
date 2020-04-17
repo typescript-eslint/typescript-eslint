@@ -5,6 +5,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import { TypeFlags } from 'typescript';
 
 export type Options = [
   {
@@ -76,8 +77,13 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = util.isNullableType(type, { allowUndefined: true });
+        const isNullish = util.isNullableType(type, {
+          allowUndefined: true,
+        });
         if (!isNullish) {
+          return;
+        }
+        if (util.getTypeFlags(type) & TypeFlags.BooleanLiteral) {
           return;
         }
 
