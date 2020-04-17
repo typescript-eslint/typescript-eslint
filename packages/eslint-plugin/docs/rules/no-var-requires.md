@@ -20,6 +20,40 @@ require('foo');
 import foo from 'foo';
 ```
 
+## Options
+
+```ts
+interface options {
+  allowPackageDotJson?: boolean;
+}
+```
+
+- `allowPackageDotJson` : allows to use require for `package.json` alone. default is `false`
+
+configuration
+
+```CJSON
+{
+    // Use type for object definitions
+    "@typescript-eslint/no-var-requires": ["error", { allowPackageDotJson : true } ]
+}
+```
+
+Examples of **incorrect** code for this rule:
+
+```ts
+var foo = require('foo');
+const foo = require('package.jsons');
+```
+
+Examples of **correct** code for this rule:
+
+```ts
+import foo = require('package.json');
+import foo = require('../package.json');
+import foo = require('../packages/package.json');
+```
+
 ## When Not To Use It
 
 If you don't care about TypeScript module syntax, then you will not need this rule.

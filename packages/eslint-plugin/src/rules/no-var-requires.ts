@@ -4,7 +4,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type Options = [];
+type Options = [
+  {
+    allowPackageDotJson?: boolean;
+  },
+];
 type MessageIds = 'noVarReqs';
 
 export default util.createRule<Options, MessageIds>({
@@ -20,14 +24,31 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowPackageDotJson: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
+  defaultOptions: [{ allowPackageDotJson: false }],
   create(context) {
+    const allowPackageDotJson = context.options[0]?.allowPackageDotJson;
     return {
       'CallExpression, OptionalCallExpression'(
         node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
       ): void {
+        if (
+          allowPackageDotJson &&
+          /package.json$/.test(node.arguments[0]?.value)
+        ) {
+          return;
+        }
+
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&

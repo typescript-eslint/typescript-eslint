@@ -10,6 +10,19 @@ ruleTester.run('no-var-requires', rule, {
     "import foo = require('foo');",
     "require('foo');",
     "require?.('foo');",
+    'require();',
+    {
+      code: "const pkg = require('package.json');",
+      options: [{ allowPackageDotJson: true }],
+    },
+    {
+      code: "const pkg = require('../package.json');",
+      options: [{ allowPackageDotJson: true }],
+    },
+    {
+      code: "const pkg = require('../packages/package.json');",
+      options: [{ allowPackageDotJson: true }],
+    },
   ],
   invalid: [
     {
@@ -99,6 +112,48 @@ ruleTester.run('no-var-requires', rule, {
           messageId: 'noVarReqs',
           line: 1,
           column: 19,
+        },
+      ],
+    },
+    {
+      code: "const pkg = require('package.json');",
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require();',
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require();',
+      options: [{ allowPackageDotJson: true }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: "const pkg = require('package.jsons');",
+      options: [{ allowPackageDotJson: true }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
         },
       ],
     },
