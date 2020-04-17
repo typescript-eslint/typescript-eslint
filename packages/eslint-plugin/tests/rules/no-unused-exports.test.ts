@@ -7,7 +7,6 @@ import {
   noFormat,
 } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import { clearCaches } from '@typescript-eslint/parser';
 
 const fixturesDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -69,6 +68,7 @@ export const { ...used } = { used: 1 };
 export const { foo: { bar: [used] } } = { foo: { bar: [1] } };
 export const { used = 1 } = { used: 1 };
 export const [used] = [1];
+export const [used,,] = [1,2,3];
 export const [...used] = [1];
 export const [used = 1] = [1];
 export class used {}

@@ -13,7 +13,7 @@ export type MessageIds =
   | 'unusedExportDeclaration';
 
 const cancellationTokenShim: ts.CancellationToken = {
-  isCancellationRequested: () => false,
+  isCancellationRequested: /* istanbul ignore next */ () => false,
   throwIfCancellationRequested: () => {},
 };
 
@@ -155,10 +155,6 @@ export default util.createRule<Options, MessageIds>({
           checkExport(node);
           break;
 
-        case AST_NODE_TYPES.MemberExpression:
-          // this shouldn't happen - it's syntactically invalid
-          throw new Error(`Unexpected ${node.type}.`);
-
         case AST_NODE_TYPES.ObjectPattern:
           for (const property of node.properties) {
             checkBindingName(property);
@@ -173,7 +169,9 @@ export default util.createRule<Options, MessageIds>({
           checkBindingName(node.argument);
           break;
 
-        default:
+        // this shouldn't happen - it's syntactically invalid
+        /* istanbul ignore next */ case AST_NODE_TYPES.MemberExpression:
+        /* istanbul ignore next */ default:
           throw new Error(`Unexpected ${node.type}.`);
       }
     }
