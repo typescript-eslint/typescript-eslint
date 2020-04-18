@@ -31,6 +31,13 @@ interface ExportName {
   };
 }
 
+interface ExpensivePrepWork {
+  readonly sourceFiles: ts.SourceFile[];
+  readonly sourceFilesWithoutCurrent: ts.SourceFile[];
+  readonly currentSourceFile: ts.SourceFile;
+  readonly currentSourceFilename: string;
+}
+
 export default util.createRule<Options, MessageIds>({
   name: 'no-unused-exports',
   meta: {
@@ -43,8 +50,8 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       unusedNamedExport: 'Named export {{name}} is never imported.',
-      unusedDefaultExport: 'Default export is never imported.',
       unusedExportDeclaration: 'Exported {{type}} {{name}} is never imported.',
+      unusedDefaultExport: "The module's default export is never imported.",
     },
     schema: [],
   },
@@ -52,26 +59,62 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const sourceCode = context.getSourceCode();
     const { program } = util.getParserServices(context);
-    const sourceFiles = program
-      .getSourceFiles()
-      .filter(sf => !sf.fileName.includes('node_modules'));
-    const currentSourceFile = util.nullThrows(
-      program.getSourceFile(context.getFilename()),
-      util.NullThrowsReasons.MissingToken(
-        'source file',
-        `file: ${context.getFilename()}`,
-      ),
-    );
-    const currentSourceFilename = currentSourceFile.fileName;
+
+    /*
+    Interacting with the program like this can trigger some expensive operations.
+    This little workaround is so that we avoid doing this work unless the file actually has exports.
+    Should save a bunch of time on codebases that have a lot of "leaf" files (like ours, with all our tests)
+    */
+    let expensivePrepWork: ExpensivePrepWork | null = null;
+    function doExpensivePrepWork(): ExpensivePrepWork {
+      if (expensivePrepWork) {
+        return expensivePrepWork;
+      }
+
+      const currentSourceFile = util.nullThrows(
+        program.getSourceFile(context.getFilename()),
+        util.NullThrowsReasons.MissingToken(
+          'source file',
+          `file: ${context.getFilename()}`,
+        ),
+      );
+      const currentSourceFilename = currentSourceFile.fileName;
+      const sourceFiles = program
+        .getSourceFiles()
+        .filter(sf => !sf.fileName.includes('node_modules'));
+      const sourceFilesWithoutCurrent = sourceFiles.filter(
+        sf => sf !== currentSourceFile,
+      );
+      expensivePrepWork = {
+        currentSourceFile,
+        currentSourceFilename,
+        sourceFiles,
+        sourceFilesWithoutCurrent,
+      };
+      return expensivePrepWork;
+    }
 
     function checkExport(
       node: CheckedExport,
       positionNode: TSESTree.Node | TSESTree.Token = node,
     ): void {
+      const {
+        sourceFiles,
+        sourceFilesWithoutCurrent,
+        currentSourceFile,
+        currentSourceFilename,
+      } = doExpensivePrepWork();
+
       const references = ts.FindAllReferences.findReferencedSymbols(
         program,
         cancellationTokenShim,
-        sourceFiles,
+        // named exports require the current sourcefile for some reason
+        // haven't dug in enough to figure out why
+        // all other exports don't need the current file, so we can exclude it and squeeze more perf
+        node.type === AST_NODE_TYPES.Identifier ||
+          node.type === AST_NODE_TYPES.ExportSpecifier
+          ? sourceFiles
+          : sourceFilesWithoutCurrent,
         currentSourceFile,
         positionNode.range[0],
       );
@@ -131,8 +174,12 @@ export default util.createRule<Options, MessageIds>({
       // export default from 'foo';
       ExportDefaultSpecifier: checkExport,
 
-      // don't check export *
+      // don't check this, because there's no concrete names to check.
+      // maybe we want to support this in the future somehow?
       // export * from 'foo';
+
+      // don't check this, because typescript's find references doesn't support it
+      // export = foo
     };
 
     function checkBindingName(node: TSESTree.Node): void {
@@ -216,6 +263,10 @@ export default util.createRule<Options, MessageIds>({
           type = 'function';
           break;
 
+        case AST_NODE_TYPES.Identifier:
+          type = 'variable';
+          break;
+
         case AST_NODE_TYPES.TSEnumDeclaration:
           type = 'enum';
           break;
@@ -238,10 +289,6 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSTypeAliasDeclaration:
           type = 'type';
-          break;
-
-        case AST_NODE_TYPES.Identifier:
-          type = 'variable';
           break;
       }
 

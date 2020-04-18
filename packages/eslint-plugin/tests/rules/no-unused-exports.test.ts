@@ -46,17 +46,10 @@ function fillError(
  * - exporter-unused.ts
  *   - not imported by anything
  */
-const exporter = path.join(fixturesDir, 'no-unused-exports', 'exporter.ts');
-const exporterDefault = path.join(
-  fixturesDir,
-  'no-unused-exports',
-  'exporter-default.ts',
-);
-const exporterUnused = path.join(
-  fixturesDir,
-  'no-unused-exports',
-  'exporter-unused.ts',
-);
+const exportsFixturesDir = path.join(fixturesDir, 'no-unused-exports');
+const exporter = path.join(exportsFixturesDir, 'exporter.ts');
+const exporterDefault = path.join(exportsFixturesDir, 'exporter-default.ts');
+const exporterUnused = path.join(exportsFixturesDir, 'exporter-unused.ts');
 
 ruleTester.run('no-unused-exports', rule, {
   valid: [
