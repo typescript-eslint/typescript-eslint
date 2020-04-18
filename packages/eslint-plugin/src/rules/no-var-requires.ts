@@ -44,7 +44,9 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (
           allowPackageDotJson &&
-          /package.json$/.test(node.arguments[0]?.value)
+          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
+          typeof node.arguments[0]?.value === 'string' &&
+          /package.json$/.test(node.arguments[0].value)
         ) {
           return;
         }
