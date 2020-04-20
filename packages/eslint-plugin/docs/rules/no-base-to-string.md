@@ -52,32 +52,6 @@ const literalWithToString = {
 `Value: ${literalWithToString}`;
 ```
 
-## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, interpolated expressions in tagged templates will not be checked
-  ignoreTaggedTemplateExpressions?: boolean;
-};
-
-const defaults = {
-  ignoreTaggedTemplateExpressions: false,
-};
-```
-
-### `ignoreTaggedTemplateExpressions`
-
-This allows to skip checking tagged templates, for cases where the tags do not necessarily stringify interpolated values.
-
-Examples of additional **correct** code for this rule with `{ ignoreTaggedTemplateExpressions: true }`:
-
-```ts
-function tag() {}
-tag`${{}}`;
-```
-
 ## When Not To Use It
 
 If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
