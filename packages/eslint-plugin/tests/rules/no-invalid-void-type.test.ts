@@ -5,14 +5,17 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('allowGenerics: false', rule, {
+ruleTester.run('allowInGenericTypeArguments: false', rule, {
   valid: [
-    { code: 'type Generic<T> = [T];', options: [{ allowGenerics: false }] },
+    {
+      code: 'type Generic<T> = [T];',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
   ],
   invalid: [
     {
       code: 'type GenericVoid = Generic<void>;',
-      options: [{ allowGenerics: false }],
+      options: [{ allowInGenericTypeArguments: false }],
       errors: [
         {
           messageId: 'invalidVoidNotReturn',
@@ -23,7 +26,7 @@ ruleTester.run('allowGenerics: false', rule, {
     },
     {
       code: 'function takeVoid(thing: void) {}',
-      options: [{ allowGenerics: false }],
+      options: [{ allowInGenericTypeArguments: false }],
       errors: [
         {
           messageId: 'invalidVoidNotReturn',
@@ -34,7 +37,7 @@ ruleTester.run('allowGenerics: false', rule, {
     },
     {
       code: 'let voidPromise: Promise<void> = new Promise<void>(() => {});',
-      options: [{ allowGenerics: false }],
+      options: [{ allowInGenericTypeArguments: false }],
       errors: [
         {
           messageId: 'invalidVoidNotReturn',
@@ -50,7 +53,7 @@ ruleTester.run('allowGenerics: false', rule, {
     },
     {
       code: 'let voidMap: Map<string, void> = new Map<string, void>();',
-      options: [{ allowGenerics: false }],
+      options: [{ allowInGenericTypeArguments: false }],
       errors: [
         {
           messageId: 'invalidVoidNotReturn',
@@ -67,7 +70,7 @@ ruleTester.run('allowGenerics: false', rule, {
   ],
 });
 
-ruleTester.run('allowGenerics: true', rule, {
+ruleTester.run('allowInGenericTypeArguments: true', rule, {
   valid: [
     'function func(): void {}',
     'type NormalType = () => void;',
@@ -406,23 +409,23 @@ ruleTester.run('allowGenerics: true', rule, {
   ],
 });
 
-ruleTester.run('allowGenerics: whitelist', rule, {
+ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
   valid: [
     'type Allowed<T> = [T];',
     'type Banned<T> = [T];',
     {
       code: 'type AllowedVoid = Allowed<void>;',
-      options: [{ allowGenerics: ['Allowed'] }],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
     },
     {
       code: 'type AllowedVoid = Ex.Mx.Tx<void>;',
-      options: [{ allowGenerics: ['Ex.Mx.Tx'] }],
+      options: [{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }],
     },
   ],
   invalid: [
     {
       code: 'type BannedVoid = Banned<void>;',
-      options: [{ allowGenerics: ['Allowed'] }],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
       errors: [
         {
           messageId: 'invalidVoidForGeneric',
@@ -434,7 +437,7 @@ ruleTester.run('allowGenerics: whitelist', rule, {
     },
     {
       code: 'type BannedVoid = Ex.Mx.Tx<void>;',
-      options: [{ allowGenerics: ['Tx'] }],
+      options: [{ allowInGenericTypeArguments: ['Tx'] }],
       errors: [
         {
           messageId: 'invalidVoidForGeneric',
@@ -446,7 +449,7 @@ ruleTester.run('allowGenerics: whitelist', rule, {
     },
     {
       code: 'function takeVoid(thing: void) {}',
-      options: [{ allowGenerics: ['Allowed'] }],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',

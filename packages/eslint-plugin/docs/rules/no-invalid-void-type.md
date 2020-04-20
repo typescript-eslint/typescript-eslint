@@ -50,15 +50,15 @@ async function promiseMeSomething(): Promise<void> {}
 
 ```ts
 interface Options {
-  allowGenerics?: boolean | string[];
+  allowInGenericTypeArguments?: boolean | string[];
 }
 
 const defaultOptions: Options = {
-  allowGenerics: true,
+  allowInGenericTypeArguments: true,
 };
 ```
 
-#### `allowGenerics`
+#### `allowInGenericTypeArguments`
 
 This option lets you control if `void` can be used as a valid value for generic type parameters.
 
@@ -66,7 +66,7 @@ Alternatively, you can provide an array of strings which whitelist which types m
 
 This option is `true` by default.
 
-The following patterns are considered warnings with `{ allowGenerics: false }`:
+The following patterns are considered warnings with `{ allowInGenericTypeArguments: false }`:
 
 ```ts
 logAndReturn<void>(undefined);
@@ -75,7 +75,7 @@ let voidPromise: Promise<void> = new Promise<void>(() => {});
 let voidMap: Map<string, void> = new Map<string, void>();
 ```
 
-The following patterns are considered warnings with `{ allowGenerics: ['Ex.Mx.Tx'] }`:
+The following patterns are considered warnings with `{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }`:
 
 ```ts
 logAndReturn<void>(undefined);
@@ -85,7 +85,7 @@ type NotAllowedVoid2 = Tx<void>;
 type NotAllowedVoid3 = Promise<void>;
 ```
 
-The following patterns are not considered warnings with `{ allowGenerics: ['Ex.Mx.Tx'] }`:
+The following patterns are not considered warnings with `{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }`:
 
 ```ts
 type AllowedVoid = Ex.MX.Tx<void>;

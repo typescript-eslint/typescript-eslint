@@ -5,7 +5,7 @@ import {
 import * as util from '../util';
 
 interface Options {
-  allowGenerics: boolean | string[];
+  allowInGenericTypeArguments: boolean | string[];
 }
 
 type MessageIds =
@@ -34,7 +34,7 @@ export default util.createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
-          allowGenerics: {
+          allowInGenericTypeArguments: {
             oneOf: [
               { type: 'boolean' },
               {
@@ -49,8 +49,8 @@ export default util.createRule<[Options], MessageIds>({
       },
     ],
   },
-  defaultOptions: [{ allowGenerics: true }],
-  create(context, [{ allowGenerics }]) {
+  defaultOptions: [{ allowInGenericTypeArguments: true }],
+  create(context, [{ allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -61,7 +61,7 @@ export default util.createRule<[Options], MessageIds>({
       AST_NODE_TYPES.Identifier,
     ];
 
-    if (allowGenerics === true) {
+    if (allowInGenericTypeArguments === true) {
       validParents.push(AST_NODE_TYPES.TSTypeParameterInstantiation);
     }
 
@@ -82,14 +82,14 @@ export default util.createRule<[Options], MessageIds>({
         if (
           node.parent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference &&
-          Array.isArray(allowGenerics)
+          Array.isArray(allowInGenericTypeArguments)
         ) {
           const sourceCode = context.getSourceCode();
           const fullyQualifiedName = sourceCode.getText(
             node.parent.parent.typeName,
           );
 
-          if (!allowGenerics.includes(fullyQualifiedName)) {
+          if (!allowInGenericTypeArguments.includes(fullyQualifiedName)) {
             context.report({
               messageId: 'invalidVoidForGeneric',
               data: { generic: fullyQualifiedName },
@@ -101,7 +101,7 @@ export default util.createRule<[Options], MessageIds>({
         }
 
         context.report({
-          messageId: allowGenerics
+          messageId: allowInGenericTypeArguments
             ? 'invalidVoidNotReturnOrGeneric'
             : 'invalidVoidNotReturn',
           node,
