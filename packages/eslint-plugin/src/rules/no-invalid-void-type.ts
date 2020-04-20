@@ -4,14 +4,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-const getFullyQualifiedName = (node: TSESTree.EntityName): string => {
-  if (node.type === AST_NODE_TYPES.Identifier) {
-    return node.name;
-  }
-
-  return `${getFullyQualifiedName(node.left)}.${node.right.name}`;
-};
-
 interface Options {
   allowGenerics: boolean | string[];
 }
@@ -92,7 +84,8 @@ export default util.createRule<[Options], MessageIds>({
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference &&
           Array.isArray(allowGenerics)
         ) {
-          const fullyQualifiedName = getFullyQualifiedName(
+          const sourceCode = context.getSourceCode();
+          const fullyQualifiedName = sourceCode.getText(
             node.parent.parent.typeName,
           );
 
