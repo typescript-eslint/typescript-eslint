@@ -22,6 +22,8 @@
     "@typescript-eslint/func-call-spacing": "error",
     "indent": "off",
     "@typescript-eslint/indent": "error",
+    "keyword-spacing": "off",
+    "@typescript-eslint/keyword-spacing": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/method-signature-style": "error",
