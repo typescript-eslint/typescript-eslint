@@ -2,6 +2,7 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Options {
+  'ts-expect-error'?: boolean;
   'ts-ignore'?: boolean;
   'ts-nocheck'?: boolean;
   'ts-check'?: boolean;
@@ -9,6 +10,7 @@ interface Options {
 
 const defaultOptions: [Options] = [
   {
+    'ts-expect-error': true,
     'ts-ignore': true,
     'ts-nocheck': true,
     'ts-check': false,
@@ -34,6 +36,10 @@ export default util.createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
+          'ts-expect-error': {
+            type: 'boolean',
+            default: true,
+          },
           'ts-ignore': {
             type: 'boolean',
             default: true,
@@ -53,7 +59,7 @@ export default util.createRule<[Options], MessageIds>({
   },
   defaultOptions,
   create(context, [options]) {
-    const tsCommentRegExp = /^\/*\s*@ts-(ignore|check|nocheck)/;
+    const tsCommentRegExp = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)/;
     const sourceCode = context.getSourceCode();
 
     return {

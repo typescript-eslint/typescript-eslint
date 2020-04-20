@@ -115,6 +115,7 @@ export interface LineComment extends BaseToken {
 export type Comment = BlockComment | LineComment;
 export type Token =
   | BooleanToken
+  | Comment
   | IdentifierToken
   | JSXIdentifierToken
   | JSXTextToken

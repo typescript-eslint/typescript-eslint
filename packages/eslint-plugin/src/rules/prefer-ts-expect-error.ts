@@ -1,22 +1,24 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export default util.createRule({
-  name: 'ban-ts-ignore',
+type MessageIds = 'preferExpectErrorComment';
+
+export default util.createRule<[], MessageIds>({
+  name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
     docs: {
-      description: 'Bans “// @ts-ignore” comments from being used',
+      description:
+        'Recommends using `// @ts-expect-error` over `// @ts-ignore`',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
+    },
+    fixable: 'code',
+    messages: {
+      preferExpectErrorComment:
+        'Use "// @ts-expect-error" to ensure an error is actually being suppressed.',
     },
     schema: [],
-    messages: {
-      tsIgnoreComment:
-        'Do not use "// @ts-ignore" comments because they suppress compilation errors.',
-    },
-    deprecated: true,
-    replacedBy: ['ban-ts-comment'],
   },
   defaultOptions: [],
   create(context) {
@@ -31,10 +33,19 @@ export default util.createRule({
           if (comment.type !== AST_TOKEN_TYPES.Line) {
             return;
           }
+
           if (tsIgnoreRegExp.test(comment.value)) {
             context.report({
               node: comment,
-              messageId: 'tsIgnoreComment',
+              messageId: 'preferExpectErrorComment',
+              fix: fixer =>
+                fixer.replaceText(
+                  comment,
+                  `//${comment.value.replace(
+                    '@ts-ignore',
+                    '@ts-expect-error',
+                  )}`,
+                ),
             });
           }
         });

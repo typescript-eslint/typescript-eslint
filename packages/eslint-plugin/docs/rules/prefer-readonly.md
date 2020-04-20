@@ -52,9 +52,9 @@ This rule, in its default state, does not require any argument.
 
 You may pass `"onlyInlineLambdas": true` as a rule option within an object to restrict checking only to members immediately assigned a lambda value.
 
-```cjson
+```jsonc
 {
-    "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
+  "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
 }
 ```
 

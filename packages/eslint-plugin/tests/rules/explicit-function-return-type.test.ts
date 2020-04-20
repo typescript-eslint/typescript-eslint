@@ -366,6 +366,11 @@ new Foo(1, () => {});
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: 'const log = (message: string) => void console.log(message);',
+      options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
+    },
   ],
   invalid: [
     {
@@ -1034,6 +1039,40 @@ const func = (value: number) => ({ type: 'X', value } as const);
           endLine: 2,
           column: 14,
           endColumn: 32,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'const log = (message: string) => void console.log(message);',
+      options: [
+        { allowConciseArrowFunctionExpressionsStartingWithVoid: false },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 13,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+        const log = (message: string) => {
+          void console.log(message);
+        };
+      `,
+      options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 21,
+          endColumn: 41,
         },
       ],
     },

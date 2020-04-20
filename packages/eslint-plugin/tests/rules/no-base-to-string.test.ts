@@ -70,6 +70,21 @@ const literalWithToString = {
     'let _ = {} ^ {};',
     'let _ = {} << {};',
     'let _ = {} >> {};',
+    `
+function tag() {}
+tag\`\${{}}\`;
+    `,
+    {
+      code: `
+        function tag() {}
+        tag\`\${{}}\`;
+      `,
+      options: [
+        {
+          ignoreTaggedTemplateExpressions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {

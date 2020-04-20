@@ -31,7 +31,8 @@ export default util.createRule<[], MessageIds>({
       messageId: MessageIds,
     ): void {
       const tsNode = esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+
       if (util.isTypeAnyType(type)) {
         context.report({
           node: reportingNode,

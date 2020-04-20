@@ -1,6 +1,6 @@
 # Requires that `.toString()` is only called on objects which provide useful information when stringified (`no-base-to-string`)
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in <code>`${}`</code> template literals.
+JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
 
 The default Object `.toString()` returns `"[object Object]"`, so this rule requires stringified objects define a more useful `.toString()` method.
 

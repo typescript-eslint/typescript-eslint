@@ -2,6 +2,11 @@
 
 This rule enforces PascalCase names for classes and interfaces.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.
+It will be removed in a future version of this plugin.
+
 ## Rule Details
 
 This rule aims to make it easy to differentiate classes from regular variables at a glance.
