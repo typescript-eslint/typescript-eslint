@@ -1,13 +1,13 @@
 # Disallows usage of `void` type outside of generic or return types (`no-invalid-void-type`)
 
-Disallows usage of `void` type outside of generic or return types.
+Disallows usage of `void` type outside of return types or generic type arguments.
 If `void` is used as return type, it shouldn’t be a part of intersection/union type.
 
 ## Rationale
 
 The `void` type means “nothing” or that a function does not return any value,
-in contra with implicit undefined type which means that a function returns a value `undefined`.
-So “nothing” cannot be mixed with any other types. If you need this - use `undefined` type instead.
+in contrast with implicit `undefined` type which means that a function returns a value `undefined`.
+So “nothing” cannot be mixed with any other types. If you need this - use the `undefined` type instead.
 
 ## Rule Details
 
@@ -48,12 +48,21 @@ async function promiseMeSomething(): Promise<void> {}
 
 ### Options
 
+```ts
+interface Options {
+  allowGenerics?: boolean | string[];
+}
+
+const defaultOptions: Options = {
+  allowGenerics: true,
+};
+```
+
 #### `allowGenerics`
 
-This option lets you control if `void` can be used as a valid value for generics
-by passing `true` or `false` accordingly.
+This option lets you control if `void` can be used as a valid value for generic type parameters.
 
-Alternatively, you can provide an array of strings to only allow generic types by those names.
+Alternatively, you can provide an array of strings which whitelist which types may accept `void` as a generic type parameter.
 
 This option is `true` by default.
 
