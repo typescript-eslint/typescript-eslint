@@ -622,3 +622,21 @@ declare module 'eslint/lib/rules/no-extra-semi' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/init-declarations' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'initialized' | 'notInitialized',
+    [
+      'always' | 'never',
+      {
+        ignoreForLoopInit?: boolean;
+      }?,
+    ],
+    {
+      'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
