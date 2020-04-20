@@ -15,6 +15,8 @@ It adds support for optionally ignoring computed `private` member access.
 }
 ```
 
+## Options
+
 See [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation#options) options.
 This rule adds the following options:
 
