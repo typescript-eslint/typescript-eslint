@@ -15,13 +15,13 @@ const ruleTester = new RuleTester({
   },
 });
 
-const types = ['string', 'number', 'object'];
+const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
 
 function typeValidTest(
   cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
 ): (TSESLint.ValidTestCase<Options> | string)[] {
-  return [...types, 'boolean'].map(type => cb(type));
+  return types.map(type => cb(type));
 }
 function nullishTypeValidTest(
   cb: (
@@ -31,7 +31,7 @@ function nullishTypeValidTest(
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
-      [...types, 'boolean'].forEach(type => {
+      types.forEach(type => {
         acc.push(cb(nullish, type));
       });
       return acc;
@@ -138,13 +138,6 @@ a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    {
-      code: `
-function foo(a: boolean | undefined, b: boolean) {
-  return a || b;
-}
-      `,
-    },
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
