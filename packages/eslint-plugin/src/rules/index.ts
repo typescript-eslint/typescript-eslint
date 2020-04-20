@@ -19,6 +19,7 @@ import funcCallSpacing from './func-call-spacing';
 import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
 import interfaceNamePrefix from './interface-name-prefix';
+import keywordSpacing from './keyword-spacing';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
@@ -31,10 +32,10 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
-import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
@@ -86,6 +87,7 @@ import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
+import initDeclarations from './init-declarations';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -117,7 +119,9 @@ export default {
   'func-call-spacing': funcCallSpacing,
   'generic-type-naming': genericTypeNaming,
   indent: indent,
+  'init-declarations': initDeclarations,
   'interface-name-prefix': interfaceNamePrefix,
+  'keyword-spacing': keywordSpacing,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,

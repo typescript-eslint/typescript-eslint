@@ -1,12 +1,17 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  TSESLint,
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 import * as util from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
+    ignoreIIFE?: boolean;
   },
 ];
 
@@ -33,6 +38,7 @@ export default util.createRule<Options, MessageId>({
         type: 'object',
         properties: {
           ignoreVoid: { type: 'boolean' },
+          ignoreIIFE: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -42,6 +48,7 @@ export default util.createRule<Options, MessageId>({
   defaultOptions: [
     {
       ignoreVoid: false,
+      ignoreIIFE: false,
     },
   ],
 
@@ -53,6 +60,10 @@ export default util.createRule<Options, MessageId>({
     return {
       ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+        if (options.ignoreIIFE && isAsyncIife(node)) {
+          return;
+        }
 
         if (isUnhandledPromise(checker, expression)) {
           if (options.ignoreVoid) {
@@ -79,6 +90,19 @@ export default util.createRule<Options, MessageId>({
         }
       },
     };
+
+    function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
+      if (node.expression.type !== AST_NODE_TYPES.CallExpression) {
+        return false;
+      }
+
+      return (
+        node.expression.type === AST_NODE_TYPES.CallExpression &&
+        (node.expression.callee.type ===
+          AST_NODE_TYPES.ArrowFunctionExpression ||
+          node.expression.callee.type === AST_NODE_TYPES.FunctionExpression)
+      );
+    }
 
     function isUnhandledPromise(
       checker: ts.TypeChecker,
