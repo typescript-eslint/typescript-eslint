@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promise] add option to ignore IIFEs ([#1799](https://github.com/typescript-eslint/typescript-eslint/issues/1799)) ([cea51bf](https://github.com/typescript-eslint/typescript-eslint/commit/cea51bf130d6d3c2935f5e2dcc468196f2ad9d00))
+
+
+
+
+
 # [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
 
 

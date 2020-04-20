@@ -70,6 +70,10 @@ const literalWithToString = {
     'let _ = {} ^ {};',
     'let _ = {} << {};',
     'let _ = {} >> {};',
+    `
+function tag() {}
+tag\`\${{}}\`;
+    `,
     {
       code: `
         function tag() {}
@@ -85,21 +89,6 @@ const literalWithToString = {
   invalid: [
     {
       code: '`${{}})`;',
-      errors: [
-        {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-    },
-    {
-      code: `
-        function tag() {}
-        tag\`\${{}}\`;
-      `,
       errors: [
         {
           data: {
