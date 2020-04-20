@@ -6,7 +6,7 @@ import {
 import * as ts from 'typescript';
 import * as util from '../util';
 
-export type Options = [];
+type Options = [];
 export type MessageIds =
   | 'unusedNamedExport'
   | 'unusedDefaultExport'
@@ -32,8 +32,8 @@ interface ExportName {
 }
 
 interface ExpensivePrepWork {
-  readonly sourceFiles: ts.SourceFile[];
-  readonly sourceFilesWithoutCurrent: ts.SourceFile[];
+  readonly sourceFiles: readonly ts.SourceFile[];
+  readonly sourceFilesWithoutCurrent: readonly ts.SourceFile[];
   readonly currentSourceFile: ts.SourceFile;
   readonly currentSourceFilename: string;
 }
@@ -124,16 +124,24 @@ export default util.createRule<Options, MessageIds>({
         for (const reference of references) {
           if (reference.definition.fileName !== currentSourceFilename) {
             isExternallyReferenced = true;
+            break;
           }
         }
       }
 
-      if (!isExternallyReferenced) {
-        context.report({
-          node,
-          ...getNameFromExport(node),
-        });
+      if (isExternallyReferenced) {
+        return;
       }
+
+      // TODO - additional checks for `export * from 'foo'`; TS does not consider this as a reference to any of the
+      //        exports in 'foo'. However, if this module is imported and used, then it does count as a reference
+      // Do we want to support this case? Maybe behind an option? For v1 lets just ignore this, as it will require
+      // our own implementation logic
+
+      context.report({
+        node,
+        ...getNameFromExport(node),
+      });
     }
 
     return {

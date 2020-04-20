@@ -12,10 +12,5 @@
     "file.ts",
     "react.tsx",
     "class.ts",
-    "no-unused-exports/importer.ts",
-    "no-unused-exports/exporter.ts",
-    "no-unused-exports/importer-default.ts",
-    "no-unused-exports/exporter-default.ts",
-    "no-unused-exports/exporter-unused.ts",
-  ]
+  ],
 }

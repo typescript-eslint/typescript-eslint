@@ -8,7 +8,7 @@ import {
 } from '../RuleTester';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-const fixturesDir = getFixturesRootDir();
+const fixturesDir = path.join(getFixturesRootDir(), 'no-unused-exports');
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -33,23 +33,30 @@ function fillError(
 
 /**
  * The fixtures are setup as follows:
- * - importer.ts
- *   - import { used } from './exporter';
  * - exporter.ts
  *   - must have one named export called "used"
+ * - importer.ts
+ *   - import { used } from './exporter';
  *
- * - importer-default.ts
- *   - import def from './exporter-default';
  * - exporter-default.ts
  *   - must contain a default export
+ * - importer-default.ts
+ *   - import def from './exporter-default';
+ *
+ * - export-star.ts
+ *   - must contain an export of some description
+ * - importer-star.ts
+ *   - export * from './exporter-star';
+ * - importer-star-2.ts
+ *   - import { used } from './importer-star';
  *
  * - exporter-unused.ts
  *   - not imported by anything
  */
-const exportsFixturesDir = path.join(fixturesDir, 'no-unused-exports');
-const exporter = path.join(exportsFixturesDir, 'exporter.ts');
-const exporterDefault = path.join(exportsFixturesDir, 'exporter-default.ts');
-const exporterUnused = path.join(exportsFixturesDir, 'exporter-unused.ts');
+const exporter = path.join(fixturesDir, 'exporter.ts');
+const exporterDefault = path.join(fixturesDir, 'exporter-default.ts');
+const exporterStar = path.join(fixturesDir, 'exporter-star.ts');
+const exporterUnused = path.join(fixturesDir, 'exporter-unused.ts');
 
 ruleTester.run('no-unused-exports', rule, {
   valid: [
@@ -95,6 +102,14 @@ export { default } from './exporter';
       `,
       filename: exporterDefault,
     }),
+
+    // ensure the `export * from 'foo'` case also gets picked up
+    {
+      code: `
+export const used = 1;
+      `,
+      filename: exporterStar,
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({
