@@ -63,7 +63,7 @@ const defaults = {
 ### `ignoreVoid`
 
 This allows you to stop the rule reporting promises consumed with void operator.
-This can be a good way to explicitly mark a promise as intentially not awaited.
+This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
