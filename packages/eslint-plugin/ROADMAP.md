@@ -184,7 +184,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
-| [`prefer-method-signature`]         | 🛑  | N/A                                                                                 |
+| [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
 | [`prefer-template`]                 | 🌟  | [`prefer-template`][prefer-template]                                                |
 | [`prefer-while`]                    | 🛑  | N/A                                                                                 |
@@ -202,7 +202,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 <sup>[1]</sup> Recommended config: `["error", { blankLine: "always", prev: "*", next: "return" }]`<br>
 <sup>[2]</sup> Doesn't check other control flow statements, such as `break` or `continue`.
 
-## tslint-microsoft-contrib rules
+## `tslint-microsoft-contrib` rules
 
 Rule listing is [here](https://github.com/Microsoft/tslint-microsoft-contrib#supported-rules).
 Deprecated rules are excluded (`missing-jsdoc`, `missing-optional-annotation`, `no-duplicate-case`, `no-duplicate-parameter-names`, `no-function-constructor-with-string-args`, `no-increment-decrement`, `no-empty-interfaces`, `no-missing-visibility-modifiers`, `no-multiple-var-decl`, `no-reserved-keywords`, `no-stateless-class`, `no-var-self`, `no-unnecessary-bind`, and `valid-typeof`). See the docs in the link above to find out what to use instead.
@@ -211,7 +211,7 @@ Deprecated rules are excluded (`missing-jsdoc`, `missing-optional-annotation`, `
 
 Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-plugin-chai-expect-keywords), [`chai-expect`](https://github.com/Turbo87/eslint-plugin-chai-expect), [`chai-friendly`](https://github.com/ihordiachenko/eslint-plugin-chai-friendly), [`mocha`](https://github.com/lo1tuma/eslint-plugin-mocha), and [`jest`](https://github.com/jest-community/eslint-plugin-jest)
 
-| tslint-microsoft-contrib rule      |     | ESLint rule               |
+| `tslint-microsoft-contrib` rule    |     | ESLint rule               |
 | ---------------------------------- | :-: | ------------------------- |
 | `chai-prefer-contains-to-index-of` | 🛑  | N/A                       |
 | `chai-vague-errors`                | 🛑  | N/A                       |
@@ -220,16 +220,16 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 ### TypeScript
 
-| tslint-microsoft-contrib rule |     | ESLint rule                                                |
-| ----------------------------- | :-: | ---------------------------------------------------------- |
-| `prefer-array-literal`        | 🌓  | [`@typescript-eslint/no-array-constructor`] <sup>[1]</sup> |
-| `prefer-type-cast`            | 🛑  | N/A                                                        |
+| `tslint-microsoft-contrib` rule |     | ESLint rule                                                |
+| ------------------------------- | :-: | ---------------------------------------------------------- |
+| `prefer-array-literal`          | 🌓  | [`@typescript-eslint/no-array-constructor`] <sup>[1]</sup> |
+| `prefer-type-cast`              | 🛑  | N/A                                                        |
 
 <sup>[1]</sup> ESLint rule is slightly less strict, allowing `new Array<Foo>()` and `Array(2)`.
 
 ### Miscellaneous
 
-| tslint-microsoft-contrib rule         |     | ESLint rule                                                            |
+| `tslint-microsoft-contrib` rule       |     | ESLint rule                                                            |
 | ------------------------------------- | :-: | ---------------------------------------------------------------------- |
 | `export-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `function-name`                       | 🛑  | N/A                                                                    |
@@ -274,7 +274,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 ### Security
 
-| tslint-microsoft-contrib rule   |     | ESLint rule                                        |
+| `tslint-microsoft-contrib` rule |     | ESLint rule                                        |
 | ------------------------------- | :-: | -------------------------------------------------- |
 | `no-disable-auto-sanitization`  | 🛑  | N/A                                                |
 | `no-document-domain`            | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
@@ -291,7 +291,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 ### Browser
 
-| tslint-microsoft-contrib rule       |     | ESLint rule                                        |
+| `tslint-microsoft-contrib` rule     |     | ESLint rule                                        |
 | ----------------------------------- | :-: | -------------------------------------------------- |
 | `jquery-deferred-must-complete`     | 🛑  | N/A                                                |
 | `no-backbone-get-set-outside-model` | 🛑  | N/A                                                |
@@ -306,7 +306,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 ### React A11y
 
-| tslint-microsoft-contrib rule             |     | ESLint rule                                                |
+| `tslint-microsoft-contrib` rule           |     | ESLint rule                                                |
 | ----------------------------------------- | :-: | ---------------------------------------------------------- |
 | `react-a11y-accessible-headings`          | 🌓  | [`jsx-a11y/heading-has-content`] <sup>[1]</sup>            |
 | `react-a11y-anchors`                      | 🔌  | [`jsx-a11y/anchor-is-valid`]                               |
@@ -597,6 +597,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
 [`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
+[`@typescript-eslint/method-signature-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/method-signature-style.md
 [`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
 [`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-interface.md
 [`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-inferrable-types.md

@@ -133,5 +133,56 @@ type Foo = R
         },
       ],
     },
+    {
+      code: `
+interface Foo<T> extends Bar<T> {}
+      `,
+      output: noFormat`
+type Foo<T> = Bar<T>
+      `,
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      filename: 'test.d.ts',
+      code: `
+declare module FooBar {
+  type Baz = typeof baz;
+  export interface Bar extends Baz {}
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 4,
+          column: 20,
+          endLine: 4,
+          endColumn: 23,
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: noFormat`
+declare module FooBar {
+  type Baz = typeof baz;
+  export type Bar = Baz
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+      // output matches input because a suggestion was made
+      output: `
+declare module FooBar {
+  type Baz = typeof baz;
+  export interface Bar extends Baz {}
+}
+      `.trimRight(),
+    },
   ],
 });

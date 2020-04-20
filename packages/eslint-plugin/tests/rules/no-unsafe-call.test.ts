@@ -47,6 +47,7 @@ function foo(x: any) { x() }
 function foo(x: any) { x?.() }
 function foo(x: any) { x.a.b.c.d.e.f.g() }
 function foo(x: any) { x.a.b.c.d.e.f.g?.() }
+function foo<T extends any>(x: T) { x() }
       `,
       errors: [
         {
@@ -72,6 +73,12 @@ function foo(x: any) { x.a.b.c.d.e.f.g?.() }
           line: 5,
           column: 24,
           endColumn: 39,
+        },
+        {
+          messageId: 'unsafeCall',
+          line: 6,
+          column: 37,
+          endColumn: 38,
         },
       ],
     }),
