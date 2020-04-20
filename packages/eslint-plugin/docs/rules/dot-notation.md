@@ -3,7 +3,7 @@
 ## Rule Details
 
 This rule extends the base [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation) rule.
-It supports all options and features of the base rule.
+It adds support for optionally ignoring computed `private` member access.
 
 ## How to use
 
@@ -15,26 +15,30 @@ It supports all options and features of the base rule.
 }
 ```
 
-## Options
-
-New options
-
-- `allowPrivateClassPropertyAccess`
-
-This allows square-bracket notation for private class members.
+See [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation#options) options.
+This rule adds the following options:
 
 ```ts
-interface Options {
+interface Options extends BaseDotNotationOptions {
   allowPrivateClassPropertyAccess?: boolean;
 }
+const defaultOptions: Options = {
+  ...baseDotNotationDefaultOptions,
+  allowPrivateClassPropertyAccess: false,
+};
 ```
 
-```cjson
-{
-  "allowPrivateClassPropertyAccess": true,
+### `allowPrivateClassPropertyAccess`
+
+Example of a correct code when `allowPrivateClassPropertyAccess` is set to `true`
+
+```ts
+class X {
+  private priv_prop = 123;
 }
-```
 
-See [`eslint/dot-notation` options](https://eslint.org/docs/rules/dot-notation#options).
+const x = new X();
+x['priv_prop'] = 123;
+```
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)</sup>

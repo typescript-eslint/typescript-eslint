@@ -22,15 +22,6 @@ function q(str: string): string {
 
 ruleTester.run('dot-notation', rule, {
   valid: [
-    `
-class X {
-  private priv_prop = 123;
-}
-
-const x = new X();
-x['priv_prop'] = 123;
-    `,
-
     //  baseRule
 
     'a.b;',
@@ -72,6 +63,18 @@ x['priv_prop'] = 123;
     'a[void 0];',
     'a[b()];',
     { code: 'a[/(?<zero>0)/];', parserOptions: { ecmaVersion: 2018 } },
+
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+const x = new X();
+x['priv_prop'] = 123;
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
   ],
   invalid: [
     {

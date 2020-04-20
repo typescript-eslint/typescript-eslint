@@ -36,7 +36,7 @@ export default createRule<Options, MessageIds>({
           },
           allowPrivateClassPropertyAccess: {
             tyoe: 'boolean',
-            default: true,
+            default: false,
           },
         },
         additionalProperties: false,
@@ -47,7 +47,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowPrivateClassPropertyAccess: true,
+      allowPrivateClassPropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
     },
