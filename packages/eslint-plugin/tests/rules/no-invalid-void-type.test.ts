@@ -421,6 +421,20 @@ ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
       code: 'type AllowedVoid = Ex.Mx.Tx<void>;',
       options: [{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }],
     },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: 'type AllowedVoid = Ex . Mx . Tx<void>;',
+      options: [{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }],
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: 'type AllowedVoid = Ex . Mx . Tx<void>;',
+      options: [{ allowInGenericTypeArguments: ['Ex.Mx . Tx'] }],
+    },
+    {
+      code: 'type AllowedVoid = Ex.Mx.Tx<void>;',
+      options: [{ allowInGenericTypeArguments: ['Ex . Mx . Tx'] }],
+    },
   ],
   invalid: [
     {

@@ -85,11 +85,15 @@ export default util.createRule<[Options], MessageIds>({
           Array.isArray(allowInGenericTypeArguments)
         ) {
           const sourceCode = context.getSourceCode();
-          const fullyQualifiedName = sourceCode.getText(
-            node.parent.parent.typeName,
-          );
+          const fullyQualifiedName = sourceCode
+            .getText(node.parent.parent.typeName)
+            .replace(/ /gu, '');
 
-          if (!allowInGenericTypeArguments.includes(fullyQualifiedName)) {
+          if (
+            !allowInGenericTypeArguments
+              .map(s => s.replace(/ /gu, ''))
+              .includes(fullyQualifiedName)
+          ) {
             context.report({
               messageId: 'invalidVoidForGeneric',
               data: { generic: fullyQualifiedName },
