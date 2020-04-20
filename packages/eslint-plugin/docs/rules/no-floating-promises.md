@@ -11,36 +11,36 @@ either calling `.then()` with two arguments or `.catch()` with one argument.
 Examples of **incorrect** code for this rule:
 
 ```ts
-const promise = new Promise((resolve, reject) => resolve('value'));
+const promise = new Promise((resolve, reject) => resolve("value"));
 promise;
 
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 returnsPromise().then(() => {});
 
-Promise.reject('value').catch();
+Promise.reject("value").catch();
 
-Promise.reject('value').finally();
+Promise.reject("value").finally();
 ```
 
 Examples of **correct** code for this rule:
 
 ```ts
-const promise = new Promise((resolve, reject) => resolve('value'));
+const promise = new Promise((resolve, reject) => resolve("value"));
 await promise;
 
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 returnsPromise().then(
   () => {},
-  () => {},
+  () => {}
 );
 
-Promise.reject('value').catch(() => {});
+Promise.reject("value").catch(() => {});
 
-Promise.reject('value').finally(() => {});
+Promise.reject("value").finally(() => {});
 ```
 
 ## Options
@@ -69,11 +69,11 @@ Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
 ```ts
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 void returnsPromise();
 
-void Promise.reject('value');
+void Promise.reject("value");
 ```
 
 ### `ignoreIIFE`
@@ -83,11 +83,11 @@ This allows you to skip checking of async iife
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
 ```ts
-await (async function() {
+await(async function () {
   await res(1);
 })();
 
-(async function() {
+(async function () {
   await res(1);
 })();
 ```
