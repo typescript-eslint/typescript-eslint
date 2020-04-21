@@ -70,7 +70,7 @@ type Options = {
   // if true, functions immediately returning another function expression will not be checked
   allowHigherOrderFunctions?: boolean;
   // if true, concise arrow functions that start with the void keyword will not be checked
-  allowConciseArrowFunctionExpressionStartingWithVoid?: boolean;
+  allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
 };
 
 const defaults = {
