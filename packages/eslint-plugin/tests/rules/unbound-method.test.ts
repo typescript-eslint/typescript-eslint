@@ -73,7 +73,7 @@ class OtherClass extends BaseClass {
 
 const oc = new OtherClass();
 oc.superLogThis();
-    `,
+      `,
       options: [
         {
           allowSuper: true,
@@ -574,7 +574,7 @@ class OtherClass extends BaseClass {
 
 const oc = new OtherClass();
 oc.superLogThis();
-    `,
+      `,
       options: [
         {
           allowSuper: false,
