@@ -66,7 +66,7 @@ class OtherClass extends BaseClass {
   superLogThis: any;
   constructor() {
     super();
-    this.superLogThis = super.logThis; // X - Incorrect eslint error
+    this.superLogThis = super.logThis;
   }
 }
 
