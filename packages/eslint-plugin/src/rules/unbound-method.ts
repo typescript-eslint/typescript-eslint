@@ -12,6 +12,7 @@ import * as util from '../util';
 
 interface Config {
   ignoreStatic: boolean;
+  allowSuper?: boolean;
 }
 
 export type Options = [Config];
@@ -138,6 +139,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreStatic: {
             type: 'boolean',
           },
+          allowSuper: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -147,9 +151,10 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreStatic: false,
+      allowSuper: false,
     },
   ],
-  create(context, [{ ignoreStatic }]) {
+  create(context, [{ ignoreStatic, allowSuper }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const currentSourceFile = parserServices.program.getSourceFile(
@@ -160,7 +165,7 @@ export default util.createRule<Options, MessageIds>({
       'MemberExpression, OptionalMemberExpression'(
         node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        if (isSafeUse(node)) {
+        if (isSafeUse(node, allowSuper)) {
           return;
         }
 
@@ -217,7 +222,7 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   return false;
 }
 
-function isSafeUse(node: TSESTree.Node): boolean {
+function isSafeUse(node: TSESTree.Node, allowSuper: boolean = false): boolean {
   const parent = node.parent;
 
   switch (parent?.type) {
@@ -249,7 +254,10 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.AssignmentExpression:
       return (
         parent.operator === '=' &&
-        (node === parent.left || node.object.type === AST_NODE_TYPES.Super)
+        (node === parent.left ||
+          (allowSuper &&
+            (node as TSESTree.MemberExpression) &&
+            node.object.type === AST_NODE_TYPES.Super))
       );
 
     case AST_NODE_TYPES.TSNonNullExpression:
