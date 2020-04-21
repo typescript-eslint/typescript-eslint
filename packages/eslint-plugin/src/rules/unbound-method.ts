@@ -222,7 +222,7 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   return false;
 }
 
-function isSafeUse(node: TSESTree.Node, allowSuper: boolean = false): boolean {
+function isSafeUse(node: TSESTree.Node, allowSuper = false): boolean {
   const parent = node.parent;
 
   switch (parent?.type) {

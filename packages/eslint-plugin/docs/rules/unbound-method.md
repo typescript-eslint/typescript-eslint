@@ -52,6 +52,7 @@ const innerLog = () => instance.logBound();
 The rule accepts an options object with the following property:
 
 - `ignoreStatic` to not check whether `static` methods are correctly bound
+- `allowSuper` allows `Super` class methods to bound with base class.
 
 ### `ignoreStatic`
 
@@ -70,6 +71,24 @@ const { log } = OtherClass;
 log();
 ```
 
+### `allowSuper`
+
+Examples of **correct** code for this rule with `{ allowSuper: true }`:
+
+```ts
+class SuperClass {
+  method1(){ ... }
+}
+
+class baseClass extend SuperClass {
+  constructor(){
+    super();
+    this.baseVar = super.method1;
+  }
+}
+
+```
+
 ### Example
 
 ```json
@@ -77,7 +96,8 @@ log();
   "@typescript-eslint/unbound-method": [
     "error",
     {
-      "ignoreStatic": true
+      "ignoreStatic": true,
+      "allowSuper": false
     }
   ]
 }
