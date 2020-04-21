@@ -54,7 +54,8 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
-    `
+    {
+      code: `
 class BaseClass {
   x: number = 42;
   logThis() {
@@ -73,6 +74,12 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
+      options: [
+        {
+          allowSuper: true,
+        },
+      ],
+    },
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -544,6 +551,39 @@ const { log } = console;
       errors: [
         {
           line: 1,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class BaseClass {
+  x: number = 42;
+  logThis() {
+    console.log('x is ');
+  }
+}
+
+class OtherClass extends BaseClass {
+  superLogThis: any;
+  constructor() {
+    super();
+    this.superLogThis = super.logThis;
+  }
+}
+
+const oc = new OtherClass();
+oc.superLogThis();
+    `,
+      options: [
+        {
+          allowSuper: false,
+        },
+      ],
+      errors: [
+        {
+          line: 13,
+          column: 25,
           messageId: 'unbound',
         },
       ],
