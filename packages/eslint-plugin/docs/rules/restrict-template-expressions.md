@@ -40,6 +40,7 @@ type Options = {
 const defaults = {
   allowNumber: false,
   allowBoolean: false,
+  allowAny: false,
   allowNullable: false,
 };
 ```
