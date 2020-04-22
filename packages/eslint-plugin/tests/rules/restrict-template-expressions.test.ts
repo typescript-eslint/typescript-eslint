@@ -214,33 +214,68 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: `
         const msg = \`arg = \${123}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '123' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         const msg = \`arg = \${false}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'false' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         const msg = \`arg = \${null}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'null' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         declare const arg: number;
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'number' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         declare const arg: boolean;
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'boolean' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
@@ -248,14 +283,23 @@ ruleTester.run('restrict-template-expressions', rule, {
         const arg = {};
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        { messageId: 'invalidType', data: { type: '{}' }, line: 3, column: 30 },
+      ],
     },
     {
       code: `
         declare const arg: { a: string } & { b: string };
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '{ a: string; } & { b: string; }' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
@@ -264,7 +308,25 @@ ruleTester.run('restrict-template-expressions', rule, {
           return \`arg = \${arg}\`;
         }
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+      errors: [
+        { messageId: 'invalidType', data: { type: '{}' }, line: 3, column: 27 },
+      ],
+    },
+    {
+      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      code: `
+        function test<TWithNoConstraint>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'any' },
+          line: 3,
+          column: 27,
+        },
+      ],
     },
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
@@ -273,7 +335,14 @@ ruleTester.run('restrict-template-expressions', rule, {
           return \`arg = \${arg}\`;
         }
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'any' },
+          line: 3,
+          column: 27,
+        },
+      ],
     },
   ],
 });
