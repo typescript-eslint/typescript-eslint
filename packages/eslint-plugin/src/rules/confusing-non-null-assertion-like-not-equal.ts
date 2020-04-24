@@ -1,0 +1,146 @@
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import * as util from '../util';
+
+type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+
+export default util.createRule<[], MessageIds>({
+  name: 'no-non-null-assertion',
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallows non-null assertions using the `!` postfix operator',
+      category: 'Stylistic Issues',
+      recommended: 'warn',
+    },
+    messages: {
+      noNonNull: 'Forbidden non-null assertion.',
+      suggestOptionalChain:
+        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
+    },
+    schema: [],
+  },
+  defaultOptions: [],
+  create(context) {
+    const sourceCode = context.getSourceCode();
+    return {
+      TSNonNullExpression(node: TSESTree.TSNonNullExpression): void {
+        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+
+        function convertTokenToOptional(
+          replacement: '?' | '?.',
+        ): TSESLint.ReportFixFunction {
+          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
+            const operator = sourceCode.getTokenAfter(
+              node.expression,
+              util.isNonNullAssertionPunctuator,
+            );
+            if (operator) {
+              return fixer.replaceText(operator, replacement);
+            }
+
+            return null;
+          };
+        }
+
+        function removeToken(): TSESLint.ReportFixFunction {
+          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
+            const operator = sourceCode.getTokenAfter(
+              node.expression,
+              util.isNonNullAssertionPunctuator,
+            );
+            if (operator) {
+              return fixer.remove(operator);
+            }
+
+            return null;
+          };
+        }
+
+        const nextToken = sourceCode.getTokenAfter(node);
+        if (
+          nextToken &&
+          nextToken.type === AST_TOKEN_TYPES.Punctuator &&
+          (nextToken.value === '==' || nextToken.value === '===')
+        ) {
+          // match
+        }
+
+        if (node.expression.type === AST_NODE_TYPES.BinaryExpression) {
+          if (
+            node.expression.operator === '===' ||
+            node.expression.operator === '=='
+          ) {
+          }
+        }
+
+        if (node.parent) {
+          if (
+            (node.parent.type === AST_NODE_TYPES.MemberExpression ||
+              node.parent.type === AST_NODE_TYPES.OptionalMemberExpression) &&
+            node.parent.object === node
+          ) {
+            if (!node.parent.optional) {
+              if (node.parent.computed) {
+                // it is x![y]?.z
+                suggest.push({
+                  messageId: 'suggestOptionalChain',
+                  fix: convertTokenToOptional('?.'),
+                });
+              } else {
+                // it is x!.y?.z
+                suggest.push({
+                  messageId: 'suggestOptionalChain',
+                  fix: convertTokenToOptional('?'),
+                });
+              }
+            } else {
+              if (node.parent.computed) {
+                // it is x!?.[y].z
+                suggest.push({
+                  messageId: 'suggestOptionalChain',
+                  fix: removeToken(),
+                });
+              } else {
+                // it is x!?.y.z
+                suggest.push({
+                  messageId: 'suggestOptionalChain',
+                  fix: removeToken(),
+                });
+              }
+            }
+          } else if (
+            (node.parent.type === AST_NODE_TYPES.CallExpression ||
+              node.parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
+            node.parent.callee === node
+          ) {
+            if (!node.parent.optional) {
+              // it is x.y?.z!()
+              suggest.push({
+                messageId: 'suggestOptionalChain',
+                fix: convertTokenToOptional('?.'),
+              });
+            } else {
+              // it is x.y.z!?.()
+              suggest.push({
+                messageId: 'suggestOptionalChain',
+                fix: removeToken(),
+              });
+            }
+          }
+        }
+
+        context.report({
+          node,
+          messageId: 'noNonNull',
+          suggest,
+        });
+      },
+    };
+  },
+});
