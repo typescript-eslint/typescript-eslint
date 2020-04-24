@@ -1,1 +1,3 @@
-export * from './exporter-star';
+import * as stuff from './exporter-star';
+
+console.log(stuff.used);

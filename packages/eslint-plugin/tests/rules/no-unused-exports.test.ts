@@ -37,24 +37,31 @@ function fillError(
  *   - must have one named export called "used"
  * - importer.ts
  *   - import { used } from './exporter';
+ * - import-star.ts
+ *   - import * as stuff from './exporter';
  *
  * - exporter-default.ts
  *   - must contain a default export
  * - importer-default.ts
  *   - import def from './exporter-default';
  *
- * - export-star.ts
- *   - must contain an export of some description
- * - importer-star.ts
- *   - export * from './exporter-star';
- * - importer-star-2.ts
- *   - import { used } from './importer-star';
+ * - exporter-star-from.ts
+ *   - must contain one named export called "used"
+ * - importer-star-from.ts
+ *   - export * from './exporter';
+ * - importer-star-from-2.ts
+ *   - import { used } from './export-star-from';
+ *
+ * - exporter-star.ts
+ *   - must have one named export called "used"
+ * - importer-star
  *
  * - exporter-unused.ts
  *   - not imported by anything
  */
 const exporter = path.join(fixturesDir, 'exporter.ts');
 const exporterDefault = path.join(fixturesDir, 'exporter-default.ts');
+const exporterStarFrom = path.join(fixturesDir, 'exporter-star-from.ts');
 const exporterStar = path.join(fixturesDir, 'exporter-star.ts');
 const exporterUnused = path.join(fixturesDir, 'exporter-unused.ts');
 
@@ -83,6 +90,32 @@ export { default as used } from './exporter-default';
       `,
       filename: exporter,
     }),
+
+    // make sure namespace imports are handled correctly
+    ...batchedSingleLineTests({
+      code: noFormat`
+export const used = 1;
+export const { used } = { used: 1 };
+export const { ...used } = { used: 1 };
+export const { foo: { bar: [used] } } = { foo: { bar: [1] } };
+export const { used = 1 } = { used: 1 };
+export const [used] = [1];
+export const [used,,] = [1,2,3];
+export const [...used] = [1];
+export const [used = 1] = [1];
+export class used {}
+export type used = 1;
+export interface used {}
+export enum used {}
+export function used() {}
+export module used {}
+export namespace used {}
+const used = 1; export { used };
+export { default as used } from './exporter-default';
+      `,
+      filename: exporterStar,
+    }),
+
     // a weird, but valid exported object pattern
     {
       code: `
@@ -108,7 +141,7 @@ export { default } from './exporter';
       code: `
 export const used = 1;
       `,
-      filename: exporterStar,
+      filename: exporterStarFrom,
     },
 
     // namespace exports should be ignored
