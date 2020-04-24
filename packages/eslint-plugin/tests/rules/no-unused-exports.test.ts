@@ -110,6 +110,19 @@ export const used = 1;
       `,
       filename: exporterStar,
     },
+
+    // namespace exports should be ignored
+    {
+      code: `
+namespace Foo {
+  export const unused = 1;
+}
+module Bar {
+  export const unused = 1;
+}
+      `,
+      filename: exporterUnused,
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({

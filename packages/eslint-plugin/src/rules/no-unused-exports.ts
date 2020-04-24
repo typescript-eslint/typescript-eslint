@@ -158,6 +158,11 @@ export default util.createRule<Options, MessageIds>({
           >;
         },
       ): void {
+        if (node.parent?.type === AST_NODE_TYPES.TSModuleBlock) {
+          // namespace exports don't count
+          return;
+        }
+
         if (node.declaration.type === AST_NODE_TYPES.VariableDeclaration) {
           for (const declaration of node.declaration.declarations) {
             checkBindingName(declaration.id);
