@@ -14,6 +14,7 @@ enum Usefulness {
 
 type Options = [
   {
+    /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
     ignoreTaggedTemplateExpressions?: boolean;
   },
 ];
@@ -39,7 +40,7 @@ export default util.createRule<Options, MessageIds>({
         properties: {
           ignoreTaggedTemplateExpressions: {
             type: 'boolean',
-            default: false,
+            default: true,
           },
         },
         additionalProperties: false,
@@ -47,8 +48,8 @@ export default util.createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ ignoreTaggedTemplateExpressions: false }],
-  create(context, [options]) {
+  defaultOptions: [{ ignoreTaggedTemplateExpressions: true }],
+  create(context) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
@@ -130,7 +131,6 @@ export default util.createRule<Options, MessageIds>({
       },
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (
-          options.ignoreTaggedTemplateExpressions &&
           node.parent &&
           node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
         ) {

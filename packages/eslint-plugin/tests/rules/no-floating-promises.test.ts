@@ -335,6 +335,54 @@ async function test() {
   return returnsPromise();
 }
     `,
+    // ignoreIIFE
+    {
+      code: `
+        (async () => {
+          await something();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        (async () => {
+          something();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: '(async function foo() {})();',
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        function foo() {
+          (async function bar() {})();
+        }
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        const foo = () =>
+          new Promise(res => {
+            (async function() {
+              await res(1);
+            })();
+          });
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        (async function() {
+          await res(1);
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
   ],
 
   invalid: [
@@ -722,6 +770,127 @@ async function test() {
         },
         {
           line: 20,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        (async () => {
+          await something();
+        })();
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        (async () => {
+          something();
+        })();
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: '(async function foo() {})();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        function foo() {
+          (async function bar() {})();
+        }
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = () =>
+          new Promise(res => {
+            (async function() {
+              await res(1);
+            })();
+          });
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        (async function() {
+          await res(1);
+        })();
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        (async function() {
+          Promise.resolve();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+      errors: [
+        {
+          line: 3,
+          messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+        (async function() {
+          const promiseIntersection: Promise<number> & number;
+          promiseIntersection;
+          promiseIntersection.then(() => {});
+          promiseIntersection.catch();
+          promiseIntersection.finally();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floating',
+        },
+        {
+          line: 5,
+          messageId: 'floating',
+        },
+        {
+          line: 6,
+          messageId: 'floating',
+        },
+        {
+          line: 7,
           messageId: 'floating',
         },
       ],
