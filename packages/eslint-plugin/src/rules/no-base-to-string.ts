@@ -16,6 +16,7 @@ type Options = [
   {
     /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
     ignoreTaggedTemplateExpressions?: boolean;
+    ignoredTypeNames?: string[];
   },
 ];
 type MessageIds = 'baseToString';
@@ -42,6 +43,12 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
             default: true,
           },
+          ignoredTypeNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -49,9 +56,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
   },
   defaultOptions: [{ ignoreTaggedTemplateExpressions: true }],
-  create(context) {
+  create(context, [option]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
+    const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
@@ -86,6 +94,10 @@ export default util.createRule<Options, MessageIds>({
 
       // Patch for old version TypeScript, the Boolean type definition missing toString()
       if (type.flags & ts.TypeFlags.BooleanLiteral) {
+        return Usefulness.Always;
+      }
+
+      if (ignoredTypeNames.includes(util.getTypeName(typeChecker, type))) {
         return Usefulness.Always;
       }
 
