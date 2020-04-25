@@ -84,6 +84,11 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
+      // Patch for old version TypeScript, the Boolean type definition missing toString()
+      if (type.flags & ts.TypeFlags.BooleanLiteral) {
+        return Usefulness.Always;
+      }
+
       if (
         toString.declarations.every(
           ({ parent }) =>
