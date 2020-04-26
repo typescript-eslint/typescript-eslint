@@ -47,22 +47,22 @@ export default util.createRule<[], MessageIds>({
 
   create(context) {
     //returns the type property if missing in the properties list.
-    const checkIfAllPropertiesAreDestructured = (
+    const checkIfPropertyIsPresent = (
       objectPattern: TSESTree.ObjectPattern,
     ) => (typeProperty: TSESTree.TypeElement): void => {
       //type property name
 
-      const properties = objectPattern.properties.filter(isProperty);
       if (typeProperty.type !== AST_NODE_TYPES.TSPropertySignature) {
         return;
       }
-      const name =
-        typeProperty.key.type === AST_NODE_TYPES.Identifier &&
-        typeProperty.key.name;
 
-      if (!name) {
-        return;
-      } //not so sure in which case this can happen
+      if (typeProperty.key.type !== AST_NODE_TYPES.Identifier) {
+        return; //unamed property, ex { "1"+"2" : 3}
+      }
+
+      const name = typeProperty.key.name;
+      const properties = objectPattern.properties.filter(isProperty);
+
       const property = properties.find(
         property =>
           property.key.type === AST_NODE_TYPES.Identifier &&
@@ -109,7 +109,6 @@ export default util.createRule<[], MessageIds>({
       // function f({ a, b: {c, d}, d} : T) {}
       if (
         type.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-        // TODO(question): why do we have to check that there is an identifier ?
         type.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier
       ) {
         const typeName = type.typeAnnotation.typeName.name;
@@ -119,17 +118,16 @@ export default util.createRule<[], MessageIds>({
           .find(typeDeclaration => {
             return typeDeclaration.id.name === typeName;
           });
-        if (!typeDeclaration) {
+        if (
+          !typeDeclaration ||
+          typeDeclaration.typeAnnotation.type !== AST_NODE_TYPES.TSTypeLiteral
+        ) {
           return;
         } //type not found
 
-        if (
-          typeDeclaration.typeAnnotation.type === AST_NODE_TYPES.TSTypeLiteral
-        ) {
-          typeDeclaration.typeAnnotation.members.map(
-            checkIfAllPropertiesAreDestructured(object),
-          );
-        }
+        typeDeclaration.typeAnnotation.members.map(
+          checkIfPropertyIsPresent(object),
+        );
 
         return; //WIP
         //reference to another type, time to learn the syntax or find a utility to find the type
@@ -138,12 +136,12 @@ export default util.createRule<[], MessageIds>({
       //type definition in the function declaration
       // function f({ a, b: {c, d}, d} : {a: string}) {}
       if (type.typeAnnotation.type === AST_NODE_TYPES.TSTypeLiteral) {
-        type.typeAnnotation.members.map(
-          checkIfAllPropertiesAreDestructured(object),
-        );
+        type.typeAnnotation.members.map(checkIfPropertyIsPresent(object));
       }
 
       //TODO: do we want to handle Omit ?
+
+      //TODO: TSInterfaceDeclaration
 
       return;
     };

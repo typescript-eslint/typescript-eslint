@@ -7,13 +7,20 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unused-type-properties', rule, {
   valid: [
-    'function f({ a, b: { c, d } }) {}', // no type
-
+    'function f({ a }) {}', // no type
+    'function f({ a }: () => any) {}', // non property type
+    'function f({ a }: { [key: string]: string}) {}', //non TSPropertySignature
+    'function f({ a }: { ["a"+"b"]: string}) {}', //unamed key
+    // type not found in the tree
     `
 type T2 = { a: string; b: { c: string; d: string } };
 function f({ a, b: { c, d } }: T) {}
-    `, // type not found in the tree
-
+    `,
+    //interface is not a type literal
+    `
+interface T { a: string };
+function f({ a, b }: T) {}
+    `,
     `
 type T = { a: string; b: { c: string; d: string } };
 function f({ a, b }: T) {}
@@ -59,7 +66,7 @@ function f({ a }: T) {}
         },
       ],
     },
-
+    //recursivity  : here { c } is the problem
     {
       code: `
 type T = { a: string; b: { c: string; d: string } };
@@ -73,6 +80,7 @@ function f({ a, b: { c } }: T) {}
         },
       ],
     },
+    //adding another type does not change anything
     {
       code: `
 type T = { a: string; b: { c: string; d: string } };
