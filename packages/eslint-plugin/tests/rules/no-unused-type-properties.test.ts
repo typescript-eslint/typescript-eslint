@@ -85,8 +85,8 @@ function f({ a, b: { c } }: T) {}
     //adding another type does not change anything
     {
       code: `
-type T = { a: string; b: { c: string; d: string } };
 type T2 = { a: string };
+type T = { a: string; b: { c: string; d: string } };
 function f({ a, b: { c } }: T) {}
       `,
       errors: [
