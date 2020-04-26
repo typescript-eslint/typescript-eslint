@@ -62,6 +62,7 @@ import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUnusedExpressions from './no-unused-expressions';
+import noUnusedTypeProperties from './no-unused-type-properties';
 import noUnusedVars from './no-unused-vars';
 import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
@@ -164,6 +165,7 @@ export default {
   'no-unsafe-return': noUnsafeReturn,
   'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-expressions': noUnusedExpressions,
+  'no-unused-type-properties': noUnusedTypeProperties,
   'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
