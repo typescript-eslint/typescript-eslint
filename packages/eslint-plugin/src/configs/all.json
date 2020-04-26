@@ -50,6 +50,7 @@
     "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/no-implied-eval": "error",
     "@typescript-eslint/no-inferrable-types": "error",
+    "@typescript-eslint/no-invalid-void-type": "error",
     "no-magic-numbers": "off",
     "@typescript-eslint/no-magic-numbers": "error",
     "@typescript-eslint/no-misused-new": "error",
