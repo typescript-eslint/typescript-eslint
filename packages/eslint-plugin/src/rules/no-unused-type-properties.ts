@@ -1,31 +1,28 @@
 import * as util from '../util';
 import baseRule from 'eslint/lib/rules/no-extra-parens';
 import {
-  ObjectPattern,
-  Parameter,
-  Property,
-  RestElement,
-  Statement,
-  TSTypeAliasDeclaration,
-  TSTypeAnnotation,
-  TypeElement,
-} from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'unusedProperties';
 
 //TODO(question): are there type checker somewhere ?
-function isProperty(property: Property | RestElement): property is Property {
+function isProperty(
+  property: TSESTree.Property | TSESTree.RestElement,
+): property is TSESTree.Property {
   return property.type === AST_NODE_TYPES.Property;
 }
 
-function isObjectPattern(param: Parameter): param is ObjectPattern {
-  return param.type === 'ObjectPattern';
+function isObjectPattern(
+  param: TSESTree.Parameter,
+): param is TSESTree.ObjectPattern {
+  return param.type === AST_NODE_TYPES.ObjectPattern;
 }
 
 function isTypeAliasDeclaration(
-  item: Statement,
-): item is TSTypeAliasDeclaration {
+  item: TSESTree.Statement,
+): item is TSESTree.TSTypeAliasDeclaration {
   return item.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
 }
 
@@ -51,19 +48,25 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     //returns the type property if missing in the properties list.
     const checkIfAllPropertiesAreDestructured = (
-      objectPattern: ObjectPattern,
-    ) => (typeProperty: TypeElement) => {
+      objectPattern: TSESTree.ObjectPattern,
+    ) => (typeProperty: TSESTree.TypeElement): void => {
       //type property name
 
       const properties = objectPattern.properties.filter(isProperty);
-      if (typeProperty.type !== AST_NODE_TYPES.TSPropertySignature) return;
+      if (typeProperty.type !== AST_NODE_TYPES.TSPropertySignature) {
+        return;
+      }
       const name =
-        typeProperty.key.type === 'Identifier' && typeProperty.key.name;
+        typeProperty.key.type === AST_NODE_TYPES.Identifier &&
+        typeProperty.key.name;
 
-      if (!name) return; //not so sure in which case this can happen
+      if (!name) {
+        return;
+      } //not so sure in which case this can happen
       const property = properties.find(
         property =>
-          property.key.type === 'Identifier' && property.key.name === name,
+          property.key.type === AST_NODE_TYPES.Identifier &&
+          property.key.name === name,
       );
       if (!property) {
         context.report({
@@ -79,20 +82,25 @@ export default util.createRule<[], MessageIds>({
       //at this point, we have the property and and the name of type
       if (
         typeProperty.typeAnnotation &&
-        property.value.type === 'ObjectPattern'
+        property.value.type === AST_NODE_TYPES.ObjectPattern
       ) {
         recursiveCheck(property.value, typeProperty.typeAnnotation);
       }
-      return null;
+      return;
     };
 
-    const recursiveCheck = (object: ObjectPattern, type: TSTypeAnnotation) => {
+    const recursiveCheck = (
+      object: TSESTree.ObjectPattern,
+      type: TSESTree.TSTypeAnnotation,
+    ): void => {
       //at this point, we can start the recursion
 
       const restElement = object.properties.find(
         property => property.type === AST_NODE_TYPES.RestElement,
       );
-      if (restElement) return;
+      if (restElement) {
+        return;
+      }
 
       //two interesting cases here : TSTypeReference and TSTypeLiteral
 
@@ -102,7 +110,7 @@ export default util.createRule<[], MessageIds>({
       if (
         type.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
         // TODO(question): why do we have to check that there is an identifier ?
-        type.typeAnnotation.typeName.type === 'Identifier'
+        type.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier
       ) {
         const typeName = type.typeAnnotation.typeName.name;
         const typeDeclaration = context
@@ -111,7 +119,9 @@ export default util.createRule<[], MessageIds>({
           .find(typeDeclaration => {
             return typeDeclaration.id.name === typeName;
           });
-        if (!typeDeclaration) return; //type not found
+        if (!typeDeclaration) {
+          return;
+        } //type not found
 
         if (
           typeDeclaration.typeAnnotation.type === AST_NODE_TYPES.TSTypeLiteral
@@ -138,8 +148,12 @@ export default util.createRule<[], MessageIds>({
       return;
     };
 
-    const checkParameter = (paramObjectPattern: ObjectPattern) => {
-      if (!paramObjectPattern.typeAnnotation) return; //no type here, we can proceed
+    const checkParameter = (
+      paramObjectPattern: TSESTree.ObjectPattern,
+    ): void => {
+      if (!paramObjectPattern.typeAnnotation) {
+        return;
+      } //no type here, we can proceed
       recursiveCheck(paramObjectPattern, paramObjectPattern.typeAnnotation);
       return;
     };

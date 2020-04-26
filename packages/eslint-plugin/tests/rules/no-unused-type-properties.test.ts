@@ -7,44 +7,49 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unused-type-properties', rule, {
   valid: [
-    `function f({ a, b: { c, d } }) {}`, // no type
+    'function f({ a, b: { c, d } }) {}', // no type
 
-    `type T2 = { a: string, b: { c: string, d: string } };
-     function f({ a, b: { c, d } } : T) {}`, // type not found in the tree
+    `
+type T2 = { a: string; b: { c: string; d: string } };
+function f({ a, b: { c, d } }: T) {}
+    `, // type not found in the tree
 
-    `type T = { a: string, b: { c: string, d: string } };
-     function f({ a, b } : T) {}`,
+    `
+type T = { a: string; b: { c: string; d: string } };
+function f({ a, b }: T) {}
+    `,
 
-    `type T = { a: string, b: { c: string, d: string } };
-     function f({ a, ...rest } : T) {}`,
+    `
+type T = { a: string; b: { c: string; d: string } };
+function f({ a, ...rest }: T) {}
+    `,
 
-    `type T = { a: string, b: { c: string, d: string } };
-     function f({ a, b: { c, d } } : T) {}`,
+    `
+type T = { a: string; b: { c: string; d: string } };
+function f({ a, b: { c, d } }: T) {}
+    `,
 
-    `type T = { a: string, b: { c: string, d: string } };
-     function f(arg : T) {}`,
-
-    `type T = { a: string, b: { c: string, d: string } };
-     function f({ a, b: { c, d } } : T) {}`,
+    `
+type T = { a: string; b: { c: string; d: string } };
+function f(arg: T) {}
+    `,
   ],
 
   invalid: [
     {
-      code: `
-function f({ a } : {a: string, b: string}) {}
-      `,
+      code: 'function f({ a }: { a: string; b: string }) {}',
       errors: [
         {
           messageId: 'unusedProperties',
-          line: 2,
+          line: 1,
           column: 12,
         },
       ],
     },
     {
       code: `
-type T = { a: string, b: { c: string, d: string } };
-function f({ a } : T) {}
+type T = { a: string; b: { c: string; d: string } };
+function f({ a }: T) {}
       `,
       errors: [
         {
@@ -57,8 +62,8 @@ function f({ a } : T) {}
 
     {
       code: `
-type T = { a: string, b: { c: string, d: string } };
-function f({ a, b: { c } } : T) {}
+type T = { a: string; b: { c: string; d: string } };
+function f({ a, b: { c } }: T) {}
       `,
       errors: [
         {
@@ -70,9 +75,9 @@ function f({ a, b: { c } } : T) {}
     },
     {
       code: `
-type T = { a: string, b: { c: string, d: string } };
+type T = { a: string; b: { c: string; d: string } };
 type T2 = { a: string };
-function f({ a, b: { c } } : T) {}
+function f({ a, b: { c } }: T) {}
       `,
       errors: [
         {
