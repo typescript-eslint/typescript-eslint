@@ -76,7 +76,7 @@ value.toString();
 let text = `${value}`;
 ```
 
-The following patterns are considered correct with the default options `{ ignoreTypeNames: ["RegExp"] }`:
+The following patterns are considered correct with the options `{ ignoreTypeNames: ["RegExp"] }`:
 
 ```ts
 `${/regex/}`;
