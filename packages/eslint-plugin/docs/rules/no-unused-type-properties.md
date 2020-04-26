@@ -33,7 +33,7 @@ function g({ a, b: { c } }: T) {}
 
 ## React Component Example
 
-```
+```typescript jsx
 type MyProps {
   a: string,
   b: string //forgotten and now unused props
