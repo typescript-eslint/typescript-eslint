@@ -640,7 +640,7 @@ declare module 'eslint/lib/rules/init-declarations' {
   >;
   export = rule;
 }
-    
+
 declare module 'eslint/lib/rules/dot-notation' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
