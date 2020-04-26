@@ -34,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
     messages: {
-      shouldBeReadonly: 'Parameter should be a read only type',
+      shouldBeReadonly: 'Parameter should be a read only type.',
     },
   },
   defaultOptions: [

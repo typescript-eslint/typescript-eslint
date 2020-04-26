@@ -18,7 +18,7 @@ export default util.createRule({
     messages: {
       unsafeReturn: 'Unsafe return of an {{type}} typed value',
       unsafeReturnAssignment:
-        'Unsafe return of type {{sender}} from function with return type {{receiver}}',
+        'Unsafe return of type {{sender}} from function with return type {{receiver}}.',
     },
     schema: [],
   },
