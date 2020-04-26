@@ -25,11 +25,13 @@ export default util.createRule({
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-        const type = checker.getTypeAtLocation(originalNode.expression);
+        const type = util.getConstrainedTypeAtLocation(
+          checker,
+          originalNode.expression,
+        );
 
         if (
-          (typeof type.symbol !== 'undefined' &&
-            type.symbol.name === 'Array') ||
+          util.isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({

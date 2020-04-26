@@ -348,6 +348,95 @@ export const Foo: JSX.Element = (
         ecmaFeatures: { jsx: true },
       },
     },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default [test];
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default [test];
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default { test };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default { test };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const foo = (arg => arg) as Foo;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+let foo = (arg => arg) as Foo;
+foo = 3;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+class Foo {
+  bar = (arg: string): string => arg;
+}
+export default { Foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+class Foo {
+  bar(): void {
+    return;
+  }
+}
+export default { Foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
   ],
   invalid: [
     {
@@ -922,6 +1011,272 @@ export function fn(test): string {
         {
           messageId: 'missingArgType',
           line: 1,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export = foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (arg: number): number => arg;
+foo = arg => arg;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default [foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default { foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default [foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default { foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const bar = function foo(arg) {
+  return arg;
+};
+export default { bar };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool(arg) {
+    return arg;
+  }
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = arg => {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = function(arg) {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = function(arg) {
+    return arg;
+  };
+}
+export default [Foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+let test = arg => argl;
+test = (): void => {
+  return;
+};
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
         },
       ],
     },
