@@ -27,11 +27,11 @@ export default util.createRule<Options, MessageId>({
       requiresTypeChecking: true,
     },
     messages: {
-      floating: 'Promises must be handled appropriately',
+      floating: 'Promises must be handled appropriately.',
       floatingVoid:
         'Promises must be handled appropriately' +
-        ' or explicitly marked as ignored with the `void` operator',
-      floatingFixVoid: 'Add void operator to ignore',
+        ' or explicitly marked as ignored with the `void` operator.',
+      floatingFixVoid: 'Add void operator to ignore.',
     },
     schema: [
       {

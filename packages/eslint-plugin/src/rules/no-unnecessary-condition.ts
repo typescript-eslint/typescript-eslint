@@ -108,17 +108,17 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysTruthyFunc:
-        'This callback should return a conditional, but return is always truthy',
+        'This callback should return a conditional, but return is always truthy.',
       alwaysFalsyFunc:
-        'This callback should return a conditional, but return is always falsy',
+        'This callback should return a conditional, but return is always falsy.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
       alwaysNullish:
-        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`',
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values',
-      never: 'Unnecessary conditional, value is `never`',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
+        'Unnecessary conditional, both sides of the expression are literal values.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
     },
   },
   defaultOptions: [
