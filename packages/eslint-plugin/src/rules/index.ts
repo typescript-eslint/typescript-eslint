@@ -12,6 +12,7 @@ import commaSpacing from './comma-spacing';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
+import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
@@ -114,6 +115,7 @@ export default {
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
+  'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,

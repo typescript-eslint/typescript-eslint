@@ -640,3 +640,22 @@ declare module 'eslint/lib/rules/init-declarations' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/dot-notation' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useDot' | 'useBrackets',
+    [
+      {
+        allowKeywords?: boolean;
+        allowPattern?: string;
+        allowPrivateClassPropertyAccess?: boolean;
+      },
+    ],
+    {
+      MemberExpression(node: TSESTree.MemberExpression): void;
+    }
+  >;
+  export = rule;
+}
