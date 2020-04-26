@@ -10,7 +10,7 @@ ruleTester.run('no-unused-type-properties', rule, {
     'function f({ a }) {}', // no type
     'function f({ a }: () => any) {}', // non property type
     'function f({ a }: { [key: string]: string }) {}', //non TSPropertySignature
-    "function f({ a }: { ['a' + 'b']: string }) {}", //unamed key
+    "function f({ a }: { ['a' + 'b']: string }) {}", //unnamed key
     // type not found in the tree
     `
 type T2 = { a: string; b: { c: string; d: string } };
@@ -68,7 +68,7 @@ function f({ a }: T) {}
         },
       ],
     },
-    //recursivity  : here { c } is the problem
+    //recursive search  : here { c } is the problem
     {
       code: `
 type T = { a: string; b: { c: string; d: string } };

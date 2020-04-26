@@ -57,7 +57,7 @@ export default util.createRule<[], MessageIds>({
       }
 
       if (typeProperty.key.type !== AST_NODE_TYPES.Identifier) {
-        return; //unamed property, ex { "1"+"2" : 3}
+        return; //unnamed property, ex { "1"+"2" : 3}
       }
 
       const name = typeProperty.key.name;
