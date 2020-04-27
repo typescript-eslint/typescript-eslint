@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintReferencer from 'eslint-scope/lib/referencer';
-import { TSESTree } from '../ts-estree';
 import {
   PatternVisitorCallback,
   PatternVisitorOptions,
@@ -9,10 +10,11 @@ import {
 import { Scope } from './Scope';
 import { ScopeManager } from './ScopeManager';
 
-interface Referencer<SM extends ScopeManager> extends Visitor {
+type ReferencerOptions = PatternVisitorOptions;
+interface Referencer extends Visitor {
   isInnerMethodDefinition: boolean;
-  options: any;
-  scopeManager: SM;
+  options: ReferencerOptions;
+  scopeManager: ScopeManager;
   parent?: TSESTree.Node;
 
   currentScope(): Scope;
@@ -33,7 +35,12 @@ interface Referencer<SM extends ScopeManager> extends Visitor {
   ): void;
   visitFunction(node: TSESTree.Node): void;
   visitClass(node: TSESTree.Node): void;
-  visitProperty(node: TSESTree.Node): void;
+  visitProperty(
+    node:
+      | TSESTree.MethodDefinition
+      | TSESTree.TSAbstractMethodDefinition
+      | TSESTree.Property,
+  ): void;
   visitForIn(node: TSESTree.Node): void;
   visitVariableDeclaration(
     variableTargetScope: any,
@@ -74,8 +81,12 @@ interface Referencer<SM extends ScopeManager> extends Visitor {
   ExportSpecifier(node: TSESTree.Node): void;
   MetaProperty(): void;
 }
-const Referencer = ESLintReferencer as {
-  new <SM extends ScopeManager>(options: any, scopeManager: SM): Referencer<SM>;
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface ReferencerStatic {}
+interface ReferencerConstructor {
+  new (options: ReferencerOptions, scopeManager: ScopeManager): Referencer;
+}
 
-export { Referencer };
+const Referencer = ESLintReferencer as ReferencerConstructor & ReferencerStatic;
+
+export { Referencer, ReferencerOptions };

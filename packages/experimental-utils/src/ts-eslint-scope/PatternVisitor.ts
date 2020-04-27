@@ -1,6 +1,5 @@
 import ESLintPatternVisitor from 'eslint-scope/lib/pattern-visitor';
 import { TSESTree } from '../ts-estree';
-import { ScopeManager } from './ScopeManager';
 import {
   PatternVisitorCallback,
   PatternVisitorOptions,
@@ -9,7 +8,6 @@ import {
 
 interface PatternVisitor extends Visitor {
   options: PatternVisitorOptions;
-  scopeManager: ScopeManager;
   parent?: TSESTree.Node;
   rightHandNodes: TSESTree.Node[];
 
@@ -24,15 +22,18 @@ interface PatternVisitor extends Visitor {
   AssignmentExpression(node: TSESTree.Node): void;
   CallExpression(node: TSESTree.Node): void;
 }
-const PatternVisitor = ESLintPatternVisitor as {
+interface PatternVisitorStatic {
+  isPattern(node: TSESTree.Node): boolean;
+}
+interface PatternVisitorConstructor {
   new (
     options: PatternVisitorOptions,
-    rootPattern: TSESTree.BaseNode,
+    rootPattern: TSESTree.Node,
     callback: PatternVisitorCallback,
   ): PatternVisitor;
+}
 
-  // static methods
-  isPattern(node: TSESTree.Node): boolean;
-};
+const PatternVisitor = ESLintPatternVisitor as PatternVisitorConstructor &
+  PatternVisitorStatic;
 
-export { PatternVisitor };
+export { PatternVisitor, PatternVisitorStatic };

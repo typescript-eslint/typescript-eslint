@@ -3,6 +3,11 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
+interface EnvTestOptions {
+  browser?: boolean;
+  es6?: boolean;
+}
+
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   code: string;
   options?: TOptions;
@@ -11,9 +16,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   settings?: Record<string, unknown>;
   parser?: string;
   globals?: Record<string, boolean>;
-  env?: {
-    browser?: boolean;
-  };
+  env?: EnvTestOptions;
 }
 
 interface SuggestionOutput<TMessageIds extends string> {
@@ -58,6 +61,7 @@ interface RunTests<
   invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
+  env?: EnvTestOptions;
   // should be require.resolve(parserPackageName)
   parser: string;
   parserOptions?: ParserOptions;
@@ -90,11 +94,12 @@ class RuleTester extends (ESLintRuleTester as {
 }
 
 export {
+  EnvTestOptions,
   InvalidTestCase,
-  SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
   RunTests,
+  SuggestionOutput,
   TestCaseError,
   ValidTestCase,
 };

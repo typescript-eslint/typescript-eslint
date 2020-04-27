@@ -36,6 +36,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@types/eslint-visitor-keys": "^1.0.0",
     "@types/json-schema": "^7.0.3",
     "@typescript-eslint/typescript-estree": "2.29.0",
     "eslint-scope": "^5.0.0",

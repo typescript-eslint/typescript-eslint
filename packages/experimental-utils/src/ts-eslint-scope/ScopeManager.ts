@@ -1,7 +1,6 @@
+import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintScopeManager from 'eslint-scope/lib/scope-manager';
-import { TSESTree } from '../ts-estree';
-import { EcmaVersion } from '../ts-eslint';
-import { Scope } from './Scope';
+import { Scope, GlobalScope } from './Scope';
 import { Variable } from './Variable';
 
 interface ScopeManagerOptions {
@@ -11,7 +10,7 @@ interface ScopeManagerOptions {
   nodejsScope?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: number;
 }
 
 interface ScopeManager {
@@ -21,7 +20,7 @@ interface ScopeManager {
   __declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
 
   scopes: Scope[];
-  globalScope: Scope;
+  globalScope: GlobalScope;
 
   __useDirective(): boolean;
   __isOptimistic(): boolean;
@@ -31,9 +30,20 @@ interface ScopeManager {
   isImpliedStrict(): boolean;
   isStrictModeSupported(): boolean;
 
-  // Returns appropriate scope for this node.
-  __get(node: TSESTree.Node): Scope | undefined;
+  /**
+   * Returns appropriate scope for this node.
+   */
+  __get(node: TSESTree.Node): Scope[] | undefined;
+  /**
+   * Get variables that are declared by the node.
+   *
+   * "are declared by the node" means the node is same as `Variable.defs[].node` or `Variable.defs[].parent`.
+   * If the node declares nothing, this method returns an empty array.
+   */
   getDeclaredVariables(node: TSESTree.Node): Variable[];
+  /**
+   * acquire scope from node.
+   */
   acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
   acquireAll(node: TSESTree.Node): Scope | null;
   release(node: TSESTree.Node, inner?: boolean): Scope | null;
@@ -54,8 +64,13 @@ interface ScopeManager {
 
   __isES6(): boolean;
 }
-const ScopeManager = ESLintScopeManager as {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface ScopeManagerStatic {}
+interface ScopeManagerConstructor {
   new (options: ScopeManagerOptions): ScopeManager;
-};
+}
+
+const ScopeManager = ESLintScopeManager as ScopeManagerConstructor &
+  ScopeManagerStatic;
 
 export { ScopeManager, ScopeManagerOptions };

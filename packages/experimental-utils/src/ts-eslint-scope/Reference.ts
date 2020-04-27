@@ -6,16 +6,38 @@ import { Variable } from './Variable';
 export type ReferenceFlag = 0x1 | 0x2 | 0x3;
 
 interface Reference {
-  identifier: TSESTree.Identifier;
+  /**
+   * The read-write mode of the reference. (Value is one of {@link Reference.READ}, {@link Reference.RW}, {@link Reference.WRITE}).
+   */
+  flag: ReferenceFlag;
+  /**
+   * Reference to the enclosing Scope.
+   */
   from: Scope;
+  identifier: TSESTree.Identifier;
+  /**
+   * Whether the Reference is to write of initialization.
+   */
+  init?: boolean;
+  /**
+   * Whether the Reference might refer to a partial value of writeExpr.
+   */
+  partial?: boolean;
+  /**
+   * The variable this reference is resolved with.
+   */
   resolved: Variable | null;
-  writeExpr: TSESTree.Node | null;
-  init: boolean;
-
-  partial: boolean;
-  __maybeImplicitGlobal: boolean;
+  /**
+   * Whether the reference comes from a dynamic scope (such as 'eval', 'with', etc.), and may be trapped by dynamic scopes.
+   */
   tainted?: boolean;
   typeMode?: boolean;
+  /**
+   * If reference is writeable, this is the tree being written to it.
+   */
+  writeExpr?: TSESTree.Node | null;
+
+  __maybeImplicitGlobal?: boolean;
 
   isWrite(): boolean;
   isRead(): boolean;
@@ -23,20 +45,22 @@ interface Reference {
   isReadOnly(): boolean;
   isReadWrite(): boolean;
 }
-const Reference = ESLintReference as {
+interface ReferenceStatic {
+  readonly READ: 0x1;
+  readonly WRITE: 0x2;
+  readonly RW: 0x3;
+}
+interface ReferenceConstructor {
   new (
     identifier: TSESTree.Identifier,
     scope: Scope,
-    flag?: ReferenceFlag,
+    flag: ReferenceFlag,
     writeExpr?: TSESTree.Node | null,
     maybeImplicitGlobal?: boolean,
     partial?: boolean,
     init?: boolean,
   ): Reference;
+}
+const Reference = ESLintReference as ReferenceConstructor & ReferenceStatic;
 
-  READ: 0x1;
-  WRITE: 0x2;
-  RW: 0x3;
-};
-
-export { Reference };
+export { Reference, ReferenceStatic };
