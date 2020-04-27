@@ -19,6 +19,7 @@ const literalListBasic: string[] = [
   '1',
   '1n',
   '[]',
+  '/regex/',
 ];
 
 const literalListNeedParen: string[] = [
@@ -101,21 +102,6 @@ tag\`\${{}}\`;
       options: [
         {
           ignoreTaggedTemplateExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-        \`\${/regex/}\`;
-        '' + /regex/;
-        /regex/.toString();
-        let value = /regex/;
-        value.toString();
-        let text = \`\${value}\`;
-      `,
-      options: [
-        {
-          ignoredTypeNames: ['RegExp'],
         },
       ],
     },

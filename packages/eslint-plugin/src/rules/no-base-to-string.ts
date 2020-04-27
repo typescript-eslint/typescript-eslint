@@ -55,7 +55,12 @@ export default util.createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ ignoreTaggedTemplateExpressions: true }],
+  defaultOptions: [
+    {
+      ignoreTaggedTemplateExpressions: true,
+      ignoredTypeNames: ['RegExp'],
+    },
+  ],
   create(context, [option]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
