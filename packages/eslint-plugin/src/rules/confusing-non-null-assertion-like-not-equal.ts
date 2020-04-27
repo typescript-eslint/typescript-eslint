@@ -14,9 +14,9 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallows confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b"',
+        'Disallows confusing combinations of non-null assertion and equal test like `a! == b`, which looks very similar to not equal `a !== b`',
       category: 'Stylistic Issues',
-      recommended: 'warn',
+      recommended: 'error',
     },
     messages: {
       confusing:
