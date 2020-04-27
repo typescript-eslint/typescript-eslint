@@ -1,28 +1,16 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-invalid-this';
 import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
-  deepMerge,
 } from '../util';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
-
-const schema = deepMerge(
-  Array.isArray(baseRule.meta.schema)
-    ? baseRule.meta.schema[0]
-    : baseRule.meta.schema,
-  {
-    properties: {
-      capIsConstructor: {
-        type: 'boolean',
-        default: true,
-      },
-    },
-  },
-);
 
 export default createRule<Options, MessageIds>({
   name: 'no-invalid-this',
@@ -36,20 +24,22 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
-    schema: [schema],
+    schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],
   create(context) {
     const rules = baseRule.create(context);
-    let argList: Array<string[]> = [];
+    const argList: Array<string[]> = [];
 
     return {
       ...rules,
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
-        const names = node?.params.map(
-          (param: TSESTree.Identifier) => param?.name,
+        argList.push(
+          node?.params.some(
+            (param: TSESTree.Identifier) =>
+              param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
+          ),
         );
-        argList.push(names);
         // baseRule's work
         rules.FunctionDeclaration(node);
       },
@@ -59,10 +49,12 @@ export default createRule<Options, MessageIds>({
         rules['FunctionDeclaration:exit'](node);
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
-        const names = node?.params.map(
-          (param: TSESTree.Identifier) => param.name,
+        argList.push(
+          node?.params.some(
+            (param: TSESTree.Identifier) =>
+              param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
+          ),
         );
-        argList.push(names);
         // baseRule's work
         rules.FunctionExpression(node);
       },
@@ -71,10 +63,10 @@ export default createRule<Options, MessageIds>({
         // baseRule's work
         rules['FunctionExpression:exit'](node);
       },
-      ThisExpression(node: TSESTree.ThisExpression) {
+      ThisExpression(node: TSESTree.ThisExpression): void {
         const lastFnArg = argList[argList.length - 1];
 
-        if (lastFnArg?.some((name: string) => name === 'this')) {
+        if (lastFnArg) {
           return;
         }
 
