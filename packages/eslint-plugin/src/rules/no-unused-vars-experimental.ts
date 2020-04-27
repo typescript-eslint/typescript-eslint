@@ -56,7 +56,7 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       unused: "{{type}} '{{name}}' is declared but its value is never read.",
       unusedWithIgnorePattern:
-        "{{type}} '{{name}}' is declared but its value is never read. Allowed unused names must match {{pattern}}",
+        "{{type}} '{{name}}' is declared but its value is never read. Allowed unused names must match {{pattern}}.",
       unusedImport: 'All imports in import declaration are unused.',
       unusedTypeParameters: 'All type parameters are unused.',
     },

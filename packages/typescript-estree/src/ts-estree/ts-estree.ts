@@ -392,7 +392,8 @@ export type LeftHandSideExpression =
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression
-  | TSAsExpression;
+  | TSAsExpression
+  | ArrowFunctionExpression;
 export type Literal =
   | BooleanLiteral
   | NumberLiteral

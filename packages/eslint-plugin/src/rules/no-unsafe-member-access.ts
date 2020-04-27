@@ -21,9 +21,9 @@ export default util.createRule({
     },
     messages: {
       unsafeMemberExpression:
-        'Unsafe member access {{property}} on an any value',
+        'Unsafe member access {{property}} on an any value.',
       unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an any value',
+        'Computed name {{property}} resolves to an any value.',
     },
     schema: [],
   },

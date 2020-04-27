@@ -18,7 +18,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
 | [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-ignore`]                 |
 | [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
-| [`invalid-void`]                  | 🛑  | N/A                                                  |
+| [`invalid-void`]                  | ✅  | [`@typescript-eslint/no-invalid-void-type`]          |
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
 | [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
 | [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
@@ -623,6 +623,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/restrict-plus-operands`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
 [`@typescript-eslint/strict-boolean-expressions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md
 [`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+[`@typescript-eslint/no-invalid-void-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-invalid-void-type.md
 [`@typescript-eslint/no-require-imports`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-require-imports.md
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
 [`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md

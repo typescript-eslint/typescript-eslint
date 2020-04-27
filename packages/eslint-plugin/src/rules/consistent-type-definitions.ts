@@ -17,8 +17,8 @@ export default util.createRule({
       recommended: false,
     },
     messages: {
-      interfaceOverType: 'Use an `interface` instead of a `type`',
-      typeOverInterface: 'Use a `type` instead of an `interface`',
+      interfaceOverType: 'Use an `interface` instead of a `type`.',
+      typeOverInterface: 'Use a `type` instead of an `interface`.',
     },
     schema: [
       {

@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-string-starts-ends-with] check for negative start index in slice ([#1920](https://github.com/typescript-eslint/typescript-eslint/issues/1920)) ([ed2bd60](https://github.com/typescript-eslint/typescript-eslint/commit/ed2bd6067f74ae33e36a084719bb91efedfba599))
+* **eslint-plugin:** fix no-base-to-string boolean literal check ([#1850](https://github.com/typescript-eslint/typescript-eslint/issues/1850)) ([2f45e99](https://github.com/typescript-eslint/typescript-eslint/commit/2f45e9992a8f12b6233716e77a6159f9cea2c879))
+
+
+### Features
+
+* **eslint-plugin:** add extension rule `dot-notation` ([#1867](https://github.com/typescript-eslint/typescript-eslint/issues/1867)) ([a85c3e1](https://github.com/typescript-eslint/typescript-eslint/commit/a85c3e1515d735b6c245cc658cdaec6deb05d630))
+* **eslint-plugin:** create `no-invalid-void-type` rule ([#1847](https://github.com/typescript-eslint/typescript-eslint/issues/1847)) ([f667ff1](https://github.com/typescript-eslint/typescript-eslint/commit/f667ff1708d4ed28b7ea5beea742889da69a76d9))
+
+
+
+
+
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] soft remove `ignoreTaggedTemplateExpressions` option ([#1916](https://github.com/typescript-eslint/typescript-eslint/issues/1916)) ([369978e](https://github.com/typescript-eslint/typescript-eslint/commit/369978e9685bacb3e3882b0510ff06eaf8df4ca1))
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promise] add option to ignore IIFEs ([#1799](https://github.com/typescript-eslint/typescript-eslint/issues/1799)) ([cea51bf](https://github.com/typescript-eslint/typescript-eslint/commit/cea51bf130d6d3c2935f5e2dcc468196f2ad9d00))
+* **eslint-plugin:** [restrict-template-expressions] add support for intersection types ([#1803](https://github.com/typescript-eslint/typescript-eslint/issues/1803)) ([cc70e4f](https://github.com/typescript-eslint/typescript-eslint/commit/cc70e4fbadd0b15fd6af913a2e1e2ddd346fa558))
+* **eslint-plugin:** add extension rule `init-declarations` ([#1814](https://github.com/typescript-eslint/typescript-eslint/issues/1814)) ([b01f5e7](https://github.com/typescript-eslint/typescript-eslint/commit/b01f5e778ac28e0797a3734fc58d025bb224f418))
+* **eslint-plugin:** add extension rule `keyword-spacing` ([#1739](https://github.com/typescript-eslint/typescript-eslint/issues/1739)) ([c5106dd](https://github.com/typescript-eslint/typescript-eslint/commit/c5106dd4bf2bc8846cc39aa8bb50c33bec026d4d))
+
+
+
+
+
 # [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
 
 

@@ -12,6 +12,7 @@ import commaSpacing from './comma-spacing';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
+import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
@@ -19,6 +20,7 @@ import funcCallSpacing from './func-call-spacing';
 import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
 import interfaceNamePrefix from './interface-name-prefix';
+import keywordSpacing from './keyword-spacing';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
@@ -31,15 +33,16 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
-import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
+import noIdentifierEnumMember from './no-identifier-enum-member';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
-import noIdentifierEnumMember from './no-identifier-enum-member';
+import noInvalidVoidType from './no-invalid-void-type';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -87,6 +90,7 @@ import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
+import initDeclarations from './init-declarations';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -112,13 +116,16 @@ export default {
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
+  'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
   'generic-type-naming': genericTypeNaming,
   indent: indent,
+  'init-declarations': initDeclarations,
   'interface-name-prefix': interfaceNamePrefix,
+  'keyword-spacing': keywordSpacing,
   'member-delimiter-style': memberDelimiterStyle,
   'member-naming': memberNaming,
   'member-ordering': memberOrdering,
@@ -139,6 +146,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
   'no-inferrable-types': noInferrableTypes,
+  'no-invalid-void-type': noInvalidVoidType,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,

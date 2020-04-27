@@ -17,7 +17,7 @@ export default util.createRule({
     },
     messages: {
       preferForOf:
-        'Expected a `for-of` loop instead of a `for` loop with this simple iteration',
+        'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
     },
     schema: [],
   },

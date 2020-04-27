@@ -6,6 +6,9 @@ Examples of **correct** code:
 const arg = 'foo';
 const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'default'}`;
+
+const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
+const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 ```
 
 Examples of **incorrect** code:
@@ -28,6 +31,8 @@ type Options = {
   allowNumber?: boolean;
   // if true, also allow boolean type in template expressions
   allowBoolean?: boolean;
+  // if true, also allow any in template expressions
+  allowAny?: boolean;
   // if true, also allow null and undefined in template expressions
   allowNullable?: boolean;
 };

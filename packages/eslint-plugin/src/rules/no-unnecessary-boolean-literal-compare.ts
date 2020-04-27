@@ -28,7 +28,7 @@ export default util.createRule<[], MessageIds>({
     fixable: 'code',
     messages: {
       direct:
-        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly',
+        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
       negated:
         'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
     },
