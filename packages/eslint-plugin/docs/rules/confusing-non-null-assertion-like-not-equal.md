@@ -25,7 +25,7 @@ const isEqualsNum = 1 + foo.num! == 2;
 
 Examples of **correct** code for this rule:
 
-```ts
+```
 interface Foo {
   bar?: string;
   num?: number;
@@ -33,7 +33,7 @@ interface Foo {
 
 const foo: Foo = getFoo();
 const isEqualsBar = foo.bar == 'hello';
-const isEqualsNum = 1 + foo.num! == 2;
+const isEqualsNum = (1 + foo.num!) == 2;
 ```
 
 ## When Not To Use It
