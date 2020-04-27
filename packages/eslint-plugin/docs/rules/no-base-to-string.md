@@ -52,6 +52,34 @@ const literalWithToString = {
 `Value: ${literalWithToString}`;
 ```
 
+## Options
+
+```ts
+type Options = {
+  ignoredTypeNames?: string[];
+};
+
+const defaultOptions: Options = {
+  ignoredTypeNames: ['RegExp'],
+};
+```
+
+### `ignoreTypeNames`
+
+A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).
+There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+
+The following patterns are considered correct with the default options `{ ignoreTypeNames: ["RegExp"] }`:
+
+```ts
+`${/regex/}`;
+'' + /regex/;
+/regex/.toString();
+let value = /regex/;
+value.toString();
+let text = `${value}`;
+```
+
 ## When Not To Use It
 
 If you don't mind `"[object Object]"` in your strings, then you will not need this rule.

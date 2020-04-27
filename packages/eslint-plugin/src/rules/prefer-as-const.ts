@@ -17,9 +17,9 @@ export default util.createRule({
     fixable: 'code',
     messages: {
       preferConstAssertion:
-        'Expected a `const` instead of a literal type assertion',
+        'Expected a `const` instead of a literal type assertion.',
       variableConstAssertion:
-        'Expected a `const` assertion instead of a literal type annotation',
+        'Expected a `const` assertion instead of a literal type annotation.',
       variableSuggest: 'You should use `as const` instead of type annotation.',
     },
     schema: [],

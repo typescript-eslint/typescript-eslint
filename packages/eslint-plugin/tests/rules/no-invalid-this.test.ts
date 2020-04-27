@@ -66,7 +66,7 @@ function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
     },
     {
       code: `
@@ -74,7 +74,7 @@ function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       options: [{}], // test the default value in schema
     },
@@ -84,7 +84,7 @@ function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       options: [{ capIsConstructor: true }], // test explicitly set option to the default value
     },
@@ -94,7 +94,7 @@ var Foo = function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
     },
     {
       code: `
@@ -104,7 +104,7 @@ class A {
     z(x => console.log(x, this));
   }
 }
-        `,
+      `,
     },
 
     // On a property.
@@ -116,7 +116,7 @@ var obj = {
     z(x => console.log(x, this));
   },
 };
-        `,
+      `,
     },
     {
       code: `
@@ -126,7 +126,7 @@ var obj = {
     z(x => console.log(x, this));
   },
 };
-        `,
+      `,
     },
     {
       code: `
@@ -138,7 +138,7 @@ var obj = {
       z(x => console.log(x, this));
     },
 };
-        `,
+      `,
     },
     {
       code: `
@@ -150,7 +150,7 @@ var obj = {
         z(x => console.log(x, this));
       },
 };
-        `,
+      `,
     },
     {
       code: `
@@ -162,7 +162,7 @@ var obj = {
     };
   })(),
 };
-        `,
+      `,
     },
     {
       code: `
@@ -172,7 +172,7 @@ Object.defineProperty(obj, 'foo', {
     z(x => console.log(x, this));
   },
 });
-        `,
+      `,
     },
     {
       code: `
@@ -184,7 +184,7 @@ Object.defineProperties(obj, {
     },
   },
 });
-        `,
+      `,
     },
 
     // Assigns to a property.
@@ -194,7 +194,7 @@ obj.foo = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
     },
     {
       code: `
@@ -204,7 +204,7 @@ obj.foo =
     console.log(this);
     z(x => console.log(x, this));
   };
-        `,
+      `,
     },
     {
       code: `
@@ -214,7 +214,7 @@ obj.foo = foo
       console.log(this);
       z(x => console.log(x, this));
     };
-        `,
+      `,
     },
     {
       code: `
@@ -224,7 +224,7 @@ obj.foo = (function() {
     z(x => console.log(x, this));
   };
 })();
-        `,
+      `,
     },
     {
       code: `
@@ -233,7 +233,7 @@ obj.foo = (() =>
     console.log(this);
     z(x => console.log(x, this));
   })();
-        `,
+      `,
     },
 
     // Bind/Call/Apply
@@ -461,7 +461,7 @@ z(x => console.log(x, this));
   console.log(this);
   z(x => console.log(x, this));
 })();
-        `,
+      `,
 
       errors: [
         {
@@ -480,7 +480,7 @@ function foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       errors: [
         {
@@ -497,7 +497,7 @@ function foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
       errors: [
@@ -515,7 +515,7 @@ function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -534,7 +534,7 @@ function foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       errors: [
         {
@@ -552,7 +552,7 @@ function Foo() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -570,7 +570,7 @@ return function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
       parserOptions: {
         ecmaFeatures: { globalReturn: true },
       },
@@ -589,7 +589,7 @@ var foo = function() {
   console.log(this);
   z(x => console.log(x, this));
 }.bar(obj);
-        `,
+      `,
 
       errors: [
         {
@@ -613,7 +613,7 @@ var obj = {
     foo();
   },
 };
-        `,
+      `,
 
       errors: [
         {
@@ -635,7 +635,7 @@ var obj = {
     foo();
   },
 };
-        `,
+      `,
 
       errors: [
         {
@@ -656,7 +656,7 @@ var obj = {
     };
   },
 };
-        `,
+      `,
 
       errors: [
         {
@@ -678,7 +678,7 @@ var obj = {
     };
   },
 };
-        `,
+      `,
 
       errors: [
         {
@@ -697,7 +697,7 @@ obj.foo = function() {
     z(x => console.log(x, this));
   };
 };
-        `,
+      `,
 
       errors: [
         {
@@ -717,7 +717,7 @@ obj.foo = function() {
     z(x => console.log(x, this));
   };
 };
-        `,
+      `,
 
       errors: [
         {
@@ -738,7 +738,7 @@ class A {
     };
   }
 }
-        `,
+      `,
 
       errors: [
         {
@@ -760,7 +760,7 @@ obj.foo = (function() {
     z(x => console.log(x, this));
   };
 })();
-        `,
+      `,
 
       errors: [
         {
@@ -777,7 +777,7 @@ obj.foo = (() => () => {
   console.log(this);
   z(x => console.log(x, this));
 })();
-        `,
+      `,
 
       errors: [
         {
@@ -796,7 +796,7 @@ var foo = function() {
   console.log(this);
   z(x => console.log(x, this));
 }.bind(null);
-        `,
+      `,
 
       errors: [
         {
@@ -814,7 +814,7 @@ var foo = function() {
   console.log(this);
   z(x => console.log(x, this));
 }.call(undefined));
-        `,
+      `,
 
       errors: [
         {
@@ -832,7 +832,7 @@ var foo = function() {
   console.log(this);
   z(x => console.log(x, this));
 }.apply(void 0));
-        `,
+      `,
 
       errors: [
         {
@@ -851,7 +851,7 @@ Array.from([], function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -868,7 +868,7 @@ foo.every(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -885,7 +885,7 @@ foo.filter(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -902,7 +902,7 @@ foo.find(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -919,7 +919,7 @@ foo.findIndex(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -936,7 +936,7 @@ foo.forEach(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -953,7 +953,7 @@ foo.map(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -970,7 +970,7 @@ foo.some(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -988,7 +988,7 @@ foo.forEach(function() {
   console.log(this);
   z(x => console.log(x, this));
 }, null);
-        `,
+      `,
 
       errors: [
         {
@@ -1008,7 +1008,7 @@ foo.forEach(function() {
   console.log(this);
   z(x => console.log(x, this));
 }
-        `,
+      `,
 
       errors: [
         {
@@ -1025,7 +1025,7 @@ foo.forEach(function() {
   console.log(this);
   z(x => console.log(x, this));
 });
-        `,
+      `,
 
       errors: [
         {
@@ -1043,7 +1043,7 @@ var Ctor = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -1061,7 +1061,7 @@ var func = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       errors: [
         {
@@ -1078,7 +1078,7 @@ var func = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -1097,7 +1097,7 @@ Ctor = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -1115,7 +1115,7 @@ func = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       errors: [
         {
@@ -1132,7 +1132,7 @@ func = function() {
   console.log(this);
   z(x => console.log(x, this));
 };
-        `,
+      `,
 
       options: [{ capIsConstructor: false }],
       errors: [
@@ -1153,7 +1153,7 @@ function foo(
     z(x => console.log(x, this));
   },
 ) {}
-        `,
+      `,
 
       errors: [
         {
@@ -1173,7 +1173,7 @@ function foo(
     z(x => console.log(x, this));
   },
 ] = a;
-        `,
+      `,
 
       errors: [
         {

@@ -23,7 +23,7 @@ export default createRule({
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-      addMissingCases: 'Add branches for missing cases',
+      addMissingCases: 'Add branches for missing cases.',
     },
   },
   defaultOptions: [],

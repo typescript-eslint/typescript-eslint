@@ -21,11 +21,11 @@ export default util.createRule({
     type: 'problem',
     messages: {
       nonPromiseAwait:
-        'returning an awaited value that is not a promise is not allowed',
+        'Returning an awaited value that is not a promise is not allowed.',
       disallowedPromiseAwait:
-        'returning an awaited promise is not allowed in this context',
+        'Returning an awaited promise is not allowed in this context.',
       requiredPromiseAwait:
-        'returning an awaited promise is required in this context',
+        'Returning an awaited promise is required in this context.',
     },
     schema: [
       {
