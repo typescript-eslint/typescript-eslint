@@ -31,13 +31,10 @@ type TypeOptions<T> =
   | {
     order: 'alphabetically',
   };
-
 {
   default?: TypeOptions<MemberTypes>,
-
   classes?: TypeOptions<MemberTypes>,
   classExpressions?: TypeOptions<MemberTypes>,
-
   interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
   typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
 }
@@ -57,7 +54,6 @@ There are multiple ways to specify the member types. The most explicit and granu
 [
   // Index signature
   "signature",
-
   // Fields
   "public-static-field",
   "protected-static-field",
@@ -71,12 +67,10 @@ There are multiple ways to specify the member types. The most explicit and granu
   "public-abstract-field",
   "protected-abstract-field",
   "private-abstract-field",
-
   // Constructors
   "public-constructor",
   "protected-constructor",
   "private-constructor",
-
   // Methods
   "public-static-method",
   "protected-static-method",
@@ -103,15 +97,12 @@ It is also possible to group member types by their accessibility (`static`, `ins
 [
   // Index signature
   // No accessibility for index signature. See above.
-
   // Fields
   "public-field", // = ["public-static-field", "public-instance-field"]
   "protected-field", // = ["protected-static-field", "protected-instance-field"]
   "private-field", // = ["private-static-field", "private-instance-field"]
-
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
-
   // Methods
   "public-method", // = ["public-static-method", "public-instance-method"]
   "protected-method", // = ["protected-static-method", "protected-instance-method"]
@@ -128,21 +119,16 @@ their accessibility.
 [
   // Index signature
   // No decorators for index signature.
-
   // Fields
   "public-decorated-field",
   "protected-decorated-field",
   "private-decorated-field",
-
   "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
-
   // Constructors
   // There are no decorators for constructors.
-
   "public-decorated-method",
   "protected-decorated-method",
   "private-decorated-method",
-
   "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
 ]
 ```
@@ -155,15 +141,12 @@ Another option is to group the member types by their scope (`public`, `protected
 [
   // Index signature
   // No scope for index signature. See above.
-
   // Fields
   "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
   "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
   "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
-
   // Constructors
   "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
-
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
   "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
@@ -179,14 +162,11 @@ The third grouping option is to ignore both scope and accessibility.
 [
   // Index signature
   // No grouping for index signature. See above.
-
   // Fields
   "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
   //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
-
   // Constructors
   // Only the accessibility of constructors is configurable. See above.
-
   // Methods
   "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
   //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
@@ -202,70 +182,52 @@ The default configuration looks as follows:
   "default": [
     // Index signature
     "signature",
-
     // Fields
     "public-static-field",
     "protected-static-field",
     "private-static-field",
-
     "public-decorated-field",
     "protected-decorated-field",
     "private-decorated-field",
-
     "public-instance-field",
     "protected-instance-field",
     "private-instance-field",
-
     "public-abstract-field",
     "protected-abstract-field",
     "private-abstract-field",
-
     "public-field",
     "protected-field",
     "private-field",
-
     "static-field",
     "instance-field",
     "abstract-field",
-
     "decorated-field",
-
     "field",
-
     // Constructors
     "public-constructor",
     "protected-constructor",
     "private-constructor",
-
     "constructor",
-
     // Methods
     "public-static-method",
     "protected-static-method",
     "private-static-method",
-
     "public-decorated-method",
     "protected-decorated-method",
     "private-decorated-method",
-
     "public-instance-method",
     "protected-instance-method",
     "private-instance-method",
-
     "public-abstract-method",
     "protected-abstract-method",
     "private-abstract-method",
-
     "public-method",
     "protected-method",
     "private-method",
-
     "static-method",
     "instance-method",
     "abstract-method",
-
     "decorated-method",
-
     "method"
   ]
 }
@@ -288,11 +250,8 @@ Note: The `default` options are overwritten in these examples.
 ```ts
 interface Foo {
   B: string; // -> field
-
   new (); // -> constructor
-
   A(): void; // -> method
-
   [Z: string]: any; // -> signature
 }
 ```
@@ -302,11 +261,8 @@ Note: Wrong order.
 ```ts
 type Foo = {
   B: string; // -> field
-
   // no constructor
-
   A(): void; // -> method
-
   // no signature
 };
 ```
@@ -318,12 +274,9 @@ class Foo {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
-
   constructor() {} // -> constructor
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   [Z: string]: any; // -> signature
 }
 ```
@@ -334,14 +287,10 @@ Note: Accessibility or scope are ignored with this configuration.
 const Foo = class {
   private C: string; // -> field
   public D: string; // -> field
-
   constructor() {} // -> constructor
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   [Z: string]: any; // -> signature
-
   protected static E: string; // -> field
 };
 ```
@@ -353,11 +302,8 @@ Note: Not all members have to be grouped to find rule violations.
 ```ts
 interface Foo {
   [Z: string]: any; // -> signature
-
   A(): void; // -> method
-
   new (); // -> constructor
-
   B: string; // -> field
 }
 ```
@@ -365,11 +311,8 @@ interface Foo {
 ```ts
 type Foo = {
   // no signature
-
   A(): void; // -> method
-
   // no constructor
-
   B: string; // -> field
 };
 ```
@@ -377,12 +320,9 @@ type Foo = {
 ```ts
 class Foo {
   [Z: string]: any; // -> signature
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   constructor() {} // -> constructor
-
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -392,12 +332,9 @@ class Foo {
 ```ts
 const Foo = class {
   [Z: string]: any; // -> signature
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   constructor() {} // -> constructor
-
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -413,17 +350,11 @@ Note: This configuration does not apply to interfaces/type literals as accessibi
 ```ts
 class Foo {
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public static E: string; // -> public static field
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   [Z: string]: any; // (irrelevant)
-
   public B(): void {} // -> public instance method
 }
 ```
@@ -433,17 +364,11 @@ Note: Public instance methods should come first before public static fields. Eve
 ```ts
 const Foo = class {
   private C: string; // (irrelevant)
-
   [Z: string]: any; // (irrelevant)
-
   public static E: string; // -> public static field
-
   public D: string; // (irrelevant)
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   public B(): void {} // -> public instance method
 };
 ```
@@ -455,17 +380,11 @@ Note: Public instance methods should come first before public static fields. Eve
 ```ts
 class Foo {
   public B(): void {} // -> public instance method
-
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public static E: string; // -> public static field
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   [Z: string]: any; // (irrelevant)
 }
 ```
@@ -473,17 +392,11 @@ class Foo {
 ```ts
 const Foo = class {
   public B(): void {} // -> public instance method
-
   private C: string; // (irrelevant)
-
   [Z: string]: any; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   public static E: string; // -> public static field
 };
 ```
@@ -497,13 +410,10 @@ Note: This configuration does not apply to interfaces/type literals as accessibi
 ```ts
 class Foo {
   private E: string; // -> instance field
-
   private static B: string; // -> static field
   protected static C: string; // -> static field
   private static D: string; // -> static field
-
   public static A: string; // -> public static field
-
   [Z: string]: any; // (irrelevant)
 }
 ```
@@ -513,18 +423,12 @@ Note: Public static fields should come first, followed by static fields and inst
 ```ts
 const foo = class {
   public T(): void {} // (irrelevant)
-
   private static B: string; // -> static field
-
   constructor() {} // (irrelevant)
-
   private E: string; // -> instance field
-
   protected static C: string; // -> static field
   private static D: string; // -> static field
-
   [Z: string]: any; // (irrelevant)
-
   public static A: string; // -> public static field
 };
 ```
@@ -536,11 +440,9 @@ Note: Public static fields should come first, followed by static fields and inst
 ```ts
 class Foo {
   public static A: string; // -> public static field
-
   private static B: string; // -> static field
   protected static C: string; // -> static field
   private static D: string; // -> static field
-
   private E: string; // -> instance field
 }
 ```
@@ -548,17 +450,12 @@ class Foo {
 ```ts
 const foo = class {
   [Z: string]: any; // -> signature
-
   public static A: string; // -> public static field
-
   constructor() {} // -> constructor
-
   private static B: string; // -> static field
   protected static C: string; // -> static field
   private static D: string; // -> static field
-
   private E: string; // -> instance field
-
   public T(): void {} // -> method
 };
 ```
@@ -578,9 +475,7 @@ class Foo {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
-
   constructor() {} // -> constructor
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
 }
@@ -592,9 +487,7 @@ class Foo {
 class Foo {
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   constructor() {} // -> constructor
-
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -608,15 +501,10 @@ class Foo {
 ```ts
 class Foo {
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public static E: string; // -> public static field
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   public B(): void {} // -> public instance method
 }
 ```
@@ -626,15 +514,10 @@ class Foo {
 ```ts
 class Foo {
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public B(): void {} // -> public instance method
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   public static E: string; // -> public static field
 }
 ```
@@ -654,9 +537,7 @@ const foo = class {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
-
   constructor() {} // -> constructor
-
   public static A(): void {} // -> method
   public B(): void {} // -> method
 };
@@ -668,9 +549,7 @@ const foo = class {
 const foo = class {
   public static A(): void {} // -> method
   public B(): void {} // -> method
-
   constructor() {} // -> constructor
-
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -684,15 +563,10 @@ const foo = class {
 ```ts
 const foo = class {
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public static E: string; // -> public static field
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
-
   public B(): void {} // -> public instance method
 };
 ```
@@ -702,15 +576,10 @@ const foo = class {
 ```ts
 const foo = class {
   private C: string; // (irrelevant)
-
   public D: string; // (irrelevant)
-
   public B(): void {} // -> public instance method
-
   public static E: string; // -> public static field
-
   constructor() {} // (irrelevant)
-
   public static A(): void {} // (irrelevant)
 };
 ```
@@ -730,11 +599,8 @@ Note: The configuration for `interfaces` does not apply to type literals (use `t
 ```ts
 interface Foo {
   B: string; // -> field
-
   new (); // -> constructor
-
   A(): void; // -> method
-
   [Z: string]: any; // -> signature
 }
 ```
@@ -744,11 +610,8 @@ interface Foo {
 ```ts
 interface Foo {
   [Z: string]: any; // -> signature
-
   A(): void; // -> method
-
   new (); // -> constructor
-
   B: string; // -> field
 }
 ```
@@ -768,11 +631,8 @@ Note: The configuration for `typeLiterals` does not apply to interfaces (use `in
 ```ts
 type Foo = {
   B: string; // -> field
-
   A(): void; // -> method
-
   new (); // -> constructor
-
   [Z: string]: any; // -> signature
 };
 ```
@@ -782,11 +642,8 @@ type Foo = {
 ```ts
 type Foo = {
   [Z: string]: any; // -> signature
-
   A(): void; // -> method
-
   new (); // -> constructor
-
   B: string; // -> field
 };
 ```
@@ -806,14 +663,11 @@ interface Foo {
   a: x;
   b: x;
   c: x;
-
   new (): Bar;
   (): Baz;
-
   a(): void;
   b(): void;
   c(): void;
-
   // Wrong group order, should be placed before all field definitions
   [a: string]: number;
 }
@@ -822,14 +676,11 @@ interface Foo {
 ```ts
 interface Foo {
   [a: string]: number;
-
   a: x;
   b: x;
   c: x;
-
   new (): Bar;
   (): Baz;
-
   // Wrong alphabetic order within group
   c(): void;
   b(): void;
@@ -849,7 +700,6 @@ It is also possible to sort all members and ignore the member groups completely.
 interface Foo {
   b(): void;
   a: b;
-
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
   (): Baz; // Order doesn't matter (no sortable identifier)
