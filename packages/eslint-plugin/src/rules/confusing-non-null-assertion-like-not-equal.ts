@@ -6,22 +6,22 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+type MessageIds = 'notNeedInEqualTest' | 'confusing';
 
 export default util.createRule<[], MessageIds>({
-  name: 'no-non-null-assertion',
+  name: 'confusing-non-null-assertion-like-not-equal',
   meta: {
     type: 'problem',
     docs: {
       description:
-        'Disallows non-null assertions using the `!` postfix operator',
+        'Disallows confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b"',
       category: 'Stylistic Issues',
       recommended: 'warn',
     },
     messages: {
-      noNonNull: 'Forbidden non-null assertion.',
-      suggestOptionalChain:
-        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
+      confusing:
+        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b"',
+      notNeedInEqualTest: 'unnecessary non-null assertion (!) in equal test',
     },
     schema: [],
   },
@@ -30,24 +30,6 @@ export default util.createRule<[], MessageIds>({
     const sourceCode = context.getSourceCode();
     return {
       TSNonNullExpression(node: TSESTree.TSNonNullExpression): void {
-        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-
-        function convertTokenToOptional(
-          replacement: '?' | '?.',
-        ): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              util.isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.replaceText(operator, replacement);
-            }
-
-            return null;
-          };
-        }
-
         function removeToken(): TSESLint.ReportFixFunction {
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
             const operator = sourceCode.getTokenAfter(
@@ -68,78 +50,30 @@ export default util.createRule<[], MessageIds>({
           nextToken.type === AST_TOKEN_TYPES.Punctuator &&
           (nextToken.value === '==' || nextToken.value === '===')
         ) {
-          // match
-        }
-
-        if (node.expression.type === AST_NODE_TYPES.BinaryExpression) {
           if (
-            node.expression.operator === '===' ||
-            node.expression.operator === '=='
+            node.parent &&
+            node.parent.type === AST_NODE_TYPES.BinaryExpression &&
+            (node.parent.operator === '===' || node.parent.operator === '==')
           ) {
+            // a! == b
+            context.report({
+              node,
+              messageId: 'confusing',
+              suggest: [
+                {
+                  messageId: 'notNeedInEqualTest',
+                  fix: removeToken(),
+                },
+              ],
+            });
+          } else {
+            // others, like `a + b! == c`
+            context.report({
+              node,
+              messageId: 'confusing',
+            });
           }
         }
-
-        if (node.parent) {
-          if (
-            (node.parent.type === AST_NODE_TYPES.MemberExpression ||
-              node.parent.type === AST_NODE_TYPES.OptionalMemberExpression) &&
-            node.parent.object === node
-          ) {
-            if (!node.parent.optional) {
-              if (node.parent.computed) {
-                // it is x![y]?.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: convertTokenToOptional('?.'),
-                });
-              } else {
-                // it is x!.y?.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: convertTokenToOptional('?'),
-                });
-              }
-            } else {
-              if (node.parent.computed) {
-                // it is x!?.[y].z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: removeToken(),
-                });
-              } else {
-                // it is x!?.y.z
-                suggest.push({
-                  messageId: 'suggestOptionalChain',
-                  fix: removeToken(),
-                });
-              }
-            }
-          } else if (
-            (node.parent.type === AST_NODE_TYPES.CallExpression ||
-              node.parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
-            node.parent.callee === node
-          ) {
-            if (!node.parent.optional) {
-              // it is x.y?.z!()
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?.'),
-              });
-            } else {
-              // it is x.y.z!?.()
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            }
-          }
-        }
-
-        context.report({
-          node,
-          messageId: 'noNonNull',
-          suggest,
-        });
       },
     };
   },
