@@ -35,7 +35,7 @@ export default createRule<Options, MessageIds>({
       ...rules,
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
         argList.push(
-          node?.params.some(
+          node.params.some(
             (param: TSESTree.Identifier) =>
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
@@ -50,7 +50,7 @@ export default createRule<Options, MessageIds>({
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         argList.push(
-          node?.params.some(
+          node.params.some(
             (param: TSESTree.Identifier) =>
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
@@ -66,7 +66,7 @@ export default createRule<Options, MessageIds>({
       ThisExpression(node: TSESTree.ThisExpression): void {
         const lastFnArg = argList[argList.length - 1];
 
-        if (lastFnArg) {
+        if (lastFnArg.length > 0) {
           return;
         }
 
