@@ -25,11 +25,11 @@ These options allow to specify how to group the members and sort their groups.
 ```ts
 type TypeOptions<T> =
   | {
-    memberTypes: Array<T> | "never",
-    order?: "alphabetically" | "as-written",
+    memberTypes: Array<T> | 'never',
+    order?: 'alphabetically' | 'as-written',
   }
   | {
-    order: "alphabetically",
+    order: 'alphabetically',
   };
 
 {
@@ -38,8 +38,8 @@ type TypeOptions<T> =
   classes?: TypeOptions<MemberTypes>,
   classExpressions?: TypeOptions<MemberTypes>,
 
-  interfaces?: TypeOptions<"signature" | "field" | "method" | "constructor">,
-  typeLiterals?: TypeOptions<"signature" | "field" | "method" | "constructor">,
+  interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
+  typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
 }
 ```
 
@@ -124,7 +124,7 @@ It is also possible to group member types by their accessibility (`static`, `ins
 It is also possible to group methods or fields with a decorator separately, optionally specifying
 their accessibility.
 
-```json5
+```jsonc
 [
   // Index signature
   // No decorators for index signature.
@@ -143,7 +143,7 @@ their accessibility.
   "protected-decorated-method",
   "private-decorated-method",
 
-  "decorated-method", // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
+  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
 ]
 ```
 
@@ -266,8 +266,8 @@ The default configuration looks as follows:
 
     "decorated-method",
 
-    "method",
-  ],
+    "method"
+  ]
 }
 ```
 
