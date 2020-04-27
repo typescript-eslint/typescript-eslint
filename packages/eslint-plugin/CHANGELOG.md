@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-string-starts-ends-with] check for negative start index in slice ([#1920](https://github.com/typescript-eslint/typescript-eslint/issues/1920)) ([ed2bd60](https://github.com/typescript-eslint/typescript-eslint/commit/ed2bd6067f74ae33e36a084719bb91efedfba599))
+* **eslint-plugin:** fix no-base-to-string boolean literal check ([#1850](https://github.com/typescript-eslint/typescript-eslint/issues/1850)) ([2f45e99](https://github.com/typescript-eslint/typescript-eslint/commit/2f45e9992a8f12b6233716e77a6159f9cea2c879))
+
+
+### Features
+
+* **eslint-plugin:** add extension rule `dot-notation` ([#1867](https://github.com/typescript-eslint/typescript-eslint/issues/1867)) ([a85c3e1](https://github.com/typescript-eslint/typescript-eslint/commit/a85c3e1515d735b6c245cc658cdaec6deb05d630))
+* **eslint-plugin:** create `no-invalid-void-type` rule ([#1847](https://github.com/typescript-eslint/typescript-eslint/issues/1847)) ([f667ff1](https://github.com/typescript-eslint/typescript-eslint/commit/f667ff1708d4ed28b7ea5beea742889da69a76d9))
+
+
+
+
+
 # [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
 
 
