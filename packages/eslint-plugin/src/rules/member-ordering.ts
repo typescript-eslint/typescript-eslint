@@ -60,6 +60,10 @@ export const defaultOrder = [
   'protected-static-field',
   'private-static-field',
 
+  'public-decorated-field',
+  'protected-decorated-field',
+  'private-decorated-field',
+
   'public-instance-field',
   'protected-instance-field',
   'private-instance-field',
@@ -76,6 +80,8 @@ export const defaultOrder = [
   'instance-field',
   'abstract-field',
 
+  'decorated-field',
+
   'field',
 
   // Constructors
@@ -89,6 +95,10 @@ export const defaultOrder = [
   'public-static-method',
   'protected-static-method',
   'private-static-method',
+
+  'public-decorated-method',
+  'protected-decorated-method',
+  'private-decorated-method',
 
   'public-instance-method',
   'protected-instance-method',
@@ -106,6 +116,8 @@ export const defaultOrder = [
   'instance-method',
   'abstract-method',
 
+  'decorated-method',
+
   'method',
 ];
 
@@ -117,6 +129,18 @@ const allMemberTypes = ['signature', 'field', 'method', 'constructor'].reduce<
   ['public', 'protected', 'private'].forEach(accessibility => {
     if (type !== 'signature') {
       all.push(`${accessibility}-${type}`); // e.g. `public-field`
+    }
+
+    // Only class instance fields and methods can have decorators attached to them
+    if (type === 'field' || type === 'method') {
+      const decoratedMemberType = `${accessibility}-decorated-${type}`;
+      const decoratedMemberTypeNoAccessibility = `decorated-${type}`;
+      if (!all.includes(decoratedMemberType)) {
+        all.push(decoratedMemberType);
+      }
+      if (!all.includes(decoratedMemberTypeNoAccessibility)) {
+        all.push(decoratedMemberTypeNoAccessibility);
+      }
     }
 
     if (type !== 'constructor' && type !== 'signature') {
@@ -258,6 +282,12 @@ function getRank(
   const memberGroups = [];
 
   if (supportsModifiers) {
+    const decorated = 'decorators' in node && node.decorators!.length > 0;
+    if (decorated && (type === 'field' || type === 'method')) {
+      memberGroups.push(`${accessibility}-decorated-${type}`);
+      memberGroups.push(`decorated-${type}`);
+    }
+
     if (type !== 'constructor') {
       // Constructors have no scope
       memberGroups.push(`${accessibility}-${scope}-${type}`);
@@ -396,27 +426,29 @@ export default util.createRule<Options, MessageIds>({
         const name = getMemberName(member, context.getSourceCode());
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
-        if (rank !== -1) {
-          // Works for 1st item because x < undefined === false for any x (typeof string)
-          if (rank < rankLastMember) {
-            context.report({
-              node: member,
-              messageId: 'incorrectGroupOrder',
-              data: {
-                name,
-                rank: getLowestRank(previousRanks, rank, groupOrder),
-              },
-            });
+        if (rank === -1) {
+          return;
+        }
 
-            isCorrectlySorted = false;
-          } else if (rank === rankLastMember) {
-            // Same member group --> Push to existing member group array
-            memberGroups[memberGroups.length - 1].push(member);
-          } else {
-            // New member group --> Create new member group array
-            previousRanks.push(rank);
-            memberGroups.push([member]);
-          }
+        // Works for 1st item because x < undefined === false for any x (typeof string)
+        if (rank < rankLastMember) {
+          context.report({
+            node: member,
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name,
+              rank: getLowestRank(previousRanks, rank, groupOrder),
+            },
+          });
+
+          isCorrectlySorted = false;
+        } else if (rank === rankLastMember) {
+          // Same member group --> Push to existing member group array
+          memberGroups[memberGroups.length - 1].push(member);
+        } else {
+          // New member group --> Create new member group array
+          previousRanks.push(rank);
+          memberGroups.push([member]);
         }
       });
 
@@ -472,36 +504,34 @@ export default util.createRule<Options, MessageIds>({
       orderConfig: OrderConfig,
       supportsModifiers: boolean,
     ): void {
-      if (orderConfig !== 'never') {
-        // Standardize config
-        let order = null;
-        let memberTypes;
+      if (orderConfig === 'never') {
+        return;
+      }
 
-        if (Array.isArray(orderConfig)) {
-          memberTypes = orderConfig;
-        } else {
-          order = orderConfig.order;
-          memberTypes = orderConfig.memberTypes;
+      // Standardize config
+      let order = null;
+      let memberTypes;
+
+      if (Array.isArray(orderConfig)) {
+        memberTypes = orderConfig;
+      } else {
+        order = orderConfig.order;
+        memberTypes = orderConfig.memberTypes;
+      }
+
+      // Check order
+      if (Array.isArray(memberTypes)) {
+        const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
+
+        if (grouped === null) {
+          return;
         }
 
-        // Check order
-        if (Array.isArray(memberTypes)) {
-          const grouped = checkGroupSort(
-            members,
-            memberTypes,
-            supportsModifiers,
-          );
-
-          if (grouped === null) {
-            return;
-          }
-
-          if (order === 'alphabetically') {
-            grouped.some(groupMember => !checkAlphaSort(groupMember));
-          }
-        } else if (order === 'alphabetically') {
-          checkAlphaSort(members);
+        if (order === 'alphabetically') {
+          grouped.some(groupMember => !checkAlphaSort(groupMember));
         }
+      } else if (order === 'alphabetically') {
+        checkAlphaSort(members);
       }
     }
 
