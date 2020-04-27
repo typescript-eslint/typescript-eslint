@@ -11,39 +11,59 @@ const ruleTester = new RuleTester({
   },
 });
 
+const literalListBasic: string[] = [
+  "''",
+  "'text'",
+  'true',
+  'false',
+  '1',
+  '1n',
+  '[]',
+  '/regex/',
+];
+
+const literalListNeedParen: string[] = [
+  '{}.constructor()',
+  '() => {}',
+  'function() {}',
+];
+
+const literalList = [...literalListBasic, ...literalListNeedParen];
+
+const literalListWrapped = [
+  ...literalListBasic,
+  ...literalListNeedParen.map(i => `(${i})`),
+];
+
 ruleTester.run('no-base-to-string', rule, {
   valid: [
-    "`${''}`;",
-    '`${true}`;',
-    '`${[]}`;',
-    '`${function() {}}`;',
-    "'' + '';",
-    "'' + true;",
-    "'' + [];",
-    'true + true;',
-    "true + '';",
-    'true + [];',
-    '[] + [];',
-    '[] + true;',
-    "[] + '';",
-    '({}.constructor());',
-    "'text'.toString();",
-    'false.toString();',
-    `
-let value = 1;
-value.toString();
-    `,
-    `
-let value = 1n;
-value.toString();
-    `,
+    // template
+    ...literalList.map(i => `\`\${${i}}\`;`),
+
+    // operator + +=
+    ...literalListWrapped
+      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
+      .reduce((pre, cur) => [...pre, ...cur]),
+
+    // toString()
+    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
+
+    // variable toString() and template
+    ...literalList.map(
+      i => `
+        let value = ${i};
+        value.toString();
+        let text = \`\${value}\`;
+      `,
+    ),
+
     `
 function someFunction() {}
 someFunction.toString();
+let text = \`\${someFunction}\`;
     `,
     'unknownObject.toString();',
     'unknownObject.someOtherMethod();',
-    '(() => {}).toString();',
     `
 class CustomToString {
   toString() {
