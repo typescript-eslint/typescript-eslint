@@ -8,11 +8,11 @@ const ruleTester = new RuleTester({
 ruleTester.run('confusing-non-null-assertion-like-not-equal', rule, {
   valid: [
     //
-    'a == b!',
+    'a == b!;',
   ],
   invalid: [
     {
-      code: 'c + a! == b',
+      code: 'c + a! == b;',
       errors: [
         {
           messageId: 'confusing',
@@ -23,7 +23,7 @@ ruleTester.run('confusing-non-null-assertion-like-not-equal', rule, {
       ],
     },
     {
-      code: 'a! == b',
+      code: 'a! == b;',
       errors: [
         {
           messageId: 'confusing',
@@ -32,14 +32,14 @@ ruleTester.run('confusing-non-null-assertion-like-not-equal', rule, {
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
-              output: 'a == b',
+              output: 'a == b;',
             },
           ],
         },
       ],
     },
     {
-      code: 'a! === b',
+      code: 'a! === b;',
       errors: [
         {
           messageId: 'confusing',
@@ -48,7 +48,7 @@ ruleTester.run('confusing-non-null-assertion-like-not-equal', rule, {
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
-              output: 'a === b',
+              output: 'a === b;',
             },
           ],
         },
