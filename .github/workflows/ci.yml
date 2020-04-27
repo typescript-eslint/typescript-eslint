@@ -93,10 +93,13 @@ jobs:
       - name: Check code formatting
         run: yarn format-check
 
-      - name: Run linting
+      - name: Lint code
         run: yarn lint
 
-      - name: Validate spelling
+      - name: Lint markdown
+        run: yarn lint:markdown
+
+      - name: Check spelling
         run: yarn check:spelling
 
   integration_tests:

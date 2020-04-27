@@ -5,7 +5,79 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('ban-ts-comment', rule, {
+ruleTester.run('ts-expect-error', rule, {
+  valid: [
+    '// just a comment containing @ts-expect-error somewhere',
+    '/* @ts-expect-error */',
+    '/** @ts-expect-error */',
+    `
+/*
+// @ts-expect-error in a block
+*/
+    `,
+    {
+      code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': false }],
+    },
+  ],
+  invalid: [
+    {
+      code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error: Suppress next line',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/////@ts-expect-error: Suppress next line',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+if (false) {
+  // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+      `,
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('ts-ignore', rule, {
   valid: [
     '// just a comment containing @ts-ignore somewhere',
     '/* @ts-ignore */',

@@ -3,11 +3,11 @@
 ## Rule Details
 
 This rule extends the base [`eslint/quotes`](https://eslint.org/docs/rules/quotes) rule.
-It supports all options and features of the base rule.
+It adds support for TypeScript features which allow quoted names, but not backtick quoted names.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "quotes": "off",

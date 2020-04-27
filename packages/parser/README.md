@@ -67,7 +67,7 @@ Default `false`.
 
 Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the typescript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
+**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
 
 - if `parserOptions.project` is _not_ provided:
   - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.

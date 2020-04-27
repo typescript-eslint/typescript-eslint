@@ -12,7 +12,16 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-export default util.createRule({
+type Options = [
+  {
+    /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
+    ignoreTaggedTemplateExpressions?: boolean;
+    ignoredTypeNames?: string[];
+  },
+];
+type MessageIds = 'baseToString';
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
     docs: {
@@ -26,13 +35,36 @@ export default util.createRule({
       baseToString:
         "'{{name}} {{certainty}} evaluate to '[object Object]' when stringified.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreTaggedTemplateExpressions: {
+            type: 'boolean',
+            default: true,
+          },
+          ignoredTypeNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     type: 'suggestion',
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      ignoreTaggedTemplateExpressions: true,
+      ignoredTypeNames: ['RegExp'],
+    },
+  ],
+  create(context, [option]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
+    const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
@@ -62,6 +94,15 @@ export default util.createRule({
     function collectToStringCertainty(type: ts.Type): Usefulness {
       const toString = typeChecker.getPropertyOfType(type, 'toString');
       if (toString === undefined || toString.declarations.length === 0) {
+        return Usefulness.Always;
+      }
+
+      // Patch for old version TypeScript, the Boolean type definition missing toString()
+      if (type.flags & ts.TypeFlags.BooleanLiteral) {
+        return Usefulness.Always;
+      }
+
+      if (ignoredTypeNames.includes(util.getTypeName(typeChecker, type))) {
         return Usefulness.Always;
       }
 
@@ -110,8 +151,13 @@ export default util.createRule({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
-
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
+        if (
+          node.parent &&
+          node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
+          return;
+        }
         for (const expression of node.expressions) {
           checkExpression(expression);
         }

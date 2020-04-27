@@ -1,25 +1,72 @@
 # Disallow magic numbers (`no-magic-numbers`)
 
-'Magic numbers' are numbers that occur multiple times in code without an explicit meaning.
-They should preferably be replaced by named constants.
-
 ## Rule Details
 
-The `@typescript-eslint/no-magic-numbers` rule extends the `no-magic-numbers` rule from ESLint core, and adds support for handling TypeScript specific code that would otherwise trigger the rule.
+This rule extends the base [`eslint/no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers) rule.
+It adds support for:
 
-See the [ESLint documentation](https://eslint.org/docs/rules/no-magic-numbers) for more details on the `no-magic-numbers` rule.
+- numeric literal types (`type T = 1`),
+- `enum` members (`enum Foo { bar = 1 }`),
+- `readonly` class properties (`class Foo { readonly bar = 1 }`).
 
-## Rule Changes
+## How to use
 
-```cjson
+```jsonc
 {
-    // note you must disable the base rule as it can report incorrect errors
-    "no-magic-numbers": "off",
-    "@typescript-eslint/no-magic-numbers": ["error", { "ignoreNumericLiteralTypes": true }]
+  // note you must disable the base rule as it can report incorrect errors
+  "no-magic-numbers": "off",
+  "@typescript-eslint/no-magic-numbers": [
+    "error",
+    {
+      /* options */
+    }
+  ]
 }
 ```
 
-In addition to the options supported by the `no-magic-numbers` rule in ESLint core, the rule adds the following options:
+## Options
+
+See [`eslint/no-magic-numbers` options](https://eslint.org/docs/rules/no-magic-numbers#options).
+This rule adds the following options:
+
+```ts
+interface Options extends BaseNoMagicNumbersOptions {
+  ignoreEnums?: boolean;
+  ignoreNumericLiteralTypes?: boolean;
+  ignoreReadonlyClassProperties?: boolean;
+}
+
+const defaultOptions: Options = {
+  ...baseNoMagicNumbersDefaultOptions,
+  ignoreEnums: false,
+  ignoreNumericLiteralTypes: false,
+  ignoreReadonlyClassProperties: false,
+};
+```
+
+### `ignoreEnums`
+
+A boolean to specify if enums used in TypeScript are considered okay. `false` by default.
+
+Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": false }]*/
+
+enum foo = {
+    SECOND = 1000,
+}
+```
+
+Examples of **correct** code for the `{ "ignoreEnums": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": true }]*/
+
+enum foo = {
+    SECOND = 1000,
+}
+```
 
 ### `ignoreNumericLiteralTypes`
 
@@ -66,30 +113,6 @@ class Foo {
   readonly B = 2;
   public static readonly C = 1;
   static readonly D = 1;
-}
-```
-
-### `ignoreEnums`
-
-A boolean to specify if enums used in TypeScript are considered okay. `false` by default.
-
-Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
-
-```ts
-/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": false }]*/
-
-enum foo = {
-    SECOND = 1000,
-}
-```
-
-Examples of **correct** code for the `{ "ignoreEnums": true }` option:
-
-```ts
-/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": true }]*/
-
-enum foo = {
-    SECOND = 1000,
 }
 ```
 

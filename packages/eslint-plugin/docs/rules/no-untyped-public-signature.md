@@ -2,6 +2,11 @@
 
 public methods are meant to be used by code outside of your class. By typing both the parameters and the return type of public methods they will be more readable and easy to use.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`explicit-module-boundary-types`](./explicit-module-boundary-types.md) rule.
+It will be removed in a future version of this plugin.
+
 ## Rule Details
 
 This rule aims to ensure that only typed public methods are declared in the code.
@@ -46,9 +51,12 @@ This rule, in its default state, does not require any argument.
 
 You may pass method names you would like this rule to ignore, like so:
 
-```cjson
+```jsonc
 {
-    "@typescript-eslint/no-untyped-public-signature": ["error", { "ignoredMethods": ["ignoredMethodName"] }]
+  "@typescript-eslint/no-untyped-public-signature": [
+    "error",
+    { "ignoredMethods": ["ignoredMethodName"] }
+  ]
 }
 ```
 

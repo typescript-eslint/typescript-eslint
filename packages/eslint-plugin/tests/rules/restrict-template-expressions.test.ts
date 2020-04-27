@@ -30,6 +30,12 @@ ruleTester.run('restrict-template-expressions', rule, {
         return \`arg = \${arg}\`;
       }
     `,
+    // Base case - intersection type
+    `
+      function test<T extends string & { _kind: 'MyBrandedString' }>(arg: T) {
+        return \`arg = \${arg}\`;
+      }
+    `,
     // Base case - don't check tagged templates
     `
       tag\`arg = \${null}\`;
@@ -64,6 +70,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowNumber: true }],
       code: `
         function test<T extends number>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    {
+      options: [{ allowNumber: true }],
+      code: `
+        function test<T extends number & { _kind: 'MyBrandedNumber' }>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
@@ -111,6 +125,43 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allowBoolean: true }],
       code: `
         function test<T extends string | boolean>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    // allowAny
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = 123;
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const arg: any = undefined;
+        const msg = \`arg = \${arg || 'some-default'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        const user = JSON.parse('{ "name": "foo" }');
+        const msg = \`arg = \${user.name || 'the user with no name'}\`;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        function test<T extends any>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
@@ -200,9 +251,25 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
     },
     {
+      code: `
+        declare const arg: { a: string } & { b: string };
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+    },
+    {
       options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
       code: `
         function test<T extends {}>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+    },
+    {
+      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      code: `
+        function test(arg: any) {
           return \`arg = \${arg}\`;
         }
       `,
