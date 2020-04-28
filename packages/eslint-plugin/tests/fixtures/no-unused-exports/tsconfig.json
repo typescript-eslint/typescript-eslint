@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "exporter-default.ts",
+    "exporter-star-from.ts",
+    "exporter-star.ts",
+    "exporter-unused.ts",
+    "exporter.ts",
+    "importer-default.ts",
+    "importer-star-from-2.ts",
+    "importer-star-from.ts",
+    "importer-star.ts",
+    "importer.ts",
+  ],
+}
