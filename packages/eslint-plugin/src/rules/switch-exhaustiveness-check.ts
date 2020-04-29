@@ -129,7 +129,7 @@ export default createRule({
             missingBranches: missingBranchTypes
               .map(missingType =>
                 isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.symbol.escapedName}`
+                  ? `typeof ${missingType.getSymbol()?.escapedName}`
                   : checker.typeToString(missingType),
               )
               .join(' | '),

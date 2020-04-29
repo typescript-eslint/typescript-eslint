@@ -48,10 +48,8 @@ export function containsAllTypesByName(
     type = type.target;
   }
 
-  if (
-    typeof type.symbol !== 'undefined' &&
-    allowedNames.has(type.symbol.name)
-  ) {
+  const symbol = type.getSymbol();
+  if (symbol && allowedNames.has(symbol.name)) {
     return true;
   }
 
@@ -90,11 +88,16 @@ export function getTypeName(
     // `type.getConstraint()` method doesn't return the constraint type of
     // the type parameter for some reason. So this gets the constraint type
     // via AST.
-    const node = type.symbol.declarations[0] as ts.TypeParameterDeclaration;
-    if (node.constraint != null) {
+    const symbol = type.getSymbol();
+    const decls = symbol?.getDeclarations();
+    const typeParamDecl = decls?.[0] as ts.TypeParameterDeclaration;
+    if (
+      ts.isTypeParameterDeclaration(typeParamDecl) &&
+      typeParamDecl.constraint != null
+    ) {
       return getTypeName(
         typeChecker,
-        typeChecker.getTypeFromTypeNode(node.constraint),
+        typeChecker.getTypeFromTypeNode(typeParamDecl.constraint),
       );
     }
   }
@@ -174,12 +177,8 @@ export function getDeclaration(
   if (!symbol) {
     return null;
   }
-  const declarations = symbol.declarations;
-  if (!declarations) {
-    return null;
-  }
-
-  return declarations[0];
+  const declarations = symbol.getDeclarations();
+  return declarations?.[0] ?? null;
 }
 
 /**
@@ -218,22 +217,21 @@ export function typeIsOrHasBaseType(
   type: ts.Type,
   parentType: ts.Type,
 ): boolean {
-  if (type.symbol === undefined || parentType.symbol === undefined) {
+  const parentSymbol = parentType.getSymbol();
+  if (!type.getSymbol() || !parentSymbol) {
     return false;
   }
 
   const typeAndBaseTypes = [type];
   const ancestorTypes = type.getBaseTypes();
 
-  if (ancestorTypes !== undefined) {
+  if (ancestorTypes) {
     typeAndBaseTypes.push(...ancestorTypes);
   }
 
   for (const baseType of typeAndBaseTypes) {
-    if (
-      baseType.symbol !== undefined &&
-      baseType.symbol.name === parentType.symbol.name
-    ) {
+    const baseSymbol = baseType.getSymbol();
+    if (baseSymbol && baseSymbol.name === parentSymbol.name) {
       return true;
     }
   }

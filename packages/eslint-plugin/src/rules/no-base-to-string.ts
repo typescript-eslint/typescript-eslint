@@ -93,7 +93,8 @@ export default util.createRule<Options, MessageIds>({
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
       const toString = typeChecker.getPropertyOfType(type, 'toString');
-      if (toString === undefined || toString.declarations.length === 0) {
+      const declarations = toString?.getDeclarations();
+      if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
       }
 
@@ -107,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       if (
-        toString.declarations.every(
+        declarations.every(
           ({ parent }) =>
             !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
         )
