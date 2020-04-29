@@ -1,14 +1,10 @@
 import rule from '../../src/rules/no-invalid-this';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
-
-const rootPath = getFixturesRootDir();
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
   },
 });
 
