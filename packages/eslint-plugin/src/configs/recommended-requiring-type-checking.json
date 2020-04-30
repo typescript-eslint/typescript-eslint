@@ -2,6 +2,7 @@
   "extends": "./configs/base.json",
   "rules": {
     "@typescript-eslint/await-thenable": "error",
+    "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/no-misused-promises": "error",
     "@typescript-eslint/no-unnecessary-type-assertion": "error",
