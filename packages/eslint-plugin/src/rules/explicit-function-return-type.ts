@@ -7,6 +7,12 @@ import {
   checkFunctionReturnType,
   checkFunctionExpressionReturnType,
 } from '../util/explicitReturnTypeUtils';
+import { SyntaxKind } from 'typescript';
+import {
+  RuleFixer,
+  ReportFixFunction,
+  RuleFix,
+} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
 type Options = [
   {
@@ -28,6 +34,7 @@ export default util.createRule<Options, MessageIds>({
         'Require explicit return types on functions and class methods',
       category: 'Stylistic Issues',
       recommended: 'warn',
+      requiresTypeChecking: true,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -55,6 +62,7 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
       },
     ],
+    fixable: 'code',
   },
   defaultOptions: [
     {
@@ -67,6 +75,61 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+
+    if (
+      !context.parserServices ||
+      !context.parserServices.esTreeNodeToTSNodeMap
+    ) {
+      /**
+       * The user needs to have configured "project" in their parserOptions
+       * for @typescript-eslint/parser
+       */
+      throw new Error(
+        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
+      );
+    }
+
+    function createFixer(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): ReportFixFunction {
+      return (fixer: RuleFixer): RuleFix | null => {
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const signature = checker.getSignatureFromDeclaration(tsNode);
+
+        if (signature != null) {
+          const children = tsNode.getChildren();
+          // find the last parenthesis
+          const lastParens = children.find(
+            child => child.kind === SyntaxKind.CloseParenToken,
+          );
+          if (lastParens !== undefined) {
+            const tokens = sourceCode.getTokens(node);
+            const lastParensToken = tokens.find(
+              token =>
+                token.range[0] === lastParens.pos &&
+                token.range[1] === lastParens.end,
+            );
+            if (lastParensToken !== undefined) {
+              // insert the type after the last parenthesis
+              return fixer.insertTextAfter(
+                lastParensToken,
+                ': ' +
+                  checker.typeToString(
+                    signature.getReturnType(),
+                    signature.getDeclaration(),
+                  ),
+              );
+            }
+          }
+        }
+        return null;
+      };
+    }
 
     return {
       'ArrowFunctionExpression, FunctionExpression'(
@@ -87,6 +150,7 @@ export default util.createRule<Options, MessageIds>({
             node,
             loc,
             messageId: 'missingReturnType',
+            fix: createFixer(node),
           }),
         );
       },
@@ -96,6 +160,7 @@ export default util.createRule<Options, MessageIds>({
             node,
             loc,
             messageId: 'missingReturnType',
+            fix: createFixer(node),
           }),
         );
       },

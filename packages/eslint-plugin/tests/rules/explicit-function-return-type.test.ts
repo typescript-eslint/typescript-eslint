@@ -1,14 +1,20 @@
 import rule from '../../src/rules/explicit-function-return-type';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
+
+const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 2018,
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
     {
-      filename: 'test.ts',
       code: `
 function test(): void {
   return;
@@ -16,7 +22,6 @@ function test(): void {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 var fn = function(): number {
   return 1;
@@ -24,13 +29,11 @@ var fn = function(): number {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 var arrowFn = (): string => 'test';
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor() {}
@@ -46,7 +49,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: 'fn(() => {});',
       options: [
         {
@@ -55,7 +57,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'fn(function() {});',
       options: [
         {
@@ -64,7 +65,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: '[function() {}, () => {}];',
       options: [
         {
@@ -73,7 +73,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: '(function() {});',
       options: [
         {
@@ -82,7 +81,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: '(() => {})();',
       options: [
         {
@@ -91,7 +89,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default (): void => {};',
       options: [
         {
@@ -100,7 +97,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 var arrowFn: Foo = () => 'test';
       `,
@@ -111,7 +107,6 @@ var arrowFn: Foo = () => 'test';
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 var funcExpr: Foo = function() {
   return 'test';
@@ -124,17 +119,14 @@ var funcExpr: Foo = function() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'const x = (() => {}) as Foo;',
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: 'const x = <Foo>(() => {});',
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 const x = {
   foo: () => {},
@@ -143,7 +135,6 @@ const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 const x = <Foo>{
   foo: () => {},
@@ -152,7 +143,6 @@ const x = <Foo>{
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 const x: Foo = {
   foo: () => {},
@@ -162,7 +152,6 @@ const x: Foo = {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/484
     {
-      filename: 'test.ts',
       code: `
 type MethodType = () => void;
 
@@ -174,7 +163,6 @@ class App {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
-      filename: 'test.ts',
       code: `
 const myObj = {
   set myProp(val) {
@@ -184,21 +172,18 @@ const myObj = {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 () => (): void => {};
       `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 () => function(): void {};
       `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 () => {
   return (): void => {};
@@ -207,7 +192,6 @@ const myObj = {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 () => {
   return function(): void {};
@@ -216,7 +200,6 @@ const myObj = {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 function fn() {
   return (): void => {};
@@ -225,7 +208,6 @@ function fn() {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 function fn() {
   return function(): void {};
@@ -234,7 +216,6 @@ function fn() {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
@@ -252,7 +233,6 @@ function FunctionDeclaration() {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 () => () => {
   return (): void => {
@@ -264,7 +244,6 @@ function FunctionDeclaration() {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/679
     {
-      filename: 'test.ts',
       code: `
 declare function foo(arg: () => void): void;
 foo(() => 1);
@@ -280,7 +259,6 @@ foo(() => '');
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 declare function foo(arg: () => void): void;
 foo?.(() => 1);
@@ -296,7 +274,6 @@ foo?.(() => '');
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Accumulator {
   private count: number = 0;
@@ -315,7 +292,6 @@ new Accumulator().accumulate(() => 1);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 declare function foo(arg: { meth: () => number }): void;
 foo({
@@ -341,7 +317,6 @@ foo({
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 const func = (value: number) => ({ type: 'X', value } as const);
 const func = (value: number) => ({ type: 'X', value } as const);
@@ -355,7 +330,6 @@ const func = (value: number) => x as const;
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 new Promise(resolve => {});
 new Foo(1, () => {});
@@ -367,16 +341,19 @@ new Foo(1, () => {});
       ],
     },
     {
-      filename: 'test.ts',
       code: 'const log = (message: string) => void console.log(message);',
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
     },
   ],
   invalid: [
     {
-      filename: 'test.ts',
       code: `
 function test(a: number, b: number) {
+  return;
+}
+      `,
+      output: `
+function test(a: number, b: number): void {
   return;
 }
       `,
@@ -391,9 +368,13 @@ function test(a: number, b: number) {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 function test() {
+  return;
+}
+      `,
+      output: `
+function test(): void {
   return;
 }
       `,
@@ -408,9 +389,13 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 var fn = function() {
+  return 1;
+};
+      `,
+      output: `
+var fn = function(): number {
   return 1;
 };
       `,
@@ -425,9 +410,11 @@ var fn = function() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 var arrowFn = () => 'test';
+      `,
+      output: `
+var arrowFn = (): string => 'test';
       `,
       errors: [
         {
@@ -440,7 +427,6 @@ var arrowFn = () => 'test';
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor() {}
@@ -453,6 +439,22 @@ class Test {
   }
   arrow = () => 'arrow';
   private method() {
+    return;
+  }
+}
+      `,
+      output: `
+class Test {
+  constructor() {}
+  get prop(): number {
+    return 1;
+  }
+  set prop() {}
+  method(): void {
+    return;
+  }
+  arrow = (): string => 'arrow';
+  private method(): void {
     return;
   }
 }
@@ -489,9 +491,13 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 function test() {
+  return;
+}
+      `,
+      output: `
+function test(): void {
   return;
 }
       `,
@@ -507,8 +513,8 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'const foo = () => {};',
+      output: 'const foo = (): void => {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -521,8 +527,8 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'const foo = function() {};',
+      output: 'const foo = function(): void {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -535,8 +541,8 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default () => {};',
+      output: 'export default (): void => {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -549,8 +555,8 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: 'export default function() {}',
+      output: 'export default function(): void {}',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -563,7 +569,6 @@ function test() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Foo {
   public a = () => {};
@@ -572,6 +577,16 @@ class Foo {
 
   static d = () => {};
   static e = function() {};
+}
+      `,
+      output: `
+class Foo {
+  public a = (): void => {};
+  public b = function(): void {};
+  public c = function test(): void {};
+
+  static d = (): void => {};
+  static e = function(): void {};
 }
       `,
       options: [{ allowExpressions: true }],
@@ -614,8 +629,8 @@ class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: "var arrowFn = () => 'test';",
+      output: "var arrowFn = (): string => 'test';",
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
         {
@@ -628,9 +643,13 @@ class Foo {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 var funcExpr = function() {
+  return 'test';
+};
+      `,
+      output: `
+var funcExpr = function(): string {
   return 'test';
 };
       `,
@@ -645,10 +664,9 @@ var funcExpr = function() {
         },
       ],
     },
-
     {
-      filename: 'test.ts',
       code: 'const x = (() => {}) as Foo;',
+      output: 'const x = ((): void => {}) as Foo;',
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
         {
@@ -661,11 +679,16 @@ var funcExpr = function() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 interface Foo {}
 const x = {
   foo: () => {},
+} as Foo;
+      `,
+      output: `
+interface Foo {}
+const x = {
+  foo: (): void => {},
 } as Foo;
       `,
       options: [{ allowTypedFunctionExpressions: false }],
@@ -680,11 +703,16 @@ const x = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 interface Foo {}
 const x: Foo = {
   foo: () => {},
+};
+      `,
+      output: `
+interface Foo {}
+const x: Foo = {
+  foo: (): void => {},
 };
       `,
       options: [{ allowTypedFunctionExpressions: false }],
@@ -699,8 +727,8 @@ const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: '() => () => {};',
+      output: '() => (): void => {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
@@ -713,8 +741,8 @@ const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: '() => function() {};',
+      output: '() => function(): void {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
@@ -727,10 +755,14 @@ const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 () => {
   return () => {};
+};
+      `,
+      output: `
+() => {
+  return (): void => {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -745,10 +777,14 @@ const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 () => {
   return function() {};
+};
+      `,
+      output: `
+() => {
+  return function(): void {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -763,10 +799,14 @@ const x: Foo = {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 function fn() {
   return () => {};
+}
+      `,
+      output: `
+function fn() {
+  return (): void => {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -781,10 +821,14 @@ function fn() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 function fn() {
   return function() {};
+}
+      `,
+      output: `
+function fn() {
+  return function(): void {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -799,7 +843,6 @@ function fn() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
@@ -809,6 +852,20 @@ function FunctionDeclaration() {
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
           () => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      };
+    };
+  };
+}
+      `,
+      output: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => {
+        // ArrowFunctionExpression_Within_FunctionExpression
+        return () =>
+          // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -826,10 +883,16 @@ function FunctionDeclaration() {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 () => () => {
   return () => {
+    return;
+  };
+};
+      `,
+      output: `
+() => () => {
+  return (): void => {
     return;
   };
 };
@@ -847,7 +910,6 @@ function FunctionDeclaration() {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/679
     {
-      filename: 'test.ts',
       code: `
 declare function foo(arg: () => void): void;
 foo(() => 1);
@@ -855,6 +917,14 @@ foo(() => {});
 foo(() => null);
 foo(() => true);
 foo(() => '');
+      `,
+      output: `
+declare function foo(arg: () => void): void;
+foo((): number => 1);
+foo((): void => {});
+foo((): null => null);
+foo((): boolean => true);
+foo((): string => '');
       `,
       options: [
         {
@@ -900,7 +970,6 @@ foo(() => '');
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Accumulator {
   private count: number = 0;
@@ -911,6 +980,17 @@ class Accumulator {
 }
 
 new Accumulator().accumulate(() => 1);
+      `,
+      output: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate((): number => 1);
       `,
       options: [
         {
@@ -928,8 +1008,8 @@ new Accumulator().accumulate(() => 1);
       ],
     },
     {
-      filename: 'test.ts',
       code: '(() => true)();',
+      output: '((): boolean => true)();',
       options: [
         {
           allowTypedFunctionExpressions: false,
@@ -946,7 +1026,6 @@ new Accumulator().accumulate(() => 1);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 declare function foo(arg: { meth: () => number }): void;
 foo({
@@ -961,6 +1040,24 @@ foo({
 });
 foo({
   meth: () => {
+    return 1;
+  },
+});
+      `,
+      output: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth(): number {
+    return 1;
+  },
+});
+foo({
+  meth: function(): number {
+    return 1;
+  },
+});
+foo({
+  meth: (): number => {
     return 1;
   },
 });
@@ -995,10 +1092,15 @@ foo({
       ],
     },
     {
-      filename: 'test.ts',
       code: `
+type Action = { type: string; value: number };
 const func = (value: number) => ({ type: 'X', value } as any);
 const func = (value: number) => ({ type: 'X', value } as Action);
+      `,
+      output: `
+type Action = { type: string; value: number };
+const func = (value: number): any => ({ type: 'X', value } as any);
+const func = (value: number): Action => ({ type: 'X', value } as Action);
       `,
       options: [
         {
@@ -1008,24 +1110,27 @@ const func = (value: number) => ({ type: 'X', value } as Action);
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
-          endLine: 2,
+          line: 3,
+          endLine: 3,
           column: 14,
           endColumn: 32,
         },
         {
           messageId: 'missingReturnType',
-          line: 3,
-          endLine: 3,
+          line: 4,
+          endLine: 4,
           column: 14,
           endColumn: 32,
         },
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 const func = (value: number) => ({ type: 'X', value } as const);
+      `,
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: `
+const func = (value: number): { readonly type: "X"; readonly value: number; } => ({ type: 'X', value } as const);
       `,
       options: [
         {
@@ -1043,8 +1148,9 @@ const func = (value: number) => ({ type: 'X', value } as const);
       ],
     },
     {
-      filename: 'test.ts',
       code: 'const log = (message: string) => void console.log(message);',
+      output:
+        'const log = (message: string): undefined => void console.log(message);',
       options: [
         { allowConciseArrowFunctionExpressionsStartingWithVoid: false },
       ],
@@ -1059,9 +1165,13 @@ const func = (value: number) => ({ type: 'X', value } as const);
       ],
     },
     {
-      filename: 'test.ts',
       code: `
         const log = (message: string) => {
+          void console.log(message);
+        };
+      `,
+      output: `
+        const log = (message: string): void => {
           void console.log(message);
         };
       `,
