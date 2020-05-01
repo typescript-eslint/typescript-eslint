@@ -7,6 +7,15 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
+interface ScopeInfo {
+  hasAsync: boolean;
+}
+
+type FunctionNode =
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression
+  | TSESTree.ArrowFunctionExpression;
+
 export default util.createRule({
   name: 'return-await',
   meta: {
@@ -39,6 +48,14 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
+
+    let scopeInfo: ScopeInfo | null = null;
+
+    function enterFunction(node: FunctionNode): void {
+      scopeInfo = {
+        hasAsync: node.async,
+      };
+    }
 
     function inTryCatch(node: ts.Node): boolean {
       let ancestor = node.parent;
@@ -185,6 +202,10 @@ export default util.createRule({
     }
 
     return {
+      FunctionDeclaration: enterFunction,
+      FunctionExpression: enterFunction,
+      ArrowFunctionExpression: enterFunction,
+
       'ArrowFunctionExpression[async = true]:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
@@ -197,6 +218,10 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
+        if (!scopeInfo || !scopeInfo.hasAsync) {
+          return;
+        }
+
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const { expression } = originalNode;

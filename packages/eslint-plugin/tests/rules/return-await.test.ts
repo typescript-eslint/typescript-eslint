@@ -181,6 +181,20 @@ ruleTester.run('return-await', rule, {
       `,
     },
     {
+      options: ['always'],
+      code: `
+        declare function foo(): Promise<boolean>;
+
+        function bar(baz: boolean): Promise<boolean> | boolean {
+          if (baz) {
+            return true;
+          } else {
+            return foo();
+          }
+        }
+      `,
+    },
+    {
       code: `
         async function test(): Promise<string> {
           const res = await Promise.resolve('{}');
