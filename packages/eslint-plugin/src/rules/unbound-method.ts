@@ -244,7 +244,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
       // the first case is safe for obvious
       // reasons. The second one is also fine
       // since we're returning something falsy
-      return ['typeof', '!'].includes(parent.operator);
+      return ['typeof', '!', 'void', 'delete'].includes(parent.operator);
 
     case AST_NODE_TYPES.BinaryExpression:
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
