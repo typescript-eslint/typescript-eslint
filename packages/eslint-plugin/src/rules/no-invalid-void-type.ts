@@ -61,6 +61,40 @@ export default util.createRule<[Options], MessageIds>({
       AST_NODE_TYPES.Identifier,
     ];
 
+    /*
+     * isValidUnionType: checks that each member of the union is either a void
+     * or a Promise<void>
+     */
+
+    function isValidUnionType(node: TSESTree.TSUnionType): boolean {
+      function isValidMemberType(member: TSESTree.TypeNode): boolean {
+        if (member.type === AST_NODE_TYPES.TSVoidKeyword) {
+          return true;
+        }
+
+        if (
+          member.type === AST_NODE_TYPES.TSTypeReference &&
+          member.typeParameters?.type ===
+            AST_NODE_TYPES.TSTypeParameterInstantiation
+        ) {
+          const sourceCode = context.getSourceCode();
+          const fullyQualifiedName = sourceCode
+            .getText(member.typeName)
+            .replace(/ /gu, '');
+
+          return (
+            fullyQualifiedName === 'Promise' &&
+            member.typeParameters.params.length === 1 &&
+            member.typeParameters.params[0].type ===
+              AST_NODE_TYPES.TSVoidKeyword
+          );
+        }
+        return false;
+      }
+
+      return node.types.every(isValidMemberType);
+    }
+
     if (allowInGenericTypeArguments === true) {
       validParents.push(AST_NODE_TYPES.TSTypeParameterInstantiation);
     }
@@ -69,6 +103,22 @@ export default util.createRule<[Options], MessageIds>({
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         /* istanbul ignore next */
         if (!node.parent?.parent) {
+          return;
+        }
+
+        // handling void inside union
+        if (
+          node.parent.type === AST_NODE_TYPES.TSUnionType &&
+          isValidUnionType(node.parent)
+        ) {
+          return;
+        }
+
+        // handling Promise<void> inside union
+        if (
+          node.parent.parent.parent?.type === AST_NODE_TYPES.TSUnionType &&
+          isValidUnionType(node.parent.parent.parent)
+        ) {
           return;
         }
 

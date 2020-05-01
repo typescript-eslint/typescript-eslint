@@ -11,6 +11,11 @@ ruleTester.run('allowInGenericTypeArguments: false', rule, {
       code: 'type Generic<T> = [T];',
       options: [{ allowInGenericTypeArguments: false }],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/1956
+      code: 'type voidPromiseUnion = void | Promise<void>;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
   ],
   invalid: [
     {
