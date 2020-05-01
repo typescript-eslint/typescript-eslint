@@ -12,8 +12,16 @@ ruleTester.run('allowInGenericTypeArguments: false', rule, {
       options: [{ allowInGenericTypeArguments: false }],
     },
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/1956
       code: 'type voidPromiseUnion = void | Promise<void>;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/1956
+      code: `
+async function foo(bar: () => void | Promise<void>) {
+  await bar();
+}
+      `,
       options: [{ allowInGenericTypeArguments: false }],
     },
   ],
