@@ -5,8 +5,8 @@ import {
 import baseRule from 'eslint/lib/rules/no-invalid-this';
 import {
   InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule,
   createRule,
+  InferMessageIdsTypeFromRule,
 } from '../util';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;

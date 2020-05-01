@@ -8,6 +8,11 @@ const ruleTester = new RuleTester({
   },
 });
 
+const errors: any = [
+  { message: "Unexpected 'this'." },
+  { message: "Unexpected 'this'." },
+];
+
 ruleTester.run('no-invalid-this', rule, {
   valid: [
     `
@@ -410,11 +415,7 @@ function foo() {
   this.prop;
 }
       `,
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors: [{ message: "Unexpected 'this'." }],
     },
     // Global.
     {
@@ -423,14 +424,7 @@ console.log(this);
 z(x => console.log(x, this));
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -440,14 +434,7 @@ z(x => console.log(x, this));
       parserOptions: {
         ecmaFeatures: { globalReturn: true },
       },
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // IIFE.
@@ -459,14 +446,7 @@ z(x => console.log(x, this));
 })();
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // Just functions.
@@ -478,14 +458,7 @@ function foo() {
 }
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -496,14 +469,7 @@ function foo() {
       `,
 
       options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -514,14 +480,7 @@ function Foo() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -532,14 +491,7 @@ function foo() {
 }
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -551,14 +503,7 @@ function Foo() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -570,14 +515,7 @@ return function() {
       parserOptions: {
         ecmaFeatures: { globalReturn: true },
       },
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -587,14 +525,7 @@ var foo = function() {
 }.bar(obj);
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // Functions in methods.
@@ -611,14 +542,7 @@ var obj = {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -633,14 +557,7 @@ var obj = {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -654,14 +571,7 @@ var obj = {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -676,14 +586,7 @@ var obj = {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -695,14 +598,7 @@ obj.foo = function() {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -715,14 +611,7 @@ obj.foo = function() {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -736,14 +625,7 @@ class A {
 }
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // Class Static methods.
@@ -758,14 +640,7 @@ obj.foo = (function() {
 })();
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -775,14 +650,7 @@ obj.foo = (() => () => {
 })();
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     // Bind/Call/Apply
 
@@ -794,14 +662,7 @@ var foo = function() {
 }.bind(null);
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -812,14 +673,7 @@ var foo = function() {
 }.call(undefined));
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -830,14 +684,7 @@ var foo = function() {
 }.apply(void 0));
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // Array methods.
@@ -849,14 +696,7 @@ Array.from([], function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -866,14 +706,7 @@ foo.every(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -883,14 +716,7 @@ foo.filter(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -900,14 +726,7 @@ foo.find(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -917,14 +736,7 @@ foo.findIndex(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -934,14 +746,7 @@ foo.forEach(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -951,14 +756,7 @@ foo.map(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -968,14 +766,7 @@ foo.some(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -986,14 +777,7 @@ foo.forEach(function() {
 }, null);
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     // @this tag.
@@ -1006,14 +790,7 @@ foo.forEach(function() {
 }
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -1023,14 +800,7 @@ foo.forEach(function() {
 });
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -1042,14 +812,7 @@ var Ctor = function() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -1059,14 +822,7 @@ var func = function() {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -1077,14 +833,7 @@ var func = function() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -1096,14 +845,7 @@ Ctor = function() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -1113,14 +855,7 @@ func = function() {
 };
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
     {
       code: `
@@ -1131,14 +866,7 @@ func = function() {
       `,
 
       options: [{ capIsConstructor: false }],
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -1151,14 +879,7 @@ function foo(
 ) {}
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
 
     {
@@ -1171,14 +892,7 @@ function foo(
 ] = a;
       `,
 
-      errors: [
-        {
-          messageId: 'unexpectedThis',
-        },
-        {
-          messageId: 'unexpectedThis',
-        },
-      ],
+      errors,
     },
   ],
 });

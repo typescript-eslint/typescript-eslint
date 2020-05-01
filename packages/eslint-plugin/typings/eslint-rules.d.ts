@@ -645,7 +645,7 @@ declare module 'eslint/lib/rules/no-invalid-this' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
   const rule: TSESLint.RuleModule<
-    'unexpectedThis',
+    never,
     [
       {
         capIsConstructor?: boolean;
