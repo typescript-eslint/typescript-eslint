@@ -150,6 +150,7 @@ ruleTester.run('unbound-method', rule, {
 
       'instance.unbound = () => {};',
       'instance.unbound = instance.unbound.bind(instance);',
+      'if (!!instance.unbound) {}',
     ].map(addContainsMethodsClass),
     `
 interface RecordA {
