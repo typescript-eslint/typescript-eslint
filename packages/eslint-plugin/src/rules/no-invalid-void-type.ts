@@ -116,6 +116,8 @@ export default util.createRule<[Options], MessageIds>({
 
         // handling Promise<void> inside union
         if (
+          node.parent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
+          node.parent.parent.type === AST_NODE_TYPES.TSTypeReference &&
           node.parent.parent.parent?.type === AST_NODE_TYPES.TSUnionType &&
           isValidUnionType(node.parent.parent.parent)
         ) {
