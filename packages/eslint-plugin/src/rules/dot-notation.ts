@@ -62,16 +62,17 @@ export default createRule<Options, MessageIds>({
 
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
-        const objectSymbol = typeChecker.getSymbolAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(node.property),
-        );
-
-        if (
-          allowPrivateClassPropertyAccess &&
-          objectSymbol?.declarations[0]?.modifiers?.[0].kind ===
+        if (allowPrivateClassPropertyAccess && node.computed) {
+          // for perf reasons - only fetch the symbol if we have to
+          const objectSymbol = typeChecker.getSymbolAtLocation(
+            parserServices.esTreeNodeToTSNodeMap.get(node.property),
+          );
+          if (
+            objectSymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind ===
             ts.SyntaxKind.PrivateKeyword
-        ) {
-          return;
+          ) {
+            return;
+          }
         }
         rules.MemberExpression(node);
       },

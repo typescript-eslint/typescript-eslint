@@ -2,8 +2,7 @@ name: "Lock threads"
 
 on:
   schedule:
-    # TODO - change to "0 0 * * *" once the backlog is processed
-    - cron: "0 * * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   lock:
