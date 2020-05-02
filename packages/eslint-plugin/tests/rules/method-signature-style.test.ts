@@ -226,5 +226,128 @@ interface Foo {
         },
       ],
     },
+    {
+      code: noFormat`
+interface Foo {
+  foo(): one;
+  foo(): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+interface Foo {
+  foo: (() => one) & (() => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface Foo {
+  foo(bar: string): one;
+  foo(bar: number, baz: string): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+interface Foo {
+  foo: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface Foo {
+  [foo](bar: string): one;
+  [foo](bar: number, baz: string): two;
+  [foo](): three;
+}
+      `,
+      output: noFormat`
+interface Foo {
+  [foo]: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface Foo {
+  [foo](bar: string): one;
+  [foo](bar: number, baz: string): two;
+  [foo](): three;
+  bar(arg: string): void;
+  bar(baz: number): Foo;
+}
+      `,
+      output: noFormat`
+interface Foo {
+  [foo]: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
+  bar: ((arg: string) => void) & ((baz: number) => Foo);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 6,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 7,
+        },
+      ],
+    },
   ],
 });
