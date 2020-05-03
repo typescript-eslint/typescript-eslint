@@ -23,6 +23,7 @@ const literalListBasic: string[] = [
 ];
 
 const literalListNeedParen: string[] = [
+  "__dirname === 'foobar'",
   '{}.constructor()',
   '() => {}',
   'function() {}',
