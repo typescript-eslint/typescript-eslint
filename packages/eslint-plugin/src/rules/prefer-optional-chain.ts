@@ -53,8 +53,7 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
-      optionalChainSuggest:
-        "You should use an optional chain expression instead, as it's more concise and easier to read.",
+      optionalChainSuggest: 'Change to an optional chain.',
     },
     schema: [
       {
