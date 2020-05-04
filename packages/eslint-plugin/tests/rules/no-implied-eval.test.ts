@@ -18,7 +18,7 @@ ruleTester.run('no-implied-eval', rule, {
     'foo.execScript(null);',
     'foo.setTimeout(null);',
     'foo();',
-    '(function() {})();',
+    '(function () {})();',
 
     'setTimeout(() => {}, 0);',
     'window.setTimeout(() => {}, 0);',
@@ -45,7 +45,7 @@ setImmediate(foo);
 execScript(foo);
     `,
     `
-const foo = function() {};
+const foo = function () {};
 
 setTimeout(foo, 0);
 setInterval(foo, 0);
@@ -72,7 +72,7 @@ execScript(foo.fn);
     `,
     `
 const foo = {
-  fn: function() {},
+  fn: function () {},
 };
 
 setTimeout(foo.fn, 0);
@@ -166,8 +166,8 @@ setImmediate(foo());
 execScript(foo());
     `,
     `
-const foo = function() {
-  return function() {
+const foo = function () {
+  return function () {
     return '';
   };
 };
@@ -368,7 +368,7 @@ execScript(foo);
     },
     {
       code: `
-const foo = function() {
+const foo = function () {
   return 'x + 1';
 };
 
@@ -402,7 +402,7 @@ execScript(foo());
     },
     {
       code: `
-const foo = function() {
+const foo = function () {
   return () => 'x + 1';
 };
 
@@ -436,7 +436,7 @@ execScript(foo()());
     },
     {
       code: `
-const fn = function() {};
+const fn = function () {};
 
 setTimeout(fn + '', 0);
 setInterval(fn + '', 0);

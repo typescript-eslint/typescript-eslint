@@ -18,7 +18,7 @@ ruleTester.run('no-invalid-this', rule, {
   valid: [
     `
 describe('foo', () => {
-  it('does something', function(this: Mocha.Context) {
+  it('does something', function (this: Mocha.Context) {
     this.timeout(100);
     // done
   });
@@ -38,7 +38,7 @@ function foo(this: prop) {
 }
     `,
     `
-z(function(x, this: context) {
+z(function (x, this: context) {
   console.log(x, this);
 });
     `,
@@ -56,7 +56,7 @@ function foo() {
     // https://github.com/eslint/eslint/issues/6824
 
     `
-var Ctor = function() {
+var Ctor = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -113,7 +113,7 @@ class A {
     {
       code: `
 var obj = {
-  foo: function() {
+  foo: function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -135,7 +135,7 @@ var obj = {
 var obj = {
   foo:
     foo ||
-    function() {
+    function () {
       console.log(this);
       z(x => console.log(x, this));
     },
@@ -147,7 +147,7 @@ var obj = {
 var obj = {
   foo: hasNative
     ? foo
-    : function() {
+    : function () {
         console.log(this);
         z(x => console.log(x, this));
       },
@@ -157,8 +157,8 @@ var obj = {
     {
       code: `
 var obj = {
-  foo: (function() {
-    return function() {
+  foo: (function () {
+    return function () {
       console.log(this);
       z(x => console.log(x, this));
     };
@@ -169,7 +169,7 @@ var obj = {
     {
       code: `
 Object.defineProperty(obj, 'foo', {
-  value: function() {
+  value: function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -180,7 +180,7 @@ Object.defineProperty(obj, 'foo', {
       code: `
 Object.defineProperties(obj, {
   foo: {
-    value: function() {
+    value: function () {
       console.log(this);
       z(x => console.log(x, this));
     },
@@ -192,7 +192,7 @@ Object.defineProperties(obj, {
     // Assigns to a property.
     {
       code: `
-obj.foo = function() {
+obj.foo = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -202,7 +202,7 @@ obj.foo = function() {
       code: `
 obj.foo =
   foo ||
-  function() {
+  function () {
     console.log(this);
     z(x => console.log(x, this));
   };
@@ -212,7 +212,7 @@ obj.foo =
       code: `
 obj.foo = foo
   ? bar
-  : function() {
+  : function () {
       console.log(this);
       z(x => console.log(x, this));
     };
@@ -220,8 +220,8 @@ obj.foo = foo
     },
     {
       code: `
-obj.foo = (function() {
-  return function() {
+obj.foo = (function () {
+  return function () {
     console.log(this);
     z(x => console.log(x, this));
   };
@@ -231,7 +231,7 @@ obj.foo = (function() {
     {
       code: `
 obj.foo = (() =>
-  function() {
+  function () {
     console.log(this);
     z(x => console.log(x, this));
   })();
@@ -240,20 +240,20 @@ obj.foo = (() =>
 
     // Bind/Call/Apply
     `
-(function() {
+(function () {
   console.log(this);
   z(x => console.log(x, this));
 }.call(obj));
     `,
     `
-var foo = function() {
+var foo = function () {
   console.log(this);
   z(x => console.log(x, this));
 }.bind(obj);
     `,
     `
 Reflect.apply(
-  function() {
+  function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -262,7 +262,7 @@ Reflect.apply(
 );
     `,
     `
-(function() {
+(function () {
   console.log(this);
   z(x => console.log(x, this));
 }.apply(obj));
@@ -283,7 +283,7 @@ class A {
     `
 Array.from(
   [],
-  function() {
+  function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -292,49 +292,49 @@ Array.from(
     `,
 
     `
-foo.every(function() {
+foo.every(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.filter(function() {
+foo.filter(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.find(function() {
+foo.find(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.findIndex(function() {
+foo.findIndex(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.forEach(function() {
+foo.forEach(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.map(function() {
+foo.map(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
     `,
 
     `
-foo.some(function() {
+foo.some(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, obj);
@@ -351,7 +351,7 @@ foo.some(function() {
 
     `
 foo(
-  /* @this Obj */ function() {
+  /* @this Obj */ function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -370,7 +370,7 @@ function foo() {
     `,
 
     `
-Ctor = function() {
+Ctor = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -378,7 +378,7 @@ Ctor = function() {
 
     `
 function foo(
-  Ctor = function() {
+  Ctor = function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -387,7 +387,7 @@ function foo(
 
     `
 [
-  obj.method = function() {
+  obj.method = function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -441,7 +441,7 @@ z(x => console.log(x, this));
     // IIFE.
     {
       code: `
-(function() {
+(function () {
   console.log(this);
   z(x => console.log(x, this));
 })();
@@ -508,7 +508,7 @@ function Foo() {
     },
     {
       code: `
-return function() {
+return function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -520,7 +520,7 @@ return function() {
     },
     {
       code: `
-var foo = function() {
+var foo = function () {
   console.log(this);
   z(x => console.log(x, this));
 }.bar(obj);
@@ -533,7 +533,7 @@ var foo = function() {
     {
       code: `
 var obj = {
-  foo: function() {
+  foo: function () {
     function foo() {
       console.log(this);
       z(x => console.log(x, this));
@@ -563,8 +563,8 @@ var obj = {
     {
       code: `
 var obj = {
-  foo: function() {
-    return function() {
+  foo: function () {
+    return function () {
       console.log(this);
       z(x => console.log(x, this));
     };
@@ -577,9 +577,9 @@ var obj = {
     {
       code: `
 var obj = {
-  foo: function() {
+  foo: function () {
     'use strict';
-    return function() {
+    return function () {
       console.log(this);
       z(x => console.log(x, this));
     };
@@ -591,8 +591,8 @@ var obj = {
     },
     {
       code: `
-obj.foo = function() {
-  return function() {
+obj.foo = function () {
+  return function () {
     console.log(this);
     z(x => console.log(x, this));
   };
@@ -603,9 +603,9 @@ obj.foo = function() {
     },
     {
       code: `
-obj.foo = function() {
+obj.foo = function () {
   'use strict';
-  return function() {
+  return function () {
     console.log(this);
     z(x => console.log(x, this));
   };
@@ -618,7 +618,7 @@ obj.foo = function() {
       code: `
 class A {
   foo() {
-    return function() {
+    return function () {
       console.log(this);
       z(x => console.log(x, this));
     };
@@ -633,7 +633,7 @@ class A {
 
     {
       code: `
-obj.foo = (function() {
+obj.foo = (function () {
   return () => {
     console.log(this);
     z(x => console.log(x, this));
@@ -657,7 +657,7 @@ obj.foo = (() => () => {
 
     {
       code: `
-var foo = function() {
+var foo = function () {
   console.log(this);
   z(x => console.log(x, this));
 }.bind(null);
@@ -668,7 +668,7 @@ var foo = function() {
 
     {
       code: `
-(function() {
+(function () {
   console.log(this);
   z(x => console.log(x, this));
 }.call(undefined));
@@ -679,7 +679,7 @@ var foo = function() {
 
     {
       code: `
-(function() {
+(function () {
   console.log(this);
   z(x => console.log(x, this));
 }.apply(void 0));
@@ -691,7 +691,7 @@ var foo = function() {
     // Array methods.
     {
       code: `
-Array.from([], function() {
+Array.from([], function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -701,7 +701,7 @@ Array.from([], function() {
     },
     {
       code: `
-foo.every(function() {
+foo.every(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -711,7 +711,7 @@ foo.every(function() {
     },
     {
       code: `
-foo.filter(function() {
+foo.filter(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -721,7 +721,7 @@ foo.filter(function() {
     },
     {
       code: `
-foo.find(function() {
+foo.find(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -731,7 +731,7 @@ foo.find(function() {
     },
     {
       code: `
-foo.findIndex(function() {
+foo.findIndex(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -741,7 +741,7 @@ foo.findIndex(function() {
     },
     {
       code: `
-foo.forEach(function() {
+foo.forEach(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -751,7 +751,7 @@ foo.forEach(function() {
     },
     {
       code: `
-foo.map(function() {
+foo.map(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -761,7 +761,7 @@ foo.map(function() {
     },
     {
       code: `
-foo.some(function() {
+foo.some(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -772,7 +772,7 @@ foo.some(function() {
 
     {
       code: `
-foo.forEach(function() {
+foo.forEach(function () {
   console.log(this);
   z(x => console.log(x, this));
 }, null);
@@ -795,7 +795,7 @@ foo.forEach(function() {
     },
     {
       code: `
-/** @this Obj */ foo(function() {
+/** @this Obj */ foo(function () {
   console.log(this);
   z(x => console.log(x, this));
 });
@@ -806,7 +806,7 @@ foo.forEach(function() {
 
     {
       code: `
-var Ctor = function() {
+var Ctor = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -817,7 +817,7 @@ var Ctor = function() {
     },
     {
       code: `
-var func = function() {
+var func = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -827,19 +827,7 @@ var func = function() {
     },
     {
       code: `
-var func = function() {
-  console.log(this);
-  z(x => console.log(x, this));
-};
-      `,
-
-      options: [{ capIsConstructor: false }],
-      errors,
-    },
-
-    {
-      code: `
-Ctor = function() {
+var func = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -848,9 +836,21 @@ Ctor = function() {
       options: [{ capIsConstructor: false }],
       errors,
     },
+
     {
       code: `
-func = function() {
+Ctor = function () {
+  console.log(this);
+  z(x => console.log(x, this));
+};
+      `,
+
+      options: [{ capIsConstructor: false }],
+      errors,
+    },
+    {
+      code: `
+func = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -860,7 +860,7 @@ func = function() {
     },
     {
       code: `
-func = function() {
+func = function () {
   console.log(this);
   z(x => console.log(x, this));
 };
@@ -873,7 +873,7 @@ func = function() {
     {
       code: `
 function foo(
-  func = function() {
+  func = function () {
     console.log(this);
     z(x => console.log(x, this));
   },
@@ -886,7 +886,7 @@ function foo(
     {
       code: `
 [
-  func = function() {
+  func = function () {
     console.log(this);
     z(x => console.log(x, this));
   },

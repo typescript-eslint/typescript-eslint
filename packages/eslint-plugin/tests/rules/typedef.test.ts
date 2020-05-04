@@ -378,7 +378,7 @@ ruleTester.run('typedef', rule, {
     },
     // variable declaration ignore function
     {
-      code: 'const foo = function(): void {};',
+      code: 'const foo = function (): void {};',
       options: [
         {
           variableDeclaration: true,
@@ -405,7 +405,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: 'const foo: () => void = function(): void {};',
+      code: 'const foo: () => void = function (): void {};',
       options: [
         {
           variableDeclaration: true,
@@ -417,7 +417,7 @@ ruleTester.run('typedef', rule, {
       code: `
 class Foo {
   a = (): void => {};
-  b = function(): void {};
+  b = function (): void {};
 }
       `,
       options: [
@@ -831,7 +831,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = function(): void {};',
+      code: 'const foo = function (): void {};',
       errors: [
         {
           messageId: 'expectedTypedefNamed',
@@ -864,7 +864,7 @@ class Foo {
       code: `
 class Foo {
   a = (): void => {};
-  b = function(): void {};
+  b = function (): void {};
 }
       `,
       errors: [

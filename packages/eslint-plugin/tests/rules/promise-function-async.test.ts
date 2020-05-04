@@ -24,12 +24,12 @@ function nonAsyncNonPromiseFunctionDeclaration(n: number) {
 }
     `,
     `
-const asyncPromiseFunctionExpressionA = async function(p: Promise<void>) {
+const asyncPromiseFunctionExpressionA = async function (p: Promise<void>) {
   return p;
 };
     `,
     `
-const asyncPromiseFunctionExpressionB = async function() {
+const asyncPromiseFunctionExpressionB = async function () {
   return new Promise<void>();
 };
     `,
@@ -182,7 +182,7 @@ function returnsUnknown(): unknown {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) {
+const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
   return p;
 };
       `,
@@ -194,7 +194,7 @@ const nonAsyncPromiseFunctionExpressionA = function(p: Promise<void>) {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpressionB = function() {
+const nonAsyncPromiseFunctionExpressionB = function () {
   return new Promise<void>();
 };
       `,
@@ -273,7 +273,7 @@ class Test {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
 
@@ -311,7 +311,7 @@ class Test {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
 
@@ -349,7 +349,7 @@ class Test {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
 
@@ -387,7 +387,7 @@ class Test {
     },
     {
       code: `
-const nonAsyncPromiseFunctionExpression = function(p: Promise<void>) {
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
 

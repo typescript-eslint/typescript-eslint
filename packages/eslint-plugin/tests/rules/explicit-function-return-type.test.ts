@@ -18,7 +18,7 @@ function test(): void {
     {
       filename: 'test.ts',
       code: `
-var fn = function(): number {
+var fn = function (): number {
   return 1;
 };
       `,
@@ -56,7 +56,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: 'fn(function() {});',
+      code: 'fn(function () {});',
       options: [
         {
           allowExpressions: true,
@@ -65,7 +65,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: '[function() {}, () => {}];',
+      code: '[function () {}, () => {}];',
       options: [
         {
           allowExpressions: true,
@@ -74,7 +74,7 @@ class Test {
     },
     {
       filename: 'test.ts',
-      code: '(function() {});',
+      code: '(function () {});',
       options: [
         {
           allowExpressions: true,
@@ -113,7 +113,7 @@ var arrowFn: Foo = () => 'test';
     {
       filename: 'test.ts',
       code: `
-var funcExpr: Foo = function() {
+var funcExpr: Foo = function () {
   return 'test';
 };
       `,
@@ -193,7 +193,7 @@ const myObj = {
     {
       filename: 'test.ts',
       code: `
-() => function(): void {};
+() => function (): void {};
       `,
       options: [{ allowHigherOrderFunctions: true }],
     },
@@ -210,7 +210,7 @@ const myObj = {
       filename: 'test.ts',
       code: `
 () => {
-  return function(): void {};
+  return function (): void {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -228,7 +228,7 @@ function fn() {
       filename: 'test.ts',
       code: `
 function fn() {
-  return function(): void {};
+  return function (): void {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -324,7 +324,7 @@ foo({
   },
 });
 foo({
-  meth: function() {
+  meth: function () {
     return 1;
   },
 });
@@ -410,7 +410,7 @@ function test() {
     {
       filename: 'test.ts',
       code: `
-var fn = function() {
+var fn = function () {
   return 1;
 };
       `,
@@ -420,7 +420,7 @@ var fn = function() {
           line: 2,
           endLine: 2,
           column: 10,
-          endColumn: 20,
+          endColumn: 21,
         },
       ],
     },
@@ -522,7 +522,7 @@ function test() {
     },
     {
       filename: 'test.ts',
-      code: 'const foo = function() {};',
+      code: 'const foo = function () {};',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -530,7 +530,7 @@ function test() {
           line: 1,
           endLine: 1,
           column: 13,
-          endColumn: 23,
+          endColumn: 24,
         },
       ],
     },
@@ -550,7 +550,7 @@ function test() {
     },
     {
       filename: 'test.ts',
-      code: 'export default function() {}',
+      code: 'export default function () {}',
       options: [{ allowExpressions: true }],
       errors: [
         {
@@ -558,7 +558,7 @@ function test() {
           line: 1,
           endLine: 1,
           column: 16,
-          endColumn: 26,
+          endColumn: 27,
         },
       ],
     },
@@ -567,11 +567,11 @@ function test() {
       code: `
 class Foo {
   public a = () => {};
-  public b = function() {};
+  public b = function () {};
   public c = function test() {};
 
   static d = () => {};
-  static e = function() {};
+  static e = function () {};
 }
       `,
       options: [{ allowExpressions: true }],
@@ -588,7 +588,7 @@ class Foo {
           line: 4,
           endLine: 4,
           column: 14,
-          endColumn: 24,
+          endColumn: 25,
         },
         {
           messageId: 'missingReturnType',
@@ -609,7 +609,7 @@ class Foo {
           line: 8,
           endLine: 8,
           column: 14,
-          endColumn: 24,
+          endColumn: 25,
         },
       ],
     },
@@ -630,7 +630,7 @@ class Foo {
     {
       filename: 'test.ts',
       code: `
-var funcExpr = function() {
+var funcExpr = function () {
   return 'test';
 };
       `,
@@ -641,7 +641,7 @@ var funcExpr = function() {
           line: 2,
           endLine: 2,
           column: 16,
-          endColumn: 26,
+          endColumn: 27,
         },
       ],
     },
@@ -714,7 +714,7 @@ const x: Foo = {
     },
     {
       filename: 'test.ts',
-      code: '() => function() {};',
+      code: '() => function () {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
@@ -722,7 +722,7 @@ const x: Foo = {
           line: 1,
           endLine: 1,
           column: 7,
-          endColumn: 17,
+          endColumn: 18,
         },
       ],
     },
@@ -748,7 +748,7 @@ const x: Foo = {
       filename: 'test.ts',
       code: `
 () => {
-  return function() {};
+  return function () {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -758,7 +758,7 @@ const x: Foo = {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 20,
+          endColumn: 21,
         },
       ],
     },
@@ -784,7 +784,7 @@ function fn() {
       filename: 'test.ts',
       code: `
 function fn() {
-  return function() {};
+  return function () {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -794,7 +794,7 @@ function fn() {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 20,
+          endColumn: 21,
         },
       ],
     },
@@ -955,7 +955,7 @@ foo({
   },
 });
 foo({
-  meth: function() {
+  meth: function () {
     return 1;
   },
 });
@@ -983,7 +983,7 @@ foo({
           line: 9,
           endLine: 9,
           column: 9,
-          endColumn: 19,
+          endColumn: 20,
         },
         {
           messageId: 'missingReturnType',

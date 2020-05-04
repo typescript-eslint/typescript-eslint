@@ -147,7 +147,7 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'const bar1 = function(...args: any[]) {};',
+      code: 'const bar1 = function (...args: any[]) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
@@ -159,7 +159,7 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'const bar2 = function(...args: readonly any[]) {};',
+      code: 'const bar2 = function (...args: readonly any[]) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
@@ -171,7 +171,7 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'const bar3 = function(...args: Array<any>) {};',
+      code: 'const bar3 = function (...args: Array<any>) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {
@@ -183,7 +183,7 @@ type obj = {
       options: [{ ignoreRestArgs: true }],
     },
     {
-      code: 'const bar4 = function(...args: ReadonlyArray<any>) {};',
+      code: 'const bar4 = function (...args: ReadonlyArray<any>) {};',
       options: [{ ignoreRestArgs: true }],
     },
     {

@@ -27,8 +27,7 @@ interface Test {
   ['f']: <T extends {}>(a: T, b: T) => T;
 }
     `,
-    // TODO - requires prettier2 to format correctly
-    noFormat`
+    `
 interface Test {
   'f!': </* a */>(/* b */ x: any /* c */) => void;
 }
