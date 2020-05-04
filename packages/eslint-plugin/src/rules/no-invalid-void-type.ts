@@ -60,43 +60,72 @@ export default util.createRule<[Options], MessageIds>({
       AST_NODE_TYPES.ClassProperty,
       AST_NODE_TYPES.Identifier,
     ];
-
-    /*
-     * isValidUnionType: checks that each member of the union is either a void
-     * or a Promise<void>
-     */
-
-    function isValidUnionType(node: TSESTree.TSUnionType): boolean {
-      function isValidMemberType(member: TSESTree.TypeNode): boolean {
-        if (member.type === AST_NODE_TYPES.TSVoidKeyword) {
-          return true;
-        }
-
-        if (
-          member.type === AST_NODE_TYPES.TSTypeReference &&
-          member.typeParameters?.type ===
-            AST_NODE_TYPES.TSTypeParameterInstantiation
-        ) {
-          const sourceCode = context.getSourceCode();
-          const fullyQualifiedName = sourceCode
-            .getText(member.typeName)
-            .replace(/ /gu, '');
-
-          return (
-            fullyQualifiedName === 'Promise' &&
-            member.typeParameters.params.length === 1 &&
-            member.typeParameters.params[0].type ===
-              AST_NODE_TYPES.TSVoidKeyword
-          );
-        }
-        return false;
-      }
-
-      return node.types.every(isValidMemberType);
-    }
+    const validUnionMembers: AST_NODE_TYPES[] = [
+      AST_NODE_TYPES.TSVoidKeyword,
+      AST_NODE_TYPES.TSNeverKeyword,
+    ];
 
     if (allowInGenericTypeArguments === true) {
       validParents.push(AST_NODE_TYPES.TSTypeParameterInstantiation);
+      validUnionMembers.push(AST_NODE_TYPES.TSTypeReference);
+    }
+
+    /*
+     * isValidGenericTypeArgument:
+     */
+
+    function isValidGenericTypeArgument(
+      node: TSESTree.TSTypeReference,
+    ): boolean | string {
+      // only matches T<..., void, ...>
+      if (
+        !(
+          node.typeParameters?.type ===
+            AST_NODE_TYPES.TSTypeParameterInstantiation &&
+          node.typeParameters?.params
+            .map(param => param.type)
+            .includes(AST_NODE_TYPES.TSVoidKeyword)
+        )
+      ) {
+        return true;
+      }
+
+      if (Array.isArray(allowInGenericTypeArguments)) {
+        const sourceCode = context.getSourceCode();
+        const fullyQualifiedName = sourceCode
+          .getText(node.typeName)
+          .replace(/ /gu, '');
+
+        if (
+          !allowInGenericTypeArguments
+            .map(s => s.replace(/ /gu, ''))
+            .includes(fullyQualifiedName)
+        ) {
+          context.report({
+            messageId: 'invalidVoidForGeneric',
+            data: { generic: fullyQualifiedName },
+            node,
+          });
+          return false;
+        }
+
+        return true;
+      }
+      return allowInGenericTypeArguments;
+    }
+
+    /*
+     * isValidUnionType: checks that each member of the union is either a void,
+     * never, or Promise<void>
+     */
+
+    function isValidUnionType(node: TSESTree.TSUnionType): boolean {
+      return node.types.every(
+        member =>
+          validUnionMembers.includes(member.type) &&
+          (member.type !== AST_NODE_TYPES.TSTypeReference ||
+            isValidGenericTypeArgument(member)),
+      );
     }
 
     return {
@@ -114,7 +143,7 @@ export default util.createRule<[Options], MessageIds>({
           return;
         }
 
-        // handling Promise<void> inside union
+        // handling T<void> inside union
         if (
           node.parent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference &&
@@ -133,35 +162,17 @@ export default util.createRule<[Options], MessageIds>({
 
         if (
           node.parent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-          node.parent.parent.type === AST_NODE_TYPES.TSTypeReference &&
-          Array.isArray(allowInGenericTypeArguments)
+          node.parent.parent.type === AST_NODE_TYPES.TSTypeReference
         ) {
-          const sourceCode = context.getSourceCode();
-          const fullyQualifiedName = sourceCode
-            .getText(node.parent.parent.typeName)
-            .replace(/ /gu, '');
-
-          if (
-            !allowInGenericTypeArguments
-              .map(s => s.replace(/ /gu, ''))
-              .includes(fullyQualifiedName)
-          ) {
-            context.report({
-              messageId: 'invalidVoidForGeneric',
-              data: { generic: fullyQualifiedName },
-              node,
-            });
-          }
-
-          return;
+          isValidGenericTypeArgument(node.parent.parent);
+        } else {
+          context.report({
+            messageId: allowInGenericTypeArguments
+              ? 'invalidVoidNotReturnOrGeneric'
+              : 'invalidVoidNotReturn',
+            node,
+          });
         }
-
-        context.report({
-          messageId: allowInGenericTypeArguments
-            ? 'invalidVoidNotReturnOrGeneric'
-            : 'invalidVoidNotReturn',
-          node,
-        });
       },
     };
   },
