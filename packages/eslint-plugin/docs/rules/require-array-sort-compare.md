@@ -45,7 +45,40 @@ userDefinedType.sort();
 
 ## Options
 
-None.
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  /**
+   * If true, an array which all elements are string is ignored.
+   */
+  ignoreStringArrays?: boolean;
+};
+
+const defaults = {
+  ignoreStringArrays: false,
+};
+```
+
+### `ignoreStringArrays`
+
+Examples of **incorrect** code for this rule with `{ ignoreStringArrays: true }`:
+
+```ts
+const one = 1;
+const two = 2;
+const three = 3;
+[one, two, three].sort();
+```
+
+Examples of **correct** code for this rule with `{ ignoreStringArrays: true }`:
+
+```ts
+const one = '1';
+const two = '2';
+const three = '3';
+[one, two, three].sort();
+```
 
 ## When Not To Use It
 
