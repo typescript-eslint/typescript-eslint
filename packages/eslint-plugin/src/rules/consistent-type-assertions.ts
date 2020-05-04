@@ -10,7 +10,6 @@ type MessageIds =
   | 'angle-bracket'
   | 'never'
   | 'unexpectedObjectTypeAssertion';
-// https://github.com/prettier/prettier/issues/4794
 type OptUnion =
   | {
       assertionStyle: 'as' | 'angle-bracket';

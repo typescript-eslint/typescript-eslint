@@ -167,7 +167,8 @@ jobs:
           yarn check-clean-workspace-after-install
 
       - name: Run unit tests
-        run: yarn test
+        # the internal plugin is only run locally, so it doesn't have to support older versions
+        run: yarn test --ignore @typescript-eslint/eslint-plugin-internal
         env:
           CI: true
 
