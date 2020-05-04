@@ -641,6 +641,28 @@ declare module 'eslint/lib/rules/init-declarations' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-invalid-this' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      {
+        capIsConstructor?: boolean;
+      }?,
+    ],
+    {
+      Program(node: TSESTree.Program): void;
+      'Program:exit'(node: TSESTree.Program): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      ThisExpression(node: TSESTree.ThisExpression): void;
+    }
+  >;
+  export = rule;
+}
 declare module 'eslint/lib/rules/dot-notation' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 

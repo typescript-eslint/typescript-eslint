@@ -41,6 +41,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
+import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
@@ -145,6 +146,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
   'no-inferrable-types': noInferrableTypes,
+  'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
