@@ -59,7 +59,7 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          autofix: {
+          suggestInsteadOfAutofix: {
             type: 'boolean',
           },
         },
