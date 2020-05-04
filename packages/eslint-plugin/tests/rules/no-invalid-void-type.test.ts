@@ -84,6 +84,17 @@ function foo(): void | never {
         },
       ],
     },
+    {
+      code: 'type invalidVoidUnion = void | number;',
+      options: [{ allowInGenericTypeArguments: false }],
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturn',
+          line: 1,
+          column: 25,
+        },
+      ],
+    },
   ],
 });
 
@@ -421,6 +432,16 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
           messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
           column: 28,
+        },
+      ],
+    },
+    {
+      code: 'type invalidVoidUnion = void | Map<string, number>;',
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrGeneric',
+          line: 1,
+          column: 25,
         },
       ],
     },
