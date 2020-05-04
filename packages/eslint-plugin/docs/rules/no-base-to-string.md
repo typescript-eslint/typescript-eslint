@@ -64,12 +64,12 @@ const defaultOptions: Options = {
 };
 ```
 
-### `ignoreTypeNames`
+### `ignoredTypeNames`
 
 A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).
 There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
-The following patterns are considered correct with the default options `{ ignoreTypeNames: ["RegExp"] }`:
+The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
 ```ts
 `${/regex/}`;
