@@ -322,7 +322,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestInsteadOfAutofix: true,
         },
       ],
-      output: null
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
