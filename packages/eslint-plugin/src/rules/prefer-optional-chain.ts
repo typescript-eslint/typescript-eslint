@@ -63,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
+        additionalProperties: false,
       },
     ],
   },
