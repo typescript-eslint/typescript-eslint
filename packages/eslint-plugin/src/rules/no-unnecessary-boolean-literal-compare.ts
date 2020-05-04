@@ -106,7 +106,7 @@ export default util.createRule<[], MessageIds>({
 
         if (comparison) {
           context.report({
-            fix: function*(fixer) {
+            fix: function* (fixer) {
               yield fixer.removeRange(comparison.range);
 
               if (!comparison.forTruthy) {

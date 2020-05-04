@@ -122,7 +122,7 @@ function foo4(...args: ReadonlyArray<any>): void {}
 declare function bar(...args: any[]): void;
 
 const baz = (...args: any[]) => {};
-const qux = function(...args: any[]) {};
+const qux = function (...args: any[]) {};
 
 type Quux = (...args: any[]) => void;
 type Quuz = new (...args: any[]) => void;
@@ -151,7 +151,7 @@ function foo4(...args: ReadonlyArray<any>): void {}
 declare function bar(...args: any[]): void;
 
 const baz = (...args: any[]) => {};
-const qux = function(...args: any[]) {};
+const qux = function (...args: any[]) {};
 
 type Quux = (...args: any[]) => void;
 type Quuz = new (...args: any[]) => void;
