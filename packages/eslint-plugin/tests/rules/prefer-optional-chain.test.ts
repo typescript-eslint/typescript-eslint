@@ -300,8 +300,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestInsteadOfAutofix: true,
         },
       ],
-      output:
-        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
@@ -323,7 +322,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestInsteadOfAutofix: true,
         },
       ],
-      output: 'foo && foo.bar(baz => <This Requires Spaces />);',
+      output: null
       errors: [
         {
           messageId: 'preferOptionalChain',
