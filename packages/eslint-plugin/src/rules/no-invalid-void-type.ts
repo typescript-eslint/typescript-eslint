@@ -78,6 +78,8 @@ export default util.createRule<[Options], MessageIds>({
      */
     function checkGenericTypeArgument(node: TSESTree.TSVoidKeyword): void {
       // only matches T<..., void, ...>
+      // extra check for precaution
+      /* istanbul ignore next */
       if (
         node.parent?.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
         node.parent.parent?.type !== AST_NODE_TYPES.TSTypeReference
