@@ -43,6 +43,11 @@ interface T1 {
 type T2 = {
   func(arg: boolean): void;
 };
+interface T3 {
+  func(arg: number): void;
+  func(arg: string): void;
+  func(arg: boolean): void;
+}
 ```
 
 Examples of **correct** code with `property` option.
@@ -54,6 +59,12 @@ interface T1 {
 type T2 = {
   func: (arg: boolean) => void;
 };
+// this is equivalent to the overload
+interface T3 {
+  func: ((arg: number) => void) &
+    ((arg: string) => void) &
+    ((arg: boolean) => void);
+}
 ```
 
 Examples of **incorrect** code with `method` option.
