@@ -373,7 +373,7 @@ instance.unbound = x; // THIS SHOULD NOT
     {
       code: `
 class Foo {
-  unbound = function() {};
+  unbound = function () {};
 }
 const unbound = new Foo().unbound;
       `,
