@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+
+### Features
+
+* **eslint-plugin-internal:** add rule no-poorly-typed-ts-props ([#1949](https://github.com/typescript-eslint/typescript-eslint/issues/1949)) ([56ea7c9](https://github.com/typescript-eslint/typescript-eslint/commit/56ea7c9581c0c99fe394bbcfc4128e8054c88ab2))
+* **experimental-utils:** expose our RuleTester extension ([#1948](https://github.com/typescript-eslint/typescript-eslint/issues/1948)) ([2dd1638](https://github.com/typescript-eslint/typescript-eslint/commit/2dd1638aaa2658ba99b2341861146b586f489121))
+
+
+
+
+
 # [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
