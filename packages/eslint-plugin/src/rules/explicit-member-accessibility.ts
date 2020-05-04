@@ -166,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.ClassProperty
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
-      return function(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+      return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
         const tokens = sourceCode.getTokens(node);
         let rangeToRemove: TSESLint.AST.Range;
         for (let i = 0; i < tokens.length; i++) {

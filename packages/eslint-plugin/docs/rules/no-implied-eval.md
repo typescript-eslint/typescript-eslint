@@ -56,19 +56,19 @@ Examples of **correct** code for this rule:
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
 
-setTimeout(function() {
+setTimeout(function () {
   alert('Hi!');
 }, 100);
 
-setInterval(function() {
+setInterval(function () {
   alert('Hi!');
 }, 100);
 
-setImmediate(function() {
+setImmediate(function () {
   alert('Hi!');
 });
 
-execScript(function() {
+execScript(function () {
   alert('Hi!');
 });
 
@@ -76,7 +76,7 @@ const fn = () => {};
 setTimeout(fn, 100);
 
 const foo = {
-  fn: function() {},
+  fn: function () {},
 };
 setTimeout(foo.fn, 100);
 setTimeout(foo.fn.bind(this), 100);

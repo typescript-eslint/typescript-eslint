@@ -97,7 +97,7 @@ function foo() {
 }
     `,
     `
-var foo = function() {
+var foo = function () {
   foo();
 };
     `,
@@ -154,7 +154,7 @@ switch (foo) {
       code: `
 a();
 {
-  let a = function() {};
+  let a = function () {};
 }
       `,
       parserOptions,
@@ -355,7 +355,7 @@ var a = 19;
     {
       code: `
 a();
-var a = function() {};
+var a = function () {};
       `,
       errors: [
         {
@@ -403,7 +403,7 @@ function a() {
     {
       code: `
 a();
-var a = function() {};
+var a = function () {};
       `,
       options: ['nofunc'],
       errors: [
@@ -644,7 +644,7 @@ if (true) {
     {
       code: `
 a();
-var a = function() {};
+var a = function () {};
       `,
       options: [{ functions: false, classes: false }],
       errors: [

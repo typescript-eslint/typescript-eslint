@@ -17,7 +17,7 @@ import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-e
 function overrideDefine(
   define: (node: TSESTree.Node, def: TSESLintScope.Definition) => void,
 ) {
-  return function(
+  return function (
     this: TSESLintScope.Scope,
     node: TSESTree.Node,
     definition: TSESLintScope.Definition,

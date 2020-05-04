@@ -103,7 +103,7 @@ ruleTester.run('no-inferrable-types', rule, {
     ...validTestCases,
 
     "const fn = (a = 5, b = true, c = 'foo') => {};",
-    "const fn = function(a = 5, b = true, c = 'foo') {};",
+    "const fn = function (a = 5, b = true, c = 'foo') {};",
     "function fn(a = 5, b = true, c = 'foo') {}",
     'function fn(a: number, b: boolean, c: string) {}',
 
@@ -121,7 +121,7 @@ class Foo {
     `,
 
     'const a: any = 5;',
-    "const fn = function(a: any = 5, b: any = true, c: any = 'foo') {};",
+    "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
 
     {
       code:
@@ -135,7 +135,7 @@ class Foo {
     },
     {
       code:
-        "const fn = function(a: number = 5, b: boolean = true, c: string = 'foo') {};",
+        "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
       options: [{ ignoreParameters: true }],
     },
     {

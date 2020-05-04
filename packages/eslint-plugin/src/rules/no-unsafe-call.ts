@@ -14,9 +14,9 @@ export default util.createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an any typed value',
-      unsafeNew: 'Unsafe construction of an any type value',
-      unsafeTemplateTag: 'Unsafe any typed template tag',
+      unsafeCall: 'Unsafe call of an any typed value.',
+      unsafeNew: 'Unsafe construction of an any type value.',
+      unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
     schema: [],
   },
