@@ -291,5 +291,56 @@ ruleTester.run('prefer-optional-chain', rule, {
         },
       ],
     },
+    // using suggestion instead of autofix
+    {
+      code:
+        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+      options: [
+        {
+          suggestInsteadOfAutofix: true,
+        },
+      ],
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar?.baz?.buzz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'foo && foo.bar(baz => <This Requires Spaces />);',
+      options: [
+        {
+          suggestInsteadOfAutofix: true,
+        },
+      ],
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar(baz => <This Requires Spaces />);',
+            },
+          ],
+        },
+      ],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
   ],
 });
