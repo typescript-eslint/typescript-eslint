@@ -14,7 +14,9 @@ enum Usefulness {
 
 type Options = [
   {
+    /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
     ignoreTaggedTemplateExpressions?: boolean;
+    ignoredTypeNames?: string[];
   },
 ];
 type MessageIds = 'baseToString';
@@ -39,7 +41,13 @@ export default util.createRule<Options, MessageIds>({
         properties: {
           ignoreTaggedTemplateExpressions: {
             type: 'boolean',
-            default: false,
+            default: true,
+          },
+          ignoredTypeNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
           },
         },
         additionalProperties: false,
@@ -47,10 +55,16 @@ export default util.createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ ignoreTaggedTemplateExpressions: false }],
-  create(context, [options]) {
+  defaultOptions: [
+    {
+      ignoreTaggedTemplateExpressions: true,
+      ignoredTypeNames: ['RegExp'],
+    },
+  ],
+  create(context, [option]) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
+    const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
@@ -79,12 +93,22 @@ export default util.createRule<Options, MessageIds>({
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
       const toString = typeChecker.getPropertyOfType(type, 'toString');
-      if (toString === undefined || toString.declarations.length === 0) {
+      const declarations = toString?.getDeclarations();
+      if (!toString || !declarations || declarations.length === 0) {
+        return Usefulness.Always;
+      }
+
+      // Patch for old version TypeScript, the Boolean type definition missing toString()
+      if (type.flags & ts.TypeFlags.BooleanLiteral) {
+        return Usefulness.Always;
+      }
+
+      if (ignoredTypeNames.includes(util.getTypeName(typeChecker, type))) {
         return Usefulness.Always;
       }
 
       if (
-        toString.declarations.every(
+        declarations.every(
           ({ parent }) =>
             !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
         )
@@ -96,10 +120,27 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Never;
       }
 
+      let allSubtypesUseful = true;
+      let someSubtypeUseful = false;
+
       for (const subType of type.types) {
-        if (collectToStringCertainty(subType) !== Usefulness.Never) {
-          return Usefulness.Sometimes;
+        const subtypeUsefulness = collectToStringCertainty(subType);
+
+        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
+          allSubtypesUseful = false;
         }
+
+        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
+          someSubtypeUseful = true;
+        }
+      }
+
+      if (allSubtypesUseful && someSubtypeUseful) {
+        return Usefulness.Always;
+      }
+
+      if (someSubtypeUseful) {
+        return Usefulness.Sometimes;
       }
 
       return Usefulness.Never;
@@ -130,7 +171,6 @@ export default util.createRule<Options, MessageIds>({
       },
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (
-          options.ignoreTaggedTemplateExpressions &&
           node.parent &&
           node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
         ) {
