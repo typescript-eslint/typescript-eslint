@@ -14,7 +14,7 @@ Rationale from TSLint:
 > ```js
 > const self = this;
 >
-> setTimeout(function() {
+> setTimeout(function () {
 >   self.doWork();
 > });
 > ```
