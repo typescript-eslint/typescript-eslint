@@ -42,6 +42,14 @@ module.exports = {
     ],
 
     //
+    // Internal repo rules
+    //
+
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+
+    //
     // eslint base
     //
 
@@ -119,12 +127,6 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
-
-    //
-    // Internal repo rules
-    //
-    '@typescript-eslint/internal/no-typescript-default-import': 'error',
-    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
   },
   parserOptions: {
     sourceType: 'module',

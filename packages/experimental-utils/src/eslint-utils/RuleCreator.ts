@@ -17,7 +17,7 @@ function RuleCreator(urlCreator: (ruleName: string) => string) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createRule<
-    TOptions extends unknown[],
+    TOptions extends readonly unknown[],
     TMessageIds extends string,
     TRuleListener extends RuleListener = RuleListener
   >({

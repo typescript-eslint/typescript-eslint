@@ -54,28 +54,30 @@ const literalWithToString = {
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
 ```ts
 type Options = {
-  // if true, interpolated expressions in tagged templates will not be checked
-  ignoreTaggedTemplateExpressions?: boolean;
+  ignoredTypeNames?: string[];
 };
 
-const defaults = {
-  ignoreTaggedTemplateExpressions: false,
+const defaultOptions: Options = {
+  ignoredTypeNames: ['RegExp'],
 };
 ```
 
-### `ignoreTaggedTemplateExpressions`
+### `ignoredTypeNames`
 
-This allows to skip checking tagged templates, for cases where the tags do not necessarily stringify interpolated values.
+A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).
+There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
-Examples of additional **correct** code for this rule with `{ ignoreTaggedTemplateExpressions: true }`:
+The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
 ```ts
-function tag() {}
-tag`${{}}`;
+`${/regex/}`;
+'' + /regex/;
+/regex/.toString();
+let value = /regex/;
+value.toString();
+let text = `${value}`;
 ```
 
 ## When Not To Use It

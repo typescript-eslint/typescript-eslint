@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [dot-notation] handle missing declarations ([#1947](https://github.com/typescript-eslint/typescript-eslint/issues/1947)) ([383f931](https://github.com/typescript-eslint/typescript-eslint/commit/383f93182599c00e231a0f0d36575ca0e19369a6))
+* **eslint-plugin:** [method-signature-style] fix overloaded methods to an intersection type ([#1966](https://github.com/typescript-eslint/typescript-eslint/issues/1966)) ([7f3fba3](https://github.com/typescript-eslint/typescript-eslint/commit/7f3fba348d432d7637e1c737df943ee1f9105062))
+* **eslint-plugin:** [return-await] await in a normal function ([#1962](https://github.com/typescript-eslint/typescript-eslint/issues/1962)) ([f82fd7b](https://github.com/typescript-eslint/typescript-eslint/commit/f82fd7bb81f986c4861d0b4e2ecdb0c496d7a602))
+* **eslint-plugin:** [unbound-method] false positives for unary expressions ([#1964](https://github.com/typescript-eslint/typescript-eslint/issues/1964)) ([b35070e](https://github.com/typescript-eslint/typescript-eslint/commit/b35070ec6f84ad5ce606386cdb6eeb91488dfdd7))
+* **eslint-plugin:** no-base-to-string boolean expression detect ([#1969](https://github.com/typescript-eslint/typescript-eslint/issues/1969)) ([f78f13a](https://github.com/typescript-eslint/typescript-eslint/commit/f78f13aedd59d5b5880903d48c779a6c50fd937e))
+
+
+### Features
+
+* **eslint-plugin:** [member-ordering] add decorators support ([#1870](https://github.com/typescript-eslint/typescript-eslint/issues/1870)) ([f7ec192](https://github.com/typescript-eslint/typescript-eslint/commit/f7ec1920607cb8eec8020b08cd7247de0bf19ce1))
+* **eslint-plugin:** [prefer-optional-chain] added option to convert to suggestion fixer ([#1965](https://github.com/typescript-eslint/typescript-eslint/issues/1965)) ([2f0824b](https://github.com/typescript-eslint/typescript-eslint/commit/2f0824b0a41f3043b6242fc1d49faae540abaf22))
+* **eslint-plugin:** new extended rule 'no-invalid-this' ([#1823](https://github.com/typescript-eslint/typescript-eslint/issues/1823)) ([b18bc35](https://github.com/typescript-eslint/typescript-eslint/commit/b18bc357507337b9725f8d9c1b549513075a0da5))
+* **eslint-plugin-internal:** add rule no-poorly-typed-ts-props ([#1949](https://github.com/typescript-eslint/typescript-eslint/issues/1949)) ([56ea7c9](https://github.com/typescript-eslint/typescript-eslint/commit/56ea7c9581c0c99fe394bbcfc4128e8054c88ab2))
+* **experimental-utils:** expose our RuleTester extension ([#1948](https://github.com/typescript-eslint/typescript-eslint/issues/1948)) ([2dd1638](https://github.com/typescript-eslint/typescript-eslint/commit/2dd1638aaa2658ba99b2341861146b586f489121))
+
+
+
+
+
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-string-starts-ends-with] check for negative start index in slice ([#1920](https://github.com/typescript-eslint/typescript-eslint/issues/1920)) ([ed2bd60](https://github.com/typescript-eslint/typescript-eslint/commit/ed2bd6067f74ae33e36a084719bb91efedfba599))
+* **eslint-plugin:** fix no-base-to-string boolean literal check ([#1850](https://github.com/typescript-eslint/typescript-eslint/issues/1850)) ([2f45e99](https://github.com/typescript-eslint/typescript-eslint/commit/2f45e9992a8f12b6233716e77a6159f9cea2c879))
+
+
+### Features
+
+* **eslint-plugin:** add extension rule `dot-notation` ([#1867](https://github.com/typescript-eslint/typescript-eslint/issues/1867)) ([a85c3e1](https://github.com/typescript-eslint/typescript-eslint/commit/a85c3e1515d735b6c245cc658cdaec6deb05d630))
+* **eslint-plugin:** create `no-invalid-void-type` rule ([#1847](https://github.com/typescript-eslint/typescript-eslint/issues/1847)) ([f667ff1](https://github.com/typescript-eslint/typescript-eslint/commit/f667ff1708d4ed28b7ea5beea742889da69a76d9))
+* **experimental-utils:** allow rule options to be a readonly tuple ([#1924](https://github.com/typescript-eslint/typescript-eslint/issues/1924)) ([4ef6788](https://github.com/typescript-eslint/typescript-eslint/commit/4ef67884962b6aac61cc895aaa3ba16aa892ecf4))
+
+
+
+
+
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] soft remove `ignoreTaggedTemplateExpressions` option ([#1916](https://github.com/typescript-eslint/typescript-eslint/issues/1916)) ([369978e](https://github.com/typescript-eslint/typescript-eslint/commit/369978e9685bacb3e3882b0510ff06eaf8df4ca1))
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promise] add option to ignore IIFEs ([#1799](https://github.com/typescript-eslint/typescript-eslint/issues/1799)) ([cea51bf](https://github.com/typescript-eslint/typescript-eslint/commit/cea51bf130d6d3c2935f5e2dcc468196f2ad9d00))
+* **eslint-plugin:** [restrict-template-expressions] add support for intersection types ([#1803](https://github.com/typescript-eslint/typescript-eslint/issues/1803)) ([cc70e4f](https://github.com/typescript-eslint/typescript-eslint/commit/cc70e4fbadd0b15fd6af913a2e1e2ddd346fa558))
+* **eslint-plugin:** add extension rule `init-declarations` ([#1814](https://github.com/typescript-eslint/typescript-eslint/issues/1814)) ([b01f5e7](https://github.com/typescript-eslint/typescript-eslint/commit/b01f5e778ac28e0797a3734fc58d025bb224f418))
+* **eslint-plugin:** add extension rule `keyword-spacing` ([#1739](https://github.com/typescript-eslint/typescript-eslint/issues/1739)) ([c5106dd](https://github.com/typescript-eslint/typescript-eslint/commit/c5106dd4bf2bc8846cc39aa8bb50c33bec026d4d))
+
+
+
+
+
 # [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
 
 

@@ -1317,6 +1317,101 @@ abstract class Foo {
             `,
       options: [{ classes: ['signature', 'field', 'constructor', 'method'] }],
     },
+    {
+      code: `
+class Foo {
+    @Dec() B: string;
+    @Dec() A: string;
+    constructor() {}
+    D: string;
+    C: string;
+    E(): void;
+    F(): void;
+}           `,
+      options: [{ default: ['decorated-field', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    B: string;
+    @Dec() private C: string;
+    private D: string;
+}           `,
+      options: [
+        {
+          default: ['public-field', 'private-decorated-field', 'private-field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    constructor() {}
+    @Dec() public A(): void;
+    @Dec() private B: string;
+    private C(): void;
+    private D: string;
+}           `,
+      options: [
+        {
+          default: [
+            'decorated-method',
+            'private-decorated-field',
+            'private-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    @Dec() private A(): void;
+    @Dec() private B: string;
+    constructor() {}
+    private C(): void;
+    private D: string;
+}           `,
+      options: [
+        {
+          default: [
+            'private-decorated-method',
+            'private-decorated-field',
+            'constructor',
+            'private-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    public A: string;
+    @Dec() private B: string;
+}           `,
+      options: [
+        {
+          default: ['private-decorated-field', 'public-instance-field'],
+          classes: ['public-instance-field', 'private-decorated-field'],
+        },
+      ],
+    },
+    // class + ignore decorator
+    {
+      code: `
+class Foo {
+    public A(): string;
+    @Dec() public B(): string;
+    public C(): string;
+
+    d: string;
+}           `,
+      options: [
+        {
+          default: ['public-method', 'field'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -3614,6 +3709,96 @@ abstract class Foo {
         },
       ],
     },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+    B: string;
+    @Dec() A: string = "";
+    C: string = "";
+    constructor() {}
+    D() {}
+    E() {}
+}           `,
+      options: [{ default: ['decorated-field', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A() {}
+
+    @Decorator()
+    B() {}
+}           `,
+      options: [{ default: ['decorated-method', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'method',
+          },
+          line: 5, // Symbol starts at the line with decorator
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    @Decorator() C() {}
+    A() {}
+}           `,
+      options: [{ default: ['public-method', 'decorated-method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'A',
+            rank: 'decorated method',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A(): void;
+    B(): void;
+    private C() {}
+    constructor() {}
+    @Dec() private D() {}
+}           `,
+      options: [
+        {
+          classes: ['public-method', 'decorated-method', 'private-method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'D',
+            rank: 'private method',
+          },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
   ],
 };
 
@@ -3702,9 +3887,11 @@ class Foo {
   protected static b : string = "";
   private static c : string = "";
   constructor() {}
-  public d : string = "";
-  protected e : string = "";
-  private f : string = "";
+  @Dec() d: string;
+  public e : string = "";
+  @Dec() f : string = "";
+  protected g : string = "";
+  private h : string = "";
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -3765,6 +3952,18 @@ const foo = class Foo {
 const foo = class Foo {
   public static a1 : string;
   public static aa : string;
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + class + decorators
+    {
+      code: `
+class Foo {
+  public static a : string;
+  @Dec() static b : string;
+  public static c : string;
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -4064,10 +4263,11 @@ type Foo = {
 class Foo {
   public static a : string;
   protected static b : string = "";
-  private static c : string = "";
+  @Dec() private static c : string = "";
   constructor() {}
   public d : string = "";
   protected e : string = "";
+  @Dec()
   private f : string = "";
 }
             `,
@@ -5026,6 +5226,29 @@ class Foo {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
     },
+    // default option + class + decorators + default order + alphabetically
+    {
+      code: `
+class Foo {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  @Dec() public d: string;
+  @Dec() protected e: string;
+  @Dec() private f: string;
+
+  public g: string = "";
+  protected h: string = "";
+  private i: string = "";
+
+  constructor() {}
+}
+            `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
 
     // default option + class + custom order + alphabetically
     {
@@ -5213,6 +5436,55 @@ const foo = class Foo {
           data: {
             name: 'd',
             rank: 'public constructor',
+          },
+        },
+      ],
+    },
+    // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+class Foo {
+  @Dec() a1: string;
+  @Dec()
+  a3: string;
+  @Dec()
+  a2: string;
+
+  constructor() {}
+
+  b1: string;
+  b2: string;
+
+  public c(): void;
+  @Dec() d(): void
+}
+            `,
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-field',
+              'field',
+              'constructor',
+              'decorated-method',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'b1',
+            rank: 'constructor',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'b2',
+            rank: 'constructor',
           },
         },
       ],

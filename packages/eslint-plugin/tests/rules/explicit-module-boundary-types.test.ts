@@ -23,7 +23,7 @@ export function test(): void {
     },
     {
       code: `
-export var fn = function(): number {
+export var fn = function (): number {
   return 1;
 };
       `,
@@ -105,7 +105,7 @@ export var arrowFn: Foo = () => 'test';
     },
     {
       code: `
-export var funcExpr: Foo = function() {
+export var funcExpr: Foo = function () {
   return 'test';
 };
       `,
@@ -176,7 +176,7 @@ export default () => (): void => {};
     },
     {
       code: `
-export default () => function(): void {};
+export default () => function (): void {};
       `,
       options: [{ allowHigherOrderFunctions: true }],
     },
@@ -191,7 +191,7 @@ export default () => {
     {
       code: `
 export default () => {
-  return function(): void {};
+  return function (): void {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -207,7 +207,7 @@ export function fn() {
     {
       code: `
 export function fn() {
-  return function(): void {};
+  return function (): void {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -304,7 +304,7 @@ export class Test {
     {
       code: `
         export function foo(outer: string) {
-          return function(inner: string): void {};
+          return function (inner: string): void {};
         }
       `,
       options: [
@@ -331,7 +331,7 @@ export class Test {
     {
       code: `
 export const Foo: FC = () => (
-  <div a={e => {}} b={function(e) {}} c={function foo(e) {}}></div>
+  <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
       parserOptions: {
@@ -341,7 +341,7 @@ export const Foo: FC = () => (
     {
       code: `
 export const Foo: JSX.Element = (
-  <div a={e => {}} b={function(e) {}} c={function foo(e) {}}></div>
+  <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
       parserOptions: {
@@ -473,7 +473,7 @@ export function test() {
     },
     {
       code: `
-export var fn = function() {
+export var fn = function () {
   return 1;
 };
       `,
@@ -483,7 +483,7 @@ export var fn = function() {
           line: 2,
           endLine: 2,
           column: 17,
-          endColumn: 27,
+          endColumn: 28,
         },
       ],
     },
@@ -560,11 +560,11 @@ export class Test {
       code: `
 export class Foo {
   public a = () => {};
-  public b = function() {};
+  public b = function () {};
   public c = function test() {};
 
   static d = () => {};
-  static e = function() {};
+  static e = function () {};
 }
       `,
       errors: [
@@ -580,7 +580,7 @@ export class Foo {
           line: 4,
           endLine: 4,
           column: 14,
-          endColumn: 24,
+          endColumn: 25,
         },
         {
           messageId: 'missingReturnType',
@@ -601,7 +601,7 @@ export class Foo {
           line: 8,
           endLine: 8,
           column: 14,
-          endColumn: 24,
+          endColumn: 25,
         },
       ],
     },
@@ -639,7 +639,7 @@ export class Foo {
     },
     {
       code: `
-export var funcExpr = function() {
+export var funcExpr = function () {
   return 'test';
 };
       `,
@@ -650,7 +650,7 @@ export var funcExpr = function() {
           line: 2,
           endLine: 2,
           column: 23,
-          endColumn: 33,
+          endColumn: 34,
         },
       ],
     },
@@ -717,7 +717,7 @@ export const x: Foo = {
       ],
     },
     {
-      code: 'export default () => function() {};',
+      code: 'export default () => function () {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
@@ -725,7 +725,7 @@ export const x: Foo = {
           line: 1,
           endLine: 1,
           column: 22,
-          endColumn: 32,
+          endColumn: 33,
         },
       ],
     },
@@ -749,7 +749,7 @@ export default () => {
     {
       code: `
 export default () => {
-  return function() {};
+  return function () {};
 };
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -759,7 +759,7 @@ export default () => {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 20,
+          endColumn: 21,
         },
       ],
     },
@@ -783,7 +783,7 @@ export function fn() {
     {
       code: `
 export function fn() {
-  return function() {};
+  return function () {};
 }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -793,7 +793,7 @@ export function fn() {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 20,
+          endColumn: 21,
         },
       ],
     },
@@ -985,7 +985,7 @@ export function fn(test): string {
     {
       code: `
         export function foo(outer) {
-          return function(inner) {};
+          return function (inner) {};
         }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -1221,7 +1221,7 @@ export default Foo;
     {
       code: `
 class Foo {
-  bool = function(arg) {
+  bool = function (arg) {
     return arg;
   };
 }
@@ -1242,7 +1242,7 @@ export default Foo;
     {
       code: `
 class Foo {
-  bool = function(arg) {
+  bool = function (arg) {
     return arg;
   };
 }

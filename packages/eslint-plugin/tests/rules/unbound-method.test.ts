@@ -150,6 +150,9 @@ ruleTester.run('unbound-method', rule, {
 
       'instance.unbound = () => {};',
       'instance.unbound = instance.unbound.bind(instance);',
+      'if (!!instance.unbound) {}',
+      'void instance.unbound',
+      'delete instance.unbound',
     ].map(addContainsMethodsClass),
     `
 interface RecordA {
@@ -370,7 +373,7 @@ instance.unbound = x; // THIS SHOULD NOT
     {
       code: `
 class Foo {
-  unbound = function() {};
+  unbound = function () {};
 }
 const unbound = new Foo().unbound;
       `,
