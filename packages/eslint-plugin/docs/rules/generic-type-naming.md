@@ -3,6 +3,11 @@
 It can be helpful to enforce a consistent naming style for generic type variables used within a type.
 For example, prefixing them with `T` and ensuring a somewhat descriptive name, or enforcing Hungarian notation.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.
+It will be removed in a future version of this plugin.
+
 ## Rule Details
 
 This rule allows you to enforce conventions over type variables. By default, it does nothing.
@@ -13,7 +18,7 @@ The rule takes a single string option, which is a regular expression that type v
 
 Examples of **correct** code with a configuration of `'^T[A-Z][a-zA-Z]+$'`:
 
-```typescript
+```ts
 type ReadOnly<TType extends object> = {
   readonly [TKey in keyof TType]: TType[TKey];
 };
@@ -25,7 +30,7 @@ interface SimpleMap<TValue> {
 
 Examples of **incorrect** code with a configuration of `'^T[A-Z][a-zA-Z]+$'`:
 
-```typescript
+```ts
 type ReadOnly<T extends object> = { readonly [Key in keyof T]: T[Key] };
 
 interface SimpleMap<T> {

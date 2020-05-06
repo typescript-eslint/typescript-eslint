@@ -3,6 +3,84 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
+
+
+### Features
+
+* **typescript-estree:** support 3.8 `export * as ns` ([#1698](https://github.com/typescript-eslint/typescript-eslint/issues/1698)) ([133f622](https://github.com/typescript-eslint/typescript-eslint/commit/133f622f38a286eac45288a9789d2ee529d5e582))
+
+
+
+
+
+# [2.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.22.0...v2.23.0) (2020-03-09)
+
+
+### Features
+
+* **typescript-estree:** support 3.8 import/export type ([#1697](https://github.com/typescript-eslint/typescript-eslint/issues/1697)) ([625d603](https://github.com/typescript-eslint/typescript-eslint/commit/625d603f94bf0521f834313bf31c734ce4948b7a))
+
+
+
+
+
 # [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
 
 **Note:** Version bump only for package @typescript-eslint/shared-fixtures

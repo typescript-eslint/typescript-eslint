@@ -1,7 +1,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MessageIds = 'unsafeCall' | 'unsafeNew';
+type MessageIds = 'unsafeCall' | 'unsafeNew' | 'unsafeTemplateTag';
 
 export default util.createRule<[], MessageIds>({
   name: 'no-unsafe-call',
@@ -14,8 +14,9 @@ export default util.createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an any typed value',
-      unsafeNew: 'Unsafe construction of an any type value',
+      unsafeCall: 'Unsafe call of an any typed value.',
+      unsafeNew: 'Unsafe construction of an any type value.',
+      unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
     schema: [],
   },
@@ -25,15 +26,13 @@ export default util.createRule<[], MessageIds>({
     const checker = program.getTypeChecker();
 
     function checkCall(
-      node:
-        | TSESTree.CallExpression
-        | TSESTree.OptionalCallExpression
-        | TSESTree.NewExpression,
-      reportingNode: TSESTree.Expression = node.callee,
-      messageId: MessageIds = 'unsafeCall',
+      node: TSESTree.Node,
+      reportingNode: TSESTree.Node,
+      messageId: MessageIds,
     ): void {
-      const tsNode = esTreeNodeToTSNodeMap.get(node.callee);
-      const type = checker.getTypeAtLocation(tsNode);
+      const tsNode = esTreeNodeToTSNodeMap.get(node);
+      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+
       if (util.isTypeAnyType(type)) {
         context.report({
           node: reportingNode,
@@ -43,9 +42,16 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      'CallExpression, OptionalCallExpression': checkCall,
+      ':matches(CallExpression, OptionalCallExpression) > :not(Import).callee'(
+        node: Exclude<TSESTree.LeftHandSideExpression, TSESTree.Import>,
+      ): void {
+        checkCall(node, node, 'unsafeCall');
+      },
       NewExpression(node): void {
-        checkCall(node, node, 'unsafeNew');
+        checkCall(node.callee, node, 'unsafeNew');
+      },
+      'TaggedTemplateExpression > *.tag'(node: TSESTree.Node): void {
+        checkCall(node, node, 'unsafeTemplateTag');
       },
     };
   },

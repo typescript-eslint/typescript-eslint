@@ -18,7 +18,7 @@ export default util.createRule({
     messages: {
       unsafeReturn: 'Unsafe return of an {{type}} typed value',
       unsafeReturnAssignment:
-        'Unsafe return of type {{sender}} from function with return type {{receiver}}',
+        'Unsafe return of type {{sender}} from function with return type {{receiver}}.',
     },
     schema: [],
   },
@@ -74,7 +74,8 @@ export default util.createRule({
       }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = checker.getTypeAtLocation(
+      const returnNodeType = util.getConstrainedTypeAtLocation(
+        checker,
         esTreeNodeToTSNodeMap.get(returnNode),
       );
       const functionTSNode = esTreeNodeToTSNodeMap.get(functionNode);

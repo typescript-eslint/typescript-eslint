@@ -58,7 +58,7 @@ type Options = {
   allowEmpty?: boolean;
   // allow extraneous classes if they only contain static members
   allowStaticOnly?: boolean;
-  // allow extraneous classes if they are have a decorator
+  // allow extraneous classes if they have a decorator
   allowWithDecorator?: boolean;
 };
 

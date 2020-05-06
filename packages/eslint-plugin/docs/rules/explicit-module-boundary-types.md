@@ -17,7 +17,7 @@ export function test() {
 }
 
 // Should indicate that a number is returned
-export default function() {
+export default function () {
   return 1;
 }
 
@@ -44,7 +44,7 @@ function test() {
 }
 
 // A return value of type number
-export var fn = function(): number {
+export var fn = function (): number {
   return 1;
 };
 
@@ -86,12 +86,17 @@ type Options = {
    * An array of function/method names that will not have their arguments or their return values checked.
    */
   allowedNames?: string[];
+  /**
+   * If true, track references to exported variables as well as direct exports.
+   */
+  shouldTrackReferences?: boolean;
 };
 
 const defaults = {
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
   allowedNames: [],
+  shouldTrackReferences: true,
 };
 ```
 
@@ -124,7 +129,7 @@ Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressio
 ```ts
 export let arrowFn = () => 'test';
 
-export let funcExpr = function() {
+export let funcExpr = function () {
   return 'test';
 };
 
@@ -142,7 +147,7 @@ type FuncType = () => string;
 
 export let arrowFn: FuncType = () => 'test';
 
-export let funcExpr: FuncType = function() {
+export let funcExpr: FuncType = function () {
   return 'test';
 };
 
@@ -174,11 +179,11 @@ Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: 
 export var arrowFn = () => () => {};
 
 export function fn() {
-  return function() {};
+  return function () {};
 }
 
 export function foo(outer) {
-  return function(inner): void {};
+  return function (inner): void {};
 }
 ```
 
@@ -188,11 +193,11 @@ Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: tr
 export var arrowFn = () => (): void => {};
 
 export function fn() {
-  return function(): void {};
+  return function (): void {};
 }
 
 export function foo(outer: string) {
-  return function(inner: string): void {};
+  return function (inner: string): void {};
 }
 ```
 
@@ -236,6 +241,28 @@ You may pass function/method names you would like this rule to ignore, like so:
     }
   ]
 }
+```
+
+### `shouldTrackReferences`
+
+Examples of **incorrect** code for this rule with `{ shouldTrackReferences: true }`:
+
+```ts
+function foo(bar) {
+  return bar;
+}
+
+export default foo;
+```
+
+Examples of **correct** code for this rule with `{ shouldTrackReferences: true }`:
+
+```ts
+function foo(bar: string): string {
+  return bar;
+}
+
+export default foo;
 ```
 
 ## When Not To Use It

@@ -1,16 +1,13 @@
 # Disallow unused expressions (`no-unused-expressions`)
 
-This rule aims to eliminate unused expressions which have no effect on the state of the program.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-unused-expressions`](https://eslint.org/docs/rules/no-unused-expressions) rule.
-It supports all options and features of the base rule.
-This version adds support for numerous typescript features.
+It adds support for optional call expressions `x?.()`, and directive in module declarations.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-unused-expressions": "off",

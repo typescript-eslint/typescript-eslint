@@ -10,28 +10,28 @@ ruleTester.run('explicit-module-boundary-types', rule, {
     {
       code: `
 function test(): void {
-    return;
+  return;
 }
-            `,
+      `,
     },
     {
       code: `
 export function test(): void {
-    return;
+  return;
 }
-            `,
+      `,
     },
     {
       code: `
-export var fn = function(): number {
-    return 1;
+export var fn = function (): number {
+  return 1;
 };
-            `,
+      `,
     },
     {
       code: `
 export var arrowFn = (): string => 'test';
-            `,
+      `,
     },
     {
       code: `
@@ -46,7 +46,7 @@ class Test {
   }
   arrow = (): string => 'arrow';
 }
-            `,
+      `,
     },
     {
       code: `
@@ -61,42 +61,42 @@ export class Test {
   }
   arrow = (): string => 'arrow';
 }
-            `,
+      `,
     },
     {
       code: `
 export function test(): void {
-    nested();
-    return;
+  nested();
+  return;
 
-    function nested() {}
+  function nested() {}
 }
-            `,
+      `,
     },
     {
       code: `
 export function test(): string {
-    const nested = () => 'value';
-    return nested();
+  const nested = () => 'value';
+  return nested();
 }
-            `,
+      `,
     },
     {
       code: `
 export function test(): string {
-    class Nested {
-        public method() {
-            return 'value';
-        }
+  class Nested {
+    public method() {
+      return 'value';
     }
-    return new Nested().method();
+  }
+  return new Nested().method();
 }
-            `,
+      `,
     },
     {
       code: `
 export var arrowFn: Foo = () => 'test';
-            `,
+      `,
       options: [
         {
           allowTypedFunctionExpressions: true,
@@ -105,8 +105,10 @@ export var arrowFn: Foo = () => 'test';
     },
     {
       code: `
-export var funcExpr: Foo = function() { return 'test'; };
-            `,
+export var funcExpr: Foo = function () {
+  return 'test';
+};
+      `,
       options: [
         {
           allowTypedFunctionExpressions: true,
@@ -114,18 +116,18 @@ export var funcExpr: Foo = function() { return 'test'; };
       ],
     },
     {
-      code: `const x = (() => {}) as Foo`,
+      code: 'const x = (() => {}) as Foo;',
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: `const x = <Foo>(() => {})`,
+      code: 'const x = <Foo>(() => {});',
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
 export const x = {
   foo: () => {},
-} as Foo
+} as Foo;
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
@@ -133,7 +135,7 @@ export const x = {
       code: `
 export const x = <Foo>{
   foo: () => {},
-}
+};
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
@@ -141,7 +143,7 @@ export const x = <Foo>{
       code: `
 export const x: Foo = {
   foo: () => {},
-}
+};
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
@@ -151,7 +153,7 @@ export const x: Foo = {
 type MethodType = () => void;
 
 export class App {
-  public method: MethodType = () => {}
+  public method: MethodType = () => {};
 }
       `,
       options: [{ allowTypedFunctionExpressions: true }],
@@ -169,37 +171,45 @@ export const myObj = {
     {
       code: `
 export default () => (): void => {};
-            `,
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
 export default () => function (): void {};
-            `,
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
-export default () => { return (): void => {} };
-            `,
+export default () => {
+  return (): void => {};
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
-export default () => { return function (): void {} };
-            `,
+export default () => {
+  return function (): void {};
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
-export function fn() { return (): void => {} };
-            `,
+export function fn() {
+  return (): void => {};
+}
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
-export function fn() { return function (): void {} };
-            `,
+export function fn() {
+  return function (): void {};
+}
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
@@ -207,20 +217,26 @@ export function fn() { return function (): void {} };
 export function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
     return function FunctionExpression_Within_FunctionExpression() {
-      return () => { // ArrowFunctionExpression_Within_FunctionExpression
-        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          (): number => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
-      }
-    }
-  }
+      return () => {
+        // ArrowFunctionExpression_Within_FunctionExpression
+        return () =>
+          // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      };
+    };
+  };
 }
-            `,
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
       code: `
-export default () => () => { return (): void => { return; } };
-            `,
+export default () => () => {
+  return (): void => {
+    return;
+  };
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
@@ -243,9 +259,9 @@ new Accumulator().accumulate(() => 1);
     },
     {
       code: `
-export const func1 = (value: number) => (({ type: "X", value }) as const);
-export const func2 = (value: number) => ({ type: "X", value } as const);
-export const func3 = (value: number) => (x as const);
+export const func1 = (value: number) => ({ type: 'X', value } as const);
+export const func2 = (value: number) => ({ type: 'X', value } as const);
+export const func3 = (value: number) => x as const;
 export const func4 = (value: number) => x as const;
       `,
       options: [
@@ -257,7 +273,7 @@ export const func4 = (value: number) => x as const;
     {
       code: `
 export const func1 = (value: string) => value;
-export const func2 = (value: number) => ({ type: "X", value });
+export const func2 = (value: number) => ({ type: 'X', value });
       `,
       options: [
         {
@@ -288,7 +304,7 @@ export class Test {
     {
       code: `
         export function foo(outer: string) {
-          return function(inner: string): void {};
+          return function (inner: string): void {};
         }
       `,
       options: [
@@ -315,13 +331,8 @@ export class Test {
     {
       code: `
 export const Foo: FC = () => (
-  <div
-    a={e => {}}
-    b={function (e) {}}
-    c={function foo(e) {}}
-  >
-  </div>
-)
+  <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
+);
       `,
       parserOptions: {
         ecmaFeatures: { jsx: true },
@@ -329,26 +340,108 @@ export const Foo: FC = () => (
     },
     {
       code: `
-export const Foo: JSX.Element =
-  <div
-    a={e => {}}
-    b={function (e) {}}
-    c={function foo(e) {}}
-  >
-  </div>
+export const Foo: JSX.Element = (
+  <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
+);
       `,
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
+    },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default [test];
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default [test];
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const test = (): void => {
+  return;
+};
+export default { test };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+function test(): void {
+  return;
+}
+export default { test };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+const foo = (arg => arg) as Foo;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+let foo = (arg => arg) as Foo;
+foo = 3;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+class Foo {
+  bar = (arg: string): string => arg;
+}
+export default { Foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+    },
+    {
+      code: `
+class Foo {
+  bar(): void {
+    return;
+  }
+}
+export default { Foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
     },
   ],
   invalid: [
     {
       code: `
-export function test(
-  a: number,
-  b: number,
-) {
+export function test(a: number, b: number) {
   return;
 }
       `,
@@ -356,9 +449,9 @@ export function test(
         {
           messageId: 'missingReturnType',
           line: 2,
-          endLine: 5,
+          endLine: 2,
           column: 8,
-          endColumn: 2,
+          endColumn: 43,
         },
       ],
     },
@@ -380,7 +473,7 @@ export function test() {
     },
     {
       code: `
-export var fn = function() {
+export var fn = function () {
   return 1;
 };
       `,
@@ -390,7 +483,7 @@ export var fn = function() {
           line: 2,
           endLine: 2,
           column: 17,
-          endColumn: 27,
+          endColumn: 28,
         },
       ],
     },
@@ -413,13 +506,13 @@ export var arrowFn = () => 'test';
 export class Test {
   constructor() {}
   get prop() {
-      return 1;
+    return 1;
   }
   set prop(value) {}
   method() {
     return;
   }
-  arrow = (arg) => 'arrow';
+  arrow = arg => 'arrow';
   private method() {
     return;
   }
@@ -452,14 +545,14 @@ export class Test {
           line: 11,
           endLine: 11,
           column: 11,
-          endColumn: 19,
+          endColumn: 17,
         },
         {
           messageId: 'missingArgType',
           line: 11,
           endLine: 11,
           column: 11,
-          endColumn: 27,
+          endColumn: 25,
         },
       ],
     },
@@ -513,7 +606,7 @@ export class Foo {
       ],
     },
     {
-      code: 'export default () => true ? (() => {}) : ((): void => {});',
+      code: 'export default () => (true ? () => {} : (): void => {});',
       errors: [
         {
           messageId: 'missingReturnType',
@@ -545,20 +638,24 @@ export class Foo {
       ],
     },
     {
-      code: "export var funcExpr = function() { return 'test'; };",
+      code: `
+export var funcExpr = function () {
+  return 'test';
+};
+      `,
       options: [{ allowTypedFunctionExpressions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
+          line: 2,
+          endLine: 2,
           column: 23,
-          endColumn: 33,
+          endColumn: 34,
         },
       ],
     },
     {
-      code: 'export const x = (() => {}) as Foo',
+      code: 'export const x = (() => {}) as Foo;',
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
         {
@@ -575,7 +672,7 @@ export class Foo {
 interface Foo {}
 export const x = {
   foo: () => {},
-} as Foo
+} as Foo;
       `,
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
@@ -593,7 +690,7 @@ export const x = {
 interface Foo {}
 export const x: Foo = {
   foo: () => {},
-}
+};
       `,
       options: [{ allowTypedFunctionExpressions: false }],
       errors: [
@@ -633,54 +730,70 @@ export const x: Foo = {
       ],
     },
     {
-      code: 'export default () => { return () => {} };',
+      code: `
+export default () => {
+  return () => {};
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 31,
-          endColumn: 36,
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
         },
       ],
     },
     {
-      code: 'export default () => { return function () {} };',
+      code: `
+export default () => {
+  return function () {};
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 31,
-          endColumn: 42,
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 21,
         },
       ],
     },
     {
-      code: 'export function fn() { return () => {} };',
+      code: `
+export function fn() {
+  return () => {};
+}
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 31,
-          endColumn: 36,
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
         },
       ],
     },
     {
-      code: 'export function fn() { return function () {} };',
+      code: `
+export function fn() {
+  return function () {};
+}
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 31,
-          endColumn: 42,
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 21,
         },
       ],
     },
@@ -689,40 +802,48 @@ export const x: Foo = {
 export function FunctionDeclaration() {
   return function FunctionExpression_Within_FunctionDeclaration() {
     return function FunctionExpression_Within_FunctionExpression() {
-      return () => { // ArrowFunctionExpression_Within_FunctionExpression
-        return () => // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          () => 1 // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
-      }
-    }
-  }
+      return () => {
+        // ArrowFunctionExpression_Within_FunctionExpression
+        return () =>
+          // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          () => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      };
+    };
+  };
 }
-            `,
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 7,
-          endLine: 7,
+          line: 9,
+          endLine: 9,
           column: 11,
           endColumn: 16,
         },
       ],
     },
     {
-      code: 'export default () => () => { return () => { return; } };',
+      code: `
+export default () => () => {
+  return () => {
+    return;
+  };
+};
+      `,
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 1,
-          endLine: 1,
-          column: 37,
-          endColumn: 42,
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
         },
       ],
     },
     {
-      code: 'export default (() => true)()',
+      code: 'export default (() => true)();',
       options: [
         {
           allowTypedFunctionExpressions: false,
@@ -740,8 +861,8 @@ export function FunctionDeclaration() {
     },
     {
       code: `
-export const func1 = (value: number) => ({ type: "X", value } as any);
-export const func2 = (value: number) => ({ type: "X", value } as Action);
+export const func1 = (value: number) => ({ type: 'X', value } as any);
+export const func2 = (value: number) => ({ type: 'X', value } as Action);
       `,
       options: [
         {
@@ -767,7 +888,7 @@ export const func2 = (value: number) => ({ type: "X", value } as Action);
     },
     {
       code: `
-export const func = (value: number) => ({ type: "X", value } as const);
+export const func = (value: number) => ({ type: 'X', value } as const);
       `,
       options: [
         {
@@ -834,19 +955,23 @@ export const func2 = (value: number) => value;
       ],
     },
     {
-      code: 'export function fn(test): string { return "123" };',
+      code: `
+export function fn(test): string {
+  return '123';
+}
+      `,
       errors: [
         {
           messageId: 'missingArgType',
-          line: 1,
-          endLine: 1,
+          line: 2,
+          endLine: 4,
           column: 8,
-          endColumn: 50,
+          endColumn: 2,
         },
       ],
     },
     {
-      code: 'export const fn = (one: number, two): string => "123";',
+      code: "export const fn = (one: number, two): string => '123';",
       errors: [
         {
           messageId: 'missingArgType',
@@ -860,7 +985,7 @@ export const func2 = (value: number) => value;
     {
       code: `
         export function foo(outer) {
-          return function(inner) {};
+          return function (inner) {};
         }
       `,
       options: [{ allowHigherOrderFunctions: true }],
@@ -886,6 +1011,272 @@ export const func2 = (value: number) => value;
         {
           messageId: 'missingArgType',
           line: 1,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export = foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (arg: number): number => arg;
+foo = arg => arg;
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default [foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = arg => arg;
+export default { foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default [foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(arg) {
+  return arg;
+}
+export default { foo };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const bar = function foo(arg) {
+  return arg;
+};
+export default { bar };
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool(arg) {
+    return arg;
+  }
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = arg => {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = function (arg) {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bool = function (arg) {
+    return arg;
+  };
+}
+export default [Foo];
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+let test = arg => argl;
+test = (): void => {
+  return;
+};
+export default test;
+      `,
+      options: [{ shouldTrackReferences: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 2,
         },
       ],
     },

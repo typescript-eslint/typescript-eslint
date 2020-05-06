@@ -3,6 +3,7 @@ import {
   RuleTester,
   batchedSingleLineTests,
   getFixturesRootDir,
+  noFormat,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -15,18 +16,38 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unsafe-call', rule, {
   valid: [
-    'function foo(x: () => void) { x() }',
-    'function foo(x?: { a: () => void }) { x?.a() }',
-    'function foo(x: { a?: () => void }) { x.a?.() }',
-    'new Map()',
+    `
+function foo(x: () => void) {
+  x();
+}
+    `,
+    `
+function foo(x?: { a: () => void }) {
+  x?.a();
+}
+    `,
+    `
+function foo(x: { a?: () => void }) {
+  x.a?.();
+}
+    `,
+    'new Map();',
+    'String.raw`foo`;',
+    "const x = import('./foo');",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
+    `
+      let foo: any = 23;
+      String(foo); // ERROR: Unsafe call of an any typed value
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: any) { x() }
 function foo(x: any) { x?.() }
 function foo(x: any) { x.a.b.c.d.e.f.g() }
 function foo(x: any) { x.a.b.c.d.e.f.g?.() }
+function foo<T extends any>(x: T) { x() }
       `,
       errors: [
         {
@@ -53,10 +74,16 @@ function foo(x: any) { x.a.b.c.d.e.f.g?.() }
           column: 24,
           endColumn: 39,
         },
+        {
+          messageId: 'unsafeCall',
+          line: 6,
+          column: 37,
+          endColumn: 38,
+        },
       ],
     }),
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: { a: any }) { x.a() }
 function foo(x: { a: any }) { x?.a() }
 function foo(x: { a: any }) { x.a?.() }
@@ -83,7 +110,7 @@ function foo(x: { a: any }) { x.a?.() }
       ],
     }),
     ...batchedSingleLineTests({
-      code: `
+      code: noFormat`
 function foo(x: any) { new x() }
 function foo(x: { a: any }) { new x.a() }
       `,
@@ -99,6 +126,26 @@ function foo(x: { a: any }) { new x.a() }
           line: 3,
           column: 31,
           endColumn: 40,
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: noFormat`
+function foo(x: any) { x\`foo\` }
+function foo(x: { tag: any }) { x.tag\`foo\` }
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 2,
+          column: 24,
+          endColumn: 25,
+        },
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 3,
+          column: 33,
+          endColumn: 38,
         },
       ],
     }),

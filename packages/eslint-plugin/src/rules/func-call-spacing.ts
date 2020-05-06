@@ -1,5 +1,4 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
 export type Options = [
@@ -79,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.OptionalCallExpression
         | TSESTree.NewExpression,
     ): void {
-      const isOptionalCall = util.isOptionalOptionalChain(node);
+      const isOptionalCall = util.isOptionalOptionalCallExpression(node);
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
@@ -88,7 +87,7 @@ export default util.createRule<Options, MessageIds>({
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,
         closingParenToken,
-        isOpeningParenToken,
+        util.isOpeningParenToken,
       );
       if (!openingParenToken || openingParenToken.range[1] >= node.range[1]) {
         // new expression with no parens...

@@ -2,11 +2,12 @@ import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import {
   createRule,
-  getParserServices,
   getConstrainedTypeAtLocation,
+  getParserServices,
+  isClosingBraceToken,
+  isOpeningBraceToken,
 } from '../util';
 import { isTypeFlagSet, unionTypeParts } from 'tsutils';
-import { isClosingBraceToken, isOpeningBraceToken } from 'eslint-utils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
@@ -22,7 +23,7 @@ export default createRule({
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-      addMissingCases: 'Add branches for missing cases',
+      addMissingCases: 'Add branches for missing cases.',
     },
   },
   defaultOptions: [],
@@ -128,7 +129,7 @@ export default createRule({
             missingBranches: missingBranchTypes
               .map(missingType =>
                 isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.symbol.escapedName}`
+                  ? `typeof ${missingType.getSymbol()?.escapedName}`
                   : checker.typeToString(missingType),
               )
               .join(' | '),

@@ -3,13 +3,15 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import {
+  createRule,
+  getParserServices,
   getPropertyName,
   getStaticValue,
+  getTypeName,
   isNotClosingParenToken,
-} from 'eslint-utils';
-import { AST as RegExpAST, RegExpParser } from 'regexpp';
-import { createRule, getParserServices, getTypeName } from '../util';
+} from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();
@@ -161,6 +163,27 @@ export default createRule({
         typeof evaluatedLength.value === 'number' &&
         typeof evaluatedString.value === 'string' &&
         evaluatedLength.value === evaluatedString.value.length
+      );
+    }
+
+    /**
+     * Check if a given node is a negative index expression
+     *
+     * E.g. `s.slice(- <expr>)`, `s.substring(s.length - <expr>)`
+     *
+     * @param node The node to check.
+     * @param expectedIndexedNode The node which is expected as the receiver of index expression.
+     */
+    function isNegativeIndexExpression(
+      node: TSESTree.Node,
+      expectedIndexedNode: TSESTree.Node,
+    ): boolean {
+      return (
+        (node.type === AST_NODE_TYPES.UnaryExpression &&
+          node.operator === '-') ||
+        (node.type === AST_NODE_TYPES.BinaryExpression &&
+          node.operator === '-' &&
+          isLengthExpression(node.left, expectedIndexedNode))
       );
     }
 
@@ -536,9 +559,10 @@ export default createRule({
         }
 
         const isEndsWith =
-          callNode.arguments.length === 1 ||
-          (callNode.arguments.length === 2 &&
-            isLengthExpression(callNode.arguments[1], node.object));
+          (callNode.arguments.length === 1 ||
+            (callNode.arguments.length === 2 &&
+              isLengthExpression(callNode.arguments[1], node.object))) &&
+          isNegativeIndexExpression(callNode.arguments[0], node.object);
         const isStartsWith =
           !isEndsWith &&
           callNode.arguments.length === 2 &&
@@ -562,6 +586,9 @@ export default createRule({
             ) {
               return null;
             }
+            // code being checked is likely mistake:
+            // unequal length of strings being checked for equality
+            // or reliant on behavior of substring (negative indices interpreted as 0)
             if (isStartsWith) {
               if (!isLengthExpression(callNode.arguments[1], eqNode.right)) {
                 return null;

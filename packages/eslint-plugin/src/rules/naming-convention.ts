@@ -349,7 +349,7 @@ export default util.createRule<Options, MessageIds>({
       unexpectedUnderscore:
         '{{type}} name {{name}} must not have a {{position}} underscore.',
       missingUnderscore:
-        '{{type}} name {{name}} must have a {{position}} underscore',
+        '{{type}} name {{name}} must have a {{position}} underscore.',
       missingAffix:
         '{{type}} name {{name}} must have one of the following {{position}}es: {{affixes}}',
       satisfyCustom:

@@ -1,6 +1,6 @@
 # Requires that `.toString()` is only called on objects which provide useful information when stringified (`no-base-to-string`)
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in <code>`${}`</code> template literals.
+JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
 
 The default Object `.toString()` returns `"[object Object]"`, so this rule requires stringified objects define a more useful `.toString()` method.
 
@@ -50,6 +50,34 @@ const literalWithToString = {
 };
 
 `Value: ${literalWithToString}`;
+```
+
+## Options
+
+```ts
+type Options = {
+  ignoredTypeNames?: string[];
+};
+
+const defaultOptions: Options = {
+  ignoredTypeNames: ['RegExp'],
+};
+```
+
+### `ignoredTypeNames`
+
+A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).
+There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+
+The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
+
+```ts
+`${/regex/}`;
+'' + /regex/;
+/regex/.toString();
+let value = /regex/;
+value.toString();
+let text = `${value}`;
 ```
 
 ## When Not To Use It

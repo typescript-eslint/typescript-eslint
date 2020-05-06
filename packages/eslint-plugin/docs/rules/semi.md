@@ -5,15 +5,13 @@ This rule enforces consistent use of semicolons after statements.
 ## Rule Details
 
 This rule extends the base [`eslint/semi`](https://eslint.org/docs/rules/semi) rule.
-It supports all options and features of the base rule.
-This version adds support for numerous typescript features.
+It adds support for TypeScript features that require semicolons.
 
-See also the [`@typescript-eslint/member-delimiter-style`](member-delimiter-style.md) rule,
-which allows you to specify the delimiter for `type` and `interface` members.
+See also the [`@typescript-eslint/member-delimiter-style`](member-delimiter-style.md) rule, which allows you to specify the delimiter for `type` and `interface` members.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "semi": "off",
