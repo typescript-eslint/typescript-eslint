@@ -38,12 +38,20 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       varObject == false;
     `,
     `
-      declare const varBooleanOrString: boolean | undefined;
+      declare const varNullOrUndefined: null | undefined;
+      varNullOrUndefined === false;
+    `,
+    `
+      declare const varBooleanOrString: boolean | string;
       varBooleanOrString === false;
     `,
     `
-      declare const varBooleanOrString: boolean | undefined;
+      declare const varBooleanOrString: boolean | string;
       varBooleanOrString == true;
+    `,
+    `
+      declare const varTrueOrStringOrUndefined: true | string | undefined;
+      varTrueOrStringOrUndefined == true;
     `,
     `
       declare const varBooleanOrUndefined: boolean | undefined;
