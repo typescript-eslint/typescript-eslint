@@ -64,42 +64,6 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       output: 'true;',
     },
     {
-      code: 'true !== true;',
-      errors: [
-        {
-          messageId: 'negated',
-        },
-      ],
-      output: '!true;',
-    },
-    {
-      code: 'false === false;',
-      errors: [
-        {
-          messageId: 'direct',
-        },
-      ],
-      output: '!false;',
-    },
-    {
-      code: 'false !== false;',
-      errors: [
-        {
-          messageId: 'negated',
-        },
-      ],
-      output: 'false;',
-    },
-    {
-      code: 'false === true;',
-      errors: [
-        {
-          messageId: 'direct',
-        },
-      ],
-      output: 'false;',
-    },
-    {
       code: 'false !== true;',
       errors: [
         {
@@ -148,7 +112,7 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrUndefined === true) {
         }
       `,
-      options: [{ allowComparingNullableBooleans: true }],
+      options: [{ allowComparingNullableBooleans: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueDirect',
@@ -162,19 +126,19 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     {
       code: `
-        declare const varTrueOrNull: true | null;
-        if (varTrueOrNull !== true) {
+        declare const varFalseOrNull: false | null;
+        if (varFalseOrNull !== true) {
         }
       `,
-      options: [{ allowComparingNullableBooleans: true }],
+      options: [{ allowComparingNullableBooleans: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
       output: `
-        declare const varTrueOrNull: true | null;
-        if (!varTrueOrNull) {
+        declare const varFalseOrNull: false | null;
+        if (!varFalseOrNull) {
         }
       `,
     },
@@ -184,7 +148,7 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varBooleanOrNull === false) {
         }
       `,
-      options: [{ allowComparingNullableBooleans: true }],
+      options: [{ allowComparingNullableBooleans: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
@@ -202,7 +166,7 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (!(varBooleanOrNull === false)) {
         }
       `,
-      options: [{ allowComparingNullableBooleans: true }],
+      options: [{ allowComparingNullableBooleans: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
@@ -220,7 +184,7 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrFalseOrUndefined !== false) {
         }
       `,
-      options: [{ allowComparingNullableBooleans: true }],
+      options: [{ allowComparingNullableBooleans: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',

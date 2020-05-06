@@ -76,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    function getBooleanComparisonWithDefault(
+    function getBooleanComparison(
       node: TSESTree.BinaryExpression,
     ): BooleanComparisonWithTypeInformation | undefined {
       const comparison = deconstructComparison(node);
@@ -198,20 +198,20 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       BinaryExpression(node): void {
-        const comparison = getBooleanComparisonWithDefault(node); // pass optional config
+        const comparison = getBooleanComparison(node);
         if (comparison === undefined) {
           return;
         }
 
         if (
           comparison.expressionIsNullableBoolean &&
-          !options.allowComparingNullableBooleans
+          options.allowComparingNullableBooleans
         ) {
           return;
         }
 
         context.report({
-          fix: function* (fixer) {
+          fix: function*(fixer) {
             yield fixer.removeRange(comparison.range);
 
             // if the expression `exp` isn't nullable, or we're comparing to `true`,
@@ -232,10 +232,10 @@ export default util.createRule<Options, MessageIds>({
             // provide the default `true`
             yield fixer.insertTextAfter(node, ' ?? true');
 
-            // if we're doing `=== false`, the we need to negate the expression
+            // if we're doing `== false` or `=== false`, then we need to negate the expression
             if (!comparison.negated) {
               const { parent } = node;
-              // if the parent is a negation, we can get rid of the parent's negation.
+              // if the parent is a negation, we can instead just get rid of the parent's negation.
               // i.e. instead of resulting in `!(!(exp))`, we can just result in `exp`
               if (parent != null && nodeIsUnaryNegation(parent)) {
                 // remove from the beginning of the parent to the beginning of this node
