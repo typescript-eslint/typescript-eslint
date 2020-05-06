@@ -64,6 +64,42 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       output: 'true;',
     },
     {
+      code: 'true !== true;',
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: '!true;',
+    },
+    {
+      code: 'false === false;',
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: '!false;',
+    },
+    {
+      code: 'false !== false;',
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: 'false;',
+    },
+    {
+      code: 'false === true;',
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: 'false;',
+    },
+    {
       code: 'false !== true;',
       errors: [
         {
@@ -103,6 +139,96 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       output: `
         declare const varTrue: true;
         if (!varTrue) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varTrueOrUndefined: true | undefined;
+        if (varTrueOrUndefined === true) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleans: true }],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      output: `
+        declare const varTrueOrUndefined: true | undefined;
+        if (varTrueOrUndefined) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varTrueOrNull: true | null;
+        if (varTrueOrNull !== true) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleans: true }],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueNegated',
+        },
+      ],
+      output: `
+        declare const varTrueOrNull: true | null;
+        if (!varTrueOrNull) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBooleanOrNull: boolean | null;
+        if (varBooleanOrNull === false) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleans: true }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varBooleanOrNull: boolean | null;
+        if (!(varBooleanOrNull ?? true)) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBooleanOrNull: boolean | null;
+        if (!(varBooleanOrNull === false)) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleans: true }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varBooleanOrNull: boolean | null;
+        if (varBooleanOrNull ?? true) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varTrueOrFalseOrUndefined: true | false | undefined;
+        if (varTrueOrFalseOrUndefined !== false) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleans: true }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varTrueOrFalseOrUndefined: true | false | undefined;
+        if (varTrueOrFalseOrUndefined ?? true) {
         }
       `,
     },

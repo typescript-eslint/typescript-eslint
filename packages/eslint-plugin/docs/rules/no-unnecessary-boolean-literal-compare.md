@@ -36,6 +36,48 @@ if (someUndefinedCondition === false) {
 }
 ```
 
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, only comparisons that compare a boolean literal to a boolean will be checked.
+  // if false, comparisons that compare a boolean literal to a nullable boolean variable will also be checked
+  allowComparingNullableBooleans?: boolean;
+};
+
+const defaults = {
+  allowComparingNullableBooleans: true,
+};
+```
+
+### `allowComparingNullableBooleans`
+
+Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleans: false }`:
+
+```ts
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition === true) {
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition !== false) {
+}
+```
+
+Examples of **correct** code for this rule with `{ allowComparingNullableBooleans: false }`:
+
+```ts
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition) {
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition ?? true) {
+}
+```
+
 ## Related to
 
 - TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
