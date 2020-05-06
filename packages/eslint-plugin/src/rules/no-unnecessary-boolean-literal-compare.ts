@@ -211,7 +211,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         context.report({
-          fix: function*(fixer) {
+          fix: function* (fixer) {
             yield fixer.removeRange(comparison.range);
 
             // if the expression `exp` isn't nullable, or we're comparing to `true`,
