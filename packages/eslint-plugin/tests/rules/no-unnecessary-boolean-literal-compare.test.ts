@@ -153,7 +153,8 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     {
       code: `
         declare const varBooleanOrNull: boolean | null;
-        if (varBooleanOrNull === false) {
+        declare const otherBoolean: boolean;
+        if (varBooleanOrNull === false && otherBoolean) {
         }
       `,
       options: [{ allowComparingNullableBooleans: false }],
@@ -164,14 +165,16 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       ],
       output: `
         declare const varBooleanOrNull: boolean | null;
-        if (!(varBooleanOrNull ?? true)) {
+        declare const otherBoolean: boolean;
+        if (!(varBooleanOrNull ?? true) && otherBoolean) {
         }
       `,
     },
     {
       code: `
         declare const varBooleanOrNull: boolean | null;
-        if (!(varBooleanOrNull === false)) {
+        declare const otherBoolean: boolean;
+        if (!(varBooleanOrNull === false) || otherBoolean) {
         }
       `,
       options: [{ allowComparingNullableBooleans: false }],
@@ -182,14 +185,16 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       ],
       output: `
         declare const varBooleanOrNull: boolean | null;
-        if (varBooleanOrNull ?? true) {
+        declare const otherBoolean: boolean;
+        if ((varBooleanOrNull ?? true) || otherBoolean) {
         }
       `,
     },
     {
       code: `
         declare const varTrueOrFalseOrUndefined: true | false | undefined;
-        if (varTrueOrFalseOrUndefined !== false) {
+        declare const otherBoolean: boolean;
+        if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
         }
       `,
       options: [{ allowComparingNullableBooleans: false }],
@@ -200,7 +205,8 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       ],
       output: `
         declare const varTrueOrFalseOrUndefined: true | false | undefined;
-        if (varTrueOrFalseOrUndefined ?? true) {
+        declare const otherBoolean: boolean;
+        if ((varTrueOrFalseOrUndefined ?? true) && !otherBoolean) {
         }
       `,
     },

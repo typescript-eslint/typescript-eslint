@@ -229,9 +229,6 @@ export default util.createRule<Options, MessageIds>({
             // if we're here, then the expression is a nullable boolean and we're
             // comparing to a literal `false`
 
-            // provide the default `true`
-            yield fixer.insertTextAfter(node, ' ?? true');
-
             // if we're doing `== false` or `=== false`, then we need to negate the expression
             if (!comparison.negated) {
               const { parent } = node;
@@ -243,10 +240,13 @@ export default util.createRule<Options, MessageIds>({
                 // remove from the end of the node to the end of the parent
                 yield fixer.removeRange([node.range[1], parent.range[1]]);
               } else {
-                yield fixer.insertTextBefore(node, '!(');
-                yield fixer.insertTextAfter(node, ')');
+                yield fixer.insertTextBefore(node, '!');
               }
             }
+
+            // provide the default `true`
+            yield fixer.insertTextBefore(node, '(');
+            yield fixer.insertTextAfter(node, ' ?? true)');
           },
           messageId: comparison.expressionIsNullableBoolean
             ? comparison.literalBooleanInComparison
