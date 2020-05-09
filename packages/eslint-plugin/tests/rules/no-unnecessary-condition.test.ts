@@ -56,6 +56,14 @@ for (let i = 0; b1 && b2; i++) {
   break;
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+for (;;) {}
     `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
@@ -203,15 +211,14 @@ returnsArr?.()[42]?.toUpperCase();
 declare const arr: string[][];
 arr[x] ?? [];
     `,
-    // Supports ignoring the RHS
+    // Doesn't check the right-hand side of a logical expression
+    //  in a non-conditional context
     {
       code: `
 declare const b1: boolean;
 declare const b2: true;
-if (b1 && b2) {
-}
+const x = b1 && b2;
       `,
-      options: [{ ignoreRhs: true }],
     },
     {
       code: `
@@ -289,19 +296,26 @@ const t1 = b1 && b2;
 const t2 = b1 || b2;
 if (b1 && b2) {
 }
+if (b2 && b1) {
+}
 while (b1 && b2) {}
+while (b2 && b1) {}
 for (let i = 0; b1 && b2; i++) {
   break;
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
+const t1 = b2 && b1 ? 'yes' : 'no';
       `,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
         ruleError(5, 12, 'alwaysTruthy'),
         ruleError(6, 5, 'alwaysTruthy'),
-        ruleError(8, 8, 'alwaysTruthy'),
-        ruleError(9, 17, 'alwaysTruthy'),
-        ruleError(12, 12, 'alwaysTruthy'),
+        ruleError(8, 11, 'alwaysTruthy'),
+        ruleError(10, 8, 'alwaysTruthy'),
+        ruleError(11, 14, 'alwaysTruthy'),
+        ruleError(12, 17, 'alwaysTruthy'),
+        ruleError(15, 12, 'alwaysTruthy'),
+        ruleError(16, 18, 'alwaysTruthy'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -313,6 +327,25 @@ const t1 = b1 && b2 ? 'yes' : 'no';
     unnecessaryConditionTest('null', 'alwaysFalsy'),
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
+
+    // More complex logical expressions
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (true && b1 && b2) {
+}
+if (b1 && false && b2) {
+}
+if (b1 || b2 || true) {
+}
+      `,
+      errors: [
+        ruleError(4, 5, 'alwaysTruthy'),
+        ruleError(6, 11, 'alwaysFalsy'),
+        ruleError(8, 17, 'alwaysTruthy'),
+      ],
+    },
 
     // Generic type params
     {
@@ -497,32 +530,6 @@ function falsy() {}
     // `,
     //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
     //     },
-
-    // Still errors on in the expected locations when ignoring RHS
-    {
-      options: [{ ignoreRhs: true }],
-      code: `
-const b1 = true;
-const b2 = false;
-const t1 = b1 && b2;
-const t2 = b1 || b2;
-if (b1 && b2) {
-}
-while (b1 && b2) {}
-for (let i = 0; b1 && b2; i++) {
-  break;
-}
-const t1 = b1 && b2 ? 'yes' : 'no';
-      `,
-      errors: [
-        ruleError(4, 12, 'alwaysTruthy'),
-        ruleError(5, 12, 'alwaysTruthy'),
-        ruleError(6, 5, 'alwaysTruthy'),
-        ruleError(8, 8, 'alwaysTruthy'),
-        ruleError(9, 17, 'alwaysTruthy'),
-        ruleError(12, 12, 'alwaysTruthy'),
-      ],
-    },
     {
       code: `
 while (true) {}
