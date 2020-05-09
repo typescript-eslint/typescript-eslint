@@ -1,12 +1,17 @@
-import rule from '../../src/rules/ban-types';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import rule, {
+  MessageIds,
+  Options,
+  TYPE_KEYWORDS,
+} from '../../src/rules/ban-types';
+import { objectReduceKey } from '../../src/util';
 import { RuleTester, noFormat } from '../RuleTester';
-import { InferOptionsTypeFromRule } from '../../src/util';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const options: InferOptionsTypeFromRule<typeof rule> = [
+const options: Options = [
   {
     types: {
       String: {
@@ -21,32 +26,13 @@ const options: InferOptionsTypeFromRule<typeof rule> = [
         fixWith: 'NS.Good',
       },
     },
-  },
-];
-
-const options2: InferOptionsTypeFromRule<typeof rule> = [
-  {
-    types: {
-      null: {
-        message: 'Use undefined instead.',
-        fixWith: 'undefined',
-      },
-    },
-  },
-];
-
-const options3: InferOptionsTypeFromRule<typeof rule> = [
-  {
-    types: {
-      undefined: null,
-    },
+    extendDefaults: false,
   },
 ];
 
 ruleTester.run('ban-types', rule, {
   valid: [
     'let f = Object();', // Should not fail if there is no options set
-    'let f: {} = {};',
     'let f: { x: number; y: number } = { x: 1, y: 1 };',
     {
       code: 'let f = Object();',
@@ -89,11 +75,27 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: 'let a: undefined;',
-      options: options2,
+      options: [
+        {
+          types: {
+            null: {
+              message: 'Use undefined instead.',
+              fixWith: 'undefined',
+            },
+          },
+        },
+      ],
     },
     {
       code: 'let a: null;',
-      options: options3,
+      options: [
+        {
+          types: {
+            undefined: null,
+          },
+          extendDefaults: false,
+        },
+      ],
     },
   ],
   invalid: [
@@ -121,30 +123,6 @@ ruleTester.run('ban-types', rule, {
         },
       ],
       options,
-    },
-    {
-      code: 'let a: undefined;',
-      errors: [
-        {
-          messageId: 'bannedTypeMessage',
-          data: { name: 'undefined', customMessage: '' },
-          line: 1,
-          column: 8,
-        },
-      ],
-      options: options3,
-    },
-    {
-      code: 'let a: null;',
-      errors: [
-        {
-          messageId: 'bannedTypeMessage',
-          data: { name: 'null', customMessage: ' Use undefined instead.' },
-          line: 1,
-          column: 8,
-        },
-      ],
-      options: options2,
     },
     {
       code: 'let aa: Foo;',
@@ -497,5 +475,34 @@ let bar: object = {};
         },
       ],
     },
+    ...objectReduceKey(
+      TYPE_KEYWORDS,
+      (acc: TSESLint.InvalidTestCase<MessageIds, Options>[], key) => {
+        acc.push({
+          code: `function foo(x: ${key}) {}`,
+          errors: [
+            {
+              messageId: 'bannedTypeMessage',
+              data: {
+                name: key,
+                customMessage: '',
+              },
+              line: 1,
+              column: 17,
+            },
+          ],
+          options: [
+            {
+              extendDefaults: false,
+              types: {
+                [key]: null,
+              },
+            },
+          ],
+        });
+        return acc;
+      },
+      [],
+    ),
   ],
 });
