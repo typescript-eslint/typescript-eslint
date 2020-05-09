@@ -2,7 +2,6 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
 type Option = 'never' | 'always';
@@ -106,7 +105,7 @@ export default util.createRule<Options, MessageIds>({
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
         if (
           node.async &&
-          isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
+          util.isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
         ) {
           return overrideConfig.asyncArrow ?? baseConfig;
         }
@@ -143,7 +142,7 @@ export default util.createRule<Options, MessageIds>({
         leftToken = sourceCode.getLastToken(node.typeParameters)!;
         rightToken = sourceCode.getTokenAfter(leftToken)!;
       } else {
-        rightToken = sourceCode.getFirstToken(node, isOpeningParenToken)!;
+        rightToken = sourceCode.getFirstToken(node, util.isOpeningParenToken)!;
         leftToken = sourceCode.getTokenBefore(rightToken)!;
       }
       const hasSpacing = sourceCode.isSpaceBetweenTokens(leftToken, rightToken);

@@ -80,7 +80,11 @@ const formatTestNames: Readonly<Record<
 };
 
 const REPLACE_REGEX = /%/g;
-const IGNORED_REGEX = /^.(?!gnored)/; // negative lookahead to not match `[iI]gnored`
+// filter to not match `[iI]gnored`
+const IGNORED_FILTER = {
+  match: false,
+  regex: /.gnored/.source,
+};
 
 type Cases = {
   code: string[];
@@ -100,7 +104,7 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -206,7 +210,7 @@ function createInvalidTestCases(
           options: [
             {
               ...options,
-              filter: IGNORED_REGEX.source,
+              filter: IGNORED_FILTER,
             },
           ],
           code: `// ${JSON.stringify(options)}\n${test.code
@@ -604,8 +608,24 @@ const cases: Cases = [
 
 ruleTester.run('naming-convention', rule, {
   valid: [
-    `const x = 1;`, // no options shouldn't crash
+    'const x = 1;', // no options shouldn't crash
     ...createValidTestCases(cases),
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: false,
+          },
+        },
+      ],
+    },
     {
       code: `
         declare const string_camelCase: string;
@@ -744,6 +764,23 @@ ruleTester.run('naming-convention', rule, {
     ...createInvalidTestCases(cases),
     {
       code: `
+        const child_process = require('child_process');
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          filter: {
+            regex: 'child_process',
+            match: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
         declare const string_camelCase01: string;
         declare const string_camelCase02: string | null;
         declare const string_camelCase03: string | null | undefined;
@@ -788,10 +825,14 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare const function_camelCase1: (() => void);
+        declare const function_camelCase1: () => void;
         declare const function_camelCase2: (() => void) | null;
         declare const function_camelCase3: (() => void) | null | undefined;
-        declare const function_camelCase4: (() => void) | (() => string) | null | undefined;
+        declare const function_camelCase4:
+          | (() => void)
+          | (() => string)
+          | null
+          | undefined;
       `,
       options: [
         {
@@ -810,11 +851,20 @@ ruleTester.run('naming-convention', rule, {
         declare const array_camelCase2: ReadonlyArray<number> | null;
         declare const array_camelCase3: number[] | null | undefined;
         declare const array_camelCase4: readonly number[] | null | undefined;
-        declare const array_camelCase5: number[] | (number | string)[] | null | undefined;
+        declare const array_camelCase5:
+          | number[]
+          | (number | string)[]
+          | null
+          | undefined;
         declare const array_camelCase6: [] | null | undefined;
         declare const array_camelCase7: [number] | null | undefined;
 
-        declare const array_camelCase8: readonly number[] | Array<string> | [boolean] | null | undefined;
+        declare const array_camelCase8:
+          | readonly number[]
+          | Array<string>
+          | [boolean]
+          | null
+          | undefined;
       `,
       options: [
         {

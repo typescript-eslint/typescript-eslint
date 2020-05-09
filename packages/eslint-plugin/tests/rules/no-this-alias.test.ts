@@ -29,7 +29,7 @@ const { length } = this;
 const { length, toString } = this;
 const [foo] = this;
 const [foo, bar] = this;
-`,
+      `,
       options: [
         {
           allowDestructuring: true,
@@ -47,9 +47,9 @@ const [foo, bar] = this;
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
     `
 declare module 'foo' {
-    declare const aVar: string
+  declare const aVar: string;
 }
-        `,
+    `,
   ],
 
   invalid: [
@@ -80,35 +80,35 @@ declare module 'foo' {
 var unscoped = this;
 
 function testFunction() {
-    let inFunction = this;
+  let inFunction = this;
 }
 const testLambda = () => {
-    const inLambda = this;
+  const inLambda = this;
 };
-`,
+      `,
       errors: [idError, idError, idError],
     },
     {
       code: `
 class TestClass {
-    constructor() {
-        const inConstructor = this;
-        const asThis: this = this;
+  constructor() {
+    const inConstructor = this;
+    const asThis: this = this;
 
-        const asString = "this";
-        const asArray = [this];
-        const asArrayString = ["this"];
-    }
+    const asString = 'this';
+    const asArray = [this];
+    const asArrayString = ['this'];
+  }
 
-    public act(scope: this = this) {
-        const inMemberFunction = this;
-        const { act } = this;
-        const { act, constructor } = this;
-        const [foo] = this;
-        const [foo, bar] = this;
-    }
+  public act(scope: this = this) {
+    const inMemberFunction = this;
+    const { act } = this;
+    const { act, constructor } = this;
+    const [foo] = this;
+    const [foo, bar] = this;
+  }
 }
-`,
+      `,
       options: [
         {
           allowDestructuring: false,

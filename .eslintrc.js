@@ -42,6 +42,14 @@ module.exports = {
     ],
 
     //
+    // Internal repo rules
+    //
+
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+
+    //
     // eslint base
     //
 
@@ -119,12 +127,6 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
-
-    //
-    // Internal repo rules
-    //
-    '@typescript-eslint/internal/no-typescript-default-import': 'error',
-    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
   },
   parserOptions: {
     sourceType: 'module',
@@ -174,7 +176,7 @@ module.exports = {
         '@typescript-eslint/internal/no-typescript-estree-import': 'error',
       },
     },
-    // rule source files
+    // plugin rule source files
     {
       files: [
         'packages/eslint-plugin-internal/src/rules/**/*.ts',
@@ -185,6 +187,17 @@ module.exports = {
       rules: {
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+      },
+    },
+    // plugin rule tests
+    {
+      files: [
+        'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin/tests/rules/**/*.test.ts',
+      ],
+      rules: {
+        '@typescript-eslint/internal/plugin-test-formatting': 'error',
       },
     },
     // tools and tests

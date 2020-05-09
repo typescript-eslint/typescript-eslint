@@ -37,7 +37,8 @@ This rule has an object option that may receive any of the following as booleans
 - `"objectDestructuring"`
 - `"parameter"`: `true` by default
 - `"propertyDeclaration"`: `true` by default
-- `"variableDeclaration"`
+- `"variableDeclaration"`,
+- `"variableDeclarationIgnoreFunction"`
 
 For example, with the following configuration:
 
@@ -76,6 +77,9 @@ Examples of **correct** code with `{ "arrayDestructuring": true }`:
 const [a]: number[] = [1];
 const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
+
+for (const [key, val] of new Map([['key', 1]])) {
+}
 ```
 
 ### `arrowParameter`
@@ -144,6 +148,9 @@ Examples of **correct** code with `{ "objectDestructuring": true }`:
 ```ts
 const { length }: { length: number } = 'text';
 const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
+
+for (const { key, val } of [{ key: 'key', val: 1 }]) {
+}
 ```
 
 ### `parameter`
@@ -157,7 +164,7 @@ function logsSize(size): void {
   console.log(size);
 }
 
-const doublesSize = function(size): number {
+const doublesSize = function (size): number {
   return size * 2;
 };
 
@@ -165,7 +172,7 @@ const divider = {
   curriesSize(size): number {
     return size;
   },
-  dividesSize: function(size): number {
+  dividesSize: function (size): number {
     return size / 2;
   },
 };
@@ -185,7 +192,7 @@ function logsSize(size: number): void {
   console.log(size);
 }
 
-const doublesSize = function(size: number): number {
+const doublesSize = function (size: number): number {
   return size * 2;
 };
 
@@ -193,7 +200,7 @@ const divider = {
   curriesSize(size: number): number {
     return size;
   },
-  dividesSize: function(size: number): number {
+  dividesSize: function (size: number): number {
     return size / 2;
   },
 };
@@ -246,6 +253,30 @@ Examples of **correct** code with `{ "variableDeclaration": true }`:
 const text: string = 'text';
 let initialText: string = 'text';
 let delayedText: string;
+```
+
+### `variableDeclarationIgnoreFunction`
+
+Ignore variable declarations for non-arrow and arrow functions.
+
+Examples of **incorrect** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+```ts
+const text = 'text';
+```
+
+Examples of **correct** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+```ts
+const a = (): void => {};
+const b = function (): void => {};
+const c: () => void = (): void => {};
+
+class Foo {
+  a = (): void => {};
+  b = function (): void => {};
+  c = () => void = (): void => {};
+}
 ```
 
 ## When Not To Use It

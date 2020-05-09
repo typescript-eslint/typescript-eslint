@@ -1,15 +1,23 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+import {
+  TSESLint,
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 import * as util from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
+    ignoreIIFE?: boolean;
   },
 ];
 
-export default util.createRule<Options, 'floating'>({
+type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
+
+export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -19,13 +27,18 @@ export default util.createRule<Options, 'floating'>({
       requiresTypeChecking: true,
     },
     messages: {
-      floating: 'Promises must be handled appropriately',
+      floating: 'Promises must be handled appropriately.',
+      floatingVoid:
+        'Promises must be handled appropriately' +
+        ' or explicitly marked as ignored with the `void` operator.',
+      floatingFixVoid: 'Add void operator to ignore.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoreVoid: { type: 'boolean' },
+          ignoreIIFE: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -35,25 +48,61 @@ export default util.createRule<Options, 'floating'>({
   defaultOptions: [
     {
       ignoreVoid: false,
+      ignoreIIFE: false,
     },
   ],
 
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     return {
       ExpressionStatement(node): void {
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
 
+        if (options.ignoreIIFE && isAsyncIife(node)) {
+          return;
+        }
+
         if (isUnhandledPromise(checker, expression)) {
-          context.report({
-            messageId: 'floating',
-            node,
-          });
+          if (options.ignoreVoid) {
+            context.report({
+              node,
+              messageId: 'floatingVoid',
+              suggest: [
+                {
+                  messageId: 'floatingFixVoid',
+                  fix(fixer): TSESLint.RuleFix {
+                    let code = sourceCode.getText(node);
+                    code = `void ${code}`;
+                    return fixer.replaceText(node, code);
+                  },
+                },
+              ],
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'floating',
+            });
+          }
         }
       },
     };
+
+    function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
+      if (node.expression.type !== AST_NODE_TYPES.CallExpression) {
+        return false;
+      }
+
+      return (
+        node.expression.type === AST_NODE_TYPES.CallExpression &&
+        (node.expression.callee.type ===
+          AST_NODE_TYPES.ArrowFunctionExpression ||
+          node.expression.callee.type === AST_NODE_TYPES.FunctionExpression)
+      );
+    }
 
     function isUnhandledPromise(
       checker: ts.TypeChecker,
@@ -89,7 +138,8 @@ export default util.createRule<Options, 'floating'>({
         // `.catch()` that handles the promise.
         return (
           !isPromiseCatchCallWithHandler(node) &&
-          !isPromiseThenCallWithRejectionHandler(node)
+          !isPromiseThenCallWithRejectionHandler(node) &&
+          !isPromiseFinallyCallWithHandler(node)
         );
       } else if (ts.isConditionalExpression(node)) {
         // We must be getting the promise-like value from one of the branches of the
@@ -189,5 +239,15 @@ function isPromiseThenCallWithRejectionHandler(
     tsutils.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'then' &&
     expression.arguments.length >= 2
+  );
+}
+
+function isPromiseFinallyCallWithHandler(
+  expression: ts.CallExpression,
+): boolean {
+  return (
+    tsutils.isPropertyAccessExpression(expression.expression) &&
+    expression.expression.name.text === 'finally' &&
+    expression.arguments.length >= 1
   );
 }

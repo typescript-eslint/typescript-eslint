@@ -1,26 +1,24 @@
-import assert from 'assert';
 import rule, { parseOptions } from '../../src/rules/interface-name-prefix';
 import { RuleTester } from '../RuleTester';
 
 describe('interface-name-prefix', () => {
   it('parseOptions', () => {
-    assert.deepEqual(parseOptions(['never']), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions(['always']), {
+    expect(parseOptions(['never'])).toEqual({ prefixWithI: 'never' });
+    expect(parseOptions(['always'])).toEqual({
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
     });
-    assert.deepEqual(parseOptions([{}]), { prefixWithI: 'never' });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'never' }]), {
+    expect(parseOptions([{}])).toEqual({ prefixWithI: 'never' });
+    expect(parseOptions([{ prefixWithI: 'never' }])).toEqual({
       prefixWithI: 'never',
     });
-    assert.deepEqual(parseOptions([{ prefixWithI: 'always' }]), {
+    expect(parseOptions([{ prefixWithI: 'always' }])).toEqual({
       prefixWithI: 'always',
       allowUnderscorePrefix: false,
     });
-    assert.deepEqual(
+    expect(
       parseOptions([{ prefixWithI: 'always', allowUnderscorePrefix: true }]),
-      { prefixWithI: 'always', allowUnderscorePrefix: true },
-    );
+    ).toEqual({ prefixWithI: 'always', allowUnderscorePrefix: true });
   });
 });
 
@@ -32,55 +30,55 @@ ruleTester.run('interface-name-prefix', rule, {
   valid: [
     `
 interface Animal {
-    name: string;
+  name: string;
 }
-        `,
+    `,
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
     },
     {
       code: `
 interface _IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: [{ prefixWithI: 'always', allowUnderscorePrefix: true }],
     },
     {
       code: `
 interface IIguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
     },
     {
       code: `
 interface Iguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
     {
       code: `
 interface I18n {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
     },
   ],
@@ -88,9 +86,9 @@ interface I18n {
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'noPrefix',
@@ -102,9 +100,9 @@ interface IAnimal {
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
       errors: [
         {
@@ -117,9 +115,9 @@ interface Animal {
     {
       code: `
 interface Animal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: [{ prefixWithI: 'always', allowUnderscorePrefix: true }],
       errors: [
         {
@@ -132,9 +130,9 @@ interface Animal {
     {
       code: `
 interface Iguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['always'],
       errors: [
         {
@@ -147,9 +145,9 @@ interface Iguana {
     {
       code: `
 interface IIguana {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {
@@ -162,9 +160,9 @@ interface IIguana {
     {
       code: `
 interface IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {
@@ -177,9 +175,9 @@ interface IAnimal {
     {
       code: `
 interface _IAnimal {
-    name: string;
+  name: string;
 }
-            `,
+      `,
       options: ['never'],
       errors: [
         {

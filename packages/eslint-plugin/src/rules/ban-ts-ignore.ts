@@ -16,7 +16,7 @@ export default util.createRule({
         'Do not use "// @ts-ignore" comments because they suppress compilation errors.',
     },
     deprecated: true,
-    replacedBy: ['@typescript-eslint/ban-ts-comment'],
+    replacedBy: ['ban-ts-comment'],
   },
   defaultOptions: [],
   create(context) {

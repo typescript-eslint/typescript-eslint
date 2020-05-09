@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the delimiter, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import rule from '../../src/rules/member-delimiter-style';
 import { RuleTester } from '../RuleTester';
 
@@ -12,14 +17,14 @@ interface Foo {
     name: string;
     age: number;
 }
-        `,
+    `,
     {
       code: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -32,7 +37,7 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -45,7 +50,7 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -58,7 +63,7 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: true },
@@ -71,7 +76,7 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma' },
@@ -84,7 +89,7 @@ interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -97,7 +102,7 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'none', requireLast: true },
@@ -110,7 +115,7 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'none', requireLast: false },
@@ -123,7 +128,7 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -147,7 +152,7 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -165,7 +170,7 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -189,7 +194,7 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -213,7 +218,7 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -231,7 +236,7 @@ interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -255,7 +260,7 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -276,7 +281,7 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -299,14 +304,14 @@ type Foo = {
     name: string;
     age: number;
 }
-        `,
+    `,
     {
       code: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: true } }],
     },
     {
@@ -315,7 +320,7 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi' } }],
     },
     {
@@ -324,7 +329,7 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
     },
     {
@@ -333,7 +338,7 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: true } }],
     },
     {
@@ -342,7 +347,7 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma' } }],
     },
     {
@@ -351,7 +356,7 @@ type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
     },
     {
@@ -360,7 +365,7 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: true } }],
     },
     {
@@ -369,7 +374,7 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
     },
     {
@@ -378,7 +383,7 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -399,7 +404,7 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -417,7 +422,7 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -441,7 +446,7 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -465,7 +470,7 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -483,7 +488,7 @@ type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -507,7 +512,7 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -528,7 +533,7 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -557,7 +562,7 @@ type Bar = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -709,7 +714,7 @@ interface Foo {
 }
 
 interface Bar { name: string, age: number }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -728,7 +733,7 @@ interface Foo {
 }
 
 type Bar = { name: string, age: number }
-            `,
+      `,
       options: [
         {
           multiline: {
@@ -755,13 +760,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSemi',
@@ -781,13 +786,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi' } }],
       errors: [
         {
@@ -808,13 +813,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: true } }],
       errors: [
         {
@@ -835,13 +840,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
       errors: [
         {
@@ -857,13 +862,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: true } }],
       errors: [
         {
@@ -879,13 +884,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma' } }],
       errors: [
         {
@@ -906,13 +911,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: true } }],
       errors: [
         {
@@ -933,13 +938,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -955,13 +960,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma' } }],
       errors: [
         {
@@ -982,13 +987,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: true } }],
       errors: [
         {
@@ -1009,13 +1014,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -1031,13 +1036,13 @@ interface Foo {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -1058,13 +1063,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none' } }],
       errors: [
         {
@@ -1085,13 +1090,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: true } }],
       errors: [
         {
@@ -1112,13 +1117,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -1134,13 +1139,13 @@ interface Foo {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -1156,13 +1161,13 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none' } }],
       errors: [
         {
@@ -1183,13 +1188,13 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: true } }],
       errors: [
         {
@@ -1210,13 +1215,13 @@ interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -1232,13 +1237,13 @@ interface Foo {
     name: string
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -1254,13 +1259,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma' },
@@ -1288,13 +1293,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -1324,13 +1329,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -1355,13 +1360,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -1389,13 +1394,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -1428,13 +1433,13 @@ interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1462,13 +1467,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -1496,13 +1501,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -1535,13 +1540,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1569,13 +1574,13 @@ interface Foo {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1608,13 +1613,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -1642,13 +1647,13 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -1678,13 +1683,13 @@ interface Foo {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1712,13 +1717,13 @@ interface Foo {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1746,13 +1751,13 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -1780,13 +1785,13 @@ interface Foo {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -1816,13 +1821,13 @@ interface Foo {
     name: string,
     age: number
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1850,13 +1855,13 @@ interface Foo {
     name: string
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -1884,13 +1889,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSemi',
@@ -1910,13 +1915,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi' } }],
       errors: [
         {
@@ -1937,13 +1942,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: true } }],
       errors: [
         {
@@ -1964,13 +1969,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: true } }],
       errors: [
         {
@@ -1986,13 +1991,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma' } }],
       errors: [
         {
@@ -2013,13 +2018,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: true } }],
       errors: [
         {
@@ -2040,13 +2045,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -2062,13 +2067,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma' } }],
       errors: [
         {
@@ -2089,13 +2094,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: true } }],
       errors: [
         {
@@ -2116,13 +2121,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -2138,13 +2143,13 @@ type Foo = {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'comma', requireLast: false } }],
       errors: [
         {
@@ -2165,13 +2170,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none' } }],
       errors: [
         {
@@ -2192,13 +2197,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: true } }],
       errors: [
         {
@@ -2219,13 +2224,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -2241,13 +2246,13 @@ type Foo = {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -2263,13 +2268,13 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none' } }],
       errors: [
         {
@@ -2290,13 +2295,13 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: true } }],
       errors: [
         {
@@ -2317,13 +2322,13 @@ type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -2339,13 +2344,13 @@ type Foo = {
     name: string
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'none', requireLast: false } }],
       errors: [
         {
@@ -2361,13 +2366,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma' },
@@ -2395,13 +2400,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -2431,13 +2436,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -2462,13 +2467,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -2496,13 +2501,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -2535,13 +2540,13 @@ type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -2569,13 +2574,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -2603,13 +2608,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -2642,13 +2647,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -2676,13 +2681,13 @@ type Foo = {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -2715,13 +2720,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi' },
@@ -2749,13 +2754,13 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: false },
@@ -2785,13 +2790,13 @@ type Foo = {
     name: string;
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -2819,13 +2824,13 @@ type Foo = {
     name: string
     age: number;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'semi', requireLast: true },
@@ -2853,13 +2858,13 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma' },
@@ -2887,13 +2892,13 @@ type Foo = {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: false },
@@ -2923,13 +2928,13 @@ type Foo = {
     name: string,
     age: number
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: true },
@@ -2957,13 +2962,13 @@ type Foo = {
     name: string
     age: number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string
     age: number
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: true },
@@ -2996,7 +3001,7 @@ type Bar = {
     name: string,
     age: number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string,
@@ -3007,7 +3012,7 @@ type Bar = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'none', requireLast: true },
@@ -3045,12 +3050,12 @@ type Bar = {
 interface Foo {
     [key: string]: any
 }
-            `,
+      `,
       output: `
 interface Foo {
     [key: string]: any;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSemi',
@@ -3064,12 +3069,12 @@ interface Foo {
 interface Foo {
     [key: string]: any
 }
-            `,
+      `,
       output: `
 interface Foo {
     [key: string]: any;
 }
-            `,
+      `,
       options: [{ singleline: { delimiter: 'comma' } }],
       errors: [
         {
@@ -3143,12 +3148,12 @@ interface Foo {
 type Foo = {
     [key: string]: any
 }
-            `,
+      `,
       output: `
 type Foo = {
     [key: string]: any;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSemi',
@@ -3162,12 +3167,12 @@ type Foo = {
 type Foo = {
     [key: string]: any
 }
-            `,
+      `,
       output: `
 type Foo = {
     [key: string]: any;
 }
-            `,
+      `,
       options: [{ singleline: { delimiter: 'semi' } }],
       errors: [
         {
@@ -3232,7 +3237,7 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
       errors: [
         {
@@ -3248,7 +3253,7 @@ interface Foo {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: true },
@@ -3286,7 +3291,7 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
       errors: [
         {
@@ -3302,7 +3307,7 @@ type Foo = {
     name: string;
     age: number;
 }
-            `,
+      `,
       options: [
         {
           multiline: { delimiter: 'comma', requireLast: true },
