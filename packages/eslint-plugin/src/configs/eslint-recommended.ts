@@ -21,6 +21,8 @@ export default {
         'no-const-assign': 'off',
         // Checked by Typescript - ts(2588)
         'no-new-symbol': 'off',
+        // Checked by Typescript - ts(2349)
+        'no-obj-calls': 'off',
         // Checked by Typescript - ts(2376)
         'no-this-before-super': 'off',
         // This is checked by Typescript using the option `strictNullChecks`.
