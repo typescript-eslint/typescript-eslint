@@ -241,7 +241,10 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return parent.tag === node;
 
     case AST_NODE_TYPES.UnaryExpression:
-      return parent.operator === 'typeof';
+      // the first case is safe for obvious
+      // reasons. The second one is also fine
+      // since we're returning something falsy
+      return ['typeof', '!', 'void', 'delete'].includes(parent.operator);
 
     case AST_NODE_TYPES.BinaryExpression:
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);

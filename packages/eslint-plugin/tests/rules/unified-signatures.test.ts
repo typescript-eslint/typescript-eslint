@@ -131,11 +131,11 @@ export interface Foo {
     `,
     `
 declare module 'foo' {
-  export default function(foo: number): string[];
+  export default function (foo: number): string[];
 }
     `,
     `
-export default function(foo: number): string[];
+export default function (foo: number): string[];
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/740
     `
@@ -682,28 +682,28 @@ export function foo(line: number, character?: number): number;
     {
       code: `
 declare module 'foo' {
-  export default function(foo: number): string[];
-  export default function(foo: number, bar?: string): string[];
+  export default function (foo: number): string[];
+  export default function (foo: number, bar?: string): string[];
 }
       `,
       errors: [
         {
           messageId: 'omittingSingleParameter',
           line: 4,
-          column: 40,
+          column: 41,
         },
       ],
     },
     {
       code: `
-export default function(foo: number): string[];
-export default function(foo: number, bar?: string): string[];
+export default function (foo: number): string[];
+export default function (foo: number, bar?: string): string[];
       `,
       errors: [
         {
           messageId: 'omittingSingleParameter',
           line: 3,
-          column: 38,
+          column: 39,
         },
       ],
     },

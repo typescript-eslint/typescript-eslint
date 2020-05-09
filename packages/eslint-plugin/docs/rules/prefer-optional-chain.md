@@ -70,6 +70,21 @@ foo?.a?.b?.method?.();
 foo?.a?.b?.c?.d?.e;
 ```
 
+## Options
+
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  // if true, the rule will only provide suggested fixes instead of automatically modifying code
+  suggestInsteadOfAutofix?: boolean;
+};
+
+const defaults = {
+  suggestInsteadOfAutofix: false,
+};
+```
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.

@@ -83,7 +83,7 @@ describe('parse()', () => {
     it('output tokens, comments, locs, and ranges when called with those options', () => {
       const spy = jest.spyOn(astConverter, 'astConverter');
 
-      const loggerFn = jest.fn(() => true);
+      const loggerFn = jest.fn(() => {});
 
       parser.parse('let foo = bar;', {
         loggerFn,
