@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESLint,
   TSESTree,
+  JSONSchema,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -25,19 +26,19 @@ export type Options = [
   },
 ];
 
-const neverConfig = {
+const neverConfig: JSONSchema.JSONSchema4 = {
   type: 'string',
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: string[]): object => ({
+const arrayConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
   type: 'array',
   items: {
     enum: memberTypes,
   },
 });
 
-const objectConfig = (memberTypes: string[]): object => ({
+const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {

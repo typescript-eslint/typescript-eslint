@@ -58,7 +58,18 @@
   // MD032/blanks-around-lists - Lists should be surrounded by blank lines
   "MD032": false,
   // MD033/no-inline-html - Inline HTML
-  "MD033": { "allowed_elements": ["a", "img", "br", "sup", "h1", "p"] },
+  "MD033": {
+    "allowed_elements": [
+      "a",
+      "img",
+      "br",
+      "sup",
+      "h1",
+      "p",
+      "details",
+      "summary"
+    ]
+  },
   // MD034/no-bare-urls - Bare URL used
   "MD034": false,
   // MD035/hr-style - Horizontal rule style
