@@ -1,0 +1,1 @@
+const b = () => new.target;

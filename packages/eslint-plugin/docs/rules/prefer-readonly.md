@@ -1,4 +1,4 @@
-# require never-modified private members be marked as `readonly` (prefer-readonly)
+# Requires that private members are marked as `readonly` if they're never modified outside of the constructor (`prefer-readonly`)
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
@@ -17,7 +17,7 @@ class Container {
 
   public constructor(
     onlyModifiedInConstructor: number,
-    // Private parameter properties can also be marked as reaodnly
+    // Private parameter properties can also be marked as readonly
     private neverModifiedParameter: string,
   ) {
     this.onlyModifiedInConstructor = onlyModifiedInConstructor;
@@ -48,13 +48,13 @@ class Container {
 
 This rule, in its default state, does not require any argument.
 
-### onlyInlineLambdas
+### `onlyInlineLambdas`
 
 You may pass `"onlyInlineLambdas": true` as a rule option within an object to restrict checking only to members immediately assigned a lambda value.
 
-```cjson
+```jsonc
 {
-    "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
+  "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
 }
 ```
 

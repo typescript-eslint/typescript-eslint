@@ -1,8 +1,9 @@
-import path from 'path';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/prefer-includes';
-import { RuleTester } from '../RuleTester';
+import * as util from '../../src/util';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -12,8 +13,33 @@ const ruleTester = new RuleTester({
   },
 });
 
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof rule>;
+
+type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, never>;
+type ValidTestCase = TSESLint.ValidTestCase<never> | string;
+function addOptional(cases: ValidTestCase[]): ValidTestCase[];
+function addOptional(cases: InvalidTestCase[]): InvalidTestCase[];
+function addOptional(
+  cases: (ValidTestCase | InvalidTestCase)[],
+): (ValidTestCase | InvalidTestCase)[] {
+  return cases.reduce<(ValidTestCase | InvalidTestCase)[]>((acc, c) => {
+    acc.push(c);
+    if (typeof c === 'string') {
+      acc.push(c.replace('.', '?.'));
+    } else {
+      acc.push({
+        ...c,
+        code: c.code.replace('.', '?.'),
+        output: 'output' in c ? c.output?.replace('.', '?.') : null,
+      });
+    }
+
+    return acc;
+  }, []);
+}
+
 ruleTester.run('prefer-includes', rule, {
-  valid: [
+  valid: addOptional([
     `
       function f(a: string): void {
         a.indexOf(b)
@@ -31,7 +57,7 @@ ruleTester.run('prefer-includes', rule, {
     `,
     `
       type UserDefined = {
-        indexOf(x: any): number // don't have 'includes'.
+        indexOf(x: any): number // don't have 'includes'
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -40,7 +66,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes(x: any): boolean // different parameters.
+        includes(x: any): boolean // different parameters
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -49,7 +75,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes(x: any, fromIndex: number): boolean // different parameters.
+        includes(x: any, fromIndex: number): boolean // different parameters
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -58,7 +84,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes: boolean // different type.
+        includes: boolean // different type
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -89,8 +115,8 @@ ruleTester.run('prefer-includes', rule, {
         something.test(a)
       }
     `,
-  ],
-  invalid: [
+  ]),
+  invalid: addOptional([
     // positive
     {
       code: `
@@ -435,5 +461,5 @@ ruleTester.run('prefer-includes', rule, {
       `,
       errors: [{ messageId: 'preferIncludes' }],
     },
-  ],
+  ]),
 });

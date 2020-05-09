@@ -303,6 +303,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 36,
@@ -447,6 +448,7 @@ Object {
             ],
             "type": "Identifier",
           },
+          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -481,6 +483,7 @@ Object {
             "line": 2,
           },
         },
+        "optional": false,
         "range": Array [
           37,
           51,
@@ -1252,6 +1255,7 @@ Object {
         "body": Array [
           Object {
             "computed": true,
+            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {

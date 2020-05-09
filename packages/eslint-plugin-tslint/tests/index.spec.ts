@@ -86,7 +86,7 @@ ruleTester.run('tslint/config', rule, {
     {
       code: 'var foo = true // semicolon',
       options: tslintRulesConfig,
-      output: 'var foo = true // semicolon',
+      output: 'var foo = true; // semicolon',
       filename: './tests/fixture-project/4.ts',
       errors: [
         {
@@ -155,7 +155,7 @@ describe('tslint/error', () => {
     linter.defineParser('@typescript-eslint/parser', parser);
 
     expect(() => linter.verify(code, config)).toThrow(
-      `You must provide a value for the "parserOptions.project" property for @typescript-eslint/parser`,
+      'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
     );
   }
 

@@ -1,5 +1,4 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import ts from 'typescript';
 import * as util from '../util';
 
 export default util.createRule({
@@ -9,7 +8,8 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce giving `compare` argument to `Array#sort`',
+      description:
+        'Requires `Array#sort` calls to always provide a `compareFunction`',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
@@ -25,27 +25,17 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        node: TSESTree.MemberExpression,
+      ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
+        callee: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        // Get the symbol of the `sort` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-        const sortSymbol = checker.getSymbolAtLocation(tsNode);
-        if (sortSymbol == null) {
-          return;
-        }
+        const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
+        const calleeObjType = util.getConstrainedTypeAtLocation(
+          checker,
+          tsNode,
+        );
 
-        // Check the owner type of the `sort` method.
-        for (const methodDecl of sortSymbol.declarations) {
-          const typeDecl = methodDecl.parent;
-          if (
-            ts.isInterfaceDeclaration(typeDecl) &&
-            ts.isSourceFile(typeDecl.parent) &&
-            typeDecl.name.escapedText === 'Array'
-          ) {
-            context.report({ node: node.parent!, messageId: 'requireCompare' });
-            return;
-          }
+        if (util.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+          context.report({ node: callee.parent!, messageId: 'requireCompare' });
         }
       },
     };

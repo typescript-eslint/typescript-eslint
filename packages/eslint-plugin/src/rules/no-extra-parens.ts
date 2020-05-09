@@ -1,4 +1,4 @@
-// anys are required to work around manipulating the AST in weird ways
+// any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unnecessary parentheses',
       category: 'Possible Errors',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'code',
     schema: baseRule.meta.schema,
@@ -35,21 +36,26 @@ export default util.createRule<Options, MessageIds>({
       const rule = rules.BinaryExpression as (n: typeof node) => void;
 
       // makes the rule think it should skip the left or right
-      if (node.left.type === AST_NODE_TYPES.TSAsExpression) {
+      const isLeftTypeAssertion = util.isTypeAssertion(node.left);
+      const isRightTypeAssertion = util.isTypeAssertion(node.right);
+      if (isLeftTypeAssertion && isRightTypeAssertion) {
+        return; // ignore
+      }
+      if (isLeftTypeAssertion) {
         return rule({
           ...node,
           left: {
             ...node.left,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }
-      if (node.right.type === AST_NODE_TYPES.TSAsExpression) {
+      if (isRightTypeAssertion) {
         return rule({
           ...node,
           right: {
             ...node.right,
-            type: AST_NODE_TYPES.BinaryExpression as any,
+            type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
       }
@@ -61,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
 
-      if (node.callee.type === AST_NODE_TYPES.TSAsExpression) {
+      if (util.isTypeAssertion(node.callee)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         return rule({
           ...node,
@@ -79,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const rule = rules.UnaryExpression as (n: typeof node) => void;
 
-      if (node.argument.type === AST_NODE_TYPES.TSAsExpression) {
+      if (util.isTypeAssertion(node.argument)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         return rule({
           ...node,
@@ -96,7 +102,7 @@ export default util.createRule<Options, MessageIds>({
     const overrides: TSESLint.RuleListener = {
       // ArrayExpression
       ArrowFunctionExpression(node) {
-        if (node.body.type !== AST_NODE_TYPES.TSAsExpression) {
+        if (!util.isTypeAssertion(node.body)) {
           return rules.ArrowFunctionExpression(node);
         }
       },
@@ -108,7 +114,7 @@ export default util.createRule<Options, MessageIds>({
       // ClassExpression
       ConditionalExpression(node) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
-        if (node.test.type === AST_NODE_TYPES.TSAsExpression) {
+        if (util.isTypeAssertion(node.test)) {
           return rules.ConditionalExpression({
             ...node,
             test: {
@@ -117,7 +123,7 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         }
-        if (node.consequent.type === AST_NODE_TYPES.TSAsExpression) {
+        if (util.isTypeAssertion(node.consequent)) {
           return rules.ConditionalExpression({
             ...node,
             consequent: {
@@ -126,7 +132,7 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         }
-        if (node.alternate.type === AST_NODE_TYPES.TSAsExpression) {
+        if (util.isTypeAssertion(node.alternate)) {
           // reduces the precedence of the node so the rule thinks it needs to be rapped
           return rules.ConditionalExpression({
             ...node,
@@ -142,7 +148,7 @@ export default util.createRule<Options, MessageIds>({
       'ForInStatement, ForOfStatement'(
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ) {
-        if (node.right.type === AST_NODE_TYPES.TSAsExpression) {
+        if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
           return rules['ForInStatement, ForOfStatement']({
             ...node,
@@ -158,19 +164,19 @@ export default util.createRule<Options, MessageIds>({
       },
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
-        if (node.init && node.init.type === AST_NODE_TYPES.TSAsExpression) {
+        if (node.init && util.isTypeAssertion(node.init)) {
           return rules.ForStatement({
             ...node,
             init: null,
           });
         }
-        if (node.test && node.test.type === AST_NODE_TYPES.TSAsExpression) {
+        if (node.test && util.isTypeAssertion(node.test)) {
           return rules.ForStatement({
             ...node,
             test: null,
           });
         }
-        if (node.update && node.update.type === AST_NODE_TYPES.TSAsExpression) {
+        if (node.update && util.isTypeAssertion(node.update)) {
           return rules.ForStatement({
             ...node,
             update: null,
@@ -180,14 +186,14 @@ export default util.createRule<Options, MessageIds>({
         return rules.ForStatement(node);
       },
       'ForStatement > *.init:exit'(node: TSESTree.Node) {
-        if (node.type !== AST_NODE_TYPES.TSAsExpression) {
+        if (!util.isTypeAssertion(node)) {
           return rules['ForStatement > *.init:exit'](node);
         }
       },
       // IfStatement
       LogicalExpression: binaryExp,
       MemberExpression(node) {
-        if (node.object.type === AST_NODE_TYPES.TSAsExpression) {
+        if (util.isTypeAssertion(node.object)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.MemberExpression({
             ...node,
@@ -205,21 +211,18 @@ export default util.createRule<Options, MessageIds>({
       // ReturnStatement
       // SequenceExpression
       SpreadElement(node) {
-        if (node.argument.type !== AST_NODE_TYPES.TSAsExpression) {
+        if (!util.isTypeAssertion(node.argument)) {
           return rules.SpreadElement(node);
         }
       },
       SwitchCase(node) {
-        if (node.test && node.test.type !== AST_NODE_TYPES.TSAsExpression) {
+        if (node.test && !util.isTypeAssertion(node.test)) {
           return rules.SwitchCase(node);
         }
       },
       // SwitchStatement
       ThrowStatement(node) {
-        if (
-          node.argument &&
-          node.argument.type !== AST_NODE_TYPES.TSAsExpression
-        ) {
+        if (node.argument && !util.isTypeAssertion(node.argument)) {
           return rules.ThrowStatement(node);
         }
       },
@@ -229,10 +232,7 @@ export default util.createRule<Options, MessageIds>({
       // WhileStatement
       // WithStatement - i'm not going to even bother implementing this terrible and never used feature
       YieldExpression(node) {
-        if (
-          node.argument &&
-          node.argument.type !== AST_NODE_TYPES.TSAsExpression
-        ) {
+        if (node.argument && !util.isTypeAssertion(node.argument)) {
           return rules.YieldExpression(node);
         }
       },

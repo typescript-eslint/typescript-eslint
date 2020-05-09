@@ -57,7 +57,7 @@ function batchedSingleLineTests<
           line: 1,
         })),
       };
-      if (output && output[i]) {
+      if (output?.[i]) {
         return {
           ...returnVal,
           output: output[i],

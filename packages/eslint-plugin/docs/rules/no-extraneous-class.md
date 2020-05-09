@@ -1,4 +1,4 @@
-# Forbids the use of classes as namespaces (no-extraneous-class)
+# Forbids the use of classes as namespaces (`no-extraneous-class`)
 
 This rule warns when a class is accidentally used as a namespace.
 
@@ -50,9 +50,25 @@ const StaticOnly = {
 
 This rule accepts a single object option.
 
-- `allowConstructorOnly: true` will silence warnings about classes containing only a constructor.
-- `allowEmpty: true` will silence warnings about empty classes.
-- `allowStaticOnly: true` will silence warnings about classes containing only static members.
+```ts
+type Options = {
+  // allow extraneous classes if they only contain a constructor
+  allowConstructorOnly?: boolean;
+  // allow extraneous classes if they have no body (i.e. are empty)
+  allowEmpty?: boolean;
+  // allow extraneous classes if they only contain static members
+  allowStaticOnly?: boolean;
+  // allow extraneous classes if they have a decorator
+  allowWithDecorator?: boolean;
+};
+
+const defaultOptions: Options = {
+  allowConstructorOnly: false,
+  allowEmpty: false,
+  allowStaticOnly: false,
+  allowWithDecorator: false,
+};
+```
 
 ## When Not To Use It
 

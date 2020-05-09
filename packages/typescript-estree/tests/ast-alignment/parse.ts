@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ParserPlugin } from '@babel/parser';
-import codeFrame from 'babel-code-frame';
+import { codeFrameColumns } from '@babel/code-frame';
 import * as parser from '../../src/parser';
-import * as parseUtils from './utils';
 
 function createError(
   message: string,
@@ -31,6 +30,8 @@ function parseWithBabelParser(text: string, jsx = true): any {
     'estree',
     'bigInt',
     'importMeta',
+    'optionalChaining',
+    'nullishCoalescingOperator',
   ];
   if (jsx) {
     plugins.push('jsx');
@@ -90,14 +91,10 @@ export function parse(
   try {
     switch (opts.parser) {
       case '@typescript-eslint/typescript-estree':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithTypeScriptESTree(text, opts.jsx),
-        );
+        result.ast = parseWithTypeScriptESTree(text, opts.jsx);
         break;
       case '@babel/parser':
-        result.ast = parseUtils.normalizeNodeTypes(
-          parseWithBabelParser(text, opts.jsx),
-        );
+        result.ast = parseWithBabelParser(text, opts.jsx);
         break;
       default:
         throw new Error(
@@ -107,9 +104,18 @@ export function parse(
   } catch (error) {
     const loc = error.loc;
     if (loc) {
-      error.codeFrame = codeFrame(text, loc.line, loc.column + 1, {
-        highlightCode: true,
-      });
+      error.codeFrame = codeFrameColumns(
+        text,
+        {
+          start: {
+            line: loc.line,
+            column: loc.column + 1,
+          },
+        },
+        {
+          highlightCode: true,
+        },
+      );
       error.message += `\n${error.codeFrame}`;
     }
     result.parseError = error;

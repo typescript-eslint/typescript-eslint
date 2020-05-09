@@ -1,4 +1,4 @@
-# Require explicit return types on functions and class methods (explicit-function-return-type)
+# Require explicit return types on functions and class methods (`explicit-function-return-type`)
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case
@@ -18,7 +18,7 @@ function test() {
 }
 
 // Should indicate that a number is returned
-var fn = function() {
+var fn = function () {
   return 1;
 };
 
@@ -42,7 +42,7 @@ function test(): void {
 }
 
 // A return value of type number
-var fn = function(): number {
+var fn = function (): number {
   return 1;
 };
 
@@ -69,6 +69,8 @@ type Options = {
   allowTypedFunctionExpressions?: boolean;
   // if true, functions immediately returning another function expression will not be checked
   allowHigherOrderFunctions?: boolean;
+  // if true, concise arrow functions that start with the void keyword will not be checked
+  allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
 };
 
 const defaults = {
@@ -100,7 +102,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 }
 ```
 
-### allowExpressions
+### `allowExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
 
@@ -117,19 +119,19 @@ Examples of **correct** code for this rule with `{ allowExpressions: true }`:
 ```ts
 node.addEventListener('click', () => {});
 
-node.addEventListener('click', function() {});
+node.addEventListener('click', function () {});
 
 const foo = arr.map(i => i * i);
 ```
 
-### allowTypedFunctionExpressions
+### `allowTypedFunctionExpressions`
 
 Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: true }`:
 
 ```ts
 let arrowFn = () => 'test';
 
-let funcExpr = function() {
+let funcExpr = function () {
   return 'test';
 };
 
@@ -176,7 +178,7 @@ functionWithObjectArg({
 });
 ```
 
-### allowHigherOrderFunctions
+### `allowHigherOrderFunctions`
 
 Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
@@ -184,7 +186,7 @@ Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: 
 var arrowFn = () => () => {};
 
 function fn() {
-  return function() {};
+  return function () {};
 }
 ```
 
@@ -194,8 +196,26 @@ Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: tr
 var arrowFn = () => (): void => {};
 
 function fn() {
-  return function(): void {};
+  return function (): void {};
 }
+```
+
+### `allowConciseArrowFunctionExpressionsStartingWithVoid`
+
+Examples of **incorrect** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+
+```ts
+var join = (a: string, b: string) => `${a}${b}`;
+
+const log = (message: string) => {
+  console.log(message);
+};
+```
+
+Examples of **correct** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+
+```ts
+var log = (message: string) => void console.log(message);
 ```
 
 ## When Not To Use It

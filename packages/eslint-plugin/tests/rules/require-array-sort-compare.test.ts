@@ -1,8 +1,7 @@
-import path from 'path';
 import rule from '../../src/rules/require-array-sort-compare';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -16,59 +15,81 @@ ruleTester.run('require-array-sort-compare', rule, {
   valid: [
     `
       function f(a: any[]) {
-        a.sort(undefined)
+        a.sort(undefined);
       }
     `,
     `
       function f(a: any[]) {
-        a.sort((a, b) => a - b)
+        a.sort((a, b) => a - b);
       }
     `,
     `
       function f(a: Array<string>) {
-        a.sort(undefined)
+        a.sort(undefined);
       }
     `,
     `
       function f(a: Array<number>) {
-        a.sort((a, b) => a - b)
+        a.sort((a, b) => a - b);
       }
     `,
     `
       function f(a: { sort(): void }) {
-        a.sort()
+        a.sort();
       }
     `,
     `
-      class A { sort(): void {} }
+      class A {
+        sort(): void {}
+      }
       function f(a: A) {
-        a.sort()
+        a.sort();
       }
     `,
     `
-      interface A { sort(): void }
+      interface A {
+        sort(): void;
+      }
       function f(a: A) {
-        a.sort()
+        a.sort();
       }
     `,
     `
-      interface A { sort(): void }
+      interface A {
+        sort(): void;
+      }
       function f<T extends A>(a: T) {
-        a.sort()
+        a.sort();
       }
     `,
     `
       function f(a: any) {
-        a.sort()
+        a.sort();
       }
     `,
     `
       namespace UserDefined {
         interface Array {
-          sort(): void
+          sort(): void;
         }
         function f(a: Array) {
-          a.sort()
+          a.sort();
+        }
+      }
+    `,
+    // optional chain
+    `
+      function f(a: any[]) {
+        a?.sort((a, b) => a - b);
+      }
+    `,
+    `
+      namespace UserDefined {
+        interface Array {
+          sort(): void;
+        }
+        function f(a: Array) {
+          a?.sort();
         }
       }
     `,
@@ -77,7 +98,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f(a: Array<any>) {
-          a.sort()
+          a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -85,7 +106,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f(a: string[]) {
-          a.sort()
+          a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -93,8 +114,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f(a: string | string[]) {
-          if (Array.isArray(a))
-            a.sort()
+          if (Array.isArray(a)) a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -102,7 +122,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f(a: number[] | string[]) {
-          a.sort()
+          a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -110,7 +130,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f<T extends number[]>(a: T) {
-          a.sort()
+          a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -118,7 +138,16 @@ ruleTester.run('require-array-sort-compare', rule, {
     {
       code: `
         function f<T, U extends T[]>(a: U) {
-          a.sort()
+          a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    // optional chain
+    {
+      code: `
+        function f(a: string[]) {
+          a?.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],

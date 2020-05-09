@@ -1,6 +1,6 @@
-# Disallow aliasing `this` (no-this-alias)
+# Disallow aliasing `this` (`no-this-alias`)
 
-This rule prohibts assigning variables to `this`.
+This rule prohibits assigning variables to `this`.
 
 ## Rule Details
 
@@ -14,7 +14,7 @@ Rationale from TSLint:
 > ```js
 > const self = this;
 >
-> setTimeout(function() {
+> setTimeout(function () {
 >   self.doWork();
 > });
 > ```
@@ -39,15 +39,15 @@ Examples of **correct** code for this rule:
 
 You can pass an object option:
 
-```json5
+```jsonc
 {
-  '@typescript-eslint/no-this-alias': [
-    'error',
+  "@typescript-eslint/no-this-alias": [
+    "error",
     {
-      allowDestructuring: true, // Allow `const { props, state } = this`; false by default
-      allowedNames: ['self'], // Allow `const self = this`; `[]` by default
-    },
-  ],
+      "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
+      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
+    }
+  ]
 }
 ```
 

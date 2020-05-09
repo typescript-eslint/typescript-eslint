@@ -4,6 +4,11 @@
 // NOTE - this test suite is intentionally kept in a separate file to our
 // custom tests. This is to keep a clear boundary between the two.
 
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import {
   AST_TOKEN_TYPES,
   AST_NODE_TYPES,
@@ -2838,7 +2843,7 @@ ruleTester.run('indent', rule, {
       options: [2, { SwitchCase: 1 }],
     },
 
-    // Template curlies
+    // Template literals
     {
       code: unIndent`
                 \`foo\${
@@ -4586,7 +4591,7 @@ ruleTester.run('indent', rule, {
                 ? bar
                             : baz
             `,
-      options: [4, { ignoredNodes: ['ConditionalExpression'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.ConditionalExpression] }],
     },
     {
       code: unIndent`
@@ -4596,7 +4601,7 @@ ruleTester.run('indent', rule, {
                 }
                 }
             `,
-      options: [4, { ignoredNodes: ['ClassBody'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.ClassBody] }],
     },
     {
       code: unIndent`
@@ -4608,7 +4613,12 @@ ruleTester.run('indent', rule, {
             `,
       options: [
         4,
-        { ignoredNodes: ['ClassBody', AST_NODE_TYPES.BlockStatement] },
+        {
+          ignoredNodes: [
+            AST_NODE_TYPES.ClassBody,
+            AST_NODE_TYPES.BlockStatement,
+          ],
+        },
       ],
     },
     {
@@ -4630,7 +4640,7 @@ ruleTester.run('indent', rule, {
                 foo
                                             .bar
             `,
-      options: [4, { ignoredNodes: ['MemberExpression'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.MemberExpression] }],
     },
     {
       code: unIndent`
@@ -4655,7 +4665,7 @@ ruleTester.run('indent', rule, {
                 <Foo
                             bar="1" />
             `,
-      options: [4, { ignoredNodes: ['JSXOpeningElement'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.JSXOpeningElement] }],
     },
     {
       code: unIndent`
@@ -4666,7 +4676,12 @@ ruleTester.run('indent', rule, {
             `,
       options: [
         4,
-        { ignoredNodes: ['JSXElement', AST_NODE_TYPES.JSXOpeningElement] },
+        {
+          ignoredNodes: [
+            AST_NODE_TYPES.JSXElement,
+            AST_NODE_TYPES.JSXOpeningElement,
+          ],
+        },
       ],
     },
     {
@@ -4694,7 +4709,7 @@ ruleTester.run('indent', rule, {
                     valueIfFalse
                 );
             `,
-      options: [4, { ignoredNodes: ['ConditionalExpression'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.ConditionalExpression] }],
     },
     {
       code: unIndent`
@@ -4722,7 +4737,7 @@ ruleTester.run('indent', rule, {
                        ? qux
                        : boop
             `,
-      options: [4, { ignoredNodes: ['ConditionalExpression'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.ConditionalExpression] }],
     },
     {
       code: unIndent`
@@ -4733,7 +4748,7 @@ ruleTester.run('indent', rule, {
                         } FROM THE_DATABASE
                 \`
             `,
-      options: [4, { ignoredNodes: ['TemplateLiteral'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.TemplateLiteral] }],
     },
     {
       code: unIndent`
@@ -4743,7 +4758,7 @@ ruleTester.run('indent', rule, {
                     Text
                 </foo>
             `,
-      options: [4, { ignoredNodes: ['JSXOpeningElement'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.JSXOpeningElement] }],
     },
     {
       code: unIndent`
@@ -4760,7 +4775,7 @@ ruleTester.run('indent', rule, {
                     y = 2;
                 var z;
             `,
-      options: ['tab', { ignoredNodes: ['VariableDeclarator'] }],
+      options: ['tab', { ignoredNodes: [AST_NODE_TYPES.VariableDeclarator] }],
     },
     {
       code: unIndent`
@@ -4771,7 +4786,10 @@ ruleTester.run('indent', rule, {
             `,
       options: [
         'tab',
-        { ArrayExpression: 'first', ignoredNodes: ['CallExpression'] },
+        {
+          ArrayExpression: 'first',
+          ignoredNodes: [AST_NODE_TYPES.CallExpression],
+        },
       ],
     },
     {
@@ -7851,7 +7869,7 @@ ruleTester.run('indent', rule, {
       ]),
     },
 
-    // Template curlies
+    // Template literals
     {
       code: unIndent`
                 \`foo\${
@@ -9453,7 +9471,7 @@ ruleTester.run('indent', rule, {
                 }
                 }
             `,
-      options: [4, { ignoredNodes: ['ClassBody'] }],
+      options: [4, { ignoredNodes: [AST_NODE_TYPES.ClassBody] }],
       errors: expectedErrors([3, 4, 0, AST_TOKEN_TYPES.Identifier]),
     },
     {

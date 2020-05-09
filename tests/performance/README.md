@@ -18,7 +18,7 @@ docker exec -it {{ RUNNING_CONTAINER_ID_HERE }} bash
 
 Or by using the docker extension in VSCode and right clicking on the running container.
 
-Every time you make an update to the local built packages (e.g. parser or eslint-plugin), you need to rerun
+Every time you make an update to the local built packages (e.g. `parser` or `eslint-plugin`), you need to rerun
 the utility script _within_ the running container.
 
 For example, you will run something like the following (where `root@a91d93f9ffc3` refers to what's running in your container):

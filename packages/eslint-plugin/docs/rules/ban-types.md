@@ -1,4 +1,4 @@
-# Bans specific types from being used (ban-types)
+# Bans specific types from being used (`ban-types`)
 
 This rule bans specific types and can suggest alternatives. It does not ban the
 corresponding runtime objects from being used.
@@ -31,6 +31,8 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
 
 ## Options
 
+The banned type can either be a type name literal (`Foo`), a type name with generic parameter instantiations(s) (`Foo<Bar>`), or the empty object literal (`{}`).
+
 ```CJSON
 {
     "@typescript-eslint/ban-types": ["error", {
@@ -46,7 +48,29 @@ class Foo<F = string> extends Bar<string> implements Baz<string> {
                 "message": "Use string instead",
                 "fixWith": "string"
             }
+
+            "{}": {
+              "message": "Use object instead",
+              "fixWith": "object"
+            }
         }
+    }]
+}
+```
+
+By default, this rule includes types which are likely to be mistakes, such as `String` and `Number`. If you don't want these enabled, set the `extendDefaults` option to `false`:
+
+```CJSON
+{
+    "@typescript-eslint/ban-types": ["error", {
+        "types": {
+            // add a custom message, AND tell the plugin how to fix it
+            "String": {
+                "message": "Use string instead",
+                "fixWith": "string"
+            }
+        },
+        "extendDefaults": false
     }]
 }
 ```

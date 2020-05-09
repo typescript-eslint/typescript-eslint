@@ -64,11 +64,11 @@ ruleTester.run('no-type-alias', rule, {
       options: [{ allowAliases: 'in-intersections' }],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'always' }],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
@@ -124,11 +124,11 @@ ruleTester.run('no-type-alias', rule, {
       options: [{ allowAliases: 'in-intersections' }],
     },
     {
-      code: 'type Foo = 1 | 2 & 3;',
+      code: 'type Foo = 1 | (2 & 3);',
       options: [{ allowAliases: 'always' }],
     },
     {
-      code: 'type Foo = 1 | 2 & 3;',
+      code: 'type Foo = 1 | (2 & 3);',
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
@@ -163,42 +163,42 @@ ruleTester.run('no-type-alias', rule, {
       code: `
 interface Bar {}
 type Foo = Bar | string;
-            `,
+      `,
       options: [{ allowAliases: 'always' }],
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar | string;
-            `,
+      `,
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar | string;
-            `,
+      `,
       options: [{ allowAliases: 'in-unions' }],
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
-            `,
+      `,
       options: [{ allowAliases: 'always' }],
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
-            `,
+      `,
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: `
 interface Bar {}
 type Foo = Bar & string;
-            `,
+      `,
       options: [{ allowAliases: 'in-intersections' }],
     },
     {
@@ -292,73 +292,91 @@ type Foo = Bar & string;
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       options: [{ allowMappedTypes: 'always' }],
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       options: [{ allowMappedTypes: 'always' }],
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       options: [{ allowMappedTypes: 'in-unions' }],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       options: [{ allowMappedTypes: 'always' }],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
     {
-      code: `export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | false;`,
+      code: `
+export type ClassValue =
+  | string
+  | number
+  | ClassDictionary
+  | ClassArray
+  | undefined
+  | null
+  | false;
+      `,
       options: [
         {
           allowAliases: 'in-unions-and-intersections',
@@ -377,7 +395,7 @@ type Foo<T> = {
       options: [{ allowAliases: 'in-unions' }],
     },
     {
-      code: 'type Foo = keyof [string]',
+      code: 'type Foo = keyof [string];',
       options: [{ allowTupleTypes: 'always' }],
     },
     {
@@ -394,7 +412,7 @@ type Foo<T> = {
     },
     {
       code:
-        'type Foo = [string] & [number, number] | [number, number, number];',
+        'type Foo = ([string] & [number, number]) | [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -415,7 +433,7 @@ type Foo<T> = {
     },
     {
       code:
-        'type Foo = [string] & [number, number] | readonly [number, number, number];',
+        'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -436,13 +454,21 @@ type Foo<T> = {
     },
     {
       code:
-        'type Foo = [string] & [number, number] | keyof [number, number, number];',
+        'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'always' }],
     },
   ],
   invalid: [
     {
-      code: "type Foo = 'a'",
+      code: "type Foo = 'a';",
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -455,7 +481,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: "type Foo = 'a'",
+      code: "type Foo = 'a';",
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -1145,7 +1171,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -1163,7 +1189,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1172,12 +1198,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowLiterals: 'in-intersections' }],
       errors: [
         {
@@ -1196,7 +1222,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1205,12 +1231,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -1229,7 +1255,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1238,12 +1264,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'never', allowLiterals: 'in-intersections' }],
       errors: [
         {
@@ -1262,7 +1288,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1271,12 +1297,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'in-unions' }],
       errors: [
         {
@@ -1286,7 +1312,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1295,12 +1321,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [
         {
           allowAliases: 'in-unions',
@@ -1315,7 +1341,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 18,
+          column: 19,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1324,12 +1350,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 24,
+          column: 25,
         },
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [{ allowAliases: 'in-intersections' }],
       errors: [
         {
@@ -1344,7 +1370,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: "type Foo = 'a' | 'b' & 'c';",
+      code: "type Foo = 'a' | ('b' & 'c');",
       options: [
         {
           allowAliases: 'in-intersections',
@@ -1783,7 +1809,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -1801,7 +1827,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1810,12 +1836,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowLiterals: 'in-unions' }],
       errors: [
         {
@@ -1834,7 +1860,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1843,12 +1869,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -1867,7 +1893,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1876,12 +1902,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowAliases: 'never', allowLiterals: 'in-unions' }],
       errors: [
         {
@@ -1900,7 +1926,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1909,12 +1935,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowAliases: 'in-unions' }],
       errors: [
         {
@@ -1924,7 +1950,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1933,12 +1959,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowAliases: 'in-unions', allowLiterals: 'in-unions' }],
       errors: [
         {
@@ -1948,7 +1974,7 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -1957,12 +1983,12 @@ type Foo<T> = {
             compositionType: 'intersection',
           },
           line: 1,
-          column: 32,
+          column: 33,
         },
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [{ allowAliases: 'in-intersections' }],
       errors: [
         {
@@ -1977,7 +2003,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = string | string[] & number;',
+      code: 'type Foo = string | (string[] & number);',
       options: [
         {
           allowAliases: 'in-intersections',
@@ -2000,7 +2026,7 @@ type Foo<T> = {
       code: `
 interface Bar {}
 type Foo = Bar;
-            `,
+      `,
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -2016,7 +2042,7 @@ type Foo = Bar;
       code: `
 interface Bar {}
 type Foo = Bar;
-            `,
+      `,
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -2033,7 +2059,7 @@ type Foo = Bar;
       code: `
 interface Bar {}
 type Foo = Bar;
-            `,
+      `,
       options: [{ allowAliases: 'in-unions' }],
       errors: [
         {
@@ -2050,7 +2076,7 @@ type Foo = Bar;
       code: `
 interface Bar {}
 type Foo = Bar;
-            `,
+      `,
       options: [{ allowAliases: 'in-intersections' }],
       errors: [
         {
@@ -2067,7 +2093,7 @@ type Foo = Bar;
       code: `
 interface Bar {}
 type Foo = Bar;
-            `,
+      `,
       options: [{ allowAliases: 'in-unions-and-intersections' }],
       errors: [
         {
@@ -2084,7 +2110,7 @@ type Foo = Bar;
       code: `
 interface Bar {}
 type Foo = Bar | {};
-            `,
+      `,
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -2110,7 +2136,7 @@ type Foo = Bar | {};
       code: `
 interface Bar {}
 type Foo = Bar | {};
-            `,
+      `,
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -2137,7 +2163,7 @@ type Foo = Bar | {};
       code: `
 interface Bar {}
 type Foo = Bar | {};
-            `,
+      `,
       options: [{ allowAliases: 'in-unions' }],
       errors: [
         {
@@ -2155,7 +2181,7 @@ type Foo = Bar | {};
       code: `
 interface Bar {}
 type Foo = Bar | {};
-            `,
+      `,
       options: [{ allowAliases: 'in-intersections' }],
       errors: [
         {
@@ -2182,7 +2208,7 @@ type Foo = Bar | {};
       code: `
 interface Bar {}
 type Foo = Bar | {};
-            `,
+      `,
       options: [{ allowAliases: 'in-unions-and-intersections' }],
       errors: [
         {
@@ -2200,7 +2226,7 @@ type Foo = Bar | {};
       code: `
 interface Bar {}
 type Foo = Bar & {};
-            `,
+      `,
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -2226,7 +2252,7 @@ type Foo = Bar & {};
       code: `
 interface Bar {}
 type Foo = Bar & {};
-            `,
+      `,
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -2253,7 +2279,7 @@ type Foo = Bar & {};
       code: `
 interface Bar {}
 type Foo = Bar & {};
-            `,
+      `,
       options: [{ allowAliases: 'in-unions' }],
       errors: [
         {
@@ -2280,7 +2306,7 @@ type Foo = Bar & {};
       code: `
 interface Bar {}
 type Foo = Bar & {};
-            `,
+      `,
       options: [{ allowAliases: 'in-intersections' }],
       errors: [
         {
@@ -2298,7 +2324,7 @@ type Foo = Bar & {};
       code: `
 interface Bar {}
 type Foo = Bar & {};
-            `,
+      `,
       options: [{ allowAliases: 'in-unions-and-intersections' }],
       errors: [
         {
@@ -2636,7 +2662,7 @@ type Foo = Bar & {};
       ],
     },
     {
-      code: "type Foo = string & {} | 'a' | 1;",
+      code: "type Foo = (string & {}) | 'a' | 1;",
       options: [{ allowAliases: 'in-unions', allowLiterals: 'in-unions' }],
       errors: [
         {
@@ -2646,7 +2672,7 @@ type Foo = Bar & {};
             compositionType: 'intersection',
           },
           line: 1,
-          column: 12,
+          column: 13,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2655,12 +2681,12 @@ type Foo = Bar & {};
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
       ],
     },
     {
-      code: "type Foo = string & {} | 'a' | 1;",
+      code: "type Foo = (string & {}) | 'a' | 1;",
       options: [
         {
           allowAliases: 'in-intersections',
@@ -2675,7 +2701,7 @@ type Foo = Bar & {};
             compositionType: 'intersection',
           },
           line: 1,
-          column: 21,
+          column: 22,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2684,7 +2710,7 @@ type Foo = Bar & {};
             compositionType: 'union',
           },
           line: 1,
-          column: 26,
+          column: 28,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2693,16 +2719,16 @@ type Foo = Bar & {};
             compositionType: 'union',
           },
           line: 1,
-          column: 32,
+          column: 34,
         },
       ],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -2717,9 +2743,9 @@ type Foo<T> = {
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       options: [{ allowMappedTypes: 'never' }],
       errors: [
         {
@@ -2735,9 +2761,9 @@ type Foo<T> = {
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       options: [{ allowMappedTypes: 'in-unions' }],
       errors: [
         {
@@ -2753,9 +2779,9 @@ type Foo<T> = {
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       options: [{ allowMappedTypes: 'in-intersections' }],
       errors: [
         {
@@ -2771,9 +2797,9 @@ type Foo<T> = {
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
+  readonly [P in keyof T]: T[P];
 };
-            `,
+      `,
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
       errors: [
         {
@@ -2788,12 +2814,14 @@ type Foo<T> = {
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -2801,8 +2829,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 2,
-          column: 15,
+          line: 3,
+          column: 5,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2810,19 +2838,21 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 4,
+          line: 6,
           column: 5,
         },
       ],
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       options: [{ allowMappedTypes: 'never' }],
       errors: [
         {
@@ -2831,8 +2861,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 2,
-          column: 15,
+          line: 3,
+          column: 5,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2840,19 +2870,21 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 4,
+          line: 6,
           column: 5,
         },
       ],
     },
     {
       code: `
-type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} | {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
       options: [{ allowMappedTypes: 'in-intersections' }],
       errors: [
         {
@@ -2861,8 +2893,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 2,
-          column: 15,
+          line: 3,
+          column: 5,
         },
         {
           messageId: 'noCompositionAlias',
@@ -2870,7 +2902,7 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'union',
           },
-          line: 4,
+          line: 6,
           column: 5,
         },
       ],
@@ -2878,11 +2910,12 @@ type Foo<T> = {
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -2899,19 +2932,20 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 4,
-          column: 5,
+          line: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       options: [{ allowMappedTypes: 'never' }],
       errors: [
         {
@@ -2929,19 +2963,20 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 4,
-          column: 5,
+          line: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 type Foo<T> = {
-    readonly [P in keyof T] : T[P]
-} & {
-    readonly [P in keyof T] : T[P]
-};
-            `,
+  readonly [P in keyof T]: T[P];
+} &
+  {
+    readonly [P in keyof T]: T[P];
+  };
+      `,
       options: [{ allowMappedTypes: 'in-unions' }],
       errors: [
         {
@@ -2959,14 +2994,14 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 4,
-          column: 5,
+          line: 5,
+          column: 3,
         },
       ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/270
-      code: `export type ButtonProps = JSX.IntrinsicElements['button'];`,
+      code: "export type ButtonProps = JSX.IntrinsicElements['button'];",
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -2979,7 +3014,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = [number] | [number, number]',
+      code: 'type Foo = [number] | [number, number];',
       options: [{ allowTupleTypes: 'never' }],
       errors: [
         {
@@ -3003,7 +3038,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = [number] & [number, number]',
+      code: 'type Foo = [number] & [number, number];',
       options: [{ allowTupleTypes: 'in-unions' }],
       errors: [
         {
@@ -3027,7 +3062,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = [number] | [number, number]',
+      code: 'type Foo = [number] | [number, number];',
       options: [{ allowTupleTypes: 'in-intersections' }],
       errors: [
         {
@@ -3078,7 +3113,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = readonly [number] | keyof [number, number]',
+      code: 'type Foo = readonly [number] | keyof [number, number];',
       options: [{ allowTupleTypes: 'never' }],
       errors: [
         {
@@ -3102,7 +3137,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = keyof [number] & [number, number]',
+      code: 'type Foo = keyof [number] & [number, number];',
       options: [{ allowTupleTypes: 'in-unions' }],
       errors: [
         {
@@ -3126,7 +3161,7 @@ type Foo<T> = {
       ],
     },
     {
-      code: 'type Foo = [number] | readonly [number, number]',
+      code: 'type Foo = [number] | readonly [number, number];',
       options: [{ allowTupleTypes: 'in-intersections' }],
       errors: [
         {
@@ -3173,6 +3208,71 @@ type Foo<T> = {
       errors: [
         {
           messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'constructors',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'conditional types',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      // unique symbol is not allowed in this context
+      code: 'type Foo = keyof [string] | unique symbol;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Tuple Types',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            compositionType: 'union',
+            typeName: 'Unhandled',
+          },
+          line: 1,
+          column: 29,
         },
       ],
     },

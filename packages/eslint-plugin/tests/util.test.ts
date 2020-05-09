@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import * as util from '../src/util';
 
 describe('isDefinitionFile', () => {
@@ -20,7 +18,7 @@ describe('isDefinitionFile', () => {
     ];
 
     invalid.forEach(f => {
-      assert.strictEqual(util.isDefinitionFile(f), false);
+      expect(util.isDefinitionFile(f)).toStrictEqual(false);
     });
   });
 
@@ -28,13 +26,13 @@ describe('isDefinitionFile', () => {
     const valid = ['test.d.ts', 'test.d.tsx', 'test.D.TS', 'test.D.TSX'];
 
     valid.forEach(f => {
-      assert.strictEqual(util.isDefinitionFile(f), true);
+      expect(util.isDefinitionFile(f)).toStrictEqual(true);
     });
   });
 });
 
 describe('upperCaseFirst', () => {
   it('upper cases first', () => {
-    assert.strictEqual(util.upperCaseFirst('hello'), 'Hello');
+    expect(util.upperCaseFirst('hello')).toStrictEqual('Hello');
   });
 });

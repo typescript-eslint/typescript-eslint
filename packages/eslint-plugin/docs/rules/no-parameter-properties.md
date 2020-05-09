@@ -1,4 +1,4 @@
-# Disallow the use of parameter properties in class constructors. (no-parameter-properties)
+# Disallow the use of parameter properties in class constructors (`no-parameter-properties`)
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
@@ -13,7 +13,7 @@ declare all properties in the class.
 This rule, in its default state, does not require any argument and would completely disallow the use of parameter properties.
 If you would like to allow certain types of parameter properties then you may pass an object with the following options:
 
-- `allows`, an array containing one or more fo the allowed modifiers. Valid values are:
+- `allows`, an array containing one or more of the allowed modifiers. Valid values are:
   - `readonly`, allows **readonly** parameter properties.
   - `private`, allows **private** parameter properties.
   - `protected`, allows **protected** parameter properties.

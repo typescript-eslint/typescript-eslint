@@ -108,12 +108,8 @@ export default util.createRule({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(
-                  typeAnnotation0 && typeAnnotation0.typeAnnotation,
-                ),
-                type2: sourceCode.getText(
-                  typeAnnotation1 && typeAnnotation1.typeAnnotation,
-                ),
+                type1: sourceCode.getText(typeAnnotation0?.typeAnnotation),
+                type2: sourceCode.getText(typeAnnotation1?.typeAnnotation),
               },
               node: p1,
             });
@@ -504,7 +500,7 @@ export default util.createRule({
       key?: string,
       containingNode?: ContainingNode,
     ): void {
-      key = key || getOverloadKey(signature);
+      key = key ?? getOverloadKey(signature);
       if (
         currentScope &&
         (containingNode || signature).parent === currentScope.parent
@@ -535,7 +531,8 @@ export default util.createRule({
 
       // collect overloads
       TSDeclareFunction(node): void {
-        addOverload(node, node.id.name, getExportingNode(node));
+        const exportingNode = getExportingNode(node);
+        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
       TSCallSignatureDeclaration: addOverload,
       TSConstructSignatureDeclaration: addOverload,

@@ -1,4 +1,4 @@
-# Warns if a type assertion does not change the type of an expression (no-unnecessary-type-assertion)
+# Warns if a type assertion does not change the type of an expression (`no-unnecessary-type-assertion`)
 
 This rule prohibits using a type assertion that does not change the type of an expression.
 
@@ -41,6 +41,10 @@ const foo = <number>3;
 
 ```ts
 const foo = 3 as number;
+```
+
+```ts
+const foo = 'foo' as const;
 ```
 
 ```ts

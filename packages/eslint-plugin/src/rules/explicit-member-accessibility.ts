@@ -1,6 +1,8 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  AST_TOKEN_TYPES,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -38,6 +40,7 @@ export default util.createRule<Options, MessageIds>({
       // too opinionated to be recommended
       recommended: false,
     },
+    fixable: 'code',
     messages: {
       missingAccessibility:
         'Missing accessibility modifier on {{type}} {{name}}.',
@@ -75,14 +78,14 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
-    const baseCheck: AccessibilityLevel = option.accessibility || 'explicit';
-    const overrides = option.overrides || {};
-    const ctorCheck = overrides.constructors || baseCheck;
-    const accessorCheck = overrides.accessors || baseCheck;
-    const methodCheck = overrides.methods || baseCheck;
-    const propCheck = overrides.properties || baseCheck;
-    const paramPropCheck = overrides.parameterProperties || baseCheck;
-    const ignoredMethodNames = new Set(option.ignoredMethodNames || []);
+    const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
+    const overrides = option.overrides ?? {};
+    const ctorCheck = overrides.constructors ?? baseCheck;
+    const accessorCheck = overrides.accessors ?? baseCheck;
+    const methodCheck = overrides.methods ?? baseCheck;
+    const propCheck = overrides.properties ?? baseCheck;
+    const paramPropCheck = overrides.parameterProperties ?? baseCheck;
+    const ignoredMethodNames = new Set(option.ignoredMethodNames ?? []);
     /**
      * Generates the report for rule violations
      */
@@ -91,6 +94,7 @@ export default util.createRule<Options, MessageIds>({
       nodeType: string,
       node: TSESTree.Node,
       nodeName: string,
+      fix: TSESLint.ReportFixFunction | null = null,
     ): void {
       context.report({
         node: node,
@@ -99,6 +103,7 @@ export default util.createRule<Options, MessageIds>({
           type: nodeType,
           name: nodeName,
         },
+        fix: fix,
       });
     }
 
@@ -125,10 +130,7 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromClassMember(
-        methodDefinition,
-        sourceCode,
-      );
+      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -143,6 +145,7 @@ export default util.createRule<Options, MessageIds>({
           nodeType,
           methodDefinition,
           methodName,
+          getUnwantedPublicAccessibilityFixer(methodDefinition),
         );
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
         reportIssue(
@@ -155,6 +158,47 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Creates a fixer that removes a "public" keyword with following spaces
+     */
+    function getUnwantedPublicAccessibilityFixer(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.ClassProperty
+        | TSESTree.TSParameterProperty,
+    ): TSESLint.ReportFixFunction {
+      return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+        const tokens = sourceCode.getTokens(node);
+        let rangeToRemove: TSESLint.AST.Range;
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i];
+          if (
+            token.type === AST_TOKEN_TYPES.Keyword &&
+            token.value === 'public'
+          ) {
+            const commensAfterPublicKeyword = sourceCode.getCommentsAfter(
+              token,
+            );
+            if (commensAfterPublicKeyword.length) {
+              // public /* Hi there! */ static foo()
+              // ^^^^^^^
+              rangeToRemove = [
+                token.range[0],
+                commensAfterPublicKeyword[0].range[0],
+              ];
+              break;
+            } else {
+              // public static foo()
+              // ^^^^^^^
+              rangeToRemove = [token.range[0], tokens[i + 1].range[0]];
+              break;
+            }
+          }
+        }
+        return fixer.removeRange(rangeToRemove!);
+      };
+    }
+
+    /**
      * Checks if property has an accessibility modifier.
      * @param classProperty The node representing a ClassProperty.
      */
@@ -163,7 +207,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromPropertyName(classProperty.key);
+      const propertyName = util.getNameFromMember(classProperty, sourceCode);
       if (
         propCheck === 'no-public' &&
         classProperty.accessibility === 'public'
@@ -173,6 +217,7 @@ export default util.createRule<Options, MessageIds>({
           nodeType,
           classProperty,
           propertyName,
+          getUnwantedPublicAccessibilityFixer(classProperty),
         );
       } else if (propCheck === 'explicit' && !classProperty.accessibility) {
         reportIssue(
@@ -186,7 +231,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks that the parameter property has the desired accessibility modifiers set.
-     * @param {TSESTree.TSParameterProperty} node The node representing a Parameter Property
+     * @param node The node representing a Parameter Property
      */
     function checkParameterPropertyAccessibilityModifier(
       node: TSESTree.TSParameterProperty,
@@ -220,6 +265,7 @@ export default util.createRule<Options, MessageIds>({
               nodeType,
               node,
               nodeName,
+              getUnwantedPublicAccessibilityFixer(node),
             );
           }
           break;

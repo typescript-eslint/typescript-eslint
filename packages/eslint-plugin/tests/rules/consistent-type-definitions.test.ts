@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-definitions';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,58 +8,62 @@ const ruleTester = new RuleTester({
 ruleTester.run('consistent-type-definitions', rule, {
   valid: [
     {
-      code: `var foo = { };`,
+      code: 'var foo = {};',
       options: ['interface'],
     },
     {
-      code: `interface A {}`,
+      code: 'interface A {}',
       options: ['interface'],
     },
     {
-      code: `interface A extends B { x: number; }`,
+      code: `
+interface A extends B {
+  x: number;
+}
+      `,
       options: ['interface'],
     },
     {
-      code: `type U = string;`,
+      code: 'type U = string;',
       options: ['interface'],
     },
     {
-      code: `type V = { x: number; } | { y: string; };`,
+      code: 'type V = { x: number } | { y: string };',
       options: ['interface'],
     },
     {
       code: `
 type Record<T, U> = {
-    [K in T]: U;
-}
-`,
+  [K in T]: U;
+};
+      `,
       options: ['interface'],
     },
     {
-      code: `type T = { x: number; }`,
+      code: 'type T = { x: number };',
       options: ['type'],
     },
     {
-      code: `type A = { x: number; } & B & C;`,
+      code: 'type A = { x: number } & B & C;',
       options: ['type'],
     },
     {
-      code: `type A = { x: number; } & B<T1> & C<T2>;`,
+      code: 'type A = { x: number } & B<T1> & C<T2>;',
       options: ['type'],
     },
     {
       code: `
 export type W<T> = {
-    x: T,
+  x: T;
 };
-`,
+      `,
       options: ['type'],
     },
   ],
   invalid: [
     {
-      code: `type T = { x: number; };`,
-      output: `interface T { x: number; }`,
+      code: noFormat`type T = { x: number; };`,
+      output: noFormat`interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -70,8 +74,8 @@ export type W<T> = {
       ],
     },
     {
-      code: `type T={ x: number; };`,
-      output: `interface T { x: number; }`,
+      code: noFormat`type T={ x: number; };`,
+      output: noFormat`interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -82,8 +86,8 @@ export type W<T> = {
       ],
     },
     {
-      code: `type T=                         { x: number; };`,
-      output: `interface T { x: number; }`,
+      code: noFormat`type T=                         { x: number; };`,
+      output: noFormat`interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -96,14 +100,14 @@ export type W<T> = {
     {
       code: `
 export type W<T> = {
-    x: T,
+  x: T;
 };
-`,
+      `,
       output: `
 export interface W<T> {
-    x: T,
+  x: T;
 }
-`,
+      `,
       options: ['interface'],
       errors: [
         {
@@ -114,8 +118,8 @@ export interface W<T> {
       ],
     },
     {
-      code: `interface T { x: number; }`,
-      output: `type T = { x: number; }`,
+      code: noFormat`interface T { x: number; }`,
+      output: noFormat`type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -126,8 +130,8 @@ export interface W<T> {
       ],
     },
     {
-      code: `interface T{ x: number; }`,
-      output: `type T = { x: number; }`,
+      code: noFormat`interface T{ x: number; }`,
+      output: noFormat`type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -138,8 +142,8 @@ export interface W<T> {
       ],
     },
     {
-      code: `interface T                          { x: number; }`,
-      output: `type T = { x: number; }`,
+      code: noFormat`interface T                          { x: number; }`,
+      output: noFormat`type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -150,8 +154,8 @@ export interface W<T> {
       ],
     },
     {
-      code: `interface A extends B, C { x: number; };`,
-      output: `type A = { x: number; } & B & C;`,
+      code: noFormat`interface A extends B, C { x: number; };`,
+      output: noFormat`type A = { x: number; } & B & C;`,
       options: ['type'],
       errors: [
         {
@@ -162,8 +166,8 @@ export interface W<T> {
       ],
     },
     {
-      code: `interface A extends B<T1>, C<T2> { x: number; };`,
-      output: `type A = { x: number; } & B<T1> & C<T2>;`,
+      code: noFormat`interface A extends B<T1>, C<T2> { x: number; };`,
+      output: noFormat`type A = { x: number; } & B<T1> & C<T2>;`,
       options: ['type'],
       errors: [
         {
@@ -176,14 +180,14 @@ export interface W<T> {
     {
       code: `
 export interface W<T> {
-    x: T,
-};
-`,
-      output: `
+  x: T;
+}
+      `,
+      output: noFormat`
 export type W<T> = {
-    x: T,
-};
-`,
+  x: T;
+}
+      `,
       options: ['type'],
       errors: [
         {

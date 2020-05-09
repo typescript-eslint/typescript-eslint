@@ -1,16 +1,15 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
-  isCallExpression,
-  isNewExpression,
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
+import {
   isObjectType,
   isObjectFlagSet,
-  isParameterDeclaration,
-  isPropertyDeclaration,
   isStrictCompilerOptionEnabled,
   isTypeFlagSet,
   isVariableDeclaration,
 } from 'tsutils';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [
@@ -91,46 +90,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns the contextual type of a given node.
-     * Contextual type is the type of the target the node is going into.
-     * i.e. the type of a called function's parameter, or the defined type of a variable declaration
-     */
-    function getContextualType(
-      checker: ts.TypeChecker,
-      node: ts.Expression,
-    ): ts.Type | undefined {
-      const parent = node.parent;
-      if (!parent) {
-        return;
-      }
-
-      if (isCallExpression(parent) || isNewExpression(parent)) {
-        if (node === parent.expression) {
-          // is the callee, so has no contextual type
-          return;
-        }
-      } else if (
-        isVariableDeclaration(parent) ||
-        isPropertyDeclaration(parent) ||
-        isParameterDeclaration(parent)
-      ) {
-        return parent.type
-          ? checker.getTypeFromTypeNode(parent.type)
-          : undefined;
-      } else if (
-        ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
-          parent.kind,
-        )
-      ) {
-        // parent is not something we know we can get the contextual type of
-        return;
-      }
-      // TODO - support return statement checking
-
-      return checker.getContextualType(node);
-    }
-
-    /**
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
      */
     function isPossiblyUsedBeforeAssigned(node: ts.Expression): boolean {
@@ -156,7 +115,7 @@ export default util.createRule<Options, MessageIds>({
         const type = util.getConstrainedTypeAtLocation(checker, node);
         if (declarationType === type) {
           // possibly used before assigned, so just skip it
-          // better to false negative and skip it, than false postiive and fix to compile erroring code
+          // better to false negative and skip it, than false positive and fix to compile erroring code
           //
           // no better way to figure this out right now
           // https://github.com/Microsoft/TypeScript/issues/31124
@@ -166,11 +125,17 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    function isConstAssertion(node: TSESTree.TypeNode): boolean {
+      return (
+        node.type === AST_NODE_TYPES.TSTypeReference &&
+        node.typeName.type === AST_NODE_TYPES.Identifier &&
+        node.typeName.name === 'const'
+      );
+    }
+
     return {
       TSNonNullExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.NonNullExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
@@ -195,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
           // we know it's a nullable type
           // so figure out if the variable is used in a place that accepts nullable types
 
-          const contextualType = getContextualType(checker, originalNode);
+          const contextualType = util.getContextualType(checker, originalNode);
           if (contextualType) {
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
@@ -216,10 +181,17 @@ export default util.createRule<Options, MessageIds>({
               contextualType,
               ts.TypeFlags.Null,
             );
-            if (
-              (typeIncludesUndefined && contextualTypeIncludesUndefined) ||
-              (typeIncludesNull && contextualTypeIncludesNull)
-            ) {
+
+            // make sure that the parent accepts the same types
+            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
+            const isValidUndefined = typeIncludesUndefined
+              ? contextualTypeIncludesUndefined
+              : true;
+            const isValidNull = typeIncludesNull
+              ? contextualTypeIncludesNull
+              : true;
+
+            if (isValidUndefined && isValidNull) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
@@ -238,18 +210,15 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ): void {
         if (
-          options &&
-          options.typesToIgnore &&
-          options.typesToIgnore.includes(
+          options.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
-          )
+          ) ||
+          isConstAssertion(node.typeAnnotation)
         ) {
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get<
-          ts.AssertionExpression
-        >(node);
+        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const castType = checker.getTypeAtLocation(originalNode);
 
         if (

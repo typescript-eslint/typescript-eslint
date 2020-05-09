@@ -1,4 +1,4 @@
-# Enforces unbound methods are called with their expected scope (unbound-method)
+# Enforces unbound methods are called with their expected scope (`unbound-method`)
 
 Warns when a method is used outside of a method call.
 
@@ -43,8 +43,8 @@ const { logBound } = instance;
 logBound();
 
 // .bind and lambdas will also add a correct scope
-const dotBindLog = instance.log.bind(instance);
-const innerLog = () => instance.log();
+const dotBindLog = instance.logBound.bind(instance);
+const innerLog = () => instance.logBound();
 ```
 
 ## Options
