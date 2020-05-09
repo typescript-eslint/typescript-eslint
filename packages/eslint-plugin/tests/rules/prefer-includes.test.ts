@@ -57,7 +57,7 @@ ruleTester.run('prefer-includes', rule, {
     `,
     `
       type UserDefined = {
-        indexOf(x: any): number // don't have 'includes'.
+        indexOf(x: any): number // don't have 'includes'
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -66,7 +66,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes(x: any): boolean // different parameters.
+        includes(x: any): boolean // different parameters
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -75,7 +75,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes(x: any, fromIndex: number): boolean // different parameters.
+        includes(x: any, fromIndex: number): boolean // different parameters
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1
@@ -84,7 +84,7 @@ ruleTester.run('prefer-includes', rule, {
     `
       type UserDefined = {
         indexOf(x: any, fromIndex?: number): number
-        includes: boolean // different type.
+        includes: boolean // different type
       }
       function f(a: UserDefined): void {
         a.indexOf(b) !== -1

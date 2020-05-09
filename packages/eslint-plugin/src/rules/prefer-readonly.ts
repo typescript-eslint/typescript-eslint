@@ -321,7 +321,7 @@ class ClassScope {
   public addVariableModification(node: ts.PropertyAccessExpression): void {
     const modifierType = this.checker.getTypeAtLocation(node.expression);
     if (
-      modifierType.symbol === undefined ||
+      !modifierType.getSymbol() ||
       !typeIsOrHasBaseType(modifierType, this.classType)
     ) {
       return;

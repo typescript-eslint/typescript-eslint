@@ -41,7 +41,7 @@ This rule has an object option:
 - `"before": true`, (default for arrow) requires a space before the colon/arrow.
 - `"after": true`, (default) requires a space after the colon/arrow.
 - `"after": false`, disallows spaces after the colon/arrow.
-- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`).
+- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`). Additionally allows granular overrides for `variable` (`const foo: string`),`parameter` (`function foo(bar: string) {...}`),`property` (`interface Foo { bar: string }`) and `returnType` (`function foo(): string {...}`) annotations.
 
 ### defaults
 

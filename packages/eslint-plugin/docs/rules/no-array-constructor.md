@@ -1,10 +1,9 @@
 # Disallow generic `Array` constructors (`no-array-constructor`)
 
-Use of the `Array` constructor to construct a new array is generally discouraged in favor of array literal notation because of the single-argument pitfall and because the `Array` global may be redefined. Two exceptions are when the Array constructor is used to intentionally create sparse arrays of a specified size by giving the constructor a single numeric argument, or when using TypeScript type parameters to specify the type of the items of the array (`new Array<Foo>()`).
-
 ## Rule Details
 
-This rule disallows `Array` constructors.
+This rule extends the base [`eslint/no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor) rule.
+It adds support for the generically typed `Array` constructor (`new Array<Foo>()`).
 
 Examples of **incorrect** code for this rule:
 
@@ -27,8 +26,18 @@ Array(500);
 new Array(someOtherArray.length);
 ```
 
-## When Not To Use It
+## How to use
 
-This rule enforces a nearly universal stylistic concern. That being said, this rule may be disabled if the constructor style is preferred.
+```jsonc
+{
+  // note you must disable the base rule as it can report incorrect errors
+  "no-array-constructor": "off",
+  "@typescript-eslint/no-array-constructor": ["error"]
+}
+```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/7685fed33b15763ee3cf7dbe1facfc5ba85173f3/docs/rules/no-array-constructor.md)</sup>
+## Options
+
+See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-array-constructor#options).
+
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-array-constructor.md)</sup>

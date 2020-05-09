@@ -239,8 +239,9 @@ describe('convert', () => {
 
   it('should throw error on jsDoc node', () => {
     const jsDocCode = [
-      'type foo = ?foo<T> | ?(() => void)?',
-      'var a: function(b): c;',
+      'const x: function(new: number, string);',
+      'const x: function(this: number, string);',
+      'var g: function(number, number): number;',
     ];
 
     for (const code of jsDocCode) {

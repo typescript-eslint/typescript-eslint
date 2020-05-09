@@ -9,46 +9,89 @@ ruleTester.run('no-misused-new', rule, {
   valid: [
     `
 declare abstract class C {
-    foo () {
-    }
-    get new ();
-    bar();
+  foo() {}
+  get new();
+  bar();
 }
     `,
-    'class C { constructor(); }',
-    'const foo = class { constructor(); }',
-    'const foo = class { new(): X }',
+    `
+class C {
+  constructor();
+}
+    `,
+    `
+const foo = class {
+  constructor();
+};
+    `,
+    `
+const foo = class {
+  new(): X;
+};
+    `,
     // OK if there's a body
-    'class C { new() {} }',
-    'class C { constructor() {} }',
-    'const foo = class { new() {} }',
-    'const foo = class { constructor() {} }',
+    `
+class C {
+  new() {}
+}
+    `,
+    `
+class C {
+  constructor() {}
+}
+    `,
+    `
+const foo = class {
+  new() {}
+};
+    `,
+    `
+const foo = class {
+  constructor() {}
+};
+    `,
     // OK if return type is not the interface.
-    'interface I { new(): {}; }',
+    `
+interface I {
+  new (): {};
+}
+    `,
     // 'new' OK in type literal (we don't know the type name)
-    'type T = { new(): T; }',
-    'export default class { constructor(); }',
-    'interface foo { new<T>(): bar<T>; }',
-    "interface foo { new<T>(): 'x'; }",
+    'type T = { new (): T };',
+    `
+export default class {
+  constructor();
+}
+    `,
+    `
+interface foo {
+  new <T>(): bar<T>;
+}
+    `,
+    `
+interface foo {
+  new <T>(): 'x';
+}
+    `,
   ],
   invalid: [
     {
       code: `
 interface I {
-    new(): I;
-    constructor(): void;
+  new (): I;
+  constructor(): void;
 }
-`,
+      `,
       errors: [
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'errorMessageInterface',
           line: 4,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -56,14 +99,14 @@ interface I {
     {
       code: `
 interface G {
-    new<T>(): G<T>;
+  new <T>(): G<T>;
 }
-`,
+      `,
       errors: [
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -71,56 +114,56 @@ interface G {
     {
       code: `
 type T = {
-    constructor(): void;
-}
-`,
+  constructor(): void;
+};
+      `,
       errors: [
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class C {
-    new(): C;
+  new(): C;
 }
-`,
+      `,
       errors: [
         {
           messageId: 'errorMessageClass',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 declare abstract class C {
-    new(): C;
+  new(): C;
 }
-`,
+      `,
       errors: [
         {
           messageId: 'errorMessageClass',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 interface I {
-    constructor(): '';
+  constructor(): '';
 }
-`,
+      `,
       errors: [
         {
           messageId: 'errorMessageInterface',
           line: 3,
-          column: 5,
+          column: 3,
         },
       ],
     },

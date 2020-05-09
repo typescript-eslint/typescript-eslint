@@ -3,6 +3,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
@@ -68,8 +69,11 @@ export default util.createRule({
       const symbol = type.getSymbol();
 
       if (
-        symbol?.flags === ts.SymbolFlags.Function ||
-        symbol?.flags === ts.SymbolFlags.Method
+        symbol &&
+        tsutils.isSymbolFlagSet(
+          symbol,
+          ts.SymbolFlags.Function | ts.SymbolFlags.Method,
+        )
       ) {
         return true;
       }
@@ -79,12 +83,7 @@ export default util.createRule({
         ts.SignatureKind.Call,
       );
 
-      if (signatures.length) {
-        const [{ declaration }] = signatures;
-        return declaration?.kind === ts.SyntaxKind.FunctionType;
-      }
-
-      return false;
+      return signatures.length > 0;
     }
 
     function isFunction(node: TSESTree.Node): boolean {

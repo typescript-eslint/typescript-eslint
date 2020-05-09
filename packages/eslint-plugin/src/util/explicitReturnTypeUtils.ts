@@ -5,6 +5,7 @@ import {
   AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
+import { nullThrows, NullThrowsReasons } from './nullThrows';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -264,6 +265,26 @@ function checkFunctionReturnType(
   report(getReporLoc(node, sourceCode));
 }
 
+function isTypedFunctionExpression(
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  options: Options,
+): boolean {
+  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+
+  if (!options.allowTypedFunctionExpressions) {
+    return false;
+  }
+
+  return (
+    isTypeAssertion(parent) ||
+    isVariableDeclaratorWithTypeAnnotation(parent) ||
+    isClassPropertyWithTypeAnnotation(parent) ||
+    isPropertyOfObjectWithType(parent) ||
+    isFunctionArgument(parent, node) ||
+    isConstructorArgument(parent)
+  );
+}
+
 /**
  * Checks if a function declaration/expression has a return type.
  */
@@ -273,36 +294,25 @@ function checkFunctionExpressionReturnType(
   sourceCode: TSESLint.SourceCode,
   report: (loc: TSESTree.SourceLocation) => void,
 ): void {
-  // Should always have a parent; checking just in case
-  /* istanbul ignore else */ if (node.parent) {
-    if (options.allowTypedFunctionExpressions) {
-      if (
-        isTypeAssertion(node.parent) ||
-        isVariableDeclaratorWithTypeAnnotation(node.parent) ||
-        isClassPropertyWithTypeAnnotation(node.parent) ||
-        isPropertyOfObjectWithType(node.parent) ||
-        isFunctionArgument(node.parent, node) ||
-        isConstructorArgument(node.parent)
-      ) {
-        return;
-      }
-    }
+  if (isTypedFunctionExpression(node, options)) {
+    return;
+  }
 
-    if (
-      options.allowExpressions &&
-      node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-      node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
-      node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-      node.parent.type !== AST_NODE_TYPES.ClassProperty
-    ) {
-      return;
-    }
+  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+  if (
+    options.allowExpressions &&
+    parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+    parent.type !== AST_NODE_TYPES.MethodDefinition &&
+    parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+    parent.type !== AST_NODE_TYPES.ClassProperty
+  ) {
+    return;
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
   if (
-    node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     options.allowDirectConstAssertionInArrowFunctions &&
+    node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     returnsConstAssertionDirectly(node)
   ) {
     return;
@@ -311,4 +321,8 @@ function checkFunctionExpressionReturnType(
   checkFunctionReturnType(node, options, sourceCode, report);
 }
 
-export { checkFunctionReturnType, checkFunctionExpressionReturnType };
+export {
+  checkFunctionReturnType,
+  checkFunctionExpressionReturnType,
+  isTypedFunctionExpression,
+};

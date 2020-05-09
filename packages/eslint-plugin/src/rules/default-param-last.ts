@@ -51,7 +51,11 @@ export default createRule({
     ): void {
       let hasSeenPlainParam = false;
       for (let i = node.params.length - 1; i >= 0; i--) {
-        const param = node.params[i];
+        const current = node.params[i];
+        const param =
+          current.type === AST_NODE_TYPES.TSParameterProperty
+            ? current.parameter
+            : current;
 
         if (isPlainParam(param)) {
           hasSeenPlainParam = true;
@@ -63,7 +67,7 @@ export default createRule({
           (isOptionalParam(param) ||
             param.type === AST_NODE_TYPES.AssignmentPattern)
         ) {
-          context.report({ node: param, messageId: 'shouldBeLast' });
+          context.report({ node: current, messageId: 'shouldBeLast' });
         }
       }
     }

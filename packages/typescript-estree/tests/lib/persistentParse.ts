@@ -8,6 +8,9 @@ const CONTENTS = {
   bar: 'console.log("bar")',
   'baz/bar': 'console.log("baz bar")',
   'bat/baz/bar': 'console.log("bat/baz/bar")',
+  number: 'const foo = 1;',
+  object: '(() => { })();',
+  string: 'let a: "a" | "b";',
 };
 
 const cwdCopy = process.cwd();
@@ -303,5 +306,36 @@ describe('persistent parse', () => {
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+  });
+
+  describe('tsconfig with module set', () => {
+    const moduleTypes = [
+      'None',
+      'CommonJS',
+      'AMD',
+      'System',
+      'UMD',
+      'ES6',
+      'ES2015',
+      'ESNext',
+    ];
+
+    for (const module of moduleTypes) {
+      describe(`module ${module}`, () => {
+        const tsConfigIncludeAll = {
+          compilerOptions: { module },
+          include: ['./**/*'],
+        };
+
+        const testNames = ['object', 'number', 'string', 'foo'] as const;
+        for (const name of testNames) {
+          it(`first parse of ${name} should not throw`, () => {
+            const PROJECT_DIR = setup(tsConfigIncludeAll);
+            writeFile(PROJECT_DIR, name);
+            expect(() => parseFile(name, PROJECT_DIR)).not.toThrow();
+          });
+        }
+      });
+    }
   });
 });

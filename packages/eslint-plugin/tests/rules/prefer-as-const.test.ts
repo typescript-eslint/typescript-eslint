@@ -7,12 +7,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-as-const', rule, {
   valid: [
-    "let foo = 'baz' as const",
-    'let foo = 1 as const',
-    "let foo = { bar: 'baz' as const }",
-    'let foo = { bar: 1 as const }',
-    "let foo = { bar: 'baz' }",
-    'let foo = { bar: 2 }',
+    "let foo = 'baz' as const;",
+    'let foo = 1 as const;',
+    "let foo = { bar: 'baz' as const };",
+    'let foo = { bar: 1 as const };',
+    "let foo = { bar: 'baz' };",
+    'let foo = { bar: 2 };',
     "let foo = <bar>'bar';",
     "let foo = <string>'bar';",
     "let foo = 'bar' as string;",
@@ -23,16 +23,24 @@ ruleTester.run('prefer-as-const', rule, {
     'let foo: number = 1;',
     "let foo: 'bar' = baz;",
     "let foo = 'bar';",
-    'class foo { bar: "baz" = "baz" }',
-    'class foo { bar = "baz" }',
-    "let foo: 'bar'",
-    'let foo = { bar }',
-    "let foo: 'baz' = 'baz' as const",
+    `
+      class foo {
+        bar: 'baz' = 'baz';
+      }
+    `,
+    `
+      class foo {
+        bar = 'baz';
+      }
+    `,
+    "let foo: 'bar';",
+    'let foo = { bar };',
+    "let foo: 'baz' = 'baz' as const;",
   ],
   invalid: [
     {
-      code: "let foo = { bar: 'baz' as 'baz' }",
-      output: "let foo = { bar: 'baz' as const }",
+      code: "let foo = { bar: 'baz' as 'baz' };",
+      output: "let foo = { bar: 'baz' as const };",
       errors: [
         {
           messageId: 'preferConstAssertion',
@@ -42,8 +50,8 @@ ruleTester.run('prefer-as-const', rule, {
       ],
     },
     {
-      code: 'let foo = { bar: 1 as 1 }',
-      output: 'let foo = { bar: 1 as const }',
+      code: 'let foo = { bar: 1 as 1 };',
+      output: 'let foo = { bar: 1 as const };',
       errors: [
         {
           messageId: 'preferConstAssertion',

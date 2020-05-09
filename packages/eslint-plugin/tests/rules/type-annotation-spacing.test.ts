@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../RuleTester';
 import rule from '../../src/rules/type-annotation-spacing';
@@ -19,7 +24,7 @@ ruleTester.run('type-annotation-spacing', rule, {
 interface resolve {
     resolver: (() => PromiseLike<T>) | PromiseLike<T>;
 }
-        `,
+    `,
     'const foo = {} as Foo;',
     'let foo: string;',
     'function foo(): void {}',
@@ -28,63 +33,63 @@ interface resolve {
 class Foo {
     name: string;
 }
-        `,
+    `,
     `
 class Foo {
     constructor(message: string);
 }
-        `,
+    `,
     `
 class Foo {
     greet(): string { return "hello"; }
 }
-        `,
+    `,
     `
 class Foo {
     greet(name: string): string { return name; }
 }
-        `,
+    `,
     `
 interface Foo {
     name: string;
 }
-        `,
+    `,
     `
 interface Foo {
     greet(): string;
 }
-        `,
+    `,
     `
 interface Foo {
     greet(name: string): string;
 }
-        `,
+    `,
     `
 interface Foo {
     thing: { [key in string]: number };
 }
-        `,
+    `,
     `
 type Foo = {
     name: string;
 }
-        `,
+    `,
     `
 type Foo = {
     greet(): string;
 }
-        `,
+    `,
     `
 type Foo = {
     greet(name: string): string;
 }
-        `,
+    `,
     'type Foo = (name: string) => string;',
     `
 type Foo = {
     greet: (name: string) => string;
 }
-        `,
+    `,
     `
 const isString = (): x is string => {
 }
@@ -106,7 +111,7 @@ const isString = (): x is string => {
 class Foo {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -114,7 +119,7 @@ class Foo {
 class Foo {
     constructor(message: string);
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -122,7 +127,7 @@ class Foo {
 class Foo {
     greet(): string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -130,7 +135,7 @@ class Foo {
 class Foo {
     greet(name: string): string { return name; }
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -138,7 +143,7 @@ class Foo {
 interface Foo {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -146,7 +151,7 @@ interface Foo {
 interface Foo {
     greet(): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -154,7 +159,7 @@ interface Foo {
 interface Foo {
     greet(name: string): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -162,7 +167,7 @@ interface Foo {
 type Foo = {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -170,7 +175,7 @@ type Foo = {
 type Foo = {
     greet(): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -178,7 +183,7 @@ type Foo = {
 type Foo = {
     greet(name: string): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -190,7 +195,7 @@ type Foo = {
 type Foo = {
     greet: (name: string) => string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -210,7 +215,7 @@ type Foo = {
 class Foo {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -218,7 +223,7 @@ class Foo {
 class Foo {
     constructor(message: string);
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -226,7 +231,7 @@ class Foo {
 class Foo {
     greet(): string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -234,7 +239,7 @@ class Foo {
 class Foo {
     greet(name: string): string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -242,7 +247,7 @@ class Foo {
 interface Foo {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -250,7 +255,7 @@ interface Foo {
 interface Foo {
     greet(): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -258,7 +263,7 @@ interface Foo {
 interface Foo {
     greet(name: string): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -266,7 +271,7 @@ interface Foo {
 type Foo = {
     name: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -274,7 +279,7 @@ type Foo = {
 type Foo = {
     greet(): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -282,7 +287,7 @@ type Foo = {
 type Foo = {
     greet(name: string): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -294,7 +299,7 @@ type Foo = {
 type Foo = {
     greet: (name: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -314,7 +319,7 @@ type Foo = {
 class Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -322,7 +327,7 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -330,7 +335,7 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -338,7 +343,7 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -346,7 +351,7 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -354,7 +359,7 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -362,7 +367,7 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -370,7 +375,7 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -378,7 +383,7 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -386,7 +391,7 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -398,7 +403,7 @@ type Foo = {
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -418,7 +423,7 @@ type Foo = {
 class Foo {
     name :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -426,7 +431,7 @@ class Foo {
 class Foo {
     constructor(message :string);
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -434,7 +439,7 @@ class Foo {
 class Foo {
     greet() :string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -442,7 +447,7 @@ class Foo {
 class Foo {
     greet(name :string) :string { return name; }
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -450,7 +455,7 @@ class Foo {
 interface Foo {
     name :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -458,7 +463,7 @@ interface Foo {
 interface Foo {
     greet() :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -466,7 +471,7 @@ interface Foo {
 interface Foo {
     greet(name :string) :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -474,7 +479,7 @@ interface Foo {
 type Foo = {
     name :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -482,7 +487,7 @@ type Foo = {
 type Foo = {
     greet() :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -490,7 +495,7 @@ type Foo = {
 type Foo = {
     greet(name :string) :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -502,7 +507,7 @@ type Foo = {
 type Foo = {
     greet :(name :string) =>string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -522,7 +527,7 @@ type Foo = {
 class Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -530,7 +535,7 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -538,7 +543,7 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -546,7 +551,7 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -554,7 +559,7 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -562,7 +567,7 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -570,7 +575,7 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -578,7 +583,7 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -586,7 +591,7 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -594,7 +599,7 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -606,7 +611,7 @@ type Foo = {
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -644,7 +649,7 @@ type Foo = {
 class Foo {
     name : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -658,7 +663,7 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -672,7 +677,7 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -686,7 +691,7 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -700,7 +705,7 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -714,7 +719,7 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -728,7 +733,7 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -742,7 +747,7 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -756,7 +761,7 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -770,7 +775,7 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -794,7 +799,7 @@ type Foo = {
 type Foo = {
     greet : (name : string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -827,7 +832,7 @@ type Foo = {
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -868,7 +873,7 @@ type Foo = {
 type Foo = {
     greet : (name : string) =>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -890,7 +895,7 @@ type Foo = {
 interface Foo {
     thing: { [key in string]: number };
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -898,7 +903,7 @@ interface Foo {
 interface Foo {
     thing: { [key in string]: number };
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -906,7 +911,7 @@ interface Foo {
 interface Foo {
     thing : { [key in string] : number };
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -914,7 +919,7 @@ interface Foo {
 interface Foo {
     thing :{ [key in string] :number };
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -922,20 +927,20 @@ interface Foo {
 interface Foo {
     thing : { [key in string] : number };
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     `
 type Foo = {
     thing: { [key in string]: number };
 }
-        `,
+    `,
     {
       code: `
 type Foo = {
     thing: { [key in string]: number };
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -943,7 +948,7 @@ type Foo = {
 type Foo = {
     thing: { [key in string]: number };
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -951,7 +956,7 @@ type Foo = {
 type Foo = {
     thing : { [key in string] : number };
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -959,7 +964,7 @@ type Foo = {
 type Foo = {
     thing :{ [key in string] :number };
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -967,20 +972,20 @@ type Foo = {
 type Foo = {
     thing : { [key in string] : number };
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     `
 class Foo {
     greet: (name: string) => void = {}
 }
-        `,
+    `,
     {
       code: `
 class Foo {
     greet: (name: string) => void = {}
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -988,7 +993,7 @@ class Foo {
 class Foo {
     greet: (name: string)=> void = {}
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -996,7 +1001,7 @@ class Foo {
 class Foo {
     greet : (name : string) => void = {}
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -1004,7 +1009,7 @@ class Foo {
 class Foo {
     greet :(name :string) =>void = {}
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -1012,14 +1017,14 @@ class Foo {
 class Foo {
     greet : (name : string) => void = {}
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
       code: `
 interface Foo { a: string }
 type Bar = Record<keyof Foo, string>
-            `,
+      `,
       options: [
         {
           after: true,
@@ -1034,6 +1039,148 @@ type Bar = Record<keyof Foo, string>
       ],
     },
     'let resolver: (() => PromiseLike<T>) | PromiseLike<T>;',
+    {
+      code: 'const foo:string;',
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            variable: {
+              before: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'const foo:string;',
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            variable: {
+              after: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  greet():string;
+}
+      `,
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            property: {
+              before: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  name:string;
+}
+      `,
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            property: {
+              after: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'function foo(name:string) {}',
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            parameter: {
+              before: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'function foo(name:string) {}',
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            parameter: {
+              after: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'function foo():string {}',
+      options: [
+        {
+          overrides: {
+            colon: {
+              after: false,
+              before: true,
+            },
+            returnType: {
+              before: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'function foo():string {}',
+      options: [
+        {
+          before: true,
+          overrides: {
+            colon: {
+              after: true,
+              before: false,
+            },
+            returnType: {
+              after: false,
+            },
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1663
+    'type ConstructorFn = new (...args: any[]) => any;',
   ],
   invalid: [
     {
@@ -1077,12 +1224,12 @@ type Bar = Record<keyof Foo, string>
 class Foo {
     name : string;
 }
-            `,
+      `,
       output: `
 class Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1097,12 +1244,12 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       output: `
 class Foo {
     constructor(message: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1117,12 +1264,12 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       output: `
 class Foo {
     greet(): string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1137,12 +1284,12 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       output: `
 class Foo {
     greet(name: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1163,12 +1310,12 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1183,12 +1330,12 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       output: `
 interface Foo {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1203,12 +1350,12 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       output: `
 interface Foo {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1229,12 +1376,12 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1249,12 +1396,12 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1269,12 +1416,12 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1325,12 +1472,12 @@ type Foo = {
 type Foo = {
     greet: (name : string) => string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet: (name: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1345,12 +1492,12 @@ type Foo = {
 type Foo = {
     greet: (name : string)=> string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet: (name: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1410,13 +1557,13 @@ type Foo = {
 class Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1431,13 +1578,13 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     constructor(message: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1452,13 +1599,13 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     greet(): string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1473,13 +1620,13 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     greet(name: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1500,13 +1647,13 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 interface Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1521,13 +1668,13 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 interface Foo {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1542,13 +1689,13 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 interface Foo {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1569,13 +1716,13 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1590,13 +1737,13 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1611,13 +1758,13 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1670,13 +1817,13 @@ type Foo = {
 type Foo = {
     greet: (name : string) => string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet: (name: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1691,13 +1838,13 @@ type Foo = {
 type Foo = {
     greet: (name : string)=> string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet: (name: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1757,13 +1904,13 @@ type Foo = {
 class Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1778,13 +1925,13 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     constructor(message: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1799,13 +1946,13 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     greet(): string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1820,13 +1967,13 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     greet(name: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1847,13 +1994,13 @@ class Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 interface Foo {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1868,13 +2015,13 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 interface Foo {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1889,13 +2036,13 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 interface Foo {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1916,13 +2063,13 @@ interface Foo {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     name: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1937,13 +2084,13 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet(): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -1958,13 +2105,13 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet(name: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -2017,13 +2164,13 @@ type Foo = {
 type Foo = {
     greet: (name : string) => string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet: (name: string)=> string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -2044,13 +2191,13 @@ type Foo = {
 type Foo = {
     greet: (name : string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet: (name: string)=> string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -2122,13 +2269,13 @@ type Foo = {
 class Foo {
     name:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2149,13 +2296,13 @@ class Foo {
 class Foo {
     constructor(message:string);
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2176,13 +2323,13 @@ class Foo {
 class Foo {
     greet():string { return "hello"; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2203,13 +2350,13 @@ class Foo {
 class Foo {
     greet(name:string):string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2242,13 +2389,13 @@ class Foo {
 interface Foo {
     name:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 interface Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2269,13 +2416,13 @@ interface Foo {
 interface Foo {
     greet():string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2296,13 +2443,13 @@ interface Foo {
 interface Foo {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2335,13 +2482,13 @@ interface Foo {
 type Foo = {
     name:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2362,13 +2509,13 @@ type Foo = {
 type Foo = {
     greet():string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2389,13 +2536,13 @@ type Foo = {
 type Foo = {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2460,13 +2607,13 @@ type Foo = {
 type Foo = {
     greet: (name: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -2493,13 +2640,13 @@ type Foo = {
 type Foo = {
     greet : (name : string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -2571,13 +2718,13 @@ type Foo = {
 class Foo {
     name:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2598,13 +2745,13 @@ class Foo {
 class Foo {
     constructor(message:string);
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2625,13 +2772,13 @@ class Foo {
 class Foo {
     greet():string { return "hello"; }
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2652,13 +2799,13 @@ class Foo {
 class Foo {
     greet(name:string):string { return name; }
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2691,13 +2838,13 @@ class Foo {
 interface Foo {
     name:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 interface Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2718,13 +2865,13 @@ interface Foo {
 interface Foo {
     greet():string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2745,13 +2892,13 @@ interface Foo {
 interface Foo {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2784,13 +2931,13 @@ interface Foo {
 type Foo = {
     name:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2811,13 +2958,13 @@ type Foo = {
 type Foo = {
     greet():string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2838,13 +2985,13 @@ type Foo = {
 type Foo = {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -2909,13 +3056,13 @@ type Foo = {
 type Foo = {
     greet: (name: string)=> string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -2942,13 +3089,13 @@ type Foo = {
 type Foo = {
     greet : (name : string)=> string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -3038,7 +3185,7 @@ type Foo = {
 class Foo {
     name:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3050,7 +3197,7 @@ class Foo {
 class Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3071,7 +3218,7 @@ class Foo {
 class Foo {
     constructor(message:string);
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3083,7 +3230,7 @@ class Foo {
 class Foo {
     constructor(message : string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3104,7 +3251,7 @@ class Foo {
 class Foo {
     greet():string { return "hello"; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3116,7 +3263,7 @@ class Foo {
 class Foo {
     greet() : string { return "hello"; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3137,7 +3284,7 @@ class Foo {
 class Foo {
     greet(name:string):string { return name; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3149,7 +3296,7 @@ class Foo {
 class Foo {
     greet(name : string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3182,7 +3329,7 @@ class Foo {
 interface Foo {
     name:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3194,7 +3341,7 @@ interface Foo {
 interface Foo {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3215,7 +3362,7 @@ interface Foo {
 interface Foo {
     greet():string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3227,7 +3374,7 @@ interface Foo {
 interface Foo {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3248,7 +3395,7 @@ interface Foo {
 interface Foo {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3260,7 +3407,7 @@ interface Foo {
 interface Foo {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3293,7 +3440,7 @@ interface Foo {
 type Foo = {
     name:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3305,7 +3452,7 @@ type Foo = {
 type Foo = {
     name : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3326,7 +3473,7 @@ type Foo = {
 type Foo = {
     greet():string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3338,7 +3485,7 @@ type Foo = {
 type Foo = {
     greet() : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3359,7 +3506,7 @@ type Foo = {
 type Foo = {
     greet(name:string):string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3371,7 +3518,7 @@ type Foo = {
 type Foo = {
     greet(name : string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3429,7 +3576,7 @@ type Foo = {
 type Foo = {
     greet : (name:string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3441,7 +3588,7 @@ type Foo = {
 type Foo = {
     greet : (name : string)=>string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3508,7 +3655,7 @@ type Foo = {
 type Foo = {
     greet : (name:string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -3529,7 +3676,7 @@ type Foo = {
 type Foo = {
     greet : (name : string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceAfter',
@@ -3560,20 +3707,20 @@ type Foo = {
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/152
     {
       code: `
-                class Some {
-                    a : {some: string, other: {more: number}};
-                    someMethod : (args : {some: string, other: {more: number}}) => void;
-                    doSomething(args : {some: string, other: {more: number}}) : void {}
-                }
-            `,
+        class Some {
+            a : {some: string, other: {more: number}};
+            someMethod : (args : {some: string, other: {more: number}}) => void;
+            doSomething(args : {some: string, other: {more: number}}) : void {}
+        }
+      `,
       options: [{ after: true, before: true }],
       output: `
-                class Some {
-                    a : {some : string, other : {more : number}};
-                    someMethod : (args : {some : string, other : {more : number}}) => void;
-                    doSomething(args : {some : string, other : {more : number}}) : void {}
-                }
-            `,
+        class Some {
+            a : {some : string, other : {more : number}};
+            someMethod : (args : {some : string, other : {more : number}}) => void;
+            doSomething(args : {some : string, other : {more : number}}) : void {}
+        }
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -3581,7 +3728,7 @@ type Foo = {
             type: ':',
           },
           line: 3,
-          column: 30,
+          column: 22,
         },
         {
           messageId: 'expectedSpaceBefore',
@@ -3589,7 +3736,7 @@ type Foo = {
             type: ':',
           },
           line: 3,
-          column: 45,
+          column: 37,
         },
         {
           messageId: 'expectedSpaceBefore',
@@ -3597,6 +3744,46 @@ type Foo = {
             type: ':',
           },
           line: 3,
+          column: 44,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: ':',
+          },
+          line: 4,
+          column: 39,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: ':',
+          },
+          line: 4,
+          column: 54,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: ':',
+          },
+          line: 4,
+          column: 61,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: ':',
+          },
+          line: 5,
+          column: 37,
+        },
+        {
+          messageId: 'expectedSpaceBefore',
+          data: {
+            type: ':',
+          },
+          line: 5,
           column: 52,
         },
         {
@@ -3604,48 +3791,8 @@ type Foo = {
           data: {
             type: ':',
           },
-          line: 4,
-          column: 47,
-        },
-        {
-          messageId: 'expectedSpaceBefore',
-          data: {
-            type: ':',
-          },
-          line: 4,
-          column: 62,
-        },
-        {
-          messageId: 'expectedSpaceBefore',
-          data: {
-            type: ':',
-          },
-          line: 4,
-          column: 69,
-        },
-        {
-          messageId: 'expectedSpaceBefore',
-          data: {
-            type: ':',
-          },
           line: 5,
-          column: 45,
-        },
-        {
-          messageId: 'expectedSpaceBefore',
-          data: {
-            type: ':',
-          },
-          line: 5,
-          column: 60,
-        },
-        {
-          messageId: 'expectedSpaceBefore',
-          data: {
-            type: ':',
-          },
-          line: 5,
-          column: 67,
+          column: 59,
         },
       ],
     },
@@ -3662,54 +3809,54 @@ ruleTester.run('type-annotation-spacing', rule, {
 interface resolve {
     resolver?: (() => PromiseLike<T>) | PromiseLike<T>;
 }
-        `,
+    `,
     'function foo(a?: string) {}',
     `
 class Foo {
     name?: string;
 }
-        `,
+    `,
     `
 class Foo {
     constructor(message?: string);
 }
-        `,
+    `,
     `
 class Foo {
     greet(name?: string): string { return name; }
 }
-        `,
+    `,
     `
 interface Foo {
     name?: string;
 }
-        `,
+    `,
     `
 interface Foo {
     greet(name?: string): string;
 }
-        `,
+    `,
     `
 interface Foo {
     thing?: { [key in string]?: number };
 }
-        `,
+    `,
     `
 type Foo = {
     name?: string;
 }
-        `,
+    `,
     `
 type Foo = {
     greet(name?: string): string;
 }
-        `,
+    `,
     'type Foo = (name?: string) => string;',
     `
 type Foo = {
     greet?: (name?: string) => string;
 }
-        `,
+    `,
     {
       code: 'function foo(a?: string) {}',
       options: [{ after: true }],
@@ -3719,7 +3866,7 @@ type Foo = {
 class Foo {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3727,7 +3874,7 @@ class Foo {
 class Foo {
     constructor(message?: string);
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3735,7 +3882,7 @@ class Foo {
 class Foo {
     greet(name?: string): string { return name; }
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3743,7 +3890,7 @@ class Foo {
 interface Foo {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3751,7 +3898,7 @@ interface Foo {
 interface Foo {
     greet(name?: string): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3759,7 +3906,7 @@ interface Foo {
 type Foo = {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3767,7 +3914,7 @@ type Foo = {
 type Foo = {
     greet(name?: string): string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3779,7 +3926,7 @@ type Foo = {
 type Foo = {
     greet?: (name?: string) => string;
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -3791,7 +3938,7 @@ type Foo = {
 class Foo {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3799,7 +3946,7 @@ class Foo {
 class Foo {
     constructor(message?: string);
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3807,7 +3954,7 @@ class Foo {
 class Foo {
     greet(name?: string): string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3815,7 +3962,7 @@ class Foo {
 interface Foo {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3823,7 +3970,7 @@ interface Foo {
 interface Foo {
     greet(name?: string): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3831,7 +3978,7 @@ interface Foo {
 type Foo = {
     name?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3839,7 +3986,7 @@ type Foo = {
 type Foo = {
     greet(name?: string): string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3851,7 +3998,7 @@ type Foo = {
 type Foo = {
     greet?: (name?: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -3863,7 +4010,7 @@ type Foo = {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3871,7 +4018,7 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3879,7 +4026,7 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3887,7 +4034,7 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3895,7 +4042,7 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3903,7 +4050,7 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3911,7 +4058,7 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3923,7 +4070,7 @@ type Foo = {
 type Foo = {
     greet ?: (name : string) => string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -3935,7 +4082,7 @@ type Foo = {
 class Foo {
     name ?:string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3943,7 +4090,7 @@ class Foo {
 class Foo {
     constructor(message ?:string);
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3951,7 +4098,7 @@ class Foo {
 class Foo {
     greet(name ?:string) :string { return name; }
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3959,7 +4106,7 @@ class Foo {
 interface Foo {
     name ?:string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3967,7 +4114,7 @@ interface Foo {
 interface Foo {
     greet(name ?:string) :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3975,7 +4122,7 @@ interface Foo {
 type Foo = {
     name ?:string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3983,7 +4130,7 @@ type Foo = {
 type Foo = {
     greet(name ?:string) :string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -3995,7 +4142,7 @@ type Foo = {
 type Foo = {
     greet :(name ?:string) =>string;
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -4007,7 +4154,7 @@ type Foo = {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4015,7 +4162,7 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4023,7 +4170,7 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4031,7 +4178,7 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4039,7 +4186,7 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4047,7 +4194,7 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4055,7 +4202,7 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4067,7 +4214,7 @@ type Foo = {
 type Foo = {
     greet : (name ?: string) => string;
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
@@ -4085,7 +4232,7 @@ type Foo = {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4099,7 +4246,7 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4113,7 +4260,7 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4127,7 +4274,7 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4141,7 +4288,7 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4155,7 +4302,7 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4169,7 +4316,7 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4193,7 +4340,7 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4226,7 +4373,7 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4267,7 +4414,7 @@ type Foo = {
 type Foo = {
     greet : (name ?: string) =>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -4289,7 +4436,7 @@ type Foo = {
 interface Foo {
     thing?: { [key in string]?: number };
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -4297,7 +4444,7 @@ interface Foo {
 interface Foo {
     thing?: { [key in string]?: number };
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -4305,7 +4452,7 @@ interface Foo {
 interface Foo {
     thing ?: { [key in string] ?: number };
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -4313,7 +4460,7 @@ interface Foo {
 interface Foo {
     thing ?:{ [key in string] ?:number };
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -4321,20 +4468,20 @@ interface Foo {
 interface Foo {
     thing ?: { [key in string] ?: number };
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     `
 type Foo = {
     thing?: { [key in string]?: number };
 }
-        `,
+    `,
     {
       code: `
 type Foo = {
     thing?: { [key in string]?: number };
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -4342,7 +4489,7 @@ type Foo = {
 type Foo = {
     thing?: { [key in string]?: number };
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -4350,7 +4497,7 @@ type Foo = {
 type Foo = {
     thing ?: { [key in string] ?: number };
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -4358,7 +4505,7 @@ type Foo = {
 type Foo = {
     thing ?:{ [key in string] ?:number };
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -4366,20 +4513,20 @@ type Foo = {
 type Foo = {
     thing ?: { [key in string] ?: number };
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     `
 class Foo {
     greet: (name?: string) => void = {}
 }
-        `,
+    `,
     {
       code: `
 class Foo {
     greet: (name?: string) => void = {}
 }
-            `,
+      `,
       options: [{ after: true }],
     },
     {
@@ -4387,7 +4534,7 @@ class Foo {
 class Foo {
     greet: (name?: string)=> void = {}
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
     },
     {
@@ -4395,7 +4542,7 @@ class Foo {
 class Foo {
     greet : (name ?: string) => void = {}
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
     },
     {
@@ -4403,7 +4550,7 @@ class Foo {
 class Foo {
     greet :(name ?:string) =>void = {}
 }
-            `,
+      `,
       options: [{ after: false, before: true }],
     },
     {
@@ -4411,14 +4558,14 @@ class Foo {
 class Foo {
     greet : (name ?: string) => void = {}
 }
-            `,
+      `,
       options: [{ before: true }],
     },
     {
       code: `
 interface Foo { a?: string }
 type Bar = Record<keyof Foo, string>
-            `,
+      `,
       options: [
         {
           after: true,
@@ -4451,12 +4598,12 @@ type Bar = Record<keyof Foo, string>
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       output: `
 class Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4471,12 +4618,12 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       output: `
 class Foo {
     constructor(message?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4491,12 +4638,12 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       output: `
 class Foo {
     greet(name?: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4517,12 +4664,12 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       output: `
 interface Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4537,12 +4684,12 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       output: `
 interface Foo {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4563,12 +4710,12 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4583,12 +4730,12 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4639,12 +4786,12 @@ type Foo = {
 type Foo = {
     greet: (name ?: string) => string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet: (name?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4659,12 +4806,12 @@ type Foo = {
 type Foo = {
     greet: (name ?: string)=> string;
 }
-            `,
+      `,
       output: `
 type Foo = {
     greet: (name?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4698,13 +4845,13 @@ type Foo = {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4719,13 +4866,13 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     constructor(message?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4740,13 +4887,13 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 class Foo {
     greet(name?: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4767,13 +4914,13 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 interface Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4788,13 +4935,13 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 interface Foo {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4815,13 +4962,13 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4836,13 +4983,13 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4895,13 +5042,13 @@ type Foo = {
 type Foo = {
     greet: (name ?: string) => string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet: (name?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4916,13 +5063,13 @@ type Foo = {
 type Foo = {
     greet: (name ?: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true }],
       output: `
 type Foo = {
     greet: (name?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4956,13 +5103,13 @@ type Foo = {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4977,13 +5124,13 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     constructor(message?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -4998,13 +5145,13 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 class Foo {
     greet(name?: string): string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5025,13 +5172,13 @@ class Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 interface Foo {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5046,13 +5193,13 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 interface Foo {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5073,13 +5220,13 @@ interface Foo {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     name?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5094,13 +5241,13 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet(name?: string): string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5153,13 +5300,13 @@ type Foo = {
 type Foo = {
     greet: (name ?: string) => string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet: (name?: string)=> string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5180,13 +5327,13 @@ type Foo = {
 type Foo = {
     greet: (name ?: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: false }],
       output: `
 type Foo = {
     greet: (name?: string)=> string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'unexpectedSpaceBefore',
@@ -5220,13 +5367,13 @@ type Foo = {
 class Foo {
     name?:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5247,13 +5394,13 @@ class Foo {
 class Foo {
     constructor(message?:string);
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5274,13 +5421,13 @@ class Foo {
 class Foo {
     greet(name?:string):string { return name; }
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5313,13 +5460,13 @@ class Foo {
 interface Foo {
     name?:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5340,13 +5487,13 @@ interface Foo {
 interface Foo {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5379,13 +5526,13 @@ interface Foo {
 type Foo = {
     name?:string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5406,13 +5553,13 @@ type Foo = {
 type Foo = {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5477,13 +5624,13 @@ type Foo = {
 type Foo = {
     greet?: (name?: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5510,13 +5657,13 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string)=> string;
 }
-            `,
+      `,
       options: [{ after: true, before: true }],
       output: `
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5550,13 +5697,13 @@ type Foo = {
 class Foo {
     name?:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5577,13 +5724,13 @@ class Foo {
 class Foo {
     constructor(message?:string);
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5604,13 +5751,13 @@ class Foo {
 class Foo {
     greet(name?:string):string { return name; }
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5643,13 +5790,13 @@ class Foo {
 interface Foo {
     name?:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5670,13 +5817,13 @@ interface Foo {
 interface Foo {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5709,13 +5856,13 @@ interface Foo {
 type Foo = {
     name?:string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5736,13 +5883,13 @@ type Foo = {
 type Foo = {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5807,13 +5954,13 @@ type Foo = {
 type Foo = {
     greet?: (name?: string)=> string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5840,13 +5987,13 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string)=> string;
 }
-            `,
+      `,
       options: [{ before: true }],
       output: `
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5886,7 +6033,7 @@ type Foo = {
 class Foo {
     name?:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -5898,7 +6045,7 @@ class Foo {
 class Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5919,7 +6066,7 @@ class Foo {
 class Foo {
     constructor(message?:string);
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -5931,7 +6078,7 @@ class Foo {
 class Foo {
     constructor(message ?: string);
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5952,7 +6099,7 @@ class Foo {
 class Foo {
     greet(name?:string):string { return name; }
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -5964,7 +6111,7 @@ class Foo {
 class Foo {
     greet(name ?: string) : string { return name; }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -5997,7 +6144,7 @@ class Foo {
 interface Foo {
     name?:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6009,7 +6156,7 @@ interface Foo {
 interface Foo {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -6030,7 +6177,7 @@ interface Foo {
 interface Foo {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6042,7 +6189,7 @@ interface Foo {
 interface Foo {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -6075,7 +6222,7 @@ interface Foo {
 type Foo = {
     name?:string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6087,7 +6234,7 @@ type Foo = {
 type Foo = {
     name ?: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -6108,7 +6255,7 @@ type Foo = {
 type Foo = {
     greet(name?:string):string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6120,7 +6267,7 @@ type Foo = {
 type Foo = {
     greet(name ?: string) : string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -6178,7 +6325,7 @@ type Foo = {
 type Foo = {
     greet ?: (name?:string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6190,7 +6337,7 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string)=>string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',
@@ -6257,7 +6404,7 @@ type Foo = {
 type Foo = {
     greet ?: (name?:string)=>string;
 }
-            `,
+      `,
       options: [
         {
           before: false,
@@ -6278,7 +6425,7 @@ type Foo = {
 type Foo = {
     greet ?: (name ?: string) => string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'expectedSpaceBefore',

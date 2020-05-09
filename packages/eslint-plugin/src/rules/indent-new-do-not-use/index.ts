@@ -8,7 +8,13 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+
+import { TokenOrComment } from './BinarySearchTree';
+import { OffsetStorage } from './OffsetStorage';
+import { TokenInfo } from './TokenInfo';
 import {
+  createRule,
+  ExcludeKeys,
   isClosingBraceToken,
   isClosingBracketToken,
   isClosingParenToken,
@@ -19,11 +25,8 @@ import {
   isOpeningBraceToken,
   isOpeningParenToken,
   isSemicolonToken,
-} from 'eslint-utils';
-import { TokenOrComment } from './BinarySearchTree';
-import { OffsetStorage } from './OffsetStorage';
-import { TokenInfo } from './TokenInfo';
-import { createRule, ExcludeKeys, RequireKeys } from '../../util';
+  RequireKeys,
+} from '../../util';
 
 const GLOBAL_LINEBREAK_REGEX = /\r\n|[\r\n\u2028\u2029]/gu;
 const WHITESPACE_REGEX = /\s*$/u;

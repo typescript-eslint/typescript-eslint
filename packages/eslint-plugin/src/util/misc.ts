@@ -82,9 +82,7 @@ function findFirstResult<T, U>(
 /**
  * Gets a string representation of the name of the index signature.
  */
-export function getNameFromIndexSignature(
-  node: TSESTree.TSIndexSignature,
-): string {
+function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
   const propName: TSESTree.PropertyName | undefined = node.parameters.find(
     (parameter: TSESTree.Parameter): parameter is TSESTree.Identifier =>
       parameter.type === AST_NODE_TYPES.Identifier,
@@ -136,6 +134,7 @@ export {
   ExcludeKeys,
   findFirstResult,
   getEnumNames,
+  getNameFromIndexSignature,
   getNameFromMember,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,

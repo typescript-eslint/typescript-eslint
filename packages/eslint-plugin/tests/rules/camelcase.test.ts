@@ -1,5 +1,5 @@
 import rule from '../../src/rules/camelcase';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,75 +8,147 @@ const ruleTester = new RuleTester({
 ruleTester.run('camelcase', rule, {
   valid: [
     {
-      code: 'interface Foo { b_ar: number }',
+      code: `
+interface Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'interface Foo { bar: number }',
+      code: `
+interface Foo {
+  bar: number;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'class Foo { b_ar: number; }',
+      code: `
+class Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'class Foo { bar: number; }',
+      code: `
+class Foo {
+  bar: number;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'class Foo { b_ar: number = 0; }',
+      code: `
+class Foo {
+  b_ar: number = 0;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'class Foo { bar: number = 0; }',
+      code: `
+class Foo {
+  bar: number = 0;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'class Foo { constructor(private b_ar: number) {} }',
+      code: `
+class Foo {
+  constructor(private b_ar: number) {}
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'class Foo { constructor(private bar: number) {} }',
+      code: `
+class Foo {
+  constructor(private bar: number) {}
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'class Foo { constructor(private b_ar: number = 0) {} }',
+      code: `
+class Foo {
+  constructor(private b_ar: number = 0) {}
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'class Foo { constructor(private bar: number = 0) {} }',
+      code: `
+class Foo {
+  constructor(private bar: number = 0) {}
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'abstract class Foo { b_ar: number; }',
+      code: `
+abstract class Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'abstract class Foo { bar: number; }',
+      code: `
+abstract class Foo {
+  bar: number;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'abstract class Foo { b_ar: number = 0; }',
+      code: `
+abstract class Foo {
+  b_ar: number = 0;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'abstract class Foo { bar: number = 0; }',
+      code: `
+abstract class Foo {
+  bar: number = 0;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'abstract class Foo { abstract b_ar: number; }',
+      code: `
+abstract class Foo {
+  abstract b_ar: number;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'abstract class Foo { abstract bar: number; }',
+      code: `
+abstract class Foo {
+  abstract bar: number;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
-      code: 'abstract class Foo { abstract b_ar: number = 0; }',
+      code: `
+abstract class Foo {
+  abstract b_ar: number = 0;
+}
+      `,
       options: [{ properties: 'never' }],
     },
     {
-      code: 'abstract class Foo { abstract bar: number = 0; }',
+      code: `
+abstract class Foo {
+  abstract bar: number = 0;
+}
+      `,
       options: [{ properties: 'always' }],
     },
     {
@@ -141,19 +213,19 @@ class Foo {
     },
     {
       code: `
-type Foo<T> = {}
+type Foo<T> = {};
       `,
       options: [{ genericType: 'always' }],
     },
     {
       code: `
-type Foo<t> = {}
+type Foo<t> = {};
       `,
       options: [{ genericType: 'always' }],
     },
     {
       code: `
-type Foo<t_object> = {}
+type Foo<t_object> = {};
       `,
       options: [{ genericType: 'never' }],
     },
@@ -183,7 +255,7 @@ class Foo {
       code: 'const foo = foo.bar?.foo_bar_baz;',
     },
     {
-      code: 'const foo = (foo?.bar?.baz)?.foo_bar_baz;',
+      code: noFormat`const foo = (foo?.bar?.baz)?.foo_bar_baz;`,
     },
     {
       code: 'const foo = foo_bar?.foo;',
@@ -193,7 +265,11 @@ class Foo {
 
   invalid: [
     {
-      code: 'interface Foo { b_ar: number }',
+      code: `
+interface Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -201,13 +277,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 17,
+          line: 3,
+          column: 3,
         },
       ],
     },
     {
-      code: 'class Foo { b_ar: number; }',
+      code: `
+class Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -215,13 +295,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 13,
+          line: 3,
+          column: 3,
         },
       ],
     },
     {
-      code: 'class Foo { constructor(private b_ar: number) {} }',
+      code: `
+class Foo {
+  constructor(private b_ar: number) {}
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -229,13 +313,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 33,
+          line: 3,
+          column: 23,
         },
       ],
     },
     {
-      code: 'class Foo { constructor(private b_ar: number = 0) {} }',
+      code: `
+class Foo {
+  constructor(private b_ar: number = 0) {}
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -243,13 +331,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 33,
+          line: 3,
+          column: 23,
         },
       ],
     },
     {
-      code: 'abstract class Foo { b_ar: number; }',
+      code: `
+abstract class Foo {
+  b_ar: number;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -257,13 +349,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 22,
+          line: 3,
+          column: 3,
         },
       ],
     },
     {
-      code: 'abstract class Foo { b_ar: number = 0; }',
+      code: `
+abstract class Foo {
+  b_ar: number = 0;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -271,13 +367,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 22,
+          line: 3,
+          column: 3,
         },
       ],
     },
     {
-      code: 'abstract class Foo { abstract b_ar: number; }',
+      code: `
+abstract class Foo {
+  abstract b_ar: number;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -285,13 +385,17 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 31,
+          line: 3,
+          column: 12,
         },
       ],
     },
     {
-      code: 'abstract class Foo { abstract b_ar: number = 0; }',
+      code: `
+abstract class Foo {
+  abstract b_ar: number = 0;
+}
+      `,
       options: [{ properties: 'always' }],
       errors: [
         {
@@ -299,8 +403,8 @@ class Foo {
           data: {
             name: 'b_ar',
           },
-          line: 1,
-          column: 31,
+          line: 3,
+          column: 12,
         },
       ],
     },
@@ -319,7 +423,7 @@ class Foo {
       ],
     },
     {
-      code: 'const foo = (foo_test?.bar)?.baz;',
+      code: noFormat`const foo = (foo_test?.bar)?.baz;`,
       options: [{ properties: 'always' }],
       errors: [
         {

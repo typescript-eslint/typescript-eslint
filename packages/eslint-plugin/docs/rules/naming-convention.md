@@ -40,7 +40,12 @@ type Options = {
 
   // selector options
   selector: Selector;
-  filter?: string;
+  filter?:
+    | string
+    | {
+        regex: string;
+        match: boolean;
+      };
   // the allowed values for these are dependent on the selector - see below
   modifiers?: Modifiers<Selector>[];
   types?: Types<Selector>[];
@@ -118,6 +123,19 @@ Accepts an object with the following properties:
 - `regex` - accepts a regular expression (anything accepted into `new RegExp(regex)`).
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
 
+### `filter`
+
+The `filter` option operates similar to `custom`, accepting the same shaped object, except that it controls if the rest of the configuration should or should not be applied to an identifier.
+
+You can use this to include or exclude specific identifiers from specific configurations.
+
+Accepts an object with the following properties:
+
+- `regex` - accepts a regular expression (anything accepted into `new RegExp(regex)`).
+- `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
+
+Alternatively, `filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). In this case, it's treated as if you had passed an object with the regex and `match: true`.
+
 #### `leadingUnderscore` / `trailingUnderscore`
 
 The `leadingUnderscore` / `trailingUnderscore` options control whether leading/trailing underscores are considered valid. Accepts one of the following values:
@@ -135,7 +153,6 @@ If these are provided, the identifier must start with one of the provided values
 ### Selector Options
 
 - `selector` (see "Allowed Selectors, Modifiers and Types" below).
-- `filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). It allows you to limit the scope of this configuration to names that match this regex.
 - `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
@@ -157,7 +174,7 @@ For example, if you provide the following config:
 [
   /* 1 */ { selector: 'default', format: ['camelCase'] },
   /* 2 */ { selector: 'variable', format: ['snake_case'] },
-  /* 3 */ { selector: 'variable', type: ['boolean'], format: ['UPPER_CASE'] },
+  /* 3 */ { selector: 'variable', types: ['boolean'], format: ['UPPER_CASE'] },
   /* 4 */ { selector: 'variableLike', format: ['PascalCase'] },
 ];
 ```

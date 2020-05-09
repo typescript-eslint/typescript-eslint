@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-extra-non-null-assertion';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -17,7 +17,8 @@ const bar = foo!.bar;
       code: `
 function foo(bar: number | undefined) {
   const bar: number = bar!;
-}      `,
+}
+      `,
     },
     {
       code: `
@@ -31,21 +32,13 @@ function foo(bar?: { n: number }) {
     {
       code: `
 const foo: { bar: number } | null = null;
-const bar = foo!!!!.bar;
+const bar = foo!!.bar;
+      `,
+      output: `
+const foo: { bar: number } | null = null;
+const bar = foo!.bar;
       `,
       errors: [
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 19,
-          column: 13,
-          line: 3,
-        },
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 18,
-          column: 13,
-          line: 3,
-        },
         {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 17,
@@ -58,6 +51,11 @@ const bar = foo!!!!.bar;
       code: `
 function foo(bar: number | undefined) {
   const bar: number = bar!!;
+}
+      `,
+      output: `
+function foo(bar: number | undefined) {
+  const bar: number = bar!;
 }
       `,
       errors: [
@@ -75,6 +73,11 @@ function foo(bar?: { n: number }) {
   return bar!?.n;
 }
       `,
+      output: `
+function foo(bar?: { n: number }) {
+  return bar?.n;
+}
+      `,
       errors: [
         {
           messageId: 'noExtraNonNullAssertion',
@@ -87,7 +90,71 @@ function foo(bar?: { n: number }) {
     {
       code: `
 function foo(bar?: { n: number }) {
-  return bar!!!?.n;
+  return bar!?.();
+}
+      `,
+      output: `
+function foo(bar?: { n: number }) {
+  return bar?.();
+}
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 14,
+          column: 10,
+          line: 3,
+        },
+      ],
+    },
+    // parentheses
+    {
+      code: noFormat`
+const foo: { bar: number } | null = null;
+const bar = (foo!)!.bar;
+      `,
+      output: noFormat`
+const foo: { bar: number } | null = null;
+const bar = (foo)!.bar;
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 18,
+          column: 14,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar!)?.n;
+}
+      `,
+      output: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar)?.n;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noExtraNonNullAssertion',
+          endColumn: 15,
+          column: 11,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar)!?.n;
+}
+      `,
+      output: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar)?.n;
 }
       `,
       errors: [
@@ -97,16 +164,24 @@ function foo(bar?: { n: number }) {
           column: 10,
           line: 3,
         },
+      ],
+    },
+    {
+      code: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar!)?.();
+}
+      `,
+      output: noFormat`
+function foo(bar?: { n: number }) {
+  return (bar)?.();
+}
+      `,
+      errors: [
         {
           messageId: 'noExtraNonNullAssertion',
           endColumn: 15,
-          column: 10,
-          line: 3,
-        },
-        {
-          messageId: 'noExtraNonNullAssertion',
-          endColumn: 14,
-          column: 10,
+          column: 11,
           line: 3,
         },
       ],

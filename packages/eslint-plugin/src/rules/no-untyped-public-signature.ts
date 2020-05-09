@@ -19,8 +19,8 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     messages: {
-      noReturnType: 'Public method has no return type',
-      untypedParameter: 'Public method parameters should be typed',
+      noReturnType: 'Public method has no return type.',
+      untypedParameter: 'Public method parameters should be typed.',
     },
     schema: [
       {
