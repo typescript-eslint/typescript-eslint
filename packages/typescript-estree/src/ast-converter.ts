@@ -4,6 +4,7 @@ import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { Extra } from './parser-options';
 import { TSESTree } from './ts-estree';
+import { simpleTraverse } from './simple-traverse';
 
 export function astConverter(
   ast: SourceFile,
@@ -31,6 +32,22 @@ export function astConverter(
   });
 
   const estree = instance.convertProgram();
+
+  /**
+   * Optionally remove range and loc if specified
+   */
+  if (extra.range || extra.loc) {
+    simpleTraverse(estree, {
+      enter: node => {
+        if (!extra.range) {
+          delete node.range;
+        }
+        if (!extra.loc) {
+          delete node.loc;
+        }
+      },
+    });
+  }
 
   /**
    * Optionally convert and include all tokens in the AST

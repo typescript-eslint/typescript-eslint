@@ -9,14 +9,12 @@ const ANGLE_BRACKET_TESTS = `
 const x = <Foo>new Generic<int>();
 const x = <A>b;
 const x = <readonly number[]>[1];
-const x = <const>[1];
 const x = <a | b>('string');
 `;
 const AS_TESTS = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
 const x = [1] as readonly number[];
-const x = [1] as const;
 const x = ('string') as a | b;
 `;
 const OBJECT_LITERAL_AS_CASTS = `
@@ -31,11 +29,15 @@ new print({ bar: 5 } as Foo)
 function foo() { throw { bar: 5 } as Foo }
 function b(x = {} as Foo.Bar) {}
 function c(x = {} as Foo) {}
+print?.({ bar: 5 } as Foo)
+print?.call({ bar: 5 } as Foo)
 `;
 const OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS = `
 print(<Foo>{ bar: 5 })
 new print(<Foo>{ bar: 5 })
 function foo() { throw <Foo>{ bar: 5 } }
+print?.(<Foo>{ bar: 5 })
+print?.call(<Foo>{ bar: 5 })
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
@@ -94,6 +96,22 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
+    {
+      code: 'const x = <const>[1];',
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    },
+    {
+      code: 'const x = [1] as const;',
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -279,6 +297,14 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 7,
         },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 8,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 9,
+        },
       ],
     }),
     ...batchedSingleLineTests({
@@ -305,6 +331,14 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 6,
+        },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 7,
         },
       ],
     }),

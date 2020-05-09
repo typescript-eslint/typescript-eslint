@@ -1,4 +1,12 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the spacing, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import { RuleTester } from '../../RuleTester';
 import rule from '../../../src/rules/indent';
 import {
@@ -18,7 +26,7 @@ function nonTsTestCase(example: TemplateStringsArray): string {
 
 const individualNodeTests = [
   {
-    node: 'ClassDeclaration',
+    node: AST_NODE_TYPES.ClassDeclaration,
     code: [
       `
 abstract class Foo {
@@ -31,7 +39,7 @@ abstract class Foo {
     ],
   },
   {
-    node: 'TSAbstractClassProperty',
+    node: AST_NODE_TYPES.TSAbstractClassProperty,
     code: [
       `
 class Foo {
@@ -45,7 +53,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSAbstractMethodDefinition',
+    node: AST_NODE_TYPES.TSAbstractMethodDefinition,
     code: [
       `
 class Foo {
@@ -59,7 +67,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSArrayType',
+    node: AST_NODE_TYPES.TSArrayType,
     code: [
       `
 type foo = ArrType[];
@@ -67,7 +75,7 @@ type foo = ArrType[];
     ],
   },
   {
-    node: 'TSAsExpression',
+    node: AST_NODE_TYPES.TSAsExpression,
     code: [
       `
 const foo = {} as {
@@ -92,7 +100,7 @@ const foo = {} as
     ],
   },
   {
-    node: 'TSConditionalType',
+    node: AST_NODE_TYPES.TSConditionalType,
     code: [
       nonTsTestCase`
 const Foo = T
@@ -129,7 +137,7 @@ type Foo<T> = T extends string ? {
     ],
   },
   {
-    node: 'TSConstructorType',
+    node: AST_NODE_TYPES.TSConstructorType,
     code: [
       `
 type Constructor<T> = new (
@@ -153,7 +161,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSDeclareFunction',
+    node: AST_NODE_TYPES.TSDeclareFunction,
     code: [
       `
 declare function foo() : {
@@ -164,7 +172,7 @@ declare function foo() : {
     ],
   },
   {
-    node: 'TSEmptyBodyFunctionExpression',
+    node: AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     code: [
       `
 class Foo {
@@ -190,7 +198,7 @@ enum Foo {
     ],
   },
   {
-    node: 'TSExportAssignment',
+    node: AST_NODE_TYPES.TSExportAssignment,
     code: [
       `
 export = {
@@ -201,7 +209,7 @@ export = {
     ],
   },
   {
-    node: 'TSFunctionType',
+    node: AST_NODE_TYPES.TSFunctionType,
     code: [
       `
 const foo: () => void = () => ({
@@ -242,7 +250,7 @@ const foo: ({
     ],
   },
   {
-    node: 'TSImportType',
+    node: AST_NODE_TYPES.TSImportType,
     code: [
       `
 const foo: import("bar") = {
@@ -261,7 +269,7 @@ const foo: import(
     ],
   },
   {
-    node: 'TSIndexedAccessType',
+    node: AST_NODE_TYPES.TSIndexedAccessType,
     code: [
       nonTsTestCase`
 const Foo = Bar[
@@ -276,7 +284,7 @@ type Foo = Bar[
     ],
   },
   {
-    node: 'TSIndexSignature',
+    node: AST_NODE_TYPES.TSIndexSignature,
     code: [
       `
 type Foo = {
@@ -289,7 +297,7 @@ type Foo = {
     ],
   },
   {
-    node: 'TSInferType',
+    node: AST_NODE_TYPES.TSInferType,
     code: [
       `
 type Foo<T> = T extends string
@@ -315,7 +323,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSInterfaceHeritage',
+    node: AST_NODE_TYPES.TSInterfaceHeritage,
     code: [
       `
 interface Foo extends Bar {
@@ -329,7 +337,7 @@ interface Foo extends Bar {
     ],
   },
   {
-    node: 'TSIntersectionType',
+    node: AST_NODE_TYPES.TSIntersectionType,
     code: [
       `
 type Foo = "string" & {
@@ -355,7 +363,7 @@ import foo = require(
   },
   // TSLiteralType
   {
-    node: 'TSMappedType',
+    node: AST_NODE_TYPES.TSMappedType,
     code: [
       `
 type Partial<T> = {
@@ -383,7 +391,7 @@ type Partial<T> = {
     ],
   },
   {
-    node: 'TSMethodSignature',
+    node: AST_NODE_TYPES.TSMethodSignature,
     code: [
       `
 interface Foo {
@@ -411,7 +419,7 @@ declare module "foo" {
     ],
   },
   {
-    node: 'TSNonNullExpression',
+    node: AST_NODE_TYPES.TSNonNullExpression,
     code: [
       nonTsTestCase`
 const foo = a
@@ -426,7 +434,7 @@ const foo = a!
     ],
   },
   {
-    node: 'TSParameterProperty',
+    node: AST_NODE_TYPES.TSParameterProperty,
     code: [
       `
 class Foo {
@@ -444,7 +452,7 @@ class Foo {
     ],
   },
   {
-    node: 'TSParenthesizedType',
+    node: AST_NODE_TYPES.TSParenthesizedType,
     code: [
       `
 const x: Array<(
@@ -468,7 +476,7 @@ const x: Array<(
   },
   // TSPlusToken - tested in TSMappedType
   {
-    node: 'TSPropertySignature',
+    node: AST_NODE_TYPES.TSPropertySignature,
     code: [
       `
 interface Foo {
@@ -482,7 +490,7 @@ interface Foo {
     ],
   },
   {
-    node: 'TSQualifiedName',
+    node: AST_NODE_TYPES.TSQualifiedName,
     code: [
       `
 const a: Foo.bar = {
@@ -510,7 +518,7 @@ const a: Foo.
   },
   // TSQuestionToken - tested in TSMappedType
   {
-    node: 'TSRestType',
+    node: AST_NODE_TYPES.TSRestType,
     code: [
       `
 type foo = [
@@ -521,7 +529,7 @@ type foo = [
     ],
   },
   {
-    node: 'TSThisType',
+    node: AST_NODE_TYPES.TSThisType,
     code: [
       `
 declare class MyArray<T> extends Array<T> {
@@ -534,7 +542,7 @@ declare class MyArray<T> extends Array<T> {
     ],
   },
   {
-    node: 'TSTupleType',
+    node: AST_NODE_TYPES.TSTupleType,
     code: [
       nonTsTestCase`
 const foo = [
@@ -569,7 +577,7 @@ type foo = [
   // TSTypeAnnotation - tested in everything..
   // TSTypeLiteral - tested in everything..
   {
-    node: 'TSTypeOperator',
+    node: AST_NODE_TYPES.TSTypeOperator,
     code: [
       `
 type T = keyof {
@@ -600,7 +608,7 @@ function foo<
   },
   // TSTypeReference - tested in everything..
   {
-    node: 'TSUnionType',
+    node: AST_NODE_TYPES.TSUnionType,
     code: [
       `
 type Foo = string | {
@@ -701,7 +709,7 @@ export default class App extends Vue
         return this.$store.state.errorHandler.error
     }
 }
-        `,
+    `,
     // https://github.com/eslint/typescript-eslint-parser/issues/474
     `
 /**
@@ -710,7 +718,7 @@ export default class App extends Vue
  * @returns {string}
  */
 function foo(name: string, age: number): string {}
-        `,
+    `,
     `
 const firebaseApp = firebase.apps.length
     ? firebase.app()
@@ -722,7 +730,7 @@ const firebaseApp = firebase.apps.length
         storageBucket: __FIREBASE_STORAGE_BUCKET__,
         messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
     })
-        `,
+    `,
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/271
     {
       code: `
@@ -731,7 +739,7 @@ const foo = {
                 b: 2
             },
             bar = 1;
-            `,
+      `,
       options: [4, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -741,7 +749,7 @@ const foo : Foo = {
                 b: 2
             },
             bar = 1;
-            `,
+      `,
       options: [4, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -753,7 +761,7 @@ const name: string = '  Typescript  '
       greeting: string = (" Hello " + name)
         .toUpperCase()
         .trim();
-            `,
+      `,
       options: [2, { VariableDeclarator: { const: 3 } }],
     },
     {
@@ -765,11 +773,16 @@ const div: JQuery<HTMLElement> = $('<div>')
       button: JQuery<HTMLElement> = $('<button>')
         .text('Cancel')
         .appendTo(div);
-            `,
+      `,
       options: [2, { VariableDeclarator: { const: 3 } }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/441
-    `const;`,
+    'const;',
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1115
+    {
+      code: 'const foo = function<> (): void {}',
+    },
   ],
   invalid: [
     ...individualNodeTests.invalid,
@@ -779,13 +792,13 @@ type Foo = {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 type Foo = {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -821,7 +834,7 @@ new(
 asdf: string,
 ): Foo,
 }
-            `,
+      `,
       output: `
 interface Foo {
     bar : string,
@@ -835,7 +848,7 @@ interface Foo {
         asdf: string,
     ): Foo,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -937,7 +950,7 @@ baz : string,
 },
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo {
     bar : {
@@ -945,7 +958,7 @@ interface Foo {
     },
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -991,13 +1004,13 @@ interface Foo extends Bar {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo extends Bar {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1028,14 +1041,14 @@ extends Bar {
 bar : string = "asdf";
 age : number = 1;
 }
-            `,
+      `,
       output: `
 class Foo
     extends Bar {
     bar : string = "asdf";
     age : number = 1;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1073,14 +1086,14 @@ extends Bar {
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 interface Foo
     extends Bar {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1117,13 +1130,13 @@ const foo : Foo<{
 bar : string,
 age : number,
 }>
-            `,
+      `,
       output: `
 const foo : Foo<{
     bar : string,
     age : number,
 }>
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1154,7 +1167,7 @@ age : number,
 bar : string,
 age : number,
 }
-            `,
+      `,
       output: `
 type T = {
     bar : string,
@@ -1163,7 +1176,7 @@ type T = {
     bar : string,
     age : number,
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1214,7 +1227,7 @@ age : number,
     bar : string,
     age : number,
 }
-            `,
+      `,
       output: `
 type T =
     | {
@@ -1225,7 +1238,7 @@ type T =
         bar : string,
         age : number,
     }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1284,12 +1297,13 @@ type T =
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     import Dialogs = require("widgets/Dialogs");
-            `,
+      `,
       output: `
 import Dialogs = require("widgets/Dialogs");
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1318,7 +1332,7 @@ asdf : number,
 private test : boolean,
 ) {}
 }
-            `,
+      `,
       output: `
 class Foo {
     public bar : string;
@@ -1334,7 +1348,7 @@ class Foo {
         private test : boolean,
     ) {}
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1447,14 +1461,15 @@ class Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     abstract class Foo {}
     class Foo {}
-            `,
+      `,
       output: `
 abstract class Foo {}
 class Foo {}
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1483,14 +1498,14 @@ bar,
 baz = 1,
 buzz = '',
 }
-            `,
+      `,
       output: `
 enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1528,14 +1543,14 @@ bar,
 baz = 1,
 buzz = '',
 }
-            `,
+      `,
       output: `
 const enum Foo {
     bar,
     baz = 1,
     buzz = '',
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1567,12 +1582,13 @@ const enum Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     export = Foo;
-            `,
+      `,
       output: `
 export = Foo;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1586,12 +1602,13 @@ export = Foo;
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
     declare function h(x: number): number;
-            `,
+      `,
       output: `
 declare function h(x: number): number;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1609,12 +1626,12 @@ declare function h(x: number): number;
 declare function h(
 x: number,
 ): number;
-            `,
+      `,
       output: `
 declare function h(
     x: number,
 ): number;
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1634,14 +1651,14 @@ export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
-            `,
+      `,
       output: `
 namespace Validation {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1679,14 +1696,14 @@ export interface StringValidator {
 isAcceptable(s: string): boolean;
 }
 }
-            `,
+      `,
       output: `
 declare module "Validation" {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
     }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'wrongIndentation',
@@ -1713,6 +1730,28 @@ declare module "Validation" {
             actual: 0,
           },
           line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+    @Decorator()
+class Foo {}
+      `,
+      output: `
+@Decorator()
+class Foo {}
+      `,
+      errors: [
+        {
+          messageId: 'wrongIndentation',
+          data: {
+            expected: '0 spaces',
+            actual: 4,
+          },
+          line: 2,
           column: 1,
         },
       ],

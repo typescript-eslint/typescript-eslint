@@ -1,5 +1,4 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { isOpeningParenToken } from 'eslint-utils';
 import * as util from '../util';
 
 export type Options = [
@@ -19,6 +18,7 @@ export default util.createRule<Options, MessageIds>({
         'Require or disallow spacing between function identifiers and their invocations',
       category: 'Stylistic Issues',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'whitespace',
     schema: {
@@ -73,22 +73,30 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function checkSpacing(
-      node: TSESTree.CallExpression | TSESTree.NewExpression,
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.OptionalCallExpression
+        | TSESTree.NewExpression,
     ): void {
+      const isOptionalCall = util.isOptionalOptionalCallExpression(node);
+
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
-        node.typeParameters || node.callee,
+        node.typeParameters ?? node.callee,
       )!;
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,
         closingParenToken,
-        isOpeningParenToken,
+        util.isOpeningParenToken,
       );
       if (!openingParenToken || openingParenToken.range[1] >= node.range[1]) {
         // new expression with no parens...
         return;
       }
-      const lastCalleeToken = sourceCode.getTokenBefore(openingParenToken)!;
+      const lastCalleeToken = sourceCode.getTokenBefore(
+        openingParenToken,
+        util.isNotOptionalChainPunctuator,
+      )!;
 
       const textBetweenTokens = text
         .slice(lastCalleeToken.range[1], openingParenToken.range[0])
@@ -108,7 +116,11 @@ export default util.createRule<Options, MessageIds>({
                * Only autofix if there is no newline
                * https://github.com/eslint/eslint/issues/7787
                */
-              if (!hasNewline) {
+              if (
+                !hasNewline &&
+                // don't fix optional calls
+                !isOptionalCall
+              ) {
                 return fixer.removeRange([
                   lastCalleeToken.range[1],
                   openingParenToken.range[0],
@@ -117,6 +129,18 @@ export default util.createRule<Options, MessageIds>({
 
               return null;
             },
+          });
+        }
+      } else if (isOptionalCall) {
+        // disallow:
+        // foo?. ();
+        // foo ?.();
+        // foo ?. ();
+        if (hasWhitespace || hasNewline) {
+          context.report({
+            node,
+            loc: lastCalleeToken.loc.start,
+            messageId: 'unexpected',
           });
         }
       } else {
@@ -147,6 +171,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       CallExpression: checkSpacing,
+      OptionalCallExpression: checkSpacing,
       NewExpression: checkSpacing,
     };
   },

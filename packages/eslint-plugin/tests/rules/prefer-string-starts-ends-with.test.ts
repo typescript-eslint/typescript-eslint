@@ -1,8 +1,8 @@
-import path from 'path';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/prefer-string-starts-ends-with';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
-  valid: [
+  valid: addOptional([
     `
       function f(s: string[]) {
         s[0] === "a"
@@ -209,6 +209,12 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         s.slice(-4, -1) === "bar"
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1690
+    `
+      function f(s: string) {
+        s.slice(1) === "bar"
+      }
+    `,
     `
       function f(s: string) {
         pattern.test(s)
@@ -224,8 +230,8 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         x.test(s)
       }
     `,
-  ],
-  invalid: [
+  ]),
+  invalid: addOptional([
     // String indexing.
     {
       code: `
@@ -872,7 +878,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     {
       code: `
         function f(s: string) {
-          s.slice(startIndex) === needle // 'startIndex' can be different
+          s.slice(-length) === needle // 'length' can be different
         }
       `,
       output: null,
@@ -1042,5 +1048,68 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       `,
       errors: [{ messageId: 'preferStartsWith' }],
     },
-  ],
+  ]),
 });
+
+type Case<TMessageIds extends string, TOptions extends Readonly<unknown[]>> =
+  | TSESLint.ValidTestCase<TOptions>
+  | TSESLint.InvalidTestCase<TMessageIds, TOptions>;
+function addOptional<TOptions extends Readonly<unknown[]>>(
+  cases: (TSESLint.ValidTestCase<TOptions> | string)[],
+): TSESLint.ValidTestCase<TOptions>[];
+function addOptional<
+  TMessageIds extends string,
+  TOptions extends Readonly<unknown[]>
+>(
+  cases: TSESLint.InvalidTestCase<TMessageIds, TOptions>[],
+): TSESLint.InvalidTestCase<TMessageIds, TOptions>[];
+function addOptional<
+  TMessageIds extends string,
+  TOptions extends Readonly<unknown[]>
+>(
+  cases: (Case<TMessageIds, TOptions> | string)[],
+): Case<TMessageIds, TOptions>[] {
+  function makeOptional(code: string): string;
+  function makeOptional(code: string | null | undefined): string | null;
+  function makeOptional(code: string | null | undefined): string | null {
+    if (code === null || code === undefined) {
+      return null;
+    }
+    return (
+      code
+        .replace(/([^.])\.([^.])/, '$1?.$2')
+        .replace(/([^.])(\[\d)/, '$1?.$2')
+        // fix up s[s.length - 1] === "a" which got broken by the first regex
+        .replace(/(\w+?)\[(\w+?)\?\.(length - 1)/, '$1?.[$2.$3')
+    );
+  }
+
+  return cases.reduce<Case<TMessageIds, TOptions>[]>((acc, c) => {
+    if (typeof c === 'string') {
+      acc.push({
+        code: c,
+      });
+      acc.push({
+        code: makeOptional(c),
+      });
+    } else {
+      acc.push(c);
+      const code = makeOptional(c.code);
+      let output: string | null | undefined = null;
+      if ('output' in c) {
+        if (code.indexOf('?.')) {
+          output = makeOptional(c.output);
+        } else {
+          output = c.output;
+        }
+      }
+      acc.push({
+        ...c,
+        code,
+        output,
+      });
+    }
+
+    return acc;
+  }, []);
+}

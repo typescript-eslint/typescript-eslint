@@ -1,20 +1,19 @@
-import path from 'path';
-import rule from '../../src/rules/no-unnecessary-qualifier';
-import { RuleTester } from '../RuleTester';
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import rule from '../../src/rules/no-unnecessary-qualifier';
+import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
-const messageId = 'unnecessaryQualifier';
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
-    sourceType: 'module',
-    ecmaVersion: 6,
   },
 });
+
+const messageId = 'unnecessaryQualifier';
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
   valid: [
@@ -25,29 +24,33 @@ namespace X {
 
 namespace Y {
   export const x: X.T = 3;
-}`,
+}
+    `,
     `
 enum A {
-    X,
-    Y
+  X,
+  Y,
 }
 
 enum B {
-    Z = A.X
-}`,
+  Z = A.X,
+}
+    `,
     `
 namespace X {
-    export type T = number;
-    namespace Y {
-        type T = string;
-        const x: X.T = 0;
-    }
-}`,
-    `const x: A.B = 3;`,
+  export type T = number;
+  namespace Y {
+    type T = string;
+    const x: X.T = 0;
+  }
+}
+    `,
+    'const x: A.B = 3;',
     `
 namespace X {
   const z = X.y;
-}`,
+}
+    `,
   ],
 
   invalid: [
@@ -56,7 +59,8 @@ namespace X {
 namespace A {
   export type B = number;
   const x: A.B = 3;
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -67,14 +71,16 @@ namespace A {
 namespace A {
   export type B = number;
   const x: B = 3;
-}`,
+}
+      `,
     },
     {
       code: `
 namespace A {
   export const x = 3;
   export const y = A.x;
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -85,7 +91,8 @@ namespace A {
 namespace A {
   export const x = 3;
   export const y = x;
-}`,
+}
+      `,
     },
     {
       code: `
@@ -94,7 +101,8 @@ namespace A {
   export namespace B {
     const x: A.T = 3;
   }
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -107,7 +115,8 @@ namespace A {
   export namespace B {
     const x: T = 3;
   }
-}`,
+}
+      `,
     },
     {
       code: `
@@ -116,7 +125,8 @@ namespace A {
     export type T = number;
     const x: A.B.T = 3;
   }
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -129,7 +139,8 @@ namespace A {
     export type T = number;
     const x: T = 3;
   }
-}`,
+}
+      `,
     },
     {
       code: `
@@ -138,7 +149,8 @@ namespace A {
     export const x = 3;
     const y = A.B.x;
   }
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -151,14 +163,16 @@ namespace A {
     export const x = 3;
     const y = x;
   }
-}`,
+}
+      `,
     },
     {
       code: `
 enum A {
   B,
-  C = A.B
-}`,
+  C = A.B,
+}
+      `,
       errors: [
         {
           messageId,
@@ -168,17 +182,19 @@ enum A {
       output: `
 enum A {
   B,
-  C = B
-}`,
+  C = B,
+}
+      `,
     },
     {
       code: `
 namespace Foo {
   export enum A {
     B,
-    C = Foo.A.B
+    C = Foo.A.B,
   }
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -189,16 +205,18 @@ namespace Foo {
 namespace Foo {
   export enum A {
     B,
-    C = B
+    C = B,
   }
-}`,
+}
+      `,
     },
     {
       code: `
 import * as Foo from './foo';
 declare module './foo' {
   const x: Foo.T = 3;
-}`,
+}
+      `,
       errors: [
         {
           messageId,
@@ -209,7 +227,8 @@ declare module './foo' {
 import * as Foo from './foo';
 declare module './foo' {
   const x: T = 3;
-}`,
+}
+      `,
     },
   ],
 });

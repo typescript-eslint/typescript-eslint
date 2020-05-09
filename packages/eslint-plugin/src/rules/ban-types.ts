@@ -1,26 +1,37 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+type Types = Record<
+  string,
+  | string
+  | null
+  | {
+      message: string;
+      fixWith?: string;
+    }
+>;
+
 type Options = [
   {
-    types: Record<
-      string,
-      | string
-      | null
-      | {
-          message: string;
-          fixWith?: string;
-        }
-    >;
+    types?: Types;
+    extendDefaults?: boolean;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
 
+function removeSpaces(str: string): string {
+  return str.replace(/ /g, '');
+}
+
 function stringifyTypeName(
-  node: TSESTree.EntityName,
+  node:
+    | TSESTree.EntityName
+    | TSESTree.TSTypeLiteral
+    | TSESTree.TSNullKeyword
+    | TSESTree.TSUndefinedKeyword,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  return sourceCode.getText(node).replace(/ /g, '');
+  return removeSpaces(sourceCode.getText(node));
 }
 
 function getCustomMessage(
@@ -40,6 +51,35 @@ function getCustomMessage(
 
   return '';
 }
+
+/*
+  Defaults for this rule should be treated as an "all or nothing"
+  merge, so we need special handling here.
+
+  See: https://github.com/typescript-eslint/typescript-eslint/issues/686
+ */
+const defaultTypes = {
+  String: {
+    message: 'Use string instead',
+    fixWith: 'string',
+  },
+  Boolean: {
+    message: 'Use boolean instead',
+    fixWith: 'boolean',
+  },
+  Number: {
+    message: 'Use number instead',
+    fixWith: 'number',
+  },
+  Object: {
+    message: 'Use Record<string, any> instead',
+    fixWith: 'Record<string, any>',
+  },
+  Symbol: {
+    message: 'Use symbol instead',
+    fixWith: 'symbol',
+  },
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
@@ -75,59 +115,77 @@ export default util.createRule<Options, MessageIds>({
               ],
             },
           },
+          extendDefaults: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [
-    {
-      types: {
-        String: {
-          message: 'Use string instead',
-          fixWith: 'string',
-        },
-        Boolean: {
-          message: 'Use boolean instead',
-          fixWith: 'boolean',
-        },
-        Number: {
-          message: 'Use number instead',
-          fixWith: 'number',
-        },
-        Object: {
-          message: 'Use Record<string, any> instead',
-          fixWith: 'Record<string, any>',
-        },
-        Symbol: {
-          message: 'Use symbol instead',
-          fixWith: 'symbol',
-        },
-      },
-    },
-  ],
-  create(context, [{ types: bannedTypes }]) {
+  defaultOptions: [{}],
+  create(context, [options]) {
+    const extendDefaults = options.extendDefaults ?? true;
+    const customTypes = options.types ?? {};
+    const types: Types = {
+      ...(extendDefaults ? defaultTypes : {}),
+      ...customTypes,
+    };
+    const bannedTypes = new Map(
+      Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
+    );
+
+    function checkBannedTypes(
+      typeNode:
+        | TSESTree.EntityName
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSNullKeyword
+        | TSESTree.TSUndefinedKeyword,
+      name = stringifyTypeName(typeNode, context.getSourceCode()),
+    ): void {
+      const bannedType = bannedTypes.get(name);
+
+      if (bannedType !== undefined) {
+        const customMessage = getCustomMessage(bannedType);
+        const fixWith =
+          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+        context.report({
+          node: typeNode,
+          messageId: 'bannedTypeMessage',
+          data: {
+            name,
+            customMessage,
+          },
+          fix: fixWith
+            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+            : null,
+        });
+      }
+    }
+
     return {
-      TSTypeReference({ typeName }): void {
-        const name = stringifyTypeName(typeName, context.getSourceCode());
+      ...(bannedTypes.has('null') && {
+        TSNullKeyword(node): void {
+          checkBannedTypes(node, 'null');
+        },
+      }),
 
-        if (name in bannedTypes) {
-          const bannedType = bannedTypes[name];
-          const customMessage = getCustomMessage(bannedType);
-          const fixWith =
-            bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+      ...(bannedTypes.has('undefined') && {
+        TSUndefinedKeyword(node): void {
+          checkBannedTypes(node, 'undefined');
+        },
+      }),
 
-          context.report({
-            node: typeName,
-            messageId: 'bannedTypeMessage',
-            data: {
-              name: name,
-              customMessage,
-            },
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-            fix: fixWith ? fixer => fixer.replaceText(typeName, fixWith) : null,
-          });
+      TSTypeLiteral(node): void {
+        if (node.members.length) {
+          return;
         }
+
+        checkBannedTypes(node);
+      },
+      TSTypeReference({ typeName }): void {
+        checkBannedTypes(typeName);
       },
     };
   },

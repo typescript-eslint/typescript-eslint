@@ -1,9 +1,14 @@
-# Require that interface names be prefixed with `I` (interface-name-prefix)
+# Require that interface names should or should not prefixed with `I` (`interface-name-prefix`)
 
 Interfaces often represent important software contracts, so it can be helpful to prefix their names with `I`.
 The unprefixed name is then available for a class that provides a standard implementation of the interface.
 Alternatively, the contributor guidelines for the TypeScript repo suggest
 [never prefixing](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#names) interfaces with `I`.
+
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.
+It will be removed in a future version of this plugin.
 
 ## Rule Details
 

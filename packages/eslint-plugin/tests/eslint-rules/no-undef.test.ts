@@ -68,6 +68,57 @@ function eachr(subject: Object | Array<Value>): typeof subject {
     `
 function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
     `,
+    `
+      var a = { b: 3 };
+      var c = a?.b;
+    `,
+    `
+      var a = { b: { c: 3 } };
+      var d = a?.["b"]?.c;
+    `,
+    `
+      var a = { b: 3 };
+      var c = { };
+      var d = (a || c)?.b;
+    `,
+    `
+      var a = { b: () => {} };
+      a?.b();
+    `,
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: 'a = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+    {
+      code: 'a?.b = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+    {
+      code: 'a()?.b = 5;',
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'a',
+          },
+        },
+      ],
+    },
+  ],
 });

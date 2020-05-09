@@ -1,7 +1,9 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
 import ESLintReference from 'eslint-scope/lib/reference';
+import { TSESTree } from '../ts-estree';
 import { Scope } from './Scope';
 import { Variable } from './Variable';
+
+export type ReferenceFlag = 0x1 | 0x2 | 0x3;
 
 interface Reference {
   identifier: TSESTree.Identifier;
@@ -10,6 +12,11 @@ interface Reference {
   writeExpr: TSESTree.Node | null;
   init: boolean;
 
+  partial: boolean;
+  __maybeImplicitGlobal: boolean;
+  tainted?: boolean;
+  typeMode?: boolean;
+
   isWrite(): boolean;
   isRead(): boolean;
   isWriteOnly(): boolean;
@@ -17,7 +24,15 @@ interface Reference {
   isReadWrite(): boolean;
 }
 const Reference = ESLintReference as {
-  new (): Reference;
+  new (
+    identifier: TSESTree.Identifier,
+    scope: Scope,
+    flag?: ReferenceFlag,
+    writeExpr?: TSESTree.Node | null,
+    maybeImplicitGlobal?: boolean,
+    partial?: boolean,
+    init?: boolean,
+  ): Reference;
 
   READ: 0x1;
   WRITE: 0x2;

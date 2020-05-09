@@ -22,7 +22,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     /**
-     * @param {ASTNode} node type to be inspected.
+     * @param node type to be inspected.
      * @returns name of simple type or null
      */
     function getTypeReferenceName(
@@ -48,8 +48,8 @@ export default util.createRule({
     }
 
     /**
-     * @param {ASTNode} parent parent node.
-     * @param {ASTNode} returnType type to be compared
+     * @param parent parent node.
+     * @param returnType type to be compared
      */
     function isMatchingParentType(
       parent: undefined | TSESTree.Node,

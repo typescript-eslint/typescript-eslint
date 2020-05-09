@@ -133,129 +133,129 @@ class PanCamera extends FreeCamera {
       // https://github.com/eslint/eslint/issues/9521
       {
         code: `
-                do; while(a);
-                [1,2,3].forEach(doSomething)
-            `,
+          do; while(a);
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'any' }],
       },
       {
         code: `
-                do; while(a)
-                [1,2,3].forEach(doSomething)
-            `,
+          do; while(a)
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'any' }],
       },
       {
         code: `
-                import a from "a";
-                [1,2,3].forEach(doSomething)
-            `,
+          import a from "a";
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
       },
       {
         code: `
-                var a = 0; export {a};
-                [a] = b
-            `,
+          var a = 0; export {a};
+          [a] = b
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
       },
       {
         code: `
-                function wrap() {
-                    return;
-                    ({a} = b)
-                }
-            `,
-        options: ['never', { beforeStatementContinuationChars: 'always' }],
-        parserOptions: { ecmaVersion: 2015 },
-      },
-      {
-        code: `
-                while (true) {
-                    break;
-                    +i
-                }
-            `,
-        options: ['never', { beforeStatementContinuationChars: 'always' }],
-      },
-      {
-        code: `
-                while (true) {
-                    continue;
-                    [1,2,3].forEach(doSomething)
-                }
-            `,
-        options: ['never', { beforeStatementContinuationChars: 'always' }],
-      },
-      {
-        code: `
-                do; while(a);
-                [1,2,3].forEach(doSomething)
-            `,
-        options: ['never', { beforeStatementContinuationChars: 'always' }],
-      },
-      {
-        code: `
-                const f = () => {};
-                [1,2,3].forEach(doSomething)
-            `,
+          function wrap() {
+            return;
+            ({a} = b)
+          }
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         parserOptions: { ecmaVersion: 2015 },
       },
       {
         code: `
-                import a from "a"
-                [1,2,3].forEach(doSomething)
-            `,
+          while (true) {
+            break;
+            +i
+          }
+        `,
+        options: ['never', { beforeStatementContinuationChars: 'always' }],
+      },
+      {
+        code: `
+          while (true) {
+            continue;
+            [1,2,3].forEach(doSomething)
+          }
+        `,
+        options: ['never', { beforeStatementContinuationChars: 'always' }],
+      },
+      {
+        code: `
+          do; while(a);
+          [1,2,3].forEach(doSomething)
+        `,
+        options: ['never', { beforeStatementContinuationChars: 'always' }],
+      },
+      {
+        code: `
+          const f = () => {};
+          [1,2,3].forEach(doSomething)
+        `,
+        options: ['never', { beforeStatementContinuationChars: 'always' }],
+        parserOptions: { ecmaVersion: 2015 },
+      },
+      {
+        code: `
+          import a from "a"
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
       },
       {
         code: `
-                var a = 0; export {a}
-                [a] = b
-            `,
+          var a = 0; export {a}
+          [a] = b
+        `,
         options: neverOptionWithoutContinuationChars,
       },
       {
         code: `
-                function wrap() {
-                    return
-                    ({a} = b)
-                }
-            `,
+          function wrap() {
+            return
+            ({a} = b)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         parserOptions: { ecmaVersion: 2015 },
       },
       {
         code: `
-                while (true) {
-                    break
-                    +i
-                }
-            `,
+          while (true) {
+            break
+            +i
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
       },
       {
         code: `
-                while (true) {
-                    continue
-                    [1,2,3].forEach(doSomething)
-                }
-            `,
+          while (true) {
+            continue
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
       },
       {
         code: `
-                do; while(a)
-                [1,2,3].forEach(doSomething)
-            `,
+          do; while(a)
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
       },
       {
         code: `
-                const f = () => {}
-                [1,2,3].forEach(doSomething)
-            `,
+          const f = () => {}
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
         parserOptions: { ecmaVersion: 2015 },
       },
@@ -665,11 +665,11 @@ class PanCamera extends FreeCamera {
 
       {
         code: `
-      import a from "a"
-      (function() {
-          // ...
-      })()
-      `,
+          import a from "a"
+          (function() {
+              // ...
+          })()
+        `,
         options: [
           'never',
           { beforeStatementContinuationChars: 'always' },
@@ -678,11 +678,11 @@ class PanCamera extends FreeCamera {
       },
       {
         code: `
-      import a from "a"
-      ;(function() {
-          // ...
-      })()
-      `,
+          import a from "a"
+          ;(function() {
+              // ...
+          })()
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
@@ -767,299 +767,299 @@ class PanCamera extends FreeCamera {
       // https://github.com/eslint/eslint/issues/9521
       {
         code: `
-                      import a from "a"
-                      [1,2,3].forEach(doSomething)
-                  `,
+          import a from "a"
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      import a from "a";
-                      [1,2,3].forEach(doSomething)
-                  `,
+          import a from "a";
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
 
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      var a = 0; export {a}
-                      [a] = b
-                  `,
+          var a = 0; export {a}
+          [a] = b
+        `,
         output: `
-                      var a = 0; export {a};
-                      [a] = b
-                  `,
+          var a = 0; export {a};
+          [a] = b
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
 
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      function wrap() {
-                          return
-                          ({a} = b)
-                      }
-                  `,
+          function wrap() {
+            return
+            ({a} = b)
+          }
+        `,
         output: `
-                      function wrap() {
-                          return;
-                          ({a} = b)
-                      }
-                  `,
+          function wrap() {
+            return;
+            ({a} = b)
+          }
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         parserOptions: { ecmaVersion: 2015 },
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      while (true) {
-                          break
-                         +i
-                      }
-                  `,
+          while (true) {
+            break
+            +i
+          }
+        `,
         output: `
-                      while (true) {
-                          break;
-                         +i
-                      }
-                  `,
+          while (true) {
+            break;
+            +i
+          }
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      while (true) {
-                          continue
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         output: `
-                      while (true) {
-                          continue;
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue;
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      do; while(a)
-                      [1,2,3].forEach(doSomething)
-                  `,
+          do; while(a)
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      do; while(a);
-                      [1,2,3].forEach(doSomething)
-                  `,
+          do; while(a);
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      const f = () => {}
-                      [1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {}
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      const f = () => {};
-                      [1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {};
+          [1,2,3].forEach(doSomething)
+        `,
         options: ['never', { beforeStatementContinuationChars: 'always' }],
         parserOptions: { ecmaVersion: 2015 },
         errors: ['Missing semicolon.'],
       },
       {
         code: `
-                      import a from "a";
-                      [1,2,3].forEach(doSomething)
-                  `,
+          import a from "a";
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      import a from "a"
-                      [1,2,3].forEach(doSomething)
-                  `,
+          import a from "a"
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
 
         errors: [extraSemicolon],
       },
       {
         code: `
-                      var a = 0; export {a};
-                      [a] = b
-                  `,
+          var a = 0; export {a};
+          [a] = b
+        `,
         output: `
-                      var a = 0; export {a}
-                      [a] = b
-                  `,
+          var a = 0; export {a}
+          [a] = b
+        `,
         options: neverOptionWithoutContinuationChars,
 
         errors: [extraSemicolon],
       },
       {
         code: `
-                      function wrap() {
-                          return;
-                          ({a} = b)
-                      }
-                  `,
+          function wrap() {
+            return;
+            ({a} = b)
+          }
+        `,
         output: `
-                      function wrap() {
-                          return
-                          ({a} = b)
-                      }
-                  `,
+          function wrap() {
+            return
+            ({a} = b)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         parserOptions: { ecmaVersion: 2015 },
         errors: [extraSemicolon],
       },
       {
         code: `
-                      while (true) {
-                          break;
-                          +i
-                      }
-                  `,
+          while (true) {
+            break;
+            +i
+          }
+        `,
         output: `
-                      while (true) {
-                          break
-                          +i
-                      }
-                  `,
+          while (true) {
+            break
+            +i
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      while (true) {
-                          continue;
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue;
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         output: `
-                      while (true) {
-                          continue
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      do; while(a);
-                      [1,2,3].forEach(doSomething)
-                  `,
+          do; while(a);
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      do; while(a)
-                      [1,2,3].forEach(doSomething)
-                  `,
+          do; while(a)
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      const f = () => {};
-                      [1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {};
+          [1,2,3].forEach(doSomething)
+        `,
         output: `
-                      const f = () => {}
-                      [1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {}
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
         parserOptions: { ecmaVersion: 2015 },
         errors: [extraSemicolon],
       },
       {
         code: `
-                      import a from "a"
-                      ;[1,2,3].forEach(doSomething)
-                  `,
+          import a from "a"
+          ;[1,2,3].forEach(doSomething)
+        `,
         output: `
-                      import a from "a"
-                      [1,2,3].forEach(doSomething)
-                  `,
+          import a from "a"
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
 
         errors: [extraSemicolon],
       },
       {
         code: `
-                      var a = 0; export {a}
-                      ;[1,2,3].forEach(doSomething)
-                  `,
+          var a = 0; export {a}
+          ;[1,2,3].forEach(doSomething)
+        `,
         output: `
-                      var a = 0; export {a}
-                      [1,2,3].forEach(doSomething)
-                  `,
+          var a = 0; export {a}
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
 
         errors: [extraSemicolon],
       },
       {
         code: `
-                      function wrap() {
-                          return
-                          ;[1,2,3].forEach(doSomething)
-                      }
-                  `,
+          function wrap() {
+            return
+            ;[1,2,3].forEach(doSomething)
+          }
+        `,
         output: `
-                      function wrap() {
-                          return
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          function wrap() {
+            return
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      while (true) {
-                          break
-                          ;[1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            break
+            ;[1,2,3].forEach(doSomething)
+          }
+        `,
         output: `
-                      while (true) {
-                          break
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            break
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      while (true) {
-                          continue
-                          ;[1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue
+            ;[1,2,3].forEach(doSomething)
+          }
+        `,
         output: `
-                      while (true) {
-                          continue
-                          [1,2,3].forEach(doSomething)
-                      }
-                  `,
+          while (true) {
+            continue
+            [1,2,3].forEach(doSomething)
+          }
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      do; while(a)
-                      ;[1,2,3].forEach(doSomething)
-                  `,
+          do; while(a)
+          ;[1,2,3].forEach(doSomething)
+        `,
         output: `
-                      do; while(a)
-                      [1,2,3].forEach(doSomething)
-                  `,
+          do; while(a)
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
         errors: [extraSemicolon],
       },
       {
         code: `
-                      const f = () => {}
-                      ;[1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {}
+          ;[1,2,3].forEach(doSomething)
+        `,
         output: `
-                      const f = () => {}
-                      [1,2,3].forEach(doSomething)
-                  `,
+          const f = () => {}
+          [1,2,3].forEach(doSomething)
+        `,
         options: neverOptionWithoutContinuationChars,
         parserOptions: { ecmaVersion: 2015 },
         errors: [extraSemicolon],

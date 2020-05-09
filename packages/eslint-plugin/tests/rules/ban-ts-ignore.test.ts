@@ -7,12 +7,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('ban-ts-ignore', rule, {
   valid: [
-    `// just a comment containing @ts-ignore somewhere`,
-    `/* @ts-ignore */`,
-    `/** @ts-ignore */`,
-    `/*
+    '// just a comment containing @ts-ignore somewhere',
+    '/* @ts-ignore */',
+    '/** @ts-ignore */',
+    `
+/*
 // @ts-ignore in a block
-*/`,
+*/
+    `,
   ],
   invalid: [
     {
@@ -49,9 +51,9 @@ ruleTester.run('ban-ts-ignore', rule, {
       code: `
 if (false) {
   // @ts-ignore: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'tsIgnoreComment',

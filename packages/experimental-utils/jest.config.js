@@ -1,6 +1,11 @@
 'use strict';
 
 module.exports = {
+  globals: {
+    'ts-jest': {
+      isolatedModules: true,
+    },
+  },
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',

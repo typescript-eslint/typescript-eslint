@@ -1,4 +1,4 @@
-# Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings (prefer-string-starts-ends-with)
+# Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings (`prefer-string-starts-ends-with`)
 
 There are multiple ways to verify if a string starts or ends with a specific string, such as `foo.indexOf('bar') === 0`.
 

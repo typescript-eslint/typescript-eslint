@@ -2,7 +2,9 @@
   "recommendations": [
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint",
-      "editorconfig.editorconfig"
+      "editorconfig.editorconfig",
+      "streetsidesoftware.code-spell-checker",
+      "davidanson.vscode-markdownlint"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }

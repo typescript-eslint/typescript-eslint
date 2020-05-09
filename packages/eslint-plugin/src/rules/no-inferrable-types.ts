@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -54,7 +54,8 @@ export default util.createRule<Options, MessageIds>({
       callName: string,
     ): boolean {
       return (
-        init.type === AST_NODE_TYPES.CallExpression &&
+        (init.type === AST_NODE_TYPES.CallExpression ||
+          init.type === AST_NODE_TYPES.OptionalCallExpression) &&
         init.callee.type === AST_NODE_TYPES.Identifier &&
         init.callee.name === callName
       );
@@ -124,6 +125,7 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSBooleanKeyword:
           return (
             hasUnaryPrefix(init, '!') ||
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'Boolean') ||
             isLiteral(init, 'boolean')
           );
@@ -145,6 +147,7 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'String') ||
             isLiteral(init, 'string') ||
             init.type === AST_NODE_TYPES.TemplateLiteral
@@ -163,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
               init.value instanceof RegExp;
             const isRegExpNewCall =
               init.type === AST_NODE_TYPES.NewExpression &&
-              init.callee.type === 'Identifier' &&
+              init.callee.type === AST_NODE_TYPES.Identifier &&
               init.callee.name === 'RegExp';
             const isRegExpCall = isFunctionCall(init, 'RegExp');
 

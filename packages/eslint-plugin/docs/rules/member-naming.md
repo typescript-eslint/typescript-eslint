@@ -1,6 +1,11 @@
-# Enforces naming conventions for class members by visibility. (member-naming)
+# Enforces naming conventions for class members by visibility (`member-naming`)
 
 It can be helpful to enforce naming conventions for `private` (and sometimes `protected`) members of an object. For example, prefixing private properties with a `_` allows them to be easily discerned when being inspected by tools that do not have knowledge of TypeScript (such as most debuggers).
+
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.
+It will be removed in a future version of this plugin.
 
 ## Rule Details
 

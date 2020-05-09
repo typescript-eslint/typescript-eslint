@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "resolveJsonModule": true
+  },
+  "files": [
+    "jsx-known-issues.ts"
+  ]
+}

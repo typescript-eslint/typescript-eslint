@@ -13,51 +13,51 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('await-promise', rule, {
+ruleTester.run('await-thenable', rule, {
   valid: [
     `
 async function test() {
-  await Promise.resolve("value");
-  await Promise.reject(new Error("message"));
+  await Promise.resolve('value');
+  await Promise.reject(new Error('message'));
 }
-`,
+    `,
     `
 async function test() {
   await (async () => true)();
 }
-`,
+    `,
     `
 async function test() {
   function returnsPromise() {
-    return Promise.resolve("value");
+    return Promise.resolve('value');
   }
   await returnsPromise();
 }
-`,
+    `,
     `
 async function test() {
   async function returnsPromiseAsync() {}
   await returnsPromiseAsync();
 }
-`,
+    `,
     `
 async function test() {
   let anyValue: any;
   await anyValue;
 }
-`,
+    `,
     `
 async function test() {
   let unknownValue: unknown;
   await unknownValue;
 }
-`,
+    `,
     `
 async function test() {
   const numberPromise: Promise<number>;
   await numberPromise;
 }
-`,
+    `,
     `
 async function test() {
   class Foo extends Promise<number> {}
@@ -68,7 +68,7 @@ async function test() {
   const bar: Bar = Bar.resolve(2);
   await bar;
 }
-`,
+    `,
     `
 async function test() {
   await (Math.random() > 0.5 ? numberPromise : 0);
@@ -78,15 +78,17 @@ async function test() {
   const intersectionPromise: Promise<number> & number;
   await intersectionPromise;
 }
-`,
+    `,
     `
 async function test() {
-  class Thenable { then(callback: () => {}) { } };
+  class Thenable {
+    then(callback: () => {}) {}
+  }
   const thenable = new Thenable();
 
   await thenable;
 }
-`,
+    `,
     `
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
 // Type definitions for promise-polyfill 6.0
@@ -96,7 +98,7 @@ async function test() {
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 interface PromisePolyfillConstructor extends PromiseConstructor {
-    _immediateFn?: (handler: (() => void) | string) => void;
+  _immediateFn?: (handler: (() => void) | string) => void;
 }
 
 declare const PromisePolyfill: PromisePolyfillConstructor;
@@ -106,7 +108,7 @@ async function test() {
 
   await promise;
 }
-`,
+    `,
     `
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/bluebird/index.d.ts
 // Type definitions for bluebird 3.5
@@ -151,14 +153,21 @@ type CatchFilter<E> = ((error: E) => boolean) | (object & E);
 type IterableItem<R> = R extends Iterable<infer U> ? U : never;
 type IterableOrNever<R> = Extract<R, Iterable<any>>;
 type Resolvable<R> = R | PromiseLike<R>;
-type IterateFunction<T, R> = (item: T, index: number, arrayLength: number) => Resolvable<R>;
+type IterateFunction<T, R> = (
+  item: T,
+  index: number,
+  arrayLength: number,
+) => Resolvable<R>;
 
 declare class Bluebird<R> implements PromiseLike<R> {
-  then<U>(onFulfill?: (value: R) => Resolvable<U>, onReject?: (error: any) => Resolvable<U>): Bluebird<U>; // For simpler signature help.
+  then<U>(
+    onFulfill?: (value: R) => Resolvable<U>,
+    onReject?: (error: any) => Resolvable<U>,
+  ): Bluebird<U>; // For simpler signature help.
   then<TResult1 = R, TResult2 = never>(
-      onfulfilled?: ((value: R) => Resolvable<TResult1>) | null,
-      onrejected?: ((reason: any) => Resolvable<TResult2>) | null
-    ): Bluebird<TResult1 | TResult2>;
+    onfulfilled?: ((value: R) => Resolvable<TResult1>) | null,
+    onrejected?: ((reason: any) => Resolvable<TResult2>) | null,
+  ): Bluebird<TResult1 | TResult2>;
 }
 
 declare const bluebird: Bluebird;
@@ -166,7 +175,7 @@ declare const bluebird: Bluebird;
 async function test() {
   await bluebird;
 }
-`,
+    `,
   ],
 
   invalid: [
@@ -174,14 +183,14 @@ async function test() {
       code: `
 async function test() {
   await 0;
-  await "value";
+  await 'value';
 
-  await (Math.random() > 0.5 ? "" : 0);
+  await (Math.random() > 0.5 ? '' : 0);
 
   class NonPromise extends Array {}
   await new NonPromise();
 }
-`,
+      `,
       errors: [
         {
           line: 3,
@@ -204,7 +213,9 @@ async function test() {
     {
       code: `
 async function test() {
-  class IncorrectThenable { then() { } };
+  class IncorrectThenable {
+    then() {}
+  }
   const thenable = new IncorrectThenable();
 
   await thenable;
@@ -212,7 +223,7 @@ async function test() {
       `,
       errors: [
         {
-          line: 6,
+          line: 8,
           messageId,
         },
       ],

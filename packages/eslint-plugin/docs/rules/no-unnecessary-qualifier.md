@@ -1,4 +1,4 @@
-# Warns when a namespace qualifier is unnecessary. (no-unnecessary-qualifier)
+# Warns when a namespace qualifier is unnecessary (`no-unnecessary-qualifier`)
 
 ## Rule Details
 

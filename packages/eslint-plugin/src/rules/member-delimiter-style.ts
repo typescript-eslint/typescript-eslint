@@ -43,7 +43,7 @@ const definition = {
     singleline: {
       type: 'object',
       properties: {
-        // note can't have "none" for single line delimiter as it's invlaid syntax
+        // note can't have "none" for single line delimiter as it's invalid syntax
         delimiter: { enum: ['semi', 'comma'] },
         requireLast: { type: 'boolean' },
       },
@@ -104,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
 
     // use the base options as the defaults for the cases
     const baseOptions = options;
-    const overrides = baseOptions.overrides || {};
+    const overrides = baseOptions.overrides ?? {};
     const interfaceOptions: BaseOptions = util.deepMerge(
       baseOptions,
       overrides.interface,
@@ -227,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
       const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts || {}, index === members.length - 1);
+        checkLastToken(member, opts ?? {}, index === members.length - 1);
       });
     }
 

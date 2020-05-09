@@ -1,4 +1,4 @@
-# Sets preference level for triple slash directives versus ES6-style import declarations. (triple-slash-reference)
+# Sets preference level for triple slash directives versus ES6-style import declarations (`triple-slash-reference`)
 
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 
@@ -14,7 +14,7 @@ With `{ "path": "never", "types": "never", "lib": "never" }` options set, the fo
 /// <reference lib="baz" />
 ```
 
-Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** stlyes are used for the **same** module:
+Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** styles are used for the **same** module:
 
 ```ts
 /// <reference types="foo" />

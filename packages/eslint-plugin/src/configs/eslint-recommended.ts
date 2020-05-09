@@ -7,7 +7,7 @@ export default {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        //Checked by Typescript - ts(2378)
+        // Checked by Typescript - ts(2378)
         'getter-return': 'off',
         // Checked by Typescript - ts(2300)
         'no-dupe-args': 'off',

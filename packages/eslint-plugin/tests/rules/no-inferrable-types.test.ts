@@ -15,11 +15,18 @@ function flatten<T>(arr: T[][]): T[] {
 const testCases = [
   {
     type: 'bigint',
-    code: ['10n', '-10n', 'BigInt(10)', '-BigInt(10)'],
+    code: [
+      '10n',
+      '-10n',
+      'BigInt(10)',
+      '-BigInt(10)',
+      'BigInt?.(10)',
+      '-BigInt?.(10)',
+    ],
   },
   {
     type: 'boolean',
-    code: ['false', 'true', 'Boolean(null)', '!0'],
+    code: ['false', 'true', 'Boolean(null)', 'Boolean?.(null)', '!0'],
   },
   {
     type: 'number',
@@ -30,6 +37,9 @@ const testCases = [
       'Number("1")',
       '+Number("1")',
       '-Number("1")',
+      'Number?.("1")',
+      '+Number?.("1")',
+      '-Number?.("1")',
       'Infinity',
       '+Infinity',
       '-Infinity',
@@ -44,15 +54,15 @@ const testCases = [
   },
   {
     type: 'RegExp',
-    code: ['/a/', 'RegExp("a")', 'new RegExp("a")'],
+    code: ['/a/', 'RegExp("a")', 'RegExp?.("a")', 'new RegExp("a")'],
   },
   {
     type: 'string',
-    code: ['"str"', "'str'", '`str`', 'String(1)'],
+    code: ['"str"', "'str'", '`str`', 'String(1)', 'String?.(1)'],
   },
   {
     type: 'symbol',
-    code: ['Symbol("a")'],
+    code: ['Symbol("a")', 'Symbol?.("a")'],
   },
   {
     type: 'undefined',
@@ -92,20 +102,30 @@ ruleTester.run('no-inferrable-types', rule, {
   valid: [
     ...validTestCases,
 
-    "const fn = (a = 5, b = true, c = 'foo') => {}",
-    "const fn = function(a = 5, b = true, c = 'foo') {}",
+    "const fn = (a = 5, b = true, c = 'foo') => {};",
+    "const fn = function (a = 5, b = true, c = 'foo') {};",
     "function fn(a = 5, b = true, c = 'foo') {}",
     'function fn(a: number, b: boolean, c: string) {}',
 
-    "class Foo { a = 5; b = true; c = 'foo'; }",
-    'class Foo { readonly a: number = 5; }',
+    `
+class Foo {
+  a = 5;
+  b = true;
+  c = 'foo';
+}
+    `,
+    `
+class Foo {
+  readonly a: number = 5;
+}
+    `,
 
-    'const a: any = 5',
-    "const fn = function(a: any = 5, b: any = true, c: any = 'foo') {}",
+    'const a: any = 5;',
+    "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
 
     {
       code:
-        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {}",
+        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       options: [{ ignoreParameters: true }],
     },
     {
@@ -115,12 +135,17 @@ ruleTester.run('no-inferrable-types', rule, {
     },
     {
       code:
-        "const fn = function(a: number = 5, b: boolean = true, c: string = 'foo') {}",
+        "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
       options: [{ ignoreParameters: true }],
     },
     {
-      code:
-        "class Foo { a: number = 5; b: boolean = true; c: string = 'foo'; }",
+      code: `
+class Foo {
+  a: number = 5;
+  b: boolean = true;
+  c: string = 'foo';
+}
+      `,
       options: [{ ignoreProperties: true }],
     },
     {
@@ -139,8 +164,8 @@ class Foo {
 
     {
       code:
-        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {}",
-      output: "const fn = (a = 5, b = true, c = 'foo') => {}",
+        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
+      output: "const fn = (a = 5, b = true, c = 'foo') => {};",
       options: [
         {
           ignoreParameters: false,
@@ -175,9 +200,20 @@ class Foo {
       ],
     },
     {
-      code:
-        "class Foo { a: number = 5; b: boolean = true; c: string = 'foo'; }",
-      output: "class Foo { a = 5; b = true; c = 'foo'; }",
+      code: `
+class Foo {
+  a: number = 5;
+  b: boolean = true;
+  c: string = 'foo';
+}
+      `,
+      output: `
+class Foo {
+  a = 5;
+  b = true;
+  c = 'foo';
+}
+      `,
       options: [
         {
           ignoreParameters: false,
@@ -190,24 +226,24 @@ class Foo {
           data: {
             type: 'number',
           },
-          line: 1,
-          column: 13,
+          line: 3,
+          column: 3,
         },
         {
           messageId: 'noInferrableType',
           data: {
             type: 'boolean',
           },
-          line: 1,
-          column: 28,
+          line: 4,
+          column: 3,
         },
         {
           messageId: 'noInferrableType',
           data: {
             type: 'string',
           },
-          line: 1,
-          column: 47,
+          line: 5,
+          column: 3,
         },
       ],
     },

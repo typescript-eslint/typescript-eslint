@@ -1,8 +1,10 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { getStaticValue } from 'eslint-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
-import ts from 'typescript';
-import { createRule, getParserServices } from '../util';
+import * as ts from 'typescript';
+import { createRule, getParserServices, getStaticValue } from '../util';
 
 export default createRule({
   name: 'prefer-includes',
@@ -119,11 +121,13 @@ export default createRule({
     }
 
     return {
-      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
-        node: TSESTree.MemberExpression,
+      "BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name='indexOf'][computed=false]"(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
         // Check if the comparison is equivalent to `includes()`.
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const compareNode = callNode.parent as TSESTree.BinaryExpression;
         const negative = isNegativeCheck(compareNode);
         if (!negative && !isPositiveCheck(compareNode)) {
@@ -132,23 +136,27 @@ export default createRule({
 
         // Get the symbol of `indexOf` method.
         const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
-        const indexofMethodSymbol = types.getSymbolAtLocation(tsNode);
+        const indexofMethodDeclarations = types
+          .getSymbolAtLocation(tsNode)
+          ?.getDeclarations();
         if (
-          indexofMethodSymbol == null ||
-          indexofMethodSymbol.declarations.length === 0
+          indexofMethodDeclarations == null ||
+          indexofMethodDeclarations.length === 0
         ) {
           return;
         }
 
         // Check if every declaration of `indexOf` method has `includes` method
         // and the two methods have the same parameters.
-        for (const instanceofMethodDecl of indexofMethodSymbol.declarations) {
+        for (const instanceofMethodDecl of indexofMethodDeclarations) {
           const typeDecl = instanceofMethodDecl.parent;
           const type = types.getTypeAtLocation(typeDecl);
-          const includesMethodSymbol = type.getProperty('includes');
+          const includesMethodDecl = type
+            .getProperty('includes')
+            ?.getDeclarations();
           if (
-            includesMethodSymbol == null ||
-            !includesMethodSymbol.declarations.some(includesMethodDecl =>
+            includesMethodDecl == null ||
+            !includesMethodDecl.some(includesMethodDecl =>
               hasSameParameters(includesMethodDecl, instanceofMethodDecl),
             )
           ) {
@@ -171,10 +179,12 @@ export default createRule({
       },
 
       // /bar/.test(foo)
-      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="test"][computed=false]'(
+        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
+        const callNode = node.parent as
+          | TSESTree.CallExpression
+          | TSESTree.OptionalCallExpression;
         const text =
           callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
         if (text == null) {
@@ -187,11 +197,13 @@ export default createRule({
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
-              argNode.type !== 'Literal' &&
-              argNode.type !== 'TemplateLiteral' &&
-              argNode.type !== 'Identifier' &&
-              argNode.type !== 'MemberExpression' &&
-              argNode.type !== 'CallExpression';
+              argNode.type !== AST_NODE_TYPES.Literal &&
+              argNode.type !== AST_NODE_TYPES.TemplateLiteral &&
+              argNode.type !== AST_NODE_TYPES.Identifier &&
+              argNode.type !== AST_NODE_TYPES.MemberExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalMemberExpression &&
+              argNode.type !== AST_NODE_TYPES.CallExpression &&
+              argNode.type !== AST_NODE_TYPES.OptionalCallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {
@@ -200,7 +212,11 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `.includes(${JSON.stringify(text)}`,
+              `${
+                callNode.type === AST_NODE_TYPES.OptionalCallExpression
+                  ? '?.'
+                  : '.'
+              }includes(${JSON.stringify(text)}`,
             );
           },
         });

@@ -1,1 +1,2 @@
-export const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
+// deeply re-export, for convenience
+export * from '@typescript-eslint/experimental-utils/dist/ast-utils';
