@@ -1,6 +1,6 @@
 /* eslint-disable no-fallthrough */
 
-import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -67,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [userOptions]) {
-    const parserServices = ESLintUtils.getParserServices(context, true);
+    const parserServices = util.getParserServices(context, true);
     const tsProgram = parserServices.program;
     const afterAllDiagnosticsCallbacks: (() => void)[] = [];
 
