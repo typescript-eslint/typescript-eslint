@@ -111,12 +111,13 @@ function getTypeParametersFromType(
   }
 
   const sym = getAliasedSymbol(symAtLocation, checker);
+  const declarations = sym.getDeclarations();
 
-  if (!sym.declarations) {
+  if (!declarations) {
     return undefined;
   }
 
-  return findFirstResult(sym.declarations, decl =>
+  return findFirstResult(declarations, decl =>
     tsutils.isClassLikeDeclaration(decl) ||
     ts.isTypeAliasDeclaration(decl) ||
     ts.isInterfaceDeclaration(decl)

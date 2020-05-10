@@ -32,6 +32,7 @@ interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram>
   onCachedDirectoryStructureHostCreate(
     host: CachedDirectoryStructureHost,
   ): void;
+  extraFileExtensions?: readonly ts.FileExtensionInfo[];
 }
 
 export { WatchCompilerHostOfConfigFile };

@@ -2,11 +2,9 @@
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
 import { Linter } from './Linter';
-import { RuleModule, RuleListener } from './Rule';
+import { RuleMetaData, RuleModule, RuleListener } from './Rule';
 
 interface CLIEngine {
-  version: string;
-
   executeOnFiles(patterns: string[]): CLIEngine.LintReport;
 
   resolveFileGlobPatterns(patterns: string[]): string[];
@@ -39,6 +37,7 @@ namespace CLIEngine {
     configFile?: string;
     cwd?: string;
     envs?: string[];
+    errorOnUnmatchedPattern?: boolean;
     extensions?: string[];
     fix?: boolean;
     globals?: string[];
@@ -49,6 +48,7 @@ namespace CLIEngine {
     parser?: string;
     parserOptions?: Linter.ParserOptions;
     plugins?: string[];
+    resolvePluginsRelativeTo?: string;
     rules?: {
       [name: string]: Linter.RuleLevel | Linter.RuleLevelAndOptions;
     };
@@ -73,9 +73,24 @@ namespace CLIEngine {
     warningCount: number;
     fixableErrorCount: number;
     fixableWarningCount: number;
+    usedDeprecatedRules: DeprecatedRuleUse[];
   }
 
-  export type Formatter = (results: LintResult[]) => string;
+  export interface DeprecatedRuleUse {
+    ruleId: string;
+    replacedBy: string[];
+  }
+
+  export interface LintResultData<TMessageIds extends string> {
+    rulesMeta: {
+      [ruleId: string]: RuleMetaData<TMessageIds>;
+    };
+  }
+
+  export type Formatter = <TMessageIds extends string>(
+    results: LintResult[],
+    data?: LintResultData<TMessageIds>,
+  ) => string;
 }
 
 const CLIEngine = ESLintCLIEngine as {
@@ -83,8 +98,9 @@ const CLIEngine = ESLintCLIEngine as {
 
   // static methods
   getErrorResults(results: CLIEngine.LintResult[]): CLIEngine.LintResult[];
-
+  getFormatter(format?: string): CLIEngine.Formatter;
   outputFixes(report: CLIEngine.LintReport): void;
+  version: string;
 };
 
 export { CLIEngine };

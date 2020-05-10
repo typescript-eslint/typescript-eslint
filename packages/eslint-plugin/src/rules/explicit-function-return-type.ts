@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 import {
   checkFunctionReturnType,
@@ -11,6 +14,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
+    allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -44,6 +48,9 @@ export default util.createRule<Options, MessageIds>({
           allowDirectConstAssertionInArrowFunctions: {
             type: 'boolean',
           },
+          allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -55,6 +62,7 @@ export default util.createRule<Options, MessageIds>({
       allowTypedFunctionExpressions: true,
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
+      allowConciseArrowFunctionExpressionsStartingWithVoid: false,
     },
   ],
   create(context, [options]) {
@@ -64,6 +72,16 @@ export default util.createRule<Options, MessageIds>({
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
       ): void {
+        if (
+          options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+          node.expression &&
+          node.body.type === AST_NODE_TYPES.UnaryExpression &&
+          node.body.operator === 'void'
+        ) {
+          return;
+        }
+
         checkFunctionExpressionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,

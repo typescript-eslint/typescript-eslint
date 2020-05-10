@@ -20,6 +20,8 @@ async function returnsPromise() {
 returnsPromise().then(() => {});
 
 Promise.reject('value').catch();
+
+Promise.reject('value').finally();
 ```
 
 Examples of **correct** code for this rule:
@@ -37,6 +39,8 @@ returnsPromise().then(
 );
 
 Promise.reject('value').catch(() => {});
+
+Promise.reject('value').finally(() => {});
 ```
 
 ## Options
@@ -47,6 +51,8 @@ The rule accepts an options object with the following properties:
 type Options = {
   // if true, checking void expressions will be skipped
   ignoreVoid?: boolean;
+  // if true, checking for async iife will be skipped
+  ignoreIIFE?: boolean;
 };
 
 const defaults = {
@@ -56,7 +62,8 @@ const defaults = {
 
 ### `ignoreVoid`
 
-This allows to easily suppress false-positives with void operator.
+This allows you to stop the rule reporting promises consumed with void operator.
+This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
@@ -69,10 +76,25 @@ void returnsPromise();
 void Promise.reject('value');
 ```
 
+### `ignoreIIFE`
+
+This allows you to skip checking of async iife
+
+Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
+
+```ts
+await(async function () {
+  await res(1);
+})();
+
+(async function () {
+  await res(1);
+})();
+```
+
 ## When Not To Use It
 
-If you do not use Promise-like values in your codebase or want to allow them to
-remain unhandled.
+If you do not use Promise-like values in your codebase, or want to allow them to remain unhandled.
 
 ## Related to
 

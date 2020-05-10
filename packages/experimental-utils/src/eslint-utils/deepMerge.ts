@@ -5,7 +5,7 @@ type ObjectLike<T = unknown> = Record<string, T>;
  * @param obj an object
  * @returns `true` if obj is an object
  */
-export function isObjectNotArray<T extends ObjectLike>(
+function isObjectNotArray<T extends ObjectLike>(
   obj: unknown | unknown[],
 ): obj is T {
   return typeof obj === 'object' && !Array.isArray(obj);
@@ -25,7 +25,7 @@ export function deepMerge(
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
-  return Array.from(keys).reduce((acc, key) => {
+  return Array.from(keys).reduce<ObjectLike>((acc, key) => {
     const firstHasKey = key in first;
     const secondHasKey = key in second;
     const firstValue = first[key];
@@ -46,5 +46,7 @@ export function deepMerge(
     }
 
     return acc;
-  }, {} as ObjectLike);
+  }, {});
 }
+
+export { isObjectNotArray };

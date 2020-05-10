@@ -1,11 +1,6 @@
 'use strict';
 
 module.exports = {
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
@@ -17,6 +12,7 @@ module.exports = {
   coverageReporters: ['text-summary', 'lcov'],
   globals: {
     'ts-jest': {
+      isolatedModules: true,
       diagnostics: {
         // ignore the diagnostic error for the invalidFileErrors fixtures
         ignoreCodes: [5056],

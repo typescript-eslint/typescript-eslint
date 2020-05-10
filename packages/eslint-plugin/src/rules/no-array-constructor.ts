@@ -37,7 +37,7 @@ export default util.createRule({
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
         !node.typeParameters &&
-        !util.isOptionalOptionalChain(node)
+        !util.isOptionalOptionalCallExpression(node)
       ) {
         context.report({
           node,

@@ -13,7 +13,8 @@ type Types = Record<
 
 type Options = [
   {
-    types: Types;
+    types?: Types;
+    extendDefaults?: boolean;
   },
 ];
 type MessageIds = 'bannedTypeMessage';
@@ -23,7 +24,11 @@ function removeSpaces(str: string): string {
 }
 
 function stringifyTypeName(
-  node: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+  node:
+    | TSESTree.EntityName
+    | TSESTree.TSTypeLiteral
+    | TSESTree.TSNullKeyword
+    | TSESTree.TSUndefinedKeyword,
   sourceCode: TSESLint.SourceCode,
 ): string {
   return removeSpaces(sourceCode.getText(node));
@@ -46,6 +51,35 @@ function getCustomMessage(
 
   return '';
 }
+
+/*
+  Defaults for this rule should be treated as an "all or nothing"
+  merge, so we need special handling here.
+
+  See: https://github.com/typescript-eslint/typescript-eslint/issues/686
+ */
+const defaultTypes = {
+  String: {
+    message: 'Use string instead',
+    fixWith: 'string',
+  },
+  Boolean: {
+    message: 'Use boolean instead',
+    fixWith: 'boolean',
+  },
+  Number: {
+    message: 'Use number instead',
+    fixWith: 'number',
+  },
+  Object: {
+    message: 'Use Record<string, any> instead',
+    fixWith: 'Record<string, any>',
+  },
+  Symbol: {
+    message: 'Use symbol instead',
+    fixWith: 'symbol',
+  },
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'ban-types',
@@ -81,50 +115,37 @@ export default util.createRule<Options, MessageIds>({
               ],
             },
           },
+          extendDefaults: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [
-    {
-      types: {
-        String: {
-          message: 'Use string instead',
-          fixWith: 'string',
-        },
-        Boolean: {
-          message: 'Use boolean instead',
-          fixWith: 'boolean',
-        },
-        Number: {
-          message: 'Use number instead',
-          fixWith: 'number',
-        },
-        Object: {
-          message: 'Use Record<string, any> instead',
-          fixWith: 'Record<string, any>',
-        },
-        Symbol: {
-          message: 'Use symbol instead',
-          fixWith: 'symbol',
-        },
-      },
-    },
-  ],
-  create(context, [{ types }]) {
-    const bannedTypes: Types = Object.keys(types).reduce(
-      (res, type) => ({ ...res, [removeSpaces(type)]: types[type] }),
-      {},
+  defaultOptions: [{}],
+  create(context, [options]) {
+    const extendDefaults = options.extendDefaults ?? true;
+    const customTypes = options.types ?? {};
+    const types: Types = {
+      ...(extendDefaults ? defaultTypes : {}),
+      ...customTypes,
+    };
+    const bannedTypes = new Map(
+      Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );
 
     function checkBannedTypes(
-      typeNode: TSESTree.EntityName | TSESTree.TSTypeLiteral,
+      typeNode:
+        | TSESTree.EntityName
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSNullKeyword
+        | TSESTree.TSUndefinedKeyword,
+      name = stringifyTypeName(typeNode, context.getSourceCode()),
     ): void {
-      const name = stringifyTypeName(typeNode, context.getSourceCode());
+      const bannedType = bannedTypes.get(name);
 
-      if (name in bannedTypes) {
-        const bannedType = bannedTypes[name];
+      if (bannedType !== undefined) {
         const customMessage = getCustomMessage(bannedType);
         const fixWith =
           bannedType && typeof bannedType === 'object' && bannedType.fixWith;
@@ -144,6 +165,18 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      ...(bannedTypes.has('null') && {
+        TSNullKeyword(node): void {
+          checkBannedTypes(node, 'null');
+        },
+      }),
+
+      ...(bannedTypes.has('undefined') && {
+        TSUndefinedKeyword(node): void {
+          checkBannedTypes(node, 'undefined');
+        },
+      }),
+
       TSTypeLiteral(node): void {
         if (node.members.length) {
           return;
