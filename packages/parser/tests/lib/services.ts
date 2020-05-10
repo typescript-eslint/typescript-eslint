@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
+import { ParserOptions } from '../../src/parser-options';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -16,10 +17,9 @@ const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
 
-function createConfig(filename: string): object {
+function createConfig(filename: string): ParserOptions {
   return {
     filePath: filename,
-    generateServices: true,
     project: './tsconfig.json',
     tsconfigRootDir: path.resolve(FIXTURES_DIR),
   };

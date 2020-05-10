@@ -35,6 +35,8 @@ function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
   return options;
 }
 
-type AsMutable<T extends {}> = { -readonly [TKey in keyof T]: T[TKey] };
+type AsMutable<T extends readonly unknown[]> = {
+  -readonly [TKey in keyof T]: T[TKey];
+};
 
 export { applyDefault };

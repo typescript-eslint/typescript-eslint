@@ -60,7 +60,6 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
-    ignoreRhs?: boolean;
     checkArrayPredicates?: boolean;
   },
 ];
@@ -93,9 +92,6 @@ export default createRule<Options, MessageId>({
           allowConstantLoopConditions: {
             type: 'boolean',
           },
-          ignoreRhs: {
-            type: 'boolean',
-          },
           checkArrayPredicates: {
             type: 'boolean',
           },
@@ -124,14 +120,10 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
-      ignoreRhs: false,
       checkArrayPredicates: false,
     },
   ],
-  create(
-    context,
-    [{ allowConstantLoopConditions, checkArrayPredicates, ignoreRhs }],
-  ) {
+  create(context, [{ allowConstantLoopConditions, checkArrayPredicates }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
@@ -174,6 +166,12 @@ export default createRule<Options, MessageId>({
       //  just skip the check, to avoid false positives
       if (isArrayIndexExpression(node)) {
         return;
+      }
+
+      // When checking logical expressions, only check the right side
+      //  as the left side has been checked by checkLogicalExpressionForUnnecessaryConditionals
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        return checkNode(node.right);
       }
 
       const type = getNodeType(node);
@@ -260,20 +258,6 @@ export default createRule<Options, MessageId>({
     }
 
     /**
-     * Checks that a testable expression is necessarily conditional, reports otherwise.
-     * Filters all LogicalExpressions to prevent some duplicate reports.
-     */
-    function checkIfTestExpressionIsNecessaryConditional(
-      node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
-    ): void {
-      if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
-        return;
-      }
-
-      checkNode(node.test);
-    }
-
-    /**
      * Checks that a logical expression contains a boolean, reports otherwise.
      */
     function checkLogicalExpressionForUnnecessaryConditionals(
@@ -283,10 +267,9 @@ export default createRule<Options, MessageId>({
         checkNodeForNullish(node.left);
         return;
       }
+      // Only checks the left side, since the right side might not be "conditional" at all.
+      // The right side will be checked if the LogicalExpression is used in a conditional context
       checkNode(node.left);
-      if (!ignoreRhs) {
-        checkNode(node.right);
-      }
     }
 
     /**
@@ -298,10 +281,8 @@ export default createRule<Options, MessageId>({
         | TSESTree.ForStatement
         | TSESTree.WhileStatement,
     ): void {
-      if (
-        node.test === null ||
-        node.test.type === AST_NODE_TYPES.LogicalExpression
-      ) {
+      if (node.test === null) {
+        // e.g. `for(;;)`
         return;
       }
 
@@ -480,10 +461,10 @@ export default createRule<Options, MessageId>({
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
-      ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
+      ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
-      IfStatement: checkIfTestExpressionIsNecessaryConditional,
+      IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
       OptionalMemberExpression: checkOptionalMemberExpression,
