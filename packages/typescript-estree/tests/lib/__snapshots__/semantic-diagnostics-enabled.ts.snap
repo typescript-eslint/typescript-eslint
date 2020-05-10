@@ -585,6 +585,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalDynamicImport/dynamic-import.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `
+Object {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Dynamic import must have one specifier as an argument.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/arg-spread.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
