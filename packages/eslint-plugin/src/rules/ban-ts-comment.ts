@@ -26,7 +26,7 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description: 'Bans `// @ts-<directive>` comments from being used',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       tsDirectiveComment:

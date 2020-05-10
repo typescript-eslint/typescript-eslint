@@ -29,7 +29,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
       category: 'Stylistic Issues',
-      recommended: false,
+      recommended: 'warn',
     },
     messages: {
       missingReturnType: 'Missing return type on function.',

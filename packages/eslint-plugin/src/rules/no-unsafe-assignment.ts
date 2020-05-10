@@ -21,7 +21,7 @@ export default util.createRule({
     docs: {
       description: 'Disallows assigning any to variables and properties',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {

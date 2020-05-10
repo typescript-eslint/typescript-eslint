@@ -21,7 +21,6 @@ enum PredefinedFormats {
   strictCamelCase = 1 << 1,
   PascalCase = 1 << 2,
   StrictPascalCase = 1 << 3,
-  // eslint-disable-next-line @typescript-eslint/camelcase
   snake_case = 1 << 4,
   UPPER_CASE = 1 << 5,
 }
@@ -1080,14 +1079,12 @@ https://gist.github.com/mathiasbynens/6334847
 function isPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && !name.includes('_'))
   );
 }
 function isStrictPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && hasStrictCamelHumps(name, true))
   );
 }
@@ -1095,14 +1092,12 @@ function isStrictPascalCase(name: string): boolean {
 function isCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && !name.includes('_'))
   );
 }
 function isStrictCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && hasStrictCamelHumps(name, false))
   );
 }

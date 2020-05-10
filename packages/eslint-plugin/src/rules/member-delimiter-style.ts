@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: false,
     },
     fixable: 'code',
     messages: {

@@ -12,7 +12,7 @@ export default util.createRule({
     docs: {
       description: 'Disallows returning any from a function',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
