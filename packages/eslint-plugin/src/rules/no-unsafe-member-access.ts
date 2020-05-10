@@ -16,7 +16,7 @@ export default util.createRule({
     docs: {
       description: 'Disallows member access on any typed variables',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {

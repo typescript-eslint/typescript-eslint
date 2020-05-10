@@ -8,7 +8,7 @@ export default util.createRule({
     docs: {
       description: 'Disallow extra non-null assertion',
       category: 'Stylistic Issues',
-      recommended: false,
+      recommended: 'error',
     },
     fixable: 'code',
     schema: [],
