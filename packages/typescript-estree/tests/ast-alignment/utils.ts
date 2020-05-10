@@ -157,7 +157,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
          * ts-estree: TSAbstractClassProperty
          */
         if (node.abstract) {
-          node.type = 'TSAbstractMethodDefinition';
+          node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
           delete node.abstract;
         }
       },
@@ -210,10 +210,10 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
 
         /**
-         * babel: sets body property as Object/undefined
-         * ts-estree: sets body property as Object/null
+         * ts-estree: if there's no body, it becomes a TSEmptyBodyFunctionExpression
          */
         if (!node.body) {
+          node.type = AST_NODE_TYPES.TSEmptyBodyFunctionExpression;
           node.body = null;
         }
       },

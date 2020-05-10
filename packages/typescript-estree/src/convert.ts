@@ -18,16 +18,16 @@ import {
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
-  unescapeStringLiteralText,
   TSError,
+  unescapeStringLiteralText,
 } from './node-utils';
+import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
   AST_NODE_TYPES,
   TSESTree,
   TSNode,
   TSESTreeToTSNode,
 } from './ts-estree';
-import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -995,8 +995,12 @@ export class Converter {
       case SyntaxKind.GetAccessor:
       case SyntaxKind.SetAccessor:
       case SyntaxKind.MethodDeclaration: {
-        const method = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const method = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           generator: !!node.asteriskToken,
           expression: false, // ESTreeNode as ESTreeNode here
@@ -1102,8 +1106,12 @@ export class Converter {
           (lastModifier && findNextToken(lastModifier, node, this.ast)) ||
           node.getFirstToken()!;
 
-        const constructor = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const constructor = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           params: this.convertParameters(node.parameters),
           generator: false,

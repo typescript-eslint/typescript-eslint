@@ -272,7 +272,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (typeof options.loggerFn === 'function') {
     extra.log = options.loggerFn;
   } else if (options.loggerFn === false) {
-    extra.log = Function.prototype;
+    extra.log = (): void => {};
   }
 
   if (typeof options.tsconfigRootDir === 'string') {
@@ -337,9 +337,11 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject);
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
