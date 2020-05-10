@@ -1808,6 +1808,20 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
+        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+          if (node.arguments.length !== 1) {
+            throw createError(
+              this.ast,
+              node.arguments.pos,
+              'Dynamic import must have one specifier as an argument.',
+            );
+          }
+          return this.createNode<TSESTree.ImportExpression>(node, {
+            type: AST_NODE_TYPES.ImportExpression,
+            source: this.convertChild(node.arguments[0]),
+          });
+        }
+
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;
@@ -1915,14 +1929,17 @@ export class Converter {
       }
 
       case SyntaxKind.BigIntLiteral: {
-        const result = this.createNode<TSESTree.BigIntLiteral>(node, {
-          type: AST_NODE_TYPES.BigIntLiteral,
-          raw: '',
-          value: '',
+        const range = getRange(node, this.ast);
+        const rawValue = this.ast.text.slice(range[0], range[1]);
+        const bigint = rawValue.slice(0, -1); // remove suffix `n`
+        const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
+        return this.createNode<TSESTree.BigIntLiteral>(node, {
+          type: AST_NODE_TYPES.Literal,
+          raw: rawValue,
+          value: value,
+          bigint: value === null ? bigint : String(value),
+          range,
         });
-        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        result.value = result.raw.slice(0, -1); // remove suffix `n`
-        return result;
       }
 
       case SyntaxKind.RegularExpressionLiteral: {

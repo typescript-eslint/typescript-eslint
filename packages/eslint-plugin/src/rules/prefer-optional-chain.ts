@@ -306,7 +306,6 @@ export default util.createRule<Options, MessageIds>({
             break;
 
           case AST_NODE_TYPES.Literal:
-          case AST_NODE_TYPES.BigIntLiteral:
           case AST_NODE_TYPES.TemplateLiteral:
             propertyText = sourceCode.getText(node.property);
             break;
@@ -353,7 +352,6 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
-  AST_NODE_TYPES.BigIntLiteral,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,

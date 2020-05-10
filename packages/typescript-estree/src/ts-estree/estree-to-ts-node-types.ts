@@ -16,7 +16,6 @@ export interface EstreeToTsNodeTypes {
     | ts.BinaryExpression
     | ts.ParameterDeclaration;
   [AST_NODE_TYPES.AwaitExpression]: ts.AwaitExpression;
-  [AST_NODE_TYPES.BigIntLiteral]: ts.BigIntLiteral;
   [AST_NODE_TYPES.BinaryExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.BlockStatement]: ts.Block;
   [AST_NODE_TYPES.BreakStatement]: ts.BreakStatement;
@@ -73,6 +72,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.Import]: ts.ImportExpression;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
+  [AST_NODE_TYPES.ImportExpression]: ts.CallExpression;
   [AST_NODE_TYPES.ImportNamespaceSpecifier]: ts.NamespaceImport;
   [AST_NODE_TYPES.ImportSpecifier]: ts.ImportSpecifier;
   [AST_NODE_TYPES.JSXAttribute]: ts.JsxAttribute;
@@ -98,7 +98,8 @@ export interface EstreeToTsNodeTypes {
     | ts.RegularExpressionLiteral
     | ts.JsxText
     | ts.NullLiteral
-    | ts.BooleanLiteral;
+    | ts.BooleanLiteral
+    | ts.BigIntLiteral;
   [AST_NODE_TYPES.LogicalExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.MemberExpression]:
     | ts.PropertyAccessExpression
