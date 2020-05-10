@@ -396,12 +396,13 @@ export type LeftHandSideExpression =
   | TSAsExpression
   | ArrowFunctionExpression;
 export type Literal =
+  | BigIntLiteral
   | BooleanLiteral
   | NumberLiteral
   | NullLiteral
   | RegExpLiteral
   | StringLiteral;
-export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
+export type LiteralExpression = Literal | TemplateLiteral;
 export type MemberExpression =
   | MemberExpressionComputedName
   | MemberExpressionNonComputedName;
