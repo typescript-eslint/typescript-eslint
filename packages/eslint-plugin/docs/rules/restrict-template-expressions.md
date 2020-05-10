@@ -38,7 +38,7 @@ type Options = {
 };
 
 const defaults = {
-  allowNumber: false,
+  allowNumber: true,
   allowBoolean: false,
   allowAny: false,
   allowNullable: false,

@@ -41,7 +41,11 @@ export default util.createRule<Options, MessageId>({
       },
     ],
   },
-  defaultOptions: [{}],
+  defaultOptions: [
+    {
+      allowNumber: true,
+    },
+  ],
   create(context, [options]) {
     const service = util.getParserServices(context);
     const typeChecker = service.program.getTypeChecker();

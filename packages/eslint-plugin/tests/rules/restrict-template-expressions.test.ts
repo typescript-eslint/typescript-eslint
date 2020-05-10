@@ -206,6 +206,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: `
         const msg = \`arg = \${123}\`;
       `,
+      options: [{ allowNumber: false }],
       errors: [
         {
           messageId: 'invalidType',
@@ -246,6 +247,7 @@ ruleTester.run('restrict-template-expressions', rule, {
         declare const arg: number;
         const msg = \`arg = \${arg}\`;
       `,
+      options: [{ allowNumber: false }],
       errors: [
         {
           messageId: 'invalidType',
