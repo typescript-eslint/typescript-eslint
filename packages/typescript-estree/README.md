@@ -249,9 +249,7 @@ Types for the AST produced by the parse functions.
 
 ## Supported TypeScript Version
 
-We will always endeavor to support the latest stable version of TypeScript.
-
-The version of TypeScript currently supported by this parser is `~3.2.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+See the [Supported TypeScript Version](../../README.md#supported-typescript-version) section in the project root.
 
 If you use a non-supported version of TypeScript, the parser will log a warning to the console.
 
