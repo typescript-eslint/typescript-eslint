@@ -47,7 +47,7 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      ignoreVoid: false,
+      ignoreVoid: true,
       ignoreIIFE: false,
     },
   ],
