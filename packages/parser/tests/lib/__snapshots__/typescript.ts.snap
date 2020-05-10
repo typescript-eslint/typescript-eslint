@@ -274,7 +274,7 @@ Object {
 
 exports[`typescript fixtures/basics/abstract-class-with-abstract-constructor.src 1`] = `
 Object {
-  "$id": 6,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -284,7 +284,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 5,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -294,7 +294,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 4,
+          "$id": 2,
           "block": Object {
             "range": Array [
               7,
@@ -302,55 +302,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  63,
-                  66,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 4,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variableMap": Object {
             "AbstractSocket": Object {
@@ -358,7 +317,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -398,7 +357,7 @@ Object {
               "name": "AbstractSocket",
               "references": Array [],
               "scope": Object {
-                "$ref": 4,
+                "$ref": 2,
               },
             },
           ],
@@ -410,7 +369,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 6,
+        "$ref": 4,
       },
       "variableMap": Object {
         "AbstractSocket": Object {
@@ -418,7 +377,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -458,7 +417,7 @@ Object {
           "name": "AbstractSocket",
           "references": Array [],
           "scope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
         },
       ],
@@ -472,7 +431,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 6,
+    "$ref": 4,
   },
   "variables": Array [],
 }
@@ -480,7 +439,7 @@ Object {
 
 exports[`typescript fixtures/basics/abstract-class-with-abstract-method.src 1`] = `
 Object {
-  "$id": 6,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -490,7 +449,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 5,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -500,7 +459,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 4,
+          "$id": 2,
           "block": Object {
             "range": Array [
               7,
@@ -508,55 +467,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  64,
-                  84,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 4,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variableMap": Object {
             "AbstractSocket": Object {
@@ -564,7 +482,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -604,7 +522,7 @@ Object {
               "name": "AbstractSocket",
               "references": Array [],
               "scope": Object {
-                "$ref": 4,
+                "$ref": 2,
               },
             },
           ],
@@ -616,7 +534,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 6,
+        "$ref": 4,
       },
       "variableMap": Object {
         "AbstractSocket": Object {
@@ -624,7 +542,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -664,7 +582,7 @@ Object {
           "name": "AbstractSocket",
           "references": Array [],
           "scope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
         },
       ],
@@ -678,7 +596,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 6,
+    "$ref": 4,
   },
   "variables": Array [],
 }
@@ -1016,7 +934,7 @@ Object {
 
 exports[`typescript fixtures/basics/abstract-class-with-abstract-static-constructor.src 1`] = `
 Object {
-  "$id": 6,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -1026,7 +944,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 5,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -1036,7 +954,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 4,
+          "$id": 2,
           "block": Object {
             "range": Array [
               7,
@@ -1044,55 +962,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  68,
-                  71,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 4,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variableMap": Object {
             "AbstractSocket": Object {
@@ -1100,7 +977,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -1140,7 +1017,7 @@ Object {
               "name": "AbstractSocket",
               "references": Array [],
               "scope": Object {
-                "$ref": 4,
+                "$ref": 2,
               },
             },
           ],
@@ -1152,7 +1029,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 6,
+        "$ref": 4,
       },
       "variableMap": Object {
         "AbstractSocket": Object {
@@ -1160,7 +1037,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -1200,7 +1077,7 @@ Object {
           "name": "AbstractSocket",
           "references": Array [],
           "scope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
         },
       ],
@@ -1214,7 +1091,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 6,
+    "$ref": 4,
   },
   "variables": Array [],
 }
@@ -1387,7 +1264,7 @@ Object {
 
 exports[`typescript fixtures/basics/abstract-class-with-optional-method.src 1`] = `
 Object {
-  "$id": 6,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -1397,7 +1274,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 5,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -1407,7 +1284,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 4,
+          "$id": 2,
           "block": Object {
             "range": Array [
               7,
@@ -1415,55 +1292,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  56,
-                  76,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 4,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variableMap": Object {
             "AbstractSocket": Object {
@@ -1471,7 +1307,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -1511,7 +1347,7 @@ Object {
               "name": "AbstractSocket",
               "references": Array [],
               "scope": Object {
-                "$ref": 4,
+                "$ref": 2,
               },
             },
           ],
@@ -1523,7 +1359,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 6,
+        "$ref": 4,
       },
       "variableMap": Object {
         "AbstractSocket": Object {
@@ -1531,7 +1367,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -1571,7 +1407,7 @@ Object {
           "name": "AbstractSocket",
           "references": Array [],
           "scope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
         },
       ],
@@ -1585,7 +1421,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 6,
+    "$ref": 4,
   },
   "variables": Array [],
 }
@@ -8315,7 +8151,7 @@ Object {
 
 exports[`typescript fixtures/basics/class-with-optional-computed-method.src 1`] = `
 Object {
-  "$id": 33,
+  "$id": 25,
   "block": Object {
     "range": Array [
       0,
@@ -8325,7 +8161,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 32,
+      "$id": 24,
       "block": Object {
         "range": Array [
           0,
@@ -8335,7 +8171,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 31,
+          "$id": 23,
           "block": Object {
             "range": Array [
               111,
@@ -8348,8 +8184,8 @@ Object {
               "$id": 14,
               "block": Object {
                 "range": Array [
-                  135,
-                  138,
+                  153,
+                  158,
                 ],
                 "type": "FunctionExpression",
               },
@@ -8360,7 +8196,7 @@ Object {
               "throughReferences": Array [],
               "type": "function",
               "upperScope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "variableMap": Object {
                 "arguments": Object {
@@ -8388,8 +8224,8 @@ Object {
               "$id": 16,
               "block": Object {
                 "range": Array [
-                  153,
-                  158,
+                  176,
+                  181,
                 ],
                 "type": "FunctionExpression",
               },
@@ -8400,7 +8236,7 @@ Object {
               "throughReferences": Array [],
               "type": "function",
               "upperScope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "variableMap": Object {
                 "arguments": Object {
@@ -8428,8 +8264,8 @@ Object {
               "$id": 18,
               "block": Object {
                 "range": Array [
-                  166,
-                  169,
+                  217,
+                  222,
                 ],
                 "type": "FunctionExpression",
               },
@@ -8440,7 +8276,7 @@ Object {
               "throughReferences": Array [],
               "type": "function",
               "upperScope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "variableMap": Object {
                 "arguments": Object {
@@ -8468,8 +8304,8 @@ Object {
               "$id": 20,
               "block": Object {
                 "range": Array [
-                  176,
-                  181,
+                  239,
+                  244,
                 ],
                 "type": "FunctionExpression",
               },
@@ -8480,7 +8316,7 @@ Object {
               "throughReferences": Array [],
               "type": "function",
               "upperScope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "variableMap": Object {
                 "arguments": Object {
@@ -8508,8 +8344,8 @@ Object {
               "$id": 22,
               "block": Object {
                 "range": Array [
-                  198,
-                  201,
+                  274,
+                  279,
                 ],
                 "type": "FunctionExpression",
               },
@@ -8520,7 +8356,7 @@ Object {
               "throughReferences": Array [],
               "type": "function",
               "upperScope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "variableMap": Object {
                 "arguments": Object {
@@ -8544,166 +8380,6 @@ Object {
                 },
               ],
             },
-            Object {
-              "$id": 24,
-              "block": Object {
-                "range": Array [
-                  217,
-                  222,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 31,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 23,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 24,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 23,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 24,
-                  },
-                },
-              ],
-            },
-            Object {
-              "$id": 26,
-              "block": Object {
-                "range": Array [
-                  239,
-                  244,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 31,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 25,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 26,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 25,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 26,
-                  },
-                },
-              ],
-            },
-            Object {
-              "$id": 28,
-              "block": Object {
-                "range": Array [
-                  262,
-                  265,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 31,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 27,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 28,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 27,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 28,
-                  },
-                },
-              ],
-            },
-            Object {
-              "$id": 30,
-              "block": Object {
-                "range": Array [
-                  274,
-                  279,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 31,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 29,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 30,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 29,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 30,
-                  },
-                },
-              ],
-            },
           ],
           "functionExpressionScope": false,
           "isStrict": true,
@@ -8711,7 +8387,7 @@ Object {
             Object {
               "$id": 8,
               "from": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "identifier": Object {
                 "name": "computed1",
@@ -8730,7 +8406,7 @@ Object {
             Object {
               "$id": 9,
               "from": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "identifier": Object {
                 "name": "computed2",
@@ -8749,7 +8425,7 @@ Object {
             Object {
               "$id": 10,
               "from": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "identifier": Object {
                 "name": "obj",
@@ -8768,7 +8444,7 @@ Object {
             Object {
               "$id": 11,
               "from": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "identifier": Object {
                 "name": "obj",
@@ -8787,7 +8463,7 @@ Object {
             Object {
               "$id": 12,
               "from": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
               "identifier": Object {
                 "name": "f",
@@ -8821,7 +8497,7 @@ Object {
           ],
           "type": "class",
           "upperScope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
           "variableMap": Object {
             "X": Object {
@@ -8829,7 +8505,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
           "variables": Array [
             Object {
@@ -8869,7 +8545,7 @@ Object {
               "name": "X",
               "references": Array [],
               "scope": Object {
-                "$ref": 31,
+                "$ref": 23,
               },
             },
           ],
@@ -8881,7 +8557,7 @@ Object {
         Object {
           "$id": 4,
           "from": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
           "identifier": Object {
             "name": "computed1",
@@ -8906,7 +8582,7 @@ Object {
         Object {
           "$id": 5,
           "from": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
           "identifier": Object {
             "name": "computed2",
@@ -8931,7 +8607,7 @@ Object {
         Object {
           "$id": 6,
           "from": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
           "identifier": Object {
             "name": "obj",
@@ -8961,7 +8637,7 @@ Object {
       ],
       "type": "module",
       "upperScope": Object {
-        "$ref": 33,
+        "$ref": 25,
       },
       "variableMap": Object {
         "X": Object {
@@ -8978,7 +8654,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 32,
+        "$ref": 24,
       },
       "variables": Array [
         Object {
@@ -9031,7 +8707,7 @@ Object {
             },
           ],
           "scope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
         },
         Object {
@@ -9084,7 +8760,7 @@ Object {
             },
           ],
           "scope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
         },
         Object {
@@ -9140,7 +8816,7 @@ Object {
             },
           ],
           "scope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
         },
         Object {
@@ -9180,7 +8856,7 @@ Object {
           "name": "X",
           "references": Array [],
           "scope": Object {
-            "$ref": 32,
+            "$ref": 24,
           },
         },
       ],
@@ -9198,7 +8874,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 33,
+    "$ref": 25,
   },
   "variables": Array [],
 }
@@ -9401,7 +9077,7 @@ Object {
 
 exports[`typescript fixtures/basics/class-with-optional-methods.src 1`] = `
 Object {
-  "$id": 10,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -9411,7 +9087,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 9,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -9421,7 +9097,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 8,
+          "$id": 2,
           "block": Object {
             "range": Array [
               0,
@@ -9429,135 +9105,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  18,
-                  21,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 8,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-            Object {
-              "$id": 5,
-              "block": Object {
-                "range": Array [
-                  28,
-                  39,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 8,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 4,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 5,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 4,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 5,
-                  },
-                },
-              ],
-            },
-            Object {
-              "$id": 7,
-              "block": Object {
-                "range": Array [
-                  54,
-                  65,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 8,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 6,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 7,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 6,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 7,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 9,
+            "$ref": 3,
           },
           "variableMap": Object {
             "Foo": Object {
@@ -9565,7 +9120,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 9,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -9605,7 +9160,7 @@ Object {
               "name": "Foo",
               "references": Array [],
               "scope": Object {
-                "$ref": 8,
+                "$ref": 2,
               },
             },
           ],
@@ -9617,7 +9172,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 10,
+        "$ref": 4,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -9625,7 +9180,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 9,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -9665,7 +9220,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 9,
+            "$ref": 3,
           },
         },
       ],
@@ -9679,7 +9234,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 10,
+    "$ref": 4,
   },
   "variables": Array [],
 }
@@ -14195,7 +13750,7 @@ Object {
 
 exports[`typescript fixtures/basics/declare-class-with-optional-method.src 1`] = `
 Object {
-  "$id": 6,
+  "$id": 4,
   "block": Object {
     "range": Array [
       0,
@@ -14205,7 +13760,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 5,
+      "$id": 3,
       "block": Object {
         "range": Array [
           0,
@@ -14215,7 +13770,7 @@ Object {
       },
       "childScopes": Array [
         Object {
-          "$id": 4,
+          "$id": 2,
           "block": Object {
             "range": Array [
               0,
@@ -14223,55 +13778,14 @@ Object {
             ],
             "type": "ClassDeclaration",
           },
-          "childScopes": Array [
-            Object {
-              "$id": 3,
-              "block": Object {
-                "range": Array [
-                  28,
-                  36,
-                ],
-                "type": "FunctionExpression",
-              },
-              "childScopes": Array [],
-              "functionExpressionScope": false,
-              "isStrict": true,
-              "references": Array [],
-              "throughReferences": Array [],
-              "type": "function",
-              "upperScope": Object {
-                "$ref": 4,
-              },
-              "variableMap": Object {
-                "arguments": Object {
-                  "$ref": 2,
-                },
-              },
-              "variableScope": Object {
-                "$ref": 3,
-              },
-              "variables": Array [
-                Object {
-                  "$id": 2,
-                  "defs": Array [],
-                  "eslintUsed": undefined,
-                  "identifiers": Array [],
-                  "name": "arguments",
-                  "references": Array [],
-                  "scope": Object {
-                    "$ref": 3,
-                  },
-                },
-              ],
-            },
-          ],
+          "childScopes": Array [],
           "functionExpressionScope": false,
           "isStrict": true,
           "references": Array [],
           "throughReferences": Array [],
           "type": "class",
           "upperScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variableMap": Object {
             "Foo": Object {
@@ -14279,7 +13793,7 @@ Object {
             },
           },
           "variableScope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
           "variables": Array [
             Object {
@@ -14319,7 +13833,7 @@ Object {
               "name": "Foo",
               "references": Array [],
               "scope": Object {
-                "$ref": 4,
+                "$ref": 2,
               },
             },
           ],
@@ -14331,7 +13845,7 @@ Object {
       "throughReferences": Array [],
       "type": "module",
       "upperScope": Object {
-        "$ref": 6,
+        "$ref": 4,
       },
       "variableMap": Object {
         "Foo": Object {
@@ -14339,7 +13853,7 @@ Object {
         },
       },
       "variableScope": Object {
-        "$ref": 5,
+        "$ref": 3,
       },
       "variables": Array [
         Object {
@@ -14379,7 +13893,7 @@ Object {
           "name": "Foo",
           "references": Array [],
           "scope": Object {
-            "$ref": 5,
+            "$ref": 3,
           },
         },
       ],
@@ -14393,7 +13907,7 @@ Object {
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 6,
+    "$ref": 4,
   },
   "variables": Array [],
 }
