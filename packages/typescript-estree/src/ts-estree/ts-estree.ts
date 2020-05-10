@@ -175,6 +175,7 @@ export type Node =
   | Import
   | ImportDeclaration
   | ImportDefaultSpecifier
+  | ImportExpression
   | ImportNamespaceSpecifier
   | ImportSpecifier
   | JSXAttribute
@@ -395,12 +396,13 @@ export type LeftHandSideExpression =
   | TSAsExpression
   | ArrowFunctionExpression;
 export type Literal =
+  | BigIntLiteral
   | BooleanLiteral
   | NumberLiteral
   | NullLiteral
   | RegExpLiteral
   | StringLiteral;
-export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
+export type LiteralExpression = Literal | TemplateLiteral;
 export type MemberExpression =
   | MemberExpressionComputedName
   | MemberExpressionNonComputedName;
@@ -624,7 +626,7 @@ interface FunctionSignatureBase extends BaseNode {
 
 interface LiteralBase extends BaseNode {
   raw: string;
-  value: boolean | number | RegExp | string | null;
+  value: string | boolean | null | number | RegExp | bigint;
   regex?: {
     pattern: string;
     flags: string;
@@ -784,7 +786,9 @@ export interface AwaitExpression extends BaseNode {
 }
 
 export interface BigIntLiteral extends LiteralBase {
-  type: AST_NODE_TYPES.BigIntLiteral;
+  type: AST_NODE_TYPES.Literal;
+  value: bigint | null;
+  bigint: string;
 }
 
 export interface BinaryExpression extends BinaryExpressionBase {
@@ -966,6 +970,11 @@ export interface ImportDeclaration extends BaseNode {
 export interface ImportDefaultSpecifier extends BaseNode {
   type: AST_NODE_TYPES.ImportDefaultSpecifier;
   local: Identifier;
+}
+
+export interface ImportExpression extends BaseNode {
+  type: AST_NODE_TYPES.ImportExpression;
+  source: Expression;
 }
 
 export interface ImportNamespaceSpecifier extends BaseNode {
