@@ -62,7 +62,7 @@ function getReporLoc(
       )!.loc.end;
     }
 
-    return sourceCode.getTokenBefore(node.body!)!.loc.end;
+    return sourceCode.getTokenBefore(node.body)!.loc.end;
   }
 
   return {

@@ -675,7 +675,11 @@ interface MethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
 interface PropertyBase extends BaseNode {
   type: AST_NODE_TYPES.Property;
   key: PropertyName;
-  value: Expression | AssignmentPattern | BindingName;
+  value:
+    | Expression
+    | AssignmentPattern
+    | BindingName
+    | TSEmptyBodyFunctionExpression;
   computed: boolean;
   method: boolean;
   shorthand: boolean;
@@ -930,6 +934,7 @@ export interface FunctionDeclaration extends FunctionDeclarationBase {
 
 export interface FunctionExpression extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionExpression;
+  body: BlockStatement;
 }
 
 export interface Identifier extends BaseNode {
