@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      # TODO - delete this before merging v3 into master
+      - v3
   pull_request:
     branches:
       - '**'
