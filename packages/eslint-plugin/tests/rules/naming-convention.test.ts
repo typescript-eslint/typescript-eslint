@@ -67,7 +67,6 @@ const formatTestNames: Readonly<Record<
       'StrictPascalCase',
     ],
   },
-  // eslint-disable-next-line @typescript-eslint/camelcase
   snake_case: {
     valid: ['snake_case', 'lower'],
     invalid: [

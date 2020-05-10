@@ -18,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require PascalCased class and interface names',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
     },
     deprecated: true,
     replacedBy: ['naming-convention'],
