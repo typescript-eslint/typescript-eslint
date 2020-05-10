@@ -93,7 +93,6 @@ function createProjectProgram(
       errorLines.push(
         'The file must be included in at least one of the projects provided.',
       );
-      hasMatchedAnError = true;
     }
 
     throw new Error(errorLines.join('\n'));
