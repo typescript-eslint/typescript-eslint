@@ -656,6 +656,7 @@ interface MethodDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   kind: 'method' | 'get' | 'set' | 'constructor';
+  optional?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
   typeParameters?: TSTypeParameterDeclaration;
@@ -682,6 +683,7 @@ interface PropertyBase extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
+  optional?: boolean;
   kind: 'init' | 'get' | 'set';
 }
 
