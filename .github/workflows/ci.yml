@@ -38,11 +38,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # This also runs a build as part of the postinstall bootstrap
-      - name: Install dependencies and build
+      - name: Install dependencies
         run: |
-          yarn --ignore-engines --frozen-lockfile
-          yarn check-clean-workspace-after-install
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
 
       # Note that this command *also* type checks tests/tools,
       # whereas the build only checks src files
@@ -84,14 +88,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # This also runs a build as part of the postinstall bootstrap
-      - name: Install dependencies and build
+      - name: Install dependencies
         run: |
-          yarn --ignore-engines --frozen-lockfile
-          yarn check-clean-workspace-after-install
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
 
       - name: Check code formatting
-        run: yarn format-check
+        run: yarn check:format
 
       - name: Lint code
         run: yarn lint
@@ -124,14 +132,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # This also runs a build as part of the postinstall bootstrap
-      - name: Install dependencies and build
+      - name: Install dependencies
         run: |
-          yarn --ignore-engines --frozen-lockfile
-          yarn check-clean-workspace-after-install
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
 
       - name: Run integrations tests
-        run: yarn integration-tests
+        run: yarn test:integration
         env:
           CI: true
 
@@ -160,11 +172,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # This also runs a build as part of the postinstall bootstrap
-      - name: Install dependencies and build
+      - name: Install dependencies
         run: |
-          yarn --ignore-engines --frozen-lockfile
-          yarn check-clean-workspace-after-install
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
 
       - name: Run unit tests
         # the internal plugin is only run locally, so it doesn't have to support older versions
@@ -201,13 +217,62 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # This also runs a build as part of the postinstall bootstrap
-      - name: Install dependencies and build
+      - name: Install dependencies
         run: |
-          yarn --ignore-engines --frozen-lockfile
-          yarn check-clean-workspace-after-install
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
 
       - name: Publish all packages to npm
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # TODO - delete this before merging v3 into master
+  publish_v3_prerelease_version:
+    name: Publish the latest code as a v3 prerelease version
+    runs-on: ubuntu-latest
+    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
+    if: github.ref == 'refs/heads/v3'
+    steps:
+      - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Publish all packages to npm
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v3
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
