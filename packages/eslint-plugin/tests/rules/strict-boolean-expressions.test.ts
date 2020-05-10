@@ -6,6 +6,7 @@ import {
   batchedSingleLineTests,
   getFixturesRootDir,
   RuleTester,
+  noFormat,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -20,7 +21,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
   valid: [
     // boolean in boolean context
     ...batchedSingleLineTests<Options>({
-      code: `
+      code: noFormat`
         true ? "a" : "b";
         if (false) {}
         while (true) {}
@@ -42,7 +43,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // string in boolean context
     ...batchedSingleLineTests<Options>({
-      code: `
+      code: noFormat`
         if ("") {}
         while ("x") {}
         for (; "";) {}
@@ -55,7 +56,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // number in boolean context
     ...batchedSingleLineTests<Options>({
-      code: `
+      code: noFormat`
         if (0) {}
         while (1n) {}
         for (; Infinity;) {}
@@ -68,7 +69,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // nullable object in boolean context
     ...batchedSingleLineTests<Options>({
-      code: `
+      code: noFormat`
         declare const x: null | object; if (x) {}
         (x?: { a: any }) => !x;
         <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
@@ -78,7 +79,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable boolean in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableBoolean: true }],
-      code: `
+      code: noFormat`
         declare const x: boolean | null; if (x) {}
         (x?: boolean) => !x;
         <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
@@ -88,7 +89,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable string in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableString: true }],
-      code: `
+      code: noFormat`
         declare const x: string | null; if (x) {}
         (x?: string) => !x;
         <T extends string | null | undefined>(x: T) => x ? 1 : 0;
@@ -98,7 +99,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable number in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowNullableNumber: true }],
-      code: `
+      code: noFormat`
         declare const x: number | null; if (x) {}
         (x?: number) => !x;
         <T extends number | null | undefined>(x: T) => x ? 1 : 0;
@@ -108,7 +109,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // any in boolean context
     ...batchedSingleLineTests<Options>({
       options: [{ allowAny: true }],
-      code: `
+      code: noFormat`
         declare const x: any; if (x) {}
         (x) => !x;
         <T extends any>(x: T) => x ? 1 : 0;
@@ -122,7 +123,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
       options: [
         { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
-      code: `
+      code: noFormat`
         if (true && 1) {}
         while (false || "a") {}
         (x: object) => true || false || x ? true : false;
@@ -140,19 +141,20 @@ ruleTester.run('strict-boolean-expressions', rule, {
         { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: `
-        if ("" && {} || 0 && void 0) {}
+        if (('' && {}) || (0 && void 0)) {
+        }
       `,
       errors: [
-        { messageId: 'conditionErrorString', line: 2, column: 13 },
-        { messageId: 'conditionErrorObject', line: 2, column: 19 },
-        { messageId: 'conditionErrorNumber', line: 2, column: 25 },
-        { messageId: 'conditionErrorNullish', line: 2, column: 30 },
+        { messageId: 'conditionErrorString', line: 2, column: 14 },
+        { messageId: 'conditionErrorObject', line: 2, column: 20 },
+        { messageId: 'conditionErrorNumber', line: 2, column: 28 },
+        { messageId: 'conditionErrorNullish', line: 2, column: 33 },
       ],
     },
 
     // nullish in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      code: `
+      code: noFormat`
         null || {};
         undefined && [];
         declare const x: null; if (x) {}
@@ -170,7 +172,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // object in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      code: `
+      code: noFormat`
         [] || 1;
         ({}) && "a";
         declare const x: symbol; if (x) {}
@@ -189,7 +191,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // string in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowString: false }],
-      code: `
+      code: noFormat`
         while ("") {}
         for (; "foo";) {}
         declare const x: string; if (x) {}
@@ -208,7 +210,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // number in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNumber: false }],
-      code: `
+      code: noFormat`
         while (0n) {}
         for (; 123;) {}
         declare const x: number; if (x) {}
@@ -227,7 +229,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // mixed `string | number` value in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowString: true, allowNumber: true }],
-      code: `
+      code: noFormat`
         declare const x: string | number; if (x) {}
         (x: bigint | string) => !x;
         <T extends number | bigint | string>(x: T) => x ? 1 : 0;
@@ -242,7 +244,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable boolean in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNullableBoolean: false }],
-      code: `
+      code: noFormat`
         declare const x: boolean | null; if (x) {}
         (x?: boolean) => !x;
         <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
@@ -257,7 +259,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable object in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNullableObject: false }],
-      code: `
+      code: noFormat`
         declare const x: object | null; if (x) {}
         (x?: { a: number }) => !x;
         <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
@@ -271,7 +273,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // nullable string in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      code: `
+      code: noFormat`
         declare const x: string | null; if (x) {}
         (x?: string) => !x;
         <T extends string | null | undefined>(x: T) => x ? 1 : 0;
@@ -285,7 +287,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
 
     // nullable number in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      code: `
+      code: noFormat`
         declare const x: number | null; if (x) {}
         (x?: number) => !x;
         <T extends number | null | undefined>(x: T) => x ? 1 : 0;
@@ -300,7 +302,7 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // any in boolean context
     // TODO: when `T` is not `extends any` then the error is `conditionErrorObject` (says it's always truthy, which is false)
     ...batchedSingleLineTests<MessageId, Options>({
-      code: `
+      code: noFormat`
         if (x) {}
         x => !x;
         <T extends any>(x: T) => x ? 1 : 0;

@@ -1115,7 +1115,7 @@ export default createRule<Options, MessageIds>({
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ) {
-        const closingParen = sourceCode.getTokenBefore(node.body!)!;
+        const closingParen = sourceCode.getTokenBefore(node.body)!;
         const openingParen = sourceCode.getTokenBefore(
           node.params.length ? node.params[0] : closingParen,
         )!;

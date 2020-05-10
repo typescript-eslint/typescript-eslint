@@ -14,9 +14,9 @@ export default util.createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an any typed value',
-      unsafeNew: 'Unsafe construction of an any type value',
-      unsafeTemplateTag: 'Unsafe any typed template tag',
+      unsafeCall: 'Unsafe call of an any typed value.',
+      unsafeNew: 'Unsafe construction of an any type value.',
+      unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
     schema: [],
   },
@@ -31,7 +31,8 @@ export default util.createRule<[], MessageIds>({
       messageId: MessageIds,
     ): void {
       const tsNode = esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+
       if (util.isTypeAnyType(type)) {
         context.report({
           node: reportingNode,
@@ -41,10 +42,10 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      'CallExpression, OptionalCallExpression'(
-        node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
+      ':matches(CallExpression, OptionalCallExpression) > :not(Import).callee'(
+        node: Exclude<TSESTree.LeftHandSideExpression, TSESTree.Import>,
       ): void {
-        checkCall(node.callee, node.callee, 'unsafeCall');
+        checkCall(node, node, 'unsafeCall');
       },
       NewExpression(node): void {
         checkCall(node.callee, node, 'unsafeNew');

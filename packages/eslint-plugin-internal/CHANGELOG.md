@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+
+### Features
+
+* **eslint-plugin-internal:** add rule no-poorly-typed-ts-props ([#1949](https://github.com/typescript-eslint/typescript-eslint/issues/1949)) ([56ea7c9](https://github.com/typescript-eslint/typescript-eslint/commit/56ea7c9581c0c99fe394bbcfc4128e8054c88ab2))
+* **experimental-utils:** expose our RuleTester extension ([#1948](https://github.com/typescript-eslint/typescript-eslint/issues/1948)) ([2dd1638](https://github.com/typescript-eslint/typescript-eslint/commit/2dd1638aaa2658ba99b2341861146b586f489121))
+
+
+
+
+
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Features
+
+* **eslint-plugin-internal:** add plugin-test-formatting rule ([#1821](https://github.com/typescript-eslint/typescript-eslint/issues/1821)) ([9b0023a](https://github.com/typescript-eslint/typescript-eslint/commit/9b0023a4996ecdd7dfcb30abd1678091a78f3064))
+
+
+
+
+
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
 # [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal

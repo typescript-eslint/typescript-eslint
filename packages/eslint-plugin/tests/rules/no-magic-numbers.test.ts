@@ -12,7 +12,7 @@ ruleTester.run('no-magic-numbers', rule, {
       options: [{ ignoreNumericLiteralTypes: true }],
     },
     {
-      code: 'type Foo = "bar";',
+      code: "type Foo = 'bar';",
     },
     {
       code: 'type Foo = true;',
@@ -37,7 +37,7 @@ ruleTester.run('no-magic-numbers', rule, {
       code: `
         enum foo {
           SECOND = 1000,
-          NUM = "0123456789",
+          NUM = '0123456789',
           NEG = -1,
           POS = +1,
         }
@@ -141,7 +141,11 @@ class Foo {
       ],
     },
     {
-      code: 'interface Foo { bar: 1; }',
+      code: `
+interface Foo {
+  bar: 1;
+}
+      `,
       options: [{ ignoreNumericLiteralTypes: true }],
       errors: [
         {
@@ -149,8 +153,8 @@ class Foo {
           data: {
             raw: '1',
           },
-          line: 1,
-          column: 22,
+          line: 3,
+          column: 8,
         },
       ],
     },
@@ -158,7 +162,7 @@ class Foo {
       code: `
 enum foo {
   SECOND = 1000,
-  NUM = "0123456789",
+  NUM = '0123456789',
   NEG = -1,
   POS = +1,
 }

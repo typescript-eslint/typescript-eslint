@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-extra-non-null-assertion';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -17,7 +17,8 @@ const bar = foo!.bar;
       code: `
 function foo(bar: number | undefined) {
   const bar: number = bar!;
-}      `,
+}
+      `,
     },
     {
       code: `
@@ -108,11 +109,11 @@ function foo(bar?: { n: number }) {
     },
     // parentheses
     {
-      code: `
+      code: noFormat`
 const foo: { bar: number } | null = null;
 const bar = (foo!)!.bar;
       `,
-      output: `
+      output: noFormat`
 const foo: { bar: number } | null = null;
 const bar = (foo)!.bar;
       `,
@@ -126,12 +127,12 @@ const bar = (foo)!.bar;
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo(bar?: { n: number }) {
   return (bar!)?.n;
 }
       `,
-      output: `
+      output: noFormat`
 function foo(bar?: { n: number }) {
   return (bar)?.n;
 }
@@ -146,12 +147,12 @@ function foo(bar?: { n: number }) {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo(bar?: { n: number }) {
   return (bar)!?.n;
 }
       `,
-      output: `
+      output: noFormat`
 function foo(bar?: { n: number }) {
   return (bar)?.n;
 }
@@ -166,12 +167,12 @@ function foo(bar?: { n: number }) {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo(bar?: { n: number }) {
   return (bar!)?.();
 }
       `,
-      output: `
+      output: noFormat`
 function foo(bar?: { n: number }) {
   return (bar)?.();
 }

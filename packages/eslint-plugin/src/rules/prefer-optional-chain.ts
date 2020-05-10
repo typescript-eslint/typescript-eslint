@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -29,7 +30,16 @@ The AST will look like this:
   right: foo.bar.baz.buzz
 }
 */
-export default util.createRule({
+
+type Options = [
+  {
+    suggestInsteadOfAutofix?: boolean;
+  },
+];
+
+type MessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
+
+export default util.createRule<Options, MessageIds>({
   name: 'prefer-optional-chain',
   meta: {
     type: 'suggestion',
@@ -43,11 +53,26 @@ export default util.createRule({
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
+      optionalChainSuggest: 'Change to an optional chain.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          suggestInsteadOfAutofix: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      suggestInsteadOfAutofix: false,
+    },
+  ],
+  create(context, [options]) {
     const sourceCode = context.getSourceCode();
     return {
       [[
@@ -163,13 +188,28 @@ export default util.createRule({
             } ${sourceCode.getText(previous.right.right)}`;
           }
 
-          context.report({
-            node: previous,
-            messageId: 'preferOptionalChain',
-            fix(fixer) {
-              return fixer.replaceText(previous, optionallyChainedCode);
-            },
-          });
+          if (!options.suggestInsteadOfAutofix) {
+            context.report({
+              node: previous,
+              messageId: 'preferOptionalChain',
+              fix(fixer) {
+                return fixer.replaceText(previous, optionallyChainedCode);
+              },
+            });
+          } else {
+            context.report({
+              node: previous,
+              messageId: 'preferOptionalChain',
+              suggest: [
+                {
+                  messageId: 'optionalChainSuggest',
+                  fix: (fixer): TSESLint.RuleFix[] => [
+                    fixer.replaceText(previous, optionallyChainedCode),
+                  ],
+                },
+              ],
+            });
+          }
         }
       },
     };
@@ -265,7 +305,6 @@ export default util.createRule({
             break;
 
           case AST_NODE_TYPES.Literal:
-          case AST_NODE_TYPES.BigIntLiteral:
           case AST_NODE_TYPES.TemplateLiteral:
             propertyText = sourceCode.getText(node.property);
             break;
@@ -312,7 +351,6 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
-  AST_NODE_TYPES.BigIntLiteral,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,

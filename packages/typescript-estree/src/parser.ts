@@ -12,7 +12,9 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
-import { ensureAbsolutePath } from './create-program/shared';
+import { ASTAndProgram, ensureAbsolutePath } from './create-program/shared';
+
+const log = debug('typescript-eslint:typescript-estree:parser');
 
 /**
  * This needs to be kept in sync with the top-level README.md in the
@@ -46,11 +48,6 @@ function enforceString(code: unknown): string {
   return code;
 }
 
-interface ASTAndProgram {
-  ast: ts.SourceFile;
-  program: ts.Program | undefined;
-}
-
 /**
  * @param code The code of the file being linted
  * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
@@ -61,7 +58,7 @@ function getProgramAndAST(
   code: string,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
-): ASTAndProgram | undefined {
+): ASTAndProgram {
   return (
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
@@ -101,7 +98,7 @@ function resetExtra(): void {
     jsx: false,
     loc: false,
     log: console.log, // eslint-disable-line no-console
-    preserveNodeMaps: undefined,
+    preserveNodeMaps: true,
     projects: [],
     range: false,
     strict: false,
@@ -109,6 +106,74 @@ function resetExtra(): void {
     tsconfigRootDir: process.cwd(),
     useJSXTextNode: false,
   };
+}
+
+/**
+ * Normalizes, sanitizes, resolves and filters the provided
+ */
+function prepareAndTransformProjects(
+  projectsInput: string | string[] | undefined,
+  ignoreListInput: (string | RegExp)[] | undefined,
+): string[] {
+  let projects: string[] = [];
+
+  // Normalize and sanitize the project paths
+  if (typeof projectsInput === 'string') {
+    projects.push(projectsInput);
+  } else if (Array.isArray(projectsInput)) {
+    for (const project of projectsInput) {
+      if (typeof project === 'string') {
+        projects.push(project);
+      }
+    }
+  }
+
+  if (projects.length === 0) {
+    return projects;
+  }
+
+  // Transform glob patterns into paths
+  projects = projects.reduce<string[]>(
+    (projects, project) =>
+      projects.concat(
+        isGlob(project)
+          ? globSync(project, {
+              cwd: extra.tsconfigRootDir,
+            })
+          : project,
+      ),
+    [],
+  );
+
+  // Normalize and sanitize the ignore regex list
+  const ignoreRegexes: RegExp[] = [];
+  if (Array.isArray(ignoreListInput)) {
+    for (const ignore of ignoreListInput) {
+      if (ignore instanceof RegExp) {
+        ignoreRegexes.push(ignore);
+      } else if (typeof ignore === 'string') {
+        ignoreRegexes.push(new RegExp(ignore));
+      }
+    }
+  } else {
+    ignoreRegexes.push(/\/node_modules\//);
+  }
+
+  // Remove any paths that match the ignore list
+  const filtered = projects.filter(project => {
+    for (const ignore of ignoreRegexes) {
+      if (ignore.test(project)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  log('parserOptions.project matched projects: %s', projects);
+  log('ignore list applied to parserOptions.project: %s', filtered);
+
+  return filtered;
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
@@ -166,7 +231,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   }
 
   /**
-   * Get the file extension
+   * Get the file path
    */
   if (typeof options.filePath === 'string' && options.filePath !== '<input>') {
     extra.filePath = options.filePath;
@@ -202,37 +267,21 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   if (typeof options.loggerFn === 'function') {
     extra.log = options.loggerFn;
   } else if (options.loggerFn === false) {
-    extra.log = Function.prototype;
-  }
-
-  if (typeof options.project === 'string') {
-    extra.projects = [options.project];
-  } else if (
-    Array.isArray(options.project) &&
-    options.project.every(projectPath => typeof projectPath === 'string')
-  ) {
-    extra.projects = options.project;
+    extra.log = (): void => {};
   }
 
   if (typeof options.tsconfigRootDir === 'string') {
     extra.tsconfigRootDir = options.tsconfigRootDir;
   }
+
+  // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  // Transform glob patterns into paths
-  if (extra.projects) {
-    extra.projects = extra.projects.reduce<string[]>(
-      (projects, project) =>
-        projects.concat(
-          isGlob(project)
-            ? globSync(project, {
-                cwd: extra.tsconfigRootDir || process.cwd(),
-              })
-            : project,
-        ),
-      [],
-    );
-  }
+  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
+  extra.projects = prepareAndTransformProjects(
+    options.project,
+    options.projectFolderIgnoreList,
+  );
 
   if (
     Array.isArray(options.extraFileExtensions) &&
@@ -244,14 +293,9 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Allow the user to enable or disable the preservation of the AST node maps
    * during the conversion process.
-   *
-   * NOTE: For backwards compatibility we also preserve node maps in the case where `project` is set,
-   * and `preserveNodeMaps` is not explicitly set to anything.
    */
-  extra.preserveNodeMaps =
-    typeof options.preserveNodeMaps === 'boolean' && options.preserveNodeMaps;
-  if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
-    extra.preserveNodeMaps = true;
+  if (typeof options.preserveNodeMaps === 'boolean') {
+    extra.preserveNodeMaps = options.preserveNodeMaps;
   }
 
   extra.createDefaultProgram =
@@ -283,9 +327,11 @@ function warnAboutTSVersion(): void {
 // Parser
 //------------------------------------------------------------------------------
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject);
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
@@ -394,19 +440,12 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   )!;
 
   /**
-   * Determine if two-way maps of converted AST nodes should be preserved
-   * during the conversion process
-   */
-  const shouldPreserveNodeMaps =
-    extra.preserveNodeMaps !== undefined
-      ? extra.preserveNodeMaps
-      : shouldProvideParserServices;
-
-  /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
+  const preserveNodeMaps =
+    typeof extra.preserveNodeMaps === 'boolean' ? extra.preserveNodeMaps : true;
+  const { estree, astMaps } = astConverter(ast, extra, preserveNodeMaps);
 
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
@@ -425,15 +464,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   return {
     ast: estree as AST<T>,
     services: {
-      program: shouldProvideParserServices ? program : undefined,
-      esTreeNodeToTSNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.esTreeNodeToTSNodeMap
-          : undefined,
-      tsNodeToESTreeNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.tsNodeToESTreeNodeMap
-          : undefined,
+      hasFullTypeInformation: shouldProvideParserServices,
+      program,
+      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
     },
   };
 }

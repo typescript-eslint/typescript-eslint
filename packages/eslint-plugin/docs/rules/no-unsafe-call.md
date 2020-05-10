@@ -1,7 +1,7 @@
 # Disallows calling an any type value (`no-unsafe-call`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+The arguments to, and return value of calling an `any` typed variable are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
 
 ## Rule Details
 

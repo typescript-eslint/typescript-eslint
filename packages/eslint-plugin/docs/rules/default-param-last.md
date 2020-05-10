@@ -2,7 +2,8 @@
 
 ## Rule Details
 
-This rule enforces default or optional parameters to be the last of parameters.
+This rule extends the base [`eslint/default-param-last`](https://eslint.org/docs/rules/default-param-last) rule.
+It adds support for optional parameters.
 
 Examples of **incorrect** code for this rule:
 
@@ -37,5 +38,19 @@ class Foo {
   constructor(public a, private b?: number) {}
 }
 ```
+
+## How to use
+
+```jsonc
+{
+  // note you must disable the base rule as it can report incorrect errors
+  "default-param-last": "off",
+  "@typescript-eslint/default-param-last": ["error"]
+}
+```
+
+## Options
+
+See [`eslint/default-param-last` options](https://eslint.org/docs/rules/default-param-last#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/default-param-last.md)</sup>

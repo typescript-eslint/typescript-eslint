@@ -151,6 +151,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           };
         }
       },
+      MethodDefinition(node) {
+        /**
+         * Babel: MethodDefinition + abstract: true
+         * ts-estree: TSAbstractClassProperty
+         */
+        if (node.abstract) {
+          node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
+          delete node.abstract;
+        }
+      },
       ClassProperty(node) {
         /**
          * Babel: ClassProperty + abstract: true
@@ -197,6 +207,14 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         ) {
           node.range[0] = node.typeParameters.range[0];
           node.loc.start = Object.assign({}, node.typeParameters.loc.start);
+        }
+
+        /**
+         * ts-estree: if there's no body, it becomes a TSEmptyBodyFunctionExpression
+         */
+        if (!node.body) {
+          node.type = AST_NODE_TYPES.TSEmptyBodyFunctionExpression;
+          node.body = null;
         }
       },
       /**

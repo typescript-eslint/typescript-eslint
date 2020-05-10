@@ -13,7 +13,7 @@ export default util.createRule({
       extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
-    messages: {},
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {

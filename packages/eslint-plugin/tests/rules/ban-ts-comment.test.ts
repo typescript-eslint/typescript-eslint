@@ -5,14 +5,88 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+ruleTester.run('ts-expect-error', rule, {
+  valid: [
+    '// just a comment containing @ts-expect-error somewhere',
+    '/* @ts-expect-error */',
+    '/** @ts-expect-error */',
+    `
+/*
+// @ts-expect-error in a block
+*/
+    `,
+    {
+      code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': false }],
+    },
+  ],
+  invalid: [
+    {
+      code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error: Suppress next line',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/////@ts-expect-error: Suppress next line',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+if (false) {
+  // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+      `,
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('ts-ignore', rule, {
   valid: [
-    `// just a comment containing @ts-ignore somewhere`,
-    `/* @ts-ignore */`,
-    `/** @ts-ignore */`,
-    `/*
+    '// just a comment containing @ts-ignore somewhere',
+    '/* @ts-ignore */',
+    '/** @ts-ignore */',
+    `
+/*
 // @ts-ignore in a block
-*/`,
+*/
+    `,
     {
       code: '// @ts-ignore',
       options: [{ 'ts-ignore': false }],
@@ -68,9 +142,9 @@ ruleTester.run('ts-ignore', rule, {
       code: `
 if (false) {
   // @ts-ignore: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       errors: [
         {
           data: { directive: 'ignore' },
@@ -85,12 +159,14 @@ if (false) {
 
 ruleTester.run('ts-nocheck', rule, {
   valid: [
-    `// just a comment containing @ts-nocheck somewhere`,
-    `/* @ts-nocheck */`,
-    `/** @ts-nocheck */`,
-    `/*
+    '// just a comment containing @ts-nocheck somewhere',
+    '/* @ts-nocheck */',
+    '/** @ts-nocheck */',
+    `
+/*
 // @ts-nocheck in a block
-*/`,
+*/
+    `,
     {
       code: '// @ts-nocheck',
       options: [{ 'ts-nocheck': false }],
@@ -146,9 +222,9 @@ ruleTester.run('ts-nocheck', rule, {
       code: `
 if (false) {
   // @ts-nocheck: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       errors: [
         {
           data: { directive: 'nocheck' },
@@ -163,12 +239,14 @@ if (false) {
 
 ruleTester.run('ts-check', rule, {
   valid: [
-    `// just a comment containing @ts-check somewhere`,
-    `/* @ts-check */`,
-    `/** @ts-check */`,
-    `/*
+    '// just a comment containing @ts-check somewhere',
+    '/* @ts-check */',
+    '/** @ts-check */',
+    `
+/*
 // @ts-check in a block
-*/`,
+*/
+    `,
     {
       code: '// @ts-check',
       options: [{ 'ts-check': false }],
@@ -216,9 +294,9 @@ ruleTester.run('ts-check', rule, {
       code: `
 if (false) {
   // @ts-check: Unreachable code error
-  console.log("hello");
+  console.log('hello');
 }
-            `,
+      `,
       options: [{ 'ts-check': true }],
       errors: [
         {

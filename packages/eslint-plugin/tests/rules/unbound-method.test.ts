@@ -44,10 +44,10 @@ function addContainsMethodsClassInvalid(
 
 ruleTester.run('unbound-method', rule, {
   valid: [
-    'Promise.resolve().then(console.log)',
-    '["1", "2", "3"].map(Number.parseInt)',
+    'Promise.resolve().then(console.log);',
+    "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
-    'const x = console.log',
+    'const x = console.log;',
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -147,17 +147,23 @@ ruleTester.run('unbound-method', rule, {
 
       "typeof ContainsMethods.boundStatic === 'function';",
       "typeof ContainsMethods.unboundStatic === 'function';",
+
+      'instance.unbound = () => {};',
+      'instance.unbound = instance.unbound.bind(instance);',
+      'if (!!instance.unbound) {}',
+      'void instance.unbound',
+      'delete instance.unbound',
     ].map(addContainsMethodsClass),
     `
 interface RecordA {
-  readonly type: "A"
-  readonly a: {}
+  readonly type: 'A';
+  readonly a: {};
 }
 interface RecordB {
-  readonly type: "B"
-  readonly b: {}
+  readonly type: 'B';
+  readonly b: {};
 }
-type AnyRecord = RecordA | RecordB
+type AnyRecord = RecordA | RecordB;
 
 function test(obj: AnyRecord) {
   switch (obj.type) {
@@ -167,9 +173,9 @@ function test(obj: AnyRecord) {
     // https://github.com/typescript-eslint/typescript-eslint/issues/496
     `
 class CommunicationError {
-	constructor() {
+  constructor() {
     const x = CommunicationError.prototype;
-	}
+  }
 }
     `,
     `
@@ -192,8 +198,10 @@ function foo(instance: ContainsMethods | null) {
 
   instance?.bound++;
 
-  if (instance?.bound) { }
-  if (instance?.unbound) { }
+  if (instance?.bound) {
+  }
+  if (instance?.unbound) {
+  }
 
   typeof instance?.bound === 'function';
   typeof instance?.unbound === 'function';
@@ -202,13 +210,22 @@ function foo(instance: ContainsMethods | null) {
     // https://github.com/typescript-eslint/typescript-eslint/issues/1425
     `
 interface OptionalMethod {
-  mightBeDefined?(): void
+  mightBeDefined?(): void;
 }
 
 const x: OptionalMethod = {};
 declare const myCondition: boolean;
-if(myCondition || x.mightBeDefined) {
-  console.log('hello world')
+if (myCondition || x.mightBeDefined) {
+  console.log('hello world');
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1256
+    `
+class A {
+  unbound(): void {
+    this.unbound = undefined;
+    this.unbound = this.unbound.bind(this);
+  }
 }
     `,
   ],
@@ -296,7 +313,7 @@ class ContainsMethods {
 new ContainsMethods().unbound;
 
 ContainsMethods.unboundStatic;
-`,
+      `,
       options: [
         {
           ignoreStatic: true,
@@ -326,10 +343,43 @@ const x = CommunicationError.prototype.foo;
     },
     {
       // Promise.all is not auto-bound to Promise
-      code: 'const x = Promise.all',
+      code: 'const x = Promise.all;',
       errors: [
         {
           line: 1,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound() {}
+}
+const instance = new Foo();
+
+let x;
+
+x = instance.unbound; // THIS SHOULD ERROR
+instance.unbound = x; // THIS SHOULD NOT
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+const unbound = new Foo().unbound;
+      `,
+      errors: [
+        {
+          line: 5,
           messageId: 'unbound',
         },
       ],

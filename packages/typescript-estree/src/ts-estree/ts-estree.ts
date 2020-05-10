@@ -115,6 +115,7 @@ export interface LineComment extends BaseToken {
 export type Comment = BlockComment | LineComment;
 export type Token =
   | BooleanToken
+  | Comment
   | IdentifierToken
   | JSXIdentifierToken
   | JSXTextToken
@@ -174,6 +175,7 @@ export type Node =
   | Import
   | ImportDeclaration
   | ImportDefaultSpecifier
+  | ImportExpression
   | ImportNamespaceSpecifier
   | ImportSpecifier
   | JSXAttribute
@@ -308,11 +310,9 @@ export type BindingPattern = ArrayPattern | ObjectPattern;
 export type BindingName = BindingPattern | Identifier;
 export type ClassElement =
   | ClassProperty
-  | FunctionExpression
   | MethodDefinition
   | TSAbstractClassProperty
   | TSAbstractMethodDefinition
-  | TSEmptyBodyFunctionExpression
   | TSIndexSignature;
 export type ClassProperty =
   | ClassPropertyComputedName
@@ -393,14 +393,16 @@ export type LeftHandSideExpression =
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression
-  | TSAsExpression;
+  | TSAsExpression
+  | ArrowFunctionExpression;
 export type Literal =
+  | BigIntLiteral
   | BooleanLiteral
   | NumberLiteral
   | NullLiteral
   | RegExpLiteral
   | StringLiteral;
-export type LiteralExpression = BigIntLiteral | Literal | TemplateLiteral;
+export type LiteralExpression = Literal | TemplateLiteral;
 export type MemberExpression =
   | MemberExpressionComputedName
   | MemberExpressionNonComputedName;
@@ -624,7 +626,7 @@ interface FunctionSignatureBase extends BaseNode {
 
 interface LiteralBase extends BaseNode {
   raw: string;
-  value: boolean | number | RegExp | string | null;
+  value: string | boolean | null | number | RegExp | bigint;
   regex?: {
     pattern: string;
     flags: string;
@@ -656,6 +658,7 @@ interface MethodDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   kind: 'method' | 'get' | 'set' | 'constructor';
+  optional?: boolean;
   decorators?: Decorator[];
   accessibility?: Accessibility;
   typeParameters?: TSTypeParameterDeclaration;
@@ -674,10 +677,15 @@ interface MethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
 interface PropertyBase extends BaseNode {
   type: AST_NODE_TYPES.Property;
   key: PropertyName;
-  value: Expression | AssignmentPattern | BindingName;
+  value:
+    | Expression
+    | AssignmentPattern
+    | BindingName
+    | TSEmptyBodyFunctionExpression;
   computed: boolean;
   method: boolean;
   shorthand: boolean;
+  optional?: boolean;
   kind: 'init' | 'get' | 'set';
 }
 
@@ -766,7 +774,7 @@ export interface AssignmentExpression extends BinaryExpressionBase {
 export interface AssignmentPattern extends BaseNode {
   type: AST_NODE_TYPES.AssignmentPattern;
   left: BindingName;
-  right?: Expression;
+  right: Expression;
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
@@ -778,7 +786,9 @@ export interface AwaitExpression extends BaseNode {
 }
 
 export interface BigIntLiteral extends LiteralBase {
-  type: AST_NODE_TYPES.BigIntLiteral;
+  type: AST_NODE_TYPES.Literal;
+  value: bigint | null;
+  bigint: string;
 }
 
 export interface BinaryExpression extends BinaryExpressionBase {
@@ -927,6 +937,7 @@ export interface FunctionDeclaration extends FunctionDeclarationBase {
 
 export interface FunctionExpression extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionExpression;
+  body: BlockStatement;
 }
 
 export interface Identifier extends BaseNode {
@@ -958,6 +969,11 @@ export interface ImportDeclaration extends BaseNode {
 export interface ImportDefaultSpecifier extends BaseNode {
   type: AST_NODE_TYPES.ImportDefaultSpecifier;
   local: Identifier;
+}
+
+export interface ImportExpression extends BaseNode {
+  type: AST_NODE_TYPES.ImportExpression;
+  source: Expression;
 }
 
 export interface ImportNamespaceSpecifier extends BaseNode {
