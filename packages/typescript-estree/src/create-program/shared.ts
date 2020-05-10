@@ -4,7 +4,7 @@ import { Extra } from '../parser-options';
 
 interface ASTAndProgram {
   ast: ts.SourceFile;
-  program: ts.Program | undefined;
+  program: ts.Program;
 }
 
 /**
@@ -16,6 +16,9 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
   noEmit: true,
   // extendedDiagnostics: true,
+  /**
+   * Flags required to make no-unused-vars work
+   */
   noUnusedLocals: true,
   noUnusedParameters: true,
 };
