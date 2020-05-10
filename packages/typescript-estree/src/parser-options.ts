@@ -184,9 +184,8 @@ export interface ParserWeakMapESTreeToTSNode<
 }
 
 export interface ParserServices {
-  program: Program | undefined;
-  esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode | undefined;
-  tsNodeToESTreeNodeMap:
-    | ParserWeakMap<TSNode | TSToken, TSESTree.Node>
-    | undefined;
+  program: Program;
+  esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
+  hasFullTypeInformation: boolean;
 }

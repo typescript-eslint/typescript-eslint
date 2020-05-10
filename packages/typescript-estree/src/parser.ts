@@ -12,7 +12,7 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
-import { ensureAbsolutePath } from './create-program/shared';
+import { ASTAndProgram, ensureAbsolutePath } from './create-program/shared';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -48,11 +48,6 @@ function enforceString(code: unknown): string {
   return code;
 }
 
-interface ASTAndProgram {
-  ast: ts.SourceFile;
-  program: ts.Program | undefined;
-}
-
 /**
  * @param code The code of the file being linted
  * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
@@ -63,7 +58,7 @@ function getProgramAndAST(
   code: string,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
-): ASTAndProgram | undefined {
+): ASTAndProgram {
   return (
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
@@ -103,7 +98,7 @@ function resetExtra(): void {
     jsx: false,
     loc: false,
     log: console.log, // eslint-disable-line no-console
-    preserveNodeMaps: undefined,
+    preserveNodeMaps: true,
     projects: [],
     range: false,
     strict: false,
@@ -236,7 +231,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   }
 
   /**
-   * Get the file extension
+   * Get the file path
    */
   if (typeof options.filePath === 'string' && options.filePath !== '<input>') {
     extra.filePath = options.filePath;
@@ -298,14 +293,9 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Allow the user to enable or disable the preservation of the AST node maps
    * during the conversion process.
-   *
-   * NOTE: For backwards compatibility we also preserve node maps in the case where `project` is set,
-   * and `preserveNodeMaps` is not explicitly set to anything.
    */
-  extra.preserveNodeMaps =
-    typeof options.preserveNodeMaps === 'boolean' && options.preserveNodeMaps;
-  if (options.preserveNodeMaps === undefined && extra.projects.length > 0) {
-    extra.preserveNodeMaps = true;
+  if (typeof options.preserveNodeMaps === 'boolean') {
+    extra.preserveNodeMaps = options.preserveNodeMaps;
   }
 
   extra.createDefaultProgram =
@@ -450,19 +440,12 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   )!;
 
   /**
-   * Determine if two-way maps of converted AST nodes should be preserved
-   * during the conversion process
-   */
-  const shouldPreserveNodeMaps =
-    extra.preserveNodeMaps !== undefined
-      ? extra.preserveNodeMaps
-      : shouldProvideParserServices;
-
-  /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
    * mappings between converted and original AST nodes
    */
-  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
+  const preserveNodeMaps =
+    typeof extra.preserveNodeMaps === 'boolean' ? extra.preserveNodeMaps : true;
+  const { estree, astMaps } = astConverter(ast, extra, preserveNodeMaps);
 
   /**
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
@@ -481,15 +464,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   return {
     ast: estree as AST<T>,
     services: {
-      program: shouldProvideParserServices ? program : undefined,
-      esTreeNodeToTSNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.esTreeNodeToTSNodeMap
-          : undefined,
-      tsNodeToESTreeNodeMap:
-        shouldPreserveNodeMaps && astMaps
-          ? astMaps.tsNodeToESTreeNodeMap
-          : undefined,
+      hasFullTypeInformation: shouldProvideParserServices,
+      program,
+      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
     },
   };
 }
