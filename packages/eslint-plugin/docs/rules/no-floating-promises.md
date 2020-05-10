@@ -56,7 +56,8 @@ type Options = {
 };
 
 const defaults = {
-  ignoreVoid: false,
+  ignoreVoid: true,
+  ignoreIIFE: false,
 };
 ```
 
@@ -75,6 +76,8 @@ void returnsPromise();
 
 void Promise.reject('value');
 ```
+
+With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsAStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
 
 ### `ignoreIIFE`
 
