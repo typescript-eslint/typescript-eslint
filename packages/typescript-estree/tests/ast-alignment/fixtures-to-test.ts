@@ -37,8 +37,8 @@ class FixturesTester {
    * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
    * including the capability to ignore specific nested patterns.
    *
-   * @param {string} fixturesSubPath the sub-path within the fixtures/ directory
-   * @param {CreateFixturePatternConfig?} config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
+   * @param fixturesSubPath the sub-path within the fixtures/ directory
+   * @param config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
    */
   public addFixturePatternConfig(
     fixturesSubPath: string,
@@ -186,19 +186,7 @@ tester.addFixturePatternConfig('javascript/function', {
   ],
 });
 
-tester.addFixturePatternConfig('javascript/bigIntLiterals', {
-  ignore: [
-    /**
-     * new BigIntLiteral type
-     * @see https://github.com/estree/estree/blob/master/es2020.md#bigintliteral
-     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
-     */
-    'binary',
-    'decimal',
-    'hex',
-    'octal',
-  ],
-});
+tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
 tester.addFixturePatternConfig('javascript/blockBindings');
 
@@ -229,16 +217,7 @@ tester.addFixturePatternConfig('javascript/destructuring-and-forOf');
 tester.addFixturePatternConfig('javascript/destructuring-and-spread');
 
 tester.addFixturePatternConfig('javascript/experimentalAsyncIteration');
-tester.addFixturePatternConfig('javascript/experimentalDynamicImport', {
-  ignore: [
-    /**
-     * new ImportExpression type
-     * @see https://github.com/estree/estree/blob/master/es2020.md#importexpression
-     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
-     */
-    'dynamic-import',
-  ],
-});
+tester.addFixturePatternConfig('javascript/experimentalDynamicImport');
 tester.addFixturePatternConfig('javascript/exponentiationOperators');
 tester.addFixturePatternConfig('javascript/experimentalOptionalCatchBinding');
 
