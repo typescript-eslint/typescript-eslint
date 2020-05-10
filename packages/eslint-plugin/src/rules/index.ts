@@ -2,11 +2,8 @@ import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
-import banTsIgnore from './ban-ts-ignore';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
-import camelcase from './camelcase';
-import classNameCasing from './class-name-casing';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaSpacing from './comma-spacing';
 import consistentTypeAssertions from './consistent-type-assertions';
@@ -17,12 +14,9 @@ import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
-import genericTypeNaming from './generic-type-naming';
 import indent from './indent';
-import interfaceNamePrefix from './interface-name-prefix';
 import keywordSpacing from './keyword-spacing';
 import memberDelimiterStyle from './member-delimiter-style';
-import memberNaming from './member-naming';
 import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
@@ -63,7 +57,6 @@ import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
-import noUntypedPublicSignature from './no-untyped-public-signature';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
 import noUnusedVarsExperimental from './no-unused-vars-experimental';
@@ -106,11 +99,8 @@ export default {
   'array-type': arrayType,
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
-  'ban-ts-ignore': banTsIgnore,
   'ban-types': banTypes,
   'brace-style': braceStyle,
-  camelcase: camelcase,
-  'class-name-casing': classNameCasing,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-spacing': commaSpacing,
   'consistent-type-assertions': consistentTypeAssertions,
@@ -121,13 +111,10 @@ export default {
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
-  'generic-type-naming': genericTypeNaming,
   indent: indent,
   'init-declarations': initDeclarations,
-  'interface-name-prefix': interfaceNamePrefix,
   'keyword-spacing': keywordSpacing,
   'member-delimiter-style': memberDelimiterStyle,
-  'member-naming': memberNaming,
   'member-ordering': memberOrdering,
   'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
@@ -168,7 +155,6 @@ export default {
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
-  'no-untyped-public-signature': noUntypedPublicSignature,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-vars': noUnusedVars,

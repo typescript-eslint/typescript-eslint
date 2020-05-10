@@ -40,7 +40,10 @@ function parseReadme(): {
 
 describe('Validating rule docs', () => {
   it('All rules must have a corresponding rule doc', () => {
-    const files = fs.readdirSync(docsRoot);
+    const files = fs
+      .readdirSync(docsRoot)
+      // this rule doc was left behind on purpose for legacy reasons
+      .filter(rule => rule !== 'camelcase.md');
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();

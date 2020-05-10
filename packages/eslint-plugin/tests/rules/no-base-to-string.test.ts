@@ -95,17 +95,10 @@ const literalWithToString = {
 function tag() {}
 tag\`\${{}}\`;
     `,
-    {
-      code: `
-        function tag() {}
-        tag\`\${{}}\`;
-      `,
-      options: [
-        {
-          ignoreTaggedTemplateExpressions: true,
-        },
-      ],
-    },
+    `
+      function tag() {}
+      tag\`\${{}}\`;
+    `,
   ],
   invalid: [
     {
