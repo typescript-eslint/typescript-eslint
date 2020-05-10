@@ -142,6 +142,85 @@ declare module 'eslint/lib/rules/indent' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/keyword-spacing' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+  import { RuleFunction } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+
+  type Options = [
+    {
+      before?: boolean;
+      after?: boolean;
+      overrides?: Record<
+        string,
+        {
+          before?: boolean;
+          after?: boolean;
+        }
+      >;
+    },
+  ];
+  type MessageIds =
+    | 'expectedBefore'
+    | 'expectedAfter'
+    | 'unexpectedBefore'
+    | 'unexpectedAfter';
+
+  const rule: TSESLint.RuleModule<
+    MessageIds,
+    Options,
+    {
+      // Statements
+      DebuggerStatement: RuleFunction<TSESTree.DebuggerStatement>;
+      WithStatement: RuleFunction<TSESTree.WithStatement>;
+
+      // Statements - Control flow
+      BreakStatement: RuleFunction<TSESTree.BreakStatement>;
+      ContinueStatement: RuleFunction<TSESTree.ContinueStatement>;
+      ReturnStatement: RuleFunction<TSESTree.ReturnStatement>;
+      ThrowStatement: RuleFunction<TSESTree.ThrowStatement>;
+      TryStatement: RuleFunction<TSESTree.TryStatement>;
+
+      // Statements - Choice
+      IfStatement: RuleFunction<TSESTree.IfStatement>;
+      SwitchStatement: RuleFunction<TSESTree.Node>;
+      SwitchCase: RuleFunction<TSESTree.Node>;
+
+      // Statements - Loops
+      DoWhileStatement: RuleFunction<TSESTree.DoWhileStatement>;
+      ForInStatement: RuleFunction<TSESTree.ForInStatement>;
+      ForOfStatement: RuleFunction<TSESTree.ForOfStatement>;
+      ForStatement: RuleFunction<TSESTree.ForStatement>;
+      WhileStatement: RuleFunction<TSESTree.WhileStatement>;
+
+      // Statements - Declarations
+      ClassDeclaration: RuleFunction<TSESTree.ClassDeclaration>;
+      ExportNamedDeclaration: RuleFunction<TSESTree.ExportNamedDeclaration>;
+      ExportDefaultDeclaration: RuleFunction<TSESTree.ExportDefaultDeclaration>;
+      ExportAllDeclaration: RuleFunction<TSESTree.ExportAllDeclaration>;
+      FunctionDeclaration: RuleFunction<TSESTree.FunctionDeclaration>;
+      ImportDeclaration: RuleFunction<TSESTree.ImportDeclaration>;
+      VariableDeclaration: RuleFunction<TSESTree.VariableDeclaration>;
+
+      // Expressions
+      ArrowFunctionExpression: RuleFunction<TSESTree.ArrowFunctionExpression>;
+      AwaitExpression: RuleFunction<TSESTree.AwaitExpression>;
+      ClassExpression: RuleFunction<TSESTree.ClassExpression>;
+      FunctionExpression: RuleFunction<TSESTree.FunctionExpression>;
+      NewExpression: RuleFunction<TSESTree.NewExpression>;
+      Super: RuleFunction<TSESTree.Super>;
+      ThisExpression: RuleFunction<TSESTree.ThisExpression>;
+      UnaryExpression: RuleFunction<TSESTree.UnaryExpression>;
+      YieldExpression: RuleFunction<TSESTree.YieldExpression>;
+
+      // Others
+      ImportNamespaceSpecifier: RuleFunction<TSESTree.ImportNamespaceSpecifier>;
+      MethodDefinition: RuleFunction<TSESTree.MethodDefinition>;
+      Property: RuleFunction<TSESTree.Property>;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -539,6 +618,65 @@ declare module 'eslint/lib/rules/no-extra-semi' {
       EmptyStatement(node: TSESTree.EmptyStatement): void;
       ClassBody(node: TSESTree.ClassBody): void;
       MethodDefinition(node: TSESTree.MethodDefinition): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/init-declarations' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'initialized' | 'notInitialized',
+    [
+      'always' | 'never',
+      {
+        ignoreForLoopInit?: boolean;
+      }?,
+    ],
+    {
+      'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-invalid-this' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      {
+        capIsConstructor?: boolean;
+      }?,
+    ],
+    {
+      Program(node: TSESTree.Program): void;
+      'Program:exit'(node: TSESTree.Program): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      ThisExpression(node: TSESTree.ThisExpression): void;
+    }
+  >;
+  export = rule;
+}
+declare module 'eslint/lib/rules/dot-notation' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useDot' | 'useBrackets',
+    [
+      {
+        allowKeywords?: boolean;
+        allowPattern?: string;
+        allowPrivateClassPropertyAccess?: boolean;
+      },
+    ],
+    {
+      MemberExpression(node: TSESTree.MemberExpression): void;
     }
   >;
   export = rule;

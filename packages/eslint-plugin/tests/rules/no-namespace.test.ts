@@ -7,24 +7,24 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-namespace', rule, {
   valid: [
-    'declare global { }',
-    "declare module 'foo' { }",
+    'declare global {}',
+    "declare module 'foo' {}",
     {
-      code: 'declare module foo { }',
+      code: 'declare module foo {}',
       options: [{ allowDeclarations: true }],
     },
     {
-      code: 'declare namespace foo { }',
+      code: 'declare namespace foo {}',
       options: [{ allowDeclarations: true }],
     },
     {
       filename: 'test.d.ts',
-      code: 'namespace foo { }',
+      code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: true }],
     },
     {
       filename: 'test.d.ts',
-      code: 'module foo { }',
+      code: 'module foo {}',
       options: [{ allowDefinitionFiles: true }],
     },
   ],
@@ -72,7 +72,7 @@ ruleTester.run('no-namespace', rule, {
       ],
     },
     {
-      code: 'declare module foo { }',
+      code: 'declare module foo {}',
       errors: [
         {
           messageId: 'moduleSyntaxIsPreferred',
@@ -82,7 +82,7 @@ ruleTester.run('no-namespace', rule, {
       ],
     },
     {
-      code: 'declare namespace foo { }',
+      code: 'declare namespace foo {}',
       errors: [
         {
           messageId: 'moduleSyntaxIsPreferred',
@@ -115,7 +115,7 @@ ruleTester.run('no-namespace', rule, {
     },
     {
       filename: 'test.d.ts',
-      code: 'namespace foo { }',
+      code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: false }],
       errors: [
         {
@@ -127,7 +127,7 @@ ruleTester.run('no-namespace', rule, {
     },
     {
       filename: 'test.d.ts',
-      code: 'module foo { }',
+      code: 'module foo {}',
       options: [{ allowDefinitionFiles: false }],
       errors: [
         {
@@ -179,7 +179,7 @@ namespace Foo.Bar {
     interface X {}
   }
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'moduleSyntaxIsPreferred',

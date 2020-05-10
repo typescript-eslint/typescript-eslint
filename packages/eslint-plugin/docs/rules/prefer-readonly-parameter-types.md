@@ -74,7 +74,8 @@ function object3(arg: { readonly prop: { readonly prop2: string } }) {}
 interface CustomArrayType extends ReadonlyArray<string> {
   readonly prop: string;
 }
-function custom1(arg: CustomArrayType) {}
+function custom1(arg: Readonly<CustomArrayType>) {}
+// interfaces that extend the array types are not considered arrays, and thus must be made readonly.
 
 interface CustomFunction {
   (): void;

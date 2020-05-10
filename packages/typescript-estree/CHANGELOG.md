@@ -3,6 +3,110 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promise] add option to ignore IIFEs ([#1799](https://github.com/typescript-eslint/typescript-eslint/issues/1799)) ([cea51bf](https://github.com/typescript-eslint/typescript-eslint/commit/cea51bf130d6d3c2935f5e2dcc468196f2ad9d00))
+
+
+
+
+
+# [2.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.27.0...v2.28.0) (2020-04-13)
+
+
+### Features
+
+* **eslint-plugin:** add rule `prefer-ts-expect-error` ([#1705](https://github.com/typescript-eslint/typescript-eslint/issues/1705)) ([7021f21](https://github.com/typescript-eslint/typescript-eslint/commit/7021f2151a25db2a8edf17e06cd6f21e90761ec8))
+* **eslint-plugin:** add rule no-unsafe-assignment ([#1694](https://github.com/typescript-eslint/typescript-eslint/issues/1694)) ([a49b860](https://github.com/typescript-eslint/typescript-eslint/commit/a49b860cbbb2c7d718b99f561e2fb6eaadf16f17))
+
+
+
+
+
+# [2.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.26.0...v2.27.0) (2020-04-06)
+
+
+### Bug Fixes
+
+* **typescript-estree:** add support for TS3.9 extra file extensions ([#1833](https://github.com/typescript-eslint/typescript-eslint/issues/1833)) ([1f0ff41](https://github.com/typescript-eslint/typescript-eslint/commit/1f0ff41aa1bc3b7c5330b2f5fe22e24bf578a6b2))
+
+
+### Features
+
+* **eslint-plugin:** sort members alphabetically ([#263](https://github.com/typescript-eslint/typescript-eslint/issues/263)) ([485e902](https://github.com/typescript-eslint/typescript-eslint/commit/485e90213a0f8baac0587f7d56925448883fc5bd))
+
+
+
+
+
+# [2.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.25.0...v2.26.0) (2020-03-30)
+
+
+### Features
+
+* **typescript-estree:** add option to ignore certain folders from glob resolution ([#1802](https://github.com/typescript-eslint/typescript-eslint/issues/1802)) ([1e29e69](https://github.com/typescript-eslint/typescript-eslint/commit/1e29e69b289d61107a7de67592beae331ba50222))
+
+
+
+
+
+# [2.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.24.0...v2.25.0) (2020-03-23)
+
+
+### Bug Fixes
+
+* **typescript-estree:** export * regression from 133f622f ([#1751](https://github.com/typescript-eslint/typescript-eslint/issues/1751)) ([09d8afc](https://github.com/typescript-eslint/typescript-eslint/commit/09d8afca684635b5ac604bc1794240484a70ce91))
+
+
+
+
+
+# [2.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.23.0...v2.24.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* **typescript-estree:** unnecessary program updates by removing timeout methods ([#1693](https://github.com/typescript-eslint/typescript-eslint/issues/1693)) ([2ccd66b](https://github.com/typescript-eslint/typescript-eslint/commit/2ccd66b920816d54cc1a639059f60410df665900))
+
+
+### Features
+
+* **typescript-estree:** support 3.8 `export * as ns` ([#1698](https://github.com/typescript-eslint/typescript-eslint/issues/1698)) ([133f622](https://github.com/typescript-eslint/typescript-eslint/commit/133f622f38a286eac45288a9789d2ee529d5e582))
+
+
+
+
+
+# [2.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.22.0...v2.23.0) (2020-03-09)
+
+
+### Features
+
+* **typescript-estree:** support 3.8 import/export type ([#1697](https://github.com/typescript-eslint/typescript-eslint/issues/1697)) ([625d603](https://github.com/typescript-eslint/typescript-eslint/commit/625d603f94bf0521f834313bf31c734ce4948b7a))
+
+
+
+
+
 # [2.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.21.0...v2.22.0) (2020-03-02)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

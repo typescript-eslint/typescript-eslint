@@ -111882,6 +111882,7 @@ Object {
   "body": Array [
     Object {
       "exportKind": "value",
+      "exported": null,
       "loc": Object {
         "end": Object {
           "column": 20,

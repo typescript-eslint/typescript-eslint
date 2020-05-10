@@ -1,6 +1,7 @@
 import {
   isCallExpression,
   isJsxExpression,
+  isIdentifier,
   isNewExpression,
   isParameterDeclaration,
   isPropertyDeclaration,
@@ -8,8 +9,26 @@ import {
   isUnionOrIntersectionType,
   isVariableDeclaration,
   unionTypeParts,
+  isPropertyAssignment,
 } from 'tsutils';
 import * as ts from 'typescript';
+
+/**
+ * Checks if the given type is either an array type,
+ * or a union made up solely of array types.
+ */
+export function isTypeArrayTypeOrUnionOfArrayTypes(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  for (const t of unionTypeParts(type)) {
+    if (!checker.isArrayType(t)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /**
  * @param type Type being checked by name.
@@ -29,10 +48,8 @@ export function containsAllTypesByName(
     type = type.target;
   }
 
-  if (
-    typeof type.symbol !== 'undefined' &&
-    allowedNames.has(type.symbol.name)
-  ) {
+  const symbol = type.getSymbol();
+  if (symbol && allowedNames.has(symbol.name)) {
     return true;
   }
 
@@ -71,11 +88,16 @@ export function getTypeName(
     // `type.getConstraint()` method doesn't return the constraint type of
     // the type parameter for some reason. So this gets the constraint type
     // via AST.
-    const node = type.symbol.declarations[0] as ts.TypeParameterDeclaration;
-    if (node.constraint != null) {
+    const symbol = type.getSymbol();
+    const decls = symbol?.getDeclarations();
+    const typeParamDecl = decls?.[0] as ts.TypeParameterDeclaration;
+    if (
+      ts.isTypeParameterDeclaration(typeParamDecl) &&
+      typeParamDecl.constraint != null
+    ) {
       return getTypeName(
         typeChecker,
-        typeChecker.getTypeFromTypeNode(node.constraint),
+        typeChecker.getTypeFromTypeNode(typeParamDecl.constraint),
       );
     }
   }
@@ -155,12 +177,8 @@ export function getDeclaration(
   if (!symbol) {
     return null;
   }
-  const declarations = symbol.declarations;
-  if (!declarations) {
-    return null;
-  }
-
-  return declarations[0];
+  const declarations = symbol.getDeclarations();
+  return declarations?.[0] ?? null;
 }
 
 /**
@@ -199,22 +217,21 @@ export function typeIsOrHasBaseType(
   type: ts.Type,
   parentType: ts.Type,
 ): boolean {
-  if (type.symbol === undefined || parentType.symbol === undefined) {
+  const parentSymbol = parentType.getSymbol();
+  if (!type.getSymbol() || !parentSymbol) {
     return false;
   }
 
   const typeAndBaseTypes = [type];
   const ancestorTypes = type.getBaseTypes();
 
-  if (ancestorTypes !== undefined) {
+  if (ancestorTypes) {
     typeAndBaseTypes.push(...ancestorTypes);
   }
 
   for (const baseType of typeAndBaseTypes) {
-    if (
-      baseType.symbol !== undefined &&
-      baseType.symbol.name === parentType.symbol.name
-    ) {
+    const baseSymbol = baseType.getSymbol();
+    if (baseSymbol && baseSymbol.name === parentSymbol.name) {
       return true;
     }
   }
@@ -297,11 +314,39 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
   }
 }
 
+export function getTypeArguments(
+  type: ts.TypeReference,
+  checker: ts.TypeChecker,
+): readonly ts.Type[] {
+  // getTypeArguments was only added in TS3.7
+  if (checker.getTypeArguments) {
+    return checker.getTypeArguments(type);
+  }
+
+  return type.typeArguments ?? [];
+}
+
 /**
  * @returns true if the type is `any`
  */
 export function isTypeAnyType(type: ts.Type): boolean {
   return isTypeFlagSet(type, ts.TypeFlags.Any);
+}
+
+/**
+ * @returns true if the type is `any[]`
+ */
+export function isTypeAnyArrayType(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    checker.isArrayType(type) &&
+    isTypeAnyType(
+      // getTypeArguments was only added in TS3.7
+      getTypeArguments(type, checker)[0],
+    )
+  );
 }
 
 export const enum AnyType {
@@ -321,10 +366,7 @@ export function isAnyOrAnyArrayTypeDiscriminated(
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
-  if (
-    checker.isArrayType(type) &&
-    isTypeAnyType(checker.getTypeArguments(type)[0])
-  ) {
+  if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
   return AnyType.Safe;
@@ -345,6 +387,10 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
 ): false | { sender: ts.Type; receiver: ts.Type } {
+  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
+    return { sender: type, receiver };
+  }
+
   if (isTypeReference(type) && isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
@@ -381,9 +427,6 @@ export function isUnsafeAssignment(
     return false;
   }
 
-  if (isTypeAnyType(type) && !isTypeAnyType(receiver)) {
-    return { sender: type, receiver };
-  }
   return false;
 }
 
@@ -414,6 +457,8 @@ export function getContextualType(
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
   } else if (isJsxExpression(parent)) {
     return checker.getContextualType(parent);
+  } else if (isPropertyAssignment(parent) && isIdentifier(node)) {
+    return checker.getContextualType(node);
   } else if (
     ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
       parent.kind,
