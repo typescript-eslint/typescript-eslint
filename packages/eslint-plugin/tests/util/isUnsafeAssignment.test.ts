@@ -16,8 +16,8 @@ describe('isUnsafeAssignment', () => {
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,
     });
-    const checker = services.program!.getTypeChecker();
-    const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap!;
+    const checker = services.program.getTypeChecker();
+    const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
 
     const declaration = ast.body[0] as TSESTree.VariableDeclaration;
     const declarator = declaration.declarations[0];
