@@ -1,67 +1,122 @@
 # Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
 
-Requires that any boolean expression is limited to true booleans rather than
-casting another primitive to a boolean at runtime.
+Forbids usage of non-boolean types in expressions where a boolean is expected.
+`boolean` and `never` types are always allowed.
+Additional types which are considered safe in a boolean context can be configured via options.
 
-It is useful to be explicit, for example, if you were trying to check if a
-number was defined. Doing `if (number)` would evaluate to `false` if `number`
-was defined and `0`. This rule forces these expressions to be explicit and to
-strictly use booleans.
+The following nodes are considered boolean expressions and their type is checked:
 
-The following nodes are checked:
-
-- Arguments to the `!`, `&&`, and `||` operators
-- The condition in a conditional expression `(cond ? x : y)`
+- Argument to the logical negation operator (`!arg`).
+- The condition in a conditional expression (`cond ? x : y`).
 - Conditions for `if`, `for`, `while`, and `do-while` statements.
+- Operands of logical binary operators (`lhs || rhs` and `lhs && rhs`).
+  - Right-hand side operand is ignored when it's not a descendant of another boolean expression.
+    This is to allow usage of boolean operators for their short-circuiting behavior.
+
+## Examples
 
 Examples of **incorrect** code for this rule:
 
 ```ts
-const number = 0;
-if (number) {
-  return;
+// nullable numbers are considered unsafe by default
+let num: number | undefined = 0;
+if (num) {
+  console.log('num is defined');
 }
 
-let foo = bar || 'foobar';
+// nullable strings are considered unsafe by default
+let str: string | null = null;
+if (!str) {
+  console.log('str is empty');
+}
 
-let undefinedItem;
-let foo = undefinedItem ? 'foo' : 'bar';
+// nullable booleans are considered unsafe by default
+function foo(bool?: boolean) {
+  if (bool) {
+    bar();
+  }
+}
 
-let str = 'foo';
-while (str) {
-  break;
+// `any`, unconstrained generics and unions of more than one primitive type are disallowed
+const foo = <T>(arg: T) => (arg ? 1 : 0);
+
+// always-truthy and always-falsy types are disallowed
+let obj = {};
+while (obj) {
+  obj = getObj();
 }
 ```
 
 Examples of **correct** code for this rule:
 
-```ts
-const number = 0;
-if (typeof number !== 'undefined') {
-  return;
+```tsx
+// Using logical operators for their side effects is allowed
+const Component = () => {
+  const entry = map.get('foo') || {};
+  return entry && <p>Name: {entry.name}</p>;
+};
+
+// nullable values should be checked explicitly against null or undefined
+let num: number | undefined = 0;
+if (num != null) {
+  console.log('num is defined');
 }
 
-let foo = typeof bar !== 'undefined' ? bar : 'foobar';
-
-let undefinedItem;
-let foo = typeof undefinedItem !== 'undefined' ? 'foo' : 'bar';
-
-let str = 'foo';
-while (typeof str !== 'undefined') {
-  break;
+let str: string | null = null;
+if (str != null && !str) {
+  console.log('str is empty');
 }
+
+function foo(bool?: boolean) {
+  if (bool ?? false) {
+    bar();
+  }
+}
+
+// `any` types should be cast to boolean explicitly
+const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
 ```
 
 ## Options
 
 Options may be provided as an object with:
 
-- `allowNullable` to allow `undefined` and `null` in addition to `boolean` as a type of all boolean expressions. (`false` by default).
-- `allowSafe` to allow non-falsy types (i.e. non string / number / boolean) in addition to `boolean` as a type of all boolean expressions. (`false` by default).
-- `ignoreRhs` to skip the check on the right hand side of expressions like `a && b` or `a || b` - allows these operators to be used for their short-circuiting behavior. (`false` by default).
+- `allowString` (`true` by default) -
+  Allows `string` in a boolean context.
+  This is safe because strings have only one falsy value (`""`).
+  Set this to `false` if you prefer the explicit `str != ""` or `str.length > 0` style.
+
+- `allowNumber` (`true` by default) -
+  Allows `number` in a boolean context.
+  This is safe because numbers have only two falsy values (`0` and `NaN`).
+  Set this to `false` if you prefer the explicit `num != 0` and `!Number.isNaN(num)` style.
+
+- `allowNullableObject` (`true` by default) -
+  Allows `object | function | symbol | null | undefined` in a boolean context.
+  This is safe because objects, functions and symbols don't have falsy values.
+  Set this to `false` if you prefer the explicit `obj != null` style.
+
+- `allowNullableBoolean` (`false` by default) -
+  Allows `boolean | null | undefined` in a boolean context.
+  This is unsafe because nullable booleans can be either `false` or nullish.
+  Set this to `false` if you want to enforce explicit `bool ?? false` or `bool ?? true` style.
+  Set this to `true` if you don't mind implicitly treating false the same as a nullish value.
+
+- `allowNullableString` (`false` by default) -
+  Allows `string | null | undefined` in a boolean context.
+  This is unsafe because nullable strings can be either an empty string or nullish.
+  Set this to `true` if you don't mind implicitly treating an empty string the same as a nullish value.
+
+- `allowNullableNumber` (`false` by default) -
+  Allows `number | null | undefined` in a boolean context.
+  This is unsafe because nullable numbers can be either a falsy number or nullish.
+  Set this to `true` if you don't mind implicitly treating zero or NaN the same as a nullish value.
+
+- `allowAny` (`false` by default) -
+  Allows `any` in a boolean context.
 
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
 
-- [no-unnecessary-condition](./no-unnecessary-condition.md) - essentially a less opinionated alternative to this rule. `strict-boolean-expressions` enforces a specific code style, while `no-unnecessary-condition` is about correctness.
+- [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions
