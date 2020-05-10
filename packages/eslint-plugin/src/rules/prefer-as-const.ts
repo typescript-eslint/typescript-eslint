@@ -12,7 +12,7 @@ export default util.createRule({
     docs: {
       description: 'Prefer usage of `as const` over literal type',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
       suggestion: true,
     },
     fixable: 'code',

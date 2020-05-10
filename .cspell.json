@@ -80,6 +80,7 @@
     "rulesets",
     "superset",
     "thenables",
+    "transpiles",
     "tsconfigs",
     "tsutils",
     "typedef",

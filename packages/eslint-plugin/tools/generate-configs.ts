@@ -37,13 +37,7 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
         ] as const,
     ),
 );
-// list of rules from the base plugin that we think should be turned on for typescript code
-const BASE_RULES_THAT_ARE_RECOMMENDED = new Set([
-  'no-var',
-  'prefer-const',
-  'prefer-rest-params',
-  'prefer-spread',
-]);
+const EXTENDS = ['./configs/base', './configs/eslint-recommended'];
 
 const ruleEntries = Object.entries(rules).sort((a, b) =>
   a[0].localeCompare(b[0]),
@@ -122,8 +116,9 @@ function reducer<TMessageIds extends string>(
  * Helper function writes configuration.
  */
 function writeConfig(config: LinterConfig, filePath: string): void {
-  const configStr = format(JSON.stringify(config), {
-    parser: 'json',
+  const code = `export = ${JSON.stringify(config)};`;
+  const configStr = format(code, {
+    parser: 'typescript',
     ...prettierConfig,
   });
   fs.writeFileSync(filePath, configStr);
@@ -136,25 +131,25 @@ const baseConfig: LinterConfig = {
   },
   plugins: ['@typescript-eslint'],
 };
-writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.json'));
+writeConfig(baseConfig, path.resolve(__dirname, '../src/configs/base.ts'));
 
 console.log();
 console.log(
-  '------------------------------------------------ all.json ------------------------------------------------',
+  '------------------------------------------------ all.ts ------------------------------------------------',
 );
 const allConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: EXTENDS,
   rules: ruleEntries.reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, { errorLevel: 'error', filterDeprecated: true }),
     {},
   ),
 };
-writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.json'));
+writeConfig(allConfig, path.resolve(__dirname, '../src/configs/all.ts'));
 
 console.log();
 console.log(
-  '------------------------------ recommended.json (should not require program) ------------------------------',
+  '------------------------------ recommended.ts (should not require program) ------------------------------',
 );
 const recommendedRules = ruleEntries
   .filter(entry => !!entry[1].meta.docs?.recommended)
@@ -166,21 +161,18 @@ const recommendedRules = ruleEntries
       }),
     {},
   );
-BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
-  recommendedRules[ruleName] = 'error';
-});
 const recommendedConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: EXTENDS,
   rules: recommendedRules,
 };
 writeConfig(
   recommendedConfig,
-  path.resolve(__dirname, '../src/configs/recommended.json'),
+  path.resolve(__dirname, '../src/configs/recommended.ts'),
 );
 
 console.log();
 console.log(
-  '--------------------------------- recommended-requiring-type-checking.json ---------------------------------',
+  '--------------------------------- recommended-requiring-type-checking.ts ---------------------------------',
 );
 const recommendedRulesRequiringProgram = ruleEntries
   .filter(entry => !!entry[1].meta.docs?.recommended)
@@ -192,17 +184,14 @@ const recommendedRulesRequiringProgram = ruleEntries
       }),
     {},
   );
-BASE_RULES_THAT_ARE_RECOMMENDED.forEach(ruleName => {
-  recommendedRulesRequiringProgram[ruleName] = 'error';
-});
 const recommendedRequiringTypeCheckingConfig: LinterConfig = {
-  extends: './configs/base.json',
+  extends: EXTENDS,
   rules: recommendedRulesRequiringProgram,
 };
 writeConfig(
   recommendedRequiringTypeCheckingConfig,
   path.resolve(
     __dirname,
-    '../src/configs/recommended-requiring-type-checking.json',
+    '../src/configs/recommended-requiring-type-checking.ts',
   ),
 );

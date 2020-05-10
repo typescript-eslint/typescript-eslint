@@ -22,7 +22,7 @@ export default util.createRule<[], MessageIds>({
       description:
         'Disallows using a non-null assertion after an optional chain expression',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       suggestion: true,
     },
     messages: {

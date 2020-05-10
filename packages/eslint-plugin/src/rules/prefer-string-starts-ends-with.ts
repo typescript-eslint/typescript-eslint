@@ -26,7 +26,7 @@ export default createRule({
       description:
         'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -87,7 +87,6 @@ export default createRule({
         evaluated != null &&
         typeof evaluated.value === 'string' &&
         // checks if the string is a character long
-        // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
         evaluated.value[0] === evaluated.value
       );
     }
