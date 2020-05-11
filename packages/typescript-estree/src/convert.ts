@@ -170,17 +170,19 @@ export class Converter {
           type: AST_NODE_TYPES.ExportDefaultDeclaration,
           declaration: result,
           range: [exportKeyword.getStart(this.ast), result.range[1]],
+          exportKind: 'value',
         });
       } else {
         const isType =
           result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
           result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
+        const isDeclare = result.declare === true;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
           declaration: result,
           specifiers: [],
           source: null,
-          exportKind: isType ? 'type' : 'value',
+          exportKind: isType || isDeclare ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }
@@ -588,10 +590,7 @@ export class Converter {
         return this.createNode<TSESTree.Program>(node, {
           type: AST_NODE_TYPES.Program,
           body: this.convertBodyExpressions(node.statements, node),
-          // externalModuleIndicator is internal field in TSC
-          sourceType: (node as any).externalModuleIndicator
-            ? 'module'
-            : 'script',
+          sourceType: node.externalModuleIndicator ? 'module' : 'script',
           range: [node.getStart(this.ast), node.endOfFileToken.end],
         });
       }
@@ -1630,6 +1629,7 @@ export class Converter {
           return this.createNode<TSESTree.ExportDefaultDeclaration>(node, {
             type: AST_NODE_TYPES.ExportDefaultDeclaration,
             declaration: this.convertChild(node.expression),
+            exportKind: 'value',
           });
         }
 
