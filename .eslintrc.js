@@ -21,6 +21,7 @@ module.exports = {
     sourceType: 'module',
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
     tsconfigRootDir: __dirname,
+    warnOnUnsupportedTypeScriptVersion: false,
   },
   rules: {
     //
