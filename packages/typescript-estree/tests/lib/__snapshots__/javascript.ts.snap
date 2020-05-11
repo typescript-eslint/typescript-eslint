@@ -108554,6 +108554,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -109908,6 +109909,7 @@ Object {
         ],
         "type": "ArrayExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -110097,6 +110099,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 38,
@@ -110338,6 +110341,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -110526,6 +110530,7 @@ Object {
         },
         "type": "BinaryExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 23,
@@ -110752,6 +110757,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -110974,6 +110980,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -111181,6 +111188,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 32,
@@ -111386,6 +111394,7 @@ Object {
         "type": "Literal",
         "value": 42,
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -111577,6 +111586,7 @@ Object {
         ],
         "type": "ObjectExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 26,
@@ -111781,6 +111791,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -120618,6 +120629,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 23,
