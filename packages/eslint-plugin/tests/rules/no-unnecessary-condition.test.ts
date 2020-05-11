@@ -113,20 +113,7 @@ function test(a?: string) {
     /**
      * Predicate functions
      **/
-    // valid, with the flag off
     `
-[1, 3, 5].filter(() => true);
-[1, 2, 3].find(() => false);
-function truthy() {
-  return [];
-}
-function falsy() {}
-[1, 3, 5].filter(truthy);
-[1, 2, 3].find(falsy);
-    `,
-    {
-      options: [{ checkArrayPredicates: true }],
-      code: `
 // with literal arrow function
 [0, 1, 2].filter(x => x);
 
@@ -140,20 +127,16 @@ function length(x: string) {
 function nonEmptyStrings(x: string[]) {
   return x.filter(length);
 }
-      `,
-    },
+    `,
     // Ignores non-array methods of the same name
-    {
-      options: [{ checkArrayPredicates: true }],
-      code: `
+    `
 const notArray = {
   filter: (func: () => boolean) => func(),
   find: (func: () => boolean) => func(),
 };
 notArray.filter(() => true);
 notArray.find(() => true);
-      `,
-    },
+    `,
 
     // Nullish coalescing operator
     `
@@ -470,7 +453,6 @@ function test(a: never) {
 
     // Predicate functions
     {
-      options: [{ checkArrayPredicates: true }],
       code: `
 [1, 3, 5].filter(() => true);
 [1, 2, 3].find(() => {
@@ -534,7 +516,6 @@ if (arr.filter) {
       errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
-      options: [{ checkArrayPredicates: true }],
       code: `
 function truthy() {
   return [];
@@ -551,7 +532,6 @@ function falsy() {}
     // Supports generics
     // TODO: fix this
     //     {
-    //       options: [{ checkArrayPredicates: true }],
     //       code: `
     // const isTruthy = <T>(t: T) => T;
     // // Valid: numbers can be truthy or falsy (0).
