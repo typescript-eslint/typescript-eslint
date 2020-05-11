@@ -11,6 +11,7 @@ import {
   isBooleanLiteralType,
   isLiteralType,
   getCallSignaturesOfType,
+  isStrictCompilerOptionEnabled,
 } from 'tsutils';
 import {
   createRule,
@@ -21,6 +22,9 @@ import {
   NullThrowsReasons,
 } from '../util';
 
+const typeContainsFlag = (type: ts.Type, flag: ts.TypeFlags): boolean => {
+  return unionTypeParts(type).some(t => isTypeFlagSet(t, flag));
+};
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
@@ -72,6 +76,7 @@ export type MessageId =
   | 'neverNullish'
   | 'alwaysNullish'
   | 'literalBooleanExpression'
+  | 'noOverlapBooleanExpression'
   | 'never'
   | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
@@ -112,9 +117,11 @@ export default createRule<Options, MessageId>({
       alwaysNullish:
         'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
-      never: 'Unnecessary conditional, value is `never`.',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
+        'Unnecessary conditional, both sides of the expression are literal values',
+      noOverlapBooleanExpression:
+        'Unnecessary conditional, the types have no overlap',
+      never: 'Unnecessary conditional, value is `never`',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
     },
   },
   defaultOptions: [
@@ -127,6 +134,7 @@ export default createRule<Options, MessageId>({
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
+    const compilerOptions = service.program.getCompilerOptions();
 
     function getNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -234,6 +242,9 @@ export default createRule<Options, MessageId>({
      *
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
+     *    Known exceptions:
+     *      * https://github.com/microsoft/TypeScript/issues/32627
+     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',
@@ -248,12 +259,30 @@ export default createRule<Options, MessageId>({
     function checkIfBinaryExpressionIsNecessaryConditional(
       node: TSESTree.BinaryExpression,
     ): void {
-      if (
-        BOOL_OPERATORS.has(node.operator) &&
-        isLiteral(getNodeType(node.left)) &&
-        isLiteral(getNodeType(node.right))
-      ) {
+      if (!BOOL_OPERATORS.has(node.operator)) {
+        return;
+      }
+      const leftType = getNodeType(node.left);
+      const rightType = getNodeType(node.right);
+      if (isLiteral(leftType) && isLiteral(rightType)) {
         context.report({ node, messageId: 'literalBooleanExpression' });
+        return;
+      }
+      // Workaround for https://github.com/microsoft/TypeScript/issues/37160
+      if (isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')) {
+        const UNDEFINED = ts.TypeFlags.Undefined;
+        const NULL = ts.TypeFlags.Null;
+        if (
+          (leftType.flags === UNDEFINED &&
+            !typeContainsFlag(rightType, UNDEFINED)) ||
+          (rightType.flags === UNDEFINED &&
+            !typeContainsFlag(leftType, UNDEFINED)) ||
+          (leftType.flags === NULL && !typeContainsFlag(rightType, NULL)) ||
+          (rightType.flags === NULL && !typeContainsFlag(leftType, NULL))
+        ) {
+          context.report({ node, messageId: 'noOverlapBooleanExpression' });
+          return;
+        }
       }
     }
 
