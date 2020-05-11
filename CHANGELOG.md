@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.31.0...v2.32.0) (2020-05-11)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] support boolean in unions ([#1979](https://github.com/typescript-eslint/typescript-eslint/issues/1979)) ([6987ecc](https://github.com/typescript-eslint/typescript-eslint/commit/6987ecc1dacfb45c0f8ed3e81d08aa708eb96ad1))
+* **eslint-plugin:** [no-type-alias] handle readonly types in aliases ([#1990](https://github.com/typescript-eslint/typescript-eslint/issues/1990)) ([56d9870](https://github.com/typescript-eslint/typescript-eslint/commit/56d987070f83d1b6410b04750b20a761fd793073))
+* **eslint-plugin:** [no-unused-expressions] inherit `messages` from base rule ([#1992](https://github.com/typescript-eslint/typescript-eslint/issues/1992)) ([51ca404](https://github.com/typescript-eslint/typescript-eslint/commit/51ca404af645eed194269ab7f8f67b97bd52e32d))
+
+
+### Features
+
+* bump dependencies and align AST ([#2007](https://github.com/typescript-eslint/typescript-eslint/issues/2007)) ([18668b7](https://github.com/typescript-eslint/typescript-eslint/commit/18668b78fd7d1e5281af7fc26c76e0ca53297f69))
+
+
+
+
+
 # [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
 
 

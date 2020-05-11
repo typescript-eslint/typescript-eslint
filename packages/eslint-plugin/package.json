@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "2.31.0",
+  "version": "2.32.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -41,7 +41,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "2.31.0",
+    "@typescript-eslint/experimental-utils": "2.32.0",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^3.0.0",
     "tsutils": "^3.17.1"
