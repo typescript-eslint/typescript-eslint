@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@types/marked": "^0.7.1",
-    "chalk": "^3.0.0",
-    "marked": "^0.7.0",
+    "chalk": "^4.0.0",
+    "marked": "^1.0.0",
     "prettier": "*",
     "typescript": "*"
   },
