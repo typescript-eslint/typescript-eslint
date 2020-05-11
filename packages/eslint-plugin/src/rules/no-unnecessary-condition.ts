@@ -64,7 +64,6 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
-    checkArrayPredicates?: boolean;
   },
 ];
 
@@ -97,9 +96,6 @@ export default createRule<Options, MessageId>({
           allowConstantLoopConditions: {
             type: 'boolean',
           },
-          checkArrayPredicates: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -127,10 +123,9 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
-      checkArrayPredicates: false,
     },
   ],
-  create(context, [{ allowConstantLoopConditions, checkArrayPredicates }]) {
+  create(context, [{ allowConstantLoopConditions }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
@@ -337,11 +332,9 @@ export default createRule<Options, MessageId>({
       'some',
       'every',
     ]);
-    function shouldCheckCallback(node: TSESTree.CallExpression): boolean {
+    function isArrayPredicateFunction(node: TSESTree.CallExpression): boolean {
       const { callee } = node;
       return (
-        // option is on
-        !!checkArrayPredicates &&
         // looks like `something.filter` or `something.find`
         callee.type === AST_NODE_TYPES.MemberExpression &&
         callee.property.type === AST_NODE_TYPES.Identifier &&
@@ -351,10 +344,9 @@ export default createRule<Options, MessageId>({
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {
-      const {
-        arguments: [callback],
-      } = node;
-      if (callback && shouldCheckCallback(node)) {
+      // If this is something like arr.filter(x => /*condition*/), check `condition`
+      if (isArrayPredicateFunction(node) && node.arguments.length) {
+        const callback = node.arguments[0]!;
         // Inline defined functions
         if (
           (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
