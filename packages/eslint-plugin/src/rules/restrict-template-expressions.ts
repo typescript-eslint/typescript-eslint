@@ -10,7 +10,7 @@ type Options = [
     allowNumber?: boolean;
     allowBoolean?: boolean;
     allowAny?: boolean;
-    allowNullable?: boolean;
+    allowNullish?: boolean;
   },
 ];
 
@@ -36,7 +36,7 @@ export default util.createRule<Options, MessageId>({
           allowNumber: { type: 'boolean' },
           allowBoolean: { type: 'boolean' },
           allowAny: { type: 'boolean' },
-          allowNullable: { type: 'boolean' },
+          allowNullish: { type: 'boolean' },
         },
       },
     ],
@@ -77,7 +77,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
-        options.allowNullable &&
+        options.allowNullish &&
         util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
       ) {
         return true;

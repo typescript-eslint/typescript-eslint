@@ -166,23 +166,23 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
-    // allowNullable
+    // allowNullish
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         const arg = null;
         const msg = \`arg = \${arg}\`;
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         declare const arg: string | null | undefined;
         const msg = \`arg = \${arg}\`;
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         function test<T extends null | undefined>(arg: T) {
           return \`arg = \${arg}\`;
@@ -190,7 +190,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         function test<T extends string | null>(arg: T) {
           return \`arg = \${arg}\`;
@@ -199,7 +199,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     // allow ALL
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         type All = string | number | boolean | null | undefined;
         function test<T extends All>(arg: T) {
@@ -245,7 +245,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         const arg = {};
         const msg = \`arg = \${arg}\`;
@@ -260,7 +260,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         function test<T extends {}>(arg: T) {
           return \`arg = \${arg}\`;
@@ -269,7 +269,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         function test(arg: any) {
           return \`arg = \${arg}\`;
