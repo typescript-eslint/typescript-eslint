@@ -32,7 +32,7 @@
     "lint:markdown:fix": "lint:markdown --fix",
     "lint:markdown": "markdownlint '**/*.md' --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint": "eslint . --ext .js,.ts",
-    "postinstall": "yarn lerna-init && yarn build",
+    "postinstall": "yarn lerna:init && yarn build",
     "pre-commit": "yarn lint-staged",
     "pre-push": "yarn check:format",
     "test": "lerna run test --concurrency 1",
@@ -79,9 +79,9 @@
     "ts-jest": "^25.5.1",
     "ts-node": "^8.10.1",
     "tslint": "^6.1.2",
-    "typescript": ">=3.2.1 <4.0.0"
+    "typescript": ">=3.3.1 <4.0.0"
   },
   "resolutions": {
-    "typescript": "^3.8.3"
+    "typescript": "3.9.2"
   }
 }
