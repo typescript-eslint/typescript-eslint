@@ -103,6 +103,12 @@ function test(a: string) {
   return a === 'a';
 }
     `,
+    `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t3 = undefined === a;
+}
+    `,
 
     /**
      * Predicate functions
@@ -402,6 +408,31 @@ if (x === Foo.a) {
 }
       `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
+    },
+    // Workaround https://github.com/microsoft/TypeScript/issues/37160
+    {
+      code: `
+function test(a: string) {
+  const t1 = a !== undefined;
+  const t3 = undefined === a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === null;
+  const t3 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+      ],
     },
     // Nullish coalescing operator
     {
