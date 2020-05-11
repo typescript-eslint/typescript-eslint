@@ -3,6 +3,8 @@ import * as eslintVisitorKeys from 'eslint-visitor-keys';
 export const visitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.
   Import: [],
+  // ES2020
+  ImportExpression: ['source'],
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
@@ -40,7 +42,6 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  BigIntLiteral: [],
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
   OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],

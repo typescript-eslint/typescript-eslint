@@ -50,6 +50,7 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
   - Coverage reports should automatically be generated locally, and the `codecov` bot should also comment on your PR with the percentage, as well as links to the line-by-line coverage of each file touched by your PR.
 - Ensure you have no lint errors.
   - You can run `yarn lint` in any package or in the root.
+  - You can run `yarn lint:markdown` in the root.
 - If you have made changes to any markdown documentation, ensure there are no spelling errors
   - You can run `yarn check:spelling` in the root.
   - Or if you are using vscode, you can use [`Code Spell Checker`](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) plugin.
@@ -60,7 +61,7 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
 
 Once your changes are ready, you can raise a PR. The title of your PR should match the following format:
 
-```
+```text
 <tag>(<package>): <short description>
 ```
 

@@ -54,6 +54,7 @@ interface ParserOptions {
     jsx?: boolean;
   };
   project?: string | string[];
+  projectFolderIgnoreList?: (string | RegExp)[];
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -66,7 +67,7 @@ Default `false`.
 
 Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the typescript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
+**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
 
 - if `parserOptions.project` is _not_ provided:
   - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
@@ -81,7 +82,7 @@ Enable parsing JSX when `true`. More details can be found [here](https://www.typ
 
 Default `undefined`.
 
-This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. You may want to use this setting in tandem with the `tsconfigRootDir` option below.
+This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. Relative paths are interpreted relative to the current working directory if `tsconfigRootDir` is not set. If you intend on running ESLint from directories other than the project root, you should consider using `tsconfigRootDir`.
 
 - Accepted values:
 
@@ -118,26 +119,36 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
   }
   ```
 
-### `tsconfigRootDir`
+### `parserOptions.tsconfigRootDir`
 
 Default `undefined`.
 
 This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
 
-### `extraFileExtensions`
+### `parserOptions.projectFolderIgnoreList`
+
+Default `["/node_modules/"]`.
+
+This option allows you to ignore folders from being included in your provided list of `project`s.
+Any resolved project path that matches one or more of the provided regular expressions will be removed from the list.
+This is useful if you have configured glob patterns, but want to make sure you ignore certain folders.
+
+For example, by default it will ensure that a glob like `./**/tsconfig.json` will not match any `tsconfig`s within your `node_modules` folder (some npm packages do not exclude their source files from their published packages).
+
+### `parserOptions.extraFileExtensions`
 
 Default `undefined`.
 
 This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation.
 The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions: [".vue"]`.
 
-### `warnOnUnsupportedTypeScriptVersion`
+### `parserOptions.warnOnUnsupportedTypeScriptVersion`
 
 Default `true`.
 
 This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
 
-### `createDefaultProgram`
+### `parserOptions.createDefaultProgram`
 
 Default `false`.
 

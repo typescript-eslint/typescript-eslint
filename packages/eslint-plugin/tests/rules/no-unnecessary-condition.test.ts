@@ -6,7 +6,7 @@ import rule, {
   Options,
   MessageId,
 } from '../../src/rules/no-unnecessary-condition';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -49,10 +49,22 @@ declare const b1: boolean;
 declare const b2: boolean;
 const t1 = b1 && b2;
 const t2 = b1 || b2;
-if(b1 && b2) {}
-while(b1 && b2) {}
-for (let i = 0; (b1 && b2); i++) { break; }
-const t1 = (b1 && b2) ? 'yes' : 'no'`,
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+for (;;) {}
+    `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
     necessaryConditionTest('0 | boolean'), // boolean and falsy literal
@@ -69,42 +81,53 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
     // Generic type params
     `
 function test<T extends string>(t: T) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+    `,
     `
 // Naked type param
 function test<T>(t: T) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+    `,
     `
 // Naked type param in union
 function test<T>(t: T | []) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+    `,
 
     // Boolean expressions
     `
 function test(a: string) {
-  return a === "a"
-}`,
+  return a === 'a';
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t3 = undefined === a;
+}
+    `,
 
     /**
      * Predicate functions
      **/
     `
 // with literal arrow function
-[0,1,2].filter(x => x);
+[0, 1, 2].filter(x => x);
 
 // filter with named function
 function length(x: string) {
   return x.length;
 }
-["a", "b", ""].filter(length);
+['a', 'b', ''].filter(length);
 
 // with non-literal array
 function nonEmptyStrings(x: string[]) {
   return x.filter(length);
-}`,
+}
+    `,
     // Ignores non-array methods of the same name
     `
 const notArray = {
@@ -113,96 +136,144 @@ const notArray = {
 };
 notArray.filter(() => true);
 notArray.find(() => true);
-`,
+    `,
+
     // Nullish coalescing operator
     `
 function test(a: string | null) {
-  return a ?? "default";
-}`,
+  return a ?? 'default';
+}
+    `,
     `
 function test(a: string | undefined) {
-  return a ?? "default";
-}`,
+  return a ?? 'default';
+}
+    `,
     `
 function test(a: string | null | undefined) {
-  return a ?? "default";
-}`,
+  return a ?? 'default';
+}
+    `,
     `
 function test(a: unknown) {
-  return a ?? "default";
-}`,
-    // Supports ignoring the RHS
+  return a ?? 'default';
+}
+    `,
+    // Indexing cases
+    `
+declare const arr: object[];
+if (arr[42]) {
+} // looks unnecessary from the types, but isn't
+
+const tuple = [{}] as [object];
+declare const n: number;
+if (tuple[n]) {
+}
+    `,
+    // Optional-chaining indexing
+    `
+declare const arr: Array<{ value: string } & (() => void)>;
+if (arr[42]?.value) {
+}
+arr[41]?.();
+
+// An array access can "infect" deeper into the chain
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x?.y?.z;
+
+const tuple = ['foo'] as const;
+declare const n: number;
+tuple[n]?.toUpperCase();
+    `,
+    `
+if (arr?.[42]) {
+}
+    `,
+    `
+declare const returnsArr: undefined | (() => string[]);
+if (returnsArr?.()[42]) {
+}
+returnsArr?.()[42]?.toUpperCase();
+    `,
+    // nullish + array index
+    `
+declare const arr: string[][];
+arr[x] ?? [];
+    `,
+    // Doesn't check the right-hand side of a logical expression
+    //  in a non-conditional context
     {
       code: `
 declare const b1: boolean;
 declare const b2: true;
-if(b1 && b2) {}`,
-      options: [{ ignoreRhs: true }],
+const x = b1 && b2;
+      `,
     },
     {
       code: `
-while(true) {}
-for (;true;) {}
-do {} while(true)
+while (true) {}
+for (; true; ) {}
+do {} while (true);
       `,
       options: [{ allowConstantLoopConditions: true }],
     },
     `
 let foo: undefined | { bar: true };
 foo?.bar;
-`,
+    `,
     `
 let foo: null | { bar: true };
 foo?.bar;
-`,
+    `,
     `
 let foo: undefined;
 foo?.bar;
-`,
+    `,
     `
 let foo: undefined;
 foo?.bar.baz;
-`,
+    `,
     `
 let foo: null;
 foo?.bar;
-`,
+    `,
     `
 let anyValue: any;
 anyValue?.foo;
-`,
+    `,
     `
 let unknownValue: unknown;
 unknownValue?.foo;
-`,
+    `,
     `
 let foo: undefined | (() => {});
 foo?.();
-`,
+    `,
     `
 let foo: null | (() => {});
 foo?.();
-`,
+    `,
     `
 let foo: undefined;
 foo?.();
-`,
+    `,
     `
 let foo: undefined;
 foo?.().bar;
-`,
+    `,
     `
 let foo: null;
 foo?.();
-`,
+    `,
     `
 let anyValue: any;
 anyValue?.();
-`,
+    `,
     `
 let unknownValue: unknown;
 unknownValue?.();
-`,
+    `,
+    'const foo = [1, 2, 3][0];',
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -212,17 +283,28 @@ const b1 = true;
 declare const b2: boolean;
 const t1 = b1 && b2;
 const t2 = b1 || b2;
-if(b1 && b2) {}
-while(b1 && b2) {}
-for (let i = 0; (b1 && b2); i++) { break; }
-const t1 = (b1 && b2) ? 'yes' : 'no'`,
+if (b1 && b2) {
+}
+if (b2 && b1) {
+}
+while (b1 && b2) {}
+while (b2 && b1) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+const t1 = b2 && b1 ? 'yes' : 'no';
+      `,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
         ruleError(5, 12, 'alwaysTruthy'),
-        ruleError(6, 4, 'alwaysTruthy'),
-        ruleError(7, 7, 'alwaysTruthy'),
-        ruleError(8, 18, 'alwaysTruthy'),
-        ruleError(9, 13, 'alwaysTruthy'),
+        ruleError(6, 5, 'alwaysTruthy'),
+        ruleError(8, 11, 'alwaysTruthy'),
+        ruleError(10, 8, 'alwaysTruthy'),
+        ruleError(11, 14, 'alwaysTruthy'),
+        ruleError(12, 17, 'alwaysTruthy'),
+        ruleError(15, 12, 'alwaysTruthy'),
+        ruleError(16, 18, 'alwaysTruthy'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -235,91 +317,147 @@ const t1 = (b1 && b2) ? 'yes' : 'no'`,
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
 
+    // More complex logical expressions
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (true && b1 && b2) {
+}
+if (b1 && false && b2) {
+}
+if (b1 || b2 || true) {
+}
+      `,
+      errors: [
+        ruleError(4, 5, 'alwaysTruthy'),
+        ruleError(6, 11, 'alwaysFalsy'),
+        ruleError(8, 17, 'alwaysTruthy'),
+      ],
+    },
+
     // Generic type params
     {
       code: `
 function test<T extends object>(t: T) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+      `,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
     },
     {
       code: `
 function test<T extends false>(t: T) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+      `,
       errors: [ruleError(3, 10, 'alwaysFalsy')],
     },
     {
       code: `
 function test<T extends 'a' | 'b'>(t: T) {
-  return t ? 'yes' : 'no'
-}`,
+  return t ? 'yes' : 'no';
+}
+      `,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
     },
 
     // Boolean expressions
     {
       code: `
-function test(a: "a") {
-  return a === "a"
-}`,
+function test(a: 'a') {
+  return a === 'a';
+}
+      `,
       errors: [ruleError(3, 10, 'literalBooleanExpression')],
     },
     {
       code: `
 const y = 1;
-if (y === 0) {}
-`,
+if (y === 0) {
+}
+      `,
       errors: [ruleError(3, 5, 'literalBooleanExpression')],
     },
     {
       code: `
 enum Foo {
   a = 1,
-  b = 2
+  b = 2,
 }
 
 const x = Foo.a;
-if (x === Foo.a) {}
-`,
+if (x === Foo.a) {
+}
+      `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
+    },
+    // Workaround https://github.com/microsoft/TypeScript/issues/37160
+    {
+      code: `
+function test(a: string) {
+  const t1 = a !== undefined;
+  const t3 = undefined === a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === null;
+  const t3 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+      ],
     },
     // Nullish coalescing operator
     {
       code: `
 function test(a: string) {
   return a ?? 'default';
-}`,
+}
+      `,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     {
       code: `
 function test(a: string | false) {
   return a ?? 'default';
-}`,
+}
+      `,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     {
       code: `
 function test(a: null) {
   return a ?? 'default';
-}`,
+}
+      `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
     },
     {
       code: `
 function test(a: never) {
   return a ?? 'default';
-}`,
+}
+      `,
       errors: [ruleError(3, 10, 'never')],
     },
 
     // Predicate functions
     {
       code: `
-[1,3,5].filter(() => true);
-[1,2,3].find(() => { return false; });
+[1, 3, 5].filter(() => true);
+[1, 2, 3].find(() => {
+  return false;
+});
 
 // with non-literal array
 function nothing(x: string[]) {
@@ -333,14 +471,49 @@ function nothing2(x: readonly string[]) {
 function nothing3(x: [string, string]) {
   return x.filter(() => false);
 }
-`,
+      `,
       errors: [
-        ruleError(2, 22, 'alwaysTruthy'),
-        ruleError(3, 29, 'alwaysFalsy'),
-        ruleError(7, 25, 'alwaysFalsy'),
-        ruleError(11, 25, 'alwaysFalsy'),
-        ruleError(15, 25, 'alwaysFalsy'),
+        ruleError(2, 24, 'alwaysTruthy'),
+        ruleError(4, 10, 'alwaysFalsy'),
+        ruleError(9, 25, 'alwaysFalsy'),
+        ruleError(13, 25, 'alwaysFalsy'),
+        ruleError(17, 25, 'alwaysFalsy'),
       ],
+    },
+    // Indexing cases
+    {
+      // This is an error because 'dict' doesn't represent
+      //  the potential for undefined in its types
+      code: `
+declare const dict: Record<string, object>;
+if (dict['mightNotExist']) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
+    {
+      // Should still check tuples when accessed with literal numbers, since they don't have
+      //   unsound index signatures
+      code: `
+const x = [{}] as [{ foo: string }];
+if (x[0]) {
+}
+if (x[0]?.foo) {
+}
+      `,
+      errors: [
+        ruleError(3, 5, 'alwaysTruthy'),
+        ruleError(5, 9, 'neverOptionalChain'),
+      ],
+    },
+    {
+      // Shouldn't mistake this for an array indexing case
+      code: `
+declare const arr: object[];
+if (arr.filter) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
       code: `
@@ -348,12 +521,12 @@ function truthy() {
   return [];
 }
 function falsy() {}
-[1,3,5].filter(truthy);
-[1,2,3].find(falsy);
-`,
+[1, 3, 5].filter(truthy);
+[1, 2, 3].find(falsy);
+      `,
       errors: [
-        ruleError(6, 16, 'alwaysTruthyFunc'),
-        ruleError(7, 14, 'alwaysFalsyFunc'),
+        ruleError(6, 18, 'alwaysTruthyFunc'),
+        ruleError(7, 16, 'alwaysFalsyFunc'),
       ],
     },
     // Supports generics
@@ -368,43 +541,21 @@ function falsy() {}
     // `,
     //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
     //     },
-
-    // Still errors on in the expected locations when ignoring RHS
-    {
-      options: [{ ignoreRhs: true }],
-      code: `
-const b1 = true;
-const b2 = false;
-const t1 = b1 && b2;
-const t2 = b1 || b2;
-if(b1 && b2) {}
-while(b1 && b2) {}
-for (let i = 0; (b1 && b2); i++) { break; }
-const t1 = (b1 && b2) ? 'yes' : 'no'`,
-      errors: [
-        ruleError(4, 12, 'alwaysTruthy'),
-        ruleError(5, 12, 'alwaysTruthy'),
-        ruleError(6, 4, 'alwaysTruthy'),
-        ruleError(7, 7, 'alwaysTruthy'),
-        ruleError(8, 18, 'alwaysTruthy'),
-        ruleError(9, 13, 'alwaysTruthy'),
-      ],
-    },
     {
       code: `
-while(true) {}
-for (;true;) {}
-do {} while(true)
+while (true) {}
+for (; true; ) {}
+do {} while (true);
       `,
       options: [{ allowConstantLoopConditions: false }],
       errors: [
-        ruleError(2, 7, 'alwaysTruthy'),
-        ruleError(3, 7, 'alwaysTruthy'),
-        ruleError(4, 13, 'alwaysTruthy'),
+        ruleError(2, 8, 'alwaysTruthy'),
+        ruleError(3, 8, 'alwaysTruthy'),
+        ruleError(4, 14, 'alwaysTruthy'),
       ],
     },
     {
-      code: `
+      code: noFormat`
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -412,8 +563,8 @@ foo ?.
   bar;
 foo
   ?. bar;
-`,
-      output: `
+      `,
+      output: noFormat`
 let foo = { bar: true };
 foo.bar;
 foo . bar;
@@ -421,7 +572,7 @@ foo .
   bar;
 foo
   . bar;
-`,
+      `,
       errors: [
         {
           messageId: 'neverOptionalChain',
@@ -454,7 +605,7 @@ foo
       ],
     },
     {
-      code: `
+      code: noFormat`
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -462,7 +613,7 @@ foo ?.
   ();
 foo
   ?. ();
-`,
+      `,
       output: `
 let foo = () => {};
 foo();
@@ -471,7 +622,7 @@ foo${' '}
   ();
 foo
    ();
-`,
+      `,
       errors: [
         {
           messageId: 'neverOptionalChain',
@@ -504,7 +655,7 @@ foo
       ],
     },
     {
-      code: `
+      code: noFormat`
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -512,7 +663,7 @@ foo ?.
   (bar);
 foo
   ?. (bar);
-`,
+      `,
       output: `
 let foo = () => {};
 foo(bar);
@@ -521,7 +672,7 @@ foo${' '}
   (bar);
 foo
    (bar);
-`,
+      `,
       errors: [
         {
           messageId: 'neverOptionalChain',
@@ -550,6 +701,19 @@ foo
           column: 3,
           endLine: 8,
           endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: 'const foo = [1, 2, 3]?.[0];',
+      output: 'const foo = [1, 2, 3][0];',
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
         },
       ],
     },

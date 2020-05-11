@@ -14,10 +14,14 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
+  parserOptions: {
+    sourceType: 'module',
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
+  },
   rules: {
     //
     // our plugin :D
@@ -25,28 +29,41 @@ module.exports = {
 
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/explicit-function-return-type': 'error',
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/no-throw-literal': 'off',
-    '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
-    '@typescript-eslint/unbound-method': 'off',
-    '@typescript-eslint/prefer-as-const': 'error',
-
-    'no-empty-function': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': [
       'error',
       { allow: ['arrowFunctions'] },
     ],
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/prefer-optional-chain': 'error',
+    '@typescript-eslint/unbound-method': 'off',
+
+    // TODO - enable these new recommended rules
+    '@typescript-eslint/no-floating-promises': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    // TODO - enable this
+    '@typescript-eslint/naming-convention': 'off',
+
+    //
+    // Internal repo rules
+    //
+
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
     // eslint base
     //
 
-    'comma-dangle': ['error', 'always-multiline'],
-    'constructor-super': 'off',
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
@@ -119,20 +136,6 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
-
-    //
-    // Internal repo rules
-    //
-    '@typescript-eslint/internal/no-typescript-default-import': 'error',
-    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
-  },
-  parserOptions: {
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: false,
-    },
-    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-    tsconfigRootDir: __dirname,
   },
   overrides: [
     // all test files
@@ -174,7 +177,7 @@ module.exports = {
         '@typescript-eslint/internal/no-typescript-estree-import': 'error',
       },
     },
-    // rule source files
+    // plugin rule source files
     {
       files: [
         'packages/eslint-plugin-internal/src/rules/**/*.ts',
@@ -185,6 +188,17 @@ module.exports = {
       rules: {
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+      },
+    },
+    // plugin rule tests
+    {
+      files: [
+        'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin/tests/rules/**/*.test.ts',
+      ],
+      rules: {
+        '@typescript-eslint/internal/plugin-test-formatting': 'error',
       },
     },
     // tools and tests

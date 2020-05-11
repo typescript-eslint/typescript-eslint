@@ -29,7 +29,6 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow unused variables and arguments',
       category: 'Best Practices',
       recommended: false,
-      requiresTypeChecking: true,
     },
     schema: [
       {
@@ -56,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       unused: "{{type}} '{{name}}' is declared but its value is never read.",
       unusedWithIgnorePattern:
-        "{{type}} '{{name}}' is declared but its value is never read. Allowed unused names must match {{pattern}}",
+        "{{type}} '{{name}}' is declared but its value is never read. Allowed unused names must match {{pattern}}.",
       unusedImport: 'All imports in import declaration are unused.',
       unusedTypeParameters: 'All type parameters are unused.',
     },
@@ -68,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [userOptions]) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = util.getParserServices(context, true);
     const tsProgram = parserServices.program;
     const afterAllDiagnosticsCallbacks: (() => void)[] = [];
 
@@ -191,7 +190,7 @@ export default util.createRule<Options, MessageIds>({
       parent: ts.ParameterDeclaration,
     ): void {
       const name = identifier.getText();
-      // regardless of if the paramter is ignored, track that it had a diagnostic fired on it
+      // regardless of if the parameter is ignored, track that it had a diagnostic fired on it
       unusedParameters.add(identifier);
 
       /*

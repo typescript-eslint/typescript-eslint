@@ -7,9 +7,10 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowNullable?: boolean;
     allowNumber?: boolean;
     allowBoolean?: boolean;
+    allowAny?: boolean;
+    allowNullable?: boolean;
   },
 ];
 
@@ -22,7 +23,7 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description: 'Enforce template literal expressions to be of string type',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
@@ -32,41 +33,57 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowBoolean: { type: 'boolean' },
-          allowNullable: { type: 'boolean' },
           allowNumber: { type: 'boolean' },
+          allowBoolean: { type: 'boolean' },
+          allowAny: { type: 'boolean' },
+          allowNullable: { type: 'boolean' },
         },
       },
     ],
   },
-  defaultOptions: [{}],
+  defaultOptions: [
+    {
+      allowNumber: true,
+    },
+  ],
   create(context, [options]) {
     const service = util.getParserServices(context);
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseType =
-      | 'string'
-      | 'number'
-      | 'bigint'
-      | 'boolean'
-      | 'null'
-      | 'undefined'
-      | 'other';
-
-    const allowedTypes: BaseType[] = [
-      'string',
-      ...(options.allowNumber ? (['number', 'bigint'] as const) : []),
-      ...(options.allowBoolean ? (['boolean'] as const) : []),
-      ...(options.allowNullable ? (['null', 'undefined'] as const) : []),
-    ];
-
-    function isAllowedType(types: BaseType[]): boolean {
-      for (const type of types) {
-        if (!allowedTypes.includes(type)) {
-          return false;
-        }
+    function isUnderlyingTypePrimitive(type: ts.Type): boolean {
+      if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
+        return true;
       }
-      return true;
+
+      if (
+        options.allowNumber &&
+        util.isTypeFlagSet(
+          type,
+          ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+        )
+      ) {
+        return true;
+      }
+
+      if (
+        options.allowBoolean &&
+        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
+      ) {
+        return true;
+      }
+
+      if (options.allowAny && util.isTypeFlagSet(type, ts.TypeFlags.Any)) {
+        return true;
+      }
+
+      if (
+        options.allowNullable &&
+        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
+      ) {
+        return true;
+      }
+
+      return false;
     }
 
     return {
@@ -76,11 +93,15 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
-        for (const expr of node.expressions) {
-          const type = getNodeType(expr);
-          if (!isAllowedType(type)) {
+        for (const expression of node.expressions) {
+          if (
+            !isUnderlyingExpressionTypeConfirmingTo(
+              expression,
+              isUnderlyingTypePrimitive,
+            )
+          ) {
             context.report({
-              node: expr,
+              node: expression,
               messageId: 'invalidType',
             });
           }
@@ -88,63 +109,31 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
-    /**
-     * Helper function to get base type of node
-     * @param node the node to be evaluated.
-     */
-    function getNodeType(node: TSESTree.Expression): BaseType[] {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = typeChecker.getTypeAtLocation(tsNode);
+    function isUnderlyingExpressionTypeConfirmingTo(
+      expression: TSESTree.Expression,
+      predicate: (underlyingType: ts.Type) => boolean,
+    ): boolean {
+      return rec(getExpressionNodeType(expression));
 
-      return getBaseType(type);
+      function rec(type: ts.Type): boolean {
+        if (type.isUnion()) {
+          return type.types.every(rec);
+        }
+
+        if (type.isIntersection()) {
+          return type.types.some(rec);
+        }
+
+        return predicate(type);
+      }
     }
 
-    function getBaseType(type: ts.Type): BaseType[] {
-      const constraint = type.getConstraint();
-      if (
-        constraint &&
-        // for generic types with union constraints, it will return itself
-        constraint !== type
-      ) {
-        return getBaseType(constraint);
-      }
-
-      if (type.isStringLiteral()) {
-        return ['string'];
-      }
-      if (type.isNumberLiteral()) {
-        return ['number'];
-      }
-      if (type.flags & ts.TypeFlags.BigIntLiteral) {
-        return ['bigint'];
-      }
-      if (type.flags & ts.TypeFlags.BooleanLiteral) {
-        return ['boolean'];
-      }
-      if (type.flags & ts.TypeFlags.Null) {
-        return ['null'];
-      }
-      if (type.flags & ts.TypeFlags.Undefined) {
-        return ['undefined'];
-      }
-
-      if (type.isUnion()) {
-        return type.types
-          .map(getBaseType)
-          .reduce((all, array) => [...all, ...array], []);
-      }
-
-      const stringType = typeChecker.typeToString(type);
-      if (
-        stringType === 'string' ||
-        stringType === 'number' ||
-        stringType === 'bigint' ||
-        stringType === 'boolean'
-      ) {
-        return [stringType];
-      }
-
-      return ['other'];
+    /**
+     * Helper function to extract the TS type of an TSESTree expression.
+     */
+    function getExpressionNodeType(node: TSESTree.Expression): ts.Type {
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
+      return util.getConstrainedTypeAtLocation(typeChecker, tsNode);
     }
   },
 });

@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests semis, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import rule from '../../src/rules/no-extra-semi';
 import { RuleTester } from '../RuleTester';
 

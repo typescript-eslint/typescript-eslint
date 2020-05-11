@@ -198,6 +198,11 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   }
 
   switch (valueDeclaration.kind) {
+    case ts.SyntaxKind.PropertyDeclaration:
+      return (
+        (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
+        ts.SyntaxKind.FunctionExpression
+      );
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature:
       return !(
@@ -236,10 +241,16 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return parent.tag === node;
 
     case AST_NODE_TYPES.UnaryExpression:
-      return parent.operator === 'typeof';
+      // the first case is safe for obvious
+      // reasons. The second one is also fine
+      // since we're returning something falsy
+      return ['typeof', '!', 'void', 'delete'].includes(parent.operator);
 
     case AST_NODE_TYPES.BinaryExpression:
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
+
+    case AST_NODE_TYPES.AssignmentExpression:
+      return parent.operator === '=' && node === parent.left;
 
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:

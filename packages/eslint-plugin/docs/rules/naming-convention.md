@@ -174,7 +174,7 @@ For example, if you provide the following config:
 [
   /* 1 */ { selector: 'default', format: ['camelCase'] },
   /* 2 */ { selector: 'variable', format: ['snake_case'] },
-  /* 3 */ { selector: 'variable', type: ['boolean'], format: ['UPPER_CASE'] },
+  /* 3 */ { selector: 'variable', types: ['boolean'], format: ['UPPER_CASE'] },
   /* 4 */ { selector: 'variableLike', format: ['PascalCase'] },
 ];
 ```

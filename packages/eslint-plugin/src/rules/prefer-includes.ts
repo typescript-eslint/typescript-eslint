@@ -2,10 +2,9 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { getStaticValue } from 'eslint-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, getStaticValue } from '../util';
 
 export default createRule({
   name: 'prefer-includes',
@@ -16,7 +15,7 @@ export default createRule({
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -137,23 +136,27 @@ export default createRule({
 
         // Get the symbol of `indexOf` method.
         const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
-        const indexofMethodSymbol = types.getSymbolAtLocation(tsNode);
+        const indexofMethodDeclarations = types
+          .getSymbolAtLocation(tsNode)
+          ?.getDeclarations();
         if (
-          indexofMethodSymbol == null ||
-          indexofMethodSymbol.declarations.length === 0
+          indexofMethodDeclarations == null ||
+          indexofMethodDeclarations.length === 0
         ) {
           return;
         }
 
         // Check if every declaration of `indexOf` method has `includes` method
         // and the two methods have the same parameters.
-        for (const instanceofMethodDecl of indexofMethodSymbol.declarations) {
+        for (const instanceofMethodDecl of indexofMethodDeclarations) {
           const typeDecl = instanceofMethodDecl.parent;
           const type = types.getTypeAtLocation(typeDecl);
-          const includesMethodSymbol = type.getProperty('includes');
+          const includesMethodDecl = type
+            .getProperty('includes')
+            ?.getDeclarations();
           if (
-            includesMethodSymbol == null ||
-            !includesMethodSymbol.declarations.some(includesMethodDecl =>
+            includesMethodDecl == null ||
+            !includesMethodDecl.some(includesMethodDecl =>
               hasSameParameters(includesMethodDecl, instanceofMethodDecl),
             )
           ) {

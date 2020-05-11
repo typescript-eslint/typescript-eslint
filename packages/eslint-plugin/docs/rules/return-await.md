@@ -4,65 +4,34 @@ Returning an awaited promise can make sense for better stack trace information a
 
 ## Rule Details
 
-The `@typescript-eslint/return-await` rule specifies that awaiting a returned non-promise is never allowed. By default, the rule requires awaiting a returned promise in a `try-catch-finally` block and disallows returning an awaited promise in any other context. Optionally, the rule can require awaiting returned promises in all contexts, or disallow them in all contexts.
+This rule builds on top of the [`eslint/no-return-await`](https://eslint.org/docs/rules/no-return-await) rule.
+It expands upon the base rule to add support for optionally requiring `return await` in certain cases.
 
-## Options
+## How to use
 
-`in-try-catch` (default): `await`-ing a returned promise is required in `try-catch-finally` blocks and disallowed elsewhere.
-
-`always`: `await`-ing a returned promise is required everywhere.
-
-`never`: `await`-ing a returned promise is disallowed everywhere.
-
-```typescript
-// valid in-try-catch
-async function validInTryCatch1() {
-  try {
-    return await Promise.resolve('try');
-  } catch (e) {}
-}
-
-async function validInTryCatch2() {
-  return Promise.resolve('try');
-}
-
-async function validInTryCatch3() {
-  return 'value';
-}
-
-// valid always
-async function validAlways1() {
-  try {
-    return await Promise.resolve('try');
-  } catch (e) {}
-}
-
-async function validAlways2() {
-  return await Promise.resolve('try');
-}
-
-async function validAlways3() {
-  return 'value';
-}
-
-// valid never
-async function validNever1() {
-  try {
-    return Promise.resolve('try');
-  } catch (e) {}
-}
-
-async function validNever2() {
-  return Promise.resolve('try');
-}
-
-async function validNever3() {
-  return 'value';
+```jsonc
+{
+  // note you must disable the base rule as it can report incorrect errors
+  "no-return-await": "off",
+  "@typescript-eslint/return-await": "error"
 }
 ```
 
-```typescript
-// invalid in-try-catch
+## Options
+
+```ts
+type Options = 'in-try-catch' | 'always' | 'never';
+
+const defaultOptions: Options = 'in-try-catch';
+```
+
+### `in-try-catch`
+
+Requires that a returned promise must be `await`ed in `try-catch-finally` blocks, and disallows it elsewhere.
+
+Examples of **incorrect** code with `in-try-catch`:
+
+```ts
 async function invalidInTryCatch1() {
   try {
     return Promise.resolve('try');
@@ -76,8 +45,33 @@ async function invalidInTryCatch2() {
 async function invalidInTryCatch3() {
   return await 'value';
 }
+```
 
-// invalid always
+Examples of **correct** code with `in-try-catch`:
+
+```ts
+async function validInTryCatch1() {
+  try {
+    return await Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validInTryCatch2() {
+  return Promise.resolve('try');
+}
+
+async function validInTryCatch3() {
+  return 'value';
+}
+```
+
+### `always`
+
+Requires that all returned promises are `await`ed.
+
+Examples of **incorrect** code with `always`:
+
+```ts
 async function invalidAlways1() {
   try {
     return Promise.resolve('try');
@@ -91,8 +85,33 @@ async function invalidAlways2() {
 async function invalidAlways3() {
   return await 'value';
 }
+```
 
-// invalid never
+Examples of **correct** code with `always`:
+
+```ts
+async function validAlways1() {
+  try {
+    return await Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validAlways2() {
+  return await Promise.resolve('try');
+}
+
+async function validAlways3() {
+  return 'value';
+}
+```
+
+### `never`
+
+Disallows all `await`ing any returned promises.
+
+Examples of **incorrect** code with `never`:
+
+```ts
 async function invalidNever1() {
   try {
     return await Promise.resolve('try');
@@ -108,16 +127,20 @@ async function invalidNever3() {
 }
 ```
 
-The rule also applies to `finally` blocks. So the following would be invalid with default options:
+Examples of **correct** code with `never`:
 
-```typescript
-async function invalid() {
+```ts
+async function validNever1() {
   try {
-    return await Promise.resolve('try');
-  } catch (e) {
-    return Promise.resolve('catch');
-  } finally {
-    // cleanup
-  }
+    return Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validNever2() {
+  return Promise.resolve('try');
+}
+
+async function validNever3() {
+  return 'value';
 }
 ```

@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree';
+import { TSESTree } from '../ts-estree';
 
 type PatternVisitorCallback = (
   pattern: TSESTree.Identifier,

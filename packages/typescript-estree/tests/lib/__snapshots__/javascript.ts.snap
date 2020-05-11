@@ -16491,6 +16491,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16506,8 +16507,8 @@ Object {
           4,
         ],
         "raw": "0b1n",
-        "type": "BigIntLiteral",
-        "value": "0b1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16588,6 +16589,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 2,
@@ -16603,8 +16605,8 @@ Object {
           2,
         ],
         "raw": "1n",
-        "type": "BigIntLiteral",
-        "value": "1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16685,6 +16687,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16700,8 +16703,8 @@ Object {
           4,
         ],
         "raw": "0x1n",
-        "type": "BigIntLiteral",
-        "value": "0x1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16782,6 +16785,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16797,8 +16801,8 @@ Object {
           4,
         ],
         "raw": "0o1n",
-        "type": "BigIntLiteral",
-        "value": "0o1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -80423,44 +80427,6 @@ Object {
             },
           },
           "object": Object {
-            "arguments": Array [
-              Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 7,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  7,
-                  12,
-                ],
-                "raw": "'foo'",
-                "type": "Literal",
-                "value": "foo",
-              },
-            ],
-            "callee": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 6,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 0,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                0,
-                6,
-              ],
-              "type": "Import",
-            },
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -80471,12 +80437,30 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               0,
               13,
             ],
-            "type": "CallExpression",
+            "source": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                7,
+                12,
+              ],
+              "raw": "'foo'",
+              "type": "Literal",
+              "value": "foo",
+            },
+            "type": "ImportExpression",
           },
           "optional": false,
           "property": Object {
@@ -80737,6 +80721,8 @@ Object {
   "type": "Program",
 }
 `;
+
+exports[`javascript fixtures/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `"Dynamic import must have one specifier as an argument."`;
 
 exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
@@ -108235,6 +108221,7 @@ exports[`javascript fixtures/modules/error-delete.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -108829,6 +108816,7 @@ exports[`javascript fixtures/modules/error-strict.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 26,
@@ -109472,6 +109460,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 30,
@@ -109734,6 +109723,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 21,
@@ -111891,6 +111881,8 @@ exports[`javascript fixtures/modules/export-from-batch.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "exportKind": "value",
+      "exported": null,
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -112043,6 +112035,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 28,
@@ -112286,6 +112279,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 35,
@@ -112565,6 +112559,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 31,
@@ -112844,6 +112839,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 40,
@@ -113212,6 +113208,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 24,
@@ -113455,6 +113452,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -113843,6 +113841,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 25,
@@ -114087,6 +114086,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -114240,6 +114240,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 24,
@@ -114465,6 +114466,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -114690,6 +114692,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -115057,6 +115060,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -115192,6 +115196,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 10,
@@ -115309,6 +115314,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 13,
@@ -115498,6 +115504,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -115776,6 +115783,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -116127,6 +116135,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 15,
@@ -116338,6 +116347,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 32,
@@ -116636,6 +116646,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -116788,6 +116799,7 @@ exports[`javascript fixtures/modules/import-default.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 22,
@@ -116976,6 +116988,7 @@ exports[`javascript fixtures/modules/import-default-and-named-specifiers.src 1`]
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -117289,6 +117302,7 @@ exports[`javascript fixtures/modules/import-default-and-namespace-specifiers.src
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 32,
@@ -117584,6 +117598,7 @@ exports[`javascript fixtures/modules/import-default-as.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 35,
@@ -117862,6 +117877,7 @@ exports[`javascript fixtures/modules/import-jquery.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 22,
@@ -118032,6 +118048,7 @@ exports[`javascript fixtures/modules/import-module.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 13,
@@ -118148,6 +118165,7 @@ exports[`javascript fixtures/modules/import-named-as-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 31,
@@ -118426,6 +118444,7 @@ exports[`javascript fixtures/modules/import-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 36,
@@ -118793,6 +118812,7 @@ exports[`javascript fixtures/modules/import-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 21,
@@ -118963,6 +118983,7 @@ exports[`javascript fixtures/modules/import-named-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 24,
@@ -119205,6 +119226,7 @@ exports[`javascript fixtures/modules/import-named-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -119536,6 +119558,7 @@ exports[`javascript fixtures/modules/import-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 30,
@@ -119885,6 +119908,7 @@ exports[`javascript fixtures/modules/import-namespace-specifier.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 27,
@@ -120109,6 +120133,7 @@ exports[`javascript fixtures/modules/import-null-as-nil.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 33,
@@ -120425,6 +120450,7 @@ Object {
         ],
         "type": "VariableDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 17,
@@ -120721,6 +120747,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 16,
@@ -120903,6 +120930,7 @@ exports[`javascript fixtures/modules/invalid-import-default-module-specifier.src
 Object {
   "body": Array [
     Object {
+      "importKind": "value",
       "loc": Object {
         "end": Object {
           "column": 20,
@@ -121093,6 +121121,7 @@ Object {
   "body": Array [
     Object {
       "declaration": null,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 21,

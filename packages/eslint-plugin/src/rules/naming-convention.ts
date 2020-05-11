@@ -21,7 +21,6 @@ enum PredefinedFormats {
   strictCamelCase = 1 << 1,
   PascalCase = 1 << 2,
   StrictPascalCase = 1 << 3,
-  // eslint-disable-next-line @typescript-eslint/camelcase
   snake_case = 1 << 4,
   UPPER_CASE = 1 << 5,
 }
@@ -349,7 +348,7 @@ export default util.createRule<Options, MessageIds>({
       unexpectedUnderscore:
         '{{type}} name {{name}} must not have a {{position}} underscore.',
       missingUnderscore:
-        '{{type}} name {{name}} must have a {{position}} underscore',
+        '{{type}} name {{name}} must have a {{position}} underscore.',
       missingAffix:
         '{{type}} name {{name}} must have one of the following {{position}}es: {{affixes}}',
       satisfyCustom:
@@ -1080,14 +1079,12 @@ https://gist.github.com/mathiasbynens/6334847
 function isPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && !name.includes('_'))
   );
 }
 function isStrictPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && hasStrictCamelHumps(name, true))
   );
 }
@@ -1095,14 +1092,12 @@ function isStrictPascalCase(name: string): boolean {
 function isCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && !name.includes('_'))
   );
 }
 function isStrictCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && hasStrictCamelHumps(name, false))
   );
 }

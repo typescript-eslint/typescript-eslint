@@ -44,6 +44,10 @@ const foo = 3 as number;
 ```
 
 ```ts
+const foo = 'foo' as const;
+```
+
+```ts
 function foo(x: number | undefined): number {
   return x!;
 }

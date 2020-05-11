@@ -12,14 +12,14 @@ export default util.createRule({
     docs: {
       description: 'Prefer usage of `as const` over literal type',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
       preferConstAssertion:
-        'Expected a `const` instead of a literal type assertion',
+        'Expected a `const` instead of a literal type assertion.',
       variableConstAssertion:
-        'Expected a `const` assertion instead of a literal type annotation',
+        'Expected a `const` assertion instead of a literal type annotation.',
       variableSuggest: 'You should use `as const` instead of type annotation.',
     },
     schema: [],

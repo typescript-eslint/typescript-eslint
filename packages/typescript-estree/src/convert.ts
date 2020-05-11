@@ -18,16 +18,16 @@ import {
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
-  unescapeStringLiteralText,
   TSError,
+  unescapeStringLiteralText,
 } from './node-utils';
+import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
   AST_NODE_TYPES,
   TSESTree,
   TSNode,
   TSESTreeToTSNode,
 } from './ts-estree';
-import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -172,11 +172,15 @@ export class Converter {
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       } else {
+        const isType =
+          result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+          result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
           declaration: result,
           specifiers: [],
           source: null,
+          exportKind: isType ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
         });
       }
@@ -458,6 +462,12 @@ export class Converter {
     let result: TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier;
     switch (node.kind) {
       case SyntaxKind.PropertyAccessExpression:
+        if (node.name.kind === SyntaxKind.PrivateIdentifier) {
+          // This is one of the few times where TS explicitly errors, and doesn't even gracefully handle the syntax.
+          // So we shouldn't ever get into this state to begin with.
+          throw new Error('Non-private identifier expected.');
+        }
+
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
@@ -467,12 +477,14 @@ export class Converter {
           ) as TSESTree.JSXIdentifier,
         });
         break;
+
       case SyntaxKind.ThisKeyword:
         result = this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,
           name: 'this',
         });
         break;
+
       case SyntaxKind.Identifier:
       default:
         result = this.createNode<TSESTree.JSXIdentifier>(node, {
@@ -983,8 +995,12 @@ export class Converter {
       case SyntaxKind.GetAccessor:
       case SyntaxKind.SetAccessor:
       case SyntaxKind.MethodDeclaration: {
-        const method = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const method = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           generator: !!node.asteriskToken,
           expression: false, // ESTreeNode as ESTreeNode here
@@ -1064,11 +1080,8 @@ export class Converter {
           }
         }
 
-        if (
-          result.key.type === AST_NODE_TYPES.Identifier &&
-          node.questionToken
-        ) {
-          result.key.optional = true;
+        if (node.questionToken) {
+          result.optional = true;
         }
 
         if (node.kind === SyntaxKind.GetAccessor) {
@@ -1093,8 +1106,12 @@ export class Converter {
           (lastModifier && findNextToken(lastModifier, node, this.ast)) ||
           node.getFirstToken()!;
 
-        const constructor = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const constructor = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           params: this.convertParameters(node.parameters),
           generator: false,
@@ -1521,9 +1538,14 @@ export class Converter {
           type: AST_NODE_TYPES.ImportDeclaration,
           source: this.convertChild(node.moduleSpecifier),
           specifiers: [],
+          importKind: 'value',
         });
 
         if (node.importClause) {
+          if (node.importClause.isTypeOnly) {
+            result.importKind = 'type';
+          }
+
           if (node.importClause.name) {
             result.specifiers.push(this.convertChild(node.importClause));
           }
@@ -1569,19 +1591,30 @@ export class Converter {
         });
 
       case SyntaxKind.ExportDeclaration:
-        if (node.exportClause) {
+        if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
             source: this.convertChild(node.moduleSpecifier),
             specifiers: node.exportClause.elements.map(el =>
               this.convertChild(el),
             ),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
             declaration: null,
           });
         } else {
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
             type: AST_NODE_TYPES.ExportAllDeclaration,
             source: this.convertChild(node.moduleSpecifier),
+            exportKind: node.isTypeOnly ? 'type' : 'value',
+            exported:
+              // note - for compat with 3.7.x, where node.exportClause is always undefined and
+              //        SyntaxKind.NamespaceExport does not exist yet (i.e. is undefined), this
+              //        cannot be shortened to an optional chain, or else you end up with
+              //        undefined === undefined, and the true path will hard error at runtime
+              node.exportClause &&
+              node.exportClause.kind === SyntaxKind.NamespaceExport
+                ? this.convertChild(node.exportClause.name)
+                : null,
           });
         }
 
@@ -1778,6 +1811,20 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
+        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+          if (node.arguments.length !== 1) {
+            throw createError(
+              this.ast,
+              node.arguments.pos,
+              'Dynamic import must have one specifier as an argument.',
+            );
+          }
+          return this.createNode<TSESTree.ImportExpression>(node, {
+            type: AST_NODE_TYPES.ImportExpression,
+            source: this.convertChild(node.arguments[0]),
+          });
+        }
+
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;
@@ -1889,14 +1936,17 @@ export class Converter {
       }
 
       case SyntaxKind.BigIntLiteral: {
-        const result = this.createNode<TSESTree.BigIntLiteral>(node, {
-          type: AST_NODE_TYPES.BigIntLiteral,
-          raw: '',
-          value: '',
+        const range = getRange(node, this.ast);
+        const rawValue = this.ast.text.slice(range[0], range[1]);
+        const bigint = rawValue.slice(0, -1); // remove suffix `n`
+        const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
+        return this.createNode<TSESTree.BigIntLiteral>(node, {
+          type: AST_NODE_TYPES.Literal,
+          raw: rawValue,
+          value: value,
+          bigint: value === null ? bigint : String(value),
+          range,
         });
-        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        result.value = result.raw.slice(0, -1); // remove suffix `n`
-        return result;
       }
 
       case SyntaxKind.RegularExpressionLiteral: {

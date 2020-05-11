@@ -1,0 +1,106 @@
+{
+  "default": false,
+
+  // MD001/heading-increment/header-increment - Heading levels should only increment by one level at a time
+  "MD001": true,
+  // MD002/first-heading-h1/first-header-h1 - First heading should be a top level heading
+  "MD002": false,
+  // MD003/heading-style/header-style - Heading style
+  "MD003": false,
+  // MD004/ul-style - Unordered list style
+  "MD004": false,
+  // MD005/list-indent - Inconsistent indentation for list items at the same level
+  "MD005": false,
+  // MD006/ul-start-left - Consider starting bulleted lists at the beginning of the line
+  "MD006": false,
+  // MD007/ul-indent - Unordered list indentation
+  "MD007": false,
+  // MD009/no-trailing-spaces - Trailing spaces
+  "MD009": false,
+  // MD010/no-hard-tabs - Hard tabs
+  "MD010": false,
+  // MD011/no-reversed-links - Reversed link syntax
+  "MD011": true,
+  // MD012/no-multiple-blanks - Multiple consecutive blank lines
+  "MD012": false,
+  // MD013/line-length - Line length
+  "MD013": { "line_length": 99999 }, // no line length
+  // MD014/commands-show-output - Dollar signs used before commands without showing output
+  "MD014": false,
+  // MD018/no-missing-space-atx - No space after hash on atx style heading
+  "MD018": true,
+  // MD019/no-multiple-space-atx - Multiple spaces after hash on atx style heading
+  "MD019": false,
+  // MD020/no-missing-space-closed-atx - No space inside hashes on closed atx style heading
+  "MD020": false,
+  // MD021/no-multiple-space-closed-atx - Multiple spaces inside hashes on closed atx style heading
+  "MD021": false,
+  // MD022/blanks-around-headings/blanks-around-headers - Headings should be surrounded by blank lines
+  "MD022": true,
+  // MD023/heading-start-left/header-start-left - Headings must start at the beginning of the line
+  "MD023": false,
+  // MD024/no-duplicate-heading/no-duplicate-header - Multiple headings with the same content
+  "MD024": false,
+  // MD025/single-title/single-h1 - Multiple top level headings in the same document
+  "MD025": true,
+  // MD026/no-trailing-punctuation - Trailing punctuation in heading
+  "MD026": { "punctuation": ".,;:!。，；：！？" }, // specifically allow "?"
+  // MD027/no-multiple-space-blockquote - Multiple spaces after blockquote symbol
+  "MD027": false,
+  // MD028/no-blanks-blockquote - Blank line inside blockquote
+  "MD028": true,
+  // MD029/ol-prefix - Ordered list item prefix
+  "MD029": false,
+  // MD030/list-marker-space - Spaces after list markers
+  "MD030": true,
+  // MD031/blanks-around-fences - Fenced code blocks should be surrounded by blank lines
+  "MD031": false,
+  // MD032/blanks-around-lists - Lists should be surrounded by blank lines
+  "MD032": false,
+  // MD033/no-inline-html - Inline HTML
+  "MD033": {
+    "allowed_elements": [
+      "a",
+      "img",
+      "br",
+      "sup",
+      "h1",
+      "p",
+      "details",
+      "summary"
+    ]
+  },
+  // MD034/no-bare-urls - Bare URL used
+  "MD034": false,
+  // MD035/hr-style - Horizontal rule style
+  "MD035": false,
+  // MD036/no-emphasis-as-heading/no-emphasis-as-header - Emphasis used instead of a heading
+  "MD036": true,
+  // MD037/no-space-in-emphasis - Spaces inside emphasis markers
+  "MD037": true,
+  // MD038/no-space-in-code - Spaces inside code span elements
+  "MD038": true,
+  // MD039/no-space-in-links - Spaces inside link text
+  "MD039": true,
+  // MD040/fenced-code-language - Fenced code blocks should have a language specified
+  "MD040": true,
+  // MD041/first-line-heading/first-line-h1 - First line in file should be a top level heading
+  "MD041": false, // would love to do this, but our README files use `<h1 center>` as their heading
+  // MD042/no-empty-links - No empty links
+  "MD042": true,
+  // MD043/required-headings/required-headers - Required heading structure
+  "MD043": false,
+  // MD044/proper-names - Proper names should have the correct capitalization
+  "MD044": {
+    "names": ["JavaScript", "TypeScript", "TSLint", "ESLint"],
+    "code_blocks": false
+  },
+  // MD045/no-alt-text - Images should have alternate text (alt text)
+  "MD045": true,
+  // MD046/code-block-style - Code block style
+  "MD046": { "style": "fenced" },
+  // MD047/single-trailing-newline - Files should end with a single newline character
+  "MD047": false,
+  // MD048/code-fence-style - Code fence style
+  "MD048": { "style": "backtick" }
+}

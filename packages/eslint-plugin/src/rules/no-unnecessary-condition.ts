@@ -11,6 +11,7 @@ import {
   isBooleanLiteralType,
   isLiteralType,
   getCallSignaturesOfType,
+  isStrictCompilerOptionEnabled,
 } from 'tsutils';
 import {
   createRule,
@@ -21,6 +22,9 @@ import {
   NullThrowsReasons,
 } from '../util';
 
+const typeContainsFlag = (type: ts.Type, flag: ts.TypeFlags): boolean => {
+  return unionTypeParts(type).some(t => isTypeFlagSet(t, flag));
+};
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
@@ -60,7 +64,6 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
-    ignoreRhs?: boolean;
   },
 ];
 
@@ -72,6 +75,7 @@ export type MessageId =
   | 'neverNullish'
   | 'alwaysNullish'
   | 'literalBooleanExpression'
+  | 'noOverlapBooleanExpression'
   | 'never'
   | 'neverOptionalChain';
 export default createRule<Options, MessageId>({
@@ -92,9 +96,6 @@ export default createRule<Options, MessageId>({
           allowConstantLoopConditions: {
             type: 'boolean',
           },
-          ignoreRhs: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -104,15 +105,17 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysTruthyFunc:
-        'This callback should return a conditional, but return is always truthy',
+        'This callback should return a conditional, but return is always truthy.',
       alwaysFalsyFunc:
-        'This callback should return a conditional, but return is always falsy',
+        'This callback should return a conditional, but return is always falsy.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
       alwaysNullish:
-        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`',
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values',
+      noOverlapBooleanExpression:
+        'Unnecessary conditional, the types have no overlap',
       never: 'Unnecessary conditional, value is `never`',
       neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
     },
@@ -120,13 +123,13 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
-      ignoreRhs: false,
     },
   ],
-  create(context, [{ allowConstantLoopConditions, ignoreRhs }]) {
+  create(context, [{ allowConstantLoopConditions }]) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
+    const compilerOptions = service.program.getCompilerOptions();
 
     function getNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -135,7 +138,25 @@ export default createRule<Options, MessageId>({
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getNodeType(node);
-      return checker.isArrayType(nodeType) || checker.isTupleType(nodeType);
+      return checker.isArrayType(nodeType);
+    }
+    function nodeIsTupleType(node: TSESTree.Expression): boolean {
+      const nodeType = getNodeType(node);
+      return checker.isTupleType(nodeType);
+    }
+
+    function isArrayIndexExpression(node: TSESTree.Expression): boolean {
+      return (
+        // Is an index signature
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        node.computed &&
+        // ...into an array type
+        (nodeIsArrayType(node.object) ||
+          // ... or a tuple type
+          (nodeIsTupleType(node.object) &&
+            // Exception: literal index into a tuple - will have a sound type
+            node.property.type !== AST_NODE_TYPES.Literal))
+      );
     }
 
     /**
@@ -143,6 +164,19 @@ export default createRule<Options, MessageId>({
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(node: TSESTree.Expression): void {
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (isArrayIndexExpression(node)) {
+        return;
+      }
+
+      // When checking logical expressions, only check the right side
+      //  as the left side has been checked by checkLogicalExpressionForUnnecessaryConditionals
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        return checkNode(node.right);
+      }
+
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
@@ -173,6 +207,12 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (isArrayIndexExpression(node)) {
+        return;
+      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
@@ -197,6 +237,9 @@ export default createRule<Options, MessageId>({
      *
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
+     *    Known exceptions:
+     *      * https://github.com/microsoft/TypeScript/issues/32627
+     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',
@@ -211,27 +254,31 @@ export default createRule<Options, MessageId>({
     function checkIfBinaryExpressionIsNecessaryConditional(
       node: TSESTree.BinaryExpression,
     ): void {
-      if (
-        BOOL_OPERATORS.has(node.operator) &&
-        isLiteral(getNodeType(node.left)) &&
-        isLiteral(getNodeType(node.right))
-      ) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
-      }
-    }
-
-    /**
-     * Checks that a testable expression is necessarily conditional, reports otherwise.
-     * Filters all LogicalExpressions to prevent some duplicate reports.
-     */
-    function checkIfTestExpressionIsNecessaryConditional(
-      node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
-    ): void {
-      if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
+      if (!BOOL_OPERATORS.has(node.operator)) {
         return;
       }
-
-      checkNode(node.test);
+      const leftType = getNodeType(node.left);
+      const rightType = getNodeType(node.right);
+      if (isLiteral(leftType) && isLiteral(rightType)) {
+        context.report({ node, messageId: 'literalBooleanExpression' });
+        return;
+      }
+      // Workaround for https://github.com/microsoft/TypeScript/issues/37160
+      if (isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')) {
+        const UNDEFINED = ts.TypeFlags.Undefined;
+        const NULL = ts.TypeFlags.Null;
+        if (
+          (leftType.flags === UNDEFINED &&
+            !typeContainsFlag(rightType, UNDEFINED)) ||
+          (rightType.flags === UNDEFINED &&
+            !typeContainsFlag(leftType, UNDEFINED)) ||
+          (leftType.flags === NULL && !typeContainsFlag(rightType, NULL)) ||
+          (rightType.flags === NULL && !typeContainsFlag(leftType, NULL))
+        ) {
+          context.report({ node, messageId: 'noOverlapBooleanExpression' });
+          return;
+        }
+      }
     }
 
     /**
@@ -244,10 +291,9 @@ export default createRule<Options, MessageId>({
         checkNodeForNullish(node.left);
         return;
       }
+      // Only checks the left side, since the right side might not be "conditional" at all.
+      // The right side will be checked if the LogicalExpression is used in a conditional context
       checkNode(node.left);
-      if (!ignoreRhs) {
-        checkNode(node.right);
-      }
     }
 
     /**
@@ -259,10 +305,8 @@ export default createRule<Options, MessageId>({
         | TSESTree.ForStatement
         | TSESTree.WhileStatement,
     ): void {
-      if (
-        node.test === null ||
-        node.test.type === AST_NODE_TYPES.LogicalExpression
-      ) {
+      if (node.test === null) {
+        // e.g. `for(;;)`
         return;
       }
 
@@ -296,7 +340,7 @@ export default createRule<Options, MessageId>({
         callee.property.type === AST_NODE_TYPES.Identifier &&
         ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
         // and the left-hand side is an array, according to the types
-        nodeIsArrayType(callee.object)
+        (nodeIsArrayType(callee.object) || nodeIsTupleType(callee.object))
       );
     }
     function checkCallExpression(node: TSESTree.CallExpression): void {
@@ -350,6 +394,33 @@ export default createRule<Options, MessageId>({
       }
     }
 
+    // Recursively searches an optional chain for an array index expression
+    //  Has to search the entire chain, because an array index will "infect" the rest of the types
+    //  Example:
+    //  ```
+    //  [{x: {y: "z"} }][n] // type is {x: {y: "z"}}
+    //    ?.x // type is {y: "z"}
+    //    ?.y // This access is considered "unnecessary" according to the types
+    //  ```
+    function optionChainContainsArrayIndex(
+      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+    ): boolean {
+      const lhsNode =
+        node.type === AST_NODE_TYPES.OptionalCallExpression
+          ? node.callee
+          : node.object;
+      if (isArrayIndexExpression(lhsNode)) {
+        return true;
+      }
+      if (
+        lhsNode.type === AST_NODE_TYPES.OptionalMemberExpression ||
+        lhsNode.type === AST_NODE_TYPES.OptionalCallExpression
+      ) {
+        return optionChainContainsArrayIndex(lhsNode);
+      }
+      return false;
+    }
+
     function checkOptionalChain(
       node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
       beforeOperator: TSESTree.Node,
@@ -358,6 +429,13 @@ export default createRule<Options, MessageId>({
       // We only care if this step in the chain is optional. If just descend
       // from an optional chain, then that's fine.
       if (!node.optional) {
+        return;
+      }
+
+      // Since typescript array index signature types don't represent the
+      //  possibility of out-of-bounds access, if we're indexing into an array
+      //  just skip the check, to avoid false positives
+      if (optionChainContainsArrayIndex(node)) {
         return;
       }
 
@@ -392,7 +470,7 @@ export default createRule<Options, MessageId>({
     function checkOptionalMemberExpression(
       node: TSESTree.OptionalMemberExpression,
     ): void {
-      checkOptionalChain(node, node.object, '.');
+      checkOptionalChain(node, node.object, node.computed ? '' : '.');
     }
 
     function checkOptionalCallExpression(
@@ -404,10 +482,10 @@ export default createRule<Options, MessageId>({
     return {
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
-      ConditionalExpression: checkIfTestExpressionIsNecessaryConditional,
+      ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
-      IfStatement: checkIfTestExpressionIsNecessaryConditional,
+      IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
       OptionalMemberExpression: checkOptionalMemberExpression,

@@ -1,0 +1,280 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      # TODO - delete this before merging v3 into master
+      - v3
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  PRIMARY_NODE_VERSION: 12
+
+jobs:
+  primary_code_validation_and_tests:
+    name: Typecheck and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: echo github.ref
+        run: echo ${{ github.ref }}
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      # Note that this command *also* type checks tests/tools,
+      # whereas the build only checks src files
+      - name: Typecheck all packages
+        run: yarn typecheck
+
+      - name: Run unit tests
+        run: yarn test
+        env:
+          CI: true
+
+      - name: Publish code coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          yml: ./codecov.yml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittest
+          name: codecov
+
+  linting_and_style:
+    name: Code style and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Check code formatting
+        run: yarn check:format
+
+      - name: Lint code
+        run: yarn lint
+
+      - name: Lint markdown
+        run: yarn lint:markdown
+
+      - name: Check spelling
+        run: yarn check:spelling
+
+  integration_tests:
+    name: Run integration tests on primary Node.js version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Run integrations tests
+        run: yarn test:integration
+        env:
+          CI: true
+
+  unit_tests_on_other_node_versions:
+    name: Run unit tests on other Node.js versions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Run unit tests
+        # the internal plugin is only run locally, so it doesn't have to support older versions
+        run: yarn test --ignore @typescript-eslint/eslint-plugin-internal
+        env:
+          CI: true
+
+  publish_canary_version:
+    name: Publish the latest code as a canary version
+    runs-on: ubuntu-latest
+    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Publish all packages to npm
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # TODO - delete this before merging v3 into master
+  publish_v3_prerelease_version:
+    name: Publish the latest code as a v3 prerelease version
+    runs-on: ubuntu-latest
+    needs: [primary_code_validation_and_tests, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
+    if: github.ref == 'refs/heads/v3'
+    steps:
+      - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Publish all packages to npm
+        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v3
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
