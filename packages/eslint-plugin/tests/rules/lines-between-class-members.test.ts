@@ -1,3 +1,7 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests the new lines, which prettier will want to fix and break the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
 import rule from '../../src/rules/lines-between-class-members';
 import { RuleTester } from '../RuleTester';
 
@@ -24,7 +28,7 @@ qux1() { }
 
 qux2() { }
 };
-        `,
+      `,
       options: ['always'],
     },
     {
@@ -55,7 +59,7 @@ bar(a: string, b:string) {
 baz() { }
 qux() { }
 };
-        `,
+      `,
       options: [
         'always',
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
@@ -76,7 +80,7 @@ baz() { }
 
 qux() { }
 };
-        `,
+      `,
       options: [
         'always',
         { exceptAfterOverload: false, exceptAfterSingleLine: false },
@@ -93,7 +97,7 @@ bar(a: string, b:string){
 baz() { }
 qux() { }
 };
-        `,
+      `,
       options: [
         'never',
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
@@ -110,7 +114,7 @@ bar(a: string, b:string){
 baz() { }
 qux() { }
 };
-        `,
+      `,
       options: [
         'never',
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
@@ -133,7 +137,7 @@ bar(a: string, b:string) {
 qux1() { }
 qux2() { }
 };
-        `,
+      `,
       output: `
 class foo {
 baz1() { }
@@ -150,7 +154,7 @@ qux1() { }
 
 qux2() { }
 };
-        `,
+      `,
       options: ['always'],
       errors: [
         {
@@ -207,7 +211,7 @@ bar(a: string, b:string) {
 baz() { }
 qux() { }
 }
-        `,
+      `,
       output: `
 class foo {
 bar(a: string): void;
@@ -219,7 +223,7 @@ bar(a: string, b:string) {
 baz() { }
 qux() { }
 }
-        `,
+      `,
       options: [
         'always',
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
@@ -242,7 +246,7 @@ bar(a: string, b:string) {
 baz() { }
 qux() { }
 }
-        `,
+      `,
       output: `
 class foo {
 bar(a: string): void;
@@ -257,7 +261,7 @@ baz() { }
 
 qux() { }
 }
-        `,
+      `,
       options: [
         'always',
         { exceptAfterOverload: false, exceptAfterSingleLine: false },
@@ -289,7 +293,7 @@ baz() { }
 
 qux() { }
 };
-        `,
+      `,
       output: `
 class foo{
 bar(a: string):void;
@@ -300,7 +304,7 @@ bar(a: string, b:string){
 baz() { }
 qux() { }
 };
-        `,
+      `,
       options: [
         'never',
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
