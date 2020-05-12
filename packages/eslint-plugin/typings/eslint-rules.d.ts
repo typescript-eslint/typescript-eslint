@@ -623,6 +623,25 @@ declare module 'eslint/lib/rules/no-extra-semi' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/lines-between-class-members' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'always' | 'never',
+    [
+      'always' | 'never',
+      {
+        exceptAfterSingleLine?: boolean;
+        exceptAfterOverload?: boolean;
+      }?,
+    ],
+    {
+      ClassBody(node: TSESTree.ClassBody): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/init-declarations' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 

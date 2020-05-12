@@ -100,6 +100,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import linesBetweenClassMembers from './lines-between-class-members';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -204,4 +205,5 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'lines-between-class-members': linesBetweenClassMembers,
 };

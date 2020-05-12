@@ -24,6 +24,8 @@
     "@typescript-eslint/func-call-spacing": "error",
     "indent": "off",
     "@typescript-eslint/indent": "error",
+    "lines-between-class-members": "off",
+    "@typescript-eslint/lines-between-class-members": "error",
     "init-declarations": "off",
     "@typescript-eslint/init-declarations": "error",
     "keyword-spacing": "off",
