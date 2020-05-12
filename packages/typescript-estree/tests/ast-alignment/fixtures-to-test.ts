@@ -285,6 +285,8 @@ tester.addFixturePatternConfig('javascript/modules', {
     'export-named-specifier',
     'export-named-specifiers-comma',
     'export-named-specifiers',
+    // babel treats declare as not a module
+    'import-module',
   ],
 });
 
@@ -450,6 +452,12 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration',
+    // babel treats declare and types as not a module
+    'export-declare-const-named-enum',
+    'export-declare-named-enum',
+    'type-alias-declaration-export-function-type',
+    'type-alias-declaration-export-object-type',
+    'type-alias-declaration-export',
   ],
 });
 
