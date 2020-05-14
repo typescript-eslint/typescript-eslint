@@ -27,6 +27,8 @@ const schema = util.deepMerge(
             'constructors',
             'private-constructors',
             'protected-constructors',
+            'asyncFunctions',
+            'asyncMethods',
           ],
         },
       },
