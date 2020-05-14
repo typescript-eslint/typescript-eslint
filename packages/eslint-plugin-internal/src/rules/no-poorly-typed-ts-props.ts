@@ -93,6 +93,7 @@ export default createRule({
             suggest: [
               {
                 messageId: 'suggestedFix',
+                data: banned,
                 fix(fixer): TSESLint.RuleFix | null {
                   if (banned.fixWith == null) {
                     return null;
