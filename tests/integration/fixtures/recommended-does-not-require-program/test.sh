@@ -14,7 +14,7 @@ npm install $(npm pack /usr/eslint-plugin | tail -1)
 
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
-npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.yml /usr/linked/**/*.ts || true
+npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.js /usr/linked/**/*.ts || true
 
 # Run our assertions against the linting output
 npx jest /usr/test.js --snapshotResolver=/usr/utils/jest-snapshot-resolver.js

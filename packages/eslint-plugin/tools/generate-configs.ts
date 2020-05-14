@@ -39,9 +39,10 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
 );
 const EXTENDS = ['./configs/base', './configs/eslint-recommended'];
 
-const ruleEntries = Object.entries(rules).sort((a, b) =>
-  a[0].localeCompare(b[0]),
-);
+const ruleEntries: [
+  string,
+  TSESLint.RuleModule<string, unknown[]>,
+][] = Object.entries(rules).sort((a, b) => a[0].localeCompare(b[0]));
 
 /**
  * Helper function reduces records to key - value pairs.

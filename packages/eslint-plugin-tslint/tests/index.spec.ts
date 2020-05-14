@@ -13,6 +13,7 @@ const ruleTester = new TSESLint.RuleTester({
      * within @typescript-eslint/parser
      */
     project: './tests/fixture-project/tsconfig.json',
+    warnOnUnsupportedTypeScriptVersion: false,
   },
   parser: require.resolve('@typescript-eslint/parser'),
 });
@@ -71,6 +72,7 @@ ruleTester.run('tslint/config', rule, {
     {
       options: [{ lintFile: './tests/test-project/tslint.json' }],
       code: 'throw "err" // no-string-throw',
+      output: 'throw new Error("err") // no-string-throw',
       filename: './tests/fixture-project/3.ts',
       errors: [
         {

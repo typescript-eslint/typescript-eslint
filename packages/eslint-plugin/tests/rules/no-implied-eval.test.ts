@@ -652,6 +652,120 @@ window['execScript'](\`\`);
       ],
     },
     {
+      code: `
+global.setTimeout(\`\`, 0);
+global['setTimeout'](\`\`, 0);
+
+global.setInterval(\`\`, 0);
+global['setInterval'](\`\`, 0);
+
+global.setImmediate(\`\`);
+global['setImmediate'](\`\`);
+
+global.execScript(\`\`);
+global['execScript'](\`\`);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 2,
+          column: 19,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 3,
+          column: 22,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 20,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 6,
+          column: 23,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 8,
+          column: 21,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 9,
+          column: 24,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 11,
+          column: 19,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 12,
+          column: 22,
+        },
+      ],
+    },
+    {
+      code: `
+globalThis.setTimeout(\`\`, 0);
+globalThis['setTimeout'](\`\`, 0);
+
+globalThis.setInterval(\`\`, 0);
+globalThis['setInterval'](\`\`, 0);
+
+globalThis.setImmediate(\`\`);
+globalThis['setImmediate'](\`\`);
+
+globalThis.execScript(\`\`);
+globalThis['execScript'](\`\`);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 2,
+          column: 23,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 3,
+          column: 26,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 24,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 6,
+          column: 27,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 8,
+          column: 25,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 9,
+          column: 28,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 11,
+          column: 23,
+        },
+        {
+          messageId: 'noImpliedEvalError',
+          line: 12,
+          column: 26,
+        },
+      ],
+    },
+    {
       code: 'const fn = Function();',
       errors: [
         {
