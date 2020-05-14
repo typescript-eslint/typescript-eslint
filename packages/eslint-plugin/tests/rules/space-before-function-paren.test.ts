@@ -3,14 +3,8 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import {
-  TSESLint,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import rule, {
-  MessageIds,
-  Options,
-} from '../../src/rules/space-before-function-paren';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import rule from '../../src/rules/space-before-function-paren';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
