@@ -7,7 +7,10 @@ export type Options = [
     allowNewlines?: boolean;
   }?,
 ];
-export type MessageIds = 'unexpected' | 'missing';
+export type MessageIds =
+  | 'unexpectedWhitespace'
+  | 'unexpectedNewline'
+  | 'missing';
 
 export default util.createRule<Options, MessageIds>({
   name: 'func-call-spacing',
@@ -56,8 +59,9 @@ export default util.createRule<Options, MessageIds>({
     },
 
     messages: {
-      unexpected:
-        'Unexpected space or newline between function name and paren.',
+      unexpectedWhitespace:
+        'Unexpected whitespace between function name and paren.',
+      unexpectedNewline: 'Unexpected newline between function name and paren.',
       missing: 'Missing space between function name and paren.',
     },
   },
@@ -110,7 +114,7 @@ export default util.createRule<Options, MessageIds>({
           return context.report({
             node,
             loc: lastCalleeToken.loc.start,
-            messageId: 'unexpected',
+            messageId: 'unexpectedWhitespace',
             fix(fixer) {
               /*
                * Only autofix if there is no newline
@@ -140,7 +144,7 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node,
             loc: lastCalleeToken.loc.start,
-            messageId: 'unexpected',
+            messageId: 'unexpectedWhitespace',
           });
         }
       } else {
@@ -157,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node,
             loc: lastCalleeToken.loc.start,
-            messageId: 'unexpected',
+            messageId: 'unexpectedNewline',
             fix(fixer) {
               return fixer.replaceTextRange(
                 [lastCalleeToken.range[1], openingParenToken.range[0]],
