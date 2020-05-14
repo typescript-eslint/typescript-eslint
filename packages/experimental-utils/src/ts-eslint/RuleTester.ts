@@ -4,49 +4,109 @@ import { ParserOptions } from './ParserOptions';
 import { RuleModule } from './Rule';
 
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
-  code: string;
-  options?: TOptions;
-  filename?: string;
-  parserOptions?: ParserOptions;
-  settings?: Record<string, unknown>;
-  parser?: string;
-  globals?: Record<string, boolean>;
-  env?: {
-    browser?: boolean;
-  };
+  /**
+   * Code for the test case.
+   */
+  readonly code: string;
+  /**
+   * Environments for the test case.
+   */
+  readonly env?: Readonly<Record<string, boolean>>;
+  /**
+   * The fake filename for the test case. Useful for rules that make assertion about filenames.
+   */
+  readonly filename?: string;
+  /**
+   * The additional global variables.
+   */
+  readonly globals?: Record<string, 'readonly' | 'writable' | 'off'>;
+  /**
+   * Options for the test case.
+   */
+  readonly options?: Readonly<TOptions>;
+  /**
+   * The absolute path for the parser.
+   */
+  readonly parser?: string;
+  /**
+   * Options for the parser.
+   */
+  readonly parserOptions?: Readonly<ParserOptions>;
+  /**
+   * Settings for the test case.
+   */
+  readonly settings?: Readonly<Record<string, unknown>>;
 }
 
 interface SuggestionOutput<TMessageIds extends string> {
-  messageId: TMessageIds;
-  data?: Record<string, unknown>;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: TMessageIds;
+  /**
+   * The data used to fill the message template.
+   */
+  readonly data?: Readonly<Record<string, unknown>>;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
    */
-  output: string;
+  readonly output: string;
+
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
-  // desc?: string;
+  // readonly desc?: string;
 }
 
 interface InvalidTestCase<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>
 > extends ValidTestCase<TOptions> {
-  errors: TestCaseError<TMessageIds>[];
-  output?: string | null;
+  /**
+   * Expected errors.
+   */
+  readonly errors: TestCaseError<TMessageIds>[];
+  /**
+   * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
+   */
+  readonly output?: string | null;
 }
 
 interface TestCaseError<TMessageIds extends string> {
-  messageId: TMessageIds;
+  /**
+   * The 1-based column number of the reported start location.
+   */
+  readonly column?: number;
+  /**
+   * The data used to fill the message template.
+   */
+  readonly data?: Readonly<Record<string, unknown>>;
+  /**
+   * The 1-based column number of the reported end location.
+   */
+  readonly endColumn?: number;
+  /**
+   * The 1-based line number of the reported end location.
+   */
+  readonly endLine?: number;
+  /**
+   * The 1-based line number of the reported start location.
+   */
+  readonly line?: number;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: TMessageIds;
+  /**
+   * Reported suggestions.
+   */
+  readonly suggestions?: SuggestionOutput<TMessageIds>[] | null;
+  /**
+   * The type of the reported AST node.
+   */
+  readonly type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
+
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
-  // message?: string;
-  data?: Record<string, unknown>;
-  type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
-  line?: number;
-  column?: number;
-  endLine?: number;
-  endColumn?: number;
-  suggestions?: SuggestionOutput<TMessageIds>[] | null;
+  // readonly message?: string | RegExp;
 }
 
 interface RunTests<
@@ -54,40 +114,55 @@ interface RunTests<
   TOptions extends Readonly<unknown[]>
 > {
   // RuleTester.run also accepts strings for valid cases
-  valid: (ValidTestCase<TOptions> | string)[];
-  invalid: InvalidTestCase<TMessageIds, TOptions>[];
+  readonly valid: (ValidTestCase<TOptions> | string)[];
+  readonly invalid: InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
   // should be require.resolve(parserPackageName)
-  parser: string;
-  parserOptions?: ParserOptions;
+  readonly parser: string;
+  readonly parserOptions?: Readonly<ParserOptions>;
 }
 
-// the cast on the extends is so that we don't want to have the built type defs to attempt to import eslint
-class RuleTester extends (ESLintRuleTester as {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new (...args: unknown[]): any;
-}) {
-  constructor(config?: RuleTesterConfig) {
-    super(config);
+declare class RuleTesterBase {
+  /**
+   * Creates a new instance of RuleTester.
+   * @param testerConfig extra configuration for the tester
+   */
+  constructor(testerConfig?: RuleTesterConfig);
 
-    // nobody will ever need watching in tests
-    // so we can give everyone a perf win by disabling watching
-    if (config?.parserOptions?.project) {
-      config.parserOptions.noWatch =
-        typeof config.parserOptions.noWatch === 'boolean' || true;
-    }
-  }
-
+  /**
+   * Adds a new rule test to execute.
+   * @param ruleName The name of the rule to run.
+   * @param rule The rule to test.
+   * @param test The collection of tests to run.
+   */
   run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
-    name: string,
+    ruleName: string,
     rule: RuleModule<TMessageIds, TOptions>,
     tests: RunTests<TMessageIds, TOptions>,
-  ): void {
-    // this method is only defined here because we lazily type the eslint import with `any`
-    super.run(name, rule, tests);
-  }
+  ): void;
+
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   * @param text a string describing the rule
+   * @param callback the test callback
+   */
+  static describe?: (text: string, callback: () => void) => void;
+
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   * @param text a string describing the test case
+   * @param callback the test callback
+   */
+  static it?: (text: string, callback: () => void) => void;
 }
+
+/**
+ * @deprecated - use RuleTesterSafe instead
+ */
+class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {
   InvalidTestCase,
