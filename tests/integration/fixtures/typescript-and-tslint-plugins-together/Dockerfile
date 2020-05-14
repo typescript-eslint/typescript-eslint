@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:erbium
 
 # Copy the test.sh into the container. Every other file will be linked, rather
 # than copied to allow for changes without rebuilds wherever possible
