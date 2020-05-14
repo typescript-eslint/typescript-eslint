@@ -221,7 +221,7 @@ class Test {
 }
     `,
     // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
-    'export default function<T>(foo: T) {}',
+    'export default function <T>(foo: T) {}',
     'export default function named<T>(foo: T) {}',
     `
 interface Foo {

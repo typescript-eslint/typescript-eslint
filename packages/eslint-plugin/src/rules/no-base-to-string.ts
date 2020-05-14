@@ -93,12 +93,16 @@ export default util.createRule<Options, MessageIds>({
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
       const toString = typeChecker.getPropertyOfType(type, 'toString');
-      if (toString === undefined || toString.declarations.length === 0) {
+      const declarations = toString?.getDeclarations();
+      if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
       }
 
       // Patch for old version TypeScript, the Boolean type definition missing toString()
-      if (type.flags & ts.TypeFlags.BooleanLiteral) {
+      if (
+        type.flags & ts.TypeFlags.Boolean ||
+        type.flags & ts.TypeFlags.BooleanLiteral
+      ) {
         return Usefulness.Always;
       }
 
@@ -107,7 +111,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       if (
-        toString.declarations.every(
+        declarations.every(
           ({ parent }) =>
             !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
         )
@@ -119,10 +123,27 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Never;
       }
 
+      let allSubtypesUseful = true;
+      let someSubtypeUseful = false;
+
       for (const subType of type.types) {
-        if (collectToStringCertainty(subType) !== Usefulness.Never) {
-          return Usefulness.Sometimes;
+        const subtypeUsefulness = collectToStringCertainty(subType);
+
+        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
+          allSubtypesUseful = false;
         }
+
+        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
+          someSubtypeUseful = true;
+        }
+      }
+
+      if (allSubtypesUseful && someSubtypeUseful) {
+        return Usefulness.Always;
+      }
+
+      if (someSubtypeUseful) {
+        return Usefulness.Sometimes;
       }
 
       return Usefulness.Never;
