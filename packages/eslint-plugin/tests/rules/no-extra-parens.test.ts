@@ -234,6 +234,14 @@ for (a in (b));
 for (a of (b));
 typeof (a);
       `,
+      output: `
+a = b * c;
+a * b + c;
+for (a in b, c);
+for (a in b);
+for (a of b);
+typeof a;
+      `,
       errors: [
         {
           messageId: 'unexpected',
@@ -272,6 +280,10 @@ typeof (a);
 const Component = (<div />)
 const Component = (<div><p /></div>)
       `,
+      output: `
+const Component = <div />
+const Component = <div><p /></div>
+      `,
       options: ['all', { ignoreJSX: 'multi-line' }],
       errors: [
         {
@@ -299,6 +311,18 @@ const Component = (
     />
 )
       `,
+      output: `
+const Component =${' '}
+    <div>
+        <p />
+    </div>
+
+const Component =${' '}
+    <div
+        prop={true}
+    />
+
+      `,
       options: ['all', { ignoreJSX: 'single-line' }],
       errors: [
         {
@@ -317,6 +341,10 @@ const Component = (
       code: `
 ((function foo() {}))();
 var y = (function () {return 1;});
+      `,
+      output: `
+(function foo() {})();
+var y = function () {return 1;};
       `,
       options: ['functions'],
       errors: [

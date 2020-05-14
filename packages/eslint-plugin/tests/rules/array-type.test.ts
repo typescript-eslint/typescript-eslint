@@ -717,6 +717,7 @@ function fooFunction(foo: ArrayClass<string>[]) {
     },
     {
       code: 'let fooVar: Array[];',
+      output: 'let fooVar: any[][];',
       options: [{ default: 'array' }],
       errors: [
         {
@@ -729,6 +730,7 @@ function fooFunction(foo: ArrayClass<string>[]) {
     },
     {
       code: 'let fooVar: Array[];',
+      output: 'let fooVar: any[][];',
       options: [{ default: 'array-simple' }],
       errors: [
         {

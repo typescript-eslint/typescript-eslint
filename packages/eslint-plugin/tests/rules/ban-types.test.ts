@@ -101,6 +101,7 @@ ruleTester.run('ban-types', rule, {
   invalid: [
     {
       code: 'let a: String;',
+      output: 'let a: string;',
       errors: [
         {
           messageId: 'bannedTypeMessage',

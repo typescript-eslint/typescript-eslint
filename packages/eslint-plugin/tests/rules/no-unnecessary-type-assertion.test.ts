@@ -1,6 +1,6 @@
 import path from 'path';
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
@@ -184,6 +184,10 @@ const c = <const>[...a, ...b];
 const foo = 3;
 const bar = foo!;
       `,
+      output: `
+const foo = 3;
+const bar = foo;
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -196,6 +200,9 @@ const bar = foo!;
       code: `
 const foo = (3 + 5) as number;
       `,
+      output: noFormat`
+const foo = (3 + 5);
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -207,6 +214,9 @@ const foo = (3 + 5) as number;
     {
       code: `
 const foo = <number>(3 + 5);
+      `,
+      output: noFormat`
+const foo = (3 + 5);
       `,
       errors: [
         {
@@ -221,6 +231,10 @@ const foo = <number>(3 + 5);
 type Foo = number;
 const foo = (3 + 5) as Foo;
       `,
+      output: noFormat`
+type Foo = number;
+const foo = (3 + 5);
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
@@ -233,6 +247,10 @@ const foo = (3 + 5) as Foo;
       code: `
 type Foo = number;
 const foo = <Foo>(3 + 5);
+      `,
+      output: noFormat`
+type Foo = number;
+const foo = (3 + 5);
       `,
       errors: [
         {
