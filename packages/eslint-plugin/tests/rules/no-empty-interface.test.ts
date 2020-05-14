@@ -64,6 +64,13 @@ interface Foo {
 
 interface Bar extends Foo {}
       `,
+      output: noFormat`
+interface Foo {
+  name: string;
+}
+
+type Bar = Foo
+      `,
       options: [{ allowSingleExtends: false }],
       errors: [
         {

@@ -592,6 +592,7 @@ ruleTester.run('return-await', rule, {
     {
       options: ['always'],
       code: 'const test = async () => Promise.resolve(1);',
+      output: 'const test = async () => await Promise.resolve(1);',
       errors: [
         {
           line: 1,

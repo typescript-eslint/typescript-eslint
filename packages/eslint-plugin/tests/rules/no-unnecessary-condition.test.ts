@@ -501,6 +501,13 @@ if (x[0]) {
 if (x[0]?.foo) {
 }
       `,
+      output: `
+const x = [{}] as [{ foo: string }];
+if (x[0]) {
+}
+if (x[0].foo) {
+}
+      `,
       errors: [
         ruleError(3, 5, 'alwaysTruthy'),
         ruleError(5, 9, 'neverOptionalChain'),

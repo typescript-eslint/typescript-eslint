@@ -19,7 +19,11 @@ module.exports = {
   ],
   parserOptions: {
     sourceType: 'module',
-    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    project: [
+      './tsconfig.eslint.json',
+      './tests/integration/utils/jsconfig.json',
+      './packages/*/tsconfig.json',
+    ],
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
   },
