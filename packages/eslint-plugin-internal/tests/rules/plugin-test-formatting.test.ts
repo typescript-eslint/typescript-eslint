@@ -419,6 +419,27 @@ ruleTester.run({
   ],
 });
       `,
+      output: `
+ruleTester.run({
+  valid: [],
+  invalid: [
+    {
+      code: 'const x = 1;',
+      errors: [
+        {
+          messageId: 'foo',
+          suggestions: [
+            {
+              messageId: 'bar',
+              output: 'const x = 1;',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+      `,
       errors: [
         {
           messageId: 'invalidFormattingErrorTest',
@@ -457,6 +478,40 @@ ruleTester.run({
     {
       code: \`
       foo\`,
+    },
+  ],
+});
+      `,
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo',
+    },
+    {
+      code: \`
+foo
+\`,
+    },
+    {
+      code: \`
+      foo
+\`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo',
+    },
+    {
+      code: \`
+foo
+\`,
+    },
+    {
+      code: \`
+      foo
+\`,
     },
   ],
 });
@@ -508,6 +563,9 @@ ruleTester.run({
     },
     {
       code: wrap`\`const a = "1";
+${CODE_INDENT}\`.trimRight()`,
+      output: wrap`\`
+const a = "1";
 ${CODE_INDENT}\`.trimRight()`,
       errors: [
         {

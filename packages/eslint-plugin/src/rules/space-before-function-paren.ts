@@ -9,11 +9,11 @@ type FuncOption = Option | 'ignore';
 
 export type Options = [
   | Option
-  | Partial<{
-      anonymous: FuncOption;
-      named: FuncOption;
-      asyncArrow: FuncOption;
-    }>,
+  | {
+      anonymous?: FuncOption;
+      named?: FuncOption;
+      asyncArrow?: FuncOption;
+    },
 ];
 export type MessageIds = 'unexpected' | 'missing';
 
@@ -150,7 +150,10 @@ export default util.createRule<Options, MessageIds>({
       if (hasSpacing && functionConfig === 'never') {
         context.report({
           node,
-          loc: leftToken.loc.end,
+          loc: {
+            start: leftToken.loc.end,
+            end: rightToken.loc.start,
+          },
           messageId: 'unexpected',
           fix: fixer =>
             fixer.removeRange([leftToken.range[1], rightToken.range[0]]),
@@ -162,7 +165,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         context.report({
           node,
-          loc: leftToken.loc.end,
+          loc: rightToken.loc,
           messageId: 'missing',
           fix: fixer => fixer.insertTextAfter(leftToken, ' '),
         });

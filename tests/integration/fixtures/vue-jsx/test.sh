@@ -24,7 +24,7 @@ npm install vue-property-decorator@latest
 
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
-npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.yml /usr/linked/**/*.vue || true
+npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.js /usr/linked/**/*.vue || true
 
 # Run our assertions against the linting output
 npx jest /usr/test.js --snapshotResolver=/usr/utils/jest-snapshot-resolver.js

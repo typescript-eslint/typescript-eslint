@@ -15,22 +15,25 @@ const ruleTester = new RuleTester({
   },
 });
 
-/**
- * the base rule `quotes` doesn't use a message id
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useDoubleQuote: any = {
-  message: 'Strings must use doublequote.',
+const useDoubleQuote = {
+  messageId: 'wrongQuotes' as const,
+  data: {
+    description: 'doublequote',
+  },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useSingleQuote: any = {
-  message: 'Strings must use singlequote.',
+const useSingleQuote = {
+  messageId: 'wrongQuotes' as const,
+  data: {
+    description: 'singlequote',
+  },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useBacktick: any = {
-  message: 'Strings must use backtick.',
+const useBacktick = {
+  messageId: 'wrongQuotes' as const,
+  data: {
+    description: 'backtick',
+  },
 };
 
 ruleTester.run('quotes', rule, {

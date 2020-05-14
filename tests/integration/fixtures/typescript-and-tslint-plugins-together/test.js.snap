@@ -14,6 +14,7 @@ Array [
         "endLine": 1,
         "line": 1,
         "message": "'noSemi' is assigned a value but never used.",
+        "messageId": "unusedVar",
         "nodeType": "Identifier",
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 1,
@@ -39,6 +40,7 @@ Array [
     ],
     "source": "const noSemi = true
 ",
+    "usedDeprecatedRules": Array [],
     "warningCount": 1,
   },
 ]

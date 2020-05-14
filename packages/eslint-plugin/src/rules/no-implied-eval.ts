@@ -7,6 +7,7 @@ import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
+const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
 const EVAL_LIKE_METHODS = new Set([
   'setImmediate',
   'setInterval',
@@ -46,7 +47,7 @@ export default util.createRule({
       if (
         node.type === AST_NODE_TYPES.MemberExpression &&
         node.object.type === AST_NODE_TYPES.Identifier &&
-        node.object.name === 'window'
+        GLOBAL_CANDIDATES.has(node.object.name)
       ) {
         if (node.property.type === AST_NODE_TYPES.Identifier) {
           return node.property.name;

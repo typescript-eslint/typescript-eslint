@@ -14,6 +14,11 @@ class RuleTester extends TSESLint.RuleTester {
   constructor(private readonly options: RuleTesterConfig) {
     super({
       ...options,
+      parserOptions: {
+        ...options.parserOptions,
+        warnOnUnsupportedTypeScriptVersion:
+          options.parserOptions?.warnOnUnsupportedTypeScriptVersion ?? false,
+      },
       parser: require.resolve(options.parser),
     });
 

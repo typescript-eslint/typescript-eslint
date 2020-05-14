@@ -10,10 +10,8 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-// the base rule doesn't use a message id...
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const error: any = {
-  message: 'Useless constructor.',
+const error = {
+  messageId: 'noUselessConstructor' as const,
   type: AST_NODE_TYPES.MethodDefinition,
 };
 
