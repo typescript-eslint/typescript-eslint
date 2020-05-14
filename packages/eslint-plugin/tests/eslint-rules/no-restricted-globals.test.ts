@@ -64,10 +64,11 @@ fdescribe("foo", function() {
       options: ['event'],
       errors: [
         {
-          message: "Unexpected use of 'event'.",
-          // the base rule doesn't use messageId
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
+          messageId: 'defaultMessage',
+          data: {
+            name: 'event',
+          },
+        },
       ],
     },
     {
@@ -77,10 +78,11 @@ confirm("TEST");
       options: ['confirm'],
       errors: [
         {
-          message: "Unexpected use of 'confirm'.",
-          // the base rule doesn't use messageId
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
+          messageId: 'defaultMessage',
+          data: {
+            name: 'confirm',
+          },
+        },
       ],
     },
     {
@@ -90,10 +92,11 @@ var a = confirm("TEST")?.a;
       options: ['confirm'],
       errors: [
         {
-          message: "Unexpected use of 'confirm'.",
-          // the base rule doesn't use messageId
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
+          messageId: 'defaultMessage',
+          data: {
+            name: 'confirm',
+          },
+        },
       ],
     },
   ],
