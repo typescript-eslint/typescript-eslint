@@ -15,4 +15,16 @@ const {
   isObjectNotArray,
   getParserServices,
 } = ESLintUtils;
-export { applyDefault, deepMerge, isObjectNotArray, getParserServices };
+type InferMessageIdsTypeFromRule<T> = ESLintUtils.InferMessageIdsTypeFromRule<
+  T
+>;
+type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
+
+export {
+  applyDefault,
+  deepMerge,
+  isObjectNotArray,
+  getParserServices,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+};

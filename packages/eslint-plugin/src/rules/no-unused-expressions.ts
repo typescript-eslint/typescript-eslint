@@ -2,7 +2,10 @@ import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import baseRule from 'eslint/lib/rules/no-unused-expressions';
 import * as util from '../util';
 
-export default util.createRule({
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-unused-expressions',
   meta: {
     type: 'suggestion',
