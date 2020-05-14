@@ -189,7 +189,7 @@ ruleTester.run('space-before-function-paren', rule, {
           type: AST_NODE_TYPES.FunctionDeclaration,
           messageId: 'missing',
           line: 1,
-          column: 13,
+          column: 18,
         },
       ],
     },
@@ -534,14 +534,14 @@ ruleTester.run('space-before-function-paren', rule, {
       output: 'async () => 1',
       options: [{ asyncArrow: 'always' }],
       parserOptions: { ecmaVersion: 8 },
-      errors: ['Missing space before function parentheses.'],
+      errors: [{ messageId: 'missing' }],
     },
     {
       code: 'async () => 1',
       output: 'async() => 1',
       options: [{ asyncArrow: 'never' }],
       parserOptions: { ecmaVersion: 8 },
-      errors: ['Unexpected space before function parentheses.'],
+      errors: [{ messageId: 'unexpected' }],
     },
     {
       code: 'async() => 1',
@@ -578,5 +578,5 @@ ruleTester.run('space-before-function-paren', rule, {
         },
       ],
     },
-  ] as TSESLint.InvalidTestCase<MessageIds, Options>[],
+  ],
 });
