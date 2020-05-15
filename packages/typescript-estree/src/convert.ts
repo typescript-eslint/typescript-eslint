@@ -1992,11 +1992,6 @@ export class Converter {
         }
       }
 
-      case SyntaxKind.ImportKeyword:
-        return this.createNode<TSESTree.Import>(node, {
-          type: AST_NODE_TYPES.Import,
-        });
-
       case SyntaxKind.EmptyStatement:
         return this.createNode<TSESTree.EmptyStatement>(node, {
           type: AST_NODE_TYPES.EmptyStatement,

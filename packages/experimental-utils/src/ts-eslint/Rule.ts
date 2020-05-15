@@ -281,9 +281,9 @@ interface RuleListener {
   FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
-  Import?: RuleFunction<TSESTree.Import>;
   ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
   ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
+  ImportExpression?: RuleFunction<TSESTree.ImportExpression>;
   ImportNamespaceSpecifier?: RuleFunction<TSESTree.ImportNamespaceSpecifier>;
   ImportSpecifier?: RuleFunction<TSESTree.ImportSpecifier>;
   JSXAttribute?: RuleFunction<TSESTree.JSXAttribute>;

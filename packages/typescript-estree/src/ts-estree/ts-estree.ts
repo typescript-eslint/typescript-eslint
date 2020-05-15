@@ -172,7 +172,6 @@ export type Node =
   | FunctionExpression
   | Identifier
   | IfStatement
-  | Import
   | ImportDeclaration
   | ImportDefaultSpecifier
   | ImportExpression
@@ -447,7 +446,6 @@ export type PrimaryExpression =
   | ClassExpression
   | FunctionExpression
   | Identifier
-  | Import
   | JSXElement
   | JSXFragment
   | JSXOpeningElement
@@ -954,10 +952,6 @@ export interface IfStatement extends BaseNode {
   test: Expression;
   consequent: Statement;
   alternate: Statement | null;
-}
-
-export interface Import extends BaseNode {
-  type: AST_NODE_TYPES.Import;
 }
 
 export interface ImportDeclaration extends BaseNode {
