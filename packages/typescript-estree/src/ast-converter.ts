@@ -36,7 +36,7 @@ export function astConverter(
   /**
    * Optionally remove range and loc if specified
    */
-  if (extra.range || extra.loc) {
+  if (!extra.range || !extra.loc) {
     simpleTraverse(estree, {
       enter: node => {
         if (!extra.range) {
