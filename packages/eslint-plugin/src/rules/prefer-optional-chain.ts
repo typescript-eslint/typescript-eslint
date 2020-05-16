@@ -48,6 +48,7 @@ export default util.createRule<Options, MessageIds>({
         'Prefer using concise optional chain expressions instead of chained logical ands',
       category: 'Best Practices',
       recommended: false,
+      suggestion: true,
     },
     fixable: 'code',
     messages: {
