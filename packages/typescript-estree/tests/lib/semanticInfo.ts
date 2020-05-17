@@ -12,7 +12,7 @@ import {
   clearCaches,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
-} from '../../src/parser';
+} from '../../src';
 import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';

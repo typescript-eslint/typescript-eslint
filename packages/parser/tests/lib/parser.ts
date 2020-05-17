@@ -1,9 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
-import { parse, parseForESLint, Syntax } from '../../src/parser';
+import { parse, parseForESLint } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
-
-const { AST_NODE_TYPES } = typescriptESTree;
 
 describe('parser', () => {
   it('parse() should return just the AST from parseForESLint()', () => {
@@ -63,17 +61,6 @@ describe('parser', () => {
       jsx: false,
       ...config,
     });
-  });
-
-  it('Syntax should contain a frozen object of AST_NODE_TYPES', () => {
-    expect(Syntax).toEqual(AST_NODE_TYPES);
-    expect(
-      // intentionally breaking the readonly
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      () => ((Syntax as any).ArrayExpression = 'foo'),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `"Cannot assign to read only property 'ArrayExpression' of object '#<Object>'"`,
-    );
   });
 
   it('`warnOnUnsupportedTypeScriptVersion: false` should set `loggerFn: false` on typescript-estree', () => {

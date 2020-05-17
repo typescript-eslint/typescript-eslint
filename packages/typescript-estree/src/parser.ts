@@ -323,10 +323,6 @@ function warnAboutTSVersion(): void {
   }
 }
 
-//------------------------------------------------------------------------------
-// Parser
-//------------------------------------------------------------------------------
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
@@ -337,12 +333,6 @@ interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
-
-//------------------------------------------------------------------------------
-// Public
-//------------------------------------------------------------------------------
-
-const version: string = require('../package.json').version;
 
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
@@ -472,15 +462,4 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-export {
-  AST,
-  parse,
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-  version,
-};
-export { ParserServices, TSESTreeOptions } from './parser-options';
-export { simpleTraverse } from './simple-traverse';
-export { visitorKeys } from './visitor-keys';
-export * from './ts-estree';
-export { clearCaches } from './create-program/createWatchProgram';
+export { AST, parse, parseAndGenerateServices, ParseAndGenerateServicesResult };

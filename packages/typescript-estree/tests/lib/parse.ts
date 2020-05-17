@@ -1,6 +1,6 @@
 import debug from 'debug';
 import { join, resolve } from 'path';
-import * as parser from '../../src/parser';
+import * as parser from '../../src';
 import * as astConverter from '../../src/ast-converter';
 import { TSESTreeOptions } from '../../src/parser-options';
 import * as sharedParserUtils from '../../src/create-program/shared';

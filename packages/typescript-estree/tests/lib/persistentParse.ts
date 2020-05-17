@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { clearCaches, parseAndGenerateServices } from '../../src/parser';
+import { clearCaches, parseAndGenerateServices } from '../../src';
 
 const CONTENTS = {
   foo: 'console.log("foo")',

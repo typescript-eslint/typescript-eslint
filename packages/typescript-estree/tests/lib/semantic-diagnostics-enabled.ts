@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
-import * as parser from '../../src/parser';
+import * as parser from '../../src';
 import { extname } from 'path';
 import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 

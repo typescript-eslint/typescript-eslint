@@ -1,6 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import {
-  AST_NODE_TYPES,
   parseAndGenerateServices,
   ParserServices,
   TSESTreeOptions,
@@ -10,9 +9,6 @@ import {
 import { analyzeScope } from './analyze-scope';
 
 type ParserOptions = TSESLint.ParserOptions;
-
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-const packageJSON = require('../package.json');
 
 interface ParseForESLintResult {
   ast: TSESTree.Program & {
@@ -35,22 +31,14 @@ function validateBoolean(
   return value;
 }
 
-//------------------------------------------------------------------------------
-// Public
-//------------------------------------------------------------------------------
-
-export const version = packageJSON.version;
-
-export const Syntax = Object.freeze(AST_NODE_TYPES);
-
-export function parse(
+function parse(
   code: string,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
-export function parseForESLint(
+function parseForESLint(
   code: string,
   options?: ParserOptions | null,
 ): ParseForESLintResult {
@@ -98,5 +86,4 @@ export function parseForESLint(
   return { ast, services, scopeManager, visitorKeys };
 }
 
-export { ParserServices, ParserOptions };
-export { clearCaches } from '@typescript-eslint/typescript-estree';
+export { parse, parseForESLint, ParserOptions };
