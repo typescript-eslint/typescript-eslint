@@ -12,6 +12,7 @@ import commaSpacing from './comma-spacing';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
+import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
@@ -40,6 +41,8 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
+import noInvalidThis from './no-invalid-this';
+import noInvalidVoidType from './no-invalid-void-type';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -97,6 +100,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import linesBetweenClassMembers from './lines-between-class-members';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -113,6 +117,7 @@ export default {
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
+  'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
@@ -142,6 +147,8 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
   'no-inferrable-types': noInferrableTypes,
+  'no-invalid-this': noInvalidThis,
+  'no-invalid-void-type': noInvalidVoidType,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
@@ -198,4 +205,5 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'lines-between-class-members': linesBetweenClassMembers,
 };

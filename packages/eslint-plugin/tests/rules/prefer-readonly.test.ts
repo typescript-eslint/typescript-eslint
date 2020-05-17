@@ -14,7 +14,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('prefer-readonly', rule, {
   valid: [
     'function ignore() {}',
-    'const ignore = function() {};',
+    'const ignore = function () {};',
     'const ignore = () => {};',
     `
       const container = { member: true };

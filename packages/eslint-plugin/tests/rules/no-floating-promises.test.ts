@@ -368,7 +368,7 @@ async function test() {
       code: `
         const foo = () =>
           new Promise(res => {
-            (async function() {
+            (async function () {
               await res(1);
             })();
           });
@@ -377,7 +377,7 @@ async function test() {
     },
     {
       code: `
-        (async function() {
+        (async function () {
           await res(1);
         })();
       `,
@@ -826,7 +826,7 @@ async function test() {
       code: `
         const foo = () =>
           new Promise(res => {
-            (async function() {
+            (async function () {
               await res(1);
             })();
           });
@@ -840,7 +840,7 @@ async function test() {
     },
     {
       code: `
-        (async function() {
+        (async function () {
           await res(1);
         })();
       `,
@@ -853,7 +853,7 @@ async function test() {
     },
     {
       code: `
-        (async function() {
+        (async function () {
           Promise.resolve();
         })();
       `,
@@ -867,7 +867,7 @@ async function test() {
     },
     {
       code: `
-        (async function() {
+        (async function () {
           const promiseIntersection: Promise<number> & number;
           promiseIntersection;
           promiseIntersection.then(() => {});

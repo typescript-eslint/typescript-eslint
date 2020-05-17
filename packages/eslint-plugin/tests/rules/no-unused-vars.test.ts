@@ -135,7 +135,7 @@ bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = function<T>() {};
+const bar = function <T>() {};
 bar<Foo>();
     `,
     `

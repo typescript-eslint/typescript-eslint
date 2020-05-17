@@ -28,8 +28,8 @@ export default util.createRule<[Options], MessageIds>({
       recommended: false,
     },
     messages: {
-      expectedTypedef: 'expected a type annotation',
-      expectedTypedefNamed: 'expected {{name}} to have a type annotation',
+      expectedTypedef: 'Expected a type annotation.',
+      expectedTypedefNamed: 'Expected {{name}} to have a type annotation.',
     },
     schema: [
       {

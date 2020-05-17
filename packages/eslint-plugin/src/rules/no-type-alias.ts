@@ -262,7 +262,11 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         type.node.type.endsWith('Keyword') ||
-        aliasTypes.has(type.node.type)
+        aliasTypes.has(type.node.type) ||
+        (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
+          type.node.operator === 'readonly' &&
+          type.node.typeAnnotation &&
+          aliasTypes.has(type.node.typeAnnotation.type))
       ) {
         // alias / keyword
         checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');

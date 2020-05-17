@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.32.0...v2.33.0) (2020-05-12)
+
+
+### Bug Fixes
+
+* **experimental-utils:** remove accidental dep on json-schema ([#2010](https://github.com/typescript-eslint/typescript-eslint/issues/2010)) ([1875fba](https://github.com/typescript-eslint/typescript-eslint/commit/1875fbad41f2a3dda8f610f5dcd180c6205b73d3))
+
+
+
+
+
+# [2.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.31.0...v2.32.0) (2020-05-11)
+
+
+### Features
+
+* bump dependencies and align AST ([#2007](https://github.com/typescript-eslint/typescript-eslint/issues/2007)) ([18668b7](https://github.com/typescript-eslint/typescript-eslint/commit/18668b78fd7d1e5281af7fc26c76e0ca53297f69))
+
+
+
+
+
+# [2.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.30.0...v2.31.0) (2020-05-04)
+
+
+### Features
+
+* **experimental-utils:** expose our RuleTester extension ([#1948](https://github.com/typescript-eslint/typescript-eslint/issues/1948)) ([2dd1638](https://github.com/typescript-eslint/typescript-eslint/commit/2dd1638aaa2658ba99b2341861146b586f489121))
+
+
+
+
+
+# [2.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.29.0...v2.30.0) (2020-04-27)
+
+
+### Features
+
+* **experimental-utils:** allow rule options to be a readonly tuple ([#1924](https://github.com/typescript-eslint/typescript-eslint/issues/1924)) ([4ef6788](https://github.com/typescript-eslint/typescript-eslint/commit/4ef67884962b6aac61cc895aaa3ba16aa892ecf4))
+
+
+
+
+
 # [2.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.28.0...v2.29.0) (2020-04-20)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

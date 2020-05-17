@@ -209,6 +209,12 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         s.slice(-4, -1) === "bar"
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1690
+    `
+      function f(s: string) {
+        s.slice(1) === "bar"
+      }
+    `,
     `
       function f(s: string) {
         pattern.test(s)
@@ -872,7 +878,7 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     {
       code: `
         function f(s: string) {
-          s.slice(startIndex) === needle // 'startIndex' can be different
+          s.slice(-length) === needle // 'length' can be different
         }
       `,
       output: null,

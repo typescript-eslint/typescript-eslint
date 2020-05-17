@@ -623,6 +623,25 @@ declare module 'eslint/lib/rules/no-extra-semi' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/lines-between-class-members' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'always' | 'never',
+    [
+      'always' | 'never',
+      {
+        exceptAfterSingleLine?: boolean;
+        exceptAfterOverload?: boolean;
+      }?,
+    ],
+    {
+      ClassBody(node: TSESTree.ClassBody): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/init-declarations' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -636,6 +655,47 @@ declare module 'eslint/lib/rules/init-declarations' {
     ],
     {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-invalid-this' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    never,
+    [
+      {
+        capIsConstructor?: boolean;
+      }?,
+    ],
+    {
+      Program(node: TSESTree.Program): void;
+      'Program:exit'(node: TSESTree.Program): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      ThisExpression(node: TSESTree.ThisExpression): void;
+    }
+  >;
+  export = rule;
+}
+declare module 'eslint/lib/rules/dot-notation' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useDot' | 'useBrackets',
+    [
+      {
+        allowKeywords?: boolean;
+        allowPattern?: string;
+        allowPrivateClassPropertyAccess?: boolean;
+      },
+    ],
+    {
+      MemberExpression(node: TSESTree.MemberExpression): void;
     }
   >;
   export = rule;

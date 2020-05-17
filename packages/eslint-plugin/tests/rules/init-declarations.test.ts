@@ -22,7 +22,7 @@ function foo() {
   var bar = [];
 }
     `,
-    'var fn = function() {};',
+    'var fn = function () {};',
     'var foo = (bar = 2);',
     'for (var i = 0; i < 1; i++) {}',
     `
@@ -245,7 +245,7 @@ function foo() {
     },
     {
       code: `
-var bar: string = function(): string {
+var bar: string = function (): string {
   return 'string';
 };
       `,
@@ -253,7 +253,7 @@ var bar: string = function(): string {
     },
     {
       code: `
-var bar: string = function(arg1: stirng): string {
+var bar: string = function (arg1: stirng): string {
   return 'string';
 };
       `,
@@ -645,7 +645,7 @@ function foo() {
       ],
     },
     {
-      code: 'let arr: string = function() {};',
+      code: 'let arr: string = function () {};',
       options: ['never'],
       errors: [
         {

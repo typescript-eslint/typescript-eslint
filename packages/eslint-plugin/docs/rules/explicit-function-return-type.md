@@ -18,7 +18,7 @@ function test() {
 }
 
 // Should indicate that a number is returned
-var fn = function() {
+var fn = function () {
   return 1;
 };
 
@@ -42,7 +42,7 @@ function test(): void {
 }
 
 // A return value of type number
-var fn = function(): number {
+var fn = function (): number {
   return 1;
 };
 
@@ -77,6 +77,7 @@ const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
+  allowConciseArrowFunctionExpressionsStartingWithVoid: true,
 };
 ```
 
@@ -119,7 +120,7 @@ Examples of **correct** code for this rule with `{ allowExpressions: true }`:
 ```ts
 node.addEventListener('click', () => {});
 
-node.addEventListener('click', function() {});
+node.addEventListener('click', function () {});
 
 const foo = arr.map(i => i * i);
 ```
@@ -131,7 +132,7 @@ Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressio
 ```ts
 let arrowFn = () => 'test';
 
-let funcExpr = function() {
+let funcExpr = function () {
   return 'test';
 };
 
@@ -186,7 +187,7 @@ Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: 
 var arrowFn = () => () => {};
 
 function fn() {
-  return function() {};
+  return function () {};
 }
 ```
 
@@ -196,7 +197,7 @@ Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: tr
 var arrowFn = () => (): void => {};
 
 function fn() {
-  return function(): void {};
+  return function (): void {};
 }
 ```
 

@@ -1487,6 +1487,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
