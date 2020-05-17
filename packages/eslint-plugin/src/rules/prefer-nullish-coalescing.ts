@@ -10,10 +10,9 @@ export type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
-    forceSuggestionFixer?: boolean;
   },
 ];
-export type MessageIds = 'preferNullish';
+export type MessageIds = 'preferNullish' | 'suggestNullish';
 
 export default util.createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
@@ -27,10 +26,10 @@ export default util.createRule<Options, MessageIds>({
       suggestion: true,
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferNullish:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
+      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
     },
     schema: [
       {
@@ -54,19 +53,9 @@ export default util.createRule<Options, MessageIds>({
     {
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: true,
-      forceSuggestionFixer: false,
     },
   ],
-  create(
-    context,
-    [
-      {
-        ignoreConditionalTests,
-        ignoreMixedLogicalExpressions,
-        forceSuggestionFixer,
-      },
-    ],
-  ) {
+  create(context, [{ ignoreConditionalTests, ignoreMixedLogicalExpressions }]) {
     const parserServices = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
     const checker = parserServices.program.getTypeChecker();
@@ -119,23 +108,15 @@ export default util.createRule<Options, MessageIds>({
           yield fixer.replaceText(barBarOperator, '??');
         }
 
-        const fixer =
-          isMixedLogical || forceSuggestionFixer
-            ? // suggestion instead for cases where we aren't sure if the fixer is completely safe
-              ({
-                suggest: [
-                  {
-                    messageId: 'preferNullish',
-                    fix,
-                  },
-                ],
-              } as const)
-            : { fix };
-
         context.report({
           node: barBarOperator,
           messageId: 'preferNullish',
-          ...fixer,
+          suggest: [
+            {
+              messageId: 'suggestNullish',
+              fix,
+            },
+          ],
         });
       },
     };

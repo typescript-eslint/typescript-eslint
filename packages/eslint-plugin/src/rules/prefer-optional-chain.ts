@@ -31,15 +31,7 @@ The AST will look like this:
 }
 */
 
-type Options = [
-  {
-    suggestInsteadOfAutofix?: boolean;
-  },
-];
-
-type MessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
-
-export default util.createRule<Options, MessageIds>({
+export default util.createRule({
   name: 'prefer-optional-chain',
   meta: {
     type: 'suggestion',
@@ -50,30 +42,15 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       suggestion: true,
     },
-    fixable: 'code',
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
       optionalChainSuggest: 'Change to an optional chain.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          suggestInsteadOfAutofix: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
   },
-  defaultOptions: [
-    {
-      suggestInsteadOfAutofix: false,
-    },
-  ],
-  create(context, [options]) {
+  defaultOptions: [],
+  create(context) {
     const sourceCode = context.getSourceCode();
     return {
       [[
@@ -189,28 +166,18 @@ export default util.createRule<Options, MessageIds>({
             } ${sourceCode.getText(previous.right.right)}`;
           }
 
-          if (!options.suggestInsteadOfAutofix) {
-            context.report({
-              node: previous,
-              messageId: 'preferOptionalChain',
-              fix(fixer) {
-                return fixer.replaceText(previous, optionallyChainedCode);
+          context.report({
+            node: previous,
+            messageId: 'preferOptionalChain',
+            suggest: [
+              {
+                messageId: 'optionalChainSuggest',
+                fix: (fixer): TSESLint.RuleFix[] => [
+                  fixer.replaceText(previous, optionallyChainedCode),
+                ],
               },
-            });
-          } else {
-            context.report({
-              node: previous,
-              messageId: 'preferOptionalChain',
-              suggest: [
-                {
-                  messageId: 'optionalChainSuggest',
-                  fix: (fixer): TSESLint.RuleFix[] => [
-                    fixer.replaceText(previous, optionallyChainedCode),
-                  ],
-                },
-              ],
-            });
-          }
+            ],
+          });
         }
       },
     };

@@ -80,12 +80,6 @@ const baseCases = [
       'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz] && foo.bar.baz[buzz]()',
     output: 'foo?.bar?.baz?.[buzz]?.()',
   },
-  // two-for-one
-  {
-    code: 'foo && foo.bar && foo.bar.baz || baz && baz.bar && baz.bar.foo',
-    output: 'foo?.bar?.baz || baz?.bar?.foo',
-    errors: 2,
-  },
   // (partially) pre-optional chained
   {
     code:
@@ -104,10 +98,18 @@ const baseCases = [
   c =>
     ({
       code: c.code.trim(),
-      output: c.output.trim(),
-      errors: Array(c.errors ?? 1).fill({
-        messageId: 'preferOptionalChain',
-      }),
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: c.output.trim(),
+            },
+          ],
+        },
+      ],
     } as TSESLint.InvalidTestCase<
       InferMessageIdsTypeFromRule<typeof rule>,
       InferOptionsTypeFromRule<typeof rule>
@@ -149,12 +151,32 @@ ruleTester.run('prefer-optional-chain', rule, {
     ...baseCases.map(c => ({
       ...c,
       code: `${c.code} && bing`,
-      output: `${c.output} && bing`,
+      errors: [
+        {
+          ...c.errors[0],
+          suggestions: [
+            {
+              ...c.errors[0].suggestions![0],
+              output: `${c.errors[0].suggestions![0].output} && bing`,
+            },
+          ],
+        },
+      ],
     })),
     ...baseCases.map(c => ({
       ...c,
       code: `${c.code} && bing.bong`,
-      output: `${c.output} && bing.bong`,
+      errors: [
+        {
+          ...c.errors[0],
+          suggestions: [
+            {
+              ...c.errors[0].suggestions![0],
+              output: `${c.errors[0].suggestions![0].output} && bing.bong`,
+            },
+          ],
+        },
+      ],
     })),
     // strict nullish equality checks x !== null && x.y !== null
     ...baseCases.map(c => ({
@@ -173,24 +195,61 @@ ruleTester.run('prefer-optional-chain', rule, {
       ...c,
       code: c.code.replace(/&&/g, '!= undefined &&'),
     })),
+    // two  errors
+    {
+      code: noFormat`foo && foo.bar && foo.bar.baz || baz && baz.bar && baz.bar.foo`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`foo?.bar?.baz || baz && baz.bar && baz.bar.foo`,
+            },
+          ],
+        },
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`foo && foo.bar && foo.bar.baz || baz?.bar?.foo`,
+            },
+          ],
+        },
+      ],
+    },
     {
       // case with inconsistent checks
       code:
         'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
-      output: 'foo?.bar?.baz?.buzz;',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar?.baz?.buzz;',
+            },
+          ],
         },
       ],
     },
     // ensure essential whitespace isn't removed
     {
       code: 'foo && foo.bar(baz => <This Requires Spaces />);',
-      output: 'foo?.bar(baz => <This Requires Spaces />);',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar(baz => <This Requires Spaces />);',
+            },
+          ],
         },
       ],
       parserOptions: {
@@ -201,93 +260,147 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     {
       code: 'foo && foo.bar(baz => typeof baz);',
-      output: 'foo?.bar(baz => typeof baz);',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar(baz => typeof baz);',
+            },
+          ],
         },
       ],
     },
     {
       code: noFormat`foo && foo["some long string"] && foo["some long string"].baz`,
-      output: noFormat`foo?.["some long string"]?.baz`,
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`foo?.["some long string"]?.baz`,
+            },
+          ],
         },
       ],
     },
     {
       code: noFormat`foo && foo[\`some long string\`] && foo[\`some long string\`].baz`,
-      output: noFormat`foo?.[\`some long string\`]?.baz`,
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`foo?.[\`some long string\`]?.baz`,
+            },
+          ],
         },
       ],
     },
     {
       code: "foo && foo['some long string'] && foo['some long string'].baz;",
-      output: "foo?.['some long string']?.baz;",
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: "foo?.['some long string']?.baz;",
+            },
+          ],
         },
       ],
     },
     // should preserve comments in a call expression
     {
       code: noFormat`
-        foo && foo.bar(/* comment */a,
-          // comment2
-          b, );
-      `,
-      output: noFormat`
-        foo?.bar(/* comment */a,
-          // comment2
-          b, );
-      `,
+foo && foo.bar(/* comment */a,
+  // comment2
+  b, );
+      `.trimRight(),
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`
+foo?.bar(/* comment */a,
+  // comment2
+  b, );
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
     // ensure binary expressions that are the last expression do not get removed
     {
       code: 'foo && foo.bar != null;',
-      output: 'foo?.bar != null;',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar != null;',
+            },
+          ],
         },
       ],
     },
     {
       code: 'foo && foo.bar != undefined;',
-      output: 'foo?.bar != undefined;',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar != undefined;',
+            },
+          ],
         },
       ],
     },
     {
       code: 'foo && foo.bar != null && baz;',
-      output: 'foo?.bar != null && baz;',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar != null && baz;',
+            },
+          ],
         },
       ],
     },
     // other weird cases
     {
       code: 'foo && foo?.();',
-      output: 'foo?.();',
+      output: null,
       errors: [
         {
           messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.();',
+            },
+          ],
         },
       ],
     },
@@ -295,11 +408,6 @@ ruleTester.run('prefer-optional-chain', rule, {
     {
       code:
         'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
-      options: [
-        {
-          suggestInsteadOfAutofix: true,
-        },
-      ],
       output: null,
       errors: [
         {
@@ -317,11 +425,6 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     {
       code: 'foo && foo.bar(baz => <This Requires Spaces />);',
-      options: [
-        {
-          suggestInsteadOfAutofix: true,
-        },
-      ],
       output: null,
       errors: [
         {

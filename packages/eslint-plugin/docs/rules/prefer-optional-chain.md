@@ -70,20 +70,7 @@ foo?.a?.b?.method?.();
 foo?.a?.b?.c?.d?.e;
 ```
 
-## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, the rule will only provide suggested fixes instead of automatically modifying code
-  suggestInsteadOfAutofix?: boolean;
-};
-
-const defaults = {
-  suggestInsteadOfAutofix: false,
-};
-```
+**Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
 
 ## When Not To Use It
 
