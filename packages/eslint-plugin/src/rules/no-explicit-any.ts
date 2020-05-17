@@ -21,6 +21,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow usage of the `any` type',
       category: 'Best Practices',
       recommended: 'warn',
+      suggestion: true,
     },
     fixable: 'code',
     messages: {

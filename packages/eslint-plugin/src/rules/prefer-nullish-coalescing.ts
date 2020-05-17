@@ -24,6 +24,7 @@ export default util.createRule<Options, MessageIds>({
         'Enforce the usage of the nullish coalescing operator instead of logical chaining',
       category: 'Best Practices',
       recommended: false,
+      suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',
