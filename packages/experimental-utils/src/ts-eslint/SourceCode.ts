@@ -296,14 +296,29 @@ declare class SourceCodeBase extends TokenStore {
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
    * tokens overlap.
+   * This was added in v6.7.0.
+   * @since 6.7.0
    * @param first The first node or token to check between.
    * @param second The second node or token to check between.
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
-  isSpaceBetween(
+  isSpaceBetween?(
     first: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
     second: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
   ): boolean;
+  /**
+   * Determines if two nodes or tokens have at least one whitespace character
+   * between them. Order does not matter. Returns false if the given nodes or
+   * tokens overlap.
+   * For backward compatibility, this method returns true if there are
+   * `JSXText` tokens that contain whitespace between the two.
+   * @param first The first node or token to check between.
+   * @param second The second node or token to check between.
+   * @returns {boolean} True if there is a whitespace character between
+   * any of the tokens found between the two given nodes or tokens.
+   * @deprecated in favor of isSpaceBetween
+   */
+  isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
   /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.

@@ -159,9 +159,6 @@ declare class RuleTesterBase {
   static it?: (text: string, callback: () => void) => void;
 }
 
-/**
- * @deprecated - use RuleTesterSafe instead
- */
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {

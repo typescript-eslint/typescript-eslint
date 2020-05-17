@@ -346,6 +346,8 @@ namespace ESLint {
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
+ *
+ * @since 7.0.0
  */
 class ESLint extends (ESLintESLint as typeof ESLintBase) {}
 

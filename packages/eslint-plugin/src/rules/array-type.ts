@@ -147,7 +147,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const nextToken = sourceCode.getTokenAfter(prevToken);
-      if (nextToken && sourceCode.isSpaceBetween(prevToken, nextToken)) {
+      if (nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)) {
         return false;
       }
 
