@@ -15411,6 +15411,56 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/export-default-interface.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      50,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          50,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`typescript fixtures/basics/export-named-class-with-generic.src 1`] = `
 Object {
   "$id": 4,

@@ -99,7 +99,10 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Patch for old version TypeScript, the Boolean type definition missing toString()
-      if (type.flags & ts.TypeFlags.BooleanLiteral) {
+      if (
+        type.flags & ts.TypeFlags.Boolean ||
+        type.flags & ts.TypeFlags.BooleanLiteral
+      ) {
         return Usefulness.Always;
       }
 
@@ -120,10 +123,27 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Never;
       }
 
+      let allSubtypesUseful = true;
+      let someSubtypeUseful = false;
+
       for (const subType of type.types) {
-        if (collectToStringCertainty(subType) !== Usefulness.Never) {
-          return Usefulness.Sometimes;
+        const subtypeUsefulness = collectToStringCertainty(subType);
+
+        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
+          allSubtypesUseful = false;
         }
+
+        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
+          someSubtypeUseful = true;
+        }
+      }
+
+      if (allSubtypesUseful && someSubtypeUseful) {
+        return Usefulness.Always;
+      }
+
+      if (someSubtypeUseful) {
+        return Usefulness.Sometimes;
       }
 
       return Usefulness.Never;

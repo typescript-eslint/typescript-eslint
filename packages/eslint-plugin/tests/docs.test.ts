@@ -60,7 +60,7 @@ describe('Validating rule docs', () => {
 
       // Rule title not found.
       // Rule title does not match the rule metadata.
-      expect(tokens[0]).toEqual({
+      expect(tokens[0]).toMatchObject({
         type: 'heading',
         depth: 1,
         text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,

@@ -571,6 +571,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,

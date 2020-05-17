@@ -214,6 +214,10 @@ type Foo = Bar & string;
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
+      code: 'type Foo = string | readonly string[];',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
       code: 'type Foo = string | string[];',
       options: [{ allowAliases: 'in-unions' }],
     },

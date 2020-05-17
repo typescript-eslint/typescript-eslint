@@ -23,6 +23,7 @@ const literalListBasic: string[] = [
 ];
 
 const literalListNeedParen: string[] = [
+  "__dirname === 'foobar'",
   '{}.constructor()',
   '() => {}',
   'function() {}',
@@ -77,6 +78,14 @@ const literalWithToString = {
   toString: () => 'Hello, world!',
 };
 '' + literalToString;
+    `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
     `,
     'let _ = {} * {};',
     'let _ = {} / {};',

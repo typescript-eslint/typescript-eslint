@@ -164,7 +164,7 @@ function logsSize(size): void {
   console.log(size);
 }
 
-const doublesSize = function(size): number {
+const doublesSize = function (size): number {
   return size * 2;
 };
 
@@ -172,7 +172,7 @@ const divider = {
   curriesSize(size): number {
     return size;
   },
-  dividesSize: function(size): number {
+  dividesSize: function (size): number {
     return size / 2;
   },
 };
@@ -192,7 +192,7 @@ function logsSize(size: number): void {
   console.log(size);
 }
 
-const doublesSize = function(size: number): number {
+const doublesSize = function (size: number): number {
   return size * 2;
 };
 
@@ -200,7 +200,7 @@ const divider = {
   curriesSize(size: number): number {
     return size;
   },
-  dividesSize: function(size: number): number {
+  dividesSize: function (size: number): number {
     return size / 2;
   },
 };

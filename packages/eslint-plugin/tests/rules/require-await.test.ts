@@ -22,7 +22,7 @@ function numberOne(): number {
     `,
     // Non-async function expression
     `
-const numberOne = function(): number {
+const numberOne = function (): number {
   return 1;
 };
     `,
@@ -57,7 +57,7 @@ async function numberOne(): Promise<number> {
     `,
     // Async function expression with await
     `
-const numberOne = async function(): Promise<number> {
+const numberOne = async function (): Promise<number> {
   return await 1;
 };
     `,
@@ -77,7 +77,7 @@ async function numberOne(): Promise<number> {
     `,
     // Async function expression with promise return
     `
-const numberOne = async function(): Promise<number> {
+const numberOne = async function (): Promise<number> {
   return Promise.resolve(1);
 };
     `,
@@ -100,17 +100,17 @@ async function getAsyncNumber(x: number): Promise<number> {
     `,
     // Async function expression with async function return
     `
-const numberOne = async function(): Promise<number> {
+const numberOne = async function (): Promise<number> {
   return getAsyncNumber(1);
 };
-const getAsyncNumber = async function(x: number): Promise<number> {
+const getAsyncNumber = async function (x: number): Promise<number> {
   return Promise.resolve(x);
 };
     `,
     // Async arrow function with async function return (concise-body)
     `
 const numberOne = async (): Promise<number> => getAsyncNumber(1);
-const getAsyncNumber = async function(x: number): Promise<number> {
+const getAsyncNumber = async function (x: number): Promise<number> {
   return Promise.resolve(x);
 };
     `,
@@ -119,7 +119,7 @@ const getAsyncNumber = async function(x: number): Promise<number> {
 const numberOne = async (): Promise<number> => {
   return getAsyncNumber(1);
 };
-const getAsyncNumber = async function(x: number): Promise<number> {
+const getAsyncNumber = async function (x: number): Promise<number> {
   return Promise.resolve(x);
 };
     `,
@@ -161,7 +161,7 @@ async function* test1() {
   yield* asyncGenerator();
 }
     `,
-    'const foo: () => void = async function*() {};',
+    'const foo: () => void = async function* () {};',
     `
 async function* foo(): Promise<string> {
   return new Promise(res => res(\`hello\`));
@@ -189,7 +189,7 @@ async function numberOne(): Promise<number> {
     {
       // Async function expression with no await
       code: `
-const numberOne = async function(): Promise<number> {
+const numberOne = async function (): Promise<number> {
   return 1;
 };
       `,
@@ -264,7 +264,7 @@ async function* foo() {
     },
     {
       code: `
-const foo = async function*() {
+const foo = async function* () {
   console.log('bar');
 };
       `,
@@ -322,7 +322,7 @@ async function foo() {
 }
     `,
     `
-(async function() {
+(async function () {
   await doSomething();
 });
     `,
@@ -403,7 +403,7 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (async function() {
+        (async function () {
           doSomething();
         });
       `,
