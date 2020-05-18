@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.33.0...v2.34.0) (2020-05-18)
+
+
+### Features
+
+* **experimental-utils:** add `suggestion` property for rule  modules ([#2033](https://github.com/typescript-eslint/typescript-eslint/issues/2033)) ([f42a5b0](https://github.com/typescript-eslint/typescript-eslint/commit/f42a5b09ebfa173f418a99c552b0cbe221567194))
+
+
+
+
+
 # [2.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.32.0...v2.33.0) (2020-05-12)
 
 
