@@ -117,3 +117,13 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 This is to be expected - ESLint rules do not check file extensions on purpose, as it causes issues in environments that use non-standard extensions (for example, a `.vue` and a `.md` file can both contain TypeScript code to be linted).
 
 If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to turn off certain rules, or even change the parser based on glob patterns.
+
+
+
+
+----
+
+## TypeScript should be installed globally
+
+Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
+or by using `yarn add typescript`, not `yarn global add typescript`. See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
