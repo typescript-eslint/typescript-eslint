@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.33.0...v2.34.0) (2020-05-18)
+
+
+### Features
+
+* **eslint-plugin:** [no-invalid-void-type] allow union of void and `allowInGenericTypeArguments` ([#1960](https://github.com/typescript-eslint/typescript-eslint/issues/1960)) ([1bc105a](https://github.com/typescript-eslint/typescript-eslint/commit/1bc105a2c6ae3fde9596f0419fed0de699dc57c7))
+* **eslint-plugin:** [restrict-template-expressions] improve error message ([#1926](https://github.com/typescript-eslint/typescript-eslint/issues/1926)) ([1af59ba](https://github.com/typescript-eslint/typescript-eslint/commit/1af59ba8ac0ceabb008d9c61556acf7db0a1d352))
+* **experimental-utils:** add `suggestion` property for rule  modules ([#2033](https://github.com/typescript-eslint/typescript-eslint/issues/2033)) ([f42a5b0](https://github.com/typescript-eslint/typescript-eslint/commit/f42a5b09ebfa173f418a99c552b0cbe221567194))
+
+
+
+
+
 # [2.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.32.0...v2.33.0) (2020-05-12)
 
 
