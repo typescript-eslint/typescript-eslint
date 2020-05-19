@@ -7,6 +7,7 @@
 - [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](#i-use-a-framework-like-vue-that-requires-custom-file-extensions-and-i-get-errors-like-you-should-add-parseroptionsextrafileextensions-to-your-config)
 - [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
 - [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
+- [TypeScript should be installed globally](#typescript-should-be-installed-globally)
 
 ---
 
@@ -118,10 +119,7 @@ This is to be expected - ESLint rules do not check file extensions on purpose, a
 
 If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to turn off certain rules, or even change the parser based on glob patterns.
 
-
-
-
-----
+---
 
 ## TypeScript should be installed globally
 
