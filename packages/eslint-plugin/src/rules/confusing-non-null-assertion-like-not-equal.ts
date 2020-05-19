@@ -12,7 +12,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'Disallows confusing combinations of non-null assertion and equal test like `a! == b`, which looks very similar to not equal `a !== b`',
+        'Disallow non-null assertion in locations that may be confusing',
       category: 'Stylistic Issues',
       recommended: 'error',
     },
