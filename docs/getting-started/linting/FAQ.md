@@ -7,7 +7,7 @@
 - [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](#i-use-a-framework-like-vue-that-requires-custom-file-extensions-and-i-get-errors-like-you-should-add-parseroptionsextrafileextensions-to-your-config)
 - [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
 - [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
-- [TypeScript should be installed globally](#typescript-should-be-installed-globally)
+- [TypeScript should be installed locally](#typescript-should-be-installed-locally)
 
 ---
 
@@ -121,7 +121,7 @@ If you have some pure JavaScript code that you do not want to apply certain lint
 
 ---
 
-## TypeScript should be installed globally
+## TypeScript should be installed locally
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`. See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
