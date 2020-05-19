@@ -14,7 +14,7 @@ export default util.createRule({
       description:
         'Disallow non-null assertion in locations that may be confusing',
       category: 'Stylistic Issues',
-      recommended: 'error',
+      recommended: false,
     },
     messages: {
       confusing:
