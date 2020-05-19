@@ -6,9 +6,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MessageIds = 'notNeedInEqualTest' | 'confusing';
-
-export default util.createRule<[], MessageIds>({
+export default util.createRule({
   name: 'confusing-non-null-assertion-like-not-equal',
   meta: {
     type: 'problem',
