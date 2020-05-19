@@ -117,6 +117,13 @@ ruleTester.run('require-array-sort-compare', rule, {
       `,
       options: [{ ignoreStringArrays: true }],
     },
+    {
+      code: `
+        declare const x: string[];
+        x.sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
   ],
   invalid: [
     {

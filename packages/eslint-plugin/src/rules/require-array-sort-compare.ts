@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export type Options = [
@@ -51,13 +48,17 @@ export default util.createRule<Options, MessageIds>({
      * Check if a given node is an array which all elements are string.
      * @param node
      */
-    function isStringArrayNode(node: TSESTree.ArrayExpression): boolean {
-      return node.elements.every(element => {
-        const type = checker.getTypeAtLocation(
-          service.esTreeNodeToTSNodeMap.get(element),
+    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
+      const type = checker.getTypeAtLocation(
+        service.esTreeNodeToTSNodeMap.get(node),
+      );
+      if (checker.isArrayType(type) || checker.isTupleType(type)) {
+        const typeArgs = checker.getTypeArguments(type);
+        return typeArgs.every(
+          arg => util.getTypeName(checker, arg) === 'string',
         );
-        return util.getTypeName(checker, type) === 'string';
-      });
+      }
+      return false;
     }
 
     return {
@@ -70,11 +71,7 @@ export default util.createRule<Options, MessageIds>({
           tsNode,
         );
 
-        if (
-          options.ignoreStringArrays &&
-          callee.object.type === AST_NODE_TYPES.ArrayExpression &&
-          isStringArrayNode(callee.object)
-        ) {
+        if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
           return;
         }
 
