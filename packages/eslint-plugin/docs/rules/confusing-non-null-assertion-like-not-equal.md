@@ -2,7 +2,7 @@
 
 ## Rule Details
 
-Using a non-null assertions(`!`) and an equals test(`==`) together makes code looks very similar with not equals test(`!==`), look at below code:
+Using a non-null assertion (`!`) next to an equals check (`==` or `===`) creates code that is confusing as it looks similar to a not equals check (`!==`).
 
 ```typescript
 a! == b; // a non-null assertions(`!`) and an equals test(`==`)
