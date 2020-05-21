@@ -18,6 +18,7 @@ import {
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
+  isChildOptionalChain,
   unescapeStringLiteralText,
   TSError,
 } from './node-utils';
@@ -241,7 +242,11 @@ export class Converter {
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(node, this.ast);
+      result.range = getRange(
+        // this is completely valid, but TS hates it
+        node as never,
+        this.ast,
+      );
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -1748,11 +1753,7 @@ export class Converter {
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z is semantically different, and as such .z is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, object);
 
         if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
@@ -1780,11 +1781,7 @@ export class Converter {
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z is semantically different, and as such .z is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, object);
 
         if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
@@ -1812,11 +1809,7 @@ export class Converter {
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z() is semantically different, and as such .z() is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, callee);
 
         if (isLocallyOptional || isChildOptional) {
           result = this.createNode<TSESTree.OptionalCallExpression>(node, {

@@ -44,6 +44,7 @@
     "@typescript-eslint/experimental-utils": "2.34.0",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^3.0.0",
+    "semver": "^7.3.2",
     "tsutils": "^3.17.1"
   },
   "devDependencies": {

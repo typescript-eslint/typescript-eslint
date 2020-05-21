@@ -6,6 +6,7 @@ Object {
   "bindDiagnostics": Array [],
   "bindSuggestionDiagnostics": undefined,
   "checkJsDirective": undefined,
+  "commentDirectives": undefined,
   "endOfFileToken": Object {
     "loc": Object {
       "end": Object {

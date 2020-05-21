@@ -247,7 +247,7 @@ describe('semanticInfo', () => {
     badConfig.project = './tsconfigs.json';
     expect(() =>
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
-    ).toThrow(/File .+tsconfigs\.json' not found/);
+    ).toThrow(/Cannot read file .+tsconfigs\.json'/);
   });
 
   it('fail to read project file', () => {
@@ -258,7 +258,7 @@ describe('semanticInfo', () => {
       parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
     ).toThrow(
       // case insensitive because unix based systems are case insensitive
-      /File .+semanticInfo' not found/i,
+      /Cannot read file .+semanticInfo'./i,
     );
   });
 

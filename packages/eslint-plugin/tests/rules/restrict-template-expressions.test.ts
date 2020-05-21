@@ -158,14 +158,6 @@ ruleTester.run('restrict-template-expressions', rule, {
         const msg = \`arg = \${user.name || 'the user with no name'}\`;
       `,
     },
-    {
-      options: [{ allowAny: true }],
-      code: `
-        function test<T extends any>(arg: T) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-    },
     // allowNullable
     {
       options: [{ allowNullable: true }],
@@ -339,6 +331,23 @@ ruleTester.run('restrict-template-expressions', rule, {
         {
           messageId: 'invalidType',
           data: { type: 'any' },
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
+    // TS 3.9 change
+    {
+      options: [{ allowAny: true }],
+      code: `
+        function test<T extends any>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'unknown' },
           line: 3,
           column: 27,
         },
