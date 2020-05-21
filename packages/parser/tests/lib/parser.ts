@@ -1,5 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as typescriptESTree from '@typescript-eslint/typescript-estree';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import { parse, parseForESLint } from '../../src/parser';
 import * as scope from '../../src/analyze-scope';
 
