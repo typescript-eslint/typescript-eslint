@@ -55,15 +55,11 @@ You can also enable all the recommended rules for our plugin. Add `plugin:@types
 
 ### Recommended Configs
 
-You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin. As noted in the root README, not all ESLint core rules are compatible with TypeScript, so you need to add both `eslint:recommended` and `plugin:@typescript-eslint/eslint-recommended` (which will adjust the one from ESLint appropriately for TypeScript) to your config:
+You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin:
 
 ```json
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ]
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"]
 }
 ```
 
@@ -75,7 +71,6 @@ Some highly valuable rules simply require type-checking in order to be implement
 {
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ]
