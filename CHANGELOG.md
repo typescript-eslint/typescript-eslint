@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [dot-notation] fix typo in schema ([#2040](https://github.com/typescript-eslint/typescript-eslint/issues/2040)) ([242328f](https://github.com/typescript-eslint/typescript-eslint/commit/242328fa749ee4c72af93433a9bef95f329ac62f))
+* **eslint-plugin:** correct parser peerDep version ([fe59f69](https://github.com/typescript-eslint/typescript-eslint/commit/fe59f69381a0915a4f5135e2e88637a5eea246ba))
+* **experimental-utils:** add back SourceCode.isSpaceBetweenTokens ([ae82ea4](https://github.com/typescript-eslint/typescript-eslint/commit/ae82ea4a85a4ca332ebe6104e96c59dba30411be))
+* **typescript-estree:** remove now defunct `Import` node type ([f199cbd](https://github.com/typescript-eslint/typescript-eslint/commit/f199cbdbbd892b5ba03bfff66f463f3d9c92ee9b))
+* **typescript-estree:** use `TSEmptyBodyFunctionExpression` for body-less nodes ([#1289](https://github.com/typescript-eslint/typescript-eslint/issues/1289)) ([82e7163](https://github.com/typescript-eslint/typescript-eslint/commit/82e7163214b56ccde93ba97807b161669a50a60b))
+
+
+### Features
+
+* add index files to parser and typescript-estree ([3dfc46d](https://github.com/typescript-eslint/typescript-eslint/commit/3dfc46dccbbd28eed2d74c7b6cacddf1a0848598))
+* **eslint-plugin:** [no-floating-promises] ignore void operator by default ([#2003](https://github.com/typescript-eslint/typescript-eslint/issues/2003)) ([3626a67](https://github.com/typescript-eslint/typescript-eslint/commit/3626a673cf8117cc995245cd86e466e2553e9b0e))
+* **eslint-plugin:** [no-unnecessary-condition] remove `checkArrayPredicates` and always check it ([#1579](https://github.com/typescript-eslint/typescript-eslint/issues/1579)) ([bfd9b60](https://github.com/typescript-eslint/typescript-eslint/commit/bfd9b606d17d30d5694967a1f01e0e1501ba1022))
+* **eslint-plugin:** [no-unnecessary-condition] report when non-nullish is compared to `null`/`undefined` ([#1659](https://github.com/typescript-eslint/typescript-eslint/issues/1659)) ([7fa9060](https://github.com/typescript-eslint/typescript-eslint/commit/7fa906073903c5eb70609c25f1a91ada14dcdc71))
+* **eslint-plugin:** [prefer-nullish-coalescing][prefer-optional-chain] remove unsafe fixers ([52b6085](https://github.com/typescript-eslint/typescript-eslint/commit/52b60852d0ba6bb6abe519c9d3ec1b231793e91d))
+* **eslint-plugin:** [restrict-template-expressions] `allowNumber: true` by default ([#2005](https://github.com/typescript-eslint/typescript-eslint/issues/2005)) ([643ec24](https://github.com/typescript-eslint/typescript-eslint/commit/643ec240bd901295d9e9ea5c43fc20109c33e982))
+* **eslint-plugin:** [restrict-template-expressions] rename `allowNullable` to `allowNullish` ([#2006](https://github.com/typescript-eslint/typescript-eslint/issues/2006)) ([264b017](https://github.com/typescript-eslint/typescript-eslint/commit/264b017c11c2ab132fcbad18b42a9a0fe639386e))
+* **experimental-utils:** upgrade eslint types for v7 ([#2023](https://github.com/typescript-eslint/typescript-eslint/issues/2023)) ([06869c9](https://github.com/typescript-eslint/typescript-eslint/commit/06869c9656fa37936126666845aee40aad546ebd))
+* bump minimum required TS version ([#2004](https://github.com/typescript-eslint/typescript-eslint/issues/2004)) ([7ad4d7c](https://github.com/typescript-eslint/typescript-eslint/commit/7ad4d7c2db088b6f779b9d883a4acad13eee3775))
+* upgrade to ESLint v7 ([#2022](https://github.com/typescript-eslint/typescript-eslint/issues/2022)) ([208de71](https://github.com/typescript-eslint/typescript-eslint/commit/208de71059746bf38e94bd460346ffb2698a3e12))
+* **eslint-plugin:** [ban-types] rework default options ([#848](https://github.com/typescript-eslint/typescript-eslint/issues/848)) ([8e31d5d](https://github.com/typescript-eslint/typescript-eslint/commit/8e31d5dbe9fe5227fdbefcecfd50ce5dd51360c3))
+* **eslint-plugin:** [no-unnecessary-condition] remove option `ignoreRHS` ([#1163](https://github.com/typescript-eslint/typescript-eslint/issues/1163)) ([ee8dd8f](https://github.com/typescript-eslint/typescript-eslint/commit/ee8dd8f8a9e6c25ac426ce9bb71c5f012c51f264))
+* **eslint-plugin:** [strict-boolean-expression] rework options ([#1631](https://github.com/typescript-eslint/typescript-eslint/issues/1631)) ([cd14482](https://github.com/typescript-eslint/typescript-eslint/commit/cd1448240dca11762fcb9c10e18bb6541a840485))
+* **eslint-plugin:** delete deprecated rules ([#2002](https://github.com/typescript-eslint/typescript-eslint/issues/2002)) ([da0aec2](https://github.com/typescript-eslint/typescript-eslint/commit/da0aec2cfa27902aae7c438a2fe91343c822e4ae))
+* **eslint-plugin:** eslint-recommended: disable no-func-assign ([#984](https://github.com/typescript-eslint/typescript-eslint/issues/984)) ([ae9b8a9](https://github.com/typescript-eslint/typescript-eslint/commit/ae9b8a9c73c0328287de956466257d8bbfbdb20f))
+* **eslint-plugin:** eslint-recommended: disable no-obj-calls ([#1000](https://github.com/typescript-eslint/typescript-eslint/issues/1000)) ([b9ca14c](https://github.com/typescript-eslint/typescript-eslint/commit/b9ca14c5f5ec28a3fde1a9b2d2f6a4dc74d903e4))
+* **eslint-plugin:** update `eslint-recommended` set ([#1996](https://github.com/typescript-eslint/typescript-eslint/issues/1996)) ([9a96e18](https://github.com/typescript-eslint/typescript-eslint/commit/9a96e18400e0a0d738d159d9d01faf41d3586249))
+* **eslint-plugin:** update recommended sets ([#2001](https://github.com/typescript-eslint/typescript-eslint/issues/2001)) ([0126b4f](https://github.com/typescript-eslint/typescript-eslint/commit/0126b4f56f9197d561e90b09962ccceb4f88bc41))
+* **typescript-estree:** align nodes with estree 2020 ([#1389](https://github.com/typescript-eslint/typescript-eslint/issues/1389)) ([aff5b62](https://github.com/typescript-eslint/typescript-eslint/commit/aff5b62044f9b93f2087a1d261e9be3f8d6fd54d))
+* **typescript-estree:** align optional fields ([#1429](https://github.com/typescript-eslint/typescript-eslint/issues/1429)) ([0e0010f](https://github.com/typescript-eslint/typescript-eslint/commit/0e0010f82952f9beeeb84136eea00cc5eecc9db6))
+* drop support for node v8 ([#1997](https://github.com/typescript-eslint/typescript-eslint/issues/1997)) ([b6c3b7b](https://github.com/typescript-eslint/typescript-eslint/commit/b6c3b7b84b8d199fa75a46432febd4a364a63217))
+* **typescript-estree:** always return parserServices ([#716](https://github.com/typescript-eslint/typescript-eslint/issues/716)) ([5b23443](https://github.com/typescript-eslint/typescript-eslint/commit/5b23443c48f3f62424db3e742243f3568080b946))
+* **typescript-estree:** handle 3.9's non-null assertion changes ([#2036](https://github.com/typescript-eslint/typescript-eslint/issues/2036)) ([06bec63](https://github.com/typescript-eslint/typescript-eslint/commit/06bec63c56536db070608ab136d2ad57083f0c6a))
+
+
+
+
+
 # [2.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.33.0...v2.34.0) (2020-05-18)
 
 
