@@ -5,6 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
 
+## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
 
 ### Bug Fixes
 
