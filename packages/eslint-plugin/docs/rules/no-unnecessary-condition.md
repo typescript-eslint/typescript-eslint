@@ -64,14 +64,6 @@ function bar(arg?: string | null) {
 
 Accepts an object with the following options:
 
-- `ignoreRhs` (default `false`) - doesn't check if the right-hand side of `&&` and `||` is a necessary condition. For example, the following code is valid with this option on:
-
-```ts
-function head<T>(items: T[]) {
-  return items.length && items[0].toUpperCase();
-}
-```
-
 - `allowConstantLoopConditions` (default `false`) - allows constant expressions in loops.
 
 Example of correct code for when `allowConstantLoopConditions` is `true`:
