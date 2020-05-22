@@ -26,6 +26,7 @@ export var arrowFn = () => 'test';
 
 // All arguments should be typed
 export var arrowFn = (arg): string => `test ${arg}`;
+export var arrowFn = (arg: any): string => `test ${arg}`;
 
 export class Test {
   // Should indicate that no value is returned (void)
@@ -50,6 +51,10 @@ export var fn = function (): number {
 
 // A return value of type string
 export var arrowFn = (arg: string): string => `test ${arg}`;
+
+// All arguments should be typed
+export var arrowFn = (arg: string): string => `test ${arg}`;
+export var arrowFn = (arg: unknown): string => `test ${arg}`;
 
 // Class is not exported
 class Test {
