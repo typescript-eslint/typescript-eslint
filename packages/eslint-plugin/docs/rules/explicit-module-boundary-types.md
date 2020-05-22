@@ -237,7 +237,7 @@ You may pass function/method names you would like this rule to ignore, like so:
   "@typescript-eslint/explicit-module-boundary-types": [
     "error",
     {
-      "allowedName": ["ignoredFunctionName", "ignoredMethodName"]
+      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
     }
   ]
 }
