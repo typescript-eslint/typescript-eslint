@@ -17,7 +17,6 @@ How can we tap into this? There are two small changes you need to make to your c
    plugins: ['@typescript-eslint'],
    extends: [
      'eslint:recommended',
-     'plugin:@typescript-eslint/eslint-recommended',
      'plugin:@typescript-eslint/recommended',
 +    'plugin:@typescript-eslint/recommended-requiring-type-checking',
    ],
