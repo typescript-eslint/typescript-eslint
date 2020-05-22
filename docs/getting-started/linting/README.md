@@ -102,7 +102,6 @@ To use one of these complete config packages, you would replace the `extends` wi
     ],
     extends: [
 -     'eslint:recommended',
--     'plugin:@typescript-eslint/eslint-recommended',
 -     'plugin:@typescript-eslint/recommended',
 +     'airbnb-typescript',
     ],
@@ -124,7 +123,6 @@ Using this config is as simple as adding it to the end of your `extends`:
     ],
     extends: [
       'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
 +     'prettier/@typescript-eslint',
     ],
@@ -153,7 +151,6 @@ Every plugin that is out there includes documentation on the various rules they 
     ],
     extends: [
       'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
 +     'plugin:jest/recommended',
     ],

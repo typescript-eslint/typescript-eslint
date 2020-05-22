@@ -320,10 +320,30 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 }
 ```
 
+### Enforce that interface names do not begin with an `I`
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "interface",
+      "format": ["PascalCase"],
+      "prefix": ["T"],
+      "custom": {
+        "regex": "^I[A-Z]",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
 ### Enforce the codebase follows ESLint's `camelcase` conventions
 
 ```json
 {
+  "camelcase": "off",
   "@typescript-eslint/naming-convention": [
     "error",
     {
