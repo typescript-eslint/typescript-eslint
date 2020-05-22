@@ -343,6 +343,7 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ```json
 {
+  "camelcase": "off",
   "@typescript-eslint/naming-convention": [
     "error",
     {
