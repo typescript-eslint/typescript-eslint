@@ -758,6 +758,40 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /-/.source,
+            match: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /^(Property-Name)$/.source,
+            match: false,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     ...createInvalidTestCases(cases),
@@ -961,6 +995,35 @@ ruleTester.run('naming-convention', rule, {
             name: 'fooBar',
             regex: '/function/',
             regexMatch: 'match',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /-/.source,
+            match: false,
+          },
+        },
+      ],
+      errors: [
+        {
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+          data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Property',
+            name: 'Property Name',
+            formats: 'strictCamelCase',
           },
         },
       ],

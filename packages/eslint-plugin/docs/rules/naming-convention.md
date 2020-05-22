@@ -307,6 +307,8 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ### Enforce that type parameters (generics) are prefixed with `T`
 
+This allows you to emulate the old `generic-type-naming` rule.
+
 ```json
 {
   "@typescript-eslint/naming-convention": [
@@ -322,6 +324,8 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ### Enforce that interface names do not begin with an `I`
 
+This allows you to emulate the old `interface-name-prefix` rule.
+
 ```json
 {
   "@typescript-eslint/naming-convention": [
@@ -332,6 +336,49 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
       "prefix": ["T"],
       "custom": {
         "regex": "^I[A-Z]",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
+### Ignore properties that require quotes
+
+Sometimes you have to use a quoted name that breaks the convention (for example, HTTP headers).
+If this is a common thing in your codebase, then you can use the `filter` option in one of two ways:
+
+You can use the `filter` option to ignore specific names only:
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "property",
+      "format": ["strictCamelCase"],
+      "filter": {
+        // you can expand this regex to add more allowed names
+        "regex": "^(Property-Name-One|Property-Name-Two)$",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
+You can use the `filter` option to ignore names that require quoting:
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "property",
+      "format": ["strictCamelCase"],
+      "filter": {
+        // you can expand this regex as you find more cases that require quoting that you want to allow
+        "regex": "[- ]",
         "match": false
       }
     }
