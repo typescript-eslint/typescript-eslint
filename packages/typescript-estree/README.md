@@ -24,7 +24,7 @@ In fact, it is already used within these hyper-popular open-source projects to p
 ## Installation
 
 ```sh
-yarn add -D @typescript-eslint/typescript-estree
+yarn add -D typescript @typescript-eslint/typescript-estree
 ```
 
 ## API

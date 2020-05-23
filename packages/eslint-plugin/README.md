@@ -19,15 +19,15 @@ These docs walk you through setting up ESLint, this plugin, and our parser. If y
 
 ### Installation
 
-Make sure you have TypeScript and [`@typescript-eslint/parser`](../parser) installed, then install the plugin:
+Make sure you have TypeScript, [`@typescript-eslint/parser`](../parser) and the plugin installed:
 
 ```sh
-yarn add -D @typescript-eslint/eslint-plugin
+yarn add -D typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 It is important that you use the same version number for `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`.
 
-**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
+**Note:** If you installed ESLint and TypeScript globally (using the `-g` flag) then you must also install `@typescript-eslint/eslint-plugin` globally.
 
 ### Usage
 

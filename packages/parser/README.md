@@ -21,7 +21,7 @@ These docs walk you through setting up ESLint, this parser, and our plugin. If y
 ### Installation
 
 ```sh
-yarn add -D @typescript-eslint/parser
+yarn add -D typescript @typescript-eslint/parser
 ```
 
 ### Usage
