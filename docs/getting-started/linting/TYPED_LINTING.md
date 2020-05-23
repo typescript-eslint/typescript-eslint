@@ -1,6 +1,6 @@
 # Getting Started - Linting with Type Information
 
-The parser you configured earlier has a little secret. Under the hood, it actually just uses TypeScript's compiler APIs to parse the files. This means that we can provide lint rules with access to all of the type information that TypeScript knows about your codebase.
+The parser you configured earlier has a little secret. Under the hood, it actually just uses the APIs of the TypeScript Compiler to parse the files. This means that we can provide lint rules with access to all of the type information that TypeScript can infer about your codebase.
 
 This provides a lot of additional power, unlocking many possibilities for static analysis.
 
@@ -36,7 +36,7 @@ With that done, simply run the same lint command you ran before. You will see ne
 
 _But wait_ - I hear you exclaim - _why would you ever not want type-aware rules?_
 
-Well (for full disclosure) there is a catch; by including `parserOptions.project` in your config, you are essentially asking TypeScript to do a build of your project before ESLint can do its linting. For small projects this takes a negligible amount of time (a few seconds); for large projects, it can take longer (30s or more).
+Well (for full disclosure) there is a catch; by including `parserOptions.project` in your config, you are essentially asking the TypeScript Compiler to do a build of your project before ESLint can do its linting. For small projects this takes a negligible amount of time (a few seconds); for large projects, it can take longer (30s or more).
 
 Most of our users are fine with this, as they think the power of type-aware static analysis is worth it.
 Additionally, most users primarily consume lint errors via IDE plugins which, through some caching magic, do not suffer the same penalties. This means that generally they usually only run a complete lint before a push, or via their CI, where the extra time really doesn't matter.

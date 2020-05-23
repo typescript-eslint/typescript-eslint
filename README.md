@@ -54,7 +54,7 @@ The documentation below will give you an overview of what this project is, why i
 
 - Behind the scenes, it uses a parser to turn your source code into a data format called an Abstract Syntax Tree (AST). This data format is then used by plugins to create assertions called lint rules around what your code should look or behave like.
 
-**TypeScript** is an awesome static code analyzer for JavaScript code, and some additional syntax that it provides on top of the underlying JavaScript language.
+**TypeScript Compiler** is an awesome static code analyzer for JavaScript code, and some additional syntax that TypeScript provides on top of the underlying JavaScript language.
 
 - Behind the scenes, it uses a parser to turn your source code into a data format called an Abstract Syntax Tree (AST). This data format is then used by other parts of the TypeScript Compiler to do things like give you feedback on issues, allow you to refactor easily, etc.
 
@@ -64,9 +64,9 @@ They sound similar, right? They are! Both projects are ultimately striving to he
 
 ## Why does this project exist?
 
-As covered by the previous section, both ESLint and TypeScript rely on turning your source code into a data format called an AST in order to do their jobs.
+As covered by the previous section, both ESLint and the TypeScript Compiler rely on turning your source code into a data format called an AST in order to do their jobs.
 
-However, it turns out that ESLint and TypeScript use _different_ ASTs to each other.
+However, it turns out that ESLint and the TypeScript Compiler use _different_ ASTs to each other.
 
 The reason for this difference is not so interesting or important and is simply the result of different evolutions, priorities, and timelines of the projects.
 
@@ -120,7 +120,7 @@ The great thing is, though, if we want to support non-standard JavaScript syntax
 
 Knowing we can do this is just the start, of course, we then need to set about creating a parser which is capable of parsing TypeScript source code, and delivering an AST which is compatible with the one ESLint expects (with some additions for things such as `: number`, as mentioned above).
 
-The [`@typescript-eslint/parser`](./packages/parser/) package in this monorepo is, in fact, the custom ESLint parser implementation we provide to ESLint in this scenario.
+The [`@typescript-eslint/parser`](./packages/parser/) package in this monorepo is, in fact, the custom parser (implemented on top of the TypeScript Compiler) we provide to ESLint in this scenario.
 
 The flow and transformations that happen look a little something like this:
 
@@ -161,7 +161,7 @@ Yes!
 
 One of the huge benefits of using TypeScript is the fact that type information can be used to assert expected behaviors.
 
-When the transformation steps outlined above take place, we keep references to the original TypeScript AST and associated parser services, and so ESLint rules authors can access them in their rules.
+When the transformation steps outlined above take place, we keep references to the original TypeScript AST and associated TypeScript Compiler services, and so ESLint rules authors can access them in their rules. This includes the possibility to ask the compiler to infer and check the type of any piece of code.
 
 We already do this in numerous rules within [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/), for example, `no-unnecessary-type-assertion` and `no-inferrable-types`.
 
