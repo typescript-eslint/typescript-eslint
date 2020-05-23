@@ -34,6 +34,8 @@
 
 ## Getting Started / Installation
 
+This project, `typescript-eslint`, is a collection of packages that add TypeScript language support to ESLint. You can see the list of packages [below](#packages-included-in-this-project). Under the hood, `typescript-eslint` uses the TypeScript Compiler for parsing and optionally for type inference.
+
 - **[You can find our Getting Started docs here](./docs/getting-started/README.md):**
   - **[I want to lint my TypeScript codebase.](./docs/getting-started/linting/README.md)**
   - **[I want linting to use type information.](./docs/getting-started/linting/TYPED_LINTING.md)**
