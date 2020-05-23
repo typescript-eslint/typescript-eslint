@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions arrow default-params readable-ref-partial 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"a">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$2,
+        },
+      ],
+      name: "foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"foo">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: ArrowFunctionExpression$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"b">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "b",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"b">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: MemberExpression$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "a" => Variable$1,
+        "foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$3,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "b" => Variable$3,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

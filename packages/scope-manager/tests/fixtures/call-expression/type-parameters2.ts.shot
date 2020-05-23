@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`call-expression type-parameters2 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"T">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2 {
+          identifier: Identifier<"foo">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "T" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

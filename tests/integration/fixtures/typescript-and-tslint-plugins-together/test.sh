@@ -10,6 +10,7 @@ npm install
 # Use the local volumes for our own packages
 npm install $(npm pack /usr/types | tail -1)
 npm install $(npm pack /usr/visitor-keys | tail -1)
+npm install $(npm pack /usr/scope-manager | tail -1)
 npm install $(npm pack /usr/typescript-estree | tail -1)
 npm install $(npm pack /usr/parser | tail -1)
 npm install $(npm pack /usr/experimental-utils | tail -1)

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions arrow type-parameters type-parameter-declaration 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"foo">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: ArrowFunctionExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "T",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"Unresolved">,
+          node: TSTypeAliasDeclaration$4,
+        },
+      ],
+      name: "Unresolved",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "foo" => Variable$1,
+        "Unresolved" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$3,
+      ],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$2,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "T" => Variable$2,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;

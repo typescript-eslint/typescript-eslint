@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions function-declaration default-params writable-ref 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"foo">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"a">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"b">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "b",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"b">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: Literal$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "foo" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$1,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "arguments" => Variable$2,
+        "a" => Variable$3,
+        "b" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

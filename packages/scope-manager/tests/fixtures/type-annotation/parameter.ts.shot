@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-annotation parameter 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        FunctionNameDefinition$2 {
+          name: Identifier<"foo">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"a">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "T" => Variable$1,
+        "foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$2,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "arguments" => Variable$3,
+        "a" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

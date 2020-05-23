@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`destructuring object-assignment 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"obj">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "obj",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"obj">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: ObjectExpression$2,
+        },
+        Reference$4 {
+          identifier: Identifier<"obj">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2 {
+          identifier: Identifier<"shorthand">,
+          init: false,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+          writeExpr: Identifier<"object">,
+        },
+        Reference$3 {
+          identifier: Identifier<"value">,
+          init: false,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+          writeExpr: Identifier<"object">,
+        },
+        Reference$4,
+        Reference$5 {
+          identifier: Identifier<"object">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "obj" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`destructuring array 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"a">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"a">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"b">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "b",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"b">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        VariableDefinition$3 {
+          name: Identifier<"c">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "c",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"c">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        VariableDefinition$4 {
+          name: Identifier<"d">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "d",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"d">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: Literal$3,
+        },
+        Reference$5 {
+          identifier: Identifier<"d">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        VariableDefinition$5 {
+          name: Identifier<"e">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "e",
+      references: Array [
+        Reference$6 {
+          identifier: Identifier<"e">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$5,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$6 {
+      defs: Array [
+        VariableDefinition$6 {
+          name: Identifier<"f">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "f",
+      references: Array [
+        Reference$7 {
+          identifier: Identifier<"f">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$6,
+          writeExpr: Identifier<"g">,
+        },
+        Reference$8 {
+          identifier: Identifier<"f">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$6,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$7 {
+      defs: Array [
+        VariableDefinition$7 {
+          name: Identifier<"rest">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "rest",
+      references: Array [
+        Reference$9 {
+          identifier: Identifier<"rest">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$7,
+          writeExpr: ArrayExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+        Reference$4,
+        Reference$5,
+        Reference$6,
+        Reference$7,
+        Reference$8,
+        Reference$9,
+        Reference$10 {
+          identifier: Identifier<"g">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "a" => Variable$1,
+        "b" => Variable$2,
+        "c" => Variable$3,
+        "d" => Variable$4,
+        "e" => Variable$5,
+        "f" => Variable$6,
+        "rest" => Variable$7,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$3,
+        Variable$4,
+        Variable$5,
+        Variable$6,
+        Variable$7,
+      ],
+    },
+  ],
+}
+`;

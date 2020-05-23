@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration signatures call-generics 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"U">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "U",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"U">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"arg">,
+          node: TSCallSignatureDeclaration$4,
+        },
+      ],
+      name: "arg",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "T" => Variable$1,
+        "A" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    FunctionTypeScope$2 {
+      block: TSCallSignatureDeclaration$4,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "U" => Variable$3,
+        "arg" => Variable$4,
+      },
+      type: "functionType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

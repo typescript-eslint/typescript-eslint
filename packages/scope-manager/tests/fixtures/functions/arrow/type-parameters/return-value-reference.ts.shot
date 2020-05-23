@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions arrow type-parameters return-value-reference 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"foo">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: ArrowFunctionExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "foo" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$2,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+      ],
+      set: Map {
+        "T" => Variable$2,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;
