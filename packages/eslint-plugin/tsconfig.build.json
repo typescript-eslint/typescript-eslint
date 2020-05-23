@@ -12,6 +12,7 @@
   "references": [
     { "path": "../experimental-utils/tsconfig.build.json" },
     { "path": "../parser/tsconfig.build.json" },
+    { "path": "../scope-manager/tsconfig.build.json" },
     { "path": "../typescript-estree/tsconfig.build.json" }
   ]
 }
