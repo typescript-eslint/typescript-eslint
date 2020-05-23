@@ -34,7 +34,10 @@
 
 ## Getting Started / Installation
 
-- **[You can find our Getting Started docs here](./docs/getting-started/README.md)**
+- **[You can find our Getting Started docs here](./docs/getting-started/README.md):**
+  - **[I want to lint my TypeScript codebase.](./docs/getting-started/linting/README.md)**
+  - **[I want linting to use type information.](./docs/getting-started/linting/TYPED_LINTING.md)**
+  - **[(TODO) I want to write an ESLint plugin in TypeScript.](./docs/getting-started/plugin-development/README.md)**
 - **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
