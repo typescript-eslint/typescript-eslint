@@ -51,7 +51,7 @@ type Options = {
   types?: Types<Selector>[];
 }[];
 
-// the default config essentially does the same thing as ESLint's camelcase rule
+// the default config is similar to ESLint's camelcase rule but more strict
 const defaultOptions: Options = [
   {
     selector: 'default',
