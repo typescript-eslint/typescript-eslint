@@ -607,7 +607,6 @@ const cases: Cases = [
 
 ruleTester.run('naming-convention', rule, {
   valid: [
-    'const x = 1;', // no options shouldn't crash
     ...createValidTestCases(cases),
     {
       code: `
@@ -794,6 +793,17 @@ ruleTester.run('naming-convention', rule, {
     },
   ],
   invalid: [
+    {
+      // make sure we handle no options and apply defaults
+      code: 'const x_x = 1;',
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      // make sure we handle empty options and apply defaults
+      code: 'const x_x = 1;',
+      options: [],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
     ...createInvalidTestCases(cases),
     {
       code: `
