@@ -5,9 +5,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: [
-    'plugin:vue/essential',
-  ],
+  extends: ['plugin:vue/essential'],
   parserOptions: {
     // Local version of @typescript-eslint/parser
     parser: '@typescript-eslint/parser',

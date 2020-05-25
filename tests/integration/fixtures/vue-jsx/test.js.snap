@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should produce the expected lint ouput 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "/usr/linked/Jsx.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 17,
+        "endColumn": 20,
+        "endLine": 17,
+        "line": 17,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                390,
+                393,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                390,
+                393,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+    ],
+    "source": "<script lang=\\"tsx\\">
+import Vue from 'vue'
+import { mapMutations } from 'vuex'
+import { Component } from 'vue-property-decorator'
+
+@Component({
+  created () {
+    this.toggleHeader(false)
+  },
+  methods: {
+    ...mapMutations('APP_SCOPE_NAME', ['toggleHeader'])
+  }
+})
+export default class Jsx extends Vue {
+  render (): JSX.Element {
+    // expected error - no-explicit-any
+    const path: any = '/';
+    return (
+      // An error occurred in the next line: \\"Parsing error: '>' expected.eslint\\"
+      <div class=\\"mg-notFound\\">
+        <div class=\\"fixed-center text-center\\">
+          <p>
+            img goes here
+          </p>
+          <p class=\\"text-faded\\">Sorry, nothing here...<strong>(404)</strong></p>
+          <q-btn
+            color=\\"secondary\\"
+            style=\\"width:200px;\\"
+            onClick={() => console.log(path)}
+          >Go back</q-btn>
+        </div>
+      </div>
+    )
+  }
+}
+</script>
+",
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+]
+`;

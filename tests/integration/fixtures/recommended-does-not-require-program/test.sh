@@ -1,4 +1,5 @@
 #!/bin/bash
+set -exuo pipefail
 
 # Generate the package.json to use
 node /usr/utils/generate-package-json.js

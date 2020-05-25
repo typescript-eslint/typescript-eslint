@@ -1,5 +1,5 @@
-# Ensure child script failures are propagated
-set -e
+#!/bin/bash
+set -exuo pipefail
 
 # We run the services serially and in a non-detached state just that we can ensure predictable
 # exit codes for all of our integration tests, and we can ensure CI builds pass or fail appropriately
@@ -18,3 +18,6 @@ docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-con
 
 # markdown
 docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit markdown
+
+# eslint-v6
+docker-compose -f tests/integration/docker-compose.yml up --build --abort-on-container-exit eslint-v6
