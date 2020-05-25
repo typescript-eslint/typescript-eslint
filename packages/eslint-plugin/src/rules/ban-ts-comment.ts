@@ -2,10 +2,10 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Options {
-  'ts-expect-error'?: boolean;
-  'ts-ignore'?: boolean;
-  'ts-nocheck'?: boolean;
-  'ts-check'?: boolean;
+  'ts-expect-error'?: boolean | 'allow-with-description';
+  'ts-ignore'?: boolean | 'allow-with-description';
+  'ts-nocheck'?: boolean | 'allow-with-description';
+  'ts-check'?: boolean | 'allow-with-description';
 }
 
 const defaultOptions: [Options] = [
@@ -17,40 +17,73 @@ const defaultOptions: [Options] = [
   },
 ];
 
-type MessageIds = 'tsDirectiveComment';
+type MessageIds =
+  | 'tsDirectiveComment'
+  | 'tsDirectiveCommentRequiresDescription';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'ban-ts-comment',
   meta: {
     type: 'problem',
     docs: {
-      description: 'Bans `// @ts-<directive>` comments from being used',
+      description:
+        'Bans `// @ts-<directive>` comments from being used or requires descriptions after directive',
       category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
       tsDirectiveComment:
         'Do not use "// @ts-{{directive}}" because it alters compilation errors.',
+      tsDirectiveCommentRequiresDescription:
+        'When using "// @ts-{{directive}}" you must also provide a description after the the directive.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           'ts-expect-error': {
-            type: 'boolean',
-            default: true,
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
+              },
+              {
+                enum: ['allow-with-description'],
+              },
+            ],
           },
           'ts-ignore': {
-            type: 'boolean',
-            default: true,
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
+              },
+              {
+                enum: ['allow-with-description'],
+              },
+            ],
           },
           'ts-nocheck': {
-            type: 'boolean',
-            default: true,
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
+              },
+              {
+                enum: ['allow-with-description'],
+              },
+            ],
           },
           'ts-check': {
-            type: 'boolean',
-            default: false,
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
+              },
+              {
+                enum: ['allow-with-description'],
+              },
+            ],
           },
         },
         additionalProperties: false,
@@ -59,7 +92,7 @@ export default util.createRule<[Options], MessageIds>({
   },
   defaultOptions,
   create(context, [options]) {
-    const tsCommentRegExp = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)/;
+    const tsCommentRegExp = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();
 
     return {
@@ -71,16 +104,28 @@ export default util.createRule<[Options], MessageIds>({
             return;
           }
 
-          const [, directive] = tsCommentRegExp.exec(comment.value) ?? [];
+          const [, directive, description] =
+            tsCommentRegExp.exec(comment.value) ?? [];
 
           const fullDirective = `ts-${directive}` as keyof Options;
 
-          if (options[fullDirective]) {
+          const option = options[fullDirective];
+          if (option === true) {
             context.report({
               data: { directive },
               node: comment,
               messageId: 'tsDirectiveComment',
             });
+          }
+
+          if (option === 'allow-with-description') {
+            if (description.length === 0) {
+              context.report({
+                data: { directive },
+                node: comment,
+                messageId: 'tsDirectiveCommentRequiresDescription',
+              });
+            }
           }
         });
       },

@@ -19,6 +19,10 @@ ruleTester.run('ts-expect-error', rule, {
       code: '// @ts-expect-error',
       options: [{ 'ts-expect-error': false }],
     },
+    {
+      code: '// @ts-expect-error here is why the error is expected',
+      options: [{ 'ts-expect-error': 'allow-with-description' }],
+    },
   ],
   invalid: [
     {
@@ -74,6 +78,18 @@ if (false) {
         },
       ],
     },
+    {
+      code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -90,6 +106,11 @@ ruleTester.run('ts-ignore', rule, {
     {
       code: '// @ts-ignore',
       options: [{ 'ts-ignore': false }],
+    },
+    {
+      code:
+        '// @ts-ignore I am Ziltoid the Omniscient and I am exempted from any need to follow the rules!',
+      options: [{ 'ts-ignore': 'allow-with-description' }],
     },
   ],
   invalid: [
@@ -154,6 +175,18 @@ if (false) {
         },
       ],
     },
+    {
+      code: '// @ts-ignore',
+      options: [{ 'ts-ignore': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -170,6 +203,11 @@ ruleTester.run('ts-nocheck', rule, {
     {
       code: '// @ts-nocheck',
       options: [{ 'ts-nocheck': false }],
+    },
+    {
+      code:
+        '// @ts-nocheck no doubt, people will put nonsense here from time to time just to get the rule to stop reporting, perhaps even long messages with other nonsense in them like other // @ts-nocheck or // @ts-ignore things',
+      options: [{ 'ts-nocheck': 'allow-with-description' }],
     },
   ],
   invalid: [
@@ -234,6 +272,18 @@ if (false) {
         },
       ],
     },
+    {
+      code: '// @ts-nocheck',
+      options: [{ 'ts-nocheck': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'nocheck' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -250,6 +300,11 @@ ruleTester.run('ts-check', rule, {
     {
       code: '// @ts-check',
       options: [{ 'ts-check': false }],
+    },
+    {
+      code:
+        '// @ts-check with a description and also with a no-op // @ts-ignore',
+      options: [{ 'ts-check': 'allow-with-description' }],
     },
   ],
   invalid: [
@@ -304,6 +359,18 @@ if (false) {
           messageId: 'tsDirectiveComment',
           line: 3,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: '// @ts-ignore',
+      options: [{ 'ts-ignore': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
         },
       ],
     },
