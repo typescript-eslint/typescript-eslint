@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -58,7 +58,7 @@
     "@types/lodash": "^4.14.149",
     "@types/semver": "^7.1.0",
     "@types/tmp": "^0.2.0",
-    "@typescript-eslint/shared-fixtures": "3.0.0",
+    "@typescript-eslint/shared-fixtures": "3.0.1",
     "tmp": "^0.2.1",
     "typescript": "*"
   },

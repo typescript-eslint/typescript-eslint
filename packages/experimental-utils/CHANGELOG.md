@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.0...v3.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **experimental-utils:** export `CLIEngine` & `ESLint` ([#2083](https://github.com/typescript-eslint/typescript-eslint/issues/2083)) ([014341b](https://github.com/typescript-eslint/typescript-eslint/commit/014341bb23261f609fc2a6fe7fece191466a084a))
+
+
+
+
+
 # [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
 
 ## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)

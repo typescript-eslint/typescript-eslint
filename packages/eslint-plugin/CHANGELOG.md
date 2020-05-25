@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.0...v3.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] handle no options correctly ([#2095](https://github.com/typescript-eslint/typescript-eslint/issues/2095)) ([fd7d02b](https://github.com/typescript-eslint/typescript-eslint/commit/fd7d02b31ebd995b7fdd857d7c054042aa4f2001))
+* **eslint-plugin:** [no-throw-literal] handle intersection and union types ([#2085](https://github.com/typescript-eslint/typescript-eslint/issues/2085)) ([cae037f](https://github.com/typescript-eslint/typescript-eslint/commit/cae037ff9b20363b970cc600a09505b98bf10a14))
+* **eslint-plugin:** [unbound-method] fix crash due to missing `Intl` ([#2090](https://github.com/typescript-eslint/typescript-eslint/issues/2090)) ([f2fa82c](https://github.com/typescript-eslint/typescript-eslint/commit/f2fa82c532ae858ccfb064268cfcc9df657a54be))
+
+
+
+
+
 # [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
 
 ## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
