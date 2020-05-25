@@ -35,7 +35,7 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveComment:
         'Do not use "// @ts-{{directive}}" because it alters compilation errors.',
       tsDirectiveCommentRequiresDescription:
-        'When using "// @ts-{{directive}}" you must also provide a description after the the directive.',
+        'Include a description after the "// @ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary.',
     },
     schema: [
       {
