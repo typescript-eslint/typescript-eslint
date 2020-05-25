@@ -1,3 +1,6 @@
+#!/bin/bash
+set -exuo pipefail
+
 # This script should be run by attaching a shell to the running docker
 # container, and then running `../linked/install-local-packages.sh` from
 # that shell.
