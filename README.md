@@ -295,6 +295,6 @@ Support this project with your organization. Your logo will show up here with a 
   <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
 </a>
 
-## Contributing
+## Contributing Guide
 
 [See the contributing guide here](./CONTRIBUTING.md)
