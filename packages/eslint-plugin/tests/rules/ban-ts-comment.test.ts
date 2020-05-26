@@ -187,6 +187,31 @@ if (false) {
         },
       ],
     },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: '// @ts-ignore         ',
+      options: [{ 'ts-ignore': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-ignore    .',
+      options: [{ 'ts-ignore': 'allow-with-description' }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 

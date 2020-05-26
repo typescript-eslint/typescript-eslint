@@ -119,7 +119,8 @@ export default util.createRule<[Options], MessageIds>({
           }
 
           if (option === 'allow-with-description') {
-            if (description.length === 0) {
+            const threshold = 3;
+            if (description.trim().length < threshold) {
               context.report({
                 data: { directive },
                 node: comment,
