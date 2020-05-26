@@ -25,6 +25,7 @@ interface Options {
   'ts-ignore'?: boolean | 'allow-with-description';
   'ts-nocheck'?: boolean | 'allow-with-description';
   'ts-check'?: boolean | 'allow-with-description';
+  minimumDescriptionLength?: number;
 }
 
 const defaultOptions: Options = {
@@ -32,6 +33,7 @@ const defaultOptions: Options = {
   'ts-ignore': true,
   'ts-nocheck': true,
   'ts-check': false,
+  minimumDescriptionLength: 3,
 };
 ```
 
@@ -75,6 +77,28 @@ The following pattern is not a warning:
 ```ts
 if (false) {
   // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+```
+
+### `minimumDescriptionLength`
+
+Use `minimumDescriptionLength` to set a minimum length for descriptions when using the `allow-with-description` option for a directive.
+
+For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescriptionLength: 10 }` the following pattern is considered a warning:
+
+```ts
+if (false) {
+  // @ts-expect-error: TODO
+  console.log('hello');
+}
+```
+
+The following pattern is not a warning:
+
+```ts
+if (false) {
+  // @ts-expect-error The rationale for this override is described in issue #1337 on GitLab
   console.log('hello');
 }
 ```

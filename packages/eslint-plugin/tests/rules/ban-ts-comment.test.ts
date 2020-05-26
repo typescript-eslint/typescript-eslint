@@ -21,7 +21,20 @@ ruleTester.run('ts-expect-error', rule, {
     },
     {
       code: '// @ts-expect-error here is why the error is expected',
-      options: [{ 'ts-expect-error': 'allow-with-description' }],
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error abcdefghij',
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
     },
   ],
   invalid: [
@@ -80,10 +93,31 @@ if (false) {
     },
     {
       code: '// @ts-expect-error',
-      options: [{ 'ts-expect-error': 'allow-with-description' }],
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
       errors: [
         {
-          data: { directive: 'expect-error' },
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error: TODO',
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
@@ -180,7 +214,7 @@ if (false) {
       options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore' },
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
@@ -193,7 +227,7 @@ if (false) {
       options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore' },
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
@@ -205,7 +239,7 @@ if (false) {
       options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore' },
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
@@ -302,7 +336,7 @@ if (false) {
       options: [{ 'ts-nocheck': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'nocheck' },
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
@@ -329,7 +363,9 @@ ruleTester.run('ts-check', rule, {
     {
       code:
         '// @ts-check with a description and also with a no-op // @ts-ignore',
-      options: [{ 'ts-check': 'allow-with-description' }],
+      options: [
+        { 'ts-check': 'allow-with-description', minimumDescriptionLength: 3 },
+      ],
     },
   ],
   invalid: [
@@ -392,7 +428,7 @@ if (false) {
       options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore' },
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,

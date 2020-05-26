@@ -6,7 +6,10 @@ interface Options {
   'ts-ignore'?: boolean | 'allow-with-description';
   'ts-nocheck'?: boolean | 'allow-with-description';
   'ts-check'?: boolean | 'allow-with-description';
+  minimumDescriptionLength?: number;
 }
+
+export const defaultMinimumDescriptionLength = 3;
 
 const defaultOptions: [Options] = [
   {
@@ -14,6 +17,7 @@ const defaultOptions: [Options] = [
     'ts-ignore': true,
     'ts-nocheck': true,
     'ts-check': false,
+    minimumDescriptionLength: defaultMinimumDescriptionLength,
   },
 ];
 
@@ -35,7 +39,7 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveComment:
         'Do not use "// @ts-{{directive}}" because it alters compilation errors.',
       tsDirectiveCommentRequiresDescription:
-        'Include a description after the "// @ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary.',
+        'Include a description after the "// @ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
     },
     schema: [
       {
@@ -85,6 +89,10 @@ export default util.createRule<[Options], MessageIds>({
               },
             ],
           },
+          minimumDescriptionLength: {
+            type: 'number',
+            default: defaultMinimumDescriptionLength,
+          },
         },
         additionalProperties: false,
       },
@@ -119,10 +127,12 @@ export default util.createRule<[Options], MessageIds>({
           }
 
           if (option === 'allow-with-description') {
-            const threshold = 3;
-            if (description.trim().length < threshold) {
+            const {
+              minimumDescriptionLength = defaultMinimumDescriptionLength,
+            } = options;
+            if (description.trim().length < minimumDescriptionLength) {
               context.report({
-                data: { directive },
+                data: { directive, minimumDescriptionLength },
                 node: comment,
                 messageId: 'tsDirectiveCommentRequiresDescription',
               });
