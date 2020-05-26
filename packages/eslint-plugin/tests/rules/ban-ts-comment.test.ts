@@ -28,11 +28,11 @@ ruleTester.run('ts-expect-error', rule, {
       ],
     },
     {
-      code: '// @ts-expect-error abcdefghij',
+      code: '// @ts-expect-error exactly 21 characters',
       options: [
         {
           'ts-expect-error': 'allow-with-description',
-          minimumDescriptionLength: 10,
+          minimumDescriptionLength: 21,
         },
       ],
     },
