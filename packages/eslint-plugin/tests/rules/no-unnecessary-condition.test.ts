@@ -724,5 +724,62 @@ foo
         },
       ],
     },
+    {
+        code: `
+          declare const x: { a?: { b: string } };
+          x?.a?.b;
+        `,
+        output: `
+          declare const x: { a?: { b: string } };
+          x.a?.b;
+        `,
+        errors: [
+          {
+            messageId: 'neverOptionalChain',
+            line: 3,
+            endLine: 3,
+            column: 12,
+            endColumn: 14,
+          }
+        ],
+      },
+      {
+        code: `
+          declare const x: { a: { b?: { c: string } } };
+          x.a?.b?.c;
+        `,
+        output: `
+          declare const x: { a: { b?: { c: string } } };
+          x.a.b?.c;
+        `,
+        errors: [
+          {
+            messageId: 'neverOptionalChain',
+            line: 3,
+            endLine: 3,
+            column: 14,
+            endColumn: 16,
+          }
+        ],
+      },
+      {
+        code: `
+          let x: { a?: string };
+          x?.a;
+        `,
+        output: `
+          let x: { a?: string };
+          x.a;
+        `,
+        errors: [
+          {
+            messageId: 'neverOptionalChain',
+            line: 3,
+            endLine: 3,
+            column: 12,
+            endColumn: 14,
+          }
+        ],
+      }
   ],
 });
