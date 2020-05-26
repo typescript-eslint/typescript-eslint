@@ -109,7 +109,7 @@ ruleTester.run('ts-ignore', rule, {
     },
     {
       code:
-        '// @ts-ignore I am Ziltoid the Omniscient and I am exempted from any need to follow the rules!',
+        '// @ts-ignore I think that I am exempted from any need to follow the rules!',
       options: [{ 'ts-ignore': 'allow-with-description' }],
     },
   ],
