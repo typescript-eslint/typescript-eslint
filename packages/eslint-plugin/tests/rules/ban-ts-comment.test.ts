@@ -1,5 +1,5 @@
 import rule from '../../src/rules/ban-ts-comment';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -222,8 +222,7 @@ if (false) {
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: '// @ts-ignore         ',
+      code: noFormat`// @ts-ignore         `,
       options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
