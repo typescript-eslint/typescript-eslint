@@ -21,10 +21,10 @@ The configuration looks like this:
 
 ```ts
 interface Options {
-  'ts-expect-error'?: boolean;
-  'ts-ignore'?: boolean;
-  'ts-nocheck'?: boolean;
-  'ts-check'?: boolean;
+  'ts-expect-error'?: boolean | 'allow-with-description';
+  'ts-ignore'?: boolean | 'allow-with-description';
+  'ts-nocheck'?: boolean | 'allow-with-description';
+  'ts-check'?: boolean | 'allow-with-description';
 }
 
 const defaultOptions: Options = {
@@ -34,6 +34,8 @@ const defaultOptions: Options = {
   'ts-check': false,
 };
 ```
+
+### `ts-expect-error`, `ts-ignore`, `ts-nocheck`, `ts-check` directives
 
 A value of `true` for a particular directive means that this rule will report if it finds any usage of said directive.
 
@@ -51,6 +53,28 @@ The following patterns are not warnings:
 ```ts
 if (false) {
   // Compiler warns about unreachable code error
+  console.log('hello');
+}
+```
+
+### `allow-with-description`
+
+A value of `'allow-with-description'` for a particular directive means that this rule will report if it finds a directive that does not have a description following the directive (on the same line).
+
+For example, with `{ 'ts-expect-error': 'allow-with-description' }` the following pattern is considered a warning:
+
+```ts
+if (false) {
+  // @ts-expect-error
+  console.log('hello');
+}
+```
+
+The following pattern is not a warning:
+
+```ts
+if (false) {
+  // @ts-expect-error: Unreachable code error
   console.log('hello');
 }
 ```
