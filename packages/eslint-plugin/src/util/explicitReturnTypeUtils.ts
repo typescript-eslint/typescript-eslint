@@ -366,34 +366,31 @@ function ancestorHasReturnType(
   ancestor: TSESTree.Node | undefined,
   options: Options,
 ): boolean {
+  // Exit early if this ancestor is not a ReturnStatement.
+  if (ancestor?.type !== AST_NODE_TYPES.ReturnStatement) {
+    return false;
+  }
+
   // This boolean tells the `isValidFunctionReturnType` that it is being called
   // by an ancestor check.
   const isParentCheck = true;
-
-  // Has a valid type been found in any of the ancestors.
-  let hasType = false;
 
   while (ancestor) {
     switch (ancestor.type) {
       case AST_NODE_TYPES.ArrowFunctionExpression:
       case AST_NODE_TYPES.FunctionExpression:
-        hasType =
+        return (
           isValidFunctionExpressionReturnType(ancestor, options) ||
-          isValidFunctionReturnType(ancestor, options, isParentCheck);
-        break;
+          isValidFunctionReturnType(ancestor, options, isParentCheck)
+        );
       case AST_NODE_TYPES.FunctionDeclaration:
-        hasType = isValidFunctionReturnType(ancestor, options, isParentCheck);
-        break;
-    }
-
-    if (hasType) {
-      return hasType;
+        return isValidFunctionReturnType(ancestor, options, isParentCheck);
     }
 
     ancestor = ancestor.parent;
   }
 
-  return hasType;
+  return false;
 }
 
 export {
