@@ -82,14 +82,7 @@ This error means that the file that's being linted is not included in any of the
 
 There are a couple of solutions to this, depending on what you want to achieve.
 
-- If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, like a `.eslintignore` file, or `ignorePatterns` config.
-- If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
-    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`.
+See our docs on [type aware linting](./TYPED_LINTING.md##i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
 
 <br />
 <br />
