@@ -1,0 +1,10 @@
+blank_issues_enabled: false
+contact_links:
+  -
+    name: FAQ
+    about: Please check out our FAQ before filing new issues
+    url: https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md
+  -
+    name: Getting Started Guide
+    about: If you're looking for help setting up check out our getting started guide
+    url: https://github.com/typescript-eslint/typescript-eslint/tree/master/docs/getting-started
