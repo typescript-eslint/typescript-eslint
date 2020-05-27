@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should produce the expected lint ouput 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "/usr/linked/index.ts",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 1,
+        "endColumn": 21,
+        "endLine": 1,
+        "fix": Object {
+          "range": Array [
+            0,
+            3,
+          ],
+          "text": "let",
+        },
+        "line": 1,
+        "message": "Unexpected var, use let or const instead.",
+        "messageId": "unexpectedVar",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "no-var",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 13,
+        "endLine": 1,
+        "line": 1,
+        "message": "'foo' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+      },
+      Object {
+        "column": 10,
+        "endColumn": 13,
+        "endLine": 1,
+        "line": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 1,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                9,
+                12,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                9,
+                12,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+    ],
+    "source": "var foo: any = true;
+",
+    "usedDeprecatedRules": Array [],
+    "warningCount": 2,
+  },
+]
+`;

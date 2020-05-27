@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should produce the expected lint ouput 1`] = `
+Array [
+  Object {
+    "errorCount": 10,
+    "filePath": "/usr/linked/Doc.md",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 9,
+        "line": 9,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+      Object {
+        "column": 20,
+        "endColumn": 23,
+        "endLine": 28,
+        "line": 28,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                51,
+                54,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                51,
+                54,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 29,
+        "line": 29,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 46,
+        "line": 46,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+      Object {
+        "column": 17,
+        "endColumn": 20,
+        "endLine": 54,
+        "line": 54,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 55,
+        "line": 55,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+      Object {
+        "column": 17,
+        "endColumn": 20,
+        "endLine": 63,
+        "line": 63,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 64,
+        "line": 64,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+      Object {
+        "column": 17,
+        "endColumn": 20,
+        "endLine": 72,
+        "line": 72,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          Object {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": Object {
+              "range": Array [
+                16,
+                19,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+      Object {
+        "column": 3,
+        "endColumn": 14,
+        "endLine": 73,
+        "line": 73,
+        "message": "Unexpected console statement.",
+        "messageId": "unexpected",
+        "nodeType": "MemberExpression",
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+    ],
+    "source": "Some extra text to verify that the markdown plugin is ignoring anything that is not a code block.
+
+expected no-console error:
+
+\`\`\`jsx
+import { Button } from 'antd';
+
+function MyComp() {
+  console.log('test');
+  return (
+    <div>
+      <Button type=\\"primary\\">Primary</Button>
+      <Button>Default</Button>
+      <Button type=\\"dashed\\">Dashed</Button>
+      <Button type=\\"danger\\">Danger</Button>
+      <Button type=\\"link\\">Link</Button>
+    </div>
+  );
+}
+\`\`\`
+
+expected no-explicit-any error:
+expected no-console error:
+
+\`\`\`jsx
+import { Button } from 'antd';
+
+function MyComp(): any {
+  console.log('test');
+  return (
+    <div>
+      <Button type=\\"primary\\">Primary</Button>
+      <Button>Default</Button>
+      <Button type=\\"dashed\\">Dashed</Button>
+      <Button type=\\"danger\\">Danger</Button>
+      <Button type=\\"link\\">Link</Button>
+    </div>
+  );
+}
+\`\`\`
+
+expected no-console error:
+
+\`\`\`js
+function foo() {
+  console.log('test');
+}
+\`\`\`
+
+expected no-explicit-any error:
+expected no-console error:
+
+\`\`\`js
+function foo(): any {
+  console.log('test');
+}
+\`\`\`
+
+expected no-explicit-any error:
+expected no-console error:
+
+\`\`\`javascript
+function foo(): any {
+  console.log('test');
+}
+\`\`\`
+
+expected no-explicit-any error:
+expected no-console error:
+
+\`\`\`node
+function foo(): any {
+  console.log('test');
+}
+\`\`\`
+",
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+]
+`;

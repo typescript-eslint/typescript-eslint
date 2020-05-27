@@ -333,7 +333,6 @@ This allows you to emulate the old `interface-name-prefix` rule.
     {
       "selector": "interface",
       "format": ["PascalCase"],
-      "prefix": ["T"],
       "custom": {
         "regex": "^I[A-Z]",
         "match": false

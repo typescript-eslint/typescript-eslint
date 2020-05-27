@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.0...v3.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **typescript-estree:** handle `BigInt` with `_` numeric separator ([#2067](https://github.com/typescript-eslint/typescript-eslint/issues/2067)) ([66f1627](https://github.com/typescript-eslint/typescript-eslint/commit/66f1627b11a566d5b925a577e800f99d5c808be2))
+* **typescript-estree:** mark TS 3.8 and 3.9 as "supported" ([#2057](https://github.com/typescript-eslint/typescript-eslint/issues/2057)) ([5eedbff](https://github.com/typescript-eslint/typescript-eslint/commit/5eedbff01178ea33b98ab22e556df4c1a195f839)), closes [#1436](https://github.com/typescript-eslint/typescript-eslint/issues/1436) [#1436](https://github.com/typescript-eslint/typescript-eslint/issues/1436)
+
+
+
+
+
 # [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
 
 ## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)

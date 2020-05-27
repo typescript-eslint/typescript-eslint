@@ -11,8 +11,8 @@ Array [
       Object {
         "column": 7,
         "endColumn": 13,
-        "endLine": 1,
-        "line": 1,
+        "endLine": 2,
+        "line": 2,
         "message": "'noSemi' is assigned a value but never used.",
         "messageId": "unusedVar",
         "nodeType": "Identifier",
@@ -22,15 +22,15 @@ Array [
       Object {
         "column": 20,
         "endColumn": 20,
-        "endLine": 1,
+        "endLine": 2,
         "fix": Object {
           "range": Array [
-            19,
-            19,
+            38,
+            38,
           ],
           "text": ";",
         },
-        "line": 1,
+        "line": 2,
         "message": "Missing semicolon (tslint:semicolon)",
         "messageId": "failure",
         "nodeType": null,
@@ -38,7 +38,8 @@ Array [
         "severity": 2,
       },
     ],
-    "source": "const noSemi = true
+    "source": "// prettier-ignore
+const noSemi = true
 ",
     "usedDeprecatedRules": Array [],
     "warningCount": 1,

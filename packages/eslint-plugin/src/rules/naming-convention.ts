@@ -360,15 +360,17 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
-    const context: Context = contextWithoutDefaults.options
-      ? contextWithoutDefaults
-      : // only apply the defaults when the user provides no config
-        Object.setPrototypeOf(
-          {
-            options: defaultCamelCaseAllTheThingsConfig,
-          },
-          contextWithoutDefaults,
-        );
+    const context: Context =
+      contextWithoutDefaults.options &&
+      contextWithoutDefaults.options.length > 0
+        ? contextWithoutDefaults
+        : // only apply the defaults when the user provides no config
+          Object.setPrototypeOf(
+            {
+              options: defaultCamelCaseAllTheThingsConfig,
+            },
+            contextWithoutDefaults,
+          );
 
     const validators = parseOptions(context);
 
@@ -748,7 +750,7 @@ type ValidatorFunction = (
   modifiers?: Set<Modifiers>,
 ) => void;
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
-type Context = TSESLint.RuleContext<MessageIds, Options>;
+type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.map(opt => normalizeOption(opt));
   const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
