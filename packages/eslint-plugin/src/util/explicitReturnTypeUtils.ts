@@ -390,6 +390,7 @@ function ancestorHasReturnType(
     ancestor = ancestor.parent;
   }
 
+  /* istanbul ignore next */
   return false;
 }
 
