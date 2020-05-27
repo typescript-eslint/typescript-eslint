@@ -82,7 +82,7 @@ This error means that the file that's being linted is not included in any of the
 
 There are a couple of solutions to this, depending on what you want to achieve.
 
-See our docs on [type aware linting](./TYPED_LINTING.md##i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
+See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
 
 <br />
 <br />
