@@ -96,7 +96,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                                                |
 | [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                                                          |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                                                   |
-| [`no-void-expression`]               | 🌟  | [`no-void`][no-void]                                                                                 |
+| [`no-void-expression`]               | 🛑  | N/A (unrelated to the similarly named ESLint rule `no-void`)                                         |
 | [`prefer-conditional-expression`]    | 🛑  | N/A                                                                                                  |
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                                                       |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                                                     |
@@ -524,7 +524,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-unsafe-finally]: https://eslint.org/docs/rules/no-unsafe-finally
 [no-unused-expressions]: https://eslint.org/docs/rules/no-unused-expressions
 [no-var]: https://eslint.org/docs/rules/no-var
-[no-void]: https://eslint.org/docs/rules/no-void
 [prefer-object-spread]: https://eslint.org/docs/rules/prefer-object-spread
 [radix]: https://eslint.org/docs/rules/radix
 [default-case]: https://eslint.org/docs/rules/default-case
