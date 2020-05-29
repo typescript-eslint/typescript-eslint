@@ -8,6 +8,7 @@
 - [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
 - [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
 - [TypeScript should be installed locally](#typescript-should-be-installed-locally)
+- [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
 
 ---
 
@@ -81,14 +82,7 @@ This error means that the file that's being linted is not included in any of the
 
 There are a couple of solutions to this, depending on what you want to achieve.
 
-- If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, like a `.eslintignore` file, or `ignorePatterns` config.
-- If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
-    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`.
+See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
 
 <br />
 <br />
@@ -169,3 +163,48 @@ If you have some pure JavaScript code that you do not want to apply certain lint
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`. See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
+
+<br />
+<br />
+<br />
+
+---
+
+<br />
+<br />
+<br />
+
+## How can I ban `<specific language feature>`?
+
+ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax). This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
+
+You can use a tool like [AST Explorer](https://astexplorer.net/) to help in figuring out the structure of the AST that you want to ban.
+
+For example, you can ban enums (or some variation of) using one of the following configs:
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      // ban all enums
+      {
+        "selector": "TSEnumDeclaration",
+        "message": "My reason for not using any enums at all"
+      },
+
+      // ban just const enums
+      {
+        "selector": "TSEnumDeclaration[const=true]",
+        "message": "My reason for not using const enums"
+      },
+
+      // ban just non-const enums
+      {
+        "selector": "TSEnumDeclaration:not([const=true])",
+        "message": "My reason for not using non-const enums"
+      }
+    ]
+  }
+}
+```
