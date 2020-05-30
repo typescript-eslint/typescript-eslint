@@ -13,7 +13,7 @@ $ yarn add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 or with NPM:
 
 ```bash
-$ npm i --save=dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+$ npm i --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 ## Configuration
