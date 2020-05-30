@@ -65,6 +65,12 @@ ruleTester.run('no-unused-expressions', rule, {
         return null;
       }
     `,
+    `
+      import('./foo');
+    `,
+    `
+      import('./foo').then(() => {});
+    `,
   ],
   invalid: [
     {
