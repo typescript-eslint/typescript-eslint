@@ -1,26 +1,34 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
-  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 import {
+  ancestorHasReturnType,
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
+  doesImmediatelyReturnFunctionExpression,
+  FunctionExpression,
+  FunctionNode,
   isTypedFunctionExpression,
-  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
   {
-    allowTypedFunctionExpressions?: boolean;
-    allowHigherOrderFunctions?: boolean;
+    allowArgumentsExplicitlyTypedAsAny?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowedNames?: string[];
+    allowHigherOrderFunctions?: boolean;
+    allowTypedFunctionExpressions?: boolean;
     shouldTrackReferences?: boolean;
   },
 ];
-type MessageIds = 'missingReturnType' | 'missingArgType';
+type MessageIds =
+  | 'missingReturnType'
+  | 'missingArgType'
+  | 'missingArgTypeUnnamed'
+  | 'anyTypedArg'
+  | 'anyTypedArgUnnamed';
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
@@ -35,15 +43,16 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       missingReturnType: 'Missing return type on function.',
       missingArgType: "Argument '{{name}}' should be typed.",
+      missingArgTypeUnnamed: '{{type}} argument should be typed.',
+      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
+      anyTypedArgUnnamed:
+        '{{type}} argument should be typed with a non-any type.',
     },
     schema: [
       {
         type: 'object',
         properties: {
-          allowTypedFunctionExpressions: {
-            type: 'boolean',
-          },
-          allowHigherOrderFunctions: {
+          allowArgumentsExplicitlyTypedAsAny: {
             type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
@@ -55,6 +64,13 @@ export default util.createRule<Options, MessageIds>({
               type: 'string',
             },
           },
+          allowHigherOrderFunctions: {
+            type: 'boolean',
+          },
+          allowTypedFunctionExpressions: {
+            type: 'boolean',
+          },
+          // DEPRECATED - To be removed in next major
           shouldTrackReferences: {
             type: 'boolean',
           },
@@ -65,87 +81,136 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowTypedFunctionExpressions: true,
-      allowHigherOrderFunctions: true,
+      allowArgumentsExplicitlyTypedAsAny: false,
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
-      shouldTrackReferences: true,
+      allowHigherOrderFunctions: true,
+      allowTypedFunctionExpressions: true,
     },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
 
-    /**
-     * Steps up the nodes parents to check if any ancestor nodes are export
-     * declarations.
-     */
-    function isUnexported(node: TSESTree.Node | undefined): boolean {
-      let isReturnedValue = false;
-      while (node) {
-        if (
-          node.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
-          node.type === AST_NODE_TYPES.ExportNamedDeclaration ||
-          node.type === AST_NODE_TYPES.ExportSpecifier
-        ) {
-          return false;
+    // tracks all of the functions we've already checked
+    const checkedFunctions = new Set<FunctionNode>();
+
+    // tracks functions that were found whilst traversing
+    const foundFunctions: FunctionNode[] = [];
+
+    /*
+    # How the rule works:
+
+    As the rule traverses the AST, it immediately checks every single function that it finds is exported.
+    "exported" means that it is either directly exported, or that its name is exported.
+
+    It also collects a list of every single function it finds on the way, but does not check them.
+    After it's finished traversing the AST, it then iterates through the list of found functions, and checks to see if
+    any of them are part of a higher-order function
+    */
+
+    return {
+      ExportDefaultDeclaration(node): void {
+        checkNode(node.declaration);
+      },
+      'ExportNamedDeclaration:not([source])'(
+        node: TSESTree.ExportNamedDeclaration,
+      ): void {
+        if (node.declaration) {
+          checkNode(node.declaration);
+        } else {
+          for (const specifier of node.specifiers) {
+            followReference(specifier.local);
+          }
+        }
+      },
+      TSExportAssignment(node): void {
+        checkNode(node.expression);
+      },
+
+      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
+        node: FunctionNode,
+      ): void {
+        foundFunctions.push(node);
+      },
+      'Program:exit'(): void {
+        for (const func of foundFunctions) {
+          if (isExportedHigherOrderFunction(func)) {
+            checkNode(func);
+          }
+        }
+      },
+    };
+
+    function checkParameters(
+      node: TSESTree.TSEmptyBodyFunctionExpression | FunctionNode,
+    ): void {
+      function checkParameter(param: TSESTree.Parameter): void {
+        function report(
+          namedMessageId: MessageIds,
+          unnamedMessageId: MessageIds,
+        ): void {
+          if (param.type === AST_NODE_TYPES.Identifier) {
+            context.report({
+              node: param,
+              messageId: namedMessageId,
+              data: { name: param.name },
+            });
+          } else if (param.type === AST_NODE_TYPES.ArrayPattern) {
+            context.report({
+              node: param,
+              messageId: unnamedMessageId,
+              data: { type: 'Array pattern' },
+            });
+          } else if (param.type === AST_NODE_TYPES.ObjectPattern) {
+            context.report({
+              node: param,
+              messageId: unnamedMessageId,
+              data: { type: 'Object pattern' },
+            });
+          } else if (param.type === AST_NODE_TYPES.RestElement) {
+            if (param.argument.type === AST_NODE_TYPES.Identifier) {
+              context.report({
+                node: param,
+                messageId: namedMessageId,
+                data: { name: param.argument.name },
+              });
+            } else {
+              context.report({
+                node: param,
+                messageId: unnamedMessageId,
+                data: { type: 'Rest' },
+              });
+            }
+          }
         }
 
-        if (node.type === AST_NODE_TYPES.JSXExpressionContainer) {
-          return true;
-        }
+        switch (param.type) {
+          case AST_NODE_TYPES.ArrayPattern:
+          case AST_NODE_TYPES.Identifier:
+          case AST_NODE_TYPES.ObjectPattern:
+          case AST_NODE_TYPES.RestElement:
+            if (!param.typeAnnotation) {
+              report('missingArgType', 'missingArgTypeUnnamed');
+            } else if (
+              options.allowArgumentsExplicitlyTypedAsAny !== true &&
+              param.typeAnnotation.typeAnnotation.type ===
+                AST_NODE_TYPES.TSAnyKeyword
+            ) {
+              report('anyTypedArg', 'anyTypedArgUnnamed');
+            }
+            return;
 
-        if (node.type === AST_NODE_TYPES.ReturnStatement) {
-          isReturnedValue = true;
-        }
+          case AST_NODE_TYPES.TSParameterProperty:
+            return checkParameter(param.parameter);
 
-        if (
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          node.type === AST_NODE_TYPES.FunctionDeclaration ||
-          node.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          isReturnedValue = false;
+          case AST_NODE_TYPES.AssignmentPattern: // ignored as it has a type via its assignment
+            return;
         }
-
-        if (node.type === AST_NODE_TYPES.BlockStatement && !isReturnedValue) {
-          return true;
-        }
-
-        node = node.parent;
       }
 
-      return true;
-    }
-
-    /**
-     * Returns true when the argument node is not typed.
-     */
-    function isArgumentUntyped(node: TSESTree.Identifier): boolean {
-      return (
-        !node.typeAnnotation ||
-        node.typeAnnotation.typeAnnotation.type === AST_NODE_TYPES.TSAnyKeyword
-      );
-    }
-
-    /**
-     * Checks if a function declaration/expression has a return type.
-     */
-    function checkArguments(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
-    ): void {
-      const paramIdentifiers = node.params.filter(util.isIdentifier);
-      const untypedArgs = paramIdentifiers.filter(isArgumentUntyped);
-      untypedArgs.forEach(untypedArg =>
-        context.report({
-          node,
-          messageId: 'missingArgType',
-          data: {
-            name: untypedArg.name,
-          },
-        }),
-      );
+      for (const arg of node.params) {
+        checkParameter(arg);
+      }
     }
 
     /**
@@ -185,106 +250,151 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    /**
-     * Finds an array of a function expression node referred by a variable passed from parameters
-     */
-    function findFunctionExpressionsInScope(
-      variable: TSESLint.Scope.Variable,
-    ):
-      | (TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression)[]
-      | undefined {
-      const writeExprs = variable.references
-        .map(ref => ref.writeExpr)
-        .filter(
-          (
-            expr,
-          ): expr is
-            | TSESTree.ArrowFunctionExpression
-            | TSESTree.FunctionExpression =>
-            expr?.type === AST_NODE_TYPES.FunctionExpression ||
-            expr?.type === AST_NODE_TYPES.ArrowFunctionExpression,
-        );
+    function isExportedHigherOrderFunction(node: FunctionNode): boolean {
+      let current = node.parent;
+      while (current) {
+        if (current.type === AST_NODE_TYPES.ReturnStatement) {
+          // the parent of a return will always be a block statement, so we can skip over it
+          current = current.parent?.parent;
+          continue;
+        }
 
-      return writeExprs;
-    }
+        if (
+          !util.isFunction(current) ||
+          !doesImmediatelyReturnFunctionExpression(current)
+        ) {
+          return false;
+        }
 
-    /**
-     * Finds a function node referred by a variable passed from parameters
-     */
-    function findFunctionInScope(
-      variable: TSESLint.Scope.Variable,
-    ): TSESTree.FunctionDeclaration | undefined {
-      if (variable.defs[0].type !== 'FunctionName') {
-        return;
+        if (checkedFunctions.has(current)) {
+          return true;
+        }
+
+        current = current.parent;
       }
 
-      const functionNode = variable.defs[0].node;
-
-      if (functionNode?.type !== AST_NODE_TYPES.FunctionDeclaration) {
-        return;
-      }
-
-      return functionNode;
+      return false;
     }
 
-    /**
-     * Checks if a function referred by the identifier passed from parameters follow the rule
-     */
-    function checkWithTrackingReferences(node: TSESTree.Identifier): void {
+    function followReference(node: TSESTree.Identifier): void {
       const scope = context.getScope();
       const variable = scope.set.get(node.name);
-
-      if (!variable) {
+      /* istanbul ignore if */ if (!variable) {
         return;
       }
 
-      if (variable.defs[0].type === 'ClassName') {
-        const classNode = variable.defs[0].node;
-        for (const classElement of classNode.body.body) {
-          if (
-            classElement.type === AST_NODE_TYPES.MethodDefinition &&
-            classElement.value.type === AST_NODE_TYPES.FunctionExpression
-          ) {
-            checkFunctionExpression(classElement.value);
-          }
-
-          if (
-            classElement.type === AST_NODE_TYPES.ClassProperty &&
-            (classElement.value?.type === AST_NODE_TYPES.FunctionExpression ||
-              classElement.value?.type ===
-                AST_NODE_TYPES.ArrowFunctionExpression)
-          ) {
-            checkFunctionExpression(classElement.value);
-          }
+      // check all of the definitions
+      for (const definition of variable.defs) {
+        // cases we don't care about in this rule
+        if (
+          definition.type === 'ImplicitGlobalVariable' ||
+          definition.type === 'ImportBinding' ||
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+          definition.type === 'CatchClause' ||
+          definition.type === 'Parameter'
+        ) {
+          continue;
         }
+
+        checkNode(definition.node);
       }
 
-      const functionNode = findFunctionInScope(variable);
-      if (functionNode) {
-        checkFunction(functionNode);
-      }
-
-      const functionExpressions = findFunctionExpressionsInScope(variable);
-      if (functionExpressions && functionExpressions.length > 0) {
-        for (const functionExpression of functionExpressions) {
-          checkFunctionExpression(functionExpression);
+      // follow references to find writes to the variable
+      for (const reference of variable.references) {
+        if (
+          // we don't want to check the initialization ref, as this is handled by the declaration check
+          !reference.init &&
+          reference.writeExpr
+        ) {
+          checkNode(reference.writeExpr);
         }
       }
     }
 
-    /**
-     * Checks if a function expression follow the rule.
-     */
-    function checkFunctionExpression(
-      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): void {
-      if (
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
-        node.parent.accessibility === 'private'
-      ) {
-        // don't check private methods as they aren't part of the public signature
+    function checkNode(node: TSESTree.Node | null): void {
+      if (node == null) {
         return;
       }
+
+      switch (node.type) {
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+        case AST_NODE_TYPES.FunctionExpression:
+          return checkFunctionExpression(node);
+
+        case AST_NODE_TYPES.ArrayExpression:
+          for (const element of node.elements) {
+            checkNode(element);
+          }
+          return;
+
+        case AST_NODE_TYPES.ClassProperty:
+        case AST_NODE_TYPES.TSAbstractClassProperty:
+          if (node.accessibility === 'private') {
+            return;
+          }
+          return checkNode(node.value);
+
+        case AST_NODE_TYPES.ClassDeclaration:
+        case AST_NODE_TYPES.ClassExpression:
+          for (const element of node.body.body) {
+            checkNode(element);
+          }
+          return;
+
+        case AST_NODE_TYPES.FunctionDeclaration:
+          return checkFunction(node);
+
+        case AST_NODE_TYPES.MethodDefinition:
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
+          if (node.accessibility === 'private') {
+            return;
+          }
+          return checkNode(node.value);
+
+        case AST_NODE_TYPES.Identifier:
+          return followReference(node);
+
+        case AST_NODE_TYPES.ObjectExpression:
+          for (const property of node.properties) {
+            checkNode(property);
+          }
+          return;
+
+        case AST_NODE_TYPES.Property:
+          return checkNode(node.value);
+
+        case AST_NODE_TYPES.TSEmptyBodyFunctionExpression:
+          return checkEmptyBodyFunctionExpression(node);
+
+        case AST_NODE_TYPES.VariableDeclaration:
+          for (const declaration of node.declarations) {
+            checkNode(declaration);
+          }
+          return;
+
+        case AST_NODE_TYPES.VariableDeclarator:
+          return checkNode(node.init);
+      }
+    }
+
+    function checkEmptyBodyFunctionExpression(
+      node: TSESTree.TSEmptyBodyFunctionExpression,
+    ): void {
+      if (!node.returnType) {
+        context.report({
+          node,
+          messageId: 'missingReturnType',
+        });
+      }
+
+      checkParameters(node);
+    }
+
+    function checkFunctionExpression(node: FunctionExpression): void {
+      if (checkedFunctions.has(node)) {
+        return;
+      }
+      checkedFunctions.add(node);
 
       if (
         isAllowedName(node.parent) ||
@@ -294,21 +404,23 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionExpressionReturnType(node, options, sourceCode, loc =>
+      checkFunctionExpressionReturnType(node, options, sourceCode, loc => {
         context.report({
           node,
           loc,
           messageId: 'missingReturnType',
-        }),
-      );
+        });
+      });
 
-      checkArguments(node);
+      checkParameters(node);
     }
 
-    /**
-     * Checks if a function follow the rule
-     */
     function checkFunction(node: TSESTree.FunctionDeclaration): void {
+      if (checkedFunctions.has(node)) {
+        return;
+      }
+      checkedFunctions.add(node);
+
       if (
         isAllowedName(node.parent) ||
         ancestorHasReturnType(node.parent, options)
@@ -316,75 +428,15 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionReturnType(node, options, sourceCode, loc =>
+      checkFunctionReturnType(node, options, sourceCode, loc => {
         context.report({
           node,
           loc,
           messageId: 'missingReturnType',
-        }),
-      );
+        });
+      });
 
-      checkArguments(node);
+      checkParameters(node);
     }
-
-    return {
-      'ArrowFunctionExpression, FunctionExpression'(
-        node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-      ): void {
-        if (isUnexported(node)) {
-          return;
-        }
-
-        checkFunctionExpression(node);
-      },
-      FunctionDeclaration(node): void {
-        if (isUnexported(node)) {
-          return;
-        }
-
-        checkFunction(node);
-      },
-      'ExportDefaultDeclaration, TSExportAssignment'(
-        node: TSESTree.ExportDefaultDeclaration | TSESTree.TSExportAssignment,
-      ): void {
-        if (!options.shouldTrackReferences) {
-          return;
-        }
-
-        let exported: TSESTree.Node;
-
-        if (node.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
-          exported = node.declaration;
-        } else {
-          exported = node.expression;
-        }
-
-        switch (exported.type) {
-          case AST_NODE_TYPES.Identifier: {
-            checkWithTrackingReferences(exported);
-            break;
-          }
-          case AST_NODE_TYPES.ArrayExpression: {
-            for (const element of exported.elements) {
-              if (element.type === AST_NODE_TYPES.Identifier) {
-                checkWithTrackingReferences(element);
-              }
-            }
-            break;
-          }
-          case AST_NODE_TYPES.ObjectExpression: {
-            for (const property of exported.properties) {
-              if (
-                property.type === AST_NODE_TYPES.Property &&
-                property.value.type === AST_NODE_TYPES.Identifier
-              ) {
-                checkWithTrackingReferences(property.value);
-              }
-            }
-            break;
-          }
-        }
-      },
-    };
   },
 });

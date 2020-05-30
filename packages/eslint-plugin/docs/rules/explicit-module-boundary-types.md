@@ -71,16 +71,9 @@ The rule accepts an options object with the following properties:
 ```ts
 type Options = {
   /**
-   * If true, type annotations are also allowed on the variable of a function expression
-   * rather than on the function arguments/return value directly.
+   * If true, the rule will not report for arguments that are explicitly typed as `any`
    */
-  allowTypedFunctionExpressions?: boolean;
-  /**
-   * If true, functions immediately returning another function expression will not
-   * require an explicit return value annotation.
-   * You must still type the parameters of the function.
-   */
-  allowHigherOrderFunctions?: boolean;
+  allowArgumentsExplicitlyTypedAsAny?: boolean;
   /**
    * If true, body-less arrow functions that return an `as const` type assertion will not
    * require an explicit return value annotation.
@@ -92,16 +85,24 @@ type Options = {
    */
   allowedNames?: string[];
   /**
-   * If true, track references to exported variables as well as direct exports.
+   * If true, functions immediately returning another function expression will not
+   * require an explicit return value annotation.
+   * You must still type the parameters of the function.
    */
-  shouldTrackReferences?: boolean;
+  allowHigherOrderFunctions?: boolean;
+  /**
+   * If true, type annotations are also allowed on the variable of a function expression
+   * rather than on the function arguments/return value directly.
+   */
+  allowTypedFunctionExpressions?: boolean;
 };
 
 const defaults = {
-  allowTypedFunctionExpressions: true,
-  allowHigherOrderFunctions: true,
+  allowArgumentsExplicitlyTypedAsAny: false,
+  allowDirectConstAssertionInArrowFunctions: true,
   allowedNames: [],
-  shouldTrackReferences: true,
+  allowHigherOrderFunctions: true,
+  allowTypedFunctionExpressions: true,
 };
 ```
 
@@ -124,6 +125,94 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       }
     }
   ]
+}
+```
+
+### `allowArgumentsExplicitlyTypedAsAny`
+
+Examples of **incorrect** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: true }`:
+
+```ts
+export const func = (value: any): void => ({ type: 'X', value });
+export function foo(value: any): void {}
+```
+
+Examples of **correct** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: true }`:
+
+```ts
+export const func = (value: number): void => ({ type: 'X', value });
+export function foo(value: number): void {}
+```
+
+### `allowDirectConstAssertionInArrowFunctions`
+
+Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+export const func = (value: number) => ({ type: 'X', value });
+export const foo = () => {
+  return {
+    bar: true,
+  } as const;
+};
+export const bar = () => 1;
+export const baz = arg => arg as const;
+```
+
+Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+export const func = (value: number) => ({ type: 'X', value } as const);
+export const foo = () =>
+  ({
+    bar: true,
+  } as const);
+export const bar = () => 1 as const;
+export const baz = (arg: string) => arg as const;
+```
+
+### `allowedNames`
+
+You may pass function/method names you would like this rule to ignore, like so:
+
+```json
+{
+  "@typescript-eslint/explicit-module-boundary-types": [
+    "error",
+    {
+      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
+    }
+  ]
+}
+```
+
+### `allowHigherOrderFunctions`
+
+Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
+
+```ts
+export var arrowFn = () => () => {};
+
+export function fn() {
+  return function () {};
+}
+
+export function foo(outer) {
+  return function (inner): void {};
+}
+```
+
+Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
+
+```ts
+export var arrowFn = () => (): void => {};
+
+export function fn() {
+  return function (): void {};
+}
+
+export function foo(outer: string) {
+  return function (inner: string): void {};
 }
 ```
 
@@ -174,100 +263,6 @@ export let objectPropCast = <ObjectType>{
 
 type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};
-```
-
-### `allowHigherOrderFunctions`
-
-Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
-
-```ts
-export var arrowFn = () => () => {};
-
-export function fn() {
-  return function () {};
-}
-
-export function foo(outer) {
-  return function (inner): void {};
-}
-```
-
-Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
-
-```ts
-export var arrowFn = () => (): void => {};
-
-export function fn() {
-  return function (): void {};
-}
-
-export function foo(outer: string) {
-  return function (inner: string): void {};
-}
-```
-
-### `allowDirectConstAssertionInArrowFunctions`
-
-Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
-
-```ts
-export const func = (value: number) => ({ type: 'X', value });
-export const foo = () => {
-  return {
-    bar: true,
-  } as const;
-};
-export const bar = () => 1;
-export const baz = arg => arg as const;
-```
-
-Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
-
-```ts
-export const func = (value: number) => ({ type: 'X', value } as const);
-export const foo = () =>
-  ({
-    bar: true,
-  } as const);
-export const bar = () => 1 as const;
-export const baz = (arg: string) => arg as const;
-```
-
-### `allowedNames`
-
-You may pass function/method names you would like this rule to ignore, like so:
-
-```json
-{
-  "@typescript-eslint/explicit-module-boundary-types": [
-    "error",
-    {
-      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
-    }
-  ]
-}
-```
-
-### `shouldTrackReferences`
-
-Examples of **incorrect** code for this rule with `{ shouldTrackReferences: true }`:
-
-```ts
-function foo(bar) {
-  return bar;
-}
-
-export default foo;
-```
-
-Examples of **correct** code for this rule with `{ shouldTrackReferences: true }`:
-
-```ts
-function foo(bar: string): string {
-  return bar;
-}
-
-export default foo;
 ```
 
 ## When Not To Use It
