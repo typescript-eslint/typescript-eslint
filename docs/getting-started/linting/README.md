@@ -10,6 +10,12 @@ First step is to make sure you've got the required packages installed:
 $ yarn add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
+or with NPM:
+
+```bash
+$ npm i --save=dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
 ## Configuration
 
 Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
@@ -70,6 +76,12 @@ With that configured, open a terminal to the root of your project, and run the f
 
 ```bash
 $ yarn eslint . --ext .js,.jsx,.ts,.tsx
+```
+
+or with NPM:
+
+```bash
+$ npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
