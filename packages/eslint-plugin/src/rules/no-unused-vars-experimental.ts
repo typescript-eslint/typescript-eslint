@@ -149,6 +149,8 @@ export default util.createRule<Options, MessageIds>({
           report('Interface');
           break;
 
+        case ts.SyntaxKind.GetAccessor:
+        case ts.SyntaxKind.SetAccessor:
         case ts.SyntaxKind.MethodDeclaration:
           report('Method');
           break;
