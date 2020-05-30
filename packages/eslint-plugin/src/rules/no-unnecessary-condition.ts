@@ -20,6 +20,7 @@ import {
   isNullableType,
   nullThrows,
   NullThrowsReasons,
+  isMemberOrOptionalMemberExpression,
 } from '../util';
 
 const typeContainsFlag = (type: ts.Type, flag: ts.TypeFlags): boolean => {
@@ -439,7 +440,11 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      const type = getNodeType(node);
+      const nodeToCheck = isMemberOrOptionalMemberExpression(node)
+        ? node.object
+        : node;
+      const type = getNodeType(nodeToCheck);
+
       if (
         isTypeFlagSet(type, ts.TypeFlags.Any) ||
         isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
