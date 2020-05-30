@@ -100,13 +100,68 @@ function test<T>(t: T | []) {
     // Boolean expressions
     `
 function test(a: string) {
-  return a === 'a';
+  const t1 = a === 'a';
+  const t2 = 'a' === a;
 }
     `,
     `
 function test(a?: string) {
   const t1 = a === undefined;
-  const t3 = undefined === a;
+  const t2 = undefined === a;
+  const t1 = a !== undefined;
+  const t2 = undefined !== a;
+}
+    `,
+    `
+function test(a: null | string) {
+  const t1 = a === null;
+  const t2 = null === a;
+  const t1 = a !== null;
+  const t2 = null !== a;
+}
+    `,
+    `
+function test(a?: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+}
+    `,
+    `
+function test(a?: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+}
+    `,
+    `
+function test(a: any) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+}
+    `,
+    `
+function test(a: unknown) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
 }
     `,
 

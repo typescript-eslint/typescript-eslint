@@ -5,7 +5,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import {
-  isTypeFlagSet,
   unionTypeParts,
   isFalsyType,
   isBooleanLiteralType,
@@ -14,6 +13,7 @@ import {
   isStrictCompilerOptionEnabled,
 } from 'tsutils';
 import {
+  isTypeFlagSet,
   createRule,
   getParserServices,
   getConstrainedTypeAtLocation,
@@ -23,9 +23,6 @@ import {
   isMemberOrOptionalMemberExpression,
 } from '../util';
 
-const typeContainsFlag = (type: ts.Type, flag: ts.TypeFlags): boolean => {
-  return unionTypeParts(type).some(t => isTypeFlagSet(t, flag));
-};
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
@@ -268,13 +265,20 @@ export default createRule<Options, MessageId>({
       if (isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
+
+        const NULLISH =
+          node.operator === '==' || node.operator === '!='
+            ? NULL | UNDEFINED
+            : NULL;
+
         if (
           (leftType.flags === UNDEFINED &&
-            !typeContainsFlag(rightType, UNDEFINED)) ||
+            !isTypeFlagSet(rightType, UNDEFINED, true)) ||
           (rightType.flags === UNDEFINED &&
-            !typeContainsFlag(leftType, UNDEFINED)) ||
-          (leftType.flags === NULL && !typeContainsFlag(rightType, NULL)) ||
-          (rightType.flags === NULL && !typeContainsFlag(leftType, NULL))
+            !isTypeFlagSet(leftType, UNDEFINED, true)) ||
+          (leftType.flags === NULL &&
+            !isTypeFlagSet(rightType, NULLISH, true)) ||
+          (rightType.flags === NULL && !isTypeFlagSet(leftType, NULLISH, true))
         ) {
           context.report({ node, messageId: 'noOverlapBooleanExpression' });
           return;
