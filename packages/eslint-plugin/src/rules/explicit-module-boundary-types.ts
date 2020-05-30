@@ -8,6 +8,7 @@ import {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   isTypedFunctionExpression,
+  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -74,6 +75,10 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
 
+    /**
+     * Steps up the nodes parents to check if any ancestor nodes are export
+     * declarations.
+     */
     function isUnexported(node: TSESTree.Node | undefined): boolean {
       let isReturnedValue = false;
       while (node) {
@@ -111,6 +116,9 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
+    /**
+     * Returns true when the argument node is not typed.
+     */
     function isArgumentUntyped(node: TSESTree.Identifier): boolean {
       return (
         !node.typeAnnotation ||
@@ -265,7 +273,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if a function expression follow the rule
+     * Checks if a function expression follow the rule.
      */
     function checkFunctionExpression(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -280,7 +288,8 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         isAllowedName(node.parent) ||
-        isTypedFunctionExpression(node, options)
+        isTypedFunctionExpression(node, options) ||
+        ancestorHasReturnType(node.parent, options)
       ) {
         return;
       }
@@ -300,7 +309,10 @@ export default util.createRule<Options, MessageIds>({
      * Checks if a function follow the rule
      */
     function checkFunction(node: TSESTree.FunctionDeclaration): void {
-      if (isAllowedName(node.parent)) {
+      if (
+        isAllowedName(node.parent) ||
+        ancestorHasReturnType(node.parent, options)
+      ) {
         return;
       }
 

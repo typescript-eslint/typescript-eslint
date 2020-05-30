@@ -437,6 +437,89 @@ export default { Foo };
       `,
       options: [{ shouldTrackReferences: true }],
     },
+    {
+      code: `
+export function foo(): (n: number) => string {
+  return n => String(n);
+}
+      `,
+    },
+    {
+      code: `
+export const foo = (a: string): ((n: number) => string) => {
+  return function (n) {
+    return String(n);
+  };
+};
+      `,
+    },
+    {
+      code: `
+export function a(): void {
+  function b() {}
+  const x = () => {};
+  (function () {});
+
+  function c() {
+    return () => {};
+  }
+
+  return;
+}
+      `,
+    },
+    {
+      code: `
+export function a(): void {
+  function b() {
+    function c() {}
+  }
+  const x = () => {
+    return () => 100;
+  };
+  (function () {
+    (function () {});
+  });
+
+  function c() {
+    return () => {
+      (function () {});
+    };
+  }
+
+  return;
+}
+      `,
+    },
+    {
+      code: `
+export function a() {
+  return function b(): () => void {
+    return function c() {};
+  };
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+export var arrowFn = () => (): void => {};
+      `,
+    },
+    {
+      code: `
+export function fn() {
+  return function (): void {};
+}
+      `,
+    },
+    {
+      code: `
+export function foo(outer: string) {
+  return function (inner: string): void {};
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -1277,6 +1360,71 @@ export default test;
         {
           messageId: 'missingArgType',
           line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+export const foo = () => (a: string): ((n: number) => string) => {
+  return function (n) {
+    return String(n);
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+export var arrowFn = () => () => {};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: `
+export function fn() {
+  return function () {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+export function foo(outer) {
+  return function (inner): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingArgType',
+          line: 2,
+          column: 8,
+        },
+        {
+          messageId: 'missingArgType',
+          line: 3,
+          column: 10,
         },
       ],
     },

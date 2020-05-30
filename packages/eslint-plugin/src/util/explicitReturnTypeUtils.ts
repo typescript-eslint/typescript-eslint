@@ -240,31 +240,8 @@ interface Options {
 }
 
 /**
- * Checks if a function declaration/expression has a return type.
+ * True when the provided function expression is typed.
  */
-function checkFunctionReturnType(
-  node:
-    | TSESTree.ArrowFunctionExpression
-    | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression,
-  options: Options,
-  sourceCode: TSESLint.SourceCode,
-  report: (loc: TSESTree.SourceLocation) => void,
-): void {
-  if (
-    options.allowHigherOrderFunctions &&
-    doesImmediatelyReturnFunctionExpression(node)
-  ) {
-    return;
-  }
-
-  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
-    return;
-  }
-
-  report(getReporLoc(node, sourceCode));
-}
-
 function isTypedFunctionExpression(
   node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
   options: Options,
@@ -286,16 +263,15 @@ function isTypedFunctionExpression(
 }
 
 /**
- * Checks if a function declaration/expression has a return type.
+ * Check whether the function expression return type is either typed or valid
+ * with the provided options.
  */
-function checkFunctionExpressionReturnType(
+function isValidFunctionExpressionReturnType(
   node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
   options: Options,
-  sourceCode: TSESLint.SourceCode,
-  report: (loc: TSESTree.SourceLocation) => void,
-): void {
+): boolean {
   if (isTypedFunctionExpression(node, options)) {
-    return;
+    return true;
   }
 
   const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
@@ -306,7 +282,7 @@ function checkFunctionExpressionReturnType(
     parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
     parent.type !== AST_NODE_TYPES.ClassProperty
   ) {
-    return;
+    return true;
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
@@ -315,14 +291,112 @@ function checkFunctionExpressionReturnType(
     node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     returnsConstAssertionDirectly(node)
   ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Check that the function expression or declaration is valid.
+ */
+function isValidFunctionReturnType(
+  node:
+    | TSESTree.ArrowFunctionExpression
+    | TSESTree.FunctionDeclaration
+    | TSESTree.FunctionExpression,
+  options: Options,
+  isParentCheck = false,
+): boolean {
+  if (
+    !isParentCheck &&
+    options.allowHigherOrderFunctions &&
+    doesImmediatelyReturnFunctionExpression(node)
+  ) {
+    return true;
+  }
+
+  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Checks if a function declaration/expression has a return type.
+ */
+function checkFunctionReturnType(
+  node:
+    | TSESTree.ArrowFunctionExpression
+    | TSESTree.FunctionDeclaration
+    | TSESTree.FunctionExpression,
+  options: Options,
+  sourceCode: TSESLint.SourceCode,
+  report: (loc: TSESTree.SourceLocation) => void,
+): void {
+  if (isValidFunctionReturnType(node, options)) {
+    return;
+  }
+
+  report(getReporLoc(node, sourceCode));
+}
+
+/**
+ * Checks if a function declaration/expression has a return type.
+ */
+function checkFunctionExpressionReturnType(
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  options: Options,
+  sourceCode: TSESLint.SourceCode,
+  report: (loc: TSESTree.SourceLocation) => void,
+): void {
+  if (isValidFunctionExpressionReturnType(node, options)) {
     return;
   }
 
   checkFunctionReturnType(node, options, sourceCode, report);
 }
 
+/**
+ * Check whether any ancestor of the provided node has a valid return type, with
+ * the given options.
+ */
+function ancestorHasReturnType(
+  ancestor: TSESTree.Node | undefined,
+  options: Options,
+): boolean {
+  // Exit early if this ancestor is not a ReturnStatement.
+  if (ancestor?.type !== AST_NODE_TYPES.ReturnStatement) {
+    return false;
+  }
+
+  // This boolean tells the `isValidFunctionReturnType` that it is being called
+  // by an ancestor check.
+  const isParentCheck = true;
+
+  while (ancestor) {
+    switch (ancestor.type) {
+      case AST_NODE_TYPES.ArrowFunctionExpression:
+      case AST_NODE_TYPES.FunctionExpression:
+        return (
+          isValidFunctionExpressionReturnType(ancestor, options) ||
+          isValidFunctionReturnType(ancestor, options, isParentCheck)
+        );
+      case AST_NODE_TYPES.FunctionDeclaration:
+        return isValidFunctionReturnType(ancestor, options, isParentCheck);
+    }
+
+    ancestor = ancestor.parent;
+  }
+
+  /* istanbul ignore next */
+  return false;
+}
+
 export {
   checkFunctionReturnType,
   checkFunctionExpressionReturnType,
   isTypedFunctionExpression,
+  ancestorHasReturnType,
 };
