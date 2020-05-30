@@ -12,6 +12,7 @@
   },
   "files": [
     "dist",
+    "_ts3.4",
     "package.json",
     "README.md",
     "LICENSE"
@@ -29,7 +30,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
+    "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist && rimraf _ts3.4",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
@@ -50,5 +53,12 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "ts3.4/*"
+      ]
+    }
   }
 }
