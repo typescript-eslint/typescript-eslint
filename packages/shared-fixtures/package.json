@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }

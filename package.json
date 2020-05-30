@@ -49,7 +49,18 @@
     "extends": [
       "@commitlint/config-conventional",
       "@commitlint/config-lerna-scopes"
-    ]
+    ],
+    "rules": {
+      "body-max-length": [
+        0
+      ],
+      "footer-max-length": [
+        0
+      ],
+      "header-max-length": [
+        0
+      ]
+    }
   },
   "engines": {
     "node": "^10.12.0 || >=12.0.0"
@@ -64,6 +75,7 @@
     "all-contributors-cli": "^6.14.2",
     "cspell": "^4.0.61",
     "cz-conventional-changelog": "^3.2.0",
+    "downlevel-dts": "^0.4.0",
     "eslint": "^7.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-eslint-plugin": "^2.2.1",
@@ -76,6 +88,7 @@
     "lint-staged": "^10.2.2",
     "markdownlint-cli": "^0.23.0",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.5.1",
     "ts-node": "^8.10.1",
     "tslint": "^6.1.2",
