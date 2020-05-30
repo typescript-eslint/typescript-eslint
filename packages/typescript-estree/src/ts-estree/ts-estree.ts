@@ -359,7 +359,8 @@ export type Expression =
   | SpreadElement
   | TSAsExpression
   | TSUnaryExpression
-  | YieldExpression;
+  | YieldExpression
+  | ImportExpression;
 export type ExpressionWithTypeArguments =
   | TSClassImplements
   | TSInterfaceHeritage;

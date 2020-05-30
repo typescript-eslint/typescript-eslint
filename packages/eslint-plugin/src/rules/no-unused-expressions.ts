@@ -26,7 +26,8 @@ export default util.createRule<Options, MessageIds>({
       ExpressionStatement(node): void {
         if (
           node.directive ||
-          node.expression.type === AST_NODE_TYPES.OptionalCallExpression
+          node.expression.type === AST_NODE_TYPES.OptionalCallExpression ||
+          node.expression.type === AST_NODE_TYPES.ImportExpression
         ) {
           return;
         }
