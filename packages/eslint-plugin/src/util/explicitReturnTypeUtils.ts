@@ -7,10 +7,10 @@ import {
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { nullThrows, NullThrowsReasons } from './nullThrows';
 
-type FunctionNode =
+type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
+type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
 
 /**
  * Creates a report location for the given function.
@@ -158,10 +158,7 @@ function isPropertyOfObjectWithType(
  */
 function doesImmediatelyReturnFunctionExpression({
   body,
-}:
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression): boolean {
+}: FunctionNode): boolean {
   // Should always have a body; really checking just in case
   /* istanbul ignore if */ if (!body) {
     return false;
@@ -196,7 +193,7 @@ function doesImmediatelyReturnFunctionExpression({
  */
 function isFunctionArgument(
   parent: TSESTree.Node,
-  callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  callee?: FunctionExpression,
 ): parent is TSESTree.CallExpression | TSESTree.OptionalCallExpression {
   return (
     (parent.type === AST_NODE_TYPES.CallExpression ||
@@ -243,7 +240,7 @@ interface Options {
  * True when the provided function expression is typed.
  */
 function isTypedFunctionExpression(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  node: FunctionExpression,
   options: Options,
 ): boolean {
   const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
@@ -267,7 +264,7 @@ function isTypedFunctionExpression(
  * with the provided options.
  */
 function isValidFunctionExpressionReturnType(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  node: FunctionExpression,
   options: Options,
 ): boolean {
   if (isTypedFunctionExpression(node, options)) {
@@ -301,10 +298,7 @@ function isValidFunctionExpressionReturnType(
  * Check that the function expression or declaration is valid.
  */
 function isValidFunctionReturnType(
-  node:
-    | TSESTree.ArrowFunctionExpression
-    | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression,
+  node: FunctionNode,
   options: Options,
   isParentCheck = false,
 ): boolean {
@@ -327,10 +321,7 @@ function isValidFunctionReturnType(
  * Checks if a function declaration/expression has a return type.
  */
 function checkFunctionReturnType(
-  node:
-    | TSESTree.ArrowFunctionExpression
-    | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression,
+  node: FunctionNode,
   options: Options,
   sourceCode: TSESLint.SourceCode,
   report: (loc: TSESTree.SourceLocation) => void,
@@ -346,7 +337,7 @@ function checkFunctionReturnType(
  * Checks if a function declaration/expression has a return type.
  */
 function checkFunctionExpressionReturnType(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  node: FunctionExpression,
   options: Options,
   sourceCode: TSESLint.SourceCode,
   report: (loc: TSESTree.SourceLocation) => void,
@@ -395,8 +386,11 @@ function ancestorHasReturnType(
 }
 
 export {
-  checkFunctionReturnType,
-  checkFunctionExpressionReturnType,
-  isTypedFunctionExpression,
   ancestorHasReturnType,
+  checkFunctionExpressionReturnType,
+  checkFunctionReturnType,
+  doesImmediatelyReturnFunctionExpression,
+  FunctionExpression,
+  FunctionNode,
+  isTypedFunctionExpression,
 };

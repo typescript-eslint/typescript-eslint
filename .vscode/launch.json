@@ -18,7 +18,17 @@
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+      ],
     },
     {
       "type": "node",
@@ -34,7 +44,17 @@
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+      ],
     },
     {
       "type": "node",
@@ -50,7 +70,17 @@
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+      ],
     },
     {
       "type": "node",
@@ -66,7 +96,17 @@
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+      ],
     },
     {
       "type": "node",
@@ -82,7 +122,17 @@
       ],
       "sourceMaps": true,
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+      ],
     }
   ]
 }
