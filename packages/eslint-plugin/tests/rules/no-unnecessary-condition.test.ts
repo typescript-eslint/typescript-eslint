@@ -976,60 +976,60 @@ foo?.bar.baz().qux();
       ],
     },
     {
-        code: `
+      code: `
 type baz = null | (() => { qux: () => {} });
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar?.baz?.().qux?.();
-        `,
-        output: `
+      `,
+      output: `
 type baz = null | (() => { qux: () => {} });
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar.baz?.().qux();
-        `,
-        errors: [
-          {
-            messageId: 'neverOptionalChain',
-            line: 4,
-            endLine: 4,
-            column: 9,
-            endColumn: 11,
-          },
-          {
-            messageId: 'neverOptionalChain',
-            line: 4,
-            endLine: 4,
-            column: 22,
-            endColumn: 24,
-          },
-        ],
-      },
-      {
-        code: `
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
 type baz = null | (() => { qux: () => {} } | null);
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar?.baz?.()?.qux?.();
-        `,
-        output: `
+      `,
+      output: `
 type baz = null | (() => { qux: () => {} } | null);
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar.baz?.()?.qux();
-        `,
-        errors: [
-          {
-            messageId: 'neverOptionalChain',
-            line: 4,
-            endLine: 4,
-            column: 9,
-            endColumn: 11,
-          },
-          {
-            messageId: 'neverOptionalChain',
-            line: 4,
-            endLine: 4,
-            column: 23,
-            endColumn: 25,
-          },
-        ],
-      },
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 23,
+          endColumn: 25,
+        },
+      ],
+    },
   ],
 });
