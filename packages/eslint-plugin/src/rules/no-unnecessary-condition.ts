@@ -427,7 +427,7 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    // Checks whether a node is nullable or not regardless of it's previous node.
+    // Checks whether a member expression is nullable or not regardless of it's previous node.
     //  Example:
     //  ```
     //  // 'bar' is nullable if 'foo' is null.
@@ -435,24 +435,38 @@ export default createRule<Options, MessageId>({
     //  declare const foo: { bar : { baz: string } } | null
     //  foo?.bar;
     //  ```
-    function isNullableNodeRegardlessOfPrev(
-      node: TSESTree.LeftHandSideExpression,
+    function isNullableOriginFromPrev(
+      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
     ): boolean {
-      if (isMemberOrOptionalMemberExpression(node)) {
-        const prevType = getNodeType(node.object);
-        const property = node.property;
-        if (prevType.isUnion() && isIdentifier(property)) {
-          const ownPropertyType = prevType.types
-            .map(type => checker.getTypeOfPropertyOfType(type, property.name))
-            .find(t => t);
+      const prevType = getNodeType(node.object);
+      const property = node.property;
+      if (prevType.isUnion() && isIdentifier(property)) {
+        const ownPropertyType = prevType.types
+          .map(type => checker.getTypeOfPropertyOfType(type, property.name))
+          .find(t => t);
 
-          if (ownPropertyType) {
-            return isNullableType(ownPropertyType, { allowUndefined: true });
-          }
+        if (ownPropertyType) {
+          return (
+            !isNullableType(ownPropertyType, { allowUndefined: true }) &&
+            isNullableType(prevType, { allowUndefined: true })
+          );
         }
       }
+      return false;
+    }
 
-      return isNullableType(getNodeType(node), { allowUndefined: true });
+    function isOptionableExpression(
+      node: TSESTree.LeftHandSideExpression,
+    ): boolean {
+      const type = getNodeType(node);
+      const isOwnNullable = isMemberOrOptionalMemberExpression(node)
+        ? !isNullableOriginFromPrev(node)
+        : true;
+      return (
+        isTypeFlagSet(type, ts.TypeFlags.Any) ||
+        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
+        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
+      );
     }
 
     function checkOptionalChain(
@@ -478,13 +492,7 @@ export default createRule<Options, MessageId>({
           ? node.callee
           : node.object;
 
-      const type = getNodeType(nodeToCheck);
-
-      if (
-        isTypeFlagSet(type, ts.TypeFlags.Any) ||
-        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
-        isNullableNodeRegardlessOfPrev(nodeToCheck)
-      ) {
+      if (isOptionableExpression(nodeToCheck)) {
         return;
       }
 
