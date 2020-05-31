@@ -1,12 +1,12 @@
 # Bans `// @tslint:<rule-flag>` comments from being used (`ban-tslint-comment`)
 
-Useful when migrating from tslint to eslint. Once tslint has been removed, this rule helps locate tslint annotations (e.g. `// tslint:disable`).
+Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).
 
 ## Rule Details
 
 Examples of **incorrect** code for this rule:
 
-All tslint [rule flags](https://palantir.github.io/tslint/usage/rule-flags/)
+All TSLint [rule flags](https://palantir.github.io/tslint/usage/rule-flags/)
 
 ```js
 /* tslint:disable */
@@ -26,4 +26,4 @@ Examples of **correct** code for this rule:
 
 ## When Not To Use It
 
-If you are still using tslint.
+If you are still using TSLint.
