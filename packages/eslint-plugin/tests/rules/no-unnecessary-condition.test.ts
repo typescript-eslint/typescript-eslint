@@ -336,6 +336,10 @@ foo?.bar?.baz;
     `
 foo?.bar?.baz?.qux;
     `,
+    `
+declare const foo: { bar: { baz: string } };
+foo.bar.qux?.();
+    `
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1030,6 +1034,6 @@ foo?.bar.baz?.()?.qux();
           endColumn: 25,
         },
       ],
-    },
+    }
   ],
 });
