@@ -21,6 +21,8 @@ import {
   nullThrows,
   NullThrowsReasons,
   isMemberOrOptionalMemberExpression,
+  isIdentifier,
+  isOptionalOptionalCallExpression,
 } from '../util';
 
 // Truthiness utilities
@@ -426,6 +428,33 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    // Checks whether a node is nullable or not regardless of it's previous node.
+    //  Example:
+    //  ```
+    //  // 'bar' is nullable if 'foo' is null.
+    //  // but this function checks regardless of 'foo' type, so returns 'true'.
+    //  declare const foo: { bar : { baz: string } } | null
+    //  foo?.bar;
+    //  ```
+    function isNullableNodeRegardlessOfPrev(
+      node: TSESTree.LeftHandSideExpression,
+    ): boolean {
+      if (isMemberOrOptionalMemberExpression(node)) {
+        const prevType = getNodeType(node.object);
+        const property = node.property;
+        if (prevType.isUnion() && isIdentifier(property)) {
+          const [ownPropertyType] = prevType.types
+            .map(type => checker.getTypeOfPropertyOfType(type, property.name))
+            .filter(t => t);
+          if (ownPropertyType) {
+            return isNullableType(ownPropertyType, { allowUndefined: true });
+          }
+        }
+      }
+
+      return isNullableType(getNodeType(node), { allowUndefined: true });
+    }
+
     function checkOptionalChain(
       node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
       beforeOperator: TSESTree.Node,
@@ -446,13 +475,15 @@ export default createRule<Options, MessageId>({
 
       const nodeToCheck = isMemberOrOptionalMemberExpression(node)
         ? node.object
+        : isOptionalOptionalCallExpression(node)
+        ? node.callee
         : node;
       const type = getNodeType(nodeToCheck);
 
       if (
         isTypeFlagSet(type, ts.TypeFlags.Any) ||
         isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
-        isNullableType(type, { allowUndefined: true })
+        isNullableNodeRegardlessOfPrev(nodeToCheck)
       ) {
         return;
       }
