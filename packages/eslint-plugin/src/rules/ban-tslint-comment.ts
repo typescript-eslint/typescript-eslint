@@ -14,7 +14,7 @@ const toText = (
     : ['/*', text.trim(), '*/'].join(' ');
 
 export default util.createRule({
-  name: 'ban-tslint-comments',
+  name: 'ban-tslint-comment',
   meta: {
     type: 'suggestion',
     docs: {
