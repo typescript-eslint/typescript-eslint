@@ -18,7 +18,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans `// @tslint:<rule-flag>` comments from being used',
+      description: 'Bans `// tslint:<rule-flag>` comments from being used',
       category: 'Stylistic Issues',
       recommended: 'warn',
     },
