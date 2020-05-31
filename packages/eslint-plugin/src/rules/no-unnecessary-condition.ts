@@ -22,7 +22,6 @@ import {
   NullThrowsReasons,
   isMemberOrOptionalMemberExpression,
   isIdentifier,
-  isOptionalOptionalCallExpression,
 } from '../util';
 
 // Truthiness utilities
@@ -474,11 +473,11 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      const nodeToCheck = isMemberOrOptionalMemberExpression(node)
-        ? node.object
-        : isOptionalOptionalCallExpression(node)
-        ? node.callee
-        : node;
+      const nodeToCheck =
+        node.type === AST_NODE_TYPES.OptionalCallExpression
+          ? node.callee
+          : node.object;
+
       const type = getNodeType(nodeToCheck);
 
       if (
