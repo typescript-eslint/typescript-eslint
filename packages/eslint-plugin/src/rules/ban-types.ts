@@ -7,8 +7,9 @@ import * as util from '../util';
 
 type Types = Record<
   string,
-  | string
   | null
+  | false
+  | string
   | {
       message: string;
       fixWith?: string;
@@ -138,6 +139,7 @@ export default util.createRule<Options, MessageIds>({
             additionalProperties: {
               oneOf: [
                 { type: 'null' },
+                { type: 'boolean' },
                 { type: 'string' },
                 {
                   type: 'object',
@@ -177,23 +179,25 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      if (bannedType !== undefined) {
-        const customMessage = getCustomMessage(bannedType);
-        const fixWith =
-          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
-
-        context.report({
-          node: typeNode,
-          messageId: 'bannedTypeMessage',
-          data: {
-            name,
-            customMessage,
-          },
-          fix: fixWith
-            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
-            : null,
-        });
+      if (bannedType === undefined || bannedType === false) {
+        return;
       }
+
+      const customMessage = getCustomMessage(bannedType);
+      const fixWith =
+        bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+      context.report({
+        node: typeNode,
+        messageId: 'bannedTypeMessage',
+        data: {
+          name,
+          customMessage,
+        },
+        fix: fixWith
+          ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+          : null,
+      });
     }
 
     const keywordSelectors = util.objectReduceKey(

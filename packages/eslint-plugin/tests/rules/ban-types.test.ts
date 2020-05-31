@@ -97,6 +97,17 @@ ruleTester.run('ban-types', rule, {
         },
       ],
     },
+    {
+      code: 'type Props = {};',
+      options: [
+        {
+          types: {
+            '{}': false,
+          },
+          extendDefaults: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
