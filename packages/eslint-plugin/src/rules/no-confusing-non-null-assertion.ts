@@ -7,7 +7,7 @@ import {
 import * as util from '../util';
 
 export default util.createRule({
-  name: 'confusing-non-null-assertion-like-not-equal',
+  name: 'no-confusing-non-null-assertion',
   meta: {
     type: 'problem',
     docs: {

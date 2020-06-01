@@ -1,11 +1,11 @@
-import rule from '../../src/rules/confusing-non-null-assertion-like-not-equal';
+import rule from '../../src/rules/no-confusing-non-null-assertion';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('confusing-non-null-assertion-like-not-equal', rule, {
+ruleTester.run('no-confusing-non-null-assertion', rule, {
   valid: [
     //
     'a == b!;',

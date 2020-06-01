@@ -1,4 +1,4 @@
-# Disallows confusing combinations of non-null assertion and equal test like `a! == b`, which looks very similar to not equal `a !== b` (`confusing-non-null-assertion-like-not-equal`)
+# Disallows confusing combinations of non-null assertion and equal test like `a! == b`, which looks very similar to not equal `a !== b` (`no-confusing-non-null-assertion`)
 
 ## Rule Details
 
@@ -25,7 +25,7 @@ const isEqualsNum = 1 + foo.num! == 2;
 
 Examples of **correct** code for this rule:
 
-```
+```typescript
 interface Foo {
   bar?: string;
   num?: number;
@@ -42,4 +42,4 @@ If you don't care about this confusion, then you will not need this rule.
 
 ## Further Reading
 
-- [`Issue: Easy misunderstanding: "! ==="`](https://github.com/microsoft/TypeScript/issues/37837) in [TypeScript repo](https://github.com/microsoft/TypeScript)
+- [`Issue: Easy misunderstanding: "! ==="`](https://github.com/microsoft/TypeScript/issues/37837) in [Typescript repo](https://github.com/microsoft/TypeScript)
