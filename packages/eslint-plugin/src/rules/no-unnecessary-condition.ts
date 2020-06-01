@@ -441,16 +441,14 @@ export default createRule<Options, MessageId>({
       const prevType = getNodeType(node.object);
       const property = node.property;
       if (prevType.isUnion() && isIdentifier(property)) {
-        const ownPropertyType = prevType.types
-          .map(type => checker.getTypeOfPropertyOfType(type, property.name))
-          .find(t => t);
+        const isOwnNullable = prevType.types.some(type => {
+          const propType = checker.getTypeOfPropertyOfType(type, property.name);
+          return propType && isNullableType(propType, { allowUndefined: true });
+        });
 
-        if (ownPropertyType) {
-          return (
-            !isNullableType(ownPropertyType, { allowUndefined: true }) &&
-            isNullableType(prevType, { allowUndefined: true })
-          );
-        }
+        return (
+          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
+        );
       }
       return false;
     }

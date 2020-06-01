@@ -340,6 +340,12 @@ foo?.bar?.baz?.qux;
 declare const foo: { bar: { baz: string } };
 foo.bar.qux?.();
     `,
+    `
+type Foo = { baz: number } | null;
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1032,6 +1038,29 @@ foo?.bar.baz?.()?.qux();
           endLine: 4,
           column: 23,
           endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+      `,
+      output: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar.baz?.qux;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          endLine: 5,
+          column: 14,
+          endColumn: 16,
         },
       ],
     },
