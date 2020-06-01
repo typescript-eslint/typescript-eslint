@@ -21,6 +21,7 @@ import {
   nullThrows,
   NullThrowsReasons,
   isMemberOrOptionalMemberExpression,
+  isIdentifier,
 } from '../util';
 
 // Truthiness utilities
@@ -426,6 +427,46 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    // Checks whether a member expression is nullable or not regardless of it's previous node.
+    //  Example:
+    //  ```
+    //  // 'bar' is nullable if 'foo' is null.
+    //  // but this function checks regardless of 'foo' type, so returns 'true'.
+    //  declare const foo: { bar : { baz: string } } | null
+    //  foo?.bar;
+    //  ```
+    function isNullableOriginFromPrev(
+      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+    ): boolean {
+      const prevType = getNodeType(node.object);
+      const property = node.property;
+      if (prevType.isUnion() && isIdentifier(property)) {
+        const isOwnNullable = prevType.types.some(type => {
+          const propType = checker.getTypeOfPropertyOfType(type, property.name);
+          return propType && isNullableType(propType, { allowUndefined: true });
+        });
+
+        return (
+          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
+        );
+      }
+      return false;
+    }
+
+    function isOptionableExpression(
+      node: TSESTree.LeftHandSideExpression,
+    ): boolean {
+      const type = getNodeType(node);
+      const isOwnNullable = isMemberOrOptionalMemberExpression(node)
+        ? !isNullableOriginFromPrev(node)
+        : true;
+      return (
+        isTypeFlagSet(type, ts.TypeFlags.Any) ||
+        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
+        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
+      );
+    }
+
     function checkOptionalChain(
       node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
       beforeOperator: TSESTree.Node,
@@ -444,16 +485,12 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      const nodeToCheck = isMemberOrOptionalMemberExpression(node)
-        ? node.object
-        : node;
-      const type = getNodeType(nodeToCheck);
+      const nodeToCheck =
+        node.type === AST_NODE_TYPES.OptionalCallExpression
+          ? node.callee
+          : node.object;
 
-      if (
-        isTypeFlagSet(type, ts.TypeFlags.Any) ||
-        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
-        isNullableType(type, { allowUndefined: true })
-      ) {
+      if (isOptionableExpression(nodeToCheck)) {
         return;
       }
 

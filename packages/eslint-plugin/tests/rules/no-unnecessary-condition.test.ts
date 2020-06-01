@@ -329,6 +329,23 @@ let unknownValue: unknown;
 unknownValue?.();
     `,
     'const foo = [1, 2, 3][0];',
+    `
+declare const foo: { bar?: { baz: { c: string } } } | null;
+foo?.bar?.baz;
+    `,
+    `
+foo?.bar?.baz?.qux;
+    `,
+    `
+declare const foo: { bar: { baz: string } };
+foo.bar.qux?.();
+    `,
+    `
+type Foo = { baz: number } | null;
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -833,6 +850,217 @@ x.a;
           endLine: 3,
           column: 2,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { c: string } } } | null;
+foo?.bar?.baz;
+      `,
+      output: `
+declare const foo: { bar: { baz: { c: string } } } | null;
+foo?.bar.baz;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar?: { baz: { qux: string } } } | null;
+foo?.bar?.baz?.qux;
+      `,
+      output: `
+declare const foo: { bar?: { baz: { qux: string } } } | null;
+foo?.bar?.baz.qux;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar?.baz?.qux?.();
+      `,
+      output: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar.baz.qux?.();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar?.baz?.qux?.();
+      `,
+      output: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar.baz.qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 19,
+          endColumn: 21,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.().qux?.();
+      `,
+      output: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz().qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 14,
+          endColumn: 16,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = null | (() => { qux: () => {} });
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.().qux?.();
+      `,
+      output: `
+type baz = null | (() => { qux: () => {} });
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.().qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = null | (() => { qux: () => {} } | null);
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.()?.qux?.();
+      `,
+      output: `
+type baz = null | (() => { qux: () => {} } | null);
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.()?.qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 23,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+      `,
+      output: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar.baz?.qux;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          endLine: 5,
+          column: 14,
+          endColumn: 16,
         },
       ],
     },
