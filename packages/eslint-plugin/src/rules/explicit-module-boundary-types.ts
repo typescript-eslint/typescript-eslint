@@ -380,7 +380,10 @@ export default util.createRule<Options, MessageIds>({
     function checkEmptyBodyFunctionExpression(
       node: TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
-      if (!node.returnType) {
+      const isConstructor =
+        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.kind === 'constructor';
+      if (!isConstructor && !node.returnType) {
         context.report({
           node,
           messageId: 'missingReturnType',
