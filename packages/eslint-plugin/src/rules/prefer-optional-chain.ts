@@ -61,7 +61,8 @@ export default util.createRule({
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.BinaryExpression
-          | TSESTree.Identifier,
+          | TSESTree.Identifier
+          | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
         const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
