@@ -83,6 +83,25 @@ export class Test {
       `,
     },
     {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2150
+      code: `
+export class Test {
+  constructor();
+  constructor(value?: string) {
+    console.log(value);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare class MyClass {
+  constructor(options?: MyClass.Options);
+}
+export { MyClass };
+      `,
+    },
+    {
       code: `
 export function test(): void {
   nested();
