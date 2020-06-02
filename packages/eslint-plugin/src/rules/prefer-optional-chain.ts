@@ -55,18 +55,20 @@ export default util.createRule({
     return {
       [[
         'LogicalExpression[operator="&&"] > Identifier',
+        'LogicalExpression[operator="&&"] > MemberExpression',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.BinaryExpression
-          | TSESTree.Identifier,
+          | TSESTree.Identifier
+          | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
         const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
 
         if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
-          // the identifier is not the deepest left node
+          // the node(identifier or member expression) is not the deepest left node
           return;
         }
         if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
