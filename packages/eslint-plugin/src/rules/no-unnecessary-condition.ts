@@ -266,20 +266,28 @@ export default createRule<Options, MessageId>({
       if (isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
+        const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {
+          // Allow comparison to `any`, `unknown` or a naked type parameter.
+          flag |=
+            ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.TypeParameter;
 
-        const NULLISH =
-          node.operator === '==' || node.operator === '!='
-            ? NULL | UNDEFINED
-            : NULL;
+          // Allow loose comparison to nullish values.
+          if (node.operator === '==' || node.operator === '!=') {
+            flag |= NULL | UNDEFINED;
+          }
+
+          return isTypeFlagSet(type, flag);
+        };
 
         if (
           (leftType.flags === UNDEFINED &&
-            !isTypeFlagSet(rightType, UNDEFINED, true)) ||
+            !isComparable(rightType, UNDEFINED)) ||
           (rightType.flags === UNDEFINED &&
-            !isTypeFlagSet(leftType, UNDEFINED, true)) ||
-          (leftType.flags === NULL &&
-            !isTypeFlagSet(rightType, NULLISH, true)) ||
-          (rightType.flags === NULL && !isTypeFlagSet(leftType, NULLISH, true))
+            !isComparable(leftType, UNDEFINED)) ||
+          (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
+          (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {
           context.report({ node, messageId: 'noOverlapBooleanExpression' });
           return;
