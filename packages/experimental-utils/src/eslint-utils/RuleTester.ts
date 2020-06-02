@@ -41,7 +41,7 @@ class RuleTester extends TSESLint.RuleTester {
   private getFilename(options?: TSESLint.ParserOptions): string {
     if (options) {
       const filename = `file.ts${
-        options.ecmaFeatures && options.ecmaFeatures.jsx ? 'x' : ''
+        options.ecmaFeatures?.jsx ? 'x' : ''
       }`;
       if (options.project) {
         return path.join(

@@ -375,7 +375,7 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      if (param.decorators && param.decorators.length) {
+      if (param.decorators?.length) {
         convertedParam.decorators = param.decorators.map(el =>
           this.convertChild(el),
         );
@@ -1485,7 +1485,7 @@ export class Converter {
             );
           }
 
-          if (superClass.types[0] && superClass.types[0].typeArguments) {
+          if (superClass.types[0]?.typeArguments) {
             result.superTypeParameters = this.convertTypeArgumentsToTypeParameters(
               superClass.types[0].typeArguments,
               superClass.types[0],

@@ -281,7 +281,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
-        const typeParams = node.typeParameters && node.typeParameters.params;
+        const typeParams = node.typeParameters?.params;
         const messageId =
           defaultOption === 'array'
             ? 'errorStringArray'

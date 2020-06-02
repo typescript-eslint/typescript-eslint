@@ -84,8 +84,7 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
       return (
-        node.params &&
-        node.params.some(
+        node.params?.some(
           param => param.type === AST_NODE_TYPES.TSParameterProperty,
         )
       );
