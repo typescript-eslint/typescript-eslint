@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.2...v3.1.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **experimental-utils:** downlevel type declarations for versions older than 3.8 ([#2133](https://github.com/typescript-eslint/typescript-eslint/issues/2133)) ([7925823](https://github.com/typescript-eslint/typescript-eslint/commit/792582326a8065270b69a0ffcaad5a7b4b103ff3))
+
+
+
+
+
 ## [3.0.2](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.1...v3.0.2) (2020-05-27)
 
 **Note:** Version bump only for package @typescript-eslint/shared-fixtures

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.2...v3.1.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] don't check returned functions if parent function has return type ([#2084](https://github.com/typescript-eslint/typescript-eslint/issues/2084)) ([d7d4eeb](https://github.com/typescript-eslint/typescript-eslint/commit/d7d4eeb03f2918d5d9e361fdb47c2d42e83bd593))
+* **eslint-plugin:** [no-unnecessary-condition] handle comparison of any, unknown and loose comparisons with nullish values ([#2123](https://github.com/typescript-eslint/typescript-eslint/issues/2123)) ([1ae1d01](https://github.com/typescript-eslint/typescript-eslint/commit/1ae1d01e5603ec7cef8051ed018c3c3c88b29867))
+* **eslint-plugin:** [no-unnecessary-condition] improve optional chain handling ([#2111](https://github.com/typescript-eslint/typescript-eslint/issues/2111)) ([9ee399b](https://github.com/typescript-eslint/typescript-eslint/commit/9ee399b5906e82f346ff89141207a6630786de54))
+* **eslint-plugin:** [no-unnecessary-condition] improve optional chain handling 2 - electric boogaloo ([#2138](https://github.com/typescript-eslint/typescript-eslint/issues/2138)) ([c87cfaf](https://github.com/typescript-eslint/typescript-eslint/commit/c87cfaf6746775bb8ad9eb45b0002f068a822dbe))
+* **eslint-plugin:** [no-unused-expressions] ignore import expressions ([#2130](https://github.com/typescript-eslint/typescript-eslint/issues/2130)) ([e383691](https://github.com/typescript-eslint/typescript-eslint/commit/e3836910efdafd9edf04daed149c9e839c08047e))
+* **eslint-plugin:** [no-var-requires] false negative for TSAsExpression and MemberExpression ([#2139](https://github.com/typescript-eslint/typescript-eslint/issues/2139)) ([df95338](https://github.com/typescript-eslint/typescript-eslint/commit/df953388913b22d45242e65ce231d92a8b8a0080))
+* **experimental-utils:** downlevel type declarations for versions older than 3.8 ([#2133](https://github.com/typescript-eslint/typescript-eslint/issues/2133)) ([7925823](https://github.com/typescript-eslint/typescript-eslint/commit/792582326a8065270b69a0ffcaad5a7b4b103ff3))
+
+
+### Features
+
+* **eslint-plugin:** [ban-ts-comments] add "allow-with-description" option ([#2099](https://github.com/typescript-eslint/typescript-eslint/issues/2099)) ([8a0fd18](https://github.com/typescript-eslint/typescript-eslint/commit/8a0fd1899f544470a35afb3117f4c71aad7e4e42))
+* **eslint-plugin:** [ban-types] allow selective disable of default options with `false` value ([#2137](https://github.com/typescript-eslint/typescript-eslint/issues/2137)) ([1cb8ca4](https://github.com/typescript-eslint/typescript-eslint/commit/1cb8ca483d029935310e6904580df8501837084d))
+* **eslint-plugin:** [explicit-module-boundary-types] improve accuracy and coverage ([#2135](https://github.com/typescript-eslint/typescript-eslint/issues/2135)) ([caaa859](https://github.com/typescript-eslint/typescript-eslint/commit/caaa8599284d02ab3341e282cad35a52d0fb86c7))
+
+
+
+
+
 ## [3.0.2](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.1...v3.0.2) (2020-05-27)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin
