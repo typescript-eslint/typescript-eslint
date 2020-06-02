@@ -17,22 +17,42 @@ const baseCases = [
     output: 'foo?.bar',
   },
   {
+    code: 'foo.bar && foo.bar.baz',
+    output: 'foo.bar?.baz',
+  },
+  {
     code: 'foo && foo()',
     output: 'foo?.()',
+  },
+  {
+    code: 'foo.bar && foo.bar()',
+    output: 'foo.bar?.()',
   },
   {
     code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz',
     output: 'foo?.bar?.baz?.buzz',
   },
   {
-    // case with a jump (i.e. a non-nullish prop)
+    code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz',
+    output: 'foo.bar?.baz?.buzz',
+  },
+  // case with a jump (i.e. a non-nullish prop)
+  {
     code: 'foo && foo.bar && foo.bar.baz.buzz',
     output: 'foo?.bar?.baz.buzz',
   },
   {
-    // case where for some reason there is a doubled up expression
+    code: 'foo.bar && foo.bar.baz.buzz',
+    output: 'foo.bar?.baz.buzz',
+  },
+  // case where for some reason there is a doubled up expression
+  {
     code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
     output: 'foo?.bar?.baz?.buzz',
+  },
+  {
+    code: 'foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
+    output: 'foo.bar?.baz?.buzz',
   },
   // chained members with element access
   {
@@ -55,9 +75,17 @@ const baseCases = [
     output: 'foo?.bar?.baz?.buzz?.()',
   },
   {
-    // case with a jump (i.e. a non-nullish prop)
+    code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
+    output: 'foo.bar?.baz?.buzz?.()',
+  },
+  // case with a jump (i.e. a non-nullish prop)
+  {
     code: 'foo && foo.bar && foo.bar.baz.buzz()',
     output: 'foo?.bar?.baz.buzz()',
+  },
+  {
+    code: 'foo.bar && foo.bar.baz.buzz()',
+    output: 'foo.bar?.baz.buzz()',
   },
   {
     // case with a jump (i.e. a non-nullish prop)
@@ -93,6 +121,10 @@ const baseCases = [
   {
     code: 'foo && foo?.() && foo?.().bar',
     output: 'foo?.()?.bar',
+  },
+  {
+    code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
+    output: 'foo.bar?.()?.baz',
   },
 ].map(
   c =>
@@ -220,8 +252,8 @@ ruleTester.run('prefer-optional-chain', rule, {
         },
       ],
     },
+    // case with inconsistent checks
     {
-      // case with inconsistent checks
       code:
         'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
       output: null,
@@ -232,6 +264,21 @@ ruleTester.run('prefer-optional-chain', rule, {
             {
               messageId: 'optionalChainSuggest',
               output: 'foo?.bar?.baz?.buzz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`foo.bar && foo.bar.baz != null && foo.bar.baz.qux !== undefined && foo.bar.baz.qux.buzz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo.bar?.baz?.qux?.buzz;',
             },
           ],
         },
@@ -399,6 +446,21 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: 'foo?.();',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'foo.bar && foo.bar?.();',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo.bar?.();',
             },
           ],
         },

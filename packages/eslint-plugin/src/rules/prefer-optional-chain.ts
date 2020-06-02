@@ -55,6 +55,7 @@ export default util.createRule({
     return {
       [[
         'LogicalExpression[operator="&&"] > Identifier',
+        'LogicalExpression[operator="&&"] > MemberExpression',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
       ].join(',')](
@@ -66,7 +67,7 @@ export default util.createRule({
         const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
 
         if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
-          // the identifier is not the deepest left node
+          // the node(identifier or memeber expression) is not the deepest left node
           return;
         }
         if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
