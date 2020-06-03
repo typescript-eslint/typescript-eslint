@@ -704,31 +704,52 @@ async function buzz() {
       ],
     },
     {
-        options: ['always'],
-        code: `
+      options: ['always'],
+      code: `
 async function foo() {}
 async function bar() {}
 async function baz() {}
-async function qux() {}
 const buzz = async () => ((await foo()) ? bar() : baz());
-        `,
-        output: `
+      `,
+      output: `
 async function foo() {}
 async function bar() {}
 async function baz() {}
-async function qux() {}
 const buzz = async () => ((await foo()) ? await bar() : await baz());
-        `,
-        errors: [
-          {
-            line: 6,
-            messageId: 'requiredPromiseAwait',
-          },
-          {
-            line: 6,
-            messageId: 'requiredPromiseAwait',
-          },
-        ],
-      },
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? await 1 : bar());
+      `,
+      output: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? 1 : await bar());
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'nonPromiseAwait',
+        },
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
   ],
 });
