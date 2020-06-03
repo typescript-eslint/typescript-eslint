@@ -112,6 +112,24 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
+      if (type.isIntersection()) {
+        let someSubtypeUseful = false;
+
+        for (const subType of type.types) {
+          const subtypeUsefulness = collectToStringCertainty(subType);
+
+          if (subtypeUsefulness === Usefulness.Always) {
+            return Usefulness.Always;
+          }
+
+          if (subtypeUsefulness !== Usefulness.Never) {
+            someSubtypeUseful = true;
+          }
+        }
+
+        return someSubtypeUseful ? Usefulness.Sometimes : Usefulness.Never;
+      }
+
       if (!type.isUnion()) {
         return Usefulness.Never;
       }
