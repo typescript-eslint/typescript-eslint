@@ -188,7 +188,7 @@ export default util.createRule({
     }
 
     function findPossiblyReturnedNodes(
-        node: TSESTree.Expression
+      node: TSESTree.Expression,
     ): TSESTree.Expression[] {
       if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         return [
