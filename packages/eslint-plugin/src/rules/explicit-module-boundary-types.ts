@@ -402,7 +402,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         isAllowedName(node.parent) ||
         isTypedFunctionExpression(node, options) ||
-        ancestorHasReturnType(node.parent, options)
+        ancestorHasReturnType(node.parent)
       ) {
         return;
       }
@@ -424,10 +424,7 @@ export default util.createRule<Options, MessageIds>({
       }
       checkedFunctions.add(node);
 
-      if (
-        isAllowedName(node.parent) ||
-        ancestorHasReturnType(node.parent, options)
-      ) {
+      if (isAllowedName(node.parent) || ancestorHasReturnType(node.parent)) {
         return;
       }
 
