@@ -602,7 +602,7 @@ ruleTester.run('return-await', rule, {
     },
     {
       options: ['always'],
-      code: `
+      code: noFormat`
 async function foo() {}
 async function bar() {}
 async function baz() {}
@@ -611,7 +611,7 @@ async function buzz() {
   return (await foo()) ? bar() : baz();
 }
       `,
-      output: `
+      output: noFormat`
 async function foo() {}
 async function bar() {}
 async function baz() {}
@@ -678,14 +678,14 @@ async function buzz() {
     },
     {
       options: ['always'],
-      code: noFormat`
+      code: `
 async function foo() {}
 async function bar() {}
 async function buzz() {
   return (await foo()) ? await 1 : bar();
 }
       `,
-      output: noFormat`
+      output: `
 async function foo() {}
 async function bar() {}
 async function buzz() {
@@ -703,5 +703,32 @@ async function buzz() {
         },
       ],
     },
+    {
+        options: ['always'],
+        code: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+const buzz = async () => ((await foo()) ? bar() : baz());
+        `,
+        output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+const buzz = async () => ((await foo()) ? await bar() : await baz());
+        `,
+        errors: [
+          {
+            line: 6,
+            messageId: 'requiredPromiseAwait',
+          },
+          {
+            line: 6,
+            messageId: 'requiredPromiseAwait',
+          },
+        ],
+      },
   ],
 });

@@ -208,18 +208,17 @@ export default util.createRule({
         node: TSESTree.ArrowFunctionExpression,
       ): void {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
-          const expression = parserServices.esTreeNodeToTSNodeMap.get(
-            node.body,
-          );
-
-          test(node.body, expression);
+          findPossiblyReturnedNodes(node.body).forEach(node => {
+            const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+            test(node, tsNode);
+          });
         }
       },
       ReturnStatement(node): void {
         if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
           return;
         }
-        findPossiblyReturnedNodes(node.argument)?.forEach(node => {
+        findPossiblyReturnedNodes(node.argument).forEach(node => {
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
           test(node, tsNode);
         });
