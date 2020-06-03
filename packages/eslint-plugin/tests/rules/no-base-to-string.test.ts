@@ -110,7 +110,7 @@ tag\`\${{}}\`;
     `
       interface Brand {}
       function test(v: string & Brand): string {
-        return v + "";
+        return v + '';
       }
     `,
   ],
