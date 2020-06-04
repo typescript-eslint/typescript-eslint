@@ -300,10 +300,8 @@ function isValidFunctionExpressionReturnType(
 function isValidFunctionReturnType(
   node: FunctionNode,
   options: Options,
-  isParentCheck = false,
 ): boolean {
   if (
-    !isParentCheck &&
     options.allowHigherOrderFunctions &&
     doesImmediatelyReturnFunctionExpression(node)
   ) {
@@ -353,29 +351,22 @@ function checkFunctionExpressionReturnType(
  * Check whether any ancestor of the provided node has a valid return type, with
  * the given options.
  */
-function ancestorHasReturnType(
-  ancestor: TSESTree.Node | undefined,
-  options: Options,
-): boolean {
-  // Exit early if this ancestor is not a ReturnStatement.
-  if (ancestor?.type !== AST_NODE_TYPES.ReturnStatement) {
+function ancestorHasReturnType(ancestor: TSESTree.Node | undefined): boolean {
+  // if the ancestor is not a return, then this function was not returned at all, so we can exit early
+  const isReturnStatne = ancestor?.type === AST_NODE_TYPES.ReturnStatement;
+  const isBodylessArrow =
+    ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
+  if (!isReturnStatne && !isBodylessArrow) {
     return false;
   }
-
-  // This boolean tells the `isValidFunctionReturnType` that it is being called
-  // by an ancestor check.
-  const isParentCheck = true;
 
   while (ancestor) {
     switch (ancestor.type) {
       case AST_NODE_TYPES.ArrowFunctionExpression:
       case AST_NODE_TYPES.FunctionExpression:
-        return (
-          isValidFunctionExpressionReturnType(ancestor, options) ||
-          isValidFunctionReturnType(ancestor, options, isParentCheck)
-        );
       case AST_NODE_TYPES.FunctionDeclaration:
-        return isValidFunctionReturnType(ancestor, options, isParentCheck);
+        return ancestor.returnType != null;
     }
 
     ancestor = ancestor.parent;

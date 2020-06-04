@@ -618,6 +618,12 @@ export function foo(...[a]: any): void {}
     `
 export function foo(arg = 1): void {}
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2161
+    {
+      code: `
+export const foo = (): ((n: number) => string) => n => String(n);
+      `,
+    },
   ],
   invalid: [
     {
