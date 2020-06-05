@@ -1,5 +1,5 @@
 import rule from '../../src/rules/return-await';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, RuleTester, noFormat } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -596,6 +596,157 @@ ruleTester.run('return-await', rule, {
       errors: [
         {
           line: 1,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo()) ? bar() : baz();
+}
+      `,
+      output: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo()) ? await bar() : await baz();
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? bar() : baz()
+    ) : baz ? baz() : bar();
+}
+      `,
+      output: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? await baz() : await bar();
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 9,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 10,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 10,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+async function foo() {}
+async function bar() {}
+async function buzz() {
+  return (await foo()) ? await 1 : bar();
+}
+      `,
+      output: `
+async function foo() {}
+async function bar() {}
+async function buzz() {
+  return (await foo()) ? 1 : await bar();
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'nonPromiseAwait',
+        },
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+const buzz = async () => ((await foo()) ? bar() : baz());
+      `,
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+const buzz = async () => ((await foo()) ? await bar() : await baz());
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? await 1 : bar());
+      `,
+      output: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? 1 : await bar());
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'nonPromiseAwait',
+        },
+        {
+          line: 4,
           messageId: 'requiredPromiseAwait',
         },
       ],
