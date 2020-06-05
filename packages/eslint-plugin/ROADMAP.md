@@ -16,7 +16,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | TSLint rule                       |     | ESLint rule                                          |
 | --------------------------------- | :-: | ---------------------------------------------------- |
 | [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
-| [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-ignore`]                 |
+| [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-comment`]                |
 | [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
 | [`invalid-void`]                  | ✅  | [`@typescript-eslint/no-invalid-void-type`]          |
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
@@ -149,7 +149,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`arrow-return-shorthand`]          | 🌟  | [`arrow-body-style`][arrow-body-style]                                              |
 | [`binary-expression-operand-order`] | 🌟  | [`yoda`][yoda]                                                                      |
 | [`callable-types`]                  | ✅  | [`@typescript-eslint/prefer-function-type`]                                         |
-| [`class-name`]                      | ✅  | [`@typescript-eslint/class-name-casing`]                                            |
+| [`class-name`]                      | ✅  | [`@typescript-eslint/naming-convention`]                                            |
 | [`comment-format`]                  | 🌟  | [`capitalized-comments`][capitalized-comments] & [`spaced-comment`][spaced-comment] |
 | [`comment-type`]                    | 🛑  | N/A                                                                                 |
 | [`completed-docs`]                  | 🔌  | [`jsdoc/require-jsdoc`]                                                             |
@@ -591,7 +591,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/adjacent-overload-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
 [`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
 [`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
-[`@typescript-eslint/ban-ts-ignore`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-ignore.md
+[`@typescript-eslint/ban-ts-comment`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-comment.md
 [`@typescript-eslint/consistent-type-assertions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
 [`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
 [`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
@@ -625,7 +625,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-invalid-void-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-invalid-void-type.md
 [`@typescript-eslint/no-require-imports`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-require-imports.md
 [`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
-[`@typescript-eslint/class-name-casing`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-name-casing.md
+[`@typescript-eslint/naming-convention`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
 [`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/interface-name-prefix.md
 [`@typescript-eslint/naming-convention`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
 [`@typescript-eslint/no-parameter-properties`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-parameter-properties.md
