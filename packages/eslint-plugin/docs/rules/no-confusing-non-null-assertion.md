@@ -1,8 +1,8 @@
-# Disallows confusing combinations of non-null assertion and equal test like `a! == b`, which looks very similar to not equal `a !== b` (`no-confusing-non-null-assertion`)
+# Disallow non-null assertion in locations that may be confusing, like `a! == b`, which looks very similar to not equal `a !== b` (`no-confusing-non-null-assertion`)
 
 ## Rule Details
 
-Using a non-null assertion (`!`) next to an equals check (`==` or `===`) creates code that is confusing as it looks similar to a not equals check (`!==`).
+Using a non-null assertion (`!`) next to an assign or equals check (`=` or `==` or `===`) creates code that is confusing as it looks similar to a not equals check (`!=` `!==`).
 
 ```typescript
 a! == b; // a non-null assertions(`!`) and an equals test(`==`)
