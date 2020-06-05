@@ -33,12 +33,9 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
     return {
       'BinaryExpression, AssignmentExpression'(node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression): void {
-        function isLeftHandPrimaryExpression(node:TSESTree.Expression)  {
-          console.log('isLeftHandPrimaryExpression', node.type, sourceCode.getText(node));
+        function isLeftHandPrimaryExpression(node: TSESTree.Expression): boolean {
           return node.type === AST_NODE_TYPES.TSNonNullExpression
         }
-
-        console.log('BinaryExpression', sourceCode.getText(node), sourceCode.text, node.type,sourceCode.getTokenAfter(node.left),sourceCode.getLastTokens(node.left), sourceCode.getText(node.left),node.operator,'\n',node);
 
         if(node.operator === '==' || node.operator === '===' || node.operator === '='){
           const isAssign = node.operator === '=';
@@ -52,9 +49,9 @@ export default util.createRule({
                 suggest: [
                   {
                     messageId: isAssign ? 'notNeedInAssign' : 'notNeedInEqualTest',
-                    fix: (fixer => [
+                    fix: (fixer): TSESLint.RuleFix[] => [
                       fixer.remove(leftHandFinalToken),
-                    ]),
+                    ],
                   },
                 ],
               });
