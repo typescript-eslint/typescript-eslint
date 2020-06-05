@@ -108,11 +108,6 @@ export default util.createRule({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
     ): TSESLint.RuleFix | null {
-      // There should always be a target node; but let's be safe.
-      /* istanbul ignore if */ if (!node) {
-        return null;
-      }
-
       return fixer.insertTextBefore(node, 'await ');
     }
 
