@@ -1,4 +1,4 @@
-# Disallow non-null assertion in locations that may be confusing, like `a! == b`, which looks very similar to not equal `a !== b` (`no-confusing-non-null-assertion`)
+# Disallow non-null assertion in locations that may be confusing (`no-confusing-non-null-assertion`)
 
 ## Rule Details
 
