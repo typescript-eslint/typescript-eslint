@@ -23,8 +23,10 @@ export default util.createRule({
       confusingAssign:
         'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b"',
       notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test',
-      notNeedInAssign: 'Unnecessary non-null assertion (!) in assignment left hand',
-      wrapUpLeft:'Wrap up left hand to avoid putting non-null assertion "!" and "=" together',
+      notNeedInAssign:
+        'Unnecessary non-null assertion (!) in assignment left hand',
+      wrapUpLeft:
+        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together',
     },
     schema: [],
   },
@@ -32,30 +34,44 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      'BinaryExpression, AssignmentExpression'(node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression): void {
-        function isLeftHandPrimaryExpression(node: TSESTree.Expression): boolean {
-          return node.type === AST_NODE_TYPES.TSNonNullExpression
+      'BinaryExpression, AssignmentExpression'(
+        node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+      ): void {
+        function isLeftHandPrimaryExpression(
+          node: TSESTree.Expression,
+        ): boolean {
+          return node.type === AST_NODE_TYPES.TSNonNullExpression;
         }
 
-        if(node.operator === '==' || node.operator === '===' || node.operator === '='){
+        if (
+          node.operator === '==' ||
+          node.operator === '===' ||
+          node.operator === '='
+        ) {
           const isAssign = node.operator === '=';
           const leftHandFinalToken = sourceCode.getLastToken(node.left);
-          const tokenAfterLeft = sourceCode.getTokenAfter(node.left)
-          if(leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator && leftHandFinalToken?.value === '!' && tokenAfterLeft?.value !== ')' ){
-            if(isLeftHandPrimaryExpression(node.left)){
+          const tokenAfterLeft = sourceCode.getTokenAfter(node.left);
+          if (
+            leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator &&
+            leftHandFinalToken?.value === '!' &&
+            tokenAfterLeft?.value !== ')'
+          ) {
+            if (isLeftHandPrimaryExpression(node.left)) {
               context.report({
                 node,
                 messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
                 suggest: [
                   {
-                    messageId: isAssign ? 'notNeedInAssign' : 'notNeedInEqualTest',
+                    messageId: isAssign
+                      ? 'notNeedInAssign'
+                      : 'notNeedInEqualTest',
                     fix: (fixer): TSESLint.RuleFix[] => [
                       fixer.remove(leftHandFinalToken),
                     ],
                   },
                 ],
               });
-            }else{
+            } else {
               context.report({
                 node,
                 messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
@@ -63,8 +79,8 @@ export default util.createRule({
                   {
                     messageId: 'wrapUpLeft',
                     fix: (fixer): TSESLint.RuleFix[] => [
-                      fixer.insertTextBefore(node.left , '('),
-                      fixer.insertTextAfter(node.left , ')'),
+                      fixer.insertTextBefore(node.left, '('),
+                      fixer.insertTextAfter(node.left, ')'),
                     ],
                   },
                 ],
