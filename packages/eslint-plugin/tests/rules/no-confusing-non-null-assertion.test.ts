@@ -17,9 +17,7 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
     'a = b!;',
     'a !== b;',
     'a != b;',
-    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     '(a + b!) == c;',
-    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     '(a + b!) = c;',
   ],
   invalid: [
@@ -65,7 +63,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'wrapUpLeft',
-              // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
               output: '(a + b!) == c;',
             },
           ],
@@ -73,7 +70,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: '(obj = new new OuterObj().InnerObj).Name! == c;',
       errors: [
         {
@@ -83,7 +79,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
-              // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
               output: '(obj = new new OuterObj().InnerObj).Name == c;',
             },
           ],
@@ -91,7 +86,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: '(a==b)! ==c;',
       errors: [
         {
@@ -101,7 +95,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
-              // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
               output: '(a==b) ==c;',
             },
           ],
@@ -125,7 +118,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: '(obj = new new OuterObj().InnerObj).Name! = c;',
       errors: [
         {
@@ -135,7 +127,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'notNeedInAssign',
-              // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
               output: '(obj = new new OuterObj().InnerObj).Name = c;',
             },
           ],
@@ -143,7 +134,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: '(a=b)! =c;',
       errors: [
         {
@@ -153,7 +143,6 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           suggestions: [
             {
               messageId: 'notNeedInAssign',
-              // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
               output: '(a=b) =c;',
             },
           ],
