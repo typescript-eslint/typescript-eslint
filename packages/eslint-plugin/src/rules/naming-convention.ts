@@ -346,15 +346,15 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     messages: {
       unexpectedUnderscore:
-        '{{type}} name {{name}} must not have a {{position}} underscore.',
+        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
       missingUnderscore:
-        '{{type}} name {{name}} must have a {{position}} underscore.',
+        '{{type}} name `{{name}}` must have a {{position}} underscore.',
       missingAffix:
-        '{{type}} name {{name}} must have one of the following {{position}}es: {{affixes}}',
+        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
       satisfyCustom:
-        '{{type}} name {{name}} must {{regexMatch}} the RegExp: {{regex}}',
+        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
       doesNotMatchFormat:
-        '{{type}} name {{name}} must match one of the following formats: {{formats}}',
+        '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
     },
     schema: SCHEMA,
   },
