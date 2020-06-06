@@ -24,6 +24,7 @@ const isEqualsNum = 1 + foo.num! == 2;
 ```
 
 Examples of **correct** code for this rule:
+
 <!-- prettier-ignore -->
 ```ts
 interface Foo {
