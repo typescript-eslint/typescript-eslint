@@ -40,7 +40,10 @@ function parseReadme(): {
 
 describe('Validating rule docs', () => {
   it('All rules must have a corresponding rule doc', () => {
-    const files = fs.readdirSync(docsRoot);
+    const files = fs
+      .readdirSync(docsRoot)
+      // this rule doc was left behind on purpose for legacy reasons
+      .filter(rule => rule !== 'camelcase.md');
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();
@@ -60,7 +63,7 @@ describe('Validating rule docs', () => {
 
       // Rule title not found.
       // Rule title does not match the rule metadata.
-      expect(tokens[0]).toEqual({
+      expect(tokens[0]).toMatchObject({
         type: 'heading',
         depth: 1,
         text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,
@@ -70,6 +73,10 @@ describe('Validating rule docs', () => {
 });
 
 describe('Validating rule metadata', () => {
+  function requiresFullTypeInformation(content: string): boolean {
+    return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
+  }
+
   for (const [ruleName, rule] of rulesData) {
     describe(`${ruleName}`, () => {
       it('`name` field in rule must match the filename', () => {
@@ -85,9 +92,10 @@ describe('Validating rule metadata', () => {
         // not perfect but should be good enough
         const ruleFileContents = fs.readFileSync(
           path.resolve(__dirname, `../src/rules/${ruleName}.ts`),
+          'utf-8',
         );
 
-        expect(ruleFileContents.includes('getParserServices')).toEqual(
+        expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
           rule.meta.docs?.requiresTypeChecking ?? false,
         );
       });

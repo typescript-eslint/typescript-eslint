@@ -53,7 +53,7 @@ export default util.createRule({
         }
         case AST_NODE_TYPES.TSDeclareFunction:
         case AST_NODE_TYPES.FunctionDeclaration:
-          return member.id && member.id.name;
+          return member.id?.name ?? null;
         case AST_NODE_TYPES.TSMethodSignature:
           return util.getNameFromMember(member, sourceCode);
         case AST_NODE_TYPES.TSCallSignatureDeclaration:

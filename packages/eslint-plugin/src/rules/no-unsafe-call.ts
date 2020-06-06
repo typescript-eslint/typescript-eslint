@@ -10,7 +10,7 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description: 'Disallows calling an any type value',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
@@ -42,8 +42,8 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      ':matches(CallExpression, OptionalCallExpression) > :not(Import).callee'(
-        node: Exclude<TSESTree.LeftHandSideExpression, TSESTree.Import>,
+      ':matches(CallExpression, OptionalCallExpression) > *.callee'(
+        node: TSESTree.CallExpression['callee'],
       ): void {
         checkCall(node, node, 'unsafeCall');
       },

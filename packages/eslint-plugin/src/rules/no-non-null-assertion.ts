@@ -15,6 +15,7 @@ export default util.createRule<[], MessageIds>({
         'Disallows non-null assertions using the `!` postfix operator',
       category: 'Stylistic Issues',
       recommended: 'warn',
+      suggestion: true,
     },
     messages: {
       noNonNull: 'Forbidden non-null assertion.',

@@ -28,6 +28,13 @@ export default util.createRule({
     const checker = program.getTypeChecker();
 
     function isErrorLike(type: ts.Type): boolean {
+      if (type.isIntersection()) {
+        return type.types.some(isErrorLike);
+      }
+      if (type.isUnion()) {
+        return type.types.every(isErrorLike);
+      }
+
       const symbol = type.getSymbol();
       if (!symbol) {
         return false;

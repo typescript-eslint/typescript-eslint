@@ -51,7 +51,7 @@ type Options = {
   types?: Types<Selector>[];
 }[];
 
-// the default config essentially does the same thing as ESLint's camelcase rule
+// the default config is similar to ESLint's camelcase rule but more strict
 const defaultOptions: Options = [
   {
     selector: 'default',
@@ -307,6 +307,8 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 
 ### Enforce that type parameters (generics) are prefixed with `T`
 
+This allows you to emulate the old `generic-type-naming` rule.
+
 ```json
 {
   "@typescript-eslint/naming-convention": [
@@ -320,10 +322,74 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 }
 ```
 
+### Enforce that interface names do not begin with an `I`
+
+This allows you to emulate the old `interface-name-prefix` rule.
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "interface",
+      "format": ["PascalCase"],
+      "custom": {
+        "regex": "^I[A-Z]",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
+### Ignore properties that require quotes
+
+Sometimes you have to use a quoted name that breaks the convention (for example, HTTP headers).
+If this is a common thing in your codebase, then you can use the `filter` option in one of two ways:
+
+You can use the `filter` option to ignore specific names only:
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "property",
+      "format": ["strictCamelCase"],
+      "filter": {
+        // you can expand this regex to add more allowed names
+        "regex": "^(Property-Name-One|Property-Name-Two)$",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
+You can use the `filter` option to ignore names that require quoting:
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "property",
+      "format": ["strictCamelCase"],
+      "filter": {
+        // you can expand this regex as you find more cases that require quoting that you want to allow
+        "regex": "[- ]",
+        "match": false
+      }
+    }
+  ]
+}
+```
+
 ### Enforce the codebase follows ESLint's `camelcase` conventions
 
 ```json
 {
+  "camelcase": "off",
   "@typescript-eslint/naming-convention": [
     "error",
     {

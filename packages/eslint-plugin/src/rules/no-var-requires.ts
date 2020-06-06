@@ -34,7 +34,9 @@ export default util.createRule<Options, MessageIds>({
           node.parent &&
           (node.parent.type === AST_NODE_TYPES.VariableDeclarator ||
             node.parent.type === AST_NODE_TYPES.CallExpression ||
-            node.parent.type === AST_NODE_TYPES.OptionalCallExpression)
+            node.parent.type === AST_NODE_TYPES.OptionalCallExpression ||
+            node.parent.type === AST_NODE_TYPES.TSAsExpression ||
+            node.parent.type === AST_NODE_TYPES.MemberExpression)
         ) {
           context.report({
             node,

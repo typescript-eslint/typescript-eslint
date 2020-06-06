@@ -23,10 +23,7 @@ const printNodeModifiers = (
 const isSupportedLiteral = (
   node: TSESTree.Node,
 ): node is TSESTree.LiteralExpression => {
-  if (
-    node.type === AST_NODE_TYPES.Literal ||
-    node.type === AST_NODE_TYPES.BigIntLiteral
-  ) {
+  if (node.type === AST_NODE_TYPES.Literal) {
     return true;
   }
 

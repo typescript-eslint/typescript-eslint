@@ -79,6 +79,14 @@ const literalWithToString = {
 };
 '' + literalToString;
     `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
     'let _ = {} * {};',
     'let _ = {} / {};',
     'let _ = ({} *= {});',
@@ -95,17 +103,10 @@ const literalWithToString = {
 function tag() {}
 tag\`\${{}}\`;
     `,
-    {
-      code: `
-        function tag() {}
-        tag\`\${{}}\`;
-      `,
-      options: [
-        {
-          ignoreTaggedTemplateExpressions: true,
-        },
-      ],
-    },
+    `
+      function tag() {}
+      tag\`\${{}}\`;
+    `,
   ],
   invalid: [
     {

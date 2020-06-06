@@ -10,7 +10,7 @@ export function astConverter(
   ast: SourceFile,
   extra: Extra,
   shouldPreserveNodeMaps: boolean,
-): { estree: TSESTree.Program; astMaps: ASTMaps | undefined } {
+): { estree: TSESTree.Program; astMaps: ASTMaps } {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
@@ -36,7 +36,7 @@ export function astConverter(
   /**
    * Optionally remove range and loc if specified
    */
-  if (extra.range || extra.loc) {
+  if (!extra.range || !extra.loc) {
     simpleTraverse(estree, {
       enter: node => {
         if (!extra.range) {
@@ -63,7 +63,7 @@ export function astConverter(
     estree.comments = convertComments(ast, extra.code);
   }
 
-  const astMaps = shouldPreserveNodeMaps ? instance.getASTMaps() : undefined;
+  const astMaps = instance.getASTMaps();
 
   return { estree, astMaps };
 }

@@ -27,6 +27,8 @@ const schema = util.deepMerge(
             'constructors',
             'private-constructors',
             'protected-constructors',
+            'asyncFunctions',
+            'asyncMethods',
           ],
         },
       },
@@ -81,11 +83,8 @@ export default util.createRule<Options, MessageIds>({
     function hasParameterProperties(
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
-      return (
-        node.params &&
-        node.params.some(
-          param => param.type === AST_NODE_TYPES.TSParameterProperty,
-        )
+      return node.params?.some(
+        param => param.type === AST_NODE_TYPES.TSParameterProperty,
       );
     }
 

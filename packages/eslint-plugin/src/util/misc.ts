@@ -22,32 +22,6 @@ function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-type InferOptionsTypeFromRuleNever<T> = T extends TSESLint.RuleModule<
-  never,
-  infer TOptions
->
-  ? TOptions
-  : unknown;
-/**
- * Uses type inference to fetch the TOptions type from the given RuleModule
- */
-type InferOptionsTypeFromRule<T> = T extends TSESLint.RuleModule<
-  string,
-  infer TOptions
->
-  ? TOptions
-  : InferOptionsTypeFromRuleNever<T>;
-
-/**
- * Uses type inference to fetch the TMessageIds type from the given RuleModule
- */
-type InferMessageIdsTypeFromRule<T> = T extends TSESLint.RuleModule<
-  infer TMessageIds,
-  unknown[]
->
-  ? TMessageIds
-  : unknown;
-
 /** Return true if both parameters are equal. */
 type Equal<T> = (a: T, b: T) => boolean;
 
@@ -136,8 +110,6 @@ export {
   getEnumNames,
   getNameFromIndexSignature,
   getNameFromMember,
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
   isDefinitionFile,
   RequireKeys,
   upperCaseFirst,

@@ -71,26 +71,14 @@ function foo(): Set<number> {
         return { prop: '' } as Foo;
       }
     `,
+    // TS 3.9 changed this to be safe
+    `
+      function fn<T extends any>(x: T) {
+        return x;
+      }
+    `,
   ],
   invalid: [
-    {
-      code: `
-function fn<T extends any>(x: T) {
-  return x;
-}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeReturnAssignment',
-          data: {
-            sender: 'any',
-            receiver: 'T',
-          },
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
     ...batchedSingleLineTests({
       code: noFormat`
 function foo() { return (1 as any); }

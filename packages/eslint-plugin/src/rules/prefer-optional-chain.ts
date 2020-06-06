@@ -31,15 +31,7 @@ The AST will look like this:
 }
 */
 
-type Options = [
-  {
-    suggestInsteadOfAutofix?: boolean;
-  },
-];
-
-type MessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
-
-export default util.createRule<Options, MessageIds>({
+export default util.createRule({
   name: 'prefer-optional-chain',
   meta: {
     type: 'suggestion',
@@ -48,47 +40,35 @@ export default util.createRule<Options, MessageIds>({
         'Prefer using concise optional chain expressions instead of chained logical ands',
       category: 'Best Practices',
       recommended: false,
+      suggestion: true,
     },
-    fixable: 'code',
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
       optionalChainSuggest: 'Change to an optional chain.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          suggestInsteadOfAutofix: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
   },
-  defaultOptions: [
-    {
-      suggestInsteadOfAutofix: false,
-    },
-  ],
-  create(context, [options]) {
+  defaultOptions: [],
+  create(context) {
     const sourceCode = context.getSourceCode();
     return {
       [[
         'LogicalExpression[operator="&&"] > Identifier',
+        'LogicalExpression[operator="&&"] > MemberExpression',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.BinaryExpression
-          | TSESTree.Identifier,
+          | TSESTree.Identifier
+          | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
         const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
 
         if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
-          // the identifier is not the deepest left node
+          // the node(identifier or member expression) is not the deepest left node
           return;
         }
         if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
@@ -188,28 +168,18 @@ export default util.createRule<Options, MessageIds>({
             } ${sourceCode.getText(previous.right.right)}`;
           }
 
-          if (!options.suggestInsteadOfAutofix) {
-            context.report({
-              node: previous,
-              messageId: 'preferOptionalChain',
-              fix(fixer) {
-                return fixer.replaceText(previous, optionallyChainedCode);
+          context.report({
+            node: previous,
+            messageId: 'preferOptionalChain',
+            suggest: [
+              {
+                messageId: 'optionalChainSuggest',
+                fix: (fixer): TSESLint.RuleFix[] => [
+                  fixer.replaceText(previous, optionallyChainedCode),
+                ],
               },
-            });
-          } else {
-            context.report({
-              node: previous,
-              messageId: 'preferOptionalChain',
-              suggest: [
-                {
-                  messageId: 'optionalChainSuggest',
-                  fix: (fixer): TSESLint.RuleFix[] => [
-                    fixer.replaceText(previous, optionallyChainedCode),
-                  ],
-                },
-              ],
-            });
-          }
+            ],
+          });
         }
       },
     };
@@ -305,7 +275,6 @@ export default util.createRule<Options, MessageIds>({
             break;
 
           case AST_NODE_TYPES.Literal:
-          case AST_NODE_TYPES.BigIntLiteral:
           case AST_NODE_TYPES.TemplateLiteral:
             propertyText = sourceCode.getText(node.property);
             break;
@@ -352,7 +321,6 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
-  AST_NODE_TYPES.BigIntLiteral,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,

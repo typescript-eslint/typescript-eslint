@@ -67,7 +67,6 @@ const formatTestNames: Readonly<Record<
       'StrictPascalCase',
     ],
   },
-  // eslint-disable-next-line @typescript-eslint/camelcase
   snake_case: {
     valid: ['snake_case', 'lower'],
     invalid: [
@@ -608,7 +607,6 @@ const cases: Cases = [
 
 ruleTester.run('naming-convention', rule, {
   valid: [
-    'const x = 1;', // no options shouldn't crash
     ...createValidTestCases(cases),
     {
       code: `
@@ -759,8 +757,53 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /-/.source,
+            match: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /^(Property-Name)$/.source,
+            match: false,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
+    {
+      // make sure we handle no options and apply defaults
+      code: 'const x_x = 1;',
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      // make sure we handle empty options and apply defaults
+      code: 'const x_x = 1;',
+      options: [],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
     ...createInvalidTestCases(cases),
     {
       code: `
@@ -962,6 +1005,35 @@ ruleTester.run('naming-convention', rule, {
             name: 'fooBar',
             regex: '/function/',
             regexMatch: 'match',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          format: ['strictCamelCase'],
+          selector: 'default',
+          filter: {
+            regex: /-/.source,
+            match: false,
+          },
+        },
+      ],
+      errors: [
+        {
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+          data: {
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            type: 'Property',
+            name: 'Property Name',
+            formats: 'strictCamelCase',
           },
         },
       ],

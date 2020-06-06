@@ -1,6 +1,7 @@
 Some extra text to verify that the markdown plugin is ignoring anything that is not a code block.
 
 expected no-console error:
+
 ```jsx
 import { Button } from 'antd';
 
@@ -20,6 +21,7 @@ function MyComp() {
 
 expected no-explicit-any error:
 expected no-console error:
+
 ```jsx
 import { Button } from 'antd';
 
@@ -38,6 +40,7 @@ function MyComp(): any {
 ```
 
 expected no-console error:
+
 ```js
 function foo() {
   console.log('test');
@@ -46,24 +49,25 @@ function foo() {
 
 expected no-explicit-any error:
 expected no-console error:
+
 ```js
 function foo(): any {
   console.log('test');
 }
 ```
 
-
 expected no-explicit-any error:
 expected no-console error:
+
 ```javascript
 function foo(): any {
   console.log('test');
 }
 ```
 
-
 expected no-explicit-any error:
 expected no-console error:
+
 ```node
 function foo(): any {
   console.log('test');

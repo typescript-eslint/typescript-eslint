@@ -398,19 +398,19 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -450,19 +450,19 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -478,19 +478,19 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -508,19 +508,19 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 7,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 8,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -534,11 +534,11 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -553,15 +553,15 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -571,6 +571,7 @@ async function test() {
   void Promise.resolve();
 }
       `,
+      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 3,
@@ -588,7 +589,7 @@ async function test() {
       errors: [
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -601,7 +602,7 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -619,19 +620,19 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 7,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 8,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -646,7 +647,7 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -664,19 +665,19 @@ async function test() {
       errors: [
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 7,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 8,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -695,19 +696,19 @@ async function test() {
       errors: [
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 7,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 8,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 9,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -728,11 +729,11 @@ async function test() {
       errors: [
         {
           line: 10,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 11,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -762,15 +763,15 @@ async function test() {
       errors: [
         {
           line: 18,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 19,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 20,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -783,7 +784,7 @@ async function test() {
       errors: [
         {
           line: 2,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -796,7 +797,7 @@ async function test() {
       errors: [
         {
           line: 2,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -805,7 +806,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -818,7 +819,7 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -834,7 +835,7 @@ async function test() {
       errors: [
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -847,7 +848,7 @@ async function test() {
       errors: [
         {
           line: 2,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -861,7 +862,7 @@ async function test() {
       errors: [
         {
           line: 3,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },
@@ -879,19 +880,19 @@ async function test() {
       errors: [
         {
           line: 4,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 5,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 6,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
         {
           line: 7,
-          messageId: 'floating',
+          messageId: 'floatingVoid',
         },
       ],
     },

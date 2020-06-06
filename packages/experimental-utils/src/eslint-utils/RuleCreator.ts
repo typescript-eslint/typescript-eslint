@@ -7,7 +7,7 @@ import {
 } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
 
-// we'll automatically add the url + tslint description for people.
+// we automatically add the url
 type CreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 type CreateRuleMeta<TMessageIds extends string> = {
   docs: CreateRuleMetaDocs;
@@ -25,15 +25,15 @@ function RuleCreator(urlCreator: (ruleName: string) => string) {
     meta,
     defaultOptions,
     create,
-  }: {
+  }: Readonly<{
     name: string;
     meta: CreateRuleMeta<TMessageIds>;
-    defaultOptions: TOptions;
+    defaultOptions: Readonly<TOptions>;
     create: (
-      context: RuleContext<TMessageIds, TOptions>,
-      optionsWithDefault: TOptions,
+      context: Readonly<RuleContext<TMessageIds, TOptions>>,
+      optionsWithDefault: Readonly<TOptions>,
     ) => TRuleListener;
-  }): RuleModule<TMessageIds, TOptions, TRuleListener> {
+  }>): RuleModule<TMessageIds, TOptions, TRuleListener> {
     return {
       meta: {
         ...meta,
@@ -42,7 +42,9 @@ function RuleCreator(urlCreator: (ruleName: string) => string) {
           url: urlCreator(name),
         },
       },
-      create(context): TRuleListener {
+      create(
+        context: Readonly<RuleContext<TMessageIds, TOptions>>,
+      ): TRuleListener {
         const optionsWithDefault = applyDefault(
           defaultOptions,
           context.options,

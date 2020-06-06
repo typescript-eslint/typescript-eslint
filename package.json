@@ -18,25 +18,26 @@
   },
   "scripts": {
     "build": "lerna run build",
+    "check:clean-workspace-after-install": "git diff --quiet --exit-code",
+    "check:configs": "lerna run check:configs",
+    "check:docs": "lerna run check:docs",
+    "check:format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
+    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
-    "check:docs": "lerna run check:docs",
-    "check:configs": "lerna run check:configs",
-    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
-    "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
-    "format-check": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
-    "integration-tests": "./tests/integration/run-all-tests.sh",
-    "kill-integration-test-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
-    "lint": "eslint . --ext .js,.ts",
-    "lint-fix": "eslint . --ext .js,.ts --fix",
-    "lint:markdown": "markdownlint '**/*.md' --config=.markdownlint.json --ignore-path=.markdownlintignore",
+    "generate:contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
+    "lerna:init": "lerna bootstrap --ignore-scripts && lerna link --force-local",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
     "lint:markdown:fix": "lint:markdown --fix",
+    "lint:markdown": "markdownlint '**/*.md' --config=.markdownlint.json --ignore-path=.markdownlintignore",
+    "lint": "eslint . --ext .js,.ts",
+    "postinstall": "yarn lerna:init && yarn build",
     "pre-commit": "yarn lint-staged",
-    "pre-push": "yarn format-check",
-    "postinstall": "lerna bootstrap -- --ignore-engines && yarn build && lerna link",
-    "check-clean-workspace-after-install": "git diff --quiet --exit-code",
+    "pre-push": "yarn check:format",
     "test": "lerna run test --concurrency 1",
+    "test:integration": "./tests/integration/run-all-tests.sh",
+    "test:kill-integration-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "typecheck": "lerna run typecheck"
   },
   "config": {
@@ -48,39 +49,52 @@
     "extends": [
       "@commitlint/config-conventional",
       "@commitlint/config-lerna-scopes"
-    ]
+    ],
+    "rules": {
+      "body-max-length": [
+        0
+      ],
+      "footer-max-length": [
+        0
+      ],
+      "header-max-length": [
+        0
+      ]
+    }
   },
   "engines": {
-    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
+    "node": "^10.12.0 || >=12.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@commitlint/config-lerna-scopes": "^8.3.4",
-    "@types/jest": "^25.1.0",
-    "@types/node": "^12.12.7",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.5",
     "@types/prettier": "^2.0.0",
-    "all-contributors-cli": "^6.11.0",
-    "cspell": "^4.0.43",
-    "cz-conventional-changelog": "^3.0.2",
-    "eslint": "^6.7.0",
+    "all-contributors-cli": "^6.14.2",
+    "cspell": "^4.0.61",
+    "cz-conventional-changelog": "^3.2.0",
+    "downlevel-dts": "^0.4.0",
+    "eslint": "^7.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-eslint-plugin": "^2.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.0.4",
-    "husky": "^3.0.9",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.10.0",
+    "husky": "^4.2.5",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "^25.1.0",
+    "jest": "^25.5.4",
     "lerna": "^3.20.2",
-    "lint-staged": "^9.4.3",
-    "markdownlint-cli": "^0.22.0",
+    "lint-staged": "^10.2.2",
+    "markdownlint-cli": "^0.23.0",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.0.0",
-    "ts-node": "^8.5.0",
-    "tslint": "^6.1.0",
-    "typescript": ">=3.2.1 <3.9.0"
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.5.1",
+    "ts-node": "^8.10.1",
+    "tslint": "^6.1.2",
+    "typescript": ">=3.3.1 <4.0.0"
   },
   "resolutions": {
-    "typescript": "^3.8.3"
+    "typescript": "3.9.2"
   }
 }

@@ -29,6 +29,7 @@ function parseWithBabelParser(text: string, jsx = true): any {
     'dynamicImport',
     'estree',
     'bigInt',
+    'numericSeparator',
     'importMeta',
     'optionalChaining',
     'nullishCoalescingOperator',
