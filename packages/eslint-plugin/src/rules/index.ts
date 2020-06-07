@@ -6,6 +6,7 @@ import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaSpacing from './comma-spacing';
+import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
@@ -104,6 +105,7 @@ export default {
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-spacing': commaSpacing,
+  'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
