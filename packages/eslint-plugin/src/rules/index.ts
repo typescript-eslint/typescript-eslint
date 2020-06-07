@@ -2,6 +2,7 @@ import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
+import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
@@ -101,6 +102,7 @@ export default {
   'array-type': arrayType,
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
+  'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,

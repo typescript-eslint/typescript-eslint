@@ -5,6 +5,7 @@ export = {
     '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/ban-ts-comment': 'error',
+    '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
