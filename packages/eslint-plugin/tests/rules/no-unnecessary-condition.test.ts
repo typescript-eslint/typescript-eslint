@@ -138,14 +138,22 @@ function test(a?: string) {
   const t2 = null == a;
   const t3 = a != null;
   const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
 }
     `,
     `
-function test(a?: null | string) {
+function test(a: null | string) {
   const t1 = a == null;
   const t2 = null == a;
   const t3 = a != null;
   const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
 }
     `,
     `
@@ -154,6 +162,18 @@ function test(a: any) {
   const t2 = null == a;
   const t3 = a != null;
   const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
 }
     `,
     `
@@ -162,6 +182,38 @@ function test(a: unknown) {
   const t2 = null == a;
   const t3 = a != null;
   const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function test<T>(a: T) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
 }
     `,
 
@@ -468,25 +520,105 @@ if (x === Foo.a) {
     {
       code: `
 function test(a: string) {
-  const t1 = a !== undefined;
-  const t3 = undefined === a;
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
 }
       `,
       errors: [
         ruleError(3, 14, 'noOverlapBooleanExpression'),
         ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
       ],
     },
     {
       code: `
 function test(a?: string) {
-  const t1 = a === null;
-  const t3 = null !== a;
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test(a: null | string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
 }
       `,
       errors: [
         ruleError(3, 14, 'noOverlapBooleanExpression'),
         ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
+        ruleError(11, 14, 'noOverlapBooleanExpression'),
+        ruleError(12, 15, 'noOverlapBooleanExpression'),
+        ruleError(13, 15, 'noOverlapBooleanExpression'),
+        ruleError(14, 15, 'noOverlapBooleanExpression'),
+        ruleError(15, 15, 'noOverlapBooleanExpression'),
+        ruleError(16, 15, 'noOverlapBooleanExpression'),
+        ruleError(17, 15, 'noOverlapBooleanExpression'),
+        ruleError(18, 15, 'noOverlapBooleanExpression'),
       ],
     },
     // Nullish coalescing operator

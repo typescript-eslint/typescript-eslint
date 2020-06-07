@@ -1,5 +1,5 @@
-import * as util from '../util';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
+import * as util from '../util';
 
 export default util.createRule({
   name: 'no-extra-non-null-assertion',
@@ -32,8 +32,8 @@ export default util.createRule({
 
     return {
       'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
-      'OptionalMemberExpression > TSNonNullExpression': checkExtraNonNullAssertion,
-      'OptionalCallExpression > TSNonNullExpression.callee': checkExtraNonNullAssertion,
+      'OptionalMemberExpression[optional = true] > TSNonNullExpression': checkExtraNonNullAssertion,
+      'OptionalCallExpression[optional = true] > TSNonNullExpression.callee': checkExtraNonNullAssertion,
     };
   },
 });

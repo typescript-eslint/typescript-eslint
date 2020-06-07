@@ -83,6 +83,25 @@ export class Test {
       `,
     },
     {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2150
+      code: `
+export class Test {
+  constructor();
+  constructor(value?: string) {
+    console.log(value);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare class MyClass {
+  constructor(options?: MyClass.Options);
+}
+export { MyClass };
+      `,
+    },
+    {
       code: `
 export function test(): void {
   nested();
@@ -598,6 +617,34 @@ export function foo(...[a]: any): void {}
     // assignment patterns are ignored
     `
 export function foo(arg = 1): void {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2161
+    {
+      code: `
+export const foo = (): ((n: number) => string) => n => String(n);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2173
+    `
+export function foo(): (n: number) => (m: number) => string {
+  return function (n) {
+    return function (m) {
+      return String(n + m);
+    };
+  };
+}
+    `,
+    `
+export const foo = (): ((n: number) => (m: number) => string) => n => m =>
+  String(n + m);
+    `,
+    `
+export const bar: () => (n: number) => string = () => n => String(n);
+    `,
+    `
+type Buz = () => (n: number) => string;
+
+export const buz: Buz = () => n => String(n);
     `,
   ],
   invalid: [

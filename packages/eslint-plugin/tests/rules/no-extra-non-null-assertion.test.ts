@@ -27,6 +27,12 @@ function foo(bar?: { n: number }) {
 }
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2166
+    {
+      code: `
+checksCounter?.textContent!.trim();
+      `,
+    },
   ],
   invalid: [
     {

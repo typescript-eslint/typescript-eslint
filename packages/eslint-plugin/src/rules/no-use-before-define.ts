@@ -137,8 +137,7 @@ function isInInitializer(
         return true;
       }
       if (
-        node.parent &&
-        node.parent.parent &&
+        node.parent?.parent &&
         (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
           node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
         isInRange(node.parent.parent.right, location)
