@@ -416,7 +416,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
         allowShortCircuit?: boolean;
         allowTernary?: boolean;
         allowTaggedTemplates?: boolean;
-      }?,
+      },
     ],
     {
       ExpressionStatement(node: TSESTree.ExpressionStatement): void;

@@ -30,8 +30,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, options) {
     const rules = baseRule.create(context);
-    const { allowShortCircuit = false, allowTernary = false } =
-      options[0] ?? {};
+    const { allowShortCircuit = false, allowTernary = false } = options[0];
 
     function isValidExpression(node: TSESTree.Node): boolean {
       if (allowShortCircuit && node.type === AST_NODE_TYPES.LogicalExpression) {
