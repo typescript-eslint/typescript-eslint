@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.1.0...v3.2.0) (2020-06-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] dont report return type errors on constructor overloads ([#2158](https://github.com/typescript-eslint/typescript-eslint/issues/2158)) ([53232d7](https://github.com/typescript-eslint/typescript-eslint/commit/53232d775ca0b808e2d75d9501f4411a868b2b48))
+* **eslint-plugin:** [explicit-module-boundary-types] handle bodyless arrow functions with explicit return types that return functions ([#2169](https://github.com/typescript-eslint/typescript-eslint/issues/2169)) ([58db655](https://github.com/typescript-eslint/typescript-eslint/commit/58db655133aaae006efe3e3ceee971cf88dc348f))
+* **eslint-plugin:** [explicit-module-boundary-types] handle nested functions and functions expressions in a typed variable declaration ([#2176](https://github.com/typescript-eslint/typescript-eslint/issues/2176)) ([6ff450d](https://github.com/typescript-eslint/typescript-eslint/commit/6ff450da3abec93223a33f6b52484c9ca99b7abe))
+* **eslint-plugin:** [no-extra-non-null-assertion] dont report for assertions not followed by the optional chain ([#2167](https://github.com/typescript-eslint/typescript-eslint/issues/2167)) ([e4c1834](https://github.com/typescript-eslint/typescript-eslint/commit/e4c1834c7c5934332dd1d58c09018453568c4889))
+* **eslint-plugin:** [no-unnecessary-conditionals] Handle comparison of generics and loose comparisons with undefined values ([#2152](https://github.com/typescript-eslint/typescript-eslint/issues/2152)) ([c86e2a2](https://github.com/typescript-eslint/typescript-eslint/commit/c86e2a235372149db9b1700d39c2145e0ce5221a))
+* **eslint-plugin:** [prefer-optional-chain] handling first member expression ([#2156](https://github.com/typescript-eslint/typescript-eslint/issues/2156)) ([de18660](https://github.com/typescript-eslint/typescript-eslint/commit/de18660a8cf8f7033798646d8c5b0938d1accb12))
+* **eslint-plugin:** [return-await] correct handling of ternaries ([#2168](https://github.com/typescript-eslint/typescript-eslint/issues/2168)) ([fe4c0bf](https://github.com/typescript-eslint/typescript-eslint/commit/fe4c0bf8c04f070d6642fbe86c5e5614bc88e8fd))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] put identifiers in quotes in error messages ([#2182](https://github.com/typescript-eslint/typescript-eslint/issues/2182)) ([fc61932](https://github.com/typescript-eslint/typescript-eslint/commit/fc619326eedf7ef2efa51444ecdead81a36a204f)), closes [#2178](https://github.com/typescript-eslint/typescript-eslint/issues/2178)
+* **eslint-plugin:** [require-array-sort-compare] add `ignoreStringArrays` option ([#1972](https://github.com/typescript-eslint/typescript-eslint/issues/1972)) ([6dee784](https://github.com/typescript-eslint/typescript-eslint/commit/6dee7840a3af1dfe4c38a128d1c4655bdac625df))
+* **eslint-plugin:** add rule `ban-tslint-comment` ([#2140](https://github.com/typescript-eslint/typescript-eslint/issues/2140)) ([43ee226](https://github.com/typescript-eslint/typescript-eslint/commit/43ee226ffbaaa3e7126081db9476c24b89ec16e9))
+* **eslint-plugin:** add rule `no-confusing-non-null-assertion` ([#1941](https://github.com/typescript-eslint/typescript-eslint/issues/1941)) ([9b51c44](https://github.com/typescript-eslint/typescript-eslint/commit/9b51c44f29d8b3e95a510985544e8ded8a14404d))
+
+
+
+
+
 # [3.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.2...v3.1.0) (2020-06-01)
 
 
