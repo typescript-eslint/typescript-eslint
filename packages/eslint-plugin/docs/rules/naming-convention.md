@@ -150,6 +150,8 @@ The `prefix` / `suffix` options control which prefix/suffix strings must exist f
 
 If these are provided, the identifier must start with one of the provided values. For example, if you provide `{ prefix: ['IFace', 'Class', 'Type'] }`, then the following names are valid: `IFaceFoo`, `ClassBar`, `TypeBaz`, but the name `Bang` is not valid, as it contains none of the prefixes.
 
+**Note:** As [documented above](#format-options), the prefix is trimmed before format is validated, therefore PascalCase must be used to allow variables such as `isEnabled` using the prefix `is`.
+
 ### Selector Options
 
 - `selector` (see "Allowed Selectors, Modifiers and Types" below).
@@ -276,6 +278,8 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 ```
 
 ### Enforce that boolean variables are prefixed with an allowed verb
+
+**Note:** As [documented above](#format-options), the prefix is trimmed before format is validated, thus PascalCase must be used to allow variables such as `isEnabled`.
 
 ```json
 {
