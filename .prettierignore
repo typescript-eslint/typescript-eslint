@@ -5,6 +5,7 @@
 **/shared-fixtures
 **/.vscode
 **/.nyc_output
+**/.vs
 packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.js
 .github
 packages/eslint-plugin/src/configs/*.json
