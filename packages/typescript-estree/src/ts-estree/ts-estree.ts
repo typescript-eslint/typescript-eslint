@@ -1589,12 +1589,9 @@ export interface TSThisType extends BaseNode {
   type: AST_NODE_TYPES.TSThisType;
 }
 
-// Note that either `elementTypes` or `elements` is guaranteed to exist.
-// Both are included here for flexibility.
 export interface TSTupleType extends BaseNode {
   type: AST_NODE_TYPES.TSTupleType;
-  elementTypes?: TypeNode[];
-  elements?: TypeNode[];
+  elementTypes: TypeNode[];
 }
 
 export interface TSTypeAliasDeclaration extends BaseNode {
