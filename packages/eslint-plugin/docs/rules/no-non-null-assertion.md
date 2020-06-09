@@ -23,7 +23,7 @@ interface Foo {
 }
 
 const foo: Foo = getFoo();
-const includesBaz: boolean = foo.bar && foo.bar.includes('baz');
+const includesBaz: boolean = foo.bar?.includes('baz') ?? false;
 ```
 
 ## When Not To Use It

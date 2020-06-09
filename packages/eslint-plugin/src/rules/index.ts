@@ -2,10 +2,12 @@ import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
+import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaSpacing from './comma-spacing';
+import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
@@ -100,10 +102,12 @@ export default {
   'array-type': arrayType,
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
+  'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-spacing': commaSpacing,
+  'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
