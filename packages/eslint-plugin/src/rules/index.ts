@@ -96,6 +96,7 @@ import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 import linesBetweenClassMembers from './lines-between-class-members';
+import noLossOfPrecision from './no-loss-of-precision';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -196,4 +197,5 @@ export default {
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
   'lines-between-class-members': linesBetweenClassMembers,
+  'no-loss-of-precision': noLossOfPrecision,
 };

@@ -59,6 +59,8 @@ export = {
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': 'error',
     '@typescript-eslint/no-invalid-void-type': 'error',
+    'no-loss-of-precision': 'off',
+    '@typescript-eslint/no-loss-of-precision': 'error',
     'no-magic-numbers': 'off',
     '@typescript-eslint/no-magic-numbers': 'error',
     '@typescript-eslint/no-misused-new': 'error',
