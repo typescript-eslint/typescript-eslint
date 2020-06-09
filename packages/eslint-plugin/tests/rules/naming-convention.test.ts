@@ -864,7 +864,7 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       parserOptions,
-      errors: Array(16).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: Array(16).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -886,7 +886,7 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       parserOptions,
-      errors: Array(4).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -918,7 +918,7 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       parserOptions,
-      errors: Array(8).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
