@@ -1058,7 +1058,10 @@ function createValidator(
 
     context.report({
       node,
-      messageId: originalName === name ? 'doesNotMatchFormat' : 'doesNotMatchFormatTrimmed',
+      messageId:
+        originalName === name
+          ? 'doesNotMatchFormat'
+          : 'doesNotMatchFormatTrimmed',
       data: formatReportData({
         originalName,
         processedName: name,
