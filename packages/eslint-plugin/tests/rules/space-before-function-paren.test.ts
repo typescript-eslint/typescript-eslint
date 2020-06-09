@@ -152,7 +152,7 @@ ruleTester.run('space-before-function-paren', rule, {
     {
       code: 'abstract class Foo { constructor() {} abstract method() }',
       options: ['never'],
-    }
+    },
   ],
 
   invalid: [
