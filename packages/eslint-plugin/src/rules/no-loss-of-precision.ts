@@ -6,6 +6,7 @@ const baseRule = ((): typeof BaseRule | null => {
   try {
     return require('eslint/lib/rules/no-loss-of-precision');
   } catch {
+    /* istanbul ignore next */
     return null;
   }
 })();
@@ -28,7 +29,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    if (baseRule === null) {
+    /* istanbul ignore if */ if (baseRule === null) {
       throw new Error(
         '@typescript-eslint/no-loss-of-precision requires at least ESLint v7.1.0',
       );
