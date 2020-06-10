@@ -10,6 +10,7 @@ export = {
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
+    '@typescript-eslint/no-implicit-any-catch': 'warn',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     'no-extra-semi': 'off',

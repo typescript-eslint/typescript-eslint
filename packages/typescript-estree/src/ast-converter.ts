@@ -40,10 +40,10 @@ export function astConverter(
     simpleTraverse(estree, {
       enter: node => {
         if (!extra.range) {
-          delete (node as any).range;
+          delete node.range;
         }
         if (!extra.loc) {
-          delete (node as any).loc;
+          delete node.loc;
         }
       },
     });
