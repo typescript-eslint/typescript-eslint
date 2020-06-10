@@ -1,10 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`it should fail 1`] = `
-"Error while loading rule '@typescript-eslint/no-loss-of-precision': dd
-Occurred while linting /usr/linked/index.ts"
-`;
-
 exports[`it should produce the expected lint ouput 1`] = `
 Array [
   Object {
