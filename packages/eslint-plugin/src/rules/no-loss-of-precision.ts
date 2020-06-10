@@ -1,9 +1,17 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-loss-of-precision';
+import BaseRule from 'eslint/lib/rules/no-loss-of-precision';
 import * as util from '../util';
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+const baseRule = ((): typeof BaseRule | null => {
+  try {
+    return require('eslint/lib/rules/no-loss-of-precision');
+  } catch {
+    return null;
+  }
+})();
+
+type Options = util.InferOptionsTypeFromRule<typeof BaseRule>;
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof BaseRule>;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
@@ -16,11 +24,17 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: [],
-    messages: baseRule.meta.messages,
+    messages: baseRule?.meta?.messages ?? { noLossOfPrecision: '' },
   },
   defaultOptions: [],
   create(context) {
-    const rules = baseRule.create(context);
+    if (baseRule === null) {
+      throw new Error(
+        '@typescript-eslint/no-loss-of-precision requires at least ESLint v7.1.0',
+      );
+    }
+
+    const rules = baseRule?.create(context);
 
     function isSeperatedNumeric(node: TSESTree.Literal): boolean {
       return typeof node.value === 'number' && node.raw.includes('_');
@@ -28,13 +42,13 @@ export default util.createRule<Options, MessageIds>({
     return {
       Literal(node: TSESTree.Literal): void {
         if (isSeperatedNumeric(node)) {
-          rules.Literal({
+          rules?.Literal({
             ...node,
             raw: node.raw.replace(/_/g, ''),
           });
           return;
         }
-        rules.Literal(node);
+        rules?.Literal(node);
       },
     };
   },
