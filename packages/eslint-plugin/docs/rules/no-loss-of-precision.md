@@ -3,7 +3,8 @@
 ## Rule Details
 
 This rule extends the base [`eslint/no-loss-of-precision`](https://eslint.org/docs/rules/no-loss-of-precision) rule.
-It adds support for numeric separators.
+It adds support for [numeric separators](https://github.com/tc39/proposal-numeric-separator).
+Note that this rule requires ESLint v7.
 
 ## How to use
 
