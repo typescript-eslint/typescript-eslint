@@ -697,7 +697,7 @@ export class Converter {
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
-            ? this.convertChild(node.variableDeclaration.name)
+            ? this.convertChild(node.variableDeclaration).id
             : null,
           body: this.convertChild(node.block),
         });
