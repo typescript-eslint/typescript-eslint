@@ -28,7 +28,8 @@ const includesBaz: boolean = foo.bar?.includes('baz') ?? false;
 
 ## When Not To Use It
 
-If you don't care about strict null-checking, then you will not need this rule.
+* If you don't care about strict null-checking, then you will not need this rule.
+* Non-null assetion is required in class-based Vue ([https://github.com/kaorun343/vue-property-decorator](vue-property-decorator)) for Vue component properties defining.
 
 ## Further Reading
 
