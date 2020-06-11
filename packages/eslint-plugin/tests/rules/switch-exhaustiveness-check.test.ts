@@ -490,5 +490,42 @@ function test(value: T): number {
         },
       ],
     },
+    {
+      // keys include special characters
+      code: `
+export enum Enum {
+  'test-test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  }
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: noFormat`
+export enum Enum {
+  'test-test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  case Enum['test-test']: { throw new Error('Not implemented yet: Enum['test-test'] case') }
+  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
+  }
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
