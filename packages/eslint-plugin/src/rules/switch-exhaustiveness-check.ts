@@ -42,7 +42,9 @@ export default createRule({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
       missingBranchTypes: Array<ts.Type>,
+      symbolName?: string,
     ): TSESLint.RuleFix | null {
+      const identifierRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
       const caseIndent = lastCase
@@ -67,7 +69,17 @@ export default createRule({
           continue;
         }
 
-        const caseTest = checker.typeToString(missingBranchType);
+        const missingBranchName = missingBranchType.getSymbol()?.escapedName;
+        let caseTest = checker.typeToString(missingBranchType);
+
+        if (
+          symbolName &&
+          missingBranchName &&
+          !identifierRegex.test(missingBranchName.toString())
+        ) {
+          caseTest = `${symbolName}['${missingBranchName}']`;
+        }
+
         const errorMessage = `Not implemented yet: ${caseTest} case`;
 
         missingCases.push(
@@ -101,6 +113,7 @@ export default createRule({
 
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
       const discriminantType = getNodeType(node.discriminant);
+      const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
         const unionTypes = unionTypeParts(discriminantType);
@@ -139,7 +152,12 @@ export default createRule({
             {
               messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix | null {
-                return fixSwitch(fixer, node, missingBranchTypes);
+                return fixSwitch(
+                  fixer,
+                  node,
+                  missingBranchTypes,
+                  symbolName?.toString(),
+                );
               },
             },
           ],
