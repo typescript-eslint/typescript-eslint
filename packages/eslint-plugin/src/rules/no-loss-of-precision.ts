@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: [],
-    messages: baseRule?.meta?.messages ?? { noLossOfPrecision: '' },
+    messages: baseRule?.meta.messages ?? { noLossOfPrecision: '' },
   },
   defaultOptions: [],
   create(context) {
