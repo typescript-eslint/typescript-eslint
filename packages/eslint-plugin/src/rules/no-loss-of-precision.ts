@@ -35,21 +35,18 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    const rules = baseRule?.create(context);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const rules = baseRule!.create(context);
 
     function isSeperatedNumeric(node: TSESTree.Literal): boolean {
       return typeof node.value === 'number' && node.raw.includes('_');
     }
     return {
       Literal(node: TSESTree.Literal): void {
-        if (isSeperatedNumeric(node)) {
-          rules?.Literal({
-            ...node,
-            raw: node.raw.replace(/_/g, ''),
-          });
-          return;
-        }
-        rules?.Literal(node);
+        rules.Literal({
+          ...node,
+          raw: isSeperatedNumeric(node) ? node.raw.replace(/_/g, '') : node.raw,
+        });
       },
     };
   },
