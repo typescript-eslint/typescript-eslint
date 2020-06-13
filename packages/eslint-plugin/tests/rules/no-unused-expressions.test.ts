@@ -71,6 +71,18 @@ ruleTester.run('no-unused-expressions', rule, {
     `
       import('./foo').then(() => {});
     `,
+    {
+      code: 'foo && foo?.();',
+      options: [{ allowShortCircuit: true }],
+    },
+    {
+      code: "foo && import('./foo');",
+      options: [{ allowShortCircuit: true }],
+    },
+    {
+      code: "foo ? import('./foo') : import('./bar');",
+      options: [{ allowTernary: true }],
+    },
   ],
   invalid: [
     {
@@ -256,6 +268,30 @@ function foo() {
           endLine: 5,
           column: 3,
           endColumn: 16,
+        },
+      ]),
+    },
+    {
+      code: 'foo && foo?.bar;',
+      options: [{ allowShortCircuit: true }],
+      errors: error([
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 17,
+        },
+      ]),
+    },
+    {
+      code: 'foo ? foo?.bar : bar.baz;',
+      options: [{ allowTernary: true }],
+      errors: error([
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 26,
         },
       ]),
     },

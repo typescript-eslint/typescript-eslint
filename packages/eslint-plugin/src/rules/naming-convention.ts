@@ -12,7 +12,8 @@ type MessageIds =
   | 'missingUnderscore'
   | 'missingAffix'
   | 'satisfyCustom'
-  | 'doesNotMatchFormat';
+  | 'doesNotMatchFormat'
+  | 'doesNotMatchFormatTrimmed';
 
 // #region Options Type Config
 
@@ -355,6 +356,8 @@ export default util.createRule<Options, MessageIds>({
         '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
       doesNotMatchFormat:
         '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
+      doesNotMatchFormatTrimmed:
+        '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
     },
     schema: SCHEMA,
   },
@@ -869,18 +872,21 @@ function createValidator(
     affixes,
     formats,
     originalName,
+    processedName,
     position,
     custom,
   }: {
     affixes?: string[];
     formats?: PredefinedFormats[];
     originalName: string;
+    processedName?: string;
     position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
     custom?: NonNullable<NormalizedSelector['custom']>;
   }): Record<string, unknown> {
     return {
       type: selectorTypeToMessageString(type),
       name: originalName,
+      processedName,
       position,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
@@ -1052,9 +1058,13 @@ function createValidator(
 
     context.report({
       node,
-      messageId: 'doesNotMatchFormat',
+      messageId:
+        originalName === name
+          ? 'doesNotMatchFormat'
+          : 'doesNotMatchFormatTrimmed',
       data: formatReportData({
         originalName,
+        processedName: name,
         formats,
       }),
     });

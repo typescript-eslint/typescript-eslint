@@ -411,15 +411,13 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
 
   const rule: TSESLint.RuleModule<
     'expected',
-    (
-      | 'all'
-      | 'local'
-      | {
-          allowShortCircuit?: boolean;
-          allowTernary?: boolean;
-          allowTaggedTemplates?: boolean;
-        }
-    )[],
+    [
+      {
+        allowShortCircuit?: boolean;
+        allowTernary?: boolean;
+        allowTaggedTemplates?: boolean;
+      },
+    ],
     {
       ExpressionStatement(node: TSESTree.ExpressionStatement): void;
     }

@@ -2617,9 +2617,16 @@ export class Converter {
         });
       }
       case SyntaxKind.TupleType: {
+        // In TS 4.0, the `elementTypes` property was changed to `elements`.
+        // To support both at compile time, we cast to access the newer version
+        // if the former does not exist.
+        const elementTypes = node.elementTypes
+          ? node.elementTypes.map(el => this.convertType(el))
+          : (node as any).elements.map((el: ts.Node) => this.convertType(el));
+
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
-          elementTypes: node.elementTypes.map(el => this.convertType(el)),
+          elementTypes,
         });
       }
       case SyntaxKind.UnionType: {
