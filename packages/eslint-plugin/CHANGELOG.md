@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unused-expressions] handle ternary and short-circuit options ([#2194](https://github.com/typescript-eslint/typescript-eslint/issues/2194)) ([ee9f100](https://github.com/typescript-eslint/typescript-eslint/commit/ee9f100a2f9a874c2b361482742686eeaa9bdac7))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] better error message and docs for prefix/suffix ([#2195](https://github.com/typescript-eslint/typescript-eslint/issues/2195)) ([a2ffe55](https://github.com/typescript-eslint/typescript-eslint/commit/a2ffe5568df0f7224bfe9141d298e538383d5f09))
+
+
+
+
+
 # [3.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.1.0...v3.2.0) (2020-06-08)
 
 
