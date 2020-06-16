@@ -702,3 +702,16 @@ declare module 'eslint/lib/rules/dot-notation' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-loss-of-precision' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'noLossOfPrecision',
+    [],
+    {
+      Literal(node: TSESTree.Literal): void;
+    }
+  >;
+  export = rule;
+}
