@@ -7,7 +7,7 @@ The noImplicitAny flag in TypeScript does not cover this due to backwards compat
 
 ## Rule Details
 
-This rule doesn't requires an explicit type to be declared in the catch clause error argument.
+This rule requires an explicit type to be declared in the catch clause error argument.
 
 The following pattern is considered a warning:
 
