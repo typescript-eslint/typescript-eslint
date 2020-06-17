@@ -2,24 +2,19 @@ import { createRule } from '../util';
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import { TSEnumMember } from '../../../typescript-estree/dist/ts-estree/ts-estree';
 
-export enum MessageId {
-  NoVariable = 'noVariable',
-}
-
-type Options = [];
-
-export default createRule<Options, MessageId>({
-  name: 'no-identifier-enum-member',
+export default createRule<[], 'notLiteral'>({
+  name: 'prefer-literal-enum-member',
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow identifier (aka variable) enum members',
+      description:
+        'Require that all enum members be literal values to prevent unintended enum member name shadow issues',
       category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: false,
     },
     messages: {
-      [MessageId.NoVariable]: `Enum member can not be an ${AST_NODE_TYPES.Identifier}.`,
+      notLiteral: `Enum member must be a ${AST_NODE_TYPES.Literal}.`,
     },
     schema: [],
   },
@@ -30,11 +25,11 @@ export default createRule<Options, MessageId>({
         // If there is no initializer, then this node is just the name of the member, so ignore.
         if (
           node.initializer != null &&
-          node.initializer.type === AST_NODE_TYPES.Identifier
+          node.initializer.type !== AST_NODE_TYPES.Literal
         ) {
           context.report({
             node: node.id,
-            messageId: MessageId.NoVariable,
+            messageId: 'notLiteral',
             data: {
               type: node.initializer.type,
             },

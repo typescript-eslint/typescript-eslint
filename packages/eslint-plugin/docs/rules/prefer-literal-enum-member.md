@@ -1,7 +1,6 @@
-# Disallow identifier (aka variable) enum members (`no-identifier-enum-member`)
+# Require that all enum members be literal values to prevent unintended enum member name shadow issues (`prefer-literal-enum-member`)
 
-TypeScript allows the value of an enum member to be any valid JavaScript expression. However, because enums create their own scope whereby
-each enum member becomes a variable in that scope, unexpected values could be used at runtime. Example:
+TypeScript allows the value of an enum member to be many different kinds of valid JavaScript expressions. However, because enums create their own scope whereby each enum member becomes a variable in that scope, unexpected values could be used at runtime. Example:
 
 ```ts
 const imOutside = 2;
@@ -20,7 +19,7 @@ The answer is that `Foo.c` will be `1` at runtime. The [playground](https://www.
 
 ## Rule Details
 
-This rule is meant to prevent unexpected results in code by prohibiting the use of identifiers (aka variables) as enum members to prevent unexpected runtime behavior. All other values should be allowed since they do not have this particular issue.
+This rule is meant to prevent unexpected results in code by requiring the use of literal values as enum members to prevent unexpected runtime behavior. Template literals, arrays, objects, constructors, and all other expression types can end up using a variable from its scope or the parent scope, which can result in the same unexpected behavior at runtime.
 
 Examples of **incorrect** code for this rule:
 
@@ -28,6 +27,10 @@ Examples of **incorrect** code for this rule:
 const str = 'Test';
 enum Invalid {
   A = str, // Variable assignment
+  B = {}, // Object assignment
+  C = `A template literal string`, // Template literal
+  D = new Set(1, 2, 3), // Constructor in assignment
+  E = 2 + 2, // Expression assignment
 }
 ```
 
@@ -40,17 +43,9 @@ enum Valid {
   C = 4, // A number
   D = null,
   E = /some_regex/,
-  F = 2 + 2, // Expressions
-  G = {}, // Objects
-  H = [], // Arrays
-  I = new Set([1, 2, 3]), // Any constructable class
 }
 ```
 
-## Options
-
-There are no options.
-
 ## When Not To Use It
 
-If you want the value of an enum member to be stored as a variable, do not use this rule.
+If you want use anything other than simple literals as an enum value.
