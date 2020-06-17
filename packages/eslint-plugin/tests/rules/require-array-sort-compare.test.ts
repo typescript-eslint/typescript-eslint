@@ -93,6 +93,37 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       }
     `,
+    {
+      code: `
+        ['foo', 'bar', 'baz'].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function getString() {
+          return 'foo';
+        }
+        [getString(), getString()].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        const foo = 'foo';
+        const bar = 'bar';
+        const baz = 'baz';
+        [foo, bar, baz].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        declare const x: string[];
+        x.sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
   ],
   invalid: [
     {
@@ -151,6 +182,57 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        ['foo', 'bar', 'baz'].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        function getString() {
+          return 'foo';
+        }
+        [getString(), getString()].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        const foo = 'foo';
+        const bar = 'bar';
+        const baz = 'baz';
+        [foo, bar, baz].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        [2, 'bar', 'baz'].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function getNumber() {
+          return 2;
+        }
+        [2, 3].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        const one = 1;
+        const two = 2;
+        const three = 3;
+        [one, two, three].sort();
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: true }],
     },
   ],
 });

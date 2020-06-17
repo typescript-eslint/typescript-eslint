@@ -81,6 +81,7 @@ export default Vue.extend({
 });
 </script>
 ",
+    "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
   Object {
@@ -89,6 +90,7 @@ export default Vue.extend({
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [],
+    "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
 ]

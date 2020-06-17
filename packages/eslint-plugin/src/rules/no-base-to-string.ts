@@ -14,8 +14,6 @@ enum Usefulness {
 
 type Options = [
   {
-    /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
-    ignoreTaggedTemplateExpressions?: boolean;
     ignoredTypeNames?: string[];
   },
 ];
@@ -39,10 +37,6 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          ignoreTaggedTemplateExpressions: {
-            type: 'boolean',
-            default: true,
-          },
           ignoredTypeNames: {
             type: 'array',
             items: {
@@ -57,7 +51,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreTaggedTemplateExpressions: true,
       ignoredTypeNames: ['RegExp'],
     },
   ],

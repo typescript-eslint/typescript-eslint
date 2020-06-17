@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [3.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.1.0...v3.2.0) (2020-06-08)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [3.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.2...v3.1.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **experimental-utils:** downlevel type declarations for versions older than 3.8 ([#2133](https://github.com/typescript-eslint/typescript-eslint/issues/2133)) ([7925823](https://github.com/typescript-eslint/typescript-eslint/commit/792582326a8065270b69a0ffcaad5a7b4b103ff3))
+
+
+
+
+
+## [3.0.2](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.1...v3.0.2) (2020-05-27)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+## [3.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.0...v3.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **typescript-estree:** handle `BigInt` with `_` numeric separator ([#2067](https://github.com/typescript-eslint/typescript-eslint/issues/2067)) ([66f1627](https://github.com/typescript-eslint/typescript-eslint/commit/66f1627b11a566d5b925a577e800f99d5c808be2))
+
+
+
+
+
+# [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
+
+## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
+
+### Features
+
+* **typescript-estree:** align nodes with estree 2020 ([#1389](https://github.com/typescript-eslint/typescript-eslint/issues/1389)) ([aff5b62](https://github.com/typescript-eslint/typescript-eslint/commit/aff5b62044f9b93f2087a1d261e9be3f8d6fd54d))
+* **typescript-estree:** align optional fields ([#1429](https://github.com/typescript-eslint/typescript-eslint/issues/1429)) ([0e0010f](https://github.com/typescript-eslint/typescript-eslint/commit/0e0010f82952f9beeeb84136eea00cc5eecc9db6))
+* **typescript-estree:** handle 3.9's non-null assertion changes ([#2036](https://github.com/typescript-eslint/typescript-eslint/issues/2036)) ([06bec63](https://github.com/typescript-eslint/typescript-eslint/commit/06bec63c56536db070608ab136d2ad57083f0c6a))
+
+
+
+
+
+# [2.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.33.0...v2.34.0) (2020-05-18)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
 # [2.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.32.0...v2.33.0) (2020-05-12)
 
 **Note:** Version bump only for package @typescript-eslint/shared-fixtures

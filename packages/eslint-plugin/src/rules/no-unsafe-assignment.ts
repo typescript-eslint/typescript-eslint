@@ -21,7 +21,7 @@ export default util.createRule({
     docs: {
       description: 'Disallows assigning any to variables and properties',
       category: 'Possible Errors',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
@@ -326,7 +326,10 @@ export default util.createRule({
       },
       // object pattern props are checked via assignments
       ':not(ObjectPattern) > Property'(node: TSESTree.Property): void {
-        if (node.value.type === AST_NODE_TYPES.AssignmentPattern) {
+        if (
+          node.value.type === AST_NODE_TYPES.AssignmentPattern ||
+          node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+        ) {
           // handled by other selector
           return;
         }

@@ -273,9 +273,11 @@ export class OffsetStorage {
    * Gets the first token that the given token's indentation is dependent on
    * @returns The token that the given token depends on, or `null` if the given token is at the top level
    */
+  getFirstDependency(
+    token: Exclude<TSESTree.Token, TSESTree.Comment>,
+  ): Exclude<TSESTree.Token, TSESTree.Comment> | null;
   getFirstDependency(token: TSESTree.Token): TSESTree.Token | null;
-  getFirstDependency(token: TokenOrComment): TokenOrComment | null;
-  getFirstDependency(token: TokenOrComment): TokenOrComment | null {
+  getFirstDependency(token: TSESTree.Token): TSESTree.Token | null {
     return this.getOffsetDescriptor(token).from;
   }
 }

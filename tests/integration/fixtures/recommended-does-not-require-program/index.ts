@@ -1,1 +1,1 @@
-var foo = true
+var foo: any = true;

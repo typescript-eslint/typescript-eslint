@@ -34,13 +34,14 @@ type Options = {
   // if true, also allow any in template expressions
   allowAny?: boolean;
   // if true, also allow null and undefined in template expressions
-  allowNullable?: boolean;
+  allowNullish?: boolean;
 };
 
 const defaults = {
-  allowNumber: false,
+  allowNumber: true,
   allowBoolean: false,
-  allowNullable: false,
+  allowAny: false,
+  allowNullish: false,
 };
 ```
 
@@ -74,9 +75,9 @@ const msg1 = `arg = ${user.name}`;
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
 ```
 
-### `allowNullable`
+### `allowNullish`
 
-Examples of additional **correct** code for this rule with `{ allowNullable: true }`:
+Examples of additional **correct** code for this rule with `{ allowNullish: true }`:
 
 ```ts
 const arg = condition ? 'ok' : null;

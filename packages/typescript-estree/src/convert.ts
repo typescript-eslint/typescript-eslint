@@ -14,20 +14,21 @@ import {
   getTextForTokenKind,
   getTSNodeAccessibility,
   hasModifier,
+  isChildOptionalChain,
   isComma,
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
-  unescapeStringLiteralText,
   TSError,
+  unescapeStringLiteralText,
 } from './node-utils';
+import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
   AST_NODE_TYPES,
   TSESTree,
   TSNode,
   TSESTreeToTSNode,
 } from './ts-estree';
-import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -241,7 +242,11 @@ export class Converter {
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(node, this.ast);
+      result.range = getRange(
+        // this is completely valid, but TS hates it
+        node as never,
+        this.ast,
+      );
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -370,7 +375,7 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      if (param.decorators && param.decorators.length) {
+      if (param.decorators?.length) {
         convertedParam.decorators = param.decorators.map(el =>
           this.convertChild(el),
         );
@@ -994,8 +999,12 @@ export class Converter {
       case SyntaxKind.GetAccessor:
       case SyntaxKind.SetAccessor:
       case SyntaxKind.MethodDeclaration: {
-        const method = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const method = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           generator: !!node.asteriskToken,
           expression: false, // ESTreeNode as ESTreeNode here
@@ -1075,11 +1084,8 @@ export class Converter {
           }
         }
 
-        if (
-          result.key.type === AST_NODE_TYPES.Identifier &&
-          node.questionToken
-        ) {
-          result.key.optional = true;
+        if (node.questionToken) {
+          result.optional = true;
         }
 
         if (node.kind === SyntaxKind.GetAccessor) {
@@ -1104,8 +1110,12 @@ export class Converter {
           (lastModifier && findNextToken(lastModifier, node, this.ast)) ||
           node.getFirstToken()!;
 
-        const constructor = this.createNode<TSESTree.FunctionExpression>(node, {
-          type: AST_NODE_TYPES.FunctionExpression,
+        const constructor = this.createNode<
+          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+        >(node, {
+          type: !node.body
+            ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+            : AST_NODE_TYPES.FunctionExpression,
           id: null,
           params: this.convertParameters(node.parameters),
           generator: false,
@@ -1475,7 +1485,7 @@ export class Converter {
             );
           }
 
-          if (superClass.types[0] && superClass.types[0].typeArguments) {
+          if (superClass.types[0]?.typeArguments) {
             result.superTypeParameters = this.convertTypeArgumentsToTypeParameters(
               superClass.types[0].typeArguments,
               superClass.types[0],
@@ -1748,11 +1758,7 @@ export class Converter {
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z is semantically different, and as such .z is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, object);
 
         if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
@@ -1780,11 +1786,7 @@ export class Converter {
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (object.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            object.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z is semantically different, and as such .z is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, object);
 
         if (isLocallyOptional || isChildOptional) {
           return this.createNode<TSESTree.OptionalMemberExpression>(node, {
@@ -1806,17 +1808,27 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
+        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+          if (node.arguments.length !== 1) {
+            throw createError(
+              this.ast,
+              node.arguments.pos,
+              'Dynamic import must have one specifier as an argument.',
+            );
+          }
+          return this.createNode<TSESTree.ImportExpression>(node, {
+            type: AST_NODE_TYPES.ImportExpression,
+            source: this.convertChild(node.arguments[0]),
+          });
+        }
+
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
         let result;
 
         const isLocallyOptional = node.questionDotToken !== undefined;
         // the optional expression should propagate up the member expression tree
-        const isChildOptional =
-          (callee.type === AST_NODE_TYPES.OptionalMemberExpression ||
-            callee.type === AST_NODE_TYPES.OptionalCallExpression) &&
-          // (x?.y).z() is semantically different, and as such .z() is no longer optional
-          node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression;
+        const isChildOptional = isChildOptionalChain(node, callee);
 
         if (isLocallyOptional || isChildOptional) {
           result = this.createNode<TSESTree.OptionalCallExpression>(node, {
@@ -1917,14 +1929,22 @@ export class Converter {
       }
 
       case SyntaxKind.BigIntLiteral: {
-        const result = this.createNode<TSESTree.BigIntLiteral>(node, {
-          type: AST_NODE_TYPES.BigIntLiteral,
-          raw: '',
-          value: '',
+        const range = getRange(node, this.ast);
+        const rawValue = this.ast.text.slice(range[0], range[1]);
+        const bigint = rawValue
+          // remove suffix `n`
+          .slice(0, -1)
+          // `BigInt` doesn't accept numeric separator
+          // and `bigint` property should not include numeric separator
+          .replace(/_/g, '');
+        const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
+        return this.createNode<TSESTree.BigIntLiteral>(node, {
+          type: AST_NODE_TYPES.Literal,
+          raw: rawValue,
+          value: value,
+          bigint: value === null ? bigint : String(value),
+          range,
         });
-        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        result.value = result.raw.slice(0, -1); // remove suffix `n`
-        return result;
       }
 
       case SyntaxKind.RegularExpressionLiteral: {
@@ -1976,11 +1996,6 @@ export class Converter {
           });
         }
       }
-
-      case SyntaxKind.ImportKeyword:
-        return this.createNode<TSESTree.Import>(node, {
-          type: AST_NODE_TYPES.Import,
-        });
 
       case SyntaxKind.EmptyStatement:
         return this.createNode<TSESTree.EmptyStatement>(node, {
@@ -2602,9 +2617,16 @@ export class Converter {
         });
       }
       case SyntaxKind.TupleType: {
+        // In TS 4.0, the `elementTypes` property was changed to `elements`.
+        // To support both at compile time, we cast to access the newer version
+        // if the former does not exist.
+        const elementTypes = node.elementTypes
+          ? node.elementTypes.map(el => this.convertType(el))
+          : (node as any).elements.map((el: ts.Node) => this.convertType(el));
+
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
-          elementTypes: node.elementTypes.map(el => this.convertType(el)),
+          elementTypes,
         });
       }
       case SyntaxKind.UnionType: {

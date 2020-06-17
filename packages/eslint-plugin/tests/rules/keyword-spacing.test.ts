@@ -145,6 +145,7 @@ ruleTester.run('keyword-spacing', rule, {
     },
     {
       code: 'const foo = {} as{};',
+      output: 'const foo = {} as {};',
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedAfter('as'),

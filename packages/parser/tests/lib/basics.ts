@@ -39,20 +39,18 @@ export const Price: React.SFC<PriceProps> = function Price(props) {}
     };
 
     linter.defineParser('@typescript-eslint/parser', parser);
-    linter.defineRule('test', {
-      create(context) {
-        return {
-          TSTypeReference(node): void {
-            const name = context.getSourceCode().getText(node.typeName);
-            context.report({
-              node,
-              message: 'called on {{name}}',
-              data: { name },
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any);
-          },
-        };
-      },
+    linter.defineRule('test', function create(context) {
+      return {
+        TSTypeReference(node): void {
+          const name = context.getSourceCode().getText(node.typeName);
+          context.report({
+            node,
+            message: 'called on {{name}}',
+            data: { name },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any);
+        },
+      };
     });
 
     const messages = linter.verify(code, config, { filename: 'issue.ts' });

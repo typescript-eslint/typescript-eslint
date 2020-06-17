@@ -144,11 +144,8 @@ a && b || c || d;
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo';
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
-      `,
+      `.trimRight(),
+      output: null,
       errors: [
         {
           messageId: 'preferNullish',
@@ -156,6 +153,15 @@ x ?? 'foo';
           column: 3,
           endLine: 3,
           endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+x ?? 'foo';
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -165,11 +171,8 @@ x ?? 'foo';
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo' ? null : null;
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
@@ -178,6 +181,15 @@ x ?? 'foo' ? null : null;
           column: 3,
           endLine: 3,
           endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+x ?? 'foo' ? null : null;
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -185,11 +197,8 @@ x ?? 'foo' ? null : null;
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-if (x ?? 'foo') {}
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
@@ -198,6 +207,15 @@ if (x ?? 'foo') {}
           column: 7,
           endLine: 3,
           endColumn: 9,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+if (x ?? 'foo') {}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -205,11 +223,8 @@ if (x ?? 'foo') {}
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-do {} while (x ?? 'foo')
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
@@ -218,6 +233,15 @@ do {} while (x ?? 'foo')
           column: 16,
           endLine: 3,
           endColumn: 18,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+do {} while (x ?? 'foo')
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -225,11 +249,8 @@ do {} while (x ?? 'foo')
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-for (;x ?? 'foo';) {}
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
@@ -238,6 +259,15 @@ for (;x ?? 'foo';) {}
           column: 9,
           endLine: 3,
           endColumn: 11,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+for (;x ?? 'foo';) {}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -245,11 +275,8 @@ for (;x ?? 'foo';) {}
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-while (x ?? 'foo') {}
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
@@ -258,6 +285,15 @@ while (x ?? 'foo') {}
           column: 10,
           endLine: 3,
           endColumn: 12,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+while (x ?? 'foo') {}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -280,7 +316,7 @@ a || b && c;
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -310,7 +346,7 @@ a || b || c && d;
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -329,7 +365,7 @@ declare const d: ${type} | ${nullish};
           endColumn: 10,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -360,7 +396,7 @@ a && b || c || d;
           endColumn: 10,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -379,7 +415,7 @@ a && (b ?? c) || d;
           endColumn: 15,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -398,11 +434,8 @@ a && b || c ?? d;
       code: `
 declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-if (() => x ?? 'foo') {}
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
@@ -411,6 +444,15 @@ if (() => x ?? 'foo') {}
           column: 13,
           endLine: 3,
           endColumn: 15,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: ${type} | ${nullish};
+if (() => x ?? 'foo') {}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),
@@ -418,11 +460,8 @@ if (() => x ?? 'foo') {}
       code: `
 declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
-      `,
-      output: `
-declare const x: ${type} | ${nullish};
-if (function werid() { return x ?? 'foo' }) {}
-      `,
+      `.trimRight(),
+      output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
@@ -431,37 +470,18 @@ if (function werid() { return x ?? 'foo' }) {}
           column: 33,
           endLine: 3,
           endColumn: 35,
-        },
-      ],
-    })),
-
-    // testing the suggestion fixer option
-    {
-      code: `
-declare const x: string | null;
-x || 'foo';
-      `.trimRight(),
-      output: null,
-      options: [{ forceSuggestionFixer: true }],
-      errors: [
-        {
-          messageId: 'preferNullish',
-          line: 3,
-          column: 3,
-          endLine: 3,
-          endColumn: 5,
           suggestions: [
             {
-              messageId: 'preferNullish',
+              messageId: 'suggestNullish',
               output: `
-declare const x: string | null;
-x ?? 'foo';
+declare const x: ${type} | ${nullish};
+if (function werid() { return x ?? 'foo' }) {}
               `.trimRight(),
             },
           ],
         },
       ],
-    },
+    })),
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeInvalidTest((nullish, type) => ({
@@ -471,12 +491,7 @@ declare const b: ${type};
 declare const c: ${type};
 a || b || c;
       `.trimRight(),
-      output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type};
-declare const c: ${type};
-(a ?? b) || c;
-      `.trimRight(),
+      output: null,
       errors: [
         {
           messageId: 'preferNullish',
@@ -484,6 +499,17 @@ declare const c: ${type};
           column: 3,
           endLine: 5,
           endColumn: 5,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type};
+declare const c: ${type};
+(a ?? b) || c;
+              `.trimRight(),
+            },
+          ],
         },
       ],
     })),

@@ -23,14 +23,13 @@ interface ParserOptions {
     jsx?: boolean;
   };
   ecmaVersion?: EcmaVersion;
+  // ts-estree specific
+  debugLevel?: TSESTreeOptions['debugLevel'];
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
   extraFileExtensions?: string[];
-  // ts-estree specific
-  debugLevel?: TSESTreeOptions['debugLevel'];
   filePath?: string;
   loc?: boolean;
-  noWatch?: boolean;
   project?: string | string[];
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;

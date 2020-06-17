@@ -28,7 +28,6 @@ For example, this is how we specify all of our `tsconfig.json` within this repo.
    plugins: ['@typescript-eslint'],
    extends: [
      'eslint:recommended',
-     'plugin:@typescript-eslint/eslint-recommended',
      'plugin:@typescript-eslint/recommended',
      'plugin:@typescript-eslint/recommended-requiring-type-checking',
    ],

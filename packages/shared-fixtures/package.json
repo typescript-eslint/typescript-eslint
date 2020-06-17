@@ -1,10 +1,11 @@
 {
   "name": "@typescript-eslint/shared-fixtures",
-  "version": "2.33.0",
+  "version": "3.3.0",
   "private": true,
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }

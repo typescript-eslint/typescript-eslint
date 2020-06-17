@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'When adding two variables, operands must both be of type number or of type string',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {

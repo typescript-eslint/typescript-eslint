@@ -4,10 +4,15 @@
 
 Feel free to raise an issue if you have a question, an enhancement, or a bug report.
 
-Please ensure you use the issue search functionality to search all **_opened and closed_** issues before raising a new issue.
+Use the issue search functionality to search all **_opened and closed_** issues before raising a new issue. If you raise a duplicate issue, you're just creating noise for everyone watching this repo.
 
-When raising a new issue, please fill out the issue template - please don't skip sections.
+Before raising a bug, ensure you are using the latest version of our packages. We release every week, so there's a good chance your issue might have already been fixed.
+
+Finally, when raising a new issue, please fill out the issue template - **_please don't skip sections_**.
+
 Please provide **_as much information as possible_**. This project is maintained by volunteers, so the more the more information you provide, the less likely we will have to waste everyone's time in asking you for more information.
+
+If you have a particularly complex issue - consider creating a small, self-contained reproduction repo. This will help you in figuring out the exact problem, and will help us in reproducing and diagnosing the bug.
 
 **_Help us to help you_**
 

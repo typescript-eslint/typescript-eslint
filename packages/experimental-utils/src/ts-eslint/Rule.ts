@@ -29,6 +29,10 @@ interface RuleMetaDataDocs {
    */
   url: string;
   /**
+   * Specifies whether the rule can return suggestions.
+   */
+  suggestion?: boolean;
+  /**
    * Does the rule require us to create a full TypeScript Program in order for it
    * to type-check code. This is only used for documentation purposes.
    */
@@ -119,42 +123,44 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  data?: Record<string, unknown>;
+  readonly data?: Readonly<Record<string, unknown>>;
   /**
    * The fixer function.
    */
-  fix?: ReportFixFunction | null;
+  readonly fix?: ReportFixFunction | null;
   /**
    * The messageId which is being reported.
    */
-  messageId: TMessageIds;
+  readonly messageId: TMessageIds;
 
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
-  // desc?: string;
+  // readonly desc?: string;
 }
 interface ReportDescriptorWithSuggestion<TMessageIds extends string>
   extends ReportDescriptorBase<TMessageIds> {
   /**
    * 6.7's Suggestions API
    */
-  suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
+  readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
    */
-  node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
+  readonly node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
   /**
    * An override of the location of the report
    */
-  loc?: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
+  readonly loc?:
+    | Readonly<TSESTree.SourceLocation>
+    | Readonly<TSESTree.LineAndColumnData>;
 }
 interface ReportDescriptorLocOnly {
   /**
    * An override of the location of the report
    */
-  loc: TSESTree.SourceLocation | TSESTree.LineAndColumnData;
+  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.LineAndColumnData>;
 }
 type ReportDescriptor<
   TMessageIds extends string
@@ -175,11 +181,6 @@ interface RuleContext<
    */
   options: TOptions;
   /**
-   * The shared settings from configuration.
-   * We do not have any shared settings in this plugin.
-   */
-  settings: Record<string, unknown>;
-  /**
    * The name of the parser from configuration.
    */
   parserPath: string;
@@ -191,6 +192,11 @@ interface RuleContext<
    * An object containing parser-provided services for rules
    */
   parserServices?: ParserServices;
+  /**
+   * The shared settings from configuration.
+   * We do not have any shared settings in this plugin.
+   */
+  settings: Record<string, unknown>;
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -220,7 +226,7 @@ interface RuleContext<
    * Returns a SourceCode object that you can use to work with the source that
    * was passed to ESLint.
    */
-  getSourceCode(): SourceCode;
+  getSourceCode(): Readonly<SourceCode>;
 
   /**
    * Marks a variable with the given name in the current scope as used.
@@ -275,9 +281,9 @@ interface RuleListener {
   FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
-  Import?: RuleFunction<TSESTree.Import>;
   ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
   ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
+  ImportExpression?: RuleFunction<TSESTree.ImportExpression>;
   ImportNamespaceSpecifier?: RuleFunction<TSESTree.ImportNamespaceSpecifier>;
   ImportSpecifier?: RuleFunction<TSESTree.ImportSpecifier>;
   JSXAttribute?: RuleFunction<TSESTree.JSXAttribute>;
@@ -432,14 +438,19 @@ interface RuleModule<
    * Function which returns an object with methods that ESLint calls to “visit”
    * nodes while traversing the abstract syntax tree.
    */
-  create(context: RuleContext<TMessageIds, TOptions>): TRuleListener;
+  create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
 }
+
+type RuleCreateFunction = (
+  context: Readonly<RuleContext<never, unknown[]>>,
+) => RuleListener;
 
 export {
   ReportDescriptor,
   ReportFixFunction,
   ReportSuggestionArray,
   RuleContext,
+  RuleCreateFunction,
   RuleFix,
   RuleFixer,
   RuleFunction,

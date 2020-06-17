@@ -39,6 +39,7 @@ export default createRule({
         "Enforces rules don't use TS API properties with known bad type definitions",
       category: 'Possible Errors',
       recommended: 'error',
+      suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -93,6 +94,7 @@ export default createRule({
             suggest: [
               {
                 messageId: 'suggestedFix',
+                data: banned,
                 fix(fixer): TSESLint.RuleFix | null {
                   if (banned.fixWith == null) {
                     return null;

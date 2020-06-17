@@ -14,8 +14,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: './tsconfig.json',
-    tsconfigRootDir: rootDir,
   },
   parser: '@typescript-eslint/parser',
 });
@@ -25,12 +23,15 @@ const hasExport = /^export/m;
 function makeExternalModule<
   T extends ValidTestCase<Options> | InvalidTestCase<MessageIds, Options>
 >(tests: T[]): T[] {
-  tests.forEach(t => {
+  return tests.map(t => {
     if (!hasExport.test(t.code)) {
-      t.code = `${t.code}\nexport const __externalModule = 1;`;
+      return {
+        ...t,
+        code: `${t.code}\nexport const __externalModule = 1;`,
+      };
     }
+    return t;
   });
-  return tests;
 }
 
 const DEFAULT_IGNORED_REGEX = new RegExp(

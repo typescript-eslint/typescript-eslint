@@ -3,6 +3,87 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [3.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.1.0...v3.2.0) (2020-06-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-optional-chain] handling first member expression ([#2156](https://github.com/typescript-eslint/typescript-eslint/issues/2156)) ([de18660](https://github.com/typescript-eslint/typescript-eslint/commit/de18660a8cf8f7033798646d8c5b0938d1accb12))
+
+
+
+
+
+# [3.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.2...v3.1.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **experimental-utils:** downlevel type declarations for versions older than 3.8 ([#2133](https://github.com/typescript-eslint/typescript-eslint/issues/2133)) ([7925823](https://github.com/typescript-eslint/typescript-eslint/commit/792582326a8065270b69a0ffcaad5a7b4b103ff3))
+
+
+
+
+
+## [3.0.2](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.1...v3.0.2) (2020-05-27)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [3.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.0.0...v3.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **typescript-estree:** handle `BigInt` with `_` numeric separator ([#2067](https://github.com/typescript-eslint/typescript-eslint/issues/2067)) ([66f1627](https://github.com/typescript-eslint/typescript-eslint/commit/66f1627b11a566d5b925a577e800f99d5c808be2))
+
+
+
+
+
+# [3.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.34.0...v3.0.0) (2020-05-21)
+
+## [Please see the release notes for v3.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
+
+### Bug Fixes
+
+* **typescript-estree:** use `TSEmptyBodyFunctionExpression` for body-less nodes ([#1289](https://github.com/typescript-eslint/typescript-eslint/issues/1289)) ([82e7163](https://github.com/typescript-eslint/typescript-eslint/commit/82e7163214b56ccde93ba97807b161669a50a60b))
+
+
+### Features
+
+* add index files to parser and typescript-estree ([3dfc46d](https://github.com/typescript-eslint/typescript-eslint/commit/3dfc46dccbbd28eed2d74c7b6cacddf1a0848598))
+* **experimental-utils:** upgrade eslint types for v7 ([#2023](https://github.com/typescript-eslint/typescript-eslint/issues/2023)) ([06869c9](https://github.com/typescript-eslint/typescript-eslint/commit/06869c9656fa37936126666845aee40aad546ebd))
+* upgrade to ESLint v7 ([#2022](https://github.com/typescript-eslint/typescript-eslint/issues/2022)) ([208de71](https://github.com/typescript-eslint/typescript-eslint/commit/208de71059746bf38e94bd460346ffb2698a3e12))
+* **typescript-estree:** align nodes with estree 2020 ([#1389](https://github.com/typescript-eslint/typescript-eslint/issues/1389)) ([aff5b62](https://github.com/typescript-eslint/typescript-eslint/commit/aff5b62044f9b93f2087a1d261e9be3f8d6fd54d))
+* **typescript-estree:** align optional fields ([#1429](https://github.com/typescript-eslint/typescript-eslint/issues/1429)) ([0e0010f](https://github.com/typescript-eslint/typescript-eslint/commit/0e0010f82952f9beeeb84136eea00cc5eecc9db6))
+* drop support for node v8 ([#1997](https://github.com/typescript-eslint/typescript-eslint/issues/1997)) ([b6c3b7b](https://github.com/typescript-eslint/typescript-eslint/commit/b6c3b7b84b8d199fa75a46432febd4a364a63217))
+* **eslint-plugin:** [ban-types] rework default options ([#848](https://github.com/typescript-eslint/typescript-eslint/issues/848)) ([8e31d5d](https://github.com/typescript-eslint/typescript-eslint/commit/8e31d5dbe9fe5227fdbefcecfd50ce5dd51360c3))
+* **typescript-estree:** handle 3.9's non-null assertion changes ([#2036](https://github.com/typescript-eslint/typescript-eslint/issues/2036)) ([06bec63](https://github.com/typescript-eslint/typescript-eslint/commit/06bec63c56536db070608ab136d2ad57083f0c6a))
+
+
+
+
+
+# [2.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.33.0...v2.34.0) (2020-05-18)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 # [2.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v2.32.0...v2.33.0) (2020-05-12)
 
 **Note:** Version bump only for package @typescript-eslint/parser

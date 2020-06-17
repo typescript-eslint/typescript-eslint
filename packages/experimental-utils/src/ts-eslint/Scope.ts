@@ -81,7 +81,11 @@ namespace Scope {
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
         parent: null;
       }
-    | { type: 'ImplicitGlobalVariable'; node: TSESTree.Program; parent: null }
+    | {
+        type: 'ImplicitGlobalVariable';
+        node: TSESTree.Program;
+        parent: null;
+      }
     | {
         type: 'ImportBinding';
         node:
@@ -98,7 +102,6 @@ namespace Scope {
           | TSESTree.ArrowFunctionExpression;
         parent: null;
       }
-    | { type: 'TDZ'; node: unknown; parent: null }
     | {
         type: 'Variable';
         node: TSESTree.VariableDeclarator;

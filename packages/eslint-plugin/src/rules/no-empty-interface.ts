@@ -19,6 +19,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow the declaration of empty interfaces',
       category: 'Best Practices',
       recommended: 'error',
+      suggestion: true,
     },
     fixable: 'code',
     messages: {

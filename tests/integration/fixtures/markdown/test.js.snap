@@ -11,8 +11,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 8,
-        "line": 8,
+        "endLine": 9,
+        "line": 9,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -22,8 +22,8 @@ Array [
       Object {
         "column": 20,
         "endColumn": 23,
-        "endLine": 26,
-        "line": 26,
+        "endLine": 28,
+        "line": 28,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
         "nodeType": "TSAnyKeyword",
@@ -57,8 +57,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 27,
-        "line": 27,
+        "endLine": 29,
+        "line": 29,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -68,8 +68,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 43,
-        "line": 43,
+        "endLine": 46,
+        "line": 46,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -79,8 +79,8 @@ Array [
       Object {
         "column": 17,
         "endColumn": 20,
-        "endLine": 50,
-        "line": 50,
+        "endLine": 54,
+        "line": 54,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
         "nodeType": "TSAnyKeyword",
@@ -114,8 +114,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 51,
-        "line": 51,
+        "endLine": 55,
+        "line": 55,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -125,8 +125,8 @@ Array [
       Object {
         "column": 17,
         "endColumn": 20,
-        "endLine": 59,
-        "line": 59,
+        "endLine": 63,
+        "line": 63,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
         "nodeType": "TSAnyKeyword",
@@ -160,8 +160,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 60,
-        "line": 60,
+        "endLine": 64,
+        "line": 64,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -171,8 +171,8 @@ Array [
       Object {
         "column": 17,
         "endColumn": 20,
-        "endLine": 68,
-        "line": 68,
+        "endLine": 72,
+        "line": 72,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
         "nodeType": "TSAnyKeyword",
@@ -206,8 +206,8 @@ Array [
       Object {
         "column": 3,
         "endColumn": 14,
-        "endLine": 69,
-        "line": 69,
+        "endLine": 73,
+        "line": 73,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
         "nodeType": "MemberExpression",
@@ -218,6 +218,7 @@ Array [
     "source": "Some extra text to verify that the markdown plugin is ignoring anything that is not a code block.
 
 expected no-console error:
+
 \`\`\`jsx
 import { Button } from 'antd';
 
@@ -237,6 +238,7 @@ function MyComp() {
 
 expected no-explicit-any error:
 expected no-console error:
+
 \`\`\`jsx
 import { Button } from 'antd';
 
@@ -255,6 +257,7 @@ function MyComp(): any {
 \`\`\`
 
 expected no-console error:
+
 \`\`\`js
 function foo() {
   console.log('test');
@@ -263,30 +266,32 @@ function foo() {
 
 expected no-explicit-any error:
 expected no-console error:
+
 \`\`\`js
 function foo(): any {
   console.log('test');
 }
 \`\`\`
 
-
 expected no-explicit-any error:
 expected no-console error:
+
 \`\`\`javascript
 function foo(): any {
   console.log('test');
 }
 \`\`\`
 
-
 expected no-explicit-any error:
 expected no-console error:
+
 \`\`\`node
 function foo(): any {
   console.log('test');
 }
 \`\`\`
 ",
+    "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
 ]

@@ -158,31 +158,23 @@ ruleTester.run('restrict-template-expressions', rule, {
         const msg = \`arg = \${user.name || 'the user with no name'}\`;
       `,
     },
+    // allowNullish
     {
-      options: [{ allowAny: true }],
-      code: `
-        function test<T extends any>(arg: T) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-    },
-    // allowNullable
-    {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         const arg = null;
         const msg = \`arg = \${arg}\`;
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         declare const arg: string | null | undefined;
         const msg = \`arg = \${arg}\`;
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         function test<T extends null | undefined>(arg: T) {
           return \`arg = \${arg}\`;
@@ -190,7 +182,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
     },
     {
-      options: [{ allowNullable: true }],
+      options: [{ allowNullish: true }],
       code: `
         function test<T extends string | null>(arg: T) {
           return \`arg = \${arg}\`;
@@ -199,7 +191,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     // allow ALL
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         type All = string | number | boolean | null | undefined;
         function test<T extends All>(arg: T) {
@@ -214,66 +206,154 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: `
         const msg = \`arg = \${123}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      options: [{ allowNumber: false }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '123' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         const msg = \`arg = \${false}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'false' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         const msg = \`arg = \${null}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 2, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'null' },
+          line: 2,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         declare const arg: number;
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      options: [{ allowNumber: false }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'number' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
       code: `
         declare const arg: boolean;
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'boolean' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         const arg = {};
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        { messageId: 'invalidType', data: { type: '{}' }, line: 3, column: 30 },
+      ],
     },
     {
       code: `
         declare const arg: { a: string } & { b: string };
         const msg = \`arg = \${arg}\`;
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 30 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '{ a: string; } & { b: string; }' },
+          line: 3,
+          column: 30,
+        },
+      ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         function test<T extends {}>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+      errors: [
+        { messageId: 'invalidType', data: { type: '{}' }, line: 3, column: 27 },
+      ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullable: true }],
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      code: `
+        function test<TWithNoConstraint>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'any' },
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
+    {
+      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
       code: `
         function test(arg: any) {
           return \`arg = \${arg}\`;
         }
       `,
-      errors: [{ messageId: 'invalidType', line: 3, column: 27 }],
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'any' },
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
+    // TS 3.9 change
+    {
+      options: [{ allowAny: true }],
+      code: `
+        function test<T extends any>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'unknown' },
+          line: 3,
+          column: 27,
+        },
+      ],
     },
   ],
 });
