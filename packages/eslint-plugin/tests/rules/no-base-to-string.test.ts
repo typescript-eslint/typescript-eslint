@@ -110,7 +110,7 @@ tag\`\${{}}\`;
     `
       interface Brand {}
       function test(v: string & Brand): string {
-        return v + '';
+        return \`\${v}\`;
       }
     `,
   ],
@@ -228,7 +228,7 @@ tag\`\${{}}\`;
         interface A {}
         interface B {}
         function test(intersection: A & B): string {
-          return intersection + '';
+          return \`\${intersection}\`;
         }
       `,
       errors: [
