@@ -8,6 +8,12 @@ This rule ensures that you do not include unnecessary comparisons with boolean l
 A comparison is considered unnecessary if it checks a boolean literal against any variable with just the `boolean` type.
 A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `someObject | boolean`).
 
+**Note**: Throughout this page, only strict equality (`===` and `!==`) are
+used in the examples. However, the implementation of the rule does not
+distinguish between strict and loose equality. Any example below that uses
+`===` would be treated the same way if `==` was used, and any example below
+that uses `!==` would be treated the same way if `!=` was used.
+
 Examples of **incorrect** code for this rule:
 
 ```ts
@@ -30,31 +36,37 @@ if (someObjectBoolean === true) {
 declare const someStringBoolean: boolean | string;
 if (someStringBoolean === true) {
 }
-
-declare const someUndefinedCondition: boolean | undefined;
-if (someUndefinedCondition === false) {
-}
 ```
 
 ## Options
 
-The rule accepts an options object with the following properties:
+The rule accepts an options object with the following properties.
 
 ```ts
 type Options = {
-  // if true, only comparisons that compare a boolean literal to a boolean will be checked.
-  // if false, comparisons that compare a boolean literal to a nullable boolean variable will also be checked
-  allowComparingNullableBooleans?: boolean;
-};
-
-const defaults = {
-  allowComparingNullableBooleans: true,
+  // if false, comparisons between a nullable boolean variable to `true` will be checked and fixed
+  allowComparingNullableBooleansToTrue?: boolean;
+  // if false, comparisons between a nullable boolean variable to `false` will be checked and fixed
+  allowComparingNullableBooleansToFalse?: boolean;
 };
 ```
 
-### `allowComparingNullableBooleans`
+### Defaults
 
-Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleans: false }`:
+This rule always checks comparions between a boolean variable and a boolean
+literal. Comparisons between nullable boolean variables and boolean literals
+are **not** checked by default.
+
+```ts
+const defaults = {
+  allowComparingNullableBooleansToTrue: true,
+  allowComparingNullableBooleansToFalse: true,
+};
+```
+
+### `allowComparingNullableBooleansToTrue`
+
+Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -62,11 +74,11 @@ if (someUndefinedCondition === true) {
 }
 
 declare const someNullCondition: boolean | null;
-if (someNullCondition !== false) {
+if (someNullCondition !== true) {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowComparingNullableBooleans: false }`:
+Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -74,9 +86,48 @@ if (someUndefinedCondition) {
 }
 
 declare const someNullCondition: boolean | null;
-if (someNullCondition ?? true) {
+if (!someNullCondition) {
 }
 ```
+
+### `allowComparingNullableBooleansToFalse`
+
+Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+
+```ts
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition === false) {
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition !== false) {
+}
+```
+
+Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+
+```ts
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition ?? true) {
+}
+
+declare const someNullCondition: boolean | null;
+if (!(someNullCondition ?? true)) {
+}
+```
+
+## Fixer
+
+|           Comparison           | Fixer Output                    | Notes                                                                               |
+| :----------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
+|     `booleanVar === true`      | `booleanLiteral`                |                                                                                     |
+|     `booleanVar !== true`      | `!booleanLiteral`               |                                                                                     |
+|     `booleanVar === false`     | `!booleanLiteral`               |                                                                                     |
+|     `booleanVar !== false`     | `booleanLiteral`                |                                                                                     |
+| `nullableBooleanVar === true`  | `nullableBooleanVar`            | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+| `nullableBooleanVar !== true`  | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+| `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+| `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
 ## Related to
 

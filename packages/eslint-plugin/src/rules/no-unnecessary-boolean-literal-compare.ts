@@ -15,7 +15,8 @@ type MessageIds =
 
 type Options = [
   {
-    allowComparingNullableBooleans?: boolean;
+    allowComparingNullableBooleansToTrue?: boolean;
+    allowComparingNullableBooleansToFalse?: boolean;
   },
 ];
 
@@ -58,7 +59,10 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowComparingNullableBooleans: {
+          allowComparingNullableBooleansToTrue: {
+            type: 'boolean',
+          },
+          allowComparingNullableBooleansToFalse: {
             type: 'boolean',
           },
         },
@@ -69,7 +73,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowComparingNullableBooleans: true,
+      allowComparingNullableBooleansToTrue: true,
+      allowComparingNullableBooleansToFalse: true,
     },
   ],
   create(context, [options]) {
@@ -203,11 +208,19 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          comparison.expressionIsNullableBoolean &&
-          options.allowComparingNullableBooleans
-        ) {
-          return;
+        if (comparison.expressionIsNullableBoolean) {
+          if (
+            comparison.literalBooleanInComparison &&
+            options.allowComparingNullableBooleansToTrue
+          ) {
+            return;
+          }
+          if (
+            !comparison.literalBooleanInComparison &&
+            options.allowComparingNullableBooleansToFalse
+          ) {
+            return;
+          }
         }
 
         context.report({
