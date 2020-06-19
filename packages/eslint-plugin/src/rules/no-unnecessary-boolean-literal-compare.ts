@@ -69,7 +69,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowComparingNullableBooleans: false,
+      allowComparingNullableBooleans: true,
     },
   ],
   create(context, [options]) {

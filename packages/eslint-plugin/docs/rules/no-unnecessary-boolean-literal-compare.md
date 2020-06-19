@@ -48,7 +48,7 @@ type Options = {
 };
 
 const defaults = {
-  allowComparingNullableBooleans: false,
+  allowComparingNullableBooleans: true,
 };
 ```
 
