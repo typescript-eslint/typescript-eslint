@@ -6,5 +6,8 @@
   },
   "include": ["src", "typings", "tests", "tools"],
   "exclude": ["tests/fixtures/**/*"],
-  "references": [{ "path": "../shared-fixtures/tsconfig.build.json" }]
+  "references": [
+    { "path": "../shared-fixtures/tsconfig.build.json" },
+    { "path": "../types/tsconfig.build.json" }
+  ]
 }

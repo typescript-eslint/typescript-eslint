@@ -1,14 +1,11 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ParserOptions, TSESTree } from '@typescript-eslint/types';
 import {
   parseAndGenerateServices,
   ParserServices,
   TSESTreeOptions,
-  TSESTree,
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
 import { analyzeScope } from './analyze-scope';
-
-type ParserOptions = TSESLint.ParserOptions;
 
 interface ParseForESLintResult {
   ast: TSESTree.Program & {
