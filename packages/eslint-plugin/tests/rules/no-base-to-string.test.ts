@@ -107,6 +107,12 @@ tag\`\${{}}\`;
       function tag() {}
       tag\`\${{}}\`;
     `,
+    `
+      interface Brand {}
+      function test(v: string & Brand): string {
+        return \`\${v}\`;
+      }
+    `,
   ],
   invalid: [
     {
@@ -212,6 +218,24 @@ tag\`\${{}}\`;
           data: {
             certainty: 'will',
             name: 'someObjectOrObject',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        interface A {}
+        interface B {}
+        function test(intersection: A & B): string {
+          return \`\${intersection}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'intersection',
           },
           messageId: 'baseToString',
         },
