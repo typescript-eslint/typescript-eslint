@@ -110,7 +110,8 @@ export default util.createRule({
         }
 
         if (
-          type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+          util.isTypeAnyType(type) ||
+          util.isTypeUnknownType(type) ||
           isErrorLike(type)
         ) {
           return;
