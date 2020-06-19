@@ -99,7 +99,7 @@ const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
   .reduce((arr, names) => arr.concat(names), [])
   .filter(name => !nativelyNotBoundMembers.has(name));
 
-const isMemberNotImported = (
+const isNotImported = (
   symbol: ts.Symbol,
   currentSourceFile: ts.SourceFile | undefined,
 ): boolean => {
@@ -176,7 +176,7 @@ export default util.createRule<Options, MessageIds>({
         if (
           objectSymbol &&
           nativelyBoundMembers.includes(getMemberFullName(node)) &&
-          isMemberNotImported(objectSymbol, currentSourceFile)
+          isNotImported(objectSymbol, currentSourceFile)
         ) {
           return;
         }
@@ -188,6 +188,48 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             messageId: 'unbound',
             node,
+          });
+        }
+      },
+      'VariableDeclarator, AssignmentExpression'(
+        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+      ): void {
+        const [idNode, initNode] =
+          node.type === AST_NODE_TYPES.VariableDeclarator
+            ? [node.id, node.init]
+            : [node.left, node.right];
+
+        if (initNode && idNode.type === AST_NODE_TYPES.ObjectPattern) {
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(initNode);
+          const rightSymbol = checker.getSymbolAtLocation(tsNode);
+          const initTypes = checker.getTypeAtLocation(tsNode);
+
+          const notImported =
+            rightSymbol && isNotImported(rightSymbol, currentSourceFile);
+
+          idNode.properties.forEach(property => {
+            if (
+              property.type === AST_NODE_TYPES.Property &&
+              property.key.type === AST_NODE_TYPES.Identifier
+            ) {
+              if (
+                notImported &&
+                util.isIdentifier(initNode) &&
+                nativelyBoundMembers.includes(
+                  `${initNode.name}.${property.key.name}`,
+                )
+              ) {
+                return;
+              }
+
+              const symbol = initTypes.getProperty(property.key.name);
+              if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
+                context.report({
+                  messageId: 'unbound',
+                  node,
+                });
+              }
+            }
           });
         }
       },
