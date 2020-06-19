@@ -325,8 +325,8 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
-        types.some(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
+        types.some(
+          type => util.isTypeAnyType(type) || util.isTypeUnknownType(type),
         )
       ) {
         variantTypes.add('any');

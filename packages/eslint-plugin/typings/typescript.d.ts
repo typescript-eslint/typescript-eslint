@@ -23,4 +23,11 @@ declare module 'typescript' {
      */
     getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
   }
+
+  interface Type {
+    /**
+     * If the type is `any`, and this is set to "error", then TS was unable to resolve the type
+     */
+    intrinsicName?: string;
+  }
 }
