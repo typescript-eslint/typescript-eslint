@@ -53,7 +53,7 @@ type Options = {
 
 ### Defaults
 
-This rule always checks comparions between a boolean variable and a boolean
+This rule always checks comparisons between a boolean variable and a boolean
 literal. Comparisons between nullable boolean variables and boolean literals
 are **not** checked by default.
 
