@@ -8,6 +8,7 @@
   "exclude": ["tests/fixtures/**/*"],
   "references": [
     { "path": "../shared-fixtures/tsconfig.build.json" },
-    { "path": "../types/tsconfig.build.json" }
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" }
   ]
 }

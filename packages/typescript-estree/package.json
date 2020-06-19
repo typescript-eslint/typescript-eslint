@@ -41,8 +41,8 @@
   },
   "dependencies": {
     "@typescript-eslint/types": "3.4.0",
+    "@typescript-eslint/visitor-keys": "3.4.0",
     "debug": "^4.1.1",
-    "eslint-visitor-keys": "^1.1.0",
     "glob": "^7.1.6",
     "is-glob": "^4.0.1",
     "lodash": "^4.17.15",
