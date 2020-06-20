@@ -317,9 +317,6 @@ function foo(arg: ContainsMethods | null) {
       'const unbound = instance.unbound;',
       'const unboundStatic = ContainsMethods.unboundStatic;',
 
-      'const { unbound } = instance.unbound;',
-      'const { unboundStatic } = ContainsMethods.unboundStatic;',
-
       'const { unbound } = instance;',
       'const { unboundStatic } = ContainsMethods;',
 
