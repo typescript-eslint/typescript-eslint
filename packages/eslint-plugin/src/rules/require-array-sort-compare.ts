@@ -1,9 +1,20 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-export default util.createRule({
+export type Options = [
+  {
+    ignoreStringArrays?: boolean;
+  },
+];
+export type MessageIds = 'requireCompare';
+
+export default util.createRule<Options, MessageIds>({
   name: 'require-array-sort-compare',
-  defaultOptions: [],
+  defaultOptions: [
+    {
+      ignoreStringArrays: false,
+    },
+  ],
 
   meta: {
     type: 'problem',
@@ -17,12 +28,38 @@ export default util.createRule({
     messages: {
       requireCompare: "Require 'compare' argument.",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreStringArrays: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
 
-  create(context) {
+  create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
+
+    /**
+     * Check if a given node is an array which all elements are string.
+     * @param node
+     */
+    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
+      const type = checker.getTypeAtLocation(
+        service.esTreeNodeToTSNodeMap.get(node),
+      );
+      if (checker.isArrayType(type) || checker.isTupleType(type)) {
+        const typeArgs = checker.getTypeArguments(type);
+        return typeArgs.every(
+          arg => util.getTypeName(checker, arg) === 'string',
+        );
+      }
+      return false;
+    }
 
     return {
       ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
@@ -33,6 +70,10 @@ export default util.createRule({
           checker,
           tsNode,
         );
+
+        if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
+          return;
+        }
 
         if (util.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
           context.report({ node: callee.parent!, messageId: 'requireCompare' });

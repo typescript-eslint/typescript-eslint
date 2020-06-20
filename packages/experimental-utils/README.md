@@ -1,6 +1,12 @@
-# `@typescript-eslint/experimental-utils`
+<h1 align="center">Utils for ESLint Plugins</h1>
 
-(Experimental) Utilities for working with TypeScript + ESLint together.
+<p align="center">Utilities for working with TypeScript + ESLint together.</p>
+
+<p align="center">
+    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin"><img src="https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin"><img src="https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin.svg?style=flat-square" alt="NPM Downloads" /></a>
+</p>
 
 ## Note
 
@@ -10,7 +16,7 @@ i.e. treat it as a `0.x.y` package.
 
 Feel free to use it now, and let us know what utilities you need or send us PRs with utilities you build on top of it.
 
-Once it is stable, it will be renamed to `@typescript-eslint/util` for a `3.0.0` release.
+Once it is stable, it will be renamed to `@typescript-eslint/util` for a `4.0.0` release.
 
 ## Exports
 

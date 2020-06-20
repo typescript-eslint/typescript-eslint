@@ -10,14 +10,6 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-// the base rule doesn't have messageIds
-function error(
-  messages: { message: string; line: number; column: number }[],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] {
-  return messages;
-}
-
 ruleTester.run('no-unused-vars', rule, {
   valid: [
     `
@@ -632,13 +624,18 @@ export default class Foo {
 import { ClassDecoratorFactory } from 'decorators';
 export class Foo {}
       `,
-      errors: error([
+      errors: [
         {
-          message: "'ClassDecoratorFactory' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'ClassDecoratorFactory',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -646,13 +643,18 @@ import { Foo, Bar } from 'foo';
 function baz<Foo>() {}
 baz<Bar>();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Foo' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -660,13 +662,18 @@ import { Nullable } from 'nullable';
 const a: string = 'hello';
 console.log(a);
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Nullable' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Nullable',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -675,13 +682,18 @@ import { SomeOther } from 'other';
 const a: Nullable<string> = 'hello';
 console.log(a);
       `,
-      errors: error([
+      errors: [
         {
-          message: "'SomeOther' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'SomeOther',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
 
     {
@@ -695,13 +707,18 @@ class A {
 }
 new A();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Another' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Another',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -714,13 +731,18 @@ class A {
 }
 new A();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Another' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Another',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -733,13 +755,18 @@ class A {
 }
 new A();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Another' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Another',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -749,13 +776,18 @@ interface A {
   do(a: Nullable);
 }
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Another' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Another',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -765,13 +797,18 @@ interface A {
   other: Nullable;
 }
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Another' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Another',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -781,13 +818,18 @@ function foo(a: string) {
 }
 foo();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Nullable' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Nullable',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -797,13 +839,18 @@ function foo(): string | null {
 }
 foo();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'Nullable' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Nullable',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -815,13 +862,18 @@ class A extends Nullable {
 }
 new A();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'SomeOther' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'SomeOther',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -833,13 +885,18 @@ abstract class A extends Nullable {
 }
 new A();
       `,
-      errors: error([
+      errors: [
         {
-          message: "'SomeOther' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'SomeOther',
+            action: 'defined',
+            additional: '',
+          },
           line: 3,
           column: 10,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -848,13 +905,18 @@ enum FormFieldIds {
   EMAIL = 'email',
 }
       `,
-      errors: error([
+      errors: [
         {
-          message: "'FormFieldIds' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'FormFieldIds',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 6,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -862,13 +924,18 @@ import test from 'test';
 import baz from 'baz';
 export interface Bar extends baz.test {}
       `,
-      errors: error([
+      errors: [
         {
-          message: "'test' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'test',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 8,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -876,13 +943,18 @@ import test from 'test';
 import baz from 'baz';
 export interface Bar extends baz().test {}
       `,
-      errors: error([
+      errors: [
         {
-          message: "'test' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'test',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 8,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -890,13 +962,18 @@ import test from 'test';
 import baz from 'baz';
 export class Bar implements baz.test {}
       `,
-      errors: error([
+      errors: [
         {
-          message: "'test' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'test',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 8,
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -904,13 +981,18 @@ import test from 'test';
 import baz from 'baz';
 export class Bar implements baz().test {}
       `,
-      errors: error([
+      errors: [
         {
-          message: "'test' is defined but never used.",
+          messageId: 'unusedVar',
+          data: {
+            varName: 'test',
+            action: 'defined',
+            additional: '',
+          },
           line: 2,
           column: 8,
         },
-      ]),
+      ],
     },
   ],
 });

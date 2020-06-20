@@ -14,8 +14,6 @@ enum Usefulness {
 
 type Options = [
   {
-    /** @deprecated This option is now ignored and treated as always true, it will be removed in 3.0 */
-    ignoreTaggedTemplateExpressions?: boolean;
     ignoredTypeNames?: string[];
   },
 ];
@@ -39,10 +37,6 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          ignoreTaggedTemplateExpressions: {
-            type: 'boolean',
-            default: true,
-          },
           ignoredTypeNames: {
             type: 'array',
             items: {
@@ -57,7 +51,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreTaggedTemplateExpressions: true,
       ignoredTypeNames: ['RegExp'],
     },
   ],
@@ -119,14 +112,43 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
+      if (type.isIntersection()) {
+        for (const subType of type.types) {
+          const subtypeUsefulness = collectToStringCertainty(subType);
+
+          if (subtypeUsefulness === Usefulness.Always) {
+            return Usefulness.Always;
+          }
+        }
+
+        return Usefulness.Never;
+      }
+
       if (!type.isUnion()) {
         return Usefulness.Never;
       }
 
+      let allSubtypesUseful = true;
+      let someSubtypeUseful = false;
+
       for (const subType of type.types) {
-        if (collectToStringCertainty(subType) !== Usefulness.Never) {
-          return Usefulness.Sometimes;
+        const subtypeUsefulness = collectToStringCertainty(subType);
+
+        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
+          allSubtypesUseful = false;
         }
+
+        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
+          someSubtypeUseful = true;
+        }
+      }
+
+      if (allSubtypesUseful && someSubtypeUseful) {
+        return Usefulness.Always;
+      }
+
+      if (someSubtypeUseful) {
+        return Usefulness.Sometimes;
       }
 
       return Usefulness.Never;

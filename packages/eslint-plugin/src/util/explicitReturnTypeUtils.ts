@@ -7,10 +7,10 @@ import {
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { nullThrows, NullThrowsReasons } from './nullThrows';
 
-type FunctionNode =
+type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
+type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
 
 /**
  * Creates a report location for the given function.
@@ -62,7 +62,7 @@ function getReporLoc(
       )!.loc.end;
     }
 
-    return sourceCode.getTokenBefore(node.body!)!.loc.end;
+    return sourceCode.getTokenBefore(node.body)!.loc.end;
   }
 
   return {
@@ -158,10 +158,7 @@ function isPropertyOfObjectWithType(
  */
 function doesImmediatelyReturnFunctionExpression({
   body,
-}:
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression): boolean {
+}: FunctionNode): boolean {
   // Should always have a body; really checking just in case
   /* istanbul ignore if */ if (!body) {
     return false;
@@ -196,7 +193,7 @@ function doesImmediatelyReturnFunctionExpression({
  */
 function isFunctionArgument(
   parent: TSESTree.Node,
-  callee?: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  callee?: FunctionExpression,
 ): parent is TSESTree.CallExpression | TSESTree.OptionalCallExpression {
   return (
     (parent.type === AST_NODE_TYPES.CallExpression ||
@@ -240,33 +237,10 @@ interface Options {
 }
 
 /**
- * Checks if a function declaration/expression has a return type.
+ * True when the provided function expression is typed.
  */
-function checkFunctionReturnType(
-  node:
-    | TSESTree.ArrowFunctionExpression
-    | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression,
-  options: Options,
-  sourceCode: TSESLint.SourceCode,
-  report: (loc: TSESTree.SourceLocation) => void,
-): void {
-  if (
-    options.allowHigherOrderFunctions &&
-    doesImmediatelyReturnFunctionExpression(node)
-  ) {
-    return;
-  }
-
-  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
-    return;
-  }
-
-  report(getReporLoc(node, sourceCode));
-}
-
 function isTypedFunctionExpression(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+  node: FunctionExpression,
   options: Options,
 ): boolean {
   const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
@@ -286,16 +260,15 @@ function isTypedFunctionExpression(
 }
 
 /**
- * Checks if a function declaration/expression has a return type.
+ * Check whether the function expression return type is either typed or valid
+ * with the provided options.
  */
-function checkFunctionExpressionReturnType(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+function isValidFunctionExpressionReturnType(
+  node: FunctionExpression,
   options: Options,
-  sourceCode: TSESLint.SourceCode,
-  report: (loc: TSESTree.SourceLocation) => void,
-): void {
+): boolean {
   if (isTypedFunctionExpression(node, options)) {
-    return;
+    return true;
   }
 
   const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
@@ -306,7 +279,7 @@ function checkFunctionExpressionReturnType(
     parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
     parent.type !== AST_NODE_TYPES.ClassProperty
   ) {
-    return;
+    return true;
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
@@ -315,6 +288,59 @@ function checkFunctionExpressionReturnType(
     node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     returnsConstAssertionDirectly(node)
   ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Check that the function expression or declaration is valid.
+ */
+function isValidFunctionReturnType(
+  node: FunctionNode,
+  options: Options,
+): boolean {
+  if (
+    options.allowHigherOrderFunctions &&
+    doesImmediatelyReturnFunctionExpression(node)
+  ) {
+    return true;
+  }
+
+  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Checks if a function declaration/expression has a return type.
+ */
+function checkFunctionReturnType(
+  node: FunctionNode,
+  options: Options,
+  sourceCode: TSESLint.SourceCode,
+  report: (loc: TSESTree.SourceLocation) => void,
+): void {
+  if (isValidFunctionReturnType(node, options)) {
+    return;
+  }
+
+  report(getReporLoc(node, sourceCode));
+}
+
+/**
+ * Checks if a function declaration/expression has a return type.
+ */
+function checkFunctionExpressionReturnType(
+  node: FunctionExpression,
+  options: Options,
+  sourceCode: TSESLint.SourceCode,
+  report: (loc: TSESTree.SourceLocation) => void,
+): void {
+  if (isValidFunctionExpressionReturnType(node, options)) {
     return;
   }
 
@@ -322,7 +348,10 @@ function checkFunctionExpressionReturnType(
 }
 
 export {
-  checkFunctionReturnType,
   checkFunctionExpressionReturnType,
+  checkFunctionReturnType,
+  doesImmediatelyReturnFunctionExpression,
+  FunctionExpression,
+  FunctionNode,
   isTypedFunctionExpression,
 };

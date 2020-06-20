@@ -137,8 +137,7 @@ function isInInitializer(
         return true;
       }
       if (
-        node.parent &&
-        node.parent.parent &&
+        node.parent?.parent &&
         (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
           node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
         isInRange(node.parent.parent.right, location)
@@ -177,7 +176,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the use of variables before they are defined',
       category: 'Variables',
-      recommended: 'error',
+      recommended: false,
       extendsBaseRule: true,
     },
     messages: {

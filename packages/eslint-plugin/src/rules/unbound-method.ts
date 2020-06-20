@@ -82,6 +82,11 @@ const SUPPORTED_GLOBALS = [
   'Intl',
 ] as const;
 const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
+  if (!(namespace in global)) {
+    // node.js might not have namespaces like Intl depending on compilation options
+    // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
+    return [];
+  }
   const object = global[namespace];
   return Object.getOwnPropertyNames(object)
     .filter(

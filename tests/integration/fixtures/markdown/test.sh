@@ -1,4 +1,5 @@
 #!/bin/bash
+set -exuo pipefail
 
 # Generate the package.json to use
 node /usr/utils/generate-package-json.js
@@ -12,12 +13,12 @@ npm install $(npm pack /usr/parser | tail -1)
 npm install $(npm pack /usr/experimental-utils | tail -1)
 npm install $(npm pack /usr/eslint-plugin | tail -1)
 
-# Install the latest vue-eslint-parser (this may break us occassionally, but it's probably good to get that feedback early)
+# Install the latest eslint-plugin-markdown (this may break us occassionally, but it's probably good to get that feedback early)
 npm install eslint-plugin-markdown@latest
 
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
-npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.yml /usr/linked/**/*.md || true
+npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.js /usr/linked/**/*.md || true
 
 # Run our assertions against the linting output
 npx jest /usr/test.js --snapshotResolver=/usr/utils/jest-snapshot-resolver.js

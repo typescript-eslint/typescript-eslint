@@ -97,3 +97,22 @@ services:
       - /usr/eslint-plugin/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/markdown:/usr/linked
+
+  eslint-v6:
+    build: ./fixtures/eslint-v6
+    container_name: 'eslint-v6'
+    volumes:
+      # Runtime link to the relevant built @typescript-eslint packages and integration test utils,
+      # but apply an empty volume for the package tests, we don't need those.
+      - ../../package.json/:/usr/root-package.json
+      - ./utils/:/usr/utils
+      - ../../packages/parser/:/usr/parser
+      - /usr/parser/tests
+      - ../../packages/typescript-estree/:/usr/typescript-estree
+      - /usr/typescript-estree/tests
+      - ../../packages/experimental-utils/:/usr/experimental-utils
+      - /usr/experimental-utils/tests
+      - ../../packages/eslint-plugin/:/usr/eslint-plugin
+      - /usr/eslint-plugin/tests
+      # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
+      - ./fixtures/eslint-v6:/usr/linked

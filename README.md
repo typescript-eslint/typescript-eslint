@@ -3,12 +3,10 @@
 <p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
 
 <p align="center">
-    <a href="https://github.com/typescript-eslint/typescript-eslint/actions"><img src="https://img.shields.io/github/workflow/status/typescript-eslint/typescript-eslint/CI?style=flat-square" alt="GitHub Workflow Status" /></a>
+    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
     <a href="https://opencollective.com/typescript-eslint"><img src="https://opencollective.com/typescript-eslint/all/badge.svg?label=financial+contributors&style=flat-square" alt="Financial Contributors on Open Collective" /></a>
-    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
-    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
 </p>
 
 <br>
@@ -234,11 +232,13 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 ## Supported TypeScript Version
 
+**The version range of TypeScript currently supported by this parser is `>=3.3.1 <3.10.0`.**
+
+These versions are what we test against.
+
 We will always endeavor to support the latest stable version of TypeScript. Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript. In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
 
-**The version range of TypeScript currently supported by this parser is `>=3.2.1 <3.8.0`.**
-
-This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+Note that our packages have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
 If you use a non-supported version of TypeScript, the parser will log a warning to the console. If you want to disable this warning, you can configure this in your `parserOptions`. See: [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/).
 
@@ -293,6 +293,6 @@ Support this project with your organization. Your logo will show up here with a 
   <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
 </a>
 
-## Contributing
+## Contributing Guide
 
 [See the contributing guide here](./CONTRIBUTING.md)

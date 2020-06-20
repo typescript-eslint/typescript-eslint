@@ -16491,6 +16491,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16506,8 +16507,8 @@ Object {
           4,
         ],
         "raw": "0b1n",
-        "type": "BigIntLiteral",
-        "value": "0b1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16588,6 +16589,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 2,
@@ -16603,8 +16605,8 @@ Object {
           2,
         ],
         "raw": "1n",
-        "type": "BigIntLiteral",
-        "value": "1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16685,6 +16687,7 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16700,8 +16703,8 @@ Object {
           4,
         ],
         "raw": "0x1n",
-        "type": "BigIntLiteral",
-        "value": "0x1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -16777,11 +16780,110 @@ Object {
 }
 `;
 
+exports[`javascript fixtures/bigIntLiterals/numeric-separator.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "bigint": "123",
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          6,
+        ],
+        "raw": "1_2_3n",
+        "type": "Literal",
+        "value": 123n,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        7,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    8,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Identifier",
+      "value": "1_2_3n",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
 exports[`javascript fixtures/bigIntLiterals/octal.src 1`] = `
 Object {
   "body": Array [
     Object {
       "expression": Object {
+        "bigint": "1",
         "loc": Object {
           "end": Object {
             "column": 4,
@@ -16797,8 +16899,8 @@ Object {
           4,
         ],
         "raw": "0o1n",
-        "type": "BigIntLiteral",
-        "value": "0o1",
+        "type": "Literal",
+        "value": 1n,
       },
       "loc": Object {
         "end": Object {
@@ -80423,44 +80525,6 @@ Object {
             },
           },
           "object": Object {
-            "arguments": Array [
-              Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 7,
-                    "line": 1,
-                  },
-                },
-                "range": Array [
-                  7,
-                  12,
-                ],
-                "raw": "'foo'",
-                "type": "Literal",
-                "value": "foo",
-              },
-            ],
-            "callee": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 6,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 0,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                0,
-                6,
-              ],
-              "type": "Import",
-            },
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -80471,12 +80535,30 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               0,
               13,
             ],
-            "type": "CallExpression",
+            "source": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                7,
+                12,
+              ],
+              "raw": "'foo'",
+              "type": "Literal",
+              "value": "foo",
+            },
+            "type": "ImportExpression",
           },
           "optional": false,
           "property": Object {
@@ -80737,6 +80819,8 @@ Object {
   "type": "Program",
 }
 `;
+
+exports[`javascript fixtures/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `"Dynamic import must have one specifier as an argument."`;
 
 exports[`javascript fixtures/experimentalObjectRestSpread/arg-spread.src 1`] = `
 Object {
@@ -108554,6 +108638,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "exportKind": "value",
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -109908,6 +109993,7 @@ Object {
         ],
         "type": "ArrayExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -110097,6 +110183,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 38,
@@ -110338,6 +110425,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -110526,6 +110614,7 @@ Object {
         },
         "type": "BinaryExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 23,
@@ -110752,6 +110841,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 29,
@@ -110974,6 +111064,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -111181,6 +111272,7 @@ Object {
         ],
         "type": "FunctionDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 32,
@@ -111386,6 +111478,7 @@ Object {
         "type": "Literal",
         "value": 42,
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 18,
@@ -111577,6 +111670,7 @@ Object {
         ],
         "type": "ObjectExpression",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 26,
@@ -111781,6 +111875,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 19,
@@ -120618,6 +120713,7 @@ Object {
         "superClass": null,
         "type": "ClassDeclaration",
       },
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 23,

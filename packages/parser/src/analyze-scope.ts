@@ -875,8 +875,7 @@ export function analyzeScope(
     directive: false,
     nodejsScope:
       parserOptions.sourceType === 'script' &&
-      (parserOptions.ecmaFeatures &&
-        parserOptions.ecmaFeatures.globalReturn) === true,
+      parserOptions.ecmaFeatures?.globalReturn === true,
     impliedStrict: false,
     sourceType: parserOptions.sourceType,
     ecmaVersion: parserOptions.ecmaVersion ?? 2018,

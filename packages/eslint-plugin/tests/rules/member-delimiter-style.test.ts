@@ -3238,6 +3238,12 @@ interface Foo {
     age: number;
 }
       `,
+      output: `
+interface Foo {
+    name: string;
+    age: number
+}
+      `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
       errors: [
         {
@@ -3252,6 +3258,12 @@ interface Foo {
 interface Foo {
     name: string;
     age: number;
+}
+      `,
+      output: `
+interface Foo {
+    name: string;
+    age: number
 }
       `,
       options: [
@@ -3277,6 +3289,7 @@ interface Foo {
     },
     {
       code: 'interface Foo { a: any, [key: string]: any }',
+      output: 'interface Foo { a: any; [key: string]: any }',
       errors: [
         {
           messageId: 'expectedSemi',
@@ -3290,6 +3303,12 @@ interface Foo {
 type Foo = {
     name: string;
     age: number;
+}
+      `,
+      output: `
+type Foo = {
+    name: string;
+    age: number
 }
       `,
       options: [{ multiline: { delimiter: 'semi', requireLast: false } }],
@@ -3306,6 +3325,12 @@ type Foo = {
 type Foo = {
     name: string;
     age: number;
+}
+      `,
+      output: `
+type Foo = {
+    name: string;
+    age: number
 }
       `,
       options: [
@@ -3331,6 +3356,7 @@ type Foo = {
     },
     {
       code: 'type Foo = { a: any, [key: string]: any }',
+      output: 'type Foo = { a: any; [key: string]: any }',
       errors: [
         {
           messageId: 'expectedSemi',

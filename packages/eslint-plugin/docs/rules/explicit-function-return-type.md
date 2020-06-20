@@ -77,6 +77,7 @@ const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
+  allowConciseArrowFunctionExpressionsStartingWithVoid: true,
 };
 ```
 

@@ -15,7 +15,7 @@ export default createRule({
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',

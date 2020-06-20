@@ -1,3 +1,4 @@
+import debug from 'debug';
 import {
   isCallExpression,
   isJsxExpression,
@@ -12,6 +13,8 @@ import {
   isPropertyAssignment,
 } from 'tsutils';
 import * as ts from 'typescript';
+
+const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
 /**
  * Checks if the given type is either an array type,
@@ -327,10 +330,23 @@ export function getTypeArguments(
 }
 
 /**
+ * @returns true if the type is `unknown`
+ */
+export function isTypeUnknownType(type: ts.Type): boolean {
+  return isTypeFlagSet(type, ts.TypeFlags.Unknown);
+}
+
+/**
  * @returns true if the type is `any`
  */
 export function isTypeAnyType(type: ts.Type): boolean {
-  return isTypeFlagSet(type, ts.TypeFlags.Any);
+  if (isTypeFlagSet(type, ts.TypeFlags.Any)) {
+    if (type.intrinsicName === 'error') {
+      log('Found an "error" any type');
+    }
+    return true;
+  }
+  return false;
 }
 
 /**

@@ -11,6 +11,23 @@ ruleTester.run('allowInGenericTypeArguments: false', rule, {
       code: 'type Generic<T> = [T];',
       options: [{ allowInGenericTypeArguments: false }],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/1946
+      code: `
+function foo(): void | never {
+  throw new Error('Test');
+}
+      `,
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'type voidNeverUnion = void | never;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'type neverVoidUnion = never | void;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
   ],
   invalid: [
     {
@@ -67,6 +84,17 @@ ruleTester.run('allowInGenericTypeArguments: false', rule, {
         },
       ],
     },
+    {
+      code: 'type invalidVoidUnion = void | number;',
+      options: [{ allowInGenericTypeArguments: false }],
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturn',
+          line: 1,
+          column: 25,
+        },
+      ],
+    },
   ],
 });
 
@@ -89,6 +117,8 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type UnionType = string | number;',
     'type GenericVoid = Generic<void>;',
     'type Generic<T> = [T];',
+    'type voidPromiseUnion = void | Promise<void>;',
+    'type promiseNeverUnion = Promise<void> | never;',
   ],
   invalid: [
     {
@@ -315,7 +345,6 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     {
       code: `
         type VoidType = void;
-
         class OtherClassName {
           private propName: VoidType;
         }
@@ -406,6 +435,16 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
         },
       ],
     },
+    {
+      code: 'type invalidVoidUnion = void | Map<string, number>;',
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrGeneric',
+          line: 1,
+          column: 25,
+        },
+      ],
+    },
   ],
 });
 
@@ -434,6 +473,31 @@ ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
     {
       code: 'type AllowedVoid = Ex.Mx.Tx<void>;',
       options: [{ allowInGenericTypeArguments: ['Ex . Mx . Tx'] }],
+    },
+    {
+      code: 'type voidPromiseUnion = void | Promise<void>;',
+      options: [{ allowInGenericTypeArguments: ['Promise'] }],
+    },
+    {
+      code: 'type promiseVoidUnion = Promise<void> | void;',
+      options: [{ allowInGenericTypeArguments: ['Promise'] }],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/1956
+      code: `
+async function foo(bar: () => void | Promise<void>) {
+  await bar();
+}
+      `,
+      options: [{ allowInGenericTypeArguments: ['Promise'] }],
+    },
+    {
+      code: 'type promiseNeverUnion = Promise<void> | never;',
+      options: [{ allowInGenericTypeArguments: ['Promise'] }],
+    },
+    {
+      code: 'type voidPromiseNeverUnion = void | Promise<void> | never;',
+      options: [{ allowInGenericTypeArguments: ['Promise'] }],
     },
   ],
   invalid: [

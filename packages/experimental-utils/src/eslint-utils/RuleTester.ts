@@ -1,5 +1,5 @@
-import * as TSESLint from '../ts-eslint';
 import * as path from 'path';
+import * as TSESLint from '../ts-eslint';
 
 const parser = '@typescript-eslint/parser';
 
@@ -8,14 +8,23 @@ type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
 };
 
 class RuleTester extends TSESLint.RuleTester {
+  readonly #options: RuleTesterConfig;
+
   // as of eslint 6 you have to provide an absolute path to the parser
   // but that's not as clean to type, this saves us trying to manually enforce
   // that contributors require.resolve everything
-  constructor(private readonly options: RuleTesterConfig) {
+  constructor(options: RuleTesterConfig) {
     super({
       ...options,
+      parserOptions: {
+        ...options.parserOptions,
+        warnOnUnsupportedTypeScriptVersion:
+          options.parserOptions?.warnOnUnsupportedTypeScriptVersion ?? false,
+      },
       parser: require.resolve(options.parser),
     });
+
+    this.#options = options;
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
@@ -31,9 +40,7 @@ class RuleTester extends TSESLint.RuleTester {
   }
   private getFilename(options?: TSESLint.ParserOptions): string {
     if (options) {
-      const filename = `file.ts${
-        options.ecmaFeatures && options.ecmaFeatures.jsx ? 'x' : ''
-      }`;
+      const filename = `file.ts${options.ecmaFeatures?.jsx ? 'x' : ''}`;
       if (options.project) {
         return path.join(
           options.tsconfigRootDir != null
@@ -44,8 +51,8 @@ class RuleTester extends TSESLint.RuleTester {
       }
 
       return filename;
-    } else if (this.options.parserOptions) {
-      return this.getFilename(this.options.parserOptions);
+    } else if (this.#options.parserOptions) {
+      return this.getFilename(this.#options.parserOptions);
     }
 
     return 'file.ts';
@@ -57,9 +64,11 @@ class RuleTester extends TSESLint.RuleTester {
   run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
-    tests: TSESLint.RunTests<TMessageIds, TOptions>,
+    testsReadonly: TSESLint.RunTests<TMessageIds, TOptions>,
   ): void {
     const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${parser}`;
+
+    const tests = { ...testsReadonly };
 
     // standardize the valid tests as objects
     tests.valid = tests.valid.map(test => {
@@ -71,23 +80,31 @@ class RuleTester extends TSESLint.RuleTester {
       return test;
     });
 
-    tests.valid.forEach(test => {
+    tests.valid = tests.valid.map(test => {
       if (typeof test !== 'string') {
         if (test.parser === parser) {
           throw new Error(errorMessage);
         }
         if (!test.filename) {
-          test.filename = this.getFilename(test.parserOptions);
+          return {
+            ...test,
+            filename: this.getFilename(test.parserOptions),
+          };
         }
       }
+      return test;
     });
-    tests.invalid.forEach(test => {
+    tests.invalid = tests.invalid.map(test => {
       if (test.parser === parser) {
         throw new Error(errorMessage);
       }
       if (!test.filename) {
-        test.filename = this.getFilename(test.parserOptions);
+        return {
+          ...test,
+          filename: this.getFilename(test.parserOptions),
+        };
       }
+      return test;
     });
 
     super.run(name, rule, tests);

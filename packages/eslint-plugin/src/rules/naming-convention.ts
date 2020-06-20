@@ -12,7 +12,8 @@ type MessageIds =
   | 'missingUnderscore'
   | 'missingAffix'
   | 'satisfyCustom'
-  | 'doesNotMatchFormat';
+  | 'doesNotMatchFormat'
+  | 'doesNotMatchFormatTrimmed';
 
 // #region Options Type Config
 
@@ -21,7 +22,6 @@ enum PredefinedFormats {
   strictCamelCase = 1 << 1,
   PascalCase = 1 << 2,
   StrictPascalCase = 1 << 3,
-  // eslint-disable-next-line @typescript-eslint/camelcase
   snake_case = 1 << 4,
   UPPER_CASE = 1 << 5,
 }
@@ -347,29 +347,33 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     messages: {
       unexpectedUnderscore:
-        '{{type}} name {{name}} must not have a {{position}} underscore.',
+        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
       missingUnderscore:
-        '{{type}} name {{name}} must have a {{position}} underscore.',
+        '{{type}} name `{{name}}` must have a {{position}} underscore.',
       missingAffix:
-        '{{type}} name {{name}} must have one of the following {{position}}es: {{affixes}}',
+        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
       satisfyCustom:
-        '{{type}} name {{name}} must {{regexMatch}} the RegExp: {{regex}}',
+        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
       doesNotMatchFormat:
-        '{{type}} name {{name}} must match one of the following formats: {{formats}}',
+        '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
+      doesNotMatchFormatTrimmed:
+        '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
     },
     schema: SCHEMA,
   },
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
-    const context: Context = contextWithoutDefaults.options
-      ? contextWithoutDefaults
-      : // only apply the defaults when the user provides no config
-        Object.setPrototypeOf(
-          {
-            options: defaultCamelCaseAllTheThingsConfig,
-          },
-          contextWithoutDefaults,
-        );
+    const context: Context =
+      contextWithoutDefaults.options &&
+      contextWithoutDefaults.options.length > 0
+        ? contextWithoutDefaults
+        : // only apply the defaults when the user provides no config
+          Object.setPrototypeOf(
+            {
+              options: defaultCamelCaseAllTheThingsConfig,
+            },
+            contextWithoutDefaults,
+          );
 
     const validators = parseOptions(context);
 
@@ -749,7 +753,7 @@ type ValidatorFunction = (
   modifiers?: Set<Modifiers>,
 ) => void;
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
-type Context = TSESLint.RuleContext<MessageIds, Options>;
+type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.map(opt => normalizeOption(opt));
   const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
@@ -868,18 +872,21 @@ function createValidator(
     affixes,
     formats,
     originalName,
+    processedName,
     position,
     custom,
   }: {
     affixes?: string[];
     formats?: PredefinedFormats[];
     originalName: string;
+    processedName?: string;
     position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
     custom?: NonNullable<NormalizedSelector['custom']>;
   }): Record<string, unknown> {
     return {
       type: selectorTypeToMessageString(type),
       name: originalName,
+      processedName,
       position,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
@@ -1051,9 +1058,13 @@ function createValidator(
 
     context.report({
       node,
-      messageId: 'doesNotMatchFormat',
+      messageId:
+        originalName === name
+          ? 'doesNotMatchFormat'
+          : 'doesNotMatchFormatTrimmed',
       data: formatReportData({
         originalName,
+        processedName: name,
         formats,
       }),
     });
@@ -1080,14 +1091,12 @@ https://gist.github.com/mathiasbynens/6334847
 function isPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && !name.includes('_'))
   );
 }
 function isStrictPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toUpperCase() && hasStrictCamelHumps(name, true))
   );
 }
@@ -1095,14 +1104,12 @@ function isStrictPascalCase(name: string): boolean {
 function isCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && !name.includes('_'))
   );
 }
 function isStrictCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
     (name[0] === name[0].toLowerCase() && hasStrictCamelHumps(name, false))
   );
 }

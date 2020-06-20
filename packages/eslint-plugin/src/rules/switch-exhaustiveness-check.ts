@@ -17,6 +17,7 @@ export default createRule({
       description: 'Exhaustiveness checking in switch with union type',
       category: 'Best Practices',
       recommended: false,
+      suggestion: true,
       requiresTypeChecking: true,
     },
     schema: [],

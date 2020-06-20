@@ -1,34 +1,35 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  TSESLint,
+  TSESTree,
+  AST_NODE_TYPES,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 type Types = Record<
   string,
-  | string
   | null
+  | false
+  | string
   | {
       message: string;
       fixWith?: string;
     }
 >;
 
-type Options = [
+export type Options = [
   {
     types?: Types;
     extendDefaults?: boolean;
   },
 ];
-type MessageIds = 'bannedTypeMessage';
+export type MessageIds = 'bannedTypeMessage';
 
 function removeSpaces(str: string): string {
   return str.replace(/ /g, '');
 }
 
 function stringifyTypeName(
-  node:
-    | TSESTree.EntityName
-    | TSESTree.TSTypeLiteral
-    | TSESTree.TSNullKeyword
-    | TSESTree.TSUndefinedKeyword,
+  node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): string {
   return removeSpaces(sourceCode.getText(node));
@@ -52,13 +53,7 @@ function getCustomMessage(
   return '';
 }
 
-/*
-  Defaults for this rule should be treated as an "all or nothing"
-  merge, so we need special handling here.
-
-  See: https://github.com/typescript-eslint/typescript-eslint/issues/686
- */
-const defaultTypes = {
+const defaultTypes: Types = {
   String: {
     message: 'Use string instead',
     fixWith: 'string',
@@ -71,14 +66,55 @@ const defaultTypes = {
     message: 'Use number instead',
     fixWith: 'number',
   },
-  Object: {
-    message: 'Use Record<string, any> instead',
-    fixWith: 'Record<string, any>',
-  },
   Symbol: {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
+
+  Function: {
+    message: [
+      'The `Function` type accepts any function-like value.',
+      'It provides no type safety when calling the function, which can be a common source of bugs.',
+      'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
+      'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
+    ].join('\n'),
+  },
+
+  // object typing
+  Object: {
+    message: [
+      'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any value", you probably want `unknown` instead.',
+    ].join('\n'),
+  },
+  '{}': {
+    message: [
+      '`{}` actually means "any non-nullish value".',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any value", you probably want `unknown` instead.',
+    ].join('\n'),
+  },
+  object: {
+    message: [
+      'The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).',
+      'Consider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys.',
+    ].join('\n'),
+  },
+};
+
+export const TYPE_KEYWORDS = {
+  bigint: AST_NODE_TYPES.TSBigIntKeyword,
+  boolean: AST_NODE_TYPES.TSBooleanKeyword,
+  never: AST_NODE_TYPES.TSNeverKeyword,
+  null: AST_NODE_TYPES.TSNullKeyword,
+  number: AST_NODE_TYPES.TSNumberKeyword,
+  object: AST_NODE_TYPES.TSObjectKeyword,
+  string: AST_NODE_TYPES.TSStringKeyword,
+  symbol: AST_NODE_TYPES.TSSymbolKeyword,
+  undefined: AST_NODE_TYPES.TSUndefinedKeyword,
+  unknown: AST_NODE_TYPES.TSUnknownKeyword,
+  void: AST_NODE_TYPES.TSVoidKeyword,
 };
 
 export default util.createRule<Options, MessageIds>({
@@ -92,7 +128,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      bannedTypeMessage: "Don't use '{{name}}' as a type.{{customMessage}}",
+      bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
     },
     schema: [
       {
@@ -103,6 +139,7 @@ export default util.createRule<Options, MessageIds>({
             additionalProperties: {
               oneOf: [
                 { type: 'null' },
+                { type: 'boolean' },
                 { type: 'string' },
                 {
                   type: 'object',
@@ -127,55 +164,57 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const extendDefaults = options.extendDefaults ?? true;
     const customTypes = options.types ?? {};
-    const types: Types = {
-      ...(extendDefaults ? defaultTypes : {}),
-      ...customTypes,
-    };
+    const types = Object.assign(
+      {},
+      extendDefaults ? defaultTypes : {},
+      customTypes,
+    );
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );
 
     function checkBannedTypes(
-      typeNode:
-        | TSESTree.EntityName
-        | TSESTree.TSTypeLiteral
-        | TSESTree.TSNullKeyword
-        | TSESTree.TSUndefinedKeyword,
+      typeNode: TSESTree.Node,
       name = stringifyTypeName(typeNode, context.getSourceCode()),
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      if (bannedType !== undefined) {
-        const customMessage = getCustomMessage(bannedType);
-        const fixWith =
-          bannedType && typeof bannedType === 'object' && bannedType.fixWith;
-
-        context.report({
-          node: typeNode,
-          messageId: 'bannedTypeMessage',
-          data: {
-            name,
-            customMessage,
-          },
-          fix: fixWith
-            ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
-            : null,
-        });
+      if (bannedType === undefined || bannedType === false) {
+        return;
       }
+
+      const customMessage = getCustomMessage(bannedType);
+      const fixWith =
+        bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+
+      context.report({
+        node: typeNode,
+        messageId: 'bannedTypeMessage',
+        data: {
+          name,
+          customMessage,
+        },
+        fix: fixWith
+          ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
+          : null,
+      });
     }
 
-    return {
-      ...(bannedTypes.has('null') && {
-        TSNullKeyword(node): void {
-          checkBannedTypes(node, 'null');
-        },
-      }),
+    const keywordSelectors = util.objectReduceKey(
+      TYPE_KEYWORDS,
+      (acc: TSESLint.RuleListener, keyword) => {
+        if (bannedTypes.has(keyword)) {
+          acc[TYPE_KEYWORDS[keyword]] = (node: TSESTree.Node): void =>
+            checkBannedTypes(node, keyword);
+        }
 
-      ...(bannedTypes.has('undefined') && {
-        TSUndefinedKeyword(node): void {
-          checkBannedTypes(node, 'undefined');
-        },
-      }),
+        return acc;
+      },
+      {},
+    );
+
+    return {
+      ...keywordSelectors,
 
       TSTypeLiteral(node): void {
         if (node.members.length) {

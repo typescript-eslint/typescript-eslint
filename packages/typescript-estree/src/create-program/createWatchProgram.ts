@@ -111,7 +111,7 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
  */
 function createHash(content: string): string {
   // No ts.sys in browser environments.
-  if (ts.sys && ts.sys.createHash) {
+  if (ts.sys?.createHash) {
     return ts.sys.createHash(content);
   }
   return content;

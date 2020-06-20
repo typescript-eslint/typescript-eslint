@@ -111,7 +111,7 @@ export default createRule<Options, MessageIds>({
       if (
         prevToken &&
         isTokenOnSameLine(prevToken, commaToken) &&
-        spaceBefore !== sourceCode.isSpaceBetween(prevToken, commaToken)
+        spaceBefore !== sourceCode.isSpaceBetweenTokens(prevToken, commaToken)
       ) {
         context.report({
           node: commaToken,
@@ -140,7 +140,7 @@ export default createRule<Options, MessageIds>({
       if (
         nextToken &&
         isTokenOnSameLine(commaToken, nextToken) &&
-        spaceAfter !== sourceCode.isSpaceBetween(commaToken, nextToken)
+        spaceAfter !== sourceCode.isSpaceBetweenTokens(commaToken, nextToken)
       ) {
         context.report({
           node: commaToken,

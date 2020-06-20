@@ -1,4 +1,4 @@
-import * as parser from '../src/parser';
+import * as parser from '../src';
 import { TSESTreeOptions } from '../src/parser-options';
 
 export function parseCodeAndGenerateServices(

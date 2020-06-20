@@ -5,7 +5,10 @@ import {
 import baseRule from 'eslint/lib/rules/no-unused-vars';
 import * as util from '../util';
 
-export default util.createRule({
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-unused-vars',
   meta: {
     type: 'problem',

@@ -5,6 +5,7 @@ export * from './createRule';
 export * from './isTypeReadonly';
 export * from './misc';
 export * from './nullThrows';
+export * from './objectIterators';
 export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules
@@ -14,4 +15,16 @@ const {
   isObjectNotArray,
   getParserServices,
 } = ESLintUtils;
-export { applyDefault, deepMerge, isObjectNotArray, getParserServices };
+type InferMessageIdsTypeFromRule<T> = ESLintUtils.InferMessageIdsTypeFromRule<
+  T
+>;
+type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
+
+export {
+  applyDefault,
+  deepMerge,
+  isObjectNotArray,
+  getParserServices,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+};

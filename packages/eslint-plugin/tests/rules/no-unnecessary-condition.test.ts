@@ -56,6 +56,14 @@ for (let i = 0; b1 && b2; i++) {
   break;
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+for (;;) {}
     `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
@@ -92,27 +100,127 @@ function test<T>(t: T | []) {
     // Boolean expressions
     `
 function test(a: string) {
-  return a === 'a';
+  const t1 = a === 'a';
+  const t2 = 'a' === a;
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t1 = a !== undefined;
+  const t2 = undefined !== a;
+}
+    `,
+    `
+function test(a: null | string) {
+  const t1 = a === null;
+  const t2 = null === a;
+  const t1 = a !== null;
+  const t2 = null !== a;
+}
+    `,
+    `
+function test(a?: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a: any) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function test(a: unknown) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function test<T>(a: T) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
 }
     `,
 
     /**
      * Predicate functions
      **/
-    // valid, with the flag off
     `
-[1, 3, 5].filter(() => true);
-[1, 2, 3].find(() => false);
-function truthy() {
-  return [];
-}
-function falsy() {}
-[1, 3, 5].filter(truthy);
-[1, 2, 3].find(falsy);
-    `,
-    {
-      options: [{ checkArrayPredicates: true }],
-      code: `
 // with literal arrow function
 [0, 1, 2].filter(x => x);
 
@@ -126,20 +234,16 @@ function length(x: string) {
 function nonEmptyStrings(x: string[]) {
   return x.filter(length);
 }
-      `,
-    },
+    `,
     // Ignores non-array methods of the same name
-    {
-      options: [{ checkArrayPredicates: true }],
-      code: `
+    `
 const notArray = {
   filter: (func: () => boolean) => func(),
   find: (func: () => boolean) => func(),
 };
 notArray.filter(() => true);
 notArray.find(() => true);
-      `,
-    },
+    `,
 
     // Nullish coalescing operator
     `
@@ -203,15 +307,14 @@ returnsArr?.()[42]?.toUpperCase();
 declare const arr: string[][];
 arr[x] ?? [];
     `,
-    // Supports ignoring the RHS
+    // Doesn't check the right-hand side of a logical expression
+    //  in a non-conditional context
     {
       code: `
 declare const b1: boolean;
 declare const b2: true;
-if (b1 && b2) {
-}
+const x = b1 && b2;
       `,
-      options: [{ ignoreRhs: true }],
     },
     {
       code: `
@@ -278,6 +381,23 @@ let unknownValue: unknown;
 unknownValue?.();
     `,
     'const foo = [1, 2, 3][0];',
+    `
+declare const foo: { bar?: { baz: { c: string } } } | null;
+foo?.bar?.baz;
+    `,
+    `
+foo?.bar?.baz?.qux;
+    `,
+    `
+declare const foo: { bar: { baz: string } };
+foo.bar.qux?.();
+    `,
+    `
+type Foo = { baz: number } | null;
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -289,19 +409,26 @@ const t1 = b1 && b2;
 const t2 = b1 || b2;
 if (b1 && b2) {
 }
+if (b2 && b1) {
+}
 while (b1 && b2) {}
+while (b2 && b1) {}
 for (let i = 0; b1 && b2; i++) {
   break;
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
+const t1 = b2 && b1 ? 'yes' : 'no';
       `,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
         ruleError(5, 12, 'alwaysTruthy'),
         ruleError(6, 5, 'alwaysTruthy'),
-        ruleError(8, 8, 'alwaysTruthy'),
-        ruleError(9, 17, 'alwaysTruthy'),
-        ruleError(12, 12, 'alwaysTruthy'),
+        ruleError(8, 11, 'alwaysTruthy'),
+        ruleError(10, 8, 'alwaysTruthy'),
+        ruleError(11, 14, 'alwaysTruthy'),
+        ruleError(12, 17, 'alwaysTruthy'),
+        ruleError(15, 12, 'alwaysTruthy'),
+        ruleError(16, 18, 'alwaysTruthy'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -313,6 +440,25 @@ const t1 = b1 && b2 ? 'yes' : 'no';
     unnecessaryConditionTest('null', 'alwaysFalsy'),
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
+
+    // More complex logical expressions
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (true && b1 && b2) {
+}
+if (b1 && false && b2) {
+}
+if (b1 || b2 || true) {
+}
+      `,
+      errors: [
+        ruleError(4, 5, 'alwaysTruthy'),
+        ruleError(6, 11, 'alwaysFalsy'),
+        ruleError(8, 17, 'alwaysTruthy'),
+      ],
+    },
 
     // Generic type params
     {
@@ -370,6 +516,111 @@ if (x === Foo.a) {
       `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
     },
+    // Workaround https://github.com/microsoft/TypeScript/issues/37160
+    {
+      code: `
+function test(a: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test(a: null | string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+      `,
+      errors: [
+        ruleError(3, 14, 'noOverlapBooleanExpression'),
+        ruleError(4, 14, 'noOverlapBooleanExpression'),
+        ruleError(5, 14, 'noOverlapBooleanExpression'),
+        ruleError(6, 14, 'noOverlapBooleanExpression'),
+        ruleError(7, 14, 'noOverlapBooleanExpression'),
+        ruleError(8, 14, 'noOverlapBooleanExpression'),
+        ruleError(9, 14, 'noOverlapBooleanExpression'),
+        ruleError(10, 14, 'noOverlapBooleanExpression'),
+        ruleError(11, 14, 'noOverlapBooleanExpression'),
+        ruleError(12, 15, 'noOverlapBooleanExpression'),
+        ruleError(13, 15, 'noOverlapBooleanExpression'),
+        ruleError(14, 15, 'noOverlapBooleanExpression'),
+        ruleError(15, 15, 'noOverlapBooleanExpression'),
+        ruleError(16, 15, 'noOverlapBooleanExpression'),
+        ruleError(17, 15, 'noOverlapBooleanExpression'),
+        ruleError(18, 15, 'noOverlapBooleanExpression'),
+      ],
+    },
     // Nullish coalescing operator
     {
       code: `
@@ -406,7 +657,6 @@ function test(a: never) {
 
     // Predicate functions
     {
-      options: [{ checkArrayPredicates: true }],
       code: `
 [1, 3, 5].filter(() => true);
 [1, 2, 3].find(() => {
@@ -455,6 +705,13 @@ if (x[0]) {
 if (x[0]?.foo) {
 }
       `,
+      output: `
+const x = [{}] as [{ foo: string }];
+if (x[0]) {
+}
+if (x[0].foo) {
+}
+      `,
       errors: [
         ruleError(3, 5, 'alwaysTruthy'),
         ruleError(5, 9, 'neverOptionalChain'),
@@ -470,7 +727,6 @@ if (arr.filter) {
       errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
-      options: [{ checkArrayPredicates: true }],
       code: `
 function truthy() {
   return [];
@@ -487,7 +743,6 @@ function falsy() {}
     // Supports generics
     // TODO: fix this
     //     {
-    //       options: [{ checkArrayPredicates: true }],
     //       code: `
     // const isTruthy = <T>(t: T) => T;
     // // Valid: numbers can be truthy or falsy (0).
@@ -497,32 +752,6 @@ function falsy() {}
     // `,
     //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
     //     },
-
-    // Still errors on in the expected locations when ignoring RHS
-    {
-      options: [{ ignoreRhs: true }],
-      code: `
-const b1 = true;
-const b2 = false;
-const t1 = b1 && b2;
-const t2 = b1 || b2;
-if (b1 && b2) {
-}
-while (b1 && b2) {}
-for (let i = 0; b1 && b2; i++) {
-  break;
-}
-const t1 = b1 && b2 ? 'yes' : 'no';
-      `,
-      errors: [
-        ruleError(4, 12, 'alwaysTruthy'),
-        ruleError(5, 12, 'alwaysTruthy'),
-        ruleError(6, 5, 'alwaysTruthy'),
-        ruleError(8, 8, 'alwaysTruthy'),
-        ruleError(9, 17, 'alwaysTruthy'),
-        ruleError(12, 12, 'alwaysTruthy'),
-      ],
-    },
     {
       code: `
 while (true) {}
@@ -696,6 +925,274 @@ foo
           endLine: 1,
           column: 22,
           endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: { a?: { b: string } };
+x?.a?.b;
+      `,
+      output: `
+declare const x: { a?: { b: string } };
+x.a?.b;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 2,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: { a: { b?: { c: string } } };
+x.a?.b?.c;
+      `,
+      output: `
+declare const x: { a: { b?: { c: string } } };
+x.a.b?.c;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 4,
+          endColumn: 6,
+        },
+      ],
+    },
+    {
+      code: `
+let x: { a?: string };
+x?.a;
+      `,
+      output: `
+let x: { a?: string };
+x.a;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 2,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { c: string } } } | null;
+foo?.bar?.baz;
+      `,
+      output: `
+declare const foo: { bar: { baz: { c: string } } } | null;
+foo?.bar.baz;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar?: { baz: { qux: string } } } | null;
+foo?.bar?.baz?.qux;
+      `,
+      output: `
+declare const foo: { bar?: { baz: { qux: string } } } | null;
+foo?.bar?.baz.qux;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar?.baz?.qux?.();
+      `,
+      output: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar.baz.qux?.();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar?.baz?.qux?.();
+      `,
+      output: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar.baz.qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 16,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 3,
+          endLine: 3,
+          column: 19,
+          endColumn: 21,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.().qux?.();
+      `,
+      output: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz().qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 14,
+          endColumn: 16,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = null | (() => { qux: () => {} });
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.().qux?.();
+      `,
+      output: `
+type baz = null | (() => { qux: () => {} });
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.().qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+type baz = null | (() => { qux: () => {} } | null);
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz?.()?.qux?.();
+      `,
+      output: `
+type baz = null | (() => { qux: () => {} } | null);
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.()?.qux();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 9,
+          endColumn: 11,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          endLine: 4,
+          column: 23,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+      `,
+      output: `
+type Foo = { baz: number };
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar.baz?.qux;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          endLine: 5,
+          column: 14,
+          endColumn: 16,
         },
       ],
     },

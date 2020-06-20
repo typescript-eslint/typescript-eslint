@@ -1,5 +1,4 @@
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -30,8 +29,8 @@ export default util.createRule({
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (
-          !tsutils.isTypeFlagSet(type, ts.TypeFlags.Any) &&
-          !tsutils.isTypeFlagSet(type, ts.TypeFlags.Unknown) &&
+          !util.isTypeAnyType(type) &&
+          !util.isTypeUnknownType(type) &&
           !tsutils.isThenableType(checker, originalNode.expression, type)
         ) {
           context.report({

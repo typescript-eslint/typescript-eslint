@@ -537,7 +537,7 @@ export default createRule<Options, MessageIds>({
        * A "legal ancestor" is an expression or statement that causes the function to get executed immediately.
        * For example, `!(function(){})()` is an outer IIFE even though it is preceded by a ! operator.
        */
-      let statement = node.parent && node.parent.parent;
+      let statement = node.parent?.parent;
 
       while (
         statement &&
@@ -1115,7 +1115,7 @@ export default createRule<Options, MessageIds>({
       'FunctionDeclaration, FunctionExpression'(
         node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
       ) {
-        const closingParen = sourceCode.getTokenBefore(node.body!)!;
+        const closingParen = sourceCode.getTokenBefore(node.body)!;
         const openingParen = sourceCode.getTokenBefore(
           node.params.length ? node.params[0] : closingParen,
         )!;

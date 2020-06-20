@@ -37,8 +37,8 @@ class FixturesTester {
    * Utility to generate a FixturePatternConfig object containing the glob pattern for specific subsections of the fixtures/ directory,
    * including the capability to ignore specific nested patterns.
    *
-   * @param {string} fixturesSubPath the sub-path within the fixtures/ directory
-   * @param {CreateFixturePatternConfig?} config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
+   * @param fixturesSubPath the sub-path within the fixtures/ directory
+   * @param config an optional configuration object with optional sub-paths to ignore and/or parse with sourceType: module
    */
   public addFixturePatternConfig(
     fixturesSubPath: string,
@@ -186,19 +186,7 @@ tester.addFixturePatternConfig('javascript/function', {
   ],
 });
 
-tester.addFixturePatternConfig('javascript/bigIntLiterals', {
-  ignore: [
-    /**
-     * new BigIntLiteral type
-     * @see https://github.com/estree/estree/blob/master/es2020.md#bigintliteral
-     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
-     */
-    'binary',
-    'decimal',
-    'hex',
-    'octal',
-  ],
-});
+tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
 tester.addFixturePatternConfig('javascript/blockBindings');
 
@@ -229,16 +217,7 @@ tester.addFixturePatternConfig('javascript/destructuring-and-forOf');
 tester.addFixturePatternConfig('javascript/destructuring-and-spread');
 
 tester.addFixturePatternConfig('javascript/experimentalAsyncIteration');
-tester.addFixturePatternConfig('javascript/experimentalDynamicImport', {
-  ignore: [
-    /**
-     * new ImportExpression type
-     * @see https://github.com/estree/estree/blob/master/es2020.md#importexpression
-     * @see https://github.com/typescript-eslint/typescript-eslint/pull/1389
-     */
-    'dynamic-import',
-  ],
-});
+tester.addFixturePatternConfig('javascript/experimentalDynamicImport');
 tester.addFixturePatternConfig('javascript/exponentiationOperators');
 tester.addFixturePatternConfig('javascript/experimentalOptionalCatchBinding');
 
@@ -285,6 +264,8 @@ tester.addFixturePatternConfig('javascript/modules', {
     'export-named-specifier',
     'export-named-specifiers-comma',
     'export-named-specifiers',
+    // babel treats declare as not a module
+    'import-module',
   ],
 });
 
@@ -361,14 +342,6 @@ tester.addFixturePatternConfig('typescript/basics', {
   fileType: 'ts',
   ignore: [
     /**
-     * Babel and ts-estree reports optional field on different nodes
-     * TODO: investigate
-     */
-    'class-with-optional-methods',
-    'abstract-class-with-abstract-method',
-    'abstract-class-with-optional-method',
-    'declare-class-with-optional-method',
-    /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
      * TODO: report it to babel
@@ -397,7 +370,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: 'abstract' modifier can only appear on a class, method, or property declaration.
      */
     'abstract-class-with-abstract-constructor',
-    // babel hard fails on computed string enum members, but TS doesn't
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * babel hard fails on computed string enum members, but TS doesn't
+     * TODO: report this to babel
+     */
     'export-named-enum-computed-string',
     /**
      * Babel: TSTypePredicate includes `:` statement in range
@@ -450,6 +427,12 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration',
+    // babel treats declare and types as not a module
+    'export-declare-const-named-enum',
+    'export-declare-named-enum',
+    'type-alias-declaration-export-function-type',
+    'type-alias-declaration-export-object-type',
+    'type-alias-declaration-export',
   ],
 });
 

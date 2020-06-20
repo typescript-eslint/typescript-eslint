@@ -7,6 +7,7 @@ import 'isomorphic-fetch';
 import * as path from 'path';
 
 const IGNORED_USERS = new Set([
+  'dependabot[bot]',
   'eslint[bot]',
   'greenkeeper[bot]',
   'semantic-release-bot',
@@ -91,7 +92,7 @@ async function main(): Promise<void> {
       return {
         login: usr.login,
         name: usr.name || usr.login,
-        avatar_url: usr.avatar_url, // eslint-disable-line @typescript-eslint/camelcase
+        avatar_url: usr.avatar_url,
         profile: usr.html_url,
         contributions: [],
       };

@@ -96,6 +96,19 @@ throw new CustomError();
 class CustomError<T extends object> extends Error {}
 throw new CustomError();
     `,
+    `
+function foo() {
+  throw Object.assign(new Error('message'), { foo: 'bar' });
+}
+    `,
+    {
+      code: `
+const foo: Error | SyntaxError = bar();
+function bar() {
+  throw foo;
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -349,6 +362,31 @@ function foo<T>(fn: () => Promise<T>) {
           messageId: 'object',
           line: 5,
           column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw Object.assign({ foo: 'foo' }, { bar: 'bar' });
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+const foo: Error | { bar: string } = bar();
+function bar() {
+  throw foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
         },
       ],
     },

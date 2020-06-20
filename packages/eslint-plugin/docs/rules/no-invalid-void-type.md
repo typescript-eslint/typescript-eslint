@@ -1,13 +1,14 @@
 # Disallows usage of `void` type outside of generic or return types (`no-invalid-void-type`)
 
 Disallows usage of `void` type outside of return types or generic type arguments.
-If `void` is used as return type, it shouldn’t be a part of intersection/union type.
+If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
 
 ## Rationale
 
 The `void` type means “nothing” or that a function does not return any value,
 in contrast with implicit `undefined` type which means that a function returns a value `undefined`.
-So “nothing” cannot be mixed with any other types. If you need this - use the `undefined` type instead.
+So “nothing” cannot be mixed with any other types, other than `never`, which accepts all types.
+If you need this - use the `undefined` type instead.
 
 ## Rule Details
 
@@ -44,6 +45,8 @@ function noop(): void {}
 let trulyUndefined = void 0;
 
 async function promiseMeSomething(): Promise<void> {}
+
+type stillVoid = void | never;
 ```
 
 ### Options
@@ -63,6 +66,8 @@ const defaultOptions: Options = {
 This option lets you control if `void` can be used as a valid value for generic type parameters.
 
 Alternatively, you can provide an array of strings which whitelist which types may accept `void` as a generic type parameter.
+
+Any types considered valid by this option will be considered valid as part of a union type with `void`.
 
 This option is `true` by default.
 
@@ -88,7 +93,8 @@ type NotAllowedVoid3 = Promise<void>;
 The following patterns are not considered warnings with `{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }`:
 
 ```ts
-type AllowedVoid = Ex.MX.Tx<void>;
+type AllowedVoid = Ex.Mx.Tx<void>;
+type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 ```
 
 ## When Not To Use It

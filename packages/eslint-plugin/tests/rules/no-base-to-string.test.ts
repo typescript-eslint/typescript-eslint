@@ -79,6 +79,14 @@ const literalWithToString = {
 };
 '' + literalToString;
     `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
     'let _ = {} * {};',
     'let _ = {} / {};',
     'let _ = ({} *= {});',
@@ -95,17 +103,16 @@ const literalWithToString = {
 function tag() {}
 tag\`\${{}}\`;
     `,
-    {
-      code: `
-        function tag() {}
-        tag\`\${{}}\`;
-      `,
-      options: [
-        {
-          ignoreTaggedTemplateExpressions: true,
-        },
-      ],
-    },
+    `
+      function tag() {}
+      tag\`\${{}}\`;
+    `,
+    `
+      interface Brand {}
+      function test(v: string & Brand): string {
+        return \`\${v}\`;
+      }
+    `,
   ],
   invalid: [
     {
@@ -211,6 +218,24 @@ tag\`\${{}}\`;
           data: {
             certainty: 'will',
             name: 'someObjectOrObject',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        interface A {}
+        interface B {}
+        function test(intersection: A & B): string {
+          return \`\${intersection}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'intersection',
           },
           messageId: 'baseToString',
         },

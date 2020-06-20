@@ -46,7 +46,6 @@ type Options = [
   {
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
-    forceSuggestionFixer?: boolean;
   },
 ];
 
@@ -54,7 +53,6 @@ const defaultOptions = [
   {
     ignoreConditionalTests: true,
     ignoreMixedLogicalExpressions: true,
-    forceSuggestionFixer: false,
   },
 ];
 ```
@@ -132,12 +130,6 @@ a ?? (b && c && d);
 ```
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
-
-### `forceSuggestionFixer`
-
-Setting this option to `true` will cause the rule to use ESLint's "suggested fix" mode for all fixes. _This option is provided as to aid in transitioning your codebase onto this rule_.
-
-Suggestion fixes cannot be automatically applied via the `--fix` CLI command, but can be _manually_ chosen to be applied one at a time via an IDE or similar. This makes it safe to run autofixers on an existing codebase without worrying about potential runtime behavior changes from this rule's fixer.
 
 ## When Not To Use It
 

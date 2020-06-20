@@ -1,4 +1,5 @@
 import unescape from 'lodash/unescape';
+import * as semver from 'semver';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
@@ -446,6 +447,70 @@ export function isOptional(node: {
   return node.questionToken
     ? node.questionToken.kind === SyntaxKind.QuestionToken
     : false;
+}
+
+/**
+ * Returns true if the node is an optional chain node
+ */
+export function isOptionalChain(
+  node: TSESTree.Node,
+): node is TSESTree.OptionalCallExpression | TSESTree.OptionalMemberExpression {
+  return (
+    node.type === AST_NODE_TYPES.OptionalCallExpression ||
+    node.type == AST_NODE_TYPES.OptionalMemberExpression
+  );
+}
+
+/**
+ * Returns true if the current TS version is TS 3.9
+ */
+function isTSv3dot9(): boolean {
+  return !semver.satisfies(ts.version, '< 3.9.0 || < 3.9.1-rc || < 3.9.0-beta');
+}
+
+/**
+ * Returns true of the child of property access expression is an optional chain
+ */
+export function isChildOptionalChain(
+  node:
+    | ts.PropertyAccessExpression
+    | ts.ElementAccessExpression
+    | ts.CallExpression,
+  object: TSESTree.LeftHandSideExpression,
+): boolean {
+  if (
+    isOptionalChain(object) &&
+    // (x?.y).z is semantically different, and as such .z is no longer optional
+    node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
+  ) {
+    return true;
+  }
+
+  if (!isTSv3dot9()) {
+    return false;
+  }
+
+  // TS3.9 made a breaking change to how non-null works with optional chains.
+  // Pre-3.9,  `x?.y!.z` means `(x?.y).z` - i.e. it essentially scrubbed the optionality from the chain
+  // Post-3.9, `x?.y!.z` means `x?.y!.z`  - i.e. it just asserts that the property `y` is non-null, not the result of `x?.y`
+
+  if (
+    object.type !== AST_NODE_TYPES.TSNonNullExpression ||
+    !isOptionalChain(object.expression)
+  ) {
+    return false;
+  }
+
+  if (
+    // make sure it's not (x.y)!.z
+    node.expression.kind === ts.SyntaxKind.NonNullExpression &&
+    (node.expression as ts.NonNullExpression).expression.kind !==
+      ts.SyntaxKind.ParenthesizedExpression
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 /**

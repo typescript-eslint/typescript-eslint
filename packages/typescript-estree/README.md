@@ -3,14 +3,14 @@
 <p align="center">A parser that converts TypeScript source code into an <a href="https://github.com/estree/estree">ESTree</a>-compatible form</p>
 
 <p align="center">
-    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
-    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/v/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Version" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/typescript-estree"><img src="https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square" alt="NPM Downloads" /></a>
-    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
 </p>
 
-<br>
+## Getting Started
+
+**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
 
 ## About
 
@@ -249,9 +249,7 @@ Types for the AST produced by the parse functions.
 
 ## Supported TypeScript Version
 
-We will always endeavor to support the latest stable version of TypeScript.
-
-The version of TypeScript currently supported by this parser is `~3.2.1`. This is reflected in the `devDependency` requirement within the package.json file, and it is what the tests will be run against. We have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+See the [Supported TypeScript Version](../../README.md#supported-typescript-version) section in the project root.
 
 If you use a non-supported version of TypeScript, the parser will log a warning to the console.
 

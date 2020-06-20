@@ -1,13 +1,11 @@
 <h1 align="center">TypeScript ESLint Parser</h1>
 
-<p align="center">An ESLint custom parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
+<p align="center">An ESLint parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
 
 <p align="center">
-    <a href="https://dev.azure.com/typescript-eslint/TypeScript%20ESLint/_build/latest?definitionId=1&branchName=master"><img src="https://img.shields.io/azure-devops/build/typescript-eslint/TypeScript%20ESLint/1/master.svg?label=%F0%9F%9A%80%20Azure%20Pipelines&style=flat-square" alt="Azure Pipelines"/></a>
-    <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/typescript-estree.svg?style=flat-square" alt="GitHub license" /></a>
+    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
     <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser.svg?style=flat-square" alt="NPM Version" /></a>
     <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/dm/@typescript-eslint/parser.svg?style=flat-square" alt="NPM Downloads" /></a>
-    <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square" alt="Commitizen friendly" /></a>
 </p>
 
 ## Getting Started
@@ -20,8 +18,9 @@ These docs walk you through setting up ESLint, this parser, and our plugin. If y
 
 ### Installation
 
-```sh
-yarn add -D @typescript-eslint/parser
+```bash
+$ yarn add -D typescript @typescript-eslint/parser
+$ npm i --save-dev typescript @typescript-eslint/parser
 ```
 
 ### Usage
