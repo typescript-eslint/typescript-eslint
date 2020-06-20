@@ -308,7 +308,7 @@ export function getEqualsKind(operator: string): EqualsKind | undefined {
 
     case '!==':
       return {
-        isPositive: true,
+        isPositive: false,
         isStrict: true,
       };
 
