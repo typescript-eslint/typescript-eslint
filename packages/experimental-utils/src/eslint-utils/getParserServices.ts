@@ -11,7 +11,7 @@ function getParserServices<
   TMessageIds extends string,
   TOptions extends readonly unknown[]
 >(
-  context: TSESLint.RuleContext<TMessageIds, TOptions>,
+  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
   // backwards compatibility check
