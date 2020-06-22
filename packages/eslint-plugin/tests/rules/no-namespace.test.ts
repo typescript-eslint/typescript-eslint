@@ -98,6 +98,28 @@ declare global {
       ],
     },
     {
+      code: 'module foo {}',
+      options: [{ allowDeclarations: true }],
+      errors: [
+        {
+          messageId: 'moduleSyntaxIsPreferred',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: 'namespace foo {}',
+      options: [{ allowDeclarations: true }],
+      errors: [
+        {
+          messageId: 'moduleSyntaxIsPreferred',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
       code: 'declare module foo {}',
       errors: [
         {
