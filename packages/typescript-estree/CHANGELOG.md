@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
+
+
+### Bug Fixes
+
+* **typescript-estree:** handle TS4.0 breaking change in TupleType ([#2197](https://github.com/typescript-eslint/typescript-eslint/issues/2197)) ([5d68129](https://github.com/typescript-eslint/typescript-eslint/commit/5d6812914831a386997b453b4db1e3283e26005d))
+
+
+
+
+
 # [3.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.1.0...v3.2.0) (2020-06-08)
 
 
