@@ -44,6 +44,16 @@ declare global {
       options: [{ allowDeclarations: true }],
     },
     {
+      code: `
+declare namespace foo {
+  namespace bar {
+    namespace baz {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
       filename: 'test.d.ts',
       code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: true }],
