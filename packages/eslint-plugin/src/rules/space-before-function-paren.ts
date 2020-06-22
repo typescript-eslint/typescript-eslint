@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.TSAbstractMethodDefinition,
     ): boolean {
-      if (Reflect.get(node, 'id')) {
+      if ('id' in node && node.id != null) {
         return true;
       }
 
@@ -116,7 +116,7 @@ export default util.createRule<Options, MessageIds>({
         return overrideConfig.named ?? baseConfig;
 
         // `generator-star-spacing` should warn anonymous generators. E.g. `function* () {}`
-      } else if (!Reflect.get(node, 'generator')) {
+      } else if (!('generator' in node) || node.generator == false) {
         return overrideConfig.anonymous ?? baseConfig;
       }
 
@@ -165,7 +165,7 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         !hasSpacing &&
         functionConfig === 'always' &&
-        (!node.typeParameters || Reflect.get(node, 'id'))
+        (!node.typeParameters || ('id' in node && node != null))
       ) {
         context.report({
           node,
