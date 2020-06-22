@@ -18,6 +18,32 @@ ruleTester.run('no-namespace', rule, {
       options: [{ allowDeclarations: true }],
     },
     {
+      code: `
+declare global {
+  namespace foo {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare module foo {
+  namespace bar {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare global {
+  namespace foo {
+    namespace bar {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
       filename: 'test.d.ts',
       code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: true }],
