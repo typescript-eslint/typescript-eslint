@@ -177,6 +177,22 @@ class Mx {
       `,
       options: ['getters'],
     },
+    {
+      code: `
+        class Mx {
+          private readonly foo: string = 'bar';
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class Mx {
+          private get foo() { return 'bar'; }
+        }
+      `,
+      options: ['getters'],
+    },
   ],
   invalid: [
     {
