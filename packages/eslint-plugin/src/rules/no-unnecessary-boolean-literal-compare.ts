@@ -275,7 +275,7 @@ export default util.createRule<Options, MessageIds>({
               // `booleanOrFalse != null && booleanOrFalse`. We only apply these
               // fixes for identifiers, for more complicated expressions, we
               // could change the program behavior (e.g. if the expression is a
-              // function call, we would be eplacing one function call with two)
+              // function call, we would be replacing one function call with two)
               if (comparison.expression.type === AST_NODE_TYPES.Identifier) {
                 // remove the comparison and the boolean literal
                 yield fixer.removeRange(comparison.range);

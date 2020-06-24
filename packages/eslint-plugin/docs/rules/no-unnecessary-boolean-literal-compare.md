@@ -130,9 +130,9 @@ if (someNullCondition == undefined || someNullCondition) {
 
 ## Fixer
 
-### Boolean Expresssions
+### Boolean Expressions
 
-The follow table shows the output of the fixer on comparions that compare a boolean expression to a boolean literal.
+The follow table shows the output of the fixer on comparisons that compare a boolean expression to a boolean literal.
 
 |       Comparison       | Fixer Output      |
 | :--------------------: | ----------------- |
@@ -143,7 +143,7 @@ The follow table shows the output of the fixer on comparions that compare a bool
 
 ### Nullable Boolean Expressions
 
-The follow table shows the output of the fixer on comparions that compare a boolean expression to a boolean literal when the `fixWithExplicitNullishCheck` option is `undefined`:
+The follow table shows the output of the fixer on comparisons that compare a boolean expression to a boolean literal when the `fixWithExplicitNullishCheck` option is `undefined`:
 
 |           Comparison           | Fixer Output                    | Notes                                                                               |
 | :----------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
@@ -152,7 +152,7 @@ The follow table shows the output of the fixer on comparions that compare a bool
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-The follow table shows the output of the fixer on comparions that compare a boolean expression to a boolean literal when the `fixWithExplicitNullishCheck` option is `{ nullishSymbol: "null" }`:
+The follow table shows the output of the fixer on comparisons that compare a boolean expression to a boolean literal when the `fixWithExplicitNullishCheck` option is `{ nullishSymbol: "null" }`:
 
 |           Comparison           | Fixer Output                                          | Notes                                                                               |
 | :----------------------------: | ----------------------------------------------------- | ----------------------------------------------------------------------------------- |
