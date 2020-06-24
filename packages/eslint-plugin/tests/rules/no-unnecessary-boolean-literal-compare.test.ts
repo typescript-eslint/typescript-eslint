@@ -224,5 +224,117 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         }
       `,
     },
+    {
+      code: `
+        function getBooleanOrNull(): false | null {
+          Math.random() > 0.5 ? false : null;
+        }
+        if (getBooleanOrNull() === true) {
+        }
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToTrue: false,
+          fixWithExplicitNullishCheck: {
+            nullishSymbol: 'null',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      // can't fix because fixing would call the function twice:
+      // `getBooleanOrNull() != null && getBooleanOrNull()`
+      output: `
+        function getBooleanOrNull(): false | null {
+          Math.random() > 0.5 ? false : null;
+        }
+        if (getBooleanOrNull() === true) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varFalseOrNull: false | null;
+        if (varFalseOrNull !== true) {
+        }
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToTrue: false,
+          fixWithExplicitNullishCheck: {
+            nullishSymbol: 'undefined',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueNegated',
+        },
+      ],
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: `
+        declare const varFalseOrNull: false | null;
+        if ((varFalseOrNull == undefined || !varFalseOrNull)) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if (varBooleanOrNull === false && otherBoolean) {
+        }
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          fixWithExplicitNullishCheck: {
+            nullishSymbol: 'null',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if ((varBooleanOrNull != null && !varBooleanOrNull) && otherBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolOrUndefined: true | false | undefined;
+        declare const otherBoolean: boolean;
+        if (varBoolOrUndefined !== false && !otherBoolean) {
+        }
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          fixWithExplicitNullishCheck: {
+            nullishSymbol: 'null',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varBoolOrUndefined: true | false | undefined;
+        declare const otherBoolean: boolean;
+        if ((varBoolOrUndefined == null || varBoolOrUndefined) && !otherBoolean) {
+        }
+      `,
+    },
   ],
 });

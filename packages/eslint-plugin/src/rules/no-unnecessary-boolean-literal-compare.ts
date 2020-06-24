@@ -17,6 +17,9 @@ type Options = [
   {
     allowComparingNullableBooleansToTrue?: boolean;
     allowComparingNullableBooleansToFalse?: boolean;
+    fixWithExplicitNullishCheck?: {
+      nullishSymbol: 'null' | 'undefined';
+    };
   },
 ];
 
@@ -64,6 +67,14 @@ export default util.createRule<Options, MessageIds>({
           },
           allowComparingNullableBooleansToFalse: {
             type: 'boolean',
+          },
+          fixWithExplicitNullishCheck: {
+            type: 'object',
+            properties: {
+              nullishSymbol: {
+                type: 'string',
+              },
+            },
           },
         },
         additionalProperties: false,
@@ -201,6 +212,36 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
+    function getExplicitNullishCheck(
+      { literalBooleanInComparison, negated }: BooleanComparison,
+      expressionBeingCompared: string,
+      nullishSymbol: 'null' | 'undefined',
+    ): string {
+      if (literalBooleanInComparison) {
+        // replace `nullableBooleanVar === true` with
+        // nullableBooleanVar != null && nullableBooleanVar
+        if (!negated) {
+          return `${expressionBeingCompared} != ${nullishSymbol} && `;
+        }
+
+        // replace `nullableBooleanVar !== true` with
+        // nullableBooleanVar == null || !nullableBooleanVar
+        if (negated) {
+          return `${expressionBeingCompared} == ${nullishSymbol} || !`;
+        }
+      }
+
+      // replace `nullableBooleanVar === false` with
+      // nullableBooleanVar != null && !nullableBooleanVar
+      if (!negated) {
+        return `${expressionBeingCompared} != ${nullishSymbol} && !`;
+      }
+
+      // replace `nullableBooleanVar !== false` with
+      // nullableBooleanVar == null || nullableBooleanVar
+      return `${expressionBeingCompared} == ${nullishSymbol} || `;
+    }
+
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
@@ -225,9 +266,41 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           fix: function* (fixer) {
+            if (
+              comparison.expressionIsNullableBoolean &&
+              options.fixWithExplicitNullishCheck !== undefined
+            ) {
+              // if fixWithExplicitNullishCheck is true, then we're replacing
+              // something like `booleanOrFalse === true` with
+              // `booleanOrFalse != null && booleanOrFalse`. We only apply these
+              // fixes for identifiers, for more complicated expressions, we
+              // could change the program behavior (e.g. if the expression is a
+              // function call, we would be eplacing one function call with two)
+              if (comparison.expression.type === AST_NODE_TYPES.Identifier) {
+                // remove the comparison and the boolean literal
+                yield fixer.removeRange(comparison.range);
+
+                // add the null check
+                yield fixer.insertTextBefore(
+                  node,
+                  '(' + // with an opening parenthesis
+                    getExplicitNullishCheck(
+                      comparison,
+                      context.getSourceCode().getText(comparison.expression),
+                      options.fixWithExplicitNullishCheck.nullishSymbol,
+                    ),
+                );
+
+                // add the closing parenthesis
+                yield fixer.insertTextAfter(node, ')');
+              }
+              return;
+            }
+
+            // remove the comparison and the boolean literal
             yield fixer.removeRange(comparison.range);
 
-            // if the expression `exp` isn't nullable, or we're comparing to `true`,
+            // if the expression `exp` isn't nullable,
             // we can just replace the entire comparison with `exp` or `!exp`
             if (
               !comparison.expressionIsNullableBoolean ||
@@ -239,10 +312,13 @@ export default util.createRule<Options, MessageIds>({
               return;
             }
 
-            // if we're here, then the expression is a nullable boolean and we're
-            // comparing to a literal `false`
+            // if we're here, then:
+            //   1) the expression is a nullable boolean
+            //   2) the "fixWithExplicitNullishCheck" option is undefined
+            //   3) comparing to a literal `false`
 
-            // if we're doing `== false` or `=== false`, then we need to negate the expression
+            // if the comparison is not negated (i.e. we're doing `== false` or `=== false`),
+            // then we need to negate the expression
             if (!comparison.negated) {
               const { parent } = node;
               // if the parent is a negation, we can instead just get rid of the parent's negation.
