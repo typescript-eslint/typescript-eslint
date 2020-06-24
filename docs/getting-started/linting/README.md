@@ -18,6 +18,9 @@ Next, create a `.eslintrc.js` config file in the root of your project, and popul
 <!-- prettier-ignore -->
 ```js
 module.exports = {
+  env: {
+    node: true
+  },
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: [
@@ -102,6 +105,9 @@ To use one of these complete config packages, you would replace the `extends` wi
 
 ```diff
   module.exports = {
+    env: {
+      node: true
+    },
     root: true,
     parser: '@typescript-eslint/parser',
     plugins: [
@@ -123,6 +129,9 @@ Using this config is as simple as adding it to the end of your `extends`:
 
 ```diff
   module.exports = {
+    env: {
+      node: true
+    },
     root: true,
     parser: '@typescript-eslint/parser',
     plugins: [
@@ -150,6 +159,9 @@ Every plugin that is out there includes documentation on the various rules they 
 
 ```diff
   module.exports = {
+    env: {
+      node: true
+    },
     root: true,
     parser: '@typescript-eslint/parser',
     plugins: [
