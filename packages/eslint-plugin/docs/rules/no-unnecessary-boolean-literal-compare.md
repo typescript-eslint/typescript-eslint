@@ -154,12 +154,12 @@ The follow table shows the output of the fixer on comparions that compare a bool
 
 The follow table shows the output of the fixer on comparions that compare a boolean expression to a boolean literal when the `fixWithExplicitNullishCheck` option is `{ nullishSymbol: "null" }`:
 
-|           Comparison           | Fixer Output                                        | Notes                                                                               |
-| :----------------------------: | --------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `nullableBooleanVar === true`  | `nullableBooleanVar != null && nullableBooleanVar`  | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
-| `nullableBooleanVar !== true`  | `nullableBooleanVar == null || !nullableBooleanVar` | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
-| `nullableBooleanVar === false` | `nullableBooleanVar != null && !nullableBooleanVar` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
-| `nullableBooleanVar !== false` | `nullableBooleanVar == null || nullableBooleanVar`  | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+|           Comparison           | Fixer Output                                          | Notes                                                                               |
+| :----------------------------: | ----------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `nullableBooleanVar === true`  | `nullableBooleanVar != null && nullableBooleanVar`    | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+| `nullableBooleanVar !== true`  | `nullableBooleanVar == null \|\| !nullableBooleanVar` | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+| `nullableBooleanVar === false` | `nullableBooleanVar != null && !nullableBooleanVar`   | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+| `nullableBooleanVar !== false` | `nullableBooleanVar == null \|\| nullableBooleanVar`  | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
 ## Related to
 
