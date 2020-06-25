@@ -1,5 +1,9 @@
-# `eslint-plugin-internal`
+<h1 align="center">Internal ESLint Plugin</h1>
 
-This is just a collection of internal lint rules to help enforce some guidelines specific to this repository.
+<p align="center">An ESLint plugin used internally in this project to ensure consistency.</p>
 
-These are not intended to be used externally.
+<p align="center">
+    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
+</p>
+
+This plugin is not intended to be used externally.

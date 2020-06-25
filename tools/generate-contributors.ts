@@ -7,6 +7,7 @@ import 'isomorphic-fetch';
 import * as path from 'path';
 
 const IGNORED_USERS = new Set([
+  'dependabot[bot]',
   'eslint[bot]',
   'greenkeeper[bot]',
   'semantic-release-bot',

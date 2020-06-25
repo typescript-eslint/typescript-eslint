@@ -1,4 +1,5 @@
-import { TSESTree, TSESLintScope } from '@typescript-eslint/experimental-utils';
+import { TSESLintScope } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/types';
 import { ScopeManager } from './scope-manager';
 
 /** The scope class for enum. */

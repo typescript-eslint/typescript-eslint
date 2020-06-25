@@ -72,7 +72,7 @@ export default util.createRule<Options, MessageId>({
         return true;
       }
 
-      if (options.allowAny && util.isTypeFlagSet(type, ts.TypeFlags.Any)) {
+      if (options.allowAny && util.isTypeAnyType(type)) {
         return true;
       }
 

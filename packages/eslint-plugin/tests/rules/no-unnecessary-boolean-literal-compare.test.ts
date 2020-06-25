@@ -38,17 +38,39 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       varObject == false;
     `,
     `
-      declare const varBooleanOrString: boolean | undefined;
+      declare const varNullOrUndefined: null | undefined;
+      varNullOrUndefined === false;
+    `,
+    `
+      declare const varBooleanOrString: boolean | string;
       varBooleanOrString === false;
     `,
     `
-      declare const varBooleanOrString: boolean | undefined;
+      declare const varBooleanOrString: boolean | string;
       varBooleanOrString == true;
+    `,
+    `
+      declare const varTrueOrStringOrUndefined: true | string | undefined;
+      varTrueOrStringOrUndefined == true;
     `,
     `
       declare const varBooleanOrUndefined: boolean | undefined;
       varBooleanOrUndefined === true;
     `,
+    {
+      code: `
+        declare const varBooleanOrUndefined: boolean | undefined;
+        varBooleanOrUndefined === true;
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+    },
+    {
+      code: `
+        declare const varBooleanOrUndefined: boolean | undefined;
+        varBooleanOrUndefined === false;
+      `,
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+    },
     "'false' === true;",
     "'true' === false;",
   ],
@@ -103,6 +125,102 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       output: `
         declare const varTrue: true;
         if (!varTrue) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varTrueOrUndefined: true | undefined;
+        if (varTrueOrUndefined === true) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      output: `
+        declare const varTrueOrUndefined: true | undefined;
+        if (varTrueOrUndefined) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varFalseOrNull: false | null;
+        if (varFalseOrNull !== true) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueNegated',
+        },
+      ],
+      output: `
+        declare const varFalseOrNull: false | null;
+        if (!varFalseOrNull) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if (varBooleanOrNull === false && otherBoolean) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if (!(varBooleanOrNull ?? true) && otherBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if (!(varBooleanOrNull === false) || otherBoolean) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varBooleanOrNull: boolean | null;
+        declare const otherBoolean: boolean;
+        if ((varBooleanOrNull ?? true) || otherBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varTrueOrFalseOrUndefined: true | false | undefined;
+        declare const otherBoolean: boolean;
+        if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
+        }
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      output: `
+        declare const varTrueOrFalseOrUndefined: true | false | undefined;
+        declare const otherBoolean: boolean;
+        if ((varTrueOrFalseOrUndefined ?? true) && !otherBoolean) {
         }
       `,
     },

@@ -97,6 +97,12 @@ jobs:
         env:
           CI: true
 
+      - name: Run unit tests for visitor-keys
+        run: yarn test
+        working-directory: packages/visitor-keys
+        env:
+          CI: true
+
       - name: Run unit tests for experimental-utils
         run: yarn test
         working-directory: packages/experimental-utils
@@ -254,6 +260,12 @@ jobs:
       - name: Run unit tests for typescript-estree
         run: yarn test
         working-directory: packages/typescript-estree
+        env:
+          CI: true
+
+      - name: Run unit tests for visitor-keys
+        run: yarn test
+        working-directory: packages/visitor-keys
         env:
           CI: true
 

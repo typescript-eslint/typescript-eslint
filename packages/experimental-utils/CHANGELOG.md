@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.3.0...v3.4.0) (2020-06-22)
+
+
+### Bug Fixes
+
+* **experimental-utils:** correct types for TS versions older than 3.8 ([#2217](https://github.com/typescript-eslint/typescript-eslint/issues/2217)) ([5e4dda2](https://github.com/typescript-eslint/typescript-eslint/commit/5e4dda264a7d6a6a1626848e7599faea1ac34922))
+* **experimental-utils:** getParserServices takes a readonly context ([#2235](https://github.com/typescript-eslint/typescript-eslint/issues/2235)) ([26da8de](https://github.com/typescript-eslint/typescript-eslint/commit/26da8de7fcde9eddec63212d79af781c4bb22991))
+
+
+
+
+
 # [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

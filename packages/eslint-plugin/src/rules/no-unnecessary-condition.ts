@@ -22,6 +22,8 @@ import {
   NullThrowsReasons,
   isMemberOrOptionalMemberExpression,
   isIdentifier,
+  isTypeAnyType,
+  isTypeUnknownType,
 } from '../util';
 
 // Truthiness utilities
@@ -181,13 +183,11 @@ export default createRule<Options, MessageId>({
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type parameter
       if (
-        unionTypeParts(type).some(part =>
-          isTypeFlagSet(
-            part,
-            ts.TypeFlags.Any |
-              ts.TypeFlags.Unknown |
-              ts.TypeFlags.TypeParameter,
-          ),
+        unionTypeParts(type).some(
+          part =>
+            isTypeAnyType(part) ||
+            isTypeUnknownType(part) ||
+            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
         )
       ) {
         return;
@@ -214,7 +214,7 @@ export default createRule<Options, MessageId>({
       }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return;
       }
       const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
@@ -469,8 +469,8 @@ export default createRule<Options, MessageId>({
         ? !isNullableOriginFromPrev(node)
         : true;
       return (
-        isTypeFlagSet(type, ts.TypeFlags.Any) ||
-        isTypeFlagSet(type, ts.TypeFlags.Unknown) ||
+        isTypeAnyType(type) ||
+        isTypeUnknownType(type) ||
         (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
       );
     }

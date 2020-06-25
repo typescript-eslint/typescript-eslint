@@ -963,7 +963,7 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Variable',
             name: 'unused_foo',
-            regex: '/^unused_\\w/',
+            regex: '/^unused_\\w/u',
             regexMatch: 'not match',
           },
         },
@@ -973,7 +973,7 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Variable',
             name: '_unused_foo',
-            regex: '/^unused_\\w/',
+            regex: '/^unused_\\w/u',
             regexMatch: 'not match',
           },
         },
@@ -983,7 +983,7 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Interface',
             name: 'IFoo',
-            regex: '/^I[A-Z]/',
+            regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
           },
         },
@@ -993,7 +993,7 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Class',
             name: 'IBar',
-            regex: '/^I[A-Z]/',
+            regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
           },
         },
@@ -1003,7 +1003,7 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Function',
             name: 'fooBar',
-            regex: '/function/',
+            regex: '/function/u',
             regexMatch: 'match',
           },
         },

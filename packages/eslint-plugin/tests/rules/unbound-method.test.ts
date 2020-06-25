@@ -228,6 +228,35 @@ class A {
   }
 }
     `,
+    'const { parseInt } = Number;',
+    'const { log } = console;',
+    `
+let parseInt;
+({ parseInt } = Number);
+    `,
+    `
+let log;
+({ log } = console);
+    `,
+    `
+const foo = {
+  bar: 'bar',
+};
+const { bar } = foo;
+    `,
+    `
+class Foo {
+  unbnound() {}
+  bar = 4;
+}
+const { bar } = new Foo();
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+const { bound } = new Foo();
+    `,
   ],
   invalid: [
     {
@@ -288,8 +317,8 @@ function foo(arg: ContainsMethods | null) {
       'const unbound = instance.unbound;',
       'const unboundStatic = ContainsMethods.unboundStatic;',
 
-      'const { unbound } = instance.unbound;',
-      'const { unboundStatic } = ContainsMethods.unboundStatic;',
+      'const { unbound } = instance;',
+      'const { unboundStatic } = ContainsMethods;',
 
       '<any>instance.unbound;',
       'instance.unbound as any;',
@@ -380,6 +409,114 @@ const unbound = new Foo().unbound;
       errors: [
         {
           line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound() {}
+}
+const { unbound } = new Foo();
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+const { unbound } = new Foo();
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound() {}
+}
+let unbound;
+({ unbound } = new Foo());
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+let unbound;
+({ unbound } = new Foo());
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class CommunicationError {
+  foo() {}
+}
+const { foo } = CommunicationError.prototype;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class CommunicationError {
+  foo() {}
+}
+let foo;
+({ foo } = CommunicationError.prototype);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+import { console } from './class';
+const { log } = console;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: 'const { all } = Promise;',
+      errors: [
+        {
+          line: 1,
           messageId: 'unbound',
         },
       ],
