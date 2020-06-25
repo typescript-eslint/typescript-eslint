@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-literal-enum-member';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -42,8 +42,7 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-    `
+    noFormat`
 enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }
