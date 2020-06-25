@@ -6,9 +6,5 @@
     "rootDir": "./src",
     "resolveJsonModule": true
   },
-  "include": ["src", "typings"],
-  "references": [
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" }
-  ]
+  "include": ["src", "typings"]
 }

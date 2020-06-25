@@ -1,5 +1,5 @@
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import { TSESTree } from './ts-estree';
-import { visitorKeys } from './visitor-keys';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isValidNode(x: any): x is TSESTree.Node {

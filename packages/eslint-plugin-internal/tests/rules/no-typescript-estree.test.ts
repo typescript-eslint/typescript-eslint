@@ -19,24 +19,42 @@ ruleTester.run('no-typescript-estree-import', rule, {
 import { foo } from '@typescript-eslint/typescript-estree';
 import foo from '@typescript-eslint/typescript-estree';
 import * as foo from '@typescript-eslint/typescript-estree';
+import { foo } from '@typescript-eslint/types';
+import foo from '@typescript-eslint/types';
+import * as foo from '@typescript-eslint/types';
     `,
     output: `
+import { foo } from '@typescript-eslint/experimental-utils';
+import foo from '@typescript-eslint/experimental-utils';
+import * as foo from '@typescript-eslint/experimental-utils';
 import { foo } from '@typescript-eslint/experimental-utils';
 import foo from '@typescript-eslint/experimental-utils';
 import * as foo from '@typescript-eslint/experimental-utils';
     `,
     errors: [
       {
-        messageId: 'dontImportTSEStree',
+        messageId: 'dontImportPackage',
         line: 2,
       },
       {
-        messageId: 'dontImportTSEStree',
+        messageId: 'dontImportPackage',
         line: 3,
       },
       {
-        messageId: 'dontImportTSEStree',
+        messageId: 'dontImportPackage',
         line: 4,
+      },
+      {
+        messageId: 'dontImportPackage',
+        line: 5,
+      },
+      {
+        messageId: 'dontImportPackage',
+        line: 6,
+      },
+      {
+        messageId: 'dontImportPackage',
+        line: 7,
       },
     ],
   }),
