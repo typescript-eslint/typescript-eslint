@@ -1,7 +1,5 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import fs from 'fs';
 import glob from 'glob';
 import * as parser from '../../src/parser';

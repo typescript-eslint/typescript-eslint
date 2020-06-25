@@ -28,6 +28,8 @@
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
       ],
     },
     {
@@ -54,6 +56,8 @@
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
       ],
     },
     {
@@ -80,6 +84,8 @@
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
       ],
     },
     {
@@ -106,6 +112,8 @@
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
       ],
     },
     {
@@ -132,6 +140,8 @@
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
       ],
     }
   ]

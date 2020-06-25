@@ -1,3 +1,1 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-
-export type ParserOptions = TSESLint.ParserOptions;
+export { ParserOptions } from '@typescript-eslint/types';

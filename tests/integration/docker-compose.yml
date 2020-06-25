@@ -19,6 +19,8 @@ services:
       - /usr/eslint-plugin/tests
       - ../../packages/eslint-plugin-tslint/:/usr/eslint-plugin-tslint
       - /usr/eslint-plugin-tslint/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/typescript-and-tslint-plugins-together:/usr/linked
 
@@ -38,6 +40,8 @@ services:
       - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/vue-sfc:/usr/linked
 
@@ -57,6 +61,8 @@ services:
       - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/vue-jsx:/usr/linked
 
@@ -76,6 +82,8 @@ services:
       - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/recommended-does-not-require-program:/usr/linked
 
@@ -95,6 +103,8 @@ services:
       - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/markdown:/usr/linked
 
@@ -114,5 +124,7 @@ services:
       - /usr/experimental-utils/tests
       - ../../packages/eslint-plugin/:/usr/eslint-plugin
       - /usr/eslint-plugin/tests
+      - ../../packages/types/:/usr/types
+      - /usr/types/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/eslint-v6:/usr/linked
