@@ -30,7 +30,7 @@ module.exports = {
 };
 ```
 
-This is about the smallest config file we recommend. There's a lot more you can add to this as you further onboard, but this will be enough to get you started. In the case of getting `error 'module' is not defined no-undef`, you can read more about [eslint environment configs](https://eslint.org/docs/user-guide/configuring#specifying-environments).
+This is about the smallest config file we recommend. There's a lot more you can add to this as you further onboard, but this will be enough to get you started. In the case of getting `error 'module' is not defined no-undef`, you can read more about [ESLint environment configs](https://eslint.org/docs/user-guide/configuring#specifying-environments).
 
 Explaining the important bits:
 
