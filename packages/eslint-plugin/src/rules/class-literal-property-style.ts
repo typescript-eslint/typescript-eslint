@@ -105,8 +105,9 @@ export default util.createRule<Options, MessageIds>({
           node.readonly &&
           node.accessibility === 'private' &&
           node.typeAnnotation
-        )
+        ) {
           return;
+        }
 
         if (!node.readonly || node.declare) {
           return;
