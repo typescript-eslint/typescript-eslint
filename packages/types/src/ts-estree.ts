@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ast-node-types';
+import { AST_NODE_TYPES } from './ast-node-types';
+import { AST_TOKEN_TYPES } from './ast-token-types';
 
 export interface LineAndColumnData {
   /**

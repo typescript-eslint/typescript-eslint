@@ -1,3 +1,4 @@
+import { DebugLevel } from '@typescript-eslint/types';
 import { Program } from 'typescript';
 import { TSESTree, TSNode, TSESTreeToTSNode, TSToken } from './ts-estree';
 
@@ -45,7 +46,7 @@ interface ParseOptions {
    * - true === ['typescript-eslint']
    * - false === []
    */
-  debugLevel?: boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
+  debugLevel?: DebugLevel;
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).

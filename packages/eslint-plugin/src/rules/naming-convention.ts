@@ -1213,7 +1213,7 @@ function normalizeOption(option: Selector): NormalizedSelector {
     format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     custom: option.custom
       ? {
-          regex: new RegExp(option.custom.regex),
+          regex: new RegExp(option.custom.regex, 'u'),
           match: option.custom.match,
         }
       : null,
@@ -1236,9 +1236,9 @@ function normalizeOption(option: Selector): NormalizedSelector {
     filter:
       option.filter !== undefined
         ? typeof option.filter === 'string'
-          ? { regex: new RegExp(option.filter), match: true }
+          ? { regex: new RegExp(option.filter, 'u'), match: true }
           : {
-              regex: new RegExp(option.filter.regex),
+              regex: new RegExp(option.filter.regex, 'u'),
               match: option.filter.match,
             }
         : null,
