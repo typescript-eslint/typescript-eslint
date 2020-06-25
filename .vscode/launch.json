@@ -30,6 +30,8 @@
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
         "${workspaceFolder}/packages/types/src/index.ts",
         "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
       ],
     },
     {
@@ -58,6 +60,8 @@
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
         "${workspaceFolder}/packages/types/src/index.ts",
         "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
       ],
     },
     {
@@ -86,6 +90,8 @@
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
         "${workspaceFolder}/packages/types/src/index.ts",
         "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
       ],
     },
     {
@@ -114,6 +120,8 @@
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
         "${workspaceFolder}/packages/types/src/index.ts",
         "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
       ],
     },
     {
@@ -142,6 +150,8 @@
         "${workspaceFolder}/packages/typescript-estree/dist/index.js",
         "${workspaceFolder}/packages/types/src/index.ts",
         "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
       ],
     }
   ]
