@@ -9,6 +9,7 @@
 - [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
 - [TypeScript should be installed locally](#typescript-should-be-installed-locally)
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
+- [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
 
 ---
 
@@ -208,3 +209,22 @@ For example, you can ban enums (or some variation of) using one of the following
   }
 }
 ```
+
+<br />
+<br />
+<br />
+
+---
+
+<br />
+<br />
+<br />
+
+## Why don't I see TypeScript errors in my ESLint output?
+
+TypeScript's compiler (or whatever your build chain may be) is specifically designed and built to validate the correctness of your codebase.
+Our tooling does not reproduce the errors that TypeScript provides, because doing so would slow down the lint run [1], and duplicate the errors that TypeScript already outputs for you.
+
+Instead, our tooling exists to **_augment_** TypeScript's built in checks with lint rules that consume the type information in new ways beyond just verifying the runtime correctness of your code.
+
+[1] - TypeScript computes type information lazily, so us asking for the errors it would produce from the compiler would take an _additional_ ~100ms per file. This doesn't sound like a lot, but depending on the size of your codebase, it can easily add up to between several seconds to several minutes to a lint run.
