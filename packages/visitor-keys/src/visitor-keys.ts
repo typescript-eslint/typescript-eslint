@@ -1,6 +1,10 @@
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
-export const visitorKeys = eslintVisitorKeys.unionWith({
+interface VisitorKeys {
+  readonly [type: string]: readonly string[] | undefined;
+}
+
+const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith({
   // Additional estree nodes.
   Import: [],
   // ES2020
@@ -125,3 +129,5 @@ export const visitorKeys = eslintVisitorKeys.unionWith({
   TSUnknownKeyword: [],
   TSVoidKeyword: [],
 });
+
+export { visitorKeys, VisitorKeys };
