@@ -1,6 +1,5 @@
-import { createRule } from '../util';
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { createRule } from '../util';
 
 export default createRule<[], 'notLiteral'>({
   name: 'prefer-literal-enum-member',
@@ -21,9 +20,12 @@ export default createRule<[], 'notLiteral'>({
   defaultOptions: [],
   create(context) {
     return {
-      'TSEnumMember[initializer != null]'(node: TSESTree.TSEnumMember): void {
+      TSEnumMember(node): void {
         // If there is no initializer, then this node is just the name of the member, so ignore.
-        if (node.initializer!.type !== AST_NODE_TYPES.Literal) {
+        if (
+          node.initializer != null &&
+          node.initializer.type !== AST_NODE_TYPES.Literal
+        ) {
           context.report({
             node: node.id,
             messageId: 'notLiteral',
