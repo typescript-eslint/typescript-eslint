@@ -45,6 +45,7 @@
   "dependencies": {
     "@types/eslint-visitor-keys": "^1.0.0",
     "@typescript-eslint/experimental-utils": "3.4.0",
+    "@typescript-eslint/types": "3.4.0",
     "@typescript-eslint/typescript-estree": "3.4.0",
     "eslint-visitor-keys": "^1.1.0"
   },

@@ -1,7 +1,6 @@
-import { TSNode } from './ts-nodes';
-import { AST_NODE_TYPES } from './ast-node-types';
-import { Node } from './ts-estree';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as ts from 'typescript';
+import { TSNode } from './ts-nodes';
 
 export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ArrayExpression]: ts.ArrayLiteralExpression;
@@ -274,7 +273,7 @@ export interface EstreeToTsNodeTypes {
  * Maps TSESTree AST Node type to the expected TypeScript AST Node type(s).
  * This mapping is based on the internal logic of the parser.
  */
-export type TSESTreeToTSNode<T extends Node = Node> = Extract<
+export type TSESTreeToTSNode<T extends TSESTree.Node = TSESTree.Node> = Extract<
   TSNode | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>,
   EstreeToTsNodeTypes[T['type']]
 >;
