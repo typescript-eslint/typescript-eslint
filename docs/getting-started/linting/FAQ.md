@@ -9,6 +9,7 @@
 - [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
 - [TypeScript should be installed locally](#typescript-should-be-installed-locally)
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
+- [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors.](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
 
 ---
 
@@ -208,3 +209,19 @@ For example, you can ban enums (or some variation of) using one of the following
   }
 }
 ```
+
+<br />
+<br />
+<br />
+
+---
+
+<br />
+<br />
+<br />
+
+## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors.
+
+The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
+
+You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring#specifying-environments).
