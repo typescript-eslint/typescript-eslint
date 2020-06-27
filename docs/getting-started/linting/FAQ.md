@@ -10,7 +10,7 @@
 - [TypeScript should be installed locally](#typescript-should-be-installed-locally)
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
 - [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
-- [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors.](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
+- [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
 
 ---
 
@@ -240,7 +240,7 @@ Instead, our tooling exists to **_augment_** TypeScript's built in checks with l
 <br />
 <br />
 
-## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors.
+## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors
 
 The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
 
