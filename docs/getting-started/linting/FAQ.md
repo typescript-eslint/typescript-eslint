@@ -221,7 +221,6 @@ For example, you can ban enums (or some variation of) using one of the following
 <br />
 <br />
 
-
 ## Why don't I see TypeScript errors in my ESLint output?
 
 TypeScript's compiler (or whatever your build chain may be) is specifically designed and built to validate the correctness of your codebase.
