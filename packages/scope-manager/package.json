@@ -1,0 +1,67 @@
+{
+  "name": "@typescript-eslint/scope-manager",
+  "version": "3.4.0",
+  "description": "TypeScript scope analyser for ESLint",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
+  "engines": {
+    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/scope-manager"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "test": "jest --coverage",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@typescript-eslint/types": "3.4.0",
+    "@typescript-eslint/visitor-keys": "3.4.0"
+  },
+  "devDependencies": {
+    "@types/jest-specific-snapshot": "^0.5.4",
+    "@types/mkdirp": "^1.0.0",
+    "@typescript-eslint/typescript-estree": "3.4.0",
+    "glob": "^7.1.6",
+    "jest-specific-snapshot": "^3.0.0",
+    "make-dir": "^3.1.0",
+    "prettier": "*",
+    "pretty-format": "^25.5.0",
+    "rimraf": "*",
+    "typescript": "*"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "_ts3.4/*"
+      ]
+    }
+  }
+}

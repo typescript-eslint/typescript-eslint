@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions arrow no-body 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ParameterDefinition$1 {
+          name: Identifier<"a">,
+          node: ArrowFunctionExpression$1,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$2,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$1,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "a" => Variable$1,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

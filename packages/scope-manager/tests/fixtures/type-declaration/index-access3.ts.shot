@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration index-access3 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"k">,
+          node: VariableDeclarator$2,
+        },
+      ],
+      name: "k",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"k">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: Literal$3,
+        },
+        Reference$2 {
+          identifier: Identifier<"k">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$4,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "T" => Variable$1,
+        "k" => Variable$2,
+        "A" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

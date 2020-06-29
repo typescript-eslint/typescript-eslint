@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions arrow params 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"outer">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "outer",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"outer">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+        Reference$6 {
+          identifier: Identifier<"outer">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"a">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+        },
+        Reference$7 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"b">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"c">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "c",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        ParameterDefinition$5 {
+          name: Identifier<"d">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "d",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"d">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$5,
+          writeExpr: Literal$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$6 {
+      defs: Array [
+        ParameterDefinition$6 {
+          name: Identifier<"e">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "e",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"e">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$6,
+          writeExpr: Identifier<"a">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$7 {
+      defs: Array [
+        ParameterDefinition$7 {
+          name: Identifier<"f">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "f",
+      references: Array [
+        Reference$5 {
+          identifier: Identifier<"f">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$7,
+          writeExpr: Identifier<"outer">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$8 {
+      defs: Array [
+        ParameterDefinition$8 {
+          name: Identifier<"g">,
+          node: ArrowFunctionExpression$3,
+        },
+      ],
+      name: "g",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$9 {
+      defs: Array [
+        VariableDefinition$9 {
+          name: Identifier<"unresolved">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "unresolved",
+      references: Array [
+        Reference$8 {
+          identifier: Identifier<"unresolved">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$9,
+          writeExpr: Identifier<"g">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$8,
+        Reference$9 {
+          identifier: Identifier<"g">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "outer" => Variable$1,
+        "unresolved" => Variable$9,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$9,
+      ],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$3,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+        Reference$3,
+        Reference$4,
+        Reference$5,
+        Reference$6,
+        Reference$7,
+      ],
+      set: Map {
+        "a" => Variable$2,
+        "b" => Variable$3,
+        "c" => Variable$4,
+        "d" => Variable$5,
+        "e" => Variable$6,
+        "f" => Variable$7,
+        "g" => Variable$8,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+        Variable$5,
+        Variable$6,
+        Variable$7,
+        Variable$8,
+      ],
+    },
+  ],
+}
+`;

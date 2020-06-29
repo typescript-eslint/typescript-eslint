@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration signatures method-computed-name 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"x">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "x",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"x">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+        Reference$2 {
+          identifier: Identifier<"x">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$2,
+        },
+        Reference$4 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$4,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"arg">,
+          node: TSMethodSignature$5,
+        },
+      ],
+      name: "arg",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "x" => Variable$1,
+        "T" => Variable$2,
+        "A" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    FunctionTypeScope$2 {
+      block: TSMethodSignature$5,
+      isStrict: true,
+      references: Array [
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "arg" => Variable$4,
+      },
+      type: "functionType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

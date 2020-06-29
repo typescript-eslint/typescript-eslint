@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration implements 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"A">,
+          node: TSInterfaceDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"A">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ClassNameDefinition$3 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "A" => Variable$1,
+        "B" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$2,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "B" => Variable$3,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

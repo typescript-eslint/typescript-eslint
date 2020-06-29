@@ -32,6 +32,8 @@
         "${workspaceFolder}/packages/types/dist/index.js",
         "${workspaceFolder}/packages/visitor-keys/src/index.ts",
         "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
       ],
     },
     {
@@ -62,6 +64,8 @@
         "${workspaceFolder}/packages/types/dist/index.js",
         "${workspaceFolder}/packages/visitor-keys/src/index.ts",
         "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
       ],
     },
     {
@@ -92,6 +96,8 @@
         "${workspaceFolder}/packages/types/dist/index.js",
         "${workspaceFolder}/packages/visitor-keys/src/index.ts",
         "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
       ],
     },
     {
@@ -122,6 +128,8 @@
         "${workspaceFolder}/packages/types/dist/index.js",
         "${workspaceFolder}/packages/visitor-keys/src/index.ts",
         "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
       ],
     },
     {
@@ -152,7 +160,41 @@
         "${workspaceFolder}/packages/types/dist/index.js",
         "${workspaceFolder}/packages/visitor-keys/src/index.ts",
         "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
       ],
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run currently opened scope-manager test",
+      "cwd": "${workspaceFolder}/packages/scope-manager/",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": [
+        "--runInBand",
+        "--no-cache",
+        "--no-coverage",
+        "${fileBasename}"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
+        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
+        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
+        "${workspaceFolder}/packages/parser/src/index.ts",
+        "${workspaceFolder}/packages/parser/dist/index.js",
+        "${workspaceFolder}/packages/typescript-estree/src/index.ts",
+        "${workspaceFolder}/packages/typescript-estree/dist/index.js",
+        "${workspaceFolder}/packages/types/src/index.ts",
+        "${workspaceFolder}/packages/types/dist/index.js",
+        "${workspaceFolder}/packages/visitor-keys/src/index.ts",
+        "${workspaceFolder}/packages/visitor-keys/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+        "${workspaceFolder}/packages/scope-manager/dist/index.js",
+      ],
+    },
   ]
 }

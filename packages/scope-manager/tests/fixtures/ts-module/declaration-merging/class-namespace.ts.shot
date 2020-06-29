@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ts-module declaration-merging class-namespace 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ClassNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$1,
+        },
+        TSModuleNameDefinition$3 {
+          name: Identifier<"Foo">,
+          node: TSModuleDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"Foo">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        VariableDefinition$4 {
+          name: Identifier<"x">,
+          node: VariableDeclarator$3,
+        },
+      ],
+      name: "x",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"x">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: Literal$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        VariableDefinition$5 {
+          name: Identifier<"usage">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "usage",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"usage">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: Identifier<"Foo">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "Foo" => Variable$1,
+        "usage" => Variable$4,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$4,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "Foo" => Variable$2,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+    TSModuleScope$3 {
+      block: TSModuleDeclaration$2,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "x" => Variable$3,
+      },
+      type: "tsModule",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;
