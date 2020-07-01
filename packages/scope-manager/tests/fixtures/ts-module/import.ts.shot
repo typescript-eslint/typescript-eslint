@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ts-module import 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ImportBindingDefinition$1 {
+          name: Identifier<"bar">,
+          node: ImportSpecifier$1,
+        },
+      ],
+      name: "bar",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$2,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+    TSModuleScope$3 {
+      block: TSModuleDeclaration$3,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "bar" => Variable$1,
+      },
+      type: "tsModule",
+      upper: ModuleScope$2,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

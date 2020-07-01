@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`export equals1 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"x">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "x",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"x">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+        Reference$2 {
+          identifier: Identifier<"x">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "x" => Variable$1,
+      },
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

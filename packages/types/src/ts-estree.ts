@@ -331,6 +331,13 @@ export type DeclarationStatement =
   | TSNamespaceExportDeclaration
   | TSTypeAliasDeclaration
   | TSEnumDeclaration;
+export type DestructuringPattern =
+  | Identifier
+  | ObjectPattern
+  | ArrayPattern
+  | RestElement
+  | AssignmentPattern
+  | MemberExpression;
 export type EntityName = Identifier | TSQualifiedName;
 export type ExportDeclaration =
   | ClassDeclaration
@@ -347,6 +354,7 @@ export type Expression =
   | AssignmentExpression
   | BinaryExpression
   | ConditionalExpression
+  | ImportExpression
   | JSXClosingElement
   | JSXClosingFragment
   | JSXExpressionContainer
@@ -360,11 +368,7 @@ export type Expression =
   | SpreadElement
   | TSAsExpression
   | TSUnaryExpression
-  | YieldExpression
-  | ImportExpression;
-export type ExpressionWithTypeArguments =
-  | TSClassImplements
-  | TSInterfaceHeritage;
+  | YieldExpression;
 export type ForInitialiser = Expression | VariableDeclaration;
 export type ImportClause =
   | ImportDefaultSpecifier
@@ -429,19 +433,12 @@ export type OptionalMemberExpression =
   | OptionalMemberExpressionComputedName
   | OptionalMemberExpressionNonComputedName;
 export type Parameter =
-  | AssignmentPattern
-  | RestElement
   | ArrayPattern
-  | ObjectPattern
+  | AssignmentPattern
   | Identifier
+  | ObjectPattern
+  | RestElement
   | TSParameterProperty;
-export type DestructuringPattern =
-  | Identifier
-  | ObjectPattern
-  | ArrayPattern
-  | RestElement
-  | AssignmentPattern
-  | MemberExpression;
 export type PrimaryExpression =
   | ArrayExpression
   | ArrayPattern
@@ -514,12 +511,10 @@ export type TypeElement =
   | TSMethodSignature
   | TSPropertySignature;
 export type TypeNode =
-  | ThisExpression
   | TSAnyKeyword
   | TSArrayType
   | TSBigIntKeyword
   | TSBooleanKeyword
-  | TSClassImplements
   | TSConditionalType
   | TSConstructorType
   | TSFunctionType
@@ -575,7 +570,7 @@ interface ClassDeclarationBase extends BaseNode {
   id: Identifier | null;
   body: ClassBody;
   superClass: LeftHandSideExpression | null;
-  implements?: ExpressionWithTypeArguments[];
+  implements?: TSClassImplements[];
   abstract?: boolean;
   declare?: boolean;
   decorators?: Decorator[];
@@ -1422,7 +1417,7 @@ export interface TSIndexSignature extends BaseNode {
 
 export interface TSInferType extends BaseNode {
   type: AST_NODE_TYPES.TSInferType;
-  typeParameter: TSTypeParameterDeclaration;
+  typeParameter: TSTypeParameter;
 }
 
 export interface TSInterfaceDeclaration extends BaseNode {
@@ -1430,8 +1425,8 @@ export interface TSInterfaceDeclaration extends BaseNode {
   body: TSInterfaceBody;
   id: Identifier;
   typeParameters?: TSTypeParameterDeclaration;
-  extends?: ExpressionWithTypeArguments[];
-  implements?: ExpressionWithTypeArguments[];
+  extends?: TSInterfaceHeritage[];
+  implements?: TSInterfaceHeritage[];
   decorators?: Decorator[];
   abstract?: boolean;
   declare?: boolean;

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration computed-member 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"outer1">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "outer1",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"outer1">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+        Reference$3 {
+          identifier: Identifier<"outer1">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"outer2">,
+          node: VariableDeclarator$3,
+        },
+      ],
+      name: "outer2",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"outer2">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: Literal$4,
+        },
+        Reference$4 {
+          identifier: Identifier<"outer2">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        ClassNameDefinition$3 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$5,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ClassNameDefinition$4 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$5,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "outer1" => Variable$1,
+        "outer2" => Variable$2,
+        "A" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$5,
+      isStrict: true,
+      references: Array [
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "A" => Variable$4,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+    FunctionScope$3 {
+      block: FunctionExpression$7,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$5,
+      },
+      type: "function",
+      upper: ClassScope$2,
+      variables: Array [
+        Variable$5,
+      ],
+    },
+  ],
+}
+`;

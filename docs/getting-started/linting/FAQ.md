@@ -10,6 +10,7 @@
 - [TypeScript should be installed locally](#typescript-should-be-installed-locally)
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
 - [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
+- [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
 
 ---
 
@@ -228,3 +229,19 @@ Our tooling does not reproduce the errors that TypeScript provides, because doin
 Instead, our tooling exists to **_augment_** TypeScript's built in checks with lint rules that consume the type information in new ways beyond just verifying the runtime correctness of your code.
 
 [1] - TypeScript computes type information lazily, so us asking for the errors it would produce from the compiler would take an _additional_ ~100ms per file. This doesn't sound like a lot, but depending on the size of your codebase, it can easily add up to between several seconds to several minutes to a lint run.
+
+<br />
+<br />
+<br />
+
+---
+
+<br />
+<br />
+<br />
+
+## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors
+
+The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
+
+You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring#specifying-environments).

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration signatures index-sig 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "T" => Variable$1,
+        "A" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;

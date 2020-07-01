@@ -72,6 +72,7 @@
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.5",
     "@types/prettier": "^2.0.0",
+    "@types/rimraf": "^3.0.0",
     "all-contributors-cli": "^6.14.2",
     "cspell": "^4.0.61",
     "cz-conventional-changelog": "^3.2.0",

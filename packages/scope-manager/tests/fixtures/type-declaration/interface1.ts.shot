@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration interface1 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"A">,
+          node: TSInterfaceDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$2,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "A" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

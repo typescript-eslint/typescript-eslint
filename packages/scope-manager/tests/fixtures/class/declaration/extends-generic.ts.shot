@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration extends-generic 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ClassNameDefinition$1 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"A">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"U">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "U",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TypeDefinition$4 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [
+        ClassNameDefinition$5 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$4,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        ClassNameDefinition$6 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$4,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "A" => Variable$1,
+        "T" => Variable$4,
+        "B" => Variable$5,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$4,
+        Variable$5,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "A" => Variable$2,
+        "U" => Variable$3,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    ClassScope$3 {
+      block: ClassDeclaration$4,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "B" => Variable$6,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$6,
+      ],
+    },
+  ],
+}
+`;

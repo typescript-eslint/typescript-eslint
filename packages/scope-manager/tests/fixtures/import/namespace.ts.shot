@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`import namespace 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ImportBindingDefinition$1 {
+          name: Identifier<"v">,
+          node: ImportNamespaceSpecifier$1,
+        },
+      ],
+      name: "v",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"v">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+        Reference$2 {
+          identifier: Identifier<"v">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "T",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "v" => Variable$1,
+        "T" => Variable$2,
+      },
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;
