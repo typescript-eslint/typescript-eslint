@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ts-module declaration-merging namespace-variable 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TSModuleNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: TSModuleDeclaration$1,
+        },
+        VariableDefinition$2 {
+          name: Identifier<"Foo">,
+          node: VariableDeclarator$2,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"Foo">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$3,
+        },
+        Reference$3 {
+          identifier: Identifier<"Foo">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$3 {
+          name: Identifier<"usage">,
+          node: VariableDeclarator$4,
+        },
+      ],
+      name: "usage",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"usage">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: Identifier<"Foo">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "Foo" => Variable$1,
+        "usage" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    TSModuleScope$2 {
+      block: TSModuleDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "tsModule",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+  ],
+}
+`;

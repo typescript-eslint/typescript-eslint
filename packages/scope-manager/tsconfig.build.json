@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true
+  },
+  "include": ["src", "typings"],
+  "exclude": ["tests/fixtures"],
+  "references": [
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../typescript-estree/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" }
+  ]
+}

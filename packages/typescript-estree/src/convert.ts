@@ -2477,8 +2477,8 @@ export class Converter {
         }
 
         if (interfaceHeritageClauses.length > 0) {
-          const interfaceExtends: TSESTree.ExpressionWithTypeArguments[] = [];
-          const interfaceImplements: TSESTree.ExpressionWithTypeArguments[] = [];
+          const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
+          const interfaceImplements: TSESTree.TSInterfaceHeritage[] = [];
 
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {

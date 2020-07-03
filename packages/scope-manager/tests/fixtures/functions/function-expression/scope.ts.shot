@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions function-expression scope 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"foo">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: FunctionExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"i">,
+          node: VariableDeclarator$3,
+        },
+      ],
+      name: "i",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"i">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: Literal$4,
+        },
+        Reference$4 {
+          identifier: Identifier<"i">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        VariableDefinition$3 {
+          name: Identifier<"j">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "j",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"j">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: Literal$6,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        VariableDefinition$4 {
+          name: Identifier<"unresolved">,
+          node: VariableDeclarator$7,
+        },
+      ],
+      name: "unresolved",
+      references: Array [
+        Reference$5 {
+          identifier: Identifier<"unresolved">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$5,
+          writeExpr: Identifier<"j">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$8,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$5,
+        Reference$6 {
+          identifier: Identifier<"j">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "foo" => Variable$1,
+        "unresolved" => Variable$5,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$5,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionExpression$2,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "arguments" => Variable$2,
+        "i" => Variable$3,
+        "j" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

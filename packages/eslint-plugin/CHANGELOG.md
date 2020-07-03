@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.4.0...v3.5.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] support unicode in regex ([#2241](https://github.com/typescript-eslint/typescript-eslint/issues/2241)) ([5fdd21a](https://github.com/typescript-eslint/typescript-eslint/commit/5fdd21a1726fb6928098c4152aec55a30df960d4))
+
+
+### Features
+
+* add package scope-manager ([#1939](https://github.com/typescript-eslint/typescript-eslint/issues/1939)) ([682eb7e](https://github.com/typescript-eslint/typescript-eslint/commit/682eb7e009c3f22a542882dfd3602196a60d2a1e))
+
+
+
+
+
+# [3.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.3.0...v3.4.0) (2020-06-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] handle intersection types ([#2170](https://github.com/typescript-eslint/typescript-eslint/issues/2170)) ([9cca3a9](https://github.com/typescript-eslint/typescript-eslint/commit/9cca3a9584d5d5ef0536219c5a734f4e87efb543))
+* **eslint-plugin:** [unbound-method] handling destructuring ([#2228](https://github.com/typescript-eslint/typescript-eslint/issues/2228)) ([c3753c2](https://github.com/typescript-eslint/typescript-eslint/commit/c3753c21768d355ecdb9e7ae8e0bfdfbbc1d3bbe))
+
+
+### Features
+
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] add option to check nullable booleans ([#1983](https://github.com/typescript-eslint/typescript-eslint/issues/1983)) ([c0b3057](https://github.com/typescript-eslint/typescript-eslint/commit/c0b3057b7f7d515891ad2efe32e4ef8c01e0478f))
+* **eslint-plugin:** add extension rule `no-loss-of-precision` ([#2196](https://github.com/typescript-eslint/typescript-eslint/issues/2196)) ([535b0f2](https://github.com/typescript-eslint/typescript-eslint/commit/535b0f2ddd82efa6a2c40307a61c480f4b3cdea3))
+
+
+
+
+
 # [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
 
 

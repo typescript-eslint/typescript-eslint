@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`catch scope 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        CatchClauseDefinition$1 {
+          name: Identifier<"e">,
+          node: CatchClause$1,
+        },
+      ],
+      name: "e",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"e">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$2 {
+          name: Identifier<"a">,
+          node: VariableDeclarator$2,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"a">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$2,
+          writeExpr: Literal$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        VariableDefinition$3 {
+          name: Identifier<"unresolved">,
+          node: VariableDeclarator$4,
+        },
+      ],
+      name: "unresolved",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"unresolved">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: Identifier<"e">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        VariableDefinition$4 {
+          name: Identifier<"dontReference2">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "dontReference2",
+      references: Array [
+        Reference$5 {
+          identifier: Identifier<"dontReference2">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$4,
+          writeExpr: Identifier<"a">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$3,
+        Reference$4 {
+          identifier: Identifier<"e">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+        Reference$5,
+        Reference$6 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "unresolved" => Variable$3,
+        "dontReference2" => Variable$4,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    BlockScope$2 {
+      block: BlockStatement$7,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "block",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+    CatchScope$3 {
+      block: CatchClause$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "e" => Variable$1,
+      },
+      type: "catch",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    BlockScope$4 {
+      block: BlockStatement$8,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "a" => Variable$2,
+      },
+      type: "block",
+      upper: CatchScope$3,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;

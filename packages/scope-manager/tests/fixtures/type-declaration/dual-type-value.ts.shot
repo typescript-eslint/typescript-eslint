@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration dual-type-value 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"dual">,
+          node: VariableDeclarator$1,
+        },
+        TypeDefinition$2 {
+          name: Identifier<"dual">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "dual",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"dual">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$3,
+        },
+        Reference$2 {
+          identifier: Identifier<"dual">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+        Reference$4 {
+          identifier: Identifier<"dual">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"reference1">,
+          node: TSTypeAliasDeclaration$4,
+        },
+      ],
+      name: "reference1",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        VariableDefinition$4 {
+          name: Identifier<"reference2">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "reference2",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"reference2">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+          writeExpr: Identifier<"dual">,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$6,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "dual" => Variable$1,
+        "reference1" => Variable$2,
+        "reference2" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

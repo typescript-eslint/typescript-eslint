@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ts-enum literal-member 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TSEnumNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: TSEnumDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TSEnumNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: TSEnumDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TSEnumMemberDefinition$3 {
+          name: Literal$2,
+          node: TSEnumMember$3,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "Foo" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    TSEnumScope$2 {
+      block: TSEnumDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "Foo" => Variable$2,
+        "a" => Variable$3,
+      },
+      type: "tsEnum",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

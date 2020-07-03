@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.4.0...v3.5.0) (2020-06-29)
+
+
+### Features
+
+* split types into their own package ([#2229](https://github.com/typescript-eslint/typescript-eslint/issues/2229)) ([5f45918](https://github.com/typescript-eslint/typescript-eslint/commit/5f4591886f3438329fbf2229b03ac66174334a24))
+
+
+
+
+
+# [3.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.3.0...v3.4.0) (2020-06-22)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 # [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
 
 **Note:** Version bump only for package @typescript-eslint/parser

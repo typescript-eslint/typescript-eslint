@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration interface-heritage2 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"unreferenced">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "unreferenced",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TSModuleNameDefinition$2 {
+          name: Identifier<"Member">,
+          node: TSModuleDeclaration$2,
+        },
+      ],
+      name: "Member",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"Member">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"unreferenced">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "unreferenced",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TypeDefinition$4 {
+          name: Identifier<"Foo">,
+          node: TSInterfaceDeclaration$4,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "unreferenced" => Variable$1,
+        "Member" => Variable$2,
+        "Foo" => Variable$4,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+        Variable$4,
+      ],
+    },
+    TSModuleScope$2 {
+      block: TSModuleDeclaration$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "unreferenced" => Variable$3,
+      },
+      type: "tsModule",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

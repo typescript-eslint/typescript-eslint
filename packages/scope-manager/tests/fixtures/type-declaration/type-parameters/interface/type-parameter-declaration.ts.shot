@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration type-parameters interface type-parameter-declaration 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"Foo">,
+          node: TSInterfaceDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "T",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"Unresolved">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "Unresolved",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "Foo" => Variable$1,
+        "Unresolved" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$3,
+      ],
+    },
+    TypeScope$2 {
+      block: TSInterfaceDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "T" => Variable$2,
+      },
+      type: "type",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;

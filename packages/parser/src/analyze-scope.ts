@@ -1,13 +1,10 @@
-import {
-  TSESTree,
-  TSESLintScope,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLintScope } from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
+import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 import { getKeys as fallback } from 'eslint-visitor-keys';
 
 import { ParserOptions } from './parser-options';
 import { ScopeManager } from './scope/scope-manager';
-import { visitorKeys as childVisitorKeys } from '@typescript-eslint/typescript-estree';
 
 /**
  * Define the override function of `Scope#__define` for global augmentation.

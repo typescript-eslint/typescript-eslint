@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`global-resolution script variable-decl-var 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"top">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "top",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$2,
+      isStrict: false,
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"top">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+          writeExpr: ArrowFunctionExpression$3,
+        },
+        Reference$2 {
+          identifier: Identifier<"top">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "top" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    FunctionScope$2 {
+      block: ArrowFunctionExpression$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+  ],
+}
+`;

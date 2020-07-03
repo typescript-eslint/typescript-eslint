@@ -1,4 +1,5 @@
 **/tests/fixtures/**/*
+!packages/scope-manager/tests/fixtures/**/*
 **/tests/fixture-project/**/*
 **/dist
 **/coverage

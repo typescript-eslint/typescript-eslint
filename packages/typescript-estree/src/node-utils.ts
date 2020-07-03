@@ -5,22 +5,6 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
-const ASSIGNMENT_OPERATORS: ts.AssignmentOperator[] = [
-  SyntaxKind.EqualsToken,
-  SyntaxKind.PlusEqualsToken,
-  SyntaxKind.MinusEqualsToken,
-  SyntaxKind.AsteriskEqualsToken,
-  SyntaxKind.AsteriskAsteriskEqualsToken,
-  SyntaxKind.SlashEqualsToken,
-  SyntaxKind.PercentEqualsToken,
-  SyntaxKind.LessThanLessThanEqualsToken,
-  SyntaxKind.GreaterThanGreaterThanEqualsToken,
-  SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
-  SyntaxKind.AmpersandEqualsToken,
-  SyntaxKind.BarEqualsToken,
-  SyntaxKind.CaretEqualsToken,
-];
-
 const LOGICAL_OPERATORS: (
   | ts.LogicalOperator
   | ts.SyntaxKind.QuestionQuestionToken
@@ -30,71 +14,71 @@ const LOGICAL_OPERATORS: (
   SyntaxKind.QuestionQuestionToken,
 ];
 
-const TOKEN_TO_TEXT = {
-  [SyntaxKind.OpenBraceToken]: '{',
-  [SyntaxKind.CloseBraceToken]: '}',
-  [SyntaxKind.OpenParenToken]: '(',
-  [SyntaxKind.CloseParenToken]: ')',
-  [SyntaxKind.OpenBracketToken]: '[',
-  [SyntaxKind.CloseBracketToken]: ']',
-  [SyntaxKind.DotToken]: '.',
-  [SyntaxKind.DotDotDotToken]: '...',
-  [SyntaxKind.SemicolonToken]: ';',
-  [SyntaxKind.CommaToken]: ',',
-  [SyntaxKind.LessThanToken]: '<',
-  [SyntaxKind.GreaterThanToken]: '>',
-  [SyntaxKind.LessThanEqualsToken]: '<=',
-  [SyntaxKind.GreaterThanEqualsToken]: '>=',
-  [SyntaxKind.EqualsEqualsToken]: '==',
-  [SyntaxKind.ExclamationEqualsToken]: '!=',
-  [SyntaxKind.EqualsEqualsEqualsToken]: '===',
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof',
-  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==',
-  [SyntaxKind.EqualsGreaterThanToken]: '=>',
-  [SyntaxKind.PlusToken]: '+',
-  [SyntaxKind.MinusToken]: '-',
-  [SyntaxKind.AsteriskToken]: '*',
-  [SyntaxKind.AsteriskAsteriskToken]: '**',
-  [SyntaxKind.SlashToken]: '/',
-  [SyntaxKind.PercentToken]: '%',
-  [SyntaxKind.PlusPlusToken]: '++',
-  [SyntaxKind.MinusMinusToken]: '--',
-  [SyntaxKind.LessThanLessThanToken]: '<<',
-  [SyntaxKind.LessThanSlashToken]: '</',
-  [SyntaxKind.GreaterThanGreaterThanToken]: '>>',
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>',
-  [SyntaxKind.AmpersandToken]: '&',
-  [SyntaxKind.BarToken]: '|',
-  [SyntaxKind.CaretToken]: '^',
-  [SyntaxKind.ExclamationToken]: '!',
-  [SyntaxKind.TildeToken]: '~',
-  [SyntaxKind.AmpersandAmpersandToken]: '&&',
-  [SyntaxKind.BarBarToken]: '||',
-  [SyntaxKind.QuestionToken]: '?',
-  [SyntaxKind.ColonToken]: ':',
-  [SyntaxKind.EqualsToken]: '=',
-  [SyntaxKind.PlusEqualsToken]: '+=',
-  [SyntaxKind.MinusEqualsToken]: '-=',
-  [SyntaxKind.AsteriskEqualsToken]: '*=',
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=',
-  [SyntaxKind.SlashEqualsToken]: '/=',
-  [SyntaxKind.PercentEqualsToken]: '%=',
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=',
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=',
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=',
-  [SyntaxKind.AmpersandEqualsToken]: '&=',
-  [SyntaxKind.BarEqualsToken]: '|=',
-  [SyntaxKind.CaretEqualsToken]: '^=',
-  [SyntaxKind.AtToken]: '@',
-  [SyntaxKind.InKeyword]: 'in',
-  [SyntaxKind.UniqueKeyword]: 'unique',
-  [SyntaxKind.KeyOfKeyword]: 'keyof',
-  [SyntaxKind.NewKeyword]: 'new',
-  [SyntaxKind.ImportKeyword]: 'import',
-  [SyntaxKind.ReadonlyKeyword]: 'readonly',
-  [SyntaxKind.QuestionQuestionToken]: '??',
-  [SyntaxKind.QuestionDotToken]: '?.',
-} as const;
+interface TokenToText {
+  [SyntaxKind.OpenBraceToken]: '{';
+  [SyntaxKind.CloseBraceToken]: '}';
+  [SyntaxKind.OpenParenToken]: '(';
+  [SyntaxKind.CloseParenToken]: ')';
+  [SyntaxKind.OpenBracketToken]: '[';
+  [SyntaxKind.CloseBracketToken]: ']';
+  [SyntaxKind.DotToken]: '.';
+  [SyntaxKind.DotDotDotToken]: '...';
+  [SyntaxKind.SemicolonToken]: ';';
+  [SyntaxKind.CommaToken]: ',';
+  [SyntaxKind.LessThanToken]: '<';
+  [SyntaxKind.GreaterThanToken]: '>';
+  [SyntaxKind.LessThanEqualsToken]: '<=';
+  [SyntaxKind.GreaterThanEqualsToken]: '>=';
+  [SyntaxKind.EqualsEqualsToken]: '==';
+  [SyntaxKind.ExclamationEqualsToken]: '!=';
+  [SyntaxKind.EqualsEqualsEqualsToken]: '===';
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
+  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==';
+  [SyntaxKind.EqualsGreaterThanToken]: '=>';
+  [SyntaxKind.PlusToken]: '+';
+  [SyntaxKind.MinusToken]: '-';
+  [SyntaxKind.AsteriskToken]: '*';
+  [SyntaxKind.AsteriskAsteriskToken]: '**';
+  [SyntaxKind.SlashToken]: '/';
+  [SyntaxKind.PercentToken]: '%';
+  [SyntaxKind.PlusPlusToken]: '++';
+  [SyntaxKind.MinusMinusToken]: '--';
+  [SyntaxKind.LessThanLessThanToken]: '<<';
+  [SyntaxKind.LessThanSlashToken]: '</';
+  [SyntaxKind.GreaterThanGreaterThanToken]: '>>';
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>';
+  [SyntaxKind.AmpersandToken]: '&';
+  [SyntaxKind.BarToken]: '|';
+  [SyntaxKind.CaretToken]: '^';
+  [SyntaxKind.ExclamationToken]: '!';
+  [SyntaxKind.TildeToken]: '~';
+  [SyntaxKind.AmpersandAmpersandToken]: '&&';
+  [SyntaxKind.BarBarToken]: '||';
+  [SyntaxKind.QuestionToken]: '?';
+  [SyntaxKind.ColonToken]: ':';
+  [SyntaxKind.EqualsToken]: '=';
+  [SyntaxKind.PlusEqualsToken]: '+=';
+  [SyntaxKind.MinusEqualsToken]: '-=';
+  [SyntaxKind.AsteriskEqualsToken]: '*=';
+  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
+  [SyntaxKind.SlashEqualsToken]: '/=';
+  [SyntaxKind.PercentEqualsToken]: '%=';
+  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
+  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
+  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
+  [SyntaxKind.AmpersandEqualsToken]: '&=';
+  [SyntaxKind.BarEqualsToken]: '|=';
+  [SyntaxKind.CaretEqualsToken]: '^=';
+  [SyntaxKind.AtToken]: '@';
+  [SyntaxKind.InKeyword]: 'in';
+  [SyntaxKind.UniqueKeyword]: 'unique';
+  [SyntaxKind.KeyOfKeyword]: 'keyof';
+  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.ImportKeyword]: 'import';
+  [SyntaxKind.ReadonlyKeyword]: 'readonly';
+  [SyntaxKind.QuestionQuestionToken]: '??';
+  [SyntaxKind.QuestionDotToken]: '?.';
+}
 
 /**
  * Returns true if the given ts.Token is the assignment operator
@@ -104,7 +88,10 @@ const TOKEN_TO_TEXT = {
 export function isAssignmentOperator<T extends ts.SyntaxKind>(
   operator: ts.Token<T>,
 ): boolean {
-  return (ASSIGNMENT_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
+  return (
+    operator.kind >= SyntaxKind.FirstAssignment &&
+    operator.kind <= SyntaxKind.LastAssignment
+  );
 }
 
 /**
@@ -125,9 +112,10 @@ export function isLogicalOperator<T extends ts.SyntaxKind>(
  */
 export function getTextForTokenKind<T extends ts.SyntaxKind>(
   kind: T,
-): T extends keyof typeof TOKEN_TO_TEXT ? typeof TOKEN_TO_TEXT[T] : undefined {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return kind in TOKEN_TO_TEXT ? (TOKEN_TO_TEXT as any)[kind] : undefined;
+): T extends keyof TokenToText ? TokenToText[T] : string | undefined {
+  return ts.tokenToString(kind) as T extends keyof TokenToText
+    ? TokenToText[T]
+    : string | undefined;
 }
 
 /**

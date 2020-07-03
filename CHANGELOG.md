@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.4.0...v3.5.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] support unicode in regex ([#2241](https://github.com/typescript-eslint/typescript-eslint/issues/2241)) ([5fdd21a](https://github.com/typescript-eslint/typescript-eslint/commit/5fdd21a1726fb6928098c4152aec55a30df960d4))
+* **typescript-estree:** forward compatibility for new compound assignment operators ([#2253](https://github.com/typescript-eslint/typescript-eslint/issues/2253)) ([ba41680](https://github.com/typescript-eslint/typescript-eslint/commit/ba41680f2a25b1aa4d05c2d4b132ac73a6faefbd))
+
+
+### Features
+
+* add package scope-manager ([#1939](https://github.com/typescript-eslint/typescript-eslint/issues/1939)) ([682eb7e](https://github.com/typescript-eslint/typescript-eslint/commit/682eb7e009c3f22a542882dfd3602196a60d2a1e))
+* split types into their own package ([#2229](https://github.com/typescript-eslint/typescript-eslint/issues/2229)) ([5f45918](https://github.com/typescript-eslint/typescript-eslint/commit/5f4591886f3438329fbf2229b03ac66174334a24))
+* split visitor keys into their own package ([#2230](https://github.com/typescript-eslint/typescript-eslint/issues/2230)) ([689dae3](https://github.com/typescript-eslint/typescript-eslint/commit/689dae37392d527c64ae83db2a4c3e6b7fecece7))
+
+
+
+
+
+# [3.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.3.0...v3.4.0) (2020-06-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] handle intersection types ([#2170](https://github.com/typescript-eslint/typescript-eslint/issues/2170)) ([9cca3a9](https://github.com/typescript-eslint/typescript-eslint/commit/9cca3a9584d5d5ef0536219c5a734f4e87efb543))
+* **eslint-plugin:** [unbound-method] handling destructuring ([#2228](https://github.com/typescript-eslint/typescript-eslint/issues/2228)) ([c3753c2](https://github.com/typescript-eslint/typescript-eslint/commit/c3753c21768d355ecdb9e7ae8e0bfdfbbc1d3bbe))
+* **experimental-utils:** correct types for TS versions older than 3.8 ([#2217](https://github.com/typescript-eslint/typescript-eslint/issues/2217)) ([5e4dda2](https://github.com/typescript-eslint/typescript-eslint/commit/5e4dda264a7d6a6a1626848e7599faea1ac34922))
+* **experimental-utils:** getParserServices takes a readonly context ([#2235](https://github.com/typescript-eslint/typescript-eslint/issues/2235)) ([26da8de](https://github.com/typescript-eslint/typescript-eslint/commit/26da8de7fcde9eddec63212d79af781c4bb22991))
+
+
+### Features
+
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] add option to check nullable booleans ([#1983](https://github.com/typescript-eslint/typescript-eslint/issues/1983)) ([c0b3057](https://github.com/typescript-eslint/typescript-eslint/commit/c0b3057b7f7d515891ad2efe32e4ef8c01e0478f))
+* **eslint-plugin:** add extension rule `no-loss-of-precision` ([#2196](https://github.com/typescript-eslint/typescript-eslint/issues/2196)) ([535b0f2](https://github.com/typescript-eslint/typescript-eslint/commit/535b0f2ddd82efa6a2c40307a61c480f4b3cdea3))
+
+
+
+
+
 # [3.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.2.0...v3.3.0) (2020-06-15)
 
 

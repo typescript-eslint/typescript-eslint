@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`decorators parameter 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"decorator">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "decorator",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"decorator">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+        Reference$2 {
+          identifier: Identifier<"decorator">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+        Reference$3 {
+          identifier: Identifier<"decorator">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+        Reference$5 {
+          identifier: Identifier<"decorator">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        FunctionNameDefinition$2 {
+          name: Identifier<"foo">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"a">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$6 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"b">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$7 {
+      defs: Array [
+        ParameterDefinition$5 {
+          name: Identifier<"c">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "c",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$8 {
+      defs: Array [
+        ParameterDefinition$6 {
+          name: Identifier<"d">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "d",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"d">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$8,
+          writeExpr: Literal$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "decorator" => Variable$1,
+        "foo" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$3,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$2,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+    FunctionScope$3 {
+      block: FunctionDeclaration$2,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+        Reference$4,
+        Reference$5,
+      ],
+      set: Map {
+        "arguments" => Variable$4,
+        "a" => Variable$5,
+        "b" => Variable$6,
+        "c" => Variable$7,
+        "d" => Variable$8,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+        Variable$5,
+        Variable$6,
+        Variable$7,
+        Variable$8,
+      ],
+    },
+  ],
+}
+`;

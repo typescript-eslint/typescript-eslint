@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ts-enum literal-member-ref 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TSEnumNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: TSEnumDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TSEnumNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: TSEnumDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TSEnumMemberDefinition$3 {
+          name: Literal$2,
+          node: TSEnumMember$3,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TSEnumMemberDefinition$4 {
+          name: Identifier<"b">,
+          node: TSEnumMember$4,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "Foo" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    TSEnumScope$2 {
+      block: TSEnumDeclaration$1,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "Foo" => Variable$2,
+        "a" => Variable$3,
+        "b" => Variable$4,
+      },
+      type: "tsEnum",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration abstract 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ClassNameDefinition$1 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"a">,
+          node: TSEmptyBodyFunctionExpression$2,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"b">,
+          node: TSEmptyBodyFunctionExpression$2,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "A" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "A" => Variable$2,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+    FunctionScope$3 {
+      block: TSEmptyBodyFunctionExpression$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$3,
+        "a" => Variable$4,
+        "b" => Variable$5,
+      },
+      type: "function",
+      upper: ClassScope$2,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+        Variable$5,
+      ],
+    },
+  ],
+}
+`;
