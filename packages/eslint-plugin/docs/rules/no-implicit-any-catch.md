@@ -24,7 +24,7 @@ The following patterns are not warnings:
 ```ts
 try {
   // ...
-} catch (e) {
+} catch (e /*: unknown*/) {
   // ...
 }
 ```
@@ -32,7 +32,7 @@ try {
 ```ts
 try {
   // ...
-} catch (e) {
+} catch (e /*: any*/) {
   // ...
 }
 ```
