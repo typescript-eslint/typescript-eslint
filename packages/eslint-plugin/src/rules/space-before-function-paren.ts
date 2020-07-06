@@ -116,7 +116,7 @@ export default util.createRule<Options, MessageIds>({
         return overrideConfig.named ?? baseConfig;
 
         // `generator-star-spacing` should warn anonymous generators. E.g. `function* () {}`
-      } else if (!('generator' in node) || node.generator == false) {
+      } else if (!('generator' in node) || node.generator === false) {
         return overrideConfig.anonymous ?? baseConfig;
       }
 
