@@ -23,6 +23,16 @@ enum ValidNumber {
 }
     `,
     `
+enum ValidNumber {
+  A = -42,
+}
+    `,
+    `
+enum ValidNumber {
+  A = +42,
+}
+    `,
+    `
 enum ValidNull {
   A = null,
 }
@@ -115,6 +125,44 @@ enum InvalidExpression {
         {
           messageId: 'notLiteral',
           line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum InvalidExpression {
+  A = delete 2,
+  B = -a,
+  C = void 2,
+  D = ~2,
+  E = !0,
+}
+      `,
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 3,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 6,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 7,
           column: 3,
         },
       ],
