@@ -148,6 +148,11 @@ ruleTester.run('space-before-function-paren', rule, {
       options: ['never'],
       parserOptions: { ecmaVersion: 8 },
     },
+    'abstract class Foo { constructor () {} abstract method () }',
+    {
+      code: 'abstract class Foo { constructor() {} abstract method() }',
+      options: ['never'],
+    },
   ],
 
   invalid: [

@@ -75,9 +75,10 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSAbstractMethodDefinition,
     ): boolean {
-      if (node.id) {
+      if ('id' in node && node.id != null) {
         return true;
       }
 
@@ -85,6 +86,7 @@ export default util.createRule<Options, MessageIds>({
 
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition ||
+        parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (parent.type === AST_NODE_TYPES.Property &&
           (parent.kind === 'get' || parent.kind === 'set' || parent.method))
       );
@@ -99,7 +101,8 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSAbstractMethodDefinition,
     ): FuncOption {
       if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
@@ -113,7 +116,7 @@ export default util.createRule<Options, MessageIds>({
         return overrideConfig.named ?? baseConfig;
 
         // `generator-star-spacing` should warn anonymous generators. E.g. `function* () {}`
-      } else if (!node.generator) {
+      } else if (!('generator' in node) || node.generator === false) {
         return overrideConfig.anonymous ?? baseConfig;
       }
 
@@ -129,7 +132,8 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSAbstractMethodDefinition,
     ): void {
       const functionConfig = getConfigForFunction(node);
 
@@ -161,7 +165,7 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         !hasSpacing &&
         functionConfig === 'always' &&
-        (!node.typeParameters || node.id)
+        (!node.typeParameters || ('id' in node && node != null))
       ) {
         context.report({
           node,
@@ -176,6 +180,7 @@ export default util.createRule<Options, MessageIds>({
       ArrowFunctionExpression: checkFunction,
       FunctionDeclaration: checkFunction,
       FunctionExpression: checkFunction,
+      TSAbstractMethodDefinition: checkFunction,
     };
   },
 });
