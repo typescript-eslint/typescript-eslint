@@ -153,6 +153,19 @@ ruleTester.run('space-before-function-paren', rule, {
       code: 'abstract class Foo { constructor() {} abstract method() }',
       options: ['never'],
     },
+    {
+      code: 'abstract class Foo { constructor() {} abstract method() }',
+      options: [{ anonymous: 'always', named: 'never' }],
+    },
+    'function foo ();',
+    {
+      code: 'function foo();',
+      options: ['never'],
+    },
+    {
+      code: 'function foo();',
+      options: [{ anonymous: 'always', named: 'never' }],
+    },
   ],
 
   invalid: [
