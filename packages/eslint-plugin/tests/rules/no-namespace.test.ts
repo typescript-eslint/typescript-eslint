@@ -18,6 +18,42 @@ ruleTester.run('no-namespace', rule, {
       options: [{ allowDeclarations: true }],
     },
     {
+      code: `
+declare global {
+  namespace foo {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare module foo {
+  namespace bar {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare global {
+  namespace foo {
+    namespace bar {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare namespace foo {
+  namespace bar {
+    namespace baz {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
       filename: 'test.d.ts',
       code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: true }],
@@ -63,6 +99,28 @@ ruleTester.run('no-namespace', rule, {
     {
       code: 'namespace foo {}',
       options: [{ allowDeclarations: false }],
+      errors: [
+        {
+          messageId: 'moduleSyntaxIsPreferred',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: 'module foo {}',
+      options: [{ allowDeclarations: true }],
+      errors: [
+        {
+          messageId: 'moduleSyntaxIsPreferred',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: 'namespace foo {}',
+      options: [{ allowDeclarations: true }],
       errors: [
         {
           messageId: 'moduleSyntaxIsPreferred',

@@ -17,7 +17,9 @@ import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
+import initDeclarations from './init-declarations';
 import keywordSpacing from './keyword-spacing';
+import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
@@ -35,10 +37,12 @@ import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
+import preferLiteralEnumMember from './prefer-literal-enum-member';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
+import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -85,7 +89,6 @@ import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
-import initDeclarations from './init-declarations';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -95,8 +98,6 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
-import linesBetweenClassMembers from './lines-between-class-members';
-import noLossOfPrecision from './no-loss-of-precision';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -171,6 +172,7 @@ export default {
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
+  'prefer-literal-enum-member': preferLiteralEnumMember,
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,

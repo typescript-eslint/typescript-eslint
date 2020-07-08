@@ -50,6 +50,14 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     const filename = context.getFilename();
 
+    function isDeclaration(node: TSESTree.TSModuleDeclaration): boolean {
+      return (
+        node.declare === true ||
+        (node.parent!.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
+          isDeclaration(node.parent!.parent))
+      );
+    }
+
     return {
       "TSModuleDeclaration[global!=true][id.type='Identifier']"(
         node: TSESTree.TSModuleDeclaration,
@@ -58,7 +66,7 @@ export default util.createRule<Options, MessageIds>({
           (node.parent &&
             node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||
           (allowDefinitionFiles && util.isDefinitionFile(filename)) ||
-          (allowDeclarations && node.declare === true)
+          (allowDeclarations && isDeclaration(node))
         ) {
           return;
         }

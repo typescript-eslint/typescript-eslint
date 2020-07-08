@@ -12,7 +12,8 @@
     "**/*.{json,snap}",
     ".cspell.json",
     "yarn.lock",
-    ".github/workflows/**"
+    ".github/workflows/**",
+    ".vscode/*.json"
   ],
   "dictionaries": [
     "typescript",
@@ -57,6 +58,7 @@
     "ESLint",
     "ESLint's",
     "espree",
+    "esrecurse",
     "estree",
     "IDE's",
     "IIFE",
@@ -75,11 +77,13 @@
     "Premade",
     "prettier's",
     "recurse",
+    "redeclared",
     "reimplement",
     "resync",
     "ROADMAP",
     "ruleset",
     "rulesets",
+    "serializers",
     "superset",
     "thenables",
     "transpiles",

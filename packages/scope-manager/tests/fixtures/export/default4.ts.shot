@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`export default4 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+    FunctionScope$3 {
+      block: FunctionDeclaration$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$1,
+      },
+      type: "function",
+      upper: ModuleScope$2,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+  ],
+}
+`;

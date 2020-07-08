@@ -55,6 +55,11 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
 
     // TODO - enable these new recommended rules
     '@typescript-eslint/no-floating-promises': 'off',
@@ -222,6 +227,19 @@ module.exports = {
       rules: {
         // allow console logs in tools and tests
         'no-console': 'off',
+      },
+    },
+    // generated files
+    {
+      files: [
+        'packages/scope-manager/src/lib/*.ts',
+        'packages/eslint-plugin/src/configs/*.ts',
+      ],
+      rules: {
+        // allow console logs in tools and tests
+        '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+        '@typescript-eslint/internal/no-typescript-default-import': 'off',
+        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       },
     },
   ],

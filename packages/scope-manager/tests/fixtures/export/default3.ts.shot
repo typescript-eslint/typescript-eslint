@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`export default3 1`] = `
+ScopeManager {
+  variables: Array [],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+  ],
+}
+`;

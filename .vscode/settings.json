@@ -18,4 +18,21 @@
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // make the .shot files from jest-specific-snapshot act like normal snapshots
+  "files.associations": {
+    "*.shot": "jest-snapshot"
+  },
+  "vsicons.associations.files": [
+    {
+        "icon": "jest_snapshot",
+        "extensions": [
+            ".ts.shot",
+            ".tsx.shot",
+            ".js.shot",
+            ".jsx.shot",
+        ],
+        "extends": "jest_snapshot"
+    },
+  ],
 }

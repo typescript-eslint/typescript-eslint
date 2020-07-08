@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-      # TODO - delete this before merging v3 into master
-      - v3
   pull_request:
     branches:
       - '**'
@@ -100,6 +98,12 @@ jobs:
       - name: Run unit tests for visitor-keys
         run: yarn test
         working-directory: packages/visitor-keys
+        env:
+          CI: true
+
+      - name: Run unit tests for scope-manager
+        run: yarn test
+        working-directory: packages/scope-manager
         env:
           CI: true
 
@@ -266,6 +270,12 @@ jobs:
       - name: Run unit tests for visitor-keys
         run: yarn test
         working-directory: packages/visitor-keys
+        env:
+          CI: true
+
+      - name: Run unit tests for scope-manager
+        run: yarn test
+        working-directory: packages/scope-manager
         env:
           CI: true
 

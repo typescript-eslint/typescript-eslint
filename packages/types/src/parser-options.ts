@@ -1,3 +1,5 @@
+import { Lib } from './lib';
+
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
 type EcmaVersion =
@@ -19,14 +21,17 @@ type EcmaVersion =
 type SourceType = 'script' | 'module';
 
 interface ParserOptions {
-  comment?: boolean;
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
   };
   ecmaVersion?: EcmaVersion;
 
-  // typescript-eslint specific
+  // scope-manager specific
+  lib?: Lib[];
+
+  // typescript-estree specific
+  comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;

@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration implements-generic 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"A">,
+          node: TSInterfaceDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"A">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"U">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "U",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isTypeReference: true,
+          isValueReference: false,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ClassNameDefinition$4 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$4,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [
+        ClassNameDefinition$5 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$4,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "A" => Variable$1,
+        "T" => Variable$3,
+        "B" => Variable$4,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    TypeScope$2 {
+      block: TSInterfaceDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "U" => Variable$2,
+      },
+      type: "type",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+      ],
+    },
+    ClassScope$3 {
+      block: ClassDeclaration$4,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "B" => Variable$5,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$5,
+      ],
+    },
+  ],
+}
+`;

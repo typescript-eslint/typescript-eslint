@@ -9,28 +9,46 @@ function isValidNode(x: any): x is TSESTree.Node {
 function getVisitorKeysForNode(
   allVisitorKeys: typeof visitorKeys,
   node: TSESTree.Node,
-): readonly string[] {
+): readonly (keyof TSESTree.Node)[] {
   const keys = allVisitorKeys[node.type];
-  return keys ?? [];
+  return (keys ?? []) as never;
 }
 
-interface SimpleTraverseOptions {
-  enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
-}
+type SimpleTraverseOptions =
+  | {
+      enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
+    }
+  | {
+      [key: string]: (
+        node: TSESTree.Node,
+        parent: TSESTree.Node | undefined,
+      ) => void;
+    };
 
 class SimpleTraverser {
-  private allVisitorKeys = visitorKeys;
-  private enter: SimpleTraverseOptions['enter'];
+  private readonly allVisitorKeys = visitorKeys;
+  private readonly selectors: SimpleTraverseOptions;
+  private readonly setParentPointers: boolean;
 
-  constructor({ enter }: SimpleTraverseOptions) {
-    this.enter = enter;
+  constructor(selectors: SimpleTraverseOptions, setParentPointers = false) {
+    this.selectors = selectors;
+    this.setParentPointers = setParentPointers;
   }
 
   traverse(node: unknown, parent: TSESTree.Node | undefined): void {
     if (!isValidNode(node)) {
       return;
     }
-    this.enter(node, parent);
+
+    if (this.setParentPointers) {
+      node.parent = parent;
+    }
+
+    if ('enter' in this.selectors) {
+      this.selectors.enter(node, parent);
+    } else if (node.type in this.selectors) {
+      this.selectors[node.type](node, parent);
+    }
 
     const keys = getVisitorKeysForNode(this.allVisitorKeys, node);
     if (keys.length < 1) {
@@ -38,7 +56,7 @@ class SimpleTraverser {
     }
 
     for (const key of keys) {
-      const childOrChildren = node[key as keyof TSESTree.Node];
+      const childOrChildren = node[key];
 
       if (Array.isArray(childOrChildren)) {
         for (const child of childOrChildren) {
@@ -54,6 +72,10 @@ class SimpleTraverser {
 export function simpleTraverse(
   startingNode: TSESTree.Node,
   options: SimpleTraverseOptions,
+  setParentPointers = false,
 ): void {
-  new SimpleTraverser(options).traverse(startingNode, undefined);
+  new SimpleTraverser(options, setParentPointers).traverse(
+    startingNode,
+    undefined,
+  );
 }

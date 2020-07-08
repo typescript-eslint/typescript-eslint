@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions function-declaration overload 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"foo">,
+          node: TSDeclareFunction$1,
+        },
+        FunctionNameDefinition$4 {
+          name: Identifier<"foo">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"a">,
+          node: TSDeclareFunction$1,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"b">,
+          node: TSDeclareFunction$1,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        ParameterDefinition$5 {
+          name: Identifier<"a">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "a",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"a">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$6,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$7 {
+      defs: Array [
+        ParameterDefinition$6 {
+          name: Identifier<"b">,
+          node: FunctionDeclaration$2,
+        },
+      ],
+      name: "b",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "foo" => Variable$1,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+      ],
+    },
+    FunctionScope$2 {
+      block: TSDeclareFunction$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$2,
+        "a" => Variable$3,
+        "b" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    FunctionScope$3 {
+      block: FunctionDeclaration$2,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "arguments" => Variable$5,
+        "a" => Variable$6,
+        "b" => Variable$7,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$5,
+        Variable$6,
+        Variable$7,
+      ],
+    },
+  ],
+}
+`;

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration function function2 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"arg">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "arg",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"arg">,
+          init: true,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$1,
+          writeExpr: Literal$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"arg">,
+          node: TSFunctionType$4,
+        },
+      ],
+      name: "arg",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"arg">,
+          isTypeReference: false,
+          isValueReference: true,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "arg" => Variable$1,
+        "A" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+    FunctionTypeScope$2 {
+      block: TSFunctionType$4,
+      isStrict: true,
+      references: Array [
+        Reference$2,
+      ],
+      set: Map {
+        "arg" => Variable$3,
+      },
+      type: "functionType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

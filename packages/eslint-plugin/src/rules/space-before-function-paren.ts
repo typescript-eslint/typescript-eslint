@@ -75,9 +75,11 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSEmptyBodyFunctionExpression
+        | TSESTree.TSDeclareFunction,
     ): boolean {
-      if (node.id) {
+      if (node.id != null) {
         return true;
       }
 
@@ -85,6 +87,7 @@ export default util.createRule<Options, MessageIds>({
 
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition ||
+        parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (parent.type === AST_NODE_TYPES.Property &&
           (parent.kind === 'get' || parent.kind === 'set' || parent.method))
       );
@@ -99,7 +102,9 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSEmptyBodyFunctionExpression
+        | TSESTree.TSDeclareFunction,
     ): FuncOption {
       if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
@@ -129,7 +134,9 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+        | TSESTree.FunctionExpression
+        | TSESTree.TSEmptyBodyFunctionExpression
+        | TSESTree.TSDeclareFunction,
     ): void {
       const functionConfig = getConfigForFunction(node);
 
@@ -176,6 +183,8 @@ export default util.createRule<Options, MessageIds>({
       ArrowFunctionExpression: checkFunction,
       FunctionDeclaration: checkFunction,
       FunctionExpression: checkFunction,
+      TSEmptyBodyFunctionExpression: checkFunction,
+      TSDeclareFunction: checkFunction,
     };
   },
 });
