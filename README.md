@@ -26,6 +26,7 @@
 - [Package Versions](#package-versions)
 - [Supported TypeScript Version](#supported-typescript-version)
 - [Supported ESLint version](#supported-eslint-version)
+- [Supported Node version](#supported-node-version)
 - [License](#license)
 - [Contributors](#contributors)
 - [Contributing Guide](#contributing-guide)
@@ -249,6 +250,10 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 ## Supported ESLint version
 
 See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
+
+## Supported Node version
+
+This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://nodejs.org/en/about/releases/). Support for specific Current status releases are considered periodically.
 
 ## License
 
