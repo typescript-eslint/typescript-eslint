@@ -32,6 +32,25 @@ export default createRule({
     const sourceCode = context.getSourceCode();
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
+    const compilerOptions = service.program.getCompilerOptions();
+
+    function requiresQuoting(name: string): boolean {
+      if (name.length === 0) {
+        return true;
+      }
+
+      if (!ts.isIdentifierStart(name.charCodeAt(0), compilerOptions.target)) {
+        return true;
+      }
+
+      for (let i = 1; i < name.length; i += 1) {
+        if (!ts.isIdentifierPart(name.charCodeAt(i), compilerOptions.target)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -42,6 +61,7 @@ export default createRule({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
       missingBranchTypes: Array<ts.Type>,
+      symbolName?: string,
     ): TSESLint.RuleFix | null {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
@@ -67,7 +87,17 @@ export default createRule({
           continue;
         }
 
-        const caseTest = checker.typeToString(missingBranchType);
+        const missingBranchName = missingBranchType.getSymbol()?.escapedName;
+        let caseTest = checker.typeToString(missingBranchType);
+
+        if (
+          symbolName &&
+          (missingBranchName || missingBranchName === '') &&
+          requiresQuoting(missingBranchName.toString())
+        ) {
+          caseTest = `${symbolName}['${missingBranchName}']`;
+        }
+
         const errorMessage = `Not implemented yet: ${caseTest} case`;
 
         missingCases.push(
@@ -101,6 +131,7 @@ export default createRule({
 
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
       const discriminantType = getNodeType(node.discriminant);
+      const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
         const unionTypes = unionTypeParts(discriminantType);
@@ -139,7 +170,12 @@ export default createRule({
             {
               messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix | null {
-                return fixSwitch(fixer, node, missingBranchTypes);
+                return fixSwitch(
+                  fixer,
+                  node,
+                  missingBranchTypes,
+                  symbolName?.toString(),
+                );
               },
             },
           ],
