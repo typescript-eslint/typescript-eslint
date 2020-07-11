@@ -398,6 +398,53 @@ type Bar = { baz: null | string | { qux: string } };
 declare const foo: { fooOrBar: Foo | Bar } | null;
 foo?.fooOrBar?.baz?.qux;
     `,
+    `
+type Foo = { [key: string]: string } | null;
+declare const foo: Foo;
+
+const key = '1';
+foo?.[key]?.trim();
+    `,
+    `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key].trim();
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+  };
+}
+
+function Foo(outer: Outer, key: string): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo';
+
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo' | 'baz';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key]?.trim();
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1193,6 +1240,130 @@ foo?.fooOrBar.baz?.qux;
           endLine: 5,
           column: 14,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key]?.trim();
+      `,
+      output: `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key].trim();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 7,
+          endLine: 7,
+          column: 11,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+declare const foo: Foo;
+const key = 'bar';
+foo?.[key]?.trim();
+      `,
+      output: `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+declare const foo: Foo;
+const key = 'bar';
+foo?.[key].trim();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 5,
+          endLine: 5,
+          column: 11,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
+      code: `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+
+export function test(outer: Outer): number | undefined {
+  const key = 'bar';
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      output: `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+
+export function test(outer: Outer): number | undefined {
+  const key = 'bar';
+  return outer.inner?.[key].charCodeAt(0);
+}
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 11,
+          endLine: 11,
+          column: 28,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Bar = 'bar';
+
+function Foo(outer: Outer, key: Bar): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      output: `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Bar = 'bar';
+
+function Foo(outer: Outer, key: Bar): number | undefined {
+  return outer.inner?.[key].charCodeAt(0);
+}
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 11,
+          endLine: 11,
+          column: 28,
+          endColumn: 30,
         },
       ],
     },
