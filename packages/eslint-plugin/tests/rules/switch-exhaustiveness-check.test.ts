@@ -490,5 +490,116 @@ function test(value: T): number {
         },
       ],
     },
+    {
+      // keys include special characters
+      code: `
+export enum Enum {
+  'test-test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  }
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: noFormat`
+export enum Enum {
+  'test-test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  case Enum['test-test']: { throw new Error('Not implemented yet: Enum['test-test'] case') }
+  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
+  }
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // keys include empty string
+      code: `
+export enum Enum {
+  '' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  }
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: noFormat`
+export enum Enum {
+  '' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  case Enum['']: { throw new Error('Not implemented yet: Enum[''] case') }
+  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
+  }
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // keys include number as first character
+      code: `
+export enum Enum {
+  '9test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  }
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: noFormat`
+export enum Enum {
+  '9test' = 'test-test',
+  'test' = 'test',
+}
+
+function test(arg: Enum): string {
+  switch (arg) {
+  case Enum['9test']: { throw new Error('Not implemented yet: Enum['9test'] case') }
+  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
+  }
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
