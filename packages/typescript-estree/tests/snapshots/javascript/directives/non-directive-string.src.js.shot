@@ -1,0 +1,974 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript directives non-directive-string.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "alternate": null,
+      "consequent": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 16,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                16,
+                28,
+              ],
+              "raw": "\\"use strict\\"",
+              "type": "Literal",
+              "value": "use strict",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 16,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              16,
+              28,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          10,
+          30,
+        ],
+        "type": "BlockStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        30,
+      ],
+      "test": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 8,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 4,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          4,
+          8,
+        ],
+        "raw": "true",
+        "type": "Literal",
+        "value": true,
+      },
+      "type": "IfStatement",
+    },
+    Object {
+      "cases": Array [
+        Object {
+          "consequent": Array [
+            Object {
+              "body": Array [
+                Object {
+                  "expression": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 20,
+                        "line": 7,
+                      },
+                      "start": Object {
+                        "column": 8,
+                        "line": 7,
+                      },
+                    },
+                    "range": Array [
+                      74,
+                      86,
+                    ],
+                    "raw": "\\"use strict\\"",
+                    "type": "Literal",
+                    "value": "use strict",
+                  },
+                  "loc": Object {
+                    "end": Object {
+                      "column": 20,
+                      "line": 7,
+                    },
+                    "start": Object {
+                      "column": 8,
+                      "line": 7,
+                    },
+                  },
+                  "range": Array [
+                    74,
+                    86,
+                  ],
+                  "type": "ExpressionStatement",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 8,
+                },
+                "start": Object {
+                  "column": 16,
+                  "line": 6,
+                },
+              },
+              "range": Array [
+                64,
+                92,
+              ],
+              "type": "BlockStatement",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 5,
+              "line": 8,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 6,
+            },
+          },
+          "range": Array [
+            52,
+            92,
+          ],
+          "test": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 6,
+              },
+              "start": Object {
+                "column": 9,
+                "line": 6,
+              },
+            },
+            "range": Array [
+              57,
+              62,
+            ],
+            "raw": "false",
+            "type": "Literal",
+            "value": false,
+          },
+          "type": "SwitchCase",
+        },
+        Object {
+          "consequent": Array [
+            Object {
+              "body": Array [
+                Object {
+                  "expression": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 20,
+                        "line": 10,
+                      },
+                      "start": Object {
+                        "column": 8,
+                        "line": 10,
+                      },
+                    },
+                    "range": Array [
+                      116,
+                      128,
+                    ],
+                    "raw": "\\"use strict\\"",
+                    "type": "Literal",
+                    "value": "use strict",
+                  },
+                  "loc": Object {
+                    "end": Object {
+                      "column": 20,
+                      "line": 10,
+                    },
+                    "start": Object {
+                      "column": 8,
+                      "line": 10,
+                    },
+                  },
+                  "range": Array [
+                    116,
+                    128,
+                  ],
+                  "type": "ExpressionStatement",
+                },
+              ],
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 11,
+                },
+                "start": Object {
+                  "column": 13,
+                  "line": 9,
+                },
+              },
+              "range": Array [
+                106,
+                134,
+              ],
+              "type": "BlockStatement",
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 5,
+              "line": 11,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 9,
+            },
+          },
+          "range": Array [
+            97,
+            134,
+          ],
+          "test": null,
+          "type": "SwitchCase",
+        },
+      ],
+      "discriminant": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 5,
+          },
+        },
+        "range": Array [
+          40,
+          44,
+        ],
+        "raw": "true",
+        "type": "Literal",
+        "value": true,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 12,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        32,
+        136,
+      ],
+      "type": "SwitchStatement",
+    },
+    Object {
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 16,
+                  "line": 15,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 15,
+                },
+              },
+              "range": Array [
+                157,
+                169,
+              ],
+              "raw": "\\"use strict\\"",
+              "type": "Literal",
+              "value": "use strict",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 16,
+                "line": 15,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 15,
+              },
+            },
+            "range": Array [
+              157,
+              169,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 16,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 14,
+          },
+        },
+        "range": Array [
+          151,
+          171,
+        ],
+        "type": "BlockStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        138,
+        171,
+      ],
+      "test": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 14,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 14,
+          },
+        },
+        "range": Array [
+          145,
+          149,
+        ],
+        "raw": "true",
+        "type": "Literal",
+        "value": true,
+      },
+      "type": "WhileStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 17,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    172,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        2,
+      ],
+      "type": "Keyword",
+      "value": "if",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        3,
+        4,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        4,
+        8,
+      ],
+      "type": "Boolean",
+      "value": "true",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        16,
+        28,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        32,
+        38,
+      ],
+      "type": "Keyword",
+      "value": "switch",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        39,
+        40,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        40,
+        44,
+      ],
+      "type": "Boolean",
+      "value": "true",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        44,
+        45,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        46,
+        47,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        52,
+        56,
+      ],
+      "type": "Keyword",
+      "value": "case",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        57,
+        62,
+      ],
+      "type": "Boolean",
+      "value": "false",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        62,
+        63,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        64,
+        65,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        74,
+        86,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 8,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 8,
+        },
+      },
+      "range": Array [
+        91,
+        92,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 9,
+        },
+      },
+      "range": Array [
+        97,
+        104,
+      ],
+      "type": "Keyword",
+      "value": "default",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 9,
+        },
+      },
+      "range": Array [
+        104,
+        105,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 9,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 9,
+        },
+      },
+      "range": Array [
+        106,
+        107,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 10,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 10,
+        },
+      },
+      "range": Array [
+        116,
+        128,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 11,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 11,
+        },
+      },
+      "range": Array [
+        133,
+        134,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 12,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 12,
+        },
+      },
+      "range": Array [
+        135,
+        136,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 14,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        138,
+        143,
+      ],
+      "type": "Keyword",
+      "value": "while",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 14,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        144,
+        145,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 14,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        145,
+        149,
+      ],
+      "type": "Boolean",
+      "value": "true",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 14,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        149,
+        150,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 14,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 14,
+        },
+      },
+      "range": Array [
+        151,
+        152,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 15,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 15,
+        },
+      },
+      "range": Array [
+        157,
+        169,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 16,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 16,
+        },
+      },
+      "range": Array [
+        170,
+        171,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

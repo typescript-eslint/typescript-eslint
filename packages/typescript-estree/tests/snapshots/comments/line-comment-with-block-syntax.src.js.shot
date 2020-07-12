@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments line-comment-with-block-syntax.src 1`] = `
+Object {
+  "body": Array [],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        11,
+      ],
+      "type": "Line",
+      "value": " /*test*/",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    12,
+    12,
+  ],
+  "sourceType": "script",
+  "tokens": Array [],
+  "type": "Program",
+}
+`;

@@ -1,0 +1,391 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics export-declare-const-named-enum.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "const": true,
+        "declare": true,
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 29,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 26,
+              "line": 1,
+            },
+          },
+          "name": "Foo",
+          "range": Array [
+            26,
+            29,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "members": Array [
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "name": "foo",
+              "range": Array [
+                36,
+                39,
+              ],
+              "type": "Identifier",
+            },
+            "initializer": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                42,
+                43,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 11,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              36,
+              43,
+            ],
+            "type": "TSEnumMember",
+          },
+          Object {
+            "id": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 3,
+                },
+              },
+              "name": "bar",
+              "range": Array [
+                49,
+                52,
+              ],
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              49,
+              52,
+            ],
+            "type": "TSEnumMember",
+          },
+        ],
+        "range": Array [
+          7,
+          54,
+        ],
+        "type": "TSEnumDeclaration",
+      },
+      "exportKind": "type",
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        54,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    55,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        14,
+      ],
+      "type": "Identifier",
+      "value": "declare",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        20,
+      ],
+      "type": "Keyword",
+      "value": "const",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 21,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        21,
+        25,
+      ],
+      "type": "Keyword",
+      "value": "enum",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        26,
+        29,
+      ],
+      "type": "Identifier",
+      "value": "Foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        30,
+        31,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        36,
+        39,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        40,
+        41,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        44,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        49,
+        52,
+      ],
+      "type": "Identifier",
+      "value": "bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        53,
+        54,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

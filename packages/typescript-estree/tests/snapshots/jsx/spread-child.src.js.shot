@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx spread-child.src 1`] = `
+Object {
+  "column": 15,
+  "index": 15,
+  "lineNumber": 1,
+  "message": "Unterminated regular expression literal.",
+}
+`;

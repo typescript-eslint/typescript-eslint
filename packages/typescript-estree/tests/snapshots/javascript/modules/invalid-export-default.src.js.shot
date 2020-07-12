@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript modules invalid-export-default.src 1`] = `
+Object {
+  "column": 20,
+  "index": 20,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;

@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics cast-as-operator.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "left": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "name": "x",
+          "range": Array [
+            0,
+            1,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 17,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "operator": "===",
+        "range": Array [
+          0,
+          17,
+        ],
+        "right": Object {
+          "expression": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              6,
+              7,
+            ],
+            "raw": "1",
+            "type": "Literal",
+            "value": 1,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 6,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            6,
+            17,
+          ],
+          "type": "TSAsExpression",
+          "typeAnnotation": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 11,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              11,
+              17,
+            ],
+            "type": "TSNumberKeyword",
+          },
+        },
+        "type": "BinaryExpression",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        18,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    19,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        1,
+      ],
+      "type": "Identifier",
+      "value": "x",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        2,
+        5,
+      ],
+      "type": "Punctuator",
+      "value": "===",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "as",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        17,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

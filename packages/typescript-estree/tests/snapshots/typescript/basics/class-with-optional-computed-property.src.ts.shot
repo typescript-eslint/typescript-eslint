@@ -1,0 +1,358 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics class-with-optional-computed-property.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "body": Object {
+        "body": Array [
+          Object {
+            "accessibility": "private",
+            "computed": true,
+            "declare": false,
+            "key": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 18,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 13,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                23,
+                28,
+              ],
+              "raw": "'foo'",
+              "type": "Literal",
+              "value": "foo",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 33,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "optional": true,
+            "range": Array [
+              14,
+              43,
+            ],
+            "readonly": undefined,
+            "static": false,
+            "type": "ClassProperty",
+            "value": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 32,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 23,
+                  "line": 2,
+                },
+              },
+              "name": "undefined",
+              "range": Array [
+                33,
+                42,
+              ],
+              "type": "Identifier",
+            },
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          8,
+          45,
+        ],
+        "type": "ClassBody",
+      },
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "name": "X",
+        "range": Array [
+          6,
+          7,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        45,
+      ],
+      "superClass": null,
+      "type": "ClassDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 4,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    46,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "X",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        14,
+        21,
+      ],
+      "type": "Keyword",
+      "value": "private",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        23,
+        28,
+      ],
+      "type": "String",
+      "value": "'foo'",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        28,
+        29,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 20,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 21,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        31,
+        32,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 32,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        33,
+        42,
+      ],
+      "type": "Identifier",
+      "value": "undefined",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        44,
+        45,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

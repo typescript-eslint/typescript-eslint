@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-block-comment.src 1`] = `
+Object {
+  "column": 10,
+  "index": 84,
+  "lineNumber": 5,
+  "message": "Unterminated regular expression literal.",
+}
+`;

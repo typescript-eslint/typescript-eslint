@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx embedded-invalid-js-identifier.src 1`] = `
+Object {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "'>' expected.",
+}
+`;

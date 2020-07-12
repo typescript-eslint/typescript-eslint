@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript templateStrings tagged-no-placeholders.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 8,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "quasi": Object {
+          "expressions": Array [],
+          "loc": Object {
+            "end": Object {
+              "column": 8,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 3,
+              "line": 1,
+            },
+          },
+          "quasis": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                3,
+                8,
+              ],
+              "tail": true,
+              "type": "TemplateElement",
+              "value": Object {
+                "cooked": "foo",
+                "raw": "foo",
+              },
+            },
+          ],
+          "range": Array [
+            3,
+            8,
+          ],
+          "type": "TemplateLiteral",
+        },
+        "range": Array [
+          0,
+          8,
+        ],
+        "tag": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 3,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "name": "foo",
+          "range": Array [
+            0,
+            3,
+          ],
+          "type": "Identifier",
+        },
+        "type": "TaggedTemplateExpression",
+        "typeParameters": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        9,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    10,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        3,
+        8,
+      ],
+      "type": "Template",
+      "value": "\`foo\`",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -8,7 +8,7 @@ describe('implicit lib definitions', () => {
     });
 
     const variables = scopeManager.variables;
-    expect(variables.length).toBe(0);
+    expect(variables).toHaveLength(0);
   });
 
   it('should define implicit variables', () => {

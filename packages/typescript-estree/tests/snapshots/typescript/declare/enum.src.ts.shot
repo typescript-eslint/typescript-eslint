@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript declare enum.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declare": true,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 16,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "name": "Foo",
+        "range": Array [
+          13,
+          16,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "members": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 2,
+              },
+            },
+            "name": "Bar",
+            "range": Array [
+              23,
+              26,
+            ],
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 7,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            23,
+            26,
+          ],
+          "type": "TSEnumMember",
+        },
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 3,
+              },
+            },
+            "name": "Baz",
+            "range": Array [
+              32,
+              35,
+            ],
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 7,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            32,
+            35,
+          ],
+          "type": "TSEnumMember",
+        },
+      ],
+      "range": Array [
+        0,
+        37,
+      ],
+      "type": "TSEnumDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 5,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    38,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "declare",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        12,
+      ],
+      "type": "Keyword",
+      "value": "enum",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        16,
+      ],
+      "type": "Identifier",
+      "value": "Foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        17,
+        18,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        23,
+        26,
+      ],
+      "type": "Identifier",
+      "value": "Bar",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        32,
+        35,
+      ],
+      "type": "Identifier",
+      "value": "Baz",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        36,
+        37,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

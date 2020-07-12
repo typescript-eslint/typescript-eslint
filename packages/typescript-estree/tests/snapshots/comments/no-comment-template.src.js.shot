@@ -1,0 +1,291 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments no-comment-template.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declarations": Array [
+        Object {
+          "id": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 6,
+                "line": 1,
+              },
+            },
+            "name": "str",
+            "range": Array [
+              6,
+              9,
+            ],
+            "type": "Identifier",
+          },
+          "init": Object {
+            "expressions": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                },
+                "name": "__dirname",
+                "range": Array [
+                  15,
+                  24,
+                ],
+                "type": "Identifier",
+              },
+            ],
+            "loc": Object {
+              "end": Object {
+                "column": 36,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 12,
+                "line": 1,
+              },
+            },
+            "quasis": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 12,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  12,
+                  15,
+                ],
+                "tail": false,
+                "type": "TemplateElement",
+                "value": Object {
+                  "cooked": "",
+                  "raw": "",
+                },
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 36,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  24,
+                  36,
+                ],
+                "tail": true,
+                "type": "TemplateElement",
+                "value": Object {
+                  "cooked": "/test/*.js",
+                  "raw": "/test/*.js",
+                },
+              },
+            ],
+            "range": Array [
+              12,
+              36,
+            ],
+            "type": "TemplateLiteral",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 6,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            6,
+            36,
+          ],
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        37,
+      ],
+      "type": "VariableDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    38,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "const",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        9,
+      ],
+      "type": "Identifier",
+      "value": "str",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        10,
+        11,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        15,
+      ],
+      "type": "Template",
+      "value": "\`\${",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        24,
+      ],
+      "type": "Identifier",
+      "value": "__dirname",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        24,
+        36,
+      ],
+      "type": "Template",
+      "value": "}/test/*.js\`",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 36,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        36,
+        37,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

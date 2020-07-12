@@ -1,0 +1,245 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript modules export-default-expression.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "left": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 16,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            16,
+            17,
+          ],
+          "raw": "1",
+          "type": "Literal",
+          "value": 1,
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 21,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "operator": "+",
+        "range": Array [
+          16,
+          21,
+        ],
+        "right": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 21,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 20,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            20,
+            21,
+          ],
+          "raw": "2",
+          "type": "Literal",
+          "value": 2,
+        },
+        "type": "BinaryExpression",
+      },
+      "exportKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        23,
+      ],
+      "type": "ExportDefaultDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    24,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        14,
+      ],
+      "type": "Keyword",
+      "value": "default",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        16,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        17,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        18,
+        19,
+      ],
+      "type": "Punctuator",
+      "value": "+",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 20,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        20,
+        21,
+      ],
+      "type": "Numeric",
+      "value": "2",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 21,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        21,
+        22,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

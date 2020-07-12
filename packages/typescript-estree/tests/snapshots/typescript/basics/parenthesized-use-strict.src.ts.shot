@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics parenthesized-use-strict.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 13,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 1,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          46,
+          58,
+        ],
+        "raw": "\\"use strict\\"",
+        "type": "Literal",
+        "value": "use strict",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        45,
+        60,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 44,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        44,
+      ],
+      "type": "Line",
+      "value": " this should not be classed as a directive",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 15,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 2,
+    },
+  },
+  "range": Array [
+    45,
+    60,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        45,
+        46,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        46,
+        58,
+      ],
+      "type": "String",
+      "value": "\\"use strict\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        58,
+        59,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        59,
+        60,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

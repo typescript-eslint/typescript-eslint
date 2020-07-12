@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics abstract-class-with-abstract-constructor.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "abstract": true,
+        "body": Object {
+          "body": Array [
+            Object {
+              "computed": false,
+              "key": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 13,
+                    "line": 2,
+                  },
+                },
+                "name": "constructor",
+                "range": Array [
+                  52,
+                  63,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "constructor",
+              "loc": Object {
+                "end": Object {
+                  "column": 27,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                43,
+                66,
+              ],
+              "static": false,
+              "type": "TSAbstractMethodDefinition",
+              "value": Object {
+                "async": false,
+                "body": null,
+                "expression": false,
+                "generator": false,
+                "id": null,
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 24,
+                    "line": 2,
+                  },
+                },
+                "params": Array [],
+                "range": Array [
+                  63,
+                  66,
+                ],
+                "type": "TSEmptyBodyFunctionExpression",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 37,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            37,
+            68,
+          ],
+          "type": "ClassBody",
+        },
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 22,
+              "line": 1,
+            },
+          },
+          "name": "AbstractSocket",
+          "range": Array [
+            22,
+            36,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          7,
+          68,
+        ],
+        "superClass": null,
+        "type": "ClassDeclaration",
+      },
+      "exportKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        68,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    68,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        15,
+      ],
+      "type": "Identifier",
+      "value": "abstract",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        21,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        36,
+      ],
+      "type": "Identifier",
+      "value": "AbstractSocket",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        37,
+        38,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        51,
+      ],
+      "type": "Identifier",
+      "value": "abstract",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        52,
+        63,
+      ],
+      "type": "Identifier",
+      "value": "constructor",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        63,
+        64,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        64,
+        65,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 27,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        65,
+        66,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        67,
+        68,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

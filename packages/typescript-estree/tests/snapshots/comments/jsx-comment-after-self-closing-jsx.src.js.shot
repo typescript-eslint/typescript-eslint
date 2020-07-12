@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-comment-after-self-closing-jsx.src 1`] = `
+Object {
+  "column": 13,
+  "index": 47,
+  "lineNumber": 3,
+  "message": "'>' expected.",
+}
+`;

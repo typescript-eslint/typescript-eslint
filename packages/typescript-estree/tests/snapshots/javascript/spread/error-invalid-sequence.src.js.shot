@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript spread error-invalid-sequence.src 1`] = `
+Object {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;

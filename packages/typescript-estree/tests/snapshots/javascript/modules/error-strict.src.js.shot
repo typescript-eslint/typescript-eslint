@@ -1,0 +1,589 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript modules error-strict.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "importKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        26,
+      ],
+      "source": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 25,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 18,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          18,
+          25,
+        ],
+        "raw": "\\"house\\"",
+        "type": "Literal",
+        "value": "house",
+      },
+      "specifiers": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "local": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 12,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "name": "house",
+            "range": Array [
+              7,
+              12,
+            ],
+            "type": "Identifier",
+          },
+          "range": Array [
+            7,
+            12,
+          ],
+          "type": "ImportDefaultSpecifier",
+        },
+      ],
+      "type": "ImportDeclaration",
+    },
+    Object {
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "arguments": Array [
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 13,
+                      "line": 4,
+                    },
+                  },
+                  "name": "roof",
+                  "range": Array [
+                    56,
+                    60,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "callee": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 12,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 1,
+                    "line": 4,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 8,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 1,
+                      "line": 4,
+                    },
+                  },
+                  "name": "console",
+                  "range": Array [
+                    44,
+                    51,
+                  ],
+                  "type": "Identifier",
+                },
+                "optional": false,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 9,
+                      "line": 4,
+                    },
+                  },
+                  "name": "log",
+                  "range": Array [
+                    52,
+                    55,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  44,
+                  55,
+                ],
+                "type": "MemberExpression",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 18,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 4,
+                },
+              },
+              "optional": false,
+              "range": Array [
+                44,
+                61,
+              ],
+              "type": "CallExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 19,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 1,
+                "line": 4,
+              },
+            },
+            "range": Array [
+              44,
+              62,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          41,
+          64,
+        ],
+        "type": "BlockStatement",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "object": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 11,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 3,
+          },
+        },
+        "name": "house",
+        "range": Array [
+          34,
+          39,
+        ],
+        "type": "Identifier",
+      },
+      "range": Array [
+        28,
+        64,
+      ],
+      "type": "WithStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 6,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    65,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "import",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        12,
+      ],
+      "type": "Identifier",
+      "value": "house",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        17,
+      ],
+      "type": "Identifier",
+      "value": "from",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        18,
+        25,
+      ],
+      "type": "String",
+      "value": "\\"house\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        25,
+        26,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        28,
+        32,
+      ],
+      "type": "Keyword",
+      "value": "with",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        33,
+        34,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        34,
+        39,
+      ],
+      "type": "Identifier",
+      "value": "house",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        39,
+        40,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        41,
+        42,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        44,
+        51,
+      ],
+      "type": "Identifier",
+      "value": "console",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        51,
+        52,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        52,
+        55,
+      ],
+      "type": "Identifier",
+      "value": "log",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        55,
+        56,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        56,
+        60,
+      ],
+      "type": "Identifier",
+      "value": "roof",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        60,
+        61,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        61,
+        62,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        63,
+        64,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;
