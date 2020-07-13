@@ -626,6 +626,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        declare const ANY_UPPER_CASE: any;
+        declare const ANY_UPPER_CASE: any | null;
+        declare const ANY_UPPER_CASE: any | null | undefined;
+
         declare const string_camelCase: string;
         declare const string_camelCase: string | null;
         declare const string_camelCase: string | null | undefined;
@@ -647,6 +651,12 @@ ruleTester.run('naming-convention', rule, {
       `,
       parserOptions,
       options: [
+        {
+          selector: 'variable',
+          modifiers: ['const'],
+          format: ['UPPER_CASE'],
+          prefix: ['ANY_'],
+        },
         {
           selector: 'variable',
           types: ['string'],
@@ -824,6 +834,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        declare const any_camelCase01: any;
+        declare const any_camelCase02: any | null;
+        declare const any_camelCase03: any | null | undefined;
+
         declare const string_camelCase01: string;
         declare const string_camelCase02: string | null;
         declare const string_camelCase03: string | null | undefined;
@@ -846,6 +860,12 @@ ruleTester.run('naming-convention', rule, {
       options: [
         {
           selector: 'variable',
+          modifiers: ['const'],
+          format: ['UPPER_CASE'],
+          prefix: ['any_'],
+        },
+        {
+          selector: 'variable',
           types: ['string'],
           format: ['snake_case'],
           prefix: ['string_'],
@@ -864,7 +884,7 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       parserOptions,
-      errors: Array(16).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `

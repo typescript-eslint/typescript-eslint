@@ -80,12 +80,13 @@ type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
 
 enum Modifiers {
-  readonly = 1 << 0,
-  static = 1 << 1,
-  public = 1 << 2,
-  protected = 1 << 3,
-  private = 1 << 4,
-  abstract = 1 << 5,
+  const = 1 << 0,
+  readonly = 1 << 1,
+  static = 1 << 2,
+  public = 1 << 3,
+  protected = 1 << 4,
+  private = 1 << 5,
+  abstract = 1 << 6,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -255,7 +256,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),
-      ...selectorSchema('variable', true),
+      ...selectorSchema('variable', true, ['const']),
       ...selectorSchema('function', false),
       ...selectorSchema('parameter', true),
 
@@ -439,8 +440,18 @@ export default util.createRule<Options, MessageIds>({
         const identifiers: TSESTree.Identifier[] = [];
         getIdentifiersFromPattern(node.id, identifiers);
 
+        const modifiers = new Set<Modifiers>();
+        const parent = node.parent;
+        if (
+          parent &&
+          parent.type === AST_NODE_TYPES.VariableDeclaration &&
+          parent.kind === 'const'
+        ) {
+          modifiers.add(Modifiers.const);
+        }
+
         identifiers.forEach(i => {
-          validator(i);
+          validator(i, modifiers);
         });
       },
 
