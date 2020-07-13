@@ -1,8 +1,10 @@
+/* eslint-disable eslint-comments/no-use */
+// TODO - prettier currently removes the type annotations, re-enable this once prettier is updated
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
+
 import rule from '../../src/rules/no-implicit-any-catch';
 import { RuleTester } from '../RuleTester';
-
-//type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
-//type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -14,10 +16,13 @@ ruleTester.run('no-implicit-any-catch', rule, {
 try {
 } catch (e1: unknown) {}
     `,
-    `
+    {
+      code: `
 try {
 } catch (e2: any) {}
-    `,
+      `,
+      options: [{ allowExplicitAny: true }],
+    },
   ],
   invalid: [
     {

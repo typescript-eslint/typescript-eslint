@@ -45,7 +45,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowExplicitAny: true,
+      allowExplicitAny: false,
     },
   ],
   create(context, [{ allowExplicitAny }]) {

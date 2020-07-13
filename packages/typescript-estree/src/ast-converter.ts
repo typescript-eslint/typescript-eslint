@@ -40,9 +40,13 @@ export function astConverter(
     simpleTraverse(estree, {
       enter: node => {
         if (!extra.range) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
+          // @ts-expect-error
           delete node.range;
         }
         if (!extra.loc) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
+          // @ts-expect-error
           delete node.loc;
         }
       },

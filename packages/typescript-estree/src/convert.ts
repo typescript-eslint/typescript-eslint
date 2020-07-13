@@ -1989,7 +1989,7 @@ export class Converter {
             type: AST_NODE_TYPES.TSNullKeyword,
           });
         } else {
-          return this.createNode<TSESTree.Literal>(node as ts.NullLiteral, {
+          return this.createNode<TSESTree.Literal>(node, {
             type: AST_NODE_TYPES.Literal,
             value: null,
             raw: 'null',
@@ -2620,9 +2620,13 @@ export class Converter {
         // In TS 4.0, the `elementTypes` property was changed to `elements`.
         // To support both at compile time, we cast to access the newer version
         // if the former does not exist.
-        const elementTypes = node.elementTypes
-          ? node.elementTypes.map(el => this.convertType(el))
-          : (node as any).elements.map((el: ts.Node) => this.convertType(el));
+        type Elements = typeof node.elements;
+        const elementTypes =
+          'elementTypes' in node
+            ? ((node as any).elementTypes as Elements).map(el =>
+                this.convertType(el),
+              )
+            : node.elements.map(el => this.convertType(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
