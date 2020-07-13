@@ -1499,8 +1499,8 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-common-parent.src 1`] = `
 Object {
-  "column": 36,
-  "index": 36,
+  "column": 8,
+  "index": 8,
   "lineNumber": 1,
   "message": "JSX expressions must have one parent element.",
 }
@@ -1508,8 +1508,8 @@ Object {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-common-parent-with-comment.src 1`] = `
 Object {
-  "column": 63,
-  "index": 63,
+  "column": 8,
+  "index": 8,
   "lineNumber": 1,
   "message": "JSX expressions must have one parent element.",
 }

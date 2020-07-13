@@ -170,7 +170,7 @@ Object {
     },
   ],
   "text": "new foo<T>()",
-  "transformFlags": 0,
+  "transformFlags": 9,
   "type": "TSSourceFile",
   "typeReferenceDirectives": Array [],
 }
@@ -190,6 +190,8 @@ Object {
           "line": 1,
         },
       },
+      "localSymbol": undefined,
+      "locals": undefined,
       "modifiers": undefined,
       "name": Object {
         "escapedText": "foo",
@@ -203,6 +205,7 @@ Object {
             "line": 1,
           },
         },
+        "originalKeywordKind": undefined,
         "range": Array [
           5,
           8,
@@ -210,11 +213,13 @@ Object {
         "transformFlags": 0,
         "type": "TSUnparsedPrologue",
       },
+      "nextContainer": undefined,
       "range": Array [
         0,
         35,
       ],
-      "transformFlags": 0,
+      "symbol": undefined,
+      "transformFlags": 1,
       "type": "TSUnparsedPrologue",
       "typeAnnotation": null,
       "typeParameters": null,
@@ -289,6 +294,8 @@ Object {
       "line": 1,
     },
   },
+  "localSymbol": undefined,
+  "locals": undefined,
   "members": Array [],
   "modifiers": undefined,
   "name": Object {
@@ -309,11 +316,13 @@ Object {
     ],
     "type": "Identifier",
   },
+  "nextContainer": undefined,
   "range": Array [
     0,
     18,
   ],
-  "transformFlags": 0,
+  "symbol": undefined,
+  "transformFlags": 2305,
   "type": "TSClassDeclaration",
   "typeParameters": null,
 }
@@ -354,7 +363,7 @@ Object {
     0,
     12,
   ],
-  "transformFlags": 0,
+  "transformFlags": 9,
   "type": "TSNewExpression",
   "typeParameters": Object {
     "loc": Object {
@@ -427,7 +436,10 @@ Object {
       "line": 1,
     },
   },
+  "localSymbol": undefined,
+  "locals": undefined,
   "members": Array [],
+  "modifiers": undefined,
   "name": Object {
     "loc": Object {
       "end": Object {
@@ -446,11 +458,13 @@ Object {
     ],
     "type": "Identifier",
   },
+  "nextContainer": undefined,
   "range": Array [
     0,
     15,
   ],
-  "transformFlags": 0,
+  "symbol": undefined,
+  "transformFlags": 257,
   "type": "TSClassDeclaration",
   "typeParameters": Object {
     "loc": Object {
