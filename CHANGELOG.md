@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.5.0...v3.6.0) (2020-07-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-namespace] allow namespaces in nested declarations with `allowDeclarations` ([#2238](https://github.com/typescript-eslint/typescript-eslint/issues/2238)) ([c1df669](https://github.com/typescript-eslint/typescript-eslint/commit/c1df6694f7866d3ef7ede0b1c6c9dd6f3955e682))
+* **eslint-plugin:** [space-before-function-paren] handle abstract functions ([#2199](https://github.com/typescript-eslint/typescript-eslint/issues/2199)) ([88a3edf](https://github.com/typescript-eslint/typescript-eslint/commit/88a3edfce8349f871b7b660d2b76508b67c94eda))
+
+
+### Features
+
+* **eslint-plugin:** add rule `prefer-literal-enum-member` ([#1898](https://github.com/typescript-eslint/typescript-eslint/issues/1898)) ([fe2b2ec](https://github.com/typescript-eslint/typescript-eslint/commit/fe2b2ec39ef04ac8b73eef9d29d12fd1b24fa183))
+
+
+
+
+
 # [3.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.4.0...v3.5.0) (2020-06-29)
 
 

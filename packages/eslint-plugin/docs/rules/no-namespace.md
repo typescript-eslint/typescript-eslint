@@ -51,6 +51,14 @@ Examples of **correct** code for the `{ "allowDeclarations": true }` option:
 declare module 'foo' {}
 declare module foo {}
 declare namespace foo {}
+
+declare global {
+  namespace foo {}
+}
+
+declare module foo {
+  namespace foo {}
+}
 ```
 
 Examples of **incorrect** code for the `{ "allowDeclarations": false }` option:
