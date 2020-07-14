@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.0...v3.6.1) (2020-07-13)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] handle computed member access ([#2288](https://github.com/typescript-eslint/typescript-eslint/issues/2288)) ([3a187ca](https://github.com/typescript-eslint/typescript-eslint/commit/3a187cafb7302a3c05de0e6a236dd142a5e2d741))
+* **eslint-plugin:** [prefer-literal-enum-member] allow negative numbers ([#2277](https://github.com/typescript-eslint/typescript-eslint/issues/2277)) ([00ac9c3](https://github.com/typescript-eslint/typescript-eslint/commit/00ac9c3ccaad27bab08ec3c3a104f612bb593df5))
+* **eslint-plugin:** [space-before-function-paren] incorrect handling of abstract methods ([#2275](https://github.com/typescript-eslint/typescript-eslint/issues/2275)) ([ced6591](https://github.com/typescript-eslint/typescript-eslint/commit/ced65918b16f46c383496a9b4bd43eca8a76baf6)), closes [#2274](https://github.com/typescript-eslint/typescript-eslint/issues/2274)
+* **eslint-plugin:** [switch-exhaustiveness-check] handle special characters in enum keys ([#2207](https://github.com/typescript-eslint/typescript-eslint/issues/2207)) ([98ab010](https://github.com/typescript-eslint/typescript-eslint/commit/98ab010fb7fca884984bb4200fd806ecee8071b6))
+
+
+
+
+
 # [3.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.5.0...v3.6.0) (2020-07-06)
 
 
