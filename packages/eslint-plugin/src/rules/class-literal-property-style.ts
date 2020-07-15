@@ -56,6 +56,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
+    const dict = new Set();
+
     if (style === 'fields') {
       return {
         MethodDefinition(node: TSESTree.MethodDefinition): void {
@@ -100,13 +102,29 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      'MemberExpression > Identifier:exit'(node: TSESTree.Identifier): void {
+        if (dict.has(node.name)) {
+          context.report({
+            node,
+            messageId: 'preferGetterStyle',
+          });
+
+          dict.delete(node.name);
+        }
+      },
+      'ClassProperty:exit'(node: TSESTree.ClassProperty): void {
+        if (dict.size) {
+          context.report({
+            node: node.key,
+            messageId: 'preferGetterStyle',
+          });
+
+          dict.delete(node.key.name);
+        }
+      },
       ClassProperty(node: TSESTree.ClassProperty): void {
-        if (
-          node.readonly &&
-          node.accessibility === 'private' &&
-          node.typeAnnotation
-        ) {
-          return;
+        if (node.readonly && node.accessibility === 'private') {
+          dict.add(node.key.name);
         }
 
         if (!node.readonly || node.declare) {

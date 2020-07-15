@@ -180,10 +180,10 @@ class Mx {
     {
       code: `
 class Mx {
-  private readonly foo: string = 'bar';
+  private readonly foo: string;
 }
       `,
-      options: ['getters'],
+      options: ['fields'],
     },
     {
       code: `
@@ -197,6 +197,29 @@ class Mx {
     },
   ],
   invalid: [
+    {
+      code: `
+  class Mx {
+    private readonly foo: string;
+
+    constructor(foo: string) {
+      this.foo = bar;
+    }
+  }
+        `,
+      output: null,
+      options: ['getters'],
+      errors: [{ messageId: 'preferGetterStyle' }],
+    },
+    {
+      code: `
+class Mx {
+  private readonly foo: string
+}
+    `,
+      options: ['getters'],
+      errors: [{ messageId: 'preferGetterStyle' }],
+    },
     {
       code: `
 class Mx {
