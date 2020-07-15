@@ -33,7 +33,6 @@ declare const typedVar: () => void;
 declare const typedNested: { prop: { a: () => void } };
 
 typedVar();
-
 typedNested.prop.a();
 
 (() => {})();
