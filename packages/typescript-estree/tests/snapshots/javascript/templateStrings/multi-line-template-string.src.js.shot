@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript templateStrings multi-line-template-string.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "expressions": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 12,
+            "line": 6,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "quasis": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 12,
+                "line": 6,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              110,
+            ],
+            "tail": true,
+            "type": "TemplateElement",
+            "value": Object {
+              "cooked": "The last man on Earth
+                 sat alone in a room.
+    There was
+    a knock
+    on the
+    door...",
+              "raw": "The last man on Earth
+                 sat alone in a room.
+    There was
+    a knock
+    on the
+    door...",
+            },
+          },
+        ],
+        "range": Array [
+          0,
+          110,
+        ],
+        "type": "TemplateLiteral",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        111,
+      ],
+      "type": "ExpressionStatement",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 13,
+      "line": 6,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    111,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        110,
+      ],
+      "type": "Template",
+      "value": "\`The last man on Earth
+                 sat alone in a room.
+    There was
+    a knock
+    on the
+    door...\`",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        110,
+        111,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

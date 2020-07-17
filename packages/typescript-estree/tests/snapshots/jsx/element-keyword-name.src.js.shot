@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx element-keyword-name.src 1`] = `
+Object {
+  "column": 12,
+  "index": 18,
+  "lineNumber": 2,
+  "message": "'>' expected.",
+}
+`;

@@ -1,0 +1,418 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments template-string-block.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "expressions": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 3,
+                "line": 1,
+              },
+            },
+            "name": "name",
+            "range": Array [
+              3,
+              7,
+            ],
+            "type": "Identifier",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 9,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "quasis": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 3,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              3,
+            ],
+            "tail": false,
+            "type": "TemplateElement",
+            "value": Object {
+              "cooked": "",
+              "raw": "",
+            },
+          },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              7,
+              9,
+            ],
+            "tail": true,
+            "type": "TemplateElement",
+            "value": Object {
+              "cooked": "",
+              "raw": "",
+            },
+          },
+        ],
+        "range": Array [
+          0,
+          9,
+        ],
+        "type": "TemplateLiteral",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        10,
+      ],
+      "type": "ExpressionStatement",
+    },
+    Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "left": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 5,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                56,
+                57,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 4,
+              },
+            },
+            "operator": "+",
+            "range": Array [
+              56,
+              61,
+            ],
+            "right": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                60,
+                61,
+              ],
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
+            },
+            "type": "BinaryExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 10,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            56,
+            62,
+          ],
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        11,
+        64,
+      ],
+      "type": "BlockStatement",
+    },
+  ],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        17,
+        51,
+      ],
+      "type": "Block",
+      "value": " TODO comment comment comment ",
+    },
+  ],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 6,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    65,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        3,
+      ],
+      "type": "Template",
+      "value": "\`\${",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        3,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "name",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        9,
+      ],
+      "type": "Template",
+      "value": "}\`",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        56,
+        57,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        58,
+        59,
+      ],
+      "type": "Punctuator",
+      "value": "+",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        60,
+        61,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        61,
+        62,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        63,
+        64,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics class-with-implements-and-extends.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "body": Object {
+        "body": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 80,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 78,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          78,
+          80,
+        ],
+        "type": "ClassBody",
+      },
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 6,
+            "line": 1,
+          },
+        },
+        "name": "ClassWithParentAndInterface",
+        "range": Array [
+          6,
+          33,
+        ],
+        "type": "Identifier",
+      },
+      "implements": Array [
+        Object {
+          "expression": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 56,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 45,
+                "line": 1,
+              },
+            },
+            "name": "MyInterface",
+            "range": Array [
+              45,
+              56,
+            ],
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 56,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 45,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            45,
+            56,
+          ],
+          "type": "TSClassImplements",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 80,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        80,
+      ],
+      "superClass": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 77,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 65,
+            "line": 1,
+          },
+        },
+        "name": "MyOtherClass",
+        "range": Array [
+          65,
+          77,
+        ],
+        "type": "Identifier",
+      },
+      "type": "ClassDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    81,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 5,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        5,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        6,
+        33,
+      ],
+      "type": "Identifier",
+      "value": "ClassWithParentAndInterface",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 44,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 34,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        34,
+        44,
+      ],
+      "type": "Keyword",
+      "value": "implements",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 56,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 45,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        45,
+        56,
+      ],
+      "type": "Identifier",
+      "value": "MyInterface",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 64,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 57,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        57,
+        64,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 77,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 65,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        65,
+        77,
+      ],
+      "type": "Identifier",
+      "value": "MyOtherClass",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 79,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 78,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        78,
+        79,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 80,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 79,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        79,
+        80,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

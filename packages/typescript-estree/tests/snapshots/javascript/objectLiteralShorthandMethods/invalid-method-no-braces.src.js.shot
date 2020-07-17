@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript objectLiteralShorthandMethods invalid-method-no-braces.src 1`] = `
+Object {
+  "column": 13,
+  "index": 19,
+  "lineNumber": 2,
+  "message": "'{' expected.",
+}
+`;

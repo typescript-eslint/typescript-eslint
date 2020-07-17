@@ -1,0 +1,540 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics abstract-class-with-abstract-method.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "abstract": true,
+        "body": Object {
+          "body": Array [
+            Object {
+              "computed": false,
+              "key": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 25,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 13,
+                    "line": 2,
+                  },
+                },
+                "name": "createSocket",
+                "range": Array [
+                  52,
+                  64,
+                ],
+                "type": "Identifier",
+              },
+              "kind": "method",
+              "loc": Object {
+                "end": Object {
+                  "column": 45,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                43,
+                84,
+              ],
+              "static": false,
+              "type": "TSAbstractMethodDefinition",
+              "value": Object {
+                "async": false,
+                "body": null,
+                "expression": false,
+                "generator": false,
+                "id": null,
+                "loc": Object {
+                  "end": Object {
+                    "column": 45,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 25,
+                    "line": 2,
+                  },
+                },
+                "params": Array [],
+                "range": Array [
+                  64,
+                  84,
+                ],
+                "returnType": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 44,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 27,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    66,
+                    83,
+                  ],
+                  "type": "TSTypeAnnotation",
+                  "typeAnnotation": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 44,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 29,
+                        "line": 2,
+                      },
+                    },
+                    "range": Array [
+                      68,
+                      83,
+                    ],
+                    "type": "TSTypeReference",
+                    "typeName": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 36,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 29,
+                          "line": 2,
+                        },
+                      },
+                      "name": "Promise",
+                      "range": Array [
+                        68,
+                        75,
+                      ],
+                      "type": "Identifier",
+                    },
+                    "typeParameters": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 44,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 36,
+                          "line": 2,
+                        },
+                      },
+                      "params": Array [
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 43,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 37,
+                              "line": 2,
+                            },
+                          },
+                          "range": Array [
+                            76,
+                            82,
+                          ],
+                          "type": "TSStringKeyword",
+                        },
+                      ],
+                      "range": Array [
+                        75,
+                        83,
+                      ],
+                      "type": "TSTypeParameterInstantiation",
+                    },
+                  },
+                },
+                "type": "TSEmptyBodyFunctionExpression",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 37,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            37,
+            86,
+          ],
+          "type": "ClassBody",
+        },
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 22,
+              "line": 1,
+            },
+          },
+          "name": "AbstractSocket",
+          "range": Array [
+            22,
+            36,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          7,
+          86,
+        ],
+        "superClass": null,
+        "type": "ClassDeclaration",
+      },
+      "exportKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        86,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    86,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        15,
+      ],
+      "type": "Identifier",
+      "value": "abstract",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        21,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        36,
+      ],
+      "type": "Identifier",
+      "value": "AbstractSocket",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        37,
+        38,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        43,
+        51,
+      ],
+      "type": "Identifier",
+      "value": "abstract",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        52,
+        64,
+      ],
+      "type": "Identifier",
+      "value": "createSocket",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        64,
+        65,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 27,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        65,
+        66,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        66,
+        67,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        68,
+        75,
+      ],
+      "type": "Identifier",
+      "value": "Promise",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 36,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        75,
+        76,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 43,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        76,
+        82,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 44,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 43,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        82,
+        83,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 45,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 44,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        83,
+        84,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        85,
+        86,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx tag-names-with-multi-dots-multi.src 1`] = `
+Object {
+  "column": 7,
+  "index": 21,
+  "lineNumber": 2,
+  "message": "'>' expected.",
+}
+`;

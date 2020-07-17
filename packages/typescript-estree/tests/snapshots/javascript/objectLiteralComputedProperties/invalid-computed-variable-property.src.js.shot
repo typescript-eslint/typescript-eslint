@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript objectLiteralComputedProperties invalid-computed-variable-property.src 1`] = `
+Object {
+  "column": 0,
+  "index": 20,
+  "lineNumber": 3,
+  "message": "':' expected.",
+}
+`;
