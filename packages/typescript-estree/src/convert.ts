@@ -1983,19 +1983,12 @@ export class Converter {
           raw: 'false',
         });
 
-      case SyntaxKind.NullKeyword: {
-        if (this.inTypeMode) {
-          return this.createNode<TSESTree.TSNullKeyword>(node, {
-            type: AST_NODE_TYPES.TSNullKeyword,
-          });
-        } else {
-          return this.createNode<TSESTree.Literal>(node as ts.NullLiteral, {
-            type: AST_NODE_TYPES.Literal,
-            value: null,
-            raw: 'null',
-          });
-        }
-      }
+      case SyntaxKind.NullKeyword:
+        return this.createNode<TSESTree.Literal>(node, {
+          type: AST_NODE_TYPES.Literal,
+          value: null,
+          raw: 'null',
+        });
 
       case SyntaxKind.EmptyStatement:
         return this.createNode<TSESTree.EmptyStatement>(node, {
@@ -2620,9 +2613,12 @@ export class Converter {
         // In TS 4.0, the `elementTypes` property was changed to `elements`.
         // To support both at compile time, we cast to access the newer version
         // if the former does not exist.
-        const elementTypes = node.elementTypes
-          ? node.elementTypes.map(el => this.convertType(el))
-          : (node as any).elements.map((el: ts.Node) => this.convertType(el));
+        const elementTypes =
+          'elementTypes' in node
+            ? (node as any).elementTypes.map((el: ts.Node) =>
+                this.convertType(el),
+              )
+            : node.elements.map((el: ts.Node) => this.convertType(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -2661,10 +2657,21 @@ export class Converter {
         });
       }
       case SyntaxKind.LiteralType: {
-        return this.createNode<TSESTree.TSLiteralType>(node, {
-          type: AST_NODE_TYPES.TSLiteralType,
-          literal: this.convertType(node.literal),
-        });
+        if (node.literal.kind === SyntaxKind.NullKeyword) {
+          // 4.0.0 started nesting null types inside a LiteralType node
+          // but our AST is designed around the old way of null being a keyword
+          return this.createNode<TSESTree.TSNullKeyword>(
+            node.literal as ts.NullLiteral,
+            {
+              type: AST_NODE_TYPES.TSNullKeyword,
+            },
+          );
+        } else {
+          return this.createNode<TSESTree.TSLiteralType>(node, {
+            type: AST_NODE_TYPES.TSLiteralType,
+            literal: this.convertType(node.literal),
+          });
+        }
       }
       case SyntaxKind.TypeAssertionExpression: {
         return this.createNode<TSESTree.TSTypeAssertion>(node, {

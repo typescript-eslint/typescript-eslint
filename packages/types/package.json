@@ -33,7 +33,6 @@
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
-    "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "funding": {

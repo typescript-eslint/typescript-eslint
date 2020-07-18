@@ -67,8 +67,11 @@ interface TokenToText {
   [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
   [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
   [SyntaxKind.AmpersandEqualsToken]: '&=';
+  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
   [SyntaxKind.BarEqualsToken]: '|=';
+  [SyntaxKind.BarBarEqualsToken]: '||=';
   [SyntaxKind.CaretEqualsToken]: '^=';
+  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
   [SyntaxKind.AtToken]: '@';
   [SyntaxKind.InKeyword]: 'in';
   [SyntaxKind.UniqueKeyword]: 'unique';
