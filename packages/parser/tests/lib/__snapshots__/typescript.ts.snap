@@ -3502,6 +3502,462 @@ Object {
 }
 `;
 
+exports[`typescript fixtures/basics/catch-clause-with-annotation.src 1`] = `
+Object {
+  "$id": 9,
+  "block": Object {
+    "range": Array [
+      0,
+      63,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 8,
+      "block": Object {
+        "range": Array [
+          0,
+          63,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 0,
+          "block": Object {
+            "range": Array [
+              4,
+              8,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 8,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 8,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              9,
+              28,
+            ],
+            "type": "CatchClause",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 2,
+              "block": Object {
+                "range": Array [
+                  24,
+                  28,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 3,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 8,
+              },
+              "variables": Array [],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "catch",
+          "upperScope": Object {
+            "$ref": 8,
+          },
+          "variableMap": Object {
+            "e": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 8,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "e",
+                    "range": Array [
+                      16,
+                      22,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      9,
+                      28,
+                    ],
+                    "type": "CatchClause",
+                  },
+                  "parent": null,
+                  "type": "CatchClause",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "e",
+                  "range": Array [
+                    16,
+                    22,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "e",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 3,
+              },
+            },
+          ],
+        },
+        Object {
+          "$id": 4,
+          "block": Object {
+            "range": Array [
+              34,
+              38,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 8,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 8,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 7,
+          "block": Object {
+            "range": Array [
+              39,
+              62,
+            ],
+            "type": "CatchClause",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 6,
+              "block": Object {
+                "range": Array [
+                  58,
+                  62,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 7,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 8,
+              },
+              "variables": Array [],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "catch",
+          "upperScope": Object {
+            "$ref": 8,
+          },
+          "variableMap": Object {
+            "e": Object {
+              "$ref": 5,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 8,
+          },
+          "variables": Array [
+            Object {
+              "$id": 5,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "e",
+                    "range": Array [
+                      46,
+                      56,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      39,
+                      62,
+                    ],
+                    "type": "CatchClause",
+                  },
+                  "parent": null,
+                  "type": "CatchClause",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "e",
+                  "range": Array [
+                    46,
+                    56,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "e",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 7,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 9,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 8,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 9,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/basics/catch-clause-with-invalid-annotation.src 1`] = `
+Object {
+  "$id": 5,
+  "block": Object {
+    "range": Array [
+      0,
+      32,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 4,
+      "block": Object {
+        "range": Array [
+          0,
+          32,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [
+        Object {
+          "$id": 0,
+          "block": Object {
+            "range": Array [
+              4,
+              8,
+            ],
+            "type": "BlockStatement",
+          },
+          "childScopes": Array [],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "block",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {},
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [],
+        },
+        Object {
+          "$id": 3,
+          "block": Object {
+            "range": Array [
+              9,
+              31,
+            ],
+            "type": "CatchClause",
+          },
+          "childScopes": Array [
+            Object {
+              "$id": 2,
+              "block": Object {
+                "range": Array [
+                  27,
+                  31,
+                ],
+                "type": "BlockStatement",
+              },
+              "childScopes": Array [],
+              "functionExpressionScope": false,
+              "isStrict": true,
+              "references": Array [],
+              "throughReferences": Array [],
+              "type": "block",
+              "upperScope": Object {
+                "$ref": 3,
+              },
+              "variableMap": Object {},
+              "variableScope": Object {
+                "$ref": 4,
+              },
+              "variables": Array [],
+            },
+          ],
+          "functionExpressionScope": false,
+          "isStrict": true,
+          "references": Array [],
+          "throughReferences": Array [],
+          "type": "catch",
+          "upperScope": Object {
+            "$ref": 4,
+          },
+          "variableMap": Object {
+            "e": Object {
+              "$ref": 1,
+            },
+          },
+          "variableScope": Object {
+            "$ref": 4,
+          },
+          "variables": Array [
+            Object {
+              "$id": 1,
+              "defs": Array [
+                Object {
+                  "name": Object {
+                    "name": "e",
+                    "range": Array [
+                      16,
+                      25,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "node": Object {
+                    "range": Array [
+                      9,
+                      31,
+                    ],
+                    "type": "CatchClause",
+                  },
+                  "parent": null,
+                  "type": "CatchClause",
+                },
+              ],
+              "eslintUsed": undefined,
+              "identifiers": Array [
+                Object {
+                  "name": "e",
+                  "range": Array [
+                    16,
+                    25,
+                  ],
+                  "type": "Identifier",
+                },
+              ],
+              "name": "e",
+              "references": Array [],
+              "scope": Object {
+                "$ref": 3,
+              },
+            },
+          ],
+        },
+      ],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 5,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 4,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 5,
+  },
+  "variables": Array [],
+}
+`;
+
 exports[`typescript fixtures/basics/class-multi-line-keyword-abstract.src 1`] = `
 Object {
   "$id": 5,

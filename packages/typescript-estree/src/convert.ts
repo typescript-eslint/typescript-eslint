@@ -258,6 +258,21 @@ export class Converter {
     return result as T;
   }
 
+  private convertBindingNameWithTypeAnnotation(
+    name: ts.BindingName,
+    tsType: ts.TypeNode | undefined,
+    parent?: ts.Node,
+  ): TSESTree.BindingName {
+    const id = this.convertPattern(name);
+
+    if (tsType) {
+      id.typeAnnotation = this.convertTypeAnnotation(tsType, parent);
+      this.fixParentLocation(id, id.typeAnnotation.range);
+    }
+
+    return id;
+  }
+
   /**
    * Converts a child into a type annotation. This creates an intermediary
    * TypeAnnotation node to match what Flow does.
@@ -267,12 +282,12 @@ export class Converter {
    */
   private convertTypeAnnotation(
     child: ts.TypeNode,
-    parent: ts.Node,
+    parent: ts.Node | undefined,
   ): TSESTree.TSTypeAnnotation {
     // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
     const offset =
-      parent.kind === SyntaxKind.FunctionType ||
-      parent.kind === SyntaxKind.ConstructorType
+      parent?.kind === SyntaxKind.FunctionType ||
+      parent?.kind === SyntaxKind.ConstructorType
         ? 2
         : 1;
     const annotationStartCol = child.getFullStart() - offset;
@@ -697,7 +712,10 @@ export class Converter {
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
-            ? this.convertChild(node.variableDeclaration.name)
+            ? this.convertBindingNameWithTypeAnnotation(
+                node.variableDeclaration.name,
+                node.variableDeclaration.type,
+              )
             : null,
           body: this.convertChild(node.block),
         });
@@ -805,7 +823,11 @@ export class Converter {
       case SyntaxKind.VariableDeclaration: {
         const result = this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          id: this.convertPattern(node.name),
+          id: this.convertBindingNameWithTypeAnnotation(
+            node.name,
+            node.type,
+            node,
+          ),
           init: this.convertChild(node.initializer),
         });
 
@@ -813,13 +835,6 @@ export class Converter {
           result.definite = true;
         }
 
-        if (node.type) {
-          result.id.typeAnnotation = this.convertTypeAnnotation(
-            node.type,
-            node,
-          );
-          this.fixParentLocation(result.id, result.id.typeAnnotation.range);
-        }
         return result;
       }
 
