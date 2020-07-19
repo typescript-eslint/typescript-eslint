@@ -19,6 +19,8 @@ describe('convert', () => {
 
     function fakeUnknownKind(node: ts.Node): void {
       ts.forEachChild(node, fakeUnknownKind);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- intentionally writing to a readonly field
+      // @ts-expect-error
       node.kind = ts.SyntaxKind.UnparsedPrologue;
     }
 
