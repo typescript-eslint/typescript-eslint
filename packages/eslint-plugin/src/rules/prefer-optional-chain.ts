@@ -8,10 +8,9 @@ import * as util from '../util';
 type ValidChainTarget =
   | TSESTree.BinaryExpression
   | TSESTree.CallExpression
-  | TSESTree.MemberExpression
-  | TSESTree.OptionalCallExpression
-  | TSESTree.OptionalMemberExpression
+  | TSESTree.ChainExpression
   | TSESTree.Identifier
+  | TSESTree.MemberExpression
   | TSESTree.ThisExpression;
 
 /*
@@ -56,6 +55,7 @@ export default util.createRule({
       [[
         'LogicalExpression[operator="&&"] > Identifier',
         'LogicalExpression[operator="&&"] > MemberExpression',
+        'LogicalExpression[operator="&&"] > ChainExpression > MemberExpression',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
       ].join(',')](
@@ -65,7 +65,10 @@ export default util.createRule({
           | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
-        const initialExpression = initialIdentifierOrNotEqualsExpr.parent as TSESTree.LogicalExpression;
+        const initialExpression = (initialIdentifierOrNotEqualsExpr.parent
+          ?.type === AST_NODE_TYPES.ChainExpression
+          ? initialIdentifierOrNotEqualsExpr.parent.parent
+          : initialIdentifierOrNotEqualsExpr.parent) as TSESTree.LogicalExpression;
 
         if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
           // the node(identifier or member expression) is not the deepest left node
@@ -192,10 +195,7 @@ export default util.createRule({
         );
       }
 
-      if (
-        node.type === AST_NODE_TYPES.CallExpression ||
-        node.type === AST_NODE_TYPES.OptionalCallExpression
-      ) {
+      if (node.type === AST_NODE_TYPES.CallExpression) {
         const calleeText = getText(
           // isValidChainTarget ensures this is type safe
           node.callee as ValidChainTarget,
@@ -233,27 +233,27 @@ export default util.createRule({
         return 'this';
       }
 
+      if (node.type === AST_NODE_TYPES.ChainExpression) {
+        return getText(node.expression);
+      }
+
       return getMemberExpressionText(node);
     }
 
     /**
      * Gets a normalized representation of the given MemberExpression
      */
-    function getMemberExpressionText(
-      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-    ): string {
+    function getMemberExpressionText(node: TSESTree.MemberExpression): string {
       let objectText: string;
 
       // cases should match the list in ALLOWED_MEMBER_OBJECT_TYPES
       switch (node.object.type) {
         case AST_NODE_TYPES.CallExpression:
-        case AST_NODE_TYPES.OptionalCallExpression:
         case AST_NODE_TYPES.Identifier:
           objectText = getText(node.object);
           break;
 
         case AST_NODE_TYPES.MemberExpression:
-        case AST_NODE_TYPES.OptionalMemberExpression:
           objectText = getMemberExpressionText(node.object);
           break;
 
@@ -280,7 +280,6 @@ export default util.createRule({
             break;
 
           case AST_NODE_TYPES.MemberExpression:
-          case AST_NODE_TYPES.OptionalMemberExpression:
             propertyText = getMemberExpressionText(node.property);
             break;
 
@@ -316,15 +315,12 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.CallExpression,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.MemberExpression,
-  AST_NODE_TYPES.OptionalCallExpression,
-  AST_NODE_TYPES.OptionalMemberExpression,
   AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,
-  AST_NODE_TYPES.OptionalMemberExpression,
   AST_NODE_TYPES.TemplateLiteral,
 ]);
 const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
@@ -335,10 +331,11 @@ function isValidChainTarget(
   node: TSESTree.Node,
   allowIdentifier: boolean,
 ): node is ValidChainTarget {
-  if (
-    node.type === AST_NODE_TYPES.MemberExpression ||
-    node.type === AST_NODE_TYPES.OptionalMemberExpression
-  ) {
+  if (node.type === AST_NODE_TYPES.ChainExpression) {
+    return isValidChainTarget(node.expression, allowIdentifier);
+  }
+
+  if (node.type === AST_NODE_TYPES.MemberExpression) {
     const isObjectValid =
       ALLOWED_MEMBER_OBJECT_TYPES.has(node.object.type) &&
       // make sure to validate the expression is of our expected structure
@@ -346,8 +343,7 @@ function isValidChainTarget(
     const isPropertyValid = node.computed
       ? ALLOWED_COMPUTED_PROP_TYPES.has(node.property.type) &&
         // make sure to validate the member expression is of our expected structure
-        (node.property.type === AST_NODE_TYPES.MemberExpression ||
-        node.property.type === AST_NODE_TYPES.OptionalMemberExpression
+        (node.property.type === AST_NODE_TYPES.MemberExpression
           ? isValidChainTarget(node.property, allowIdentifier)
           : true)
       : ALLOWED_NON_COMPUTED_PROP_TYPES.has(node.property.type);
@@ -355,10 +351,7 @@ function isValidChainTarget(
     return isObjectValid && isPropertyValid;
   }
 
-  if (
-    node.type === AST_NODE_TYPES.CallExpression ||
-    node.type === AST_NODE_TYPES.OptionalCallExpression
-  ) {
+  if (node.type === AST_NODE_TYPES.CallExpression) {
     return isValidChainTarget(node.callee, allowIdentifier);
   }
 

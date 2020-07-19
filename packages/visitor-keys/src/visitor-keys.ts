@@ -48,8 +48,6 @@ const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith({
   // Additional Nodes.
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
-  OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],
-  OptionalMemberExpression: eslintVisitorKeys.KEYS.MemberExpression,
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
