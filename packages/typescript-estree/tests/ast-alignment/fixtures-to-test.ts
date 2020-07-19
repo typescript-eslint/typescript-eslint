@@ -418,6 +418,12 @@ tester.addFixturePatternConfig('typescript/basics', {
      * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
      */
     'export-star-as-ns-from',
+    /**
+     * TS 4.0 catch clause with type annotation
+     * Not supported in babel yet
+     */
+    'catch-clause-with-annotation',
+    'catch-clause-with-invalid-annotation',
   ],
   ignoreSourceType: [
     /**
