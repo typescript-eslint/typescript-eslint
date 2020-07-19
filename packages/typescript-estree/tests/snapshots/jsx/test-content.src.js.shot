@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx test-content.src 1`] = `
+Object {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;

@@ -29,9 +29,11 @@ nestedAny.prop`foo`;
 Examples of **correct** code for this rule:
 
 ```ts
-declare const properlyTyped: { prop: { a: () => void } };
+declare const typedVar: () => void;
+declare const typedNested: { prop: { a: () => void } };
 
-nestedAny.prop.a();
+typedVar();
+typedNested.prop.a();
 
 (() => {})();
 

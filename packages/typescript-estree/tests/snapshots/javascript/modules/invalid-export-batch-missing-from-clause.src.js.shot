@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`javascript modules invalid-export-batch-missing-from-clause.src 1`] = `
+Object {
+  "column": 0,
+  "index": 9,
+  "lineNumber": 2,
+  "message": "'from' expected.",
+}
+`;

@@ -145,6 +145,7 @@ function nestDescribe(
     };
 
     if ([...fixture.segments, fixture.name].join(path.sep) === ONLY) {
+      // eslint-disable-next-line jest/no-focused-tests
       it.only(fixture.name, test);
     } else {
       it(fixture.name, test);
@@ -153,3 +154,23 @@ function nestDescribe(
 }
 
 fixtures.forEach(f => nestDescribe(f));
+
+if (ONLY === '') {
+  // ensure that the snapshots are cleaned up, because jest-specific-snapshot won't do this check
+  const snapshots = glob.sync(`${FIXTURES_DIR}/**/*.shot`).map(absolute => {
+    const relative = path.relative(FIXTURES_DIR, absolute);
+    const { name, dir } = path.parse(relative);
+    return {
+      relative,
+      fixturePath: path.join(FIXTURES_DIR, dir, name),
+    };
+  });
+
+  describe('ast snapshots should have an associated test', () => {
+    for (const snap of snapshots) {
+      it(snap.relative, () => {
+        fs.existsSync(snap.fixturePath);
+      });
+    }
+  });
+}

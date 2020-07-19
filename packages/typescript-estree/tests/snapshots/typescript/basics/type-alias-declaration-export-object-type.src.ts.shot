@@ -1,0 +1,356 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics type-alias-declaration-export-object-type.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declaration": Object {
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 26,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 12,
+              "line": 1,
+            },
+          },
+          "name": "TestClassProps",
+          "range": Array [
+            12,
+            26,
+          ],
+          "type": "Identifier",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 2,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          7,
+          51,
+        ],
+        "type": "TSTypeAliasDeclaration",
+        "typeAnnotation": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 29,
+              "line": 1,
+            },
+          },
+          "members": Array [
+            Object {
+              "computed": false,
+              "export": undefined,
+              "initializer": undefined,
+              "key": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 9,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 2,
+                  },
+                },
+                "name": "count",
+                "range": Array [
+                  35,
+                  40,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 2,
+                },
+              },
+              "optional": undefined,
+              "range": Array [
+                35,
+                48,
+              ],
+              "readonly": undefined,
+              "static": undefined,
+              "type": "TSPropertySignature",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  40,
+                  48,
+                ],
+                "type": "TSTypeAnnotation",
+                "typeAnnotation": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    42,
+                    48,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+              },
+            },
+          ],
+          "range": Array [
+            29,
+            50,
+          ],
+          "type": "TSTypeLiteral",
+        },
+      },
+      "exportKind": "type",
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        51,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 2,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    51,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        11,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        26,
+      ],
+      "type": "Identifier",
+      "value": "TestClassProps",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        27,
+        28,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 4,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        35,
+        40,
+      ],
+      "type": "Identifier",
+      "value": "count",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        40,
+        41,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        42,
+        48,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        49,
+        50,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 2,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        50,
+        51,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -764,6 +764,23 @@ export interface ArrowFunctionExpression extends BaseNode {
 
 export interface AssignmentExpression extends BinaryExpressionBase {
   type: AST_NODE_TYPES.AssignmentExpression;
+  operator:
+    | '-='
+    | '??='
+    | '**='
+    | '*='
+    | '/='
+    | '&&='
+    | '&='
+    | '%='
+    | '^='
+    | '+='
+    | '<<='
+    | '='
+    | '>>='
+    | '>>>='
+    | '|='
+    | '||=';
 }
 
 export interface AssignmentPattern extends BaseNode {

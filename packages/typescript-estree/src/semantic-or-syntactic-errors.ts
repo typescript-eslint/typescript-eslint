@@ -81,6 +81,7 @@ function whitelistSupportedDiagnostics(
       case 1175: // "'implements' clause already seen."
       case 1176: // "Interface declaration cannot have 'implements' clause."
       case 1190: // "The variable declaration of a 'for...of' statement cannot have an initializer."
+      case 1196: // "Catch clause variable type annotation must be 'any' or 'unknown' if specified."
       case 1200: // "Line terminator not permitted before arrow."
       case 1206: // "Decorators are not valid here."
       case 1211: // "A class declaration without the 'default' modifier must have a name."

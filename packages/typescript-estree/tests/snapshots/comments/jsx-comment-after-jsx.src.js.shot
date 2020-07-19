@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-comment-after-jsx.src 1`] = `
+Object {
+  "column": 14,
+  "index": 48,
+  "lineNumber": 3,
+  "message": "Type expected.",
+}
+`;

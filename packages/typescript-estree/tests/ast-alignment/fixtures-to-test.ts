@@ -419,10 +419,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'export-star-as-ns-from',
     /**
-     * error catch types (TS 4.0), not yet supported in babel as of 2020-06-22
+     * TS 4.0 catch clause with type annotation
+     * Not supported in babel yet
      */
-    'catch-type-any',
-    'catch-type-unknown',
+    'catch-clause-with-annotation',
+    'catch-clause-with-invalid-annotation',
   ],
   ignoreSourceType: [
     /**

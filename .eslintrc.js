@@ -161,11 +161,9 @@ module.exports = {
     // all test files
     {
       files: [
-        'packages/eslint-plugin-internal/tests/**/*.test.ts',
-        'packages/eslint-plugin-tslint/tests/**/*.ts',
-        'packages/eslint-plugin/tests/**/*.test.ts',
+        'packages/*/tests/**/*.test.ts',
+        'packages/*/tests/**/*.spec.ts',
         'packages/parser/tests/**/*.ts',
-        'packages/typescript-estree/tests/**/*.ts',
       ],
       env: {
         'jest/globals': true,

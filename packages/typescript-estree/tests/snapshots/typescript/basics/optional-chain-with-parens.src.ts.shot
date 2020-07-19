@@ -1,0 +1,2056 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics optional-chain-with-parens.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "async": false,
+      "body": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+              },
+              "object": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 6,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 2,
+                  },
+                },
+                "name": "one",
+                "range": Array [
+                  47,
+                  50,
+                ],
+                "type": "Identifier",
+              },
+              "optional": true,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 11,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 8,
+                    "line": 2,
+                  },
+                },
+                "name": "two",
+                "range": Array [
+                  52,
+                  55,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                47,
+                55,
+              ],
+              "type": "OptionalMemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 13,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 2,
+              },
+            },
+            "range": Array [
+              46,
+              57,
+            ],
+            "type": "ExpressionStatement",
+          },
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 18,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 11,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 3,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 6,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 3,
+                    },
+                  },
+                  "name": "one",
+                  "range": Array [
+                    61,
+                    64,
+                  ],
+                  "type": "Identifier",
+                },
+                "optional": true,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 11,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 8,
+                      "line": 3,
+                    },
+                  },
+                  "name": "two",
+                  "range": Array [
+                    66,
+                    69,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  61,
+                  69,
+                ],
+                "type": "OptionalMemberExpression",
+              },
+              "optional": false,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 18,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 13,
+                    "line": 3,
+                  },
+                },
+                "name": "three",
+                "range": Array [
+                  71,
+                  76,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                60,
+                76,
+              ],
+              "type": "MemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 19,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 3,
+              },
+            },
+            "range": Array [
+              60,
+              77,
+            ],
+            "type": "ExpressionStatement",
+          },
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 4,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 10,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 4,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 6,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 4,
+                    },
+                  },
+                  "name": "one",
+                  "range": Array [
+                    81,
+                    84,
+                  ],
+                  "type": "Identifier",
+                },
+                "optional": false,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 4,
+                    },
+                  },
+                  "name": "two",
+                  "range": Array [
+                    85,
+                    88,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  81,
+                  88,
+                ],
+                "type": "MemberExpression",
+              },
+              "optional": true,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 12,
+                    "line": 4,
+                  },
+                },
+                "name": "three",
+                "range": Array [
+                  90,
+                  95,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                81,
+                95,
+              ],
+              "type": "OptionalMemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 19,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 4,
+              },
+            },
+            "range": Array [
+              80,
+              97,
+            ],
+            "type": "ExpressionStatement",
+          },
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 23,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 5,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 5,
+                  },
+                },
+                "object": Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 5,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 6,
+                        "line": 5,
+                      },
+                      "start": Object {
+                        "column": 3,
+                        "line": 5,
+                      },
+                    },
+                    "name": "one",
+                    "range": Array [
+                      101,
+                      104,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "optional": false,
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 5,
+                      },
+                      "start": Object {
+                        "column": 7,
+                        "line": 5,
+                      },
+                    },
+                    "name": "two",
+                    "range": Array [
+                      105,
+                      108,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "range": Array [
+                    101,
+                    108,
+                  ],
+                  "type": "MemberExpression",
+                },
+                "optional": true,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 12,
+                      "line": 5,
+                    },
+                  },
+                  "name": "three",
+                  "range": Array [
+                    110,
+                    115,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  101,
+                  115,
+                ],
+                "type": "OptionalMemberExpression",
+              },
+              "optional": false,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 5,
+                  },
+                },
+                "name": "four",
+                "range": Array [
+                  117,
+                  121,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                100,
+                121,
+              ],
+              "type": "MemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 24,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 5,
+              },
+            },
+            "range": Array [
+              100,
+              122,
+            ],
+            "type": "ExpressionStatement",
+          },
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 23,
+                  "line": 6,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 6,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 6,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 6,
+                  },
+                },
+                "object": Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 6,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 6,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 6,
+                        "line": 6,
+                      },
+                      "start": Object {
+                        "column": 3,
+                        "line": 6,
+                      },
+                    },
+                    "name": "one",
+                    "range": Array [
+                      126,
+                      129,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "optional": false,
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 6,
+                      },
+                      "start": Object {
+                        "column": 7,
+                        "line": 6,
+                      },
+                    },
+                    "name": "two",
+                    "range": Array [
+                      130,
+                      133,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "range": Array [
+                    126,
+                    133,
+                  ],
+                  "type": "MemberExpression",
+                },
+                "optional": true,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 6,
+                    },
+                    "start": Object {
+                      "column": 12,
+                      "line": 6,
+                    },
+                  },
+                  "name": "three",
+                  "range": Array [
+                    135,
+                    140,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  126,
+                  140,
+                ],
+                "type": "OptionalMemberExpression",
+              },
+              "optional": true,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 6,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 6,
+                  },
+                },
+                "name": "four",
+                "range": Array [
+                  142,
+                  146,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                126,
+                146,
+              ],
+              "type": "OptionalMemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 25,
+                "line": 6,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 6,
+              },
+            },
+            "range": Array [
+              125,
+              148,
+            ],
+            "type": "ExpressionStatement",
+          },
+          Object {
+            "expression": Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 29,
+                  "line": 7,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 7,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 7,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 7,
+                  },
+                },
+                "object": Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 7,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 7,
+                    },
+                  },
+                  "object": Object {
+                    "computed": false,
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 7,
+                      },
+                      "start": Object {
+                        "column": 3,
+                        "line": 7,
+                      },
+                    },
+                    "object": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 6,
+                          "line": 7,
+                        },
+                        "start": Object {
+                          "column": 3,
+                          "line": 7,
+                        },
+                      },
+                      "name": "one",
+                      "range": Array [
+                        152,
+                        155,
+                      ],
+                      "type": "Identifier",
+                    },
+                    "optional": false,
+                    "property": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 10,
+                          "line": 7,
+                        },
+                        "start": Object {
+                          "column": 7,
+                          "line": 7,
+                        },
+                      },
+                      "name": "two",
+                      "range": Array [
+                        156,
+                        159,
+                      ],
+                      "type": "Identifier",
+                    },
+                    "range": Array [
+                      152,
+                      159,
+                    ],
+                    "type": "MemberExpression",
+                  },
+                  "optional": true,
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 17,
+                        "line": 7,
+                      },
+                      "start": Object {
+                        "column": 12,
+                        "line": 7,
+                      },
+                    },
+                    "name": "three",
+                    "range": Array [
+                      161,
+                      166,
+                    ],
+                    "type": "Identifier",
+                  },
+                  "range": Array [
+                    152,
+                    166,
+                  ],
+                  "type": "OptionalMemberExpression",
+                },
+                "optional": true,
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 23,
+                      "line": 7,
+                    },
+                    "start": Object {
+                      "column": 19,
+                      "line": 7,
+                    },
+                  },
+                  "name": "four",
+                  "range": Array [
+                    168,
+                    172,
+                  ],
+                  "type": "Identifier",
+                },
+                "range": Array [
+                  152,
+                  172,
+                ],
+                "type": "OptionalMemberExpression",
+              },
+              "optional": false,
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 29,
+                    "line": 7,
+                  },
+                  "start": Object {
+                    "column": 25,
+                    "line": 7,
+                  },
+                },
+                "name": "five",
+                "range": Array [
+                  174,
+                  178,
+                ],
+                "type": "Identifier",
+              },
+              "range": Array [
+                151,
+                178,
+              ],
+              "type": "MemberExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 30,
+                "line": 7,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 7,
+              },
+            },
+            "range": Array [
+              151,
+              179,
+            ],
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 1,
+            "line": 8,
+          },
+          "start": Object {
+            "column": 42,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          42,
+          181,
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "generator": false,
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 30,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
+        "name": "processOptionalParens",
+        "range": Array [
+          9,
+          30,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 8,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "params": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 40,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 31,
+              "line": 1,
+            },
+          },
+          "name": "one",
+          "optional": true,
+          "range": Array [
+            31,
+            40,
+          ],
+          "type": "Identifier",
+          "typeAnnotation": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 40,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 35,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              35,
+              40,
+            ],
+            "type": "TSTypeAnnotation",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 40,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 37,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                37,
+                40,
+              ],
+              "type": "TSAnyKeyword",
+            },
+          },
+        },
+      ],
+      "range": Array [
+        0,
+        181,
+      ],
+      "type": "FunctionDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 9,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    182,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        8,
+      ],
+      "type": "Keyword",
+      "value": "function",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        30,
+      ],
+      "type": "Identifier",
+      "value": "processOptionalParens",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        30,
+        31,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 34,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 31,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        31,
+        34,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 34,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        34,
+        35,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 35,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        35,
+        36,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 40,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        37,
+        40,
+      ],
+      "type": "Identifier",
+      "value": "any",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 41,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        40,
+        41,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 43,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 42,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        42,
+        43,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        46,
+        47,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        47,
+        50,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        50,
+        52,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        52,
+        55,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        55,
+        56,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        56,
+        57,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        60,
+        61,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        61,
+        64,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        64,
+        66,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 11,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        66,
+        69,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        69,
+        70,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        70,
+        71,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        71,
+        76,
+      ],
+      "type": "Identifier",
+      "value": "three",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        76,
+        77,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        80,
+        81,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        81,
+        84,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        84,
+        85,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        85,
+        88,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        88,
+        90,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        90,
+        95,
+      ],
+      "type": "Identifier",
+      "value": "three",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        95,
+        96,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        96,
+        97,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        100,
+        101,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        101,
+        104,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        104,
+        105,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        105,
+        108,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        108,
+        110,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        110,
+        115,
+      ],
+      "type": "Identifier",
+      "value": "three",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        115,
+        116,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        116,
+        117,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        117,
+        121,
+      ],
+      "type": "Identifier",
+      "value": "four",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        121,
+        122,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        125,
+        126,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        126,
+        129,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        129,
+        130,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        130,
+        133,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        133,
+        135,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        135,
+        140,
+      ],
+      "type": "Identifier",
+      "value": "three",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        140,
+        142,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        142,
+        146,
+      ],
+      "type": "Identifier",
+      "value": "four",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        146,
+        147,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 6,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 6,
+        },
+      },
+      "range": Array [
+        147,
+        148,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        151,
+        152,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 3,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        152,
+        155,
+      ],
+      "type": "Identifier",
+      "value": "one",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 6,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        155,
+        156,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        156,
+        159,
+      ],
+      "type": "Identifier",
+      "value": "two",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 10,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        159,
+        161,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 17,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        161,
+        166,
+      ],
+      "type": "Identifier",
+      "value": "three",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        166,
+        168,
+      ],
+      "type": "Punctuator",
+      "value": "?.",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        168,
+        172,
+      ],
+      "type": "Identifier",
+      "value": "four",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        172,
+        173,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        173,
+        174,
+      ],
+      "type": "Punctuator",
+      "value": ".",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        174,
+        178,
+      ],
+      "type": "Identifier",
+      "value": "five",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 7,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 7,
+        },
+      },
+      "range": Array [
+        178,
+        179,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 8,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 8,
+        },
+      },
+      "range": Array [
+        180,
+        181,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -258,6 +258,21 @@ export class Converter {
     return result as T;
   }
 
+  private convertBindingNameWithTypeAnnotation(
+    name: ts.BindingName,
+    tsType: ts.TypeNode | undefined,
+    parent?: ts.Node,
+  ): TSESTree.BindingName {
+    const id = this.convertPattern(name);
+
+    if (tsType) {
+      id.typeAnnotation = this.convertTypeAnnotation(tsType, parent);
+      this.fixParentLocation(id, id.typeAnnotation.range);
+    }
+
+    return id;
+  }
+
   /**
    * Converts a child into a type annotation. This creates an intermediary
    * TypeAnnotation node to match what Flow does.
@@ -267,12 +282,12 @@ export class Converter {
    */
   private convertTypeAnnotation(
     child: ts.TypeNode,
-    parent: ts.Node,
+    parent: ts.Node | undefined,
   ): TSESTree.TSTypeAnnotation {
     // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
     const offset =
-      parent.kind === SyntaxKind.FunctionType ||
-      parent.kind === SyntaxKind.ConstructorType
+      parent?.kind === SyntaxKind.FunctionType ||
+      parent?.kind === SyntaxKind.ConstructorType
         ? 2
         : 1;
     const annotationStartCol = child.getFullStart() - offset;
@@ -697,7 +712,10 @@ export class Converter {
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
-            ? this.convertChild(node.variableDeclaration).id
+            ? this.convertBindingNameWithTypeAnnotation(
+                node.variableDeclaration.name,
+                node.variableDeclaration.type,
+              )
             : null,
           body: this.convertChild(node.block),
         });
@@ -805,7 +823,11 @@ export class Converter {
       case SyntaxKind.VariableDeclaration: {
         const result = this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          id: this.convertPattern(node.name),
+          id: this.convertBindingNameWithTypeAnnotation(
+            node.name,
+            node.type,
+            node,
+          ),
           init: this.convertChild(node.initializer),
         });
 
@@ -813,13 +835,6 @@ export class Converter {
           result.definite = true;
         }
 
-        if (node.type) {
-          result.id.typeAnnotation = this.convertTypeAnnotation(
-            node.type,
-            node,
-          );
-          this.fixParentLocation(result.id, result.id.typeAnnotation.range);
-        }
         return result;
       }
 
@@ -1983,19 +1998,12 @@ export class Converter {
           raw: 'false',
         });
 
-      case SyntaxKind.NullKeyword: {
-        if (this.inTypeMode) {
-          return this.createNode<TSESTree.TSNullKeyword>(node, {
-            type: AST_NODE_TYPES.TSNullKeyword,
-          });
-        } else {
-          return this.createNode<TSESTree.Literal>(node, {
-            type: AST_NODE_TYPES.Literal,
-            value: null,
-            raw: 'null',
-          });
-        }
-      }
+      case SyntaxKind.NullKeyword:
+        return this.createNode<TSESTree.Literal>(node, {
+          type: AST_NODE_TYPES.Literal,
+          value: null,
+          raw: 'null',
+        });
 
       case SyntaxKind.EmptyStatement:
         return this.createNode<TSESTree.EmptyStatement>(node, {
@@ -2620,13 +2628,12 @@ export class Converter {
         // In TS 4.0, the `elementTypes` property was changed to `elements`.
         // To support both at compile time, we cast to access the newer version
         // if the former does not exist.
-        type Elements = typeof node.elements;
         const elementTypes =
           'elementTypes' in node
-            ? ((node as any).elementTypes as Elements).map(el =>
+            ? (node as any).elementTypes.map((el: ts.Node) =>
                 this.convertType(el),
               )
-            : node.elements.map(el => this.convertType(el));
+            : node.elements.map((el: ts.Node) => this.convertType(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -2665,10 +2672,21 @@ export class Converter {
         });
       }
       case SyntaxKind.LiteralType: {
-        return this.createNode<TSESTree.TSLiteralType>(node, {
-          type: AST_NODE_TYPES.TSLiteralType,
-          literal: this.convertType(node.literal),
-        });
+        if (node.literal.kind === SyntaxKind.NullKeyword) {
+          // 4.0.0 started nesting null types inside a LiteralType node
+          // but our AST is designed around the old way of null being a keyword
+          return this.createNode<TSESTree.TSNullKeyword>(
+            node.literal as ts.NullLiteral,
+            {
+              type: AST_NODE_TYPES.TSNullKeyword,
+            },
+          );
+        } else {
+          return this.createNode<TSESTree.TSLiteralType>(node, {
+            type: AST_NODE_TYPES.TSLiteralType,
+            literal: this.convertType(node.literal),
+          });
+        }
       }
       case SyntaxKind.TypeAssertionExpression: {
         return this.createNode<TSESTree.TSTypeAssertion>(node, {

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx invalid-trailing-dot-tag-name.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
