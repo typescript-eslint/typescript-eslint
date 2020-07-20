@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-text-with-multiline-non-comment.src 1`] = `
+Object {
+  "column": 5,
+  "index": 81,
+  "lineNumber": 7,
+  "message": "Type expected.",
+}
+`;

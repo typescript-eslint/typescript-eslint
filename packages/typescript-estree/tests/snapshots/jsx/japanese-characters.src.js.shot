@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx japanese-characters.src 1`] = `
+Object {
+  "column": 6,
+  "index": 6,
+  "lineNumber": 1,
+  "message": "Type expected.",
+}
+`;

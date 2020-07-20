@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx invalid-placeholder-in-closing-tag.src 1`] = `
+Object {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "Unterminated regular expression literal.",
+}
+`;

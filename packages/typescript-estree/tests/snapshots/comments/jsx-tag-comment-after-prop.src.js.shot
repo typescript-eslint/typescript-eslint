@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-tag-comment-after-prop.src 1`] = `
+Object {
+  "column": 8,
+  "index": 66,
+  "lineNumber": 5,
+  "message": "'>' expected.",
+}
+`;

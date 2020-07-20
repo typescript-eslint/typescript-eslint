@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx namespaced-attribute-and-value-inserted.src 1`] = `
+Object {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "'>' expected.",
+}
+`;

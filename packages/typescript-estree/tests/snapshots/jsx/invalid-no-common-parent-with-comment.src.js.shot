@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx invalid-no-common-parent-with-comment.src 1`] = `
+Object {
+  "column": 38,
+  "index": 38,
+  "lineNumber": 1,
+  "message": "',' expected.",
+}
+`;
