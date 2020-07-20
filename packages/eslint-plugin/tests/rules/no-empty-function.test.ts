@@ -63,6 +63,22 @@ function foo() {
 }
       `,
     },
+    {
+      code: `
+@decorator()
+function foo() {}
+      `,
+      options: [{ allow: ['decoratedFunctions'] }],
+    },
+    {
+      code: `
+class Foo {
+  @decorator()
+  foo() {}
+}
+      `,
+      options: [{ allow: ['decoratedFunctions'] }],
+    },
   ],
 
   invalid: [
@@ -146,6 +162,40 @@ function foo() {}
           },
           line: 2,
           column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+@decorator()
+function foo() {}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: "function 'foo'",
+          },
+          line: 3,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  @decorator()
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: "method 'foo'",
+          },
+          line: 4,
+          column: 9,
         },
       ],
     },

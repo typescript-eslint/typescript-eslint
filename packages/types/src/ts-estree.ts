@@ -946,6 +946,7 @@ export interface ForStatement extends BaseNode {
 export interface FunctionDeclaration extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
   body: BlockStatement;
+  decorators?: Decorator[];
 }
 
 export interface FunctionExpression extends FunctionDeclarationBase {
