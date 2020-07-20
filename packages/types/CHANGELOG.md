@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.1...v3.7.0) (2020-07-20)
+
+
+### Features
+
+* **eslint-plugin:** [no-empty-function] add `decoratedFunctions` option ([#2295](https://github.com/typescript-eslint/typescript-eslint/issues/2295)) ([88f08f4](https://github.com/typescript-eslint/typescript-eslint/commit/88f08f410760f58fdc2de58ecd9dab9610821642))
+* **typescript-estree:** support short-circuiting assignment operators ([#2307](https://github.com/typescript-eslint/typescript-eslint/issues/2307)) ([2c90d9f](https://github.com/typescript-eslint/typescript-eslint/commit/2c90d9fa3aa5ebd7db697dddb7762bca2dd0e06b))
+
+
+
+
+
 ## [3.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.0...v3.6.1) (2020-07-13)
 
 **Note:** Version bump only for package @typescript-eslint/types

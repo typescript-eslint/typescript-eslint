@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.1...v3.7.0) (2020-07-20)
+
+
+### Features
+
+* **typescript-estree:** support short-circuiting assignment operators ([#2307](https://github.com/typescript-eslint/typescript-eslint/issues/2307)) ([2c90d9f](https://github.com/typescript-eslint/typescript-eslint/commit/2c90d9fa3aa5ebd7db697dddb7762bca2dd0e06b))
+* **typescript-estree:** support type annotations on catch clauses ([#2306](https://github.com/typescript-eslint/typescript-eslint/issues/2306)) ([b5afe9c](https://github.com/typescript-eslint/typescript-eslint/commit/b5afe9c560b9f38c8dffc312a600db30944129c8))
+
+
+
+
+
 ## [3.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.0...v3.6.1) (2020-07-13)
 
 **Note:** Version bump only for package @typescript-eslint/parser

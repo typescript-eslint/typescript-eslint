@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.1...v3.7.0) (2020-07-20)
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] allow selecting only `const` variables ([#2291](https://github.com/typescript-eslint/typescript-eslint/issues/2291)) ([156d058](https://github.com/typescript-eslint/typescript-eslint/commit/156d058fee835fdf1ed827a5ad4a80d57190cc54))
+* **eslint-plugin:** [no-empty-function] add `decoratedFunctions` option ([#2295](https://github.com/typescript-eslint/typescript-eslint/issues/2295)) ([88f08f4](https://github.com/typescript-eslint/typescript-eslint/commit/88f08f410760f58fdc2de58ecd9dab9610821642))
+
+
+
+
+
 ## [3.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.0...v3.6.1) (2020-07-13)
 
 
