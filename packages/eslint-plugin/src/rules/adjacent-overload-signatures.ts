@@ -30,15 +30,23 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
 
+    interface Method {
+      name: string;
+      static: boolean;
+      callSignature: boolean;
+    }
+
     /**
-     * Gets the name of the member being processed.
+     * Gets the name and attribute of the member being processed.
      * @param member the member being processed.
-     * @returns the name of the member or null if it's a member not relevant to the rule.
+     * @returns the name and attribute of the member or null if it's a member not relevant to the rule.
      */
-    function getMemberName(member: TSESTree.Node): string | null {
+    function getMemberMethod(member: TSESTree.Node): Method | null {
       if (!member) {
         return null;
       }
+
+      const isStatic = 'static' in member && !!member.static;
 
       switch (member.type) {
         case AST_NODE_TYPES.ExportDefaultDeclaration:
@@ -49,33 +57,55 @@ export default util.createRule({
             return null;
           }
 
-          return getMemberName(member.declaration);
+          return getMemberMethod(member.declaration);
         }
         case AST_NODE_TYPES.TSDeclareFunction:
-        case AST_NODE_TYPES.FunctionDeclaration:
-          return member.id?.name ?? null;
+        case AST_NODE_TYPES.FunctionDeclaration: {
+          const name = member.id?.name ?? null;
+          if (name === null) {
+            return null;
+          }
+          return {
+            name,
+            static: isStatic,
+            callSignature: false,
+          };
+        }
         case AST_NODE_TYPES.TSMethodSignature:
-          return util.getNameFromMember(member, sourceCode);
+          return {
+            name: util.getNameFromMember(member, sourceCode),
+            static: isStatic,
+            callSignature: false,
+          };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
-          return 'call';
+          return {
+            name: 'call',
+            static: isStatic,
+            callSignature: true,
+          };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
-          return 'new';
+          return {
+            name: 'new',
+            static: isStatic,
+            callSignature: false,
+          };
         case AST_NODE_TYPES.MethodDefinition:
-          return util.getNameFromMember(member, sourceCode);
+          return {
+            name: util.getNameFromMember(member, sourceCode),
+            static: isStatic,
+            callSignature: false,
+          };
       }
 
       return null;
     }
 
-    interface Method {
-      name: string;
-      static: boolean;
-    }
     function isSameMethod(method1: Method, method2: Method | null): boolean {
       return (
         !!method2 &&
         method1.name === method2.name &&
-        method1.static === method2.static
+        method1.static === method2.static &&
+        method1.callSignature === method2.callSignature
       );
     }
 
@@ -104,15 +134,11 @@ export default util.createRule({
         const seenMethods: Method[] = [];
 
         members.forEach(member => {
-          const name = getMemberName(member);
-          if (name === null) {
+          const method = getMemberMethod(member);
+          if (method === null) {
             lastMethod = null;
             return;
           }
-          const method = {
-            name,
-            static: 'static' in member && !!member.static,
-          };
 
           const index = seenMethods.findIndex(seenMethod =>
             isSameMethod(method, seenMethod),
