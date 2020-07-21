@@ -29,6 +29,7 @@ import {
   TSNode,
   TSESTreeToTSNode,
 } from './ts-estree';
+import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -1998,12 +1999,20 @@ export class Converter {
           raw: 'false',
         });
 
-      case SyntaxKind.NullKeyword:
+      case SyntaxKind.NullKeyword: {
+        if (!typescriptVersionIsAtLeast['4.0'] && this.inTypeMode) {
+          // 4.0 started nesting null types inside a LiteralType node, but we still need to support pre-4.0
+          return this.createNode<TSESTree.TSNullKeyword>(node, {
+            type: AST_NODE_TYPES.TSNullKeyword,
+          });
+        }
+
         return this.createNode<TSESTree.Literal>(node, {
           type: AST_NODE_TYPES.Literal,
           value: null,
           raw: 'null',
         });
+      }
 
       case SyntaxKind.EmptyStatement:
         return this.createNode<TSESTree.EmptyStatement>(node, {
@@ -2672,8 +2681,11 @@ export class Converter {
         });
       }
       case SyntaxKind.LiteralType: {
-        if (node.literal.kind === SyntaxKind.NullKeyword) {
-          // 4.0.0 started nesting null types inside a LiteralType node
+        if (
+          typescriptVersionIsAtLeast['4.0'] &&
+          node.literal.kind === SyntaxKind.NullKeyword
+        ) {
+          // 4.0 started nesting null types inside a LiteralType node
           // but our AST is designed around the old way of null being a keyword
           return this.createNode<TSESTree.TSNullKeyword>(
             node.literal as ts.NullLiteral,
