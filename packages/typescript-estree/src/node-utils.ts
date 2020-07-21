@@ -1,7 +1,7 @@
 import unescape from 'lodash/unescape';
-import * as semver from 'semver';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -453,13 +453,6 @@ export function isOptionalChain(
 }
 
 /**
- * Returns true if the current TS version is TS 3.9
- */
-function isTSv3dot9(): boolean {
-  return !semver.satisfies(ts.version, '< 3.9.0 || < 3.9.1-rc || < 3.9.0-beta');
-}
-
-/**
  * Returns true of the child of property access expression is an optional chain
  */
 export function isChildOptionalChain(
@@ -477,7 +470,7 @@ export function isChildOptionalChain(
     return true;
   }
 
-  if (!isTSv3dot9()) {
+  if (!typescriptVersionIsAtLeast['3.9']) {
     return false;
   }
 
