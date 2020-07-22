@@ -267,7 +267,7 @@ export const foo: FooType = bar => {};
 
 ## When Not To Use It
 
-If you wish to make sure all functions have explicit return types, as opposed to only the module boundaries, you can use [explicit-function-return-type](https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-function-return-type.md)
+If you wish to make sure all functions have explicit return types, as opposed to only the module boundaries, you can use [explicit-function-return-type](./explicit-function-return-type.md)
 
 ## Further Reading
 
