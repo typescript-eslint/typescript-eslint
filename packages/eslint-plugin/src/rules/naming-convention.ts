@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
   JSONSchema,
-  TSESTree,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -111,7 +111,9 @@ interface Selector {
   prefix?: string[];
   suffix?: string[];
   // selector options
-  selector: IndividualAndMetaSelectorsString;
+  selector:
+    | IndividualAndMetaSelectorsString
+    | IndividualAndMetaSelectorsString[];
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
   filter?:
@@ -766,13 +768,15 @@ type ValidatorFunction = (
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 function parseOptions(context: Context): ParsedOptions {
-  const normalizedOptions = context.options.map(opt => normalizeOption(opt));
-  const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
+  const normalizedOptions: NormalizedSelector[] = [];
+  context.options.forEach(opt =>
+    normalizedOptions.push(...normalizeOption(opt)),
+  );
+
+  return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
   }, {} as ParsedOptions);
-
-  return parsedOptions;
 }
 function createValidator(
   type: SelectorsString,
@@ -1205,7 +1209,7 @@ function isMetaSelector(
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
-function normalizeOption(option: Selector): NormalizedSelector {
+function normalizeOption(option: Selector): NormalizedSelector[] {
   let weight = 0;
   option.modifiers?.forEach(mod => {
     weight |= Modifiers[mod];
@@ -1219,7 +1223,7 @@ function normalizeOption(option: Selector): NormalizedSelector {
     weight |= 1 << 30;
   }
 
-  return {
+  const normalizedOption = {
     // format options
     format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     custom: option.custom
@@ -1238,10 +1242,6 @@ function normalizeOption(option: Selector): NormalizedSelector {
         : null,
     prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
     suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
-    // selector options
-    selector: isMetaSelector(option.selector)
-      ? MetaSelectors[option.selector]
-      : Selectors[option.selector],
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
     types: option.types?.map(m => TypeModifiers[m]) ?? null,
     filter:
@@ -1256,6 +1256,17 @@ function normalizeOption(option: Selector): NormalizedSelector {
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
   };
+
+  const selectors = Array.isArray(option.selector)
+    ? option.selector
+    : [option.selector];
+
+  return selectors.map(selector => ({
+    selector: isMetaSelector(selector)
+      ? MetaSelectors[selector]
+      : Selectors[selector],
+    ...normalizedOption,
+  }));
 }
 
 function isCorrectType(
