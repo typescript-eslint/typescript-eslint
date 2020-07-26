@@ -56,7 +56,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
-    const dict = new Set();
+    const dict = new Map<string, TSESTree.Identifier>();
 
     if (style === 'fields') {
       return {
@@ -102,31 +102,46 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      // if in constrcutor and names are matching
       'MemberExpression > Identifier:exit'(node: TSESTree.Identifier): void {
+        // check if we're in the constructor
+
         if (dict.has(node.name)) {
           context.report({
             node,
             messageId: 'preferGetterStyle',
           });
-
           dict.delete(node.name);
         }
       },
-      'ClassProperty:exit'(node: TSESTree.ClassProperty): void {
+      'MethodDefinition:exit'(): void {
         if (dict.size) {
-          context.report({
-            node: node.key,
-            messageId: 'preferGetterStyle',
+          dict.forEach(violatingNode => {
+            context.report({
+              node: violatingNode,
+              messageId: 'preferGetterStyle',
+            });
+            dict.delete(violatingNode.name);
           });
-
-          dict.delete(node.key.name);
         }
       },
-      ClassProperty(node: TSESTree.ClassProperty): void {
-        if (node.readonly && node.accessibility === 'private') {
-          dict.add(node.key.name);
+      'ClassDeclaration:exit'(): void {
+        if (dict.size) {
+          dict.forEach(violatingNode => {
+            context.report({
+              node: violatingNode,
+              messageId: 'preferGetterStyle',
+            });
+            dict.delete(violatingNode.name);
+          });
         }
-
+      },
+      'ClassProperty[accessibility=private] > Identifier:exit'(
+        node: TSESTree.Identifier,
+      ): void {
+        dict.set(node.name, node);
+      },
+      ClassProperty(node: TSESTree.ClassProperty): void {
         if (!node.readonly || node.declare) {
           return;
         }
