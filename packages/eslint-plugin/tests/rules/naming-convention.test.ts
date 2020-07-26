@@ -205,33 +205,46 @@ function createInvalidTestCases(
           options: Selector,
           messageId: MessageIds,
           data: Record<string, unknown> = {},
-        ): TSESLint.InvalidTestCase<MessageIds, Options> => ({
-          options: [
-            {
-              ...options,
-              filter: IGNORED_FILTER,
-            },
-          ],
-          code: `// ${JSON.stringify(options)}\n${test.code
-            .map(code => code.replace(REPLACE_REGEX, preparedName))
-            .join('\n')}`,
-          errors: test.code.map(() => ({
+        ): TSESLint.InvalidTestCase<MessageIds, Options> => {
+          const selectors = Array.isArray(test.options.selector)
+            ? test.options.selector
+            : [test.options.selector];
+          const errorsTemplate = selectors.map(selector => ({
             messageId,
-            ...(test.options.selector !== 'default' &&
-            test.options.selector !== 'variableLike' &&
-            test.options.selector !== 'memberLike' &&
-            test.options.selector !== 'typeLike'
+            ...(selector !== 'default' &&
+            selector !== 'variableLike' &&
+            selector !== 'memberLike' &&
+            selector !== 'typeLike'
               ? {
                   data: {
-                    type: selectorTypeToMessageString(test.options.selector),
+                    type: selectorTypeToMessageString(selector),
                     name: preparedName,
                     ...data,
                   },
                 }
               : // meta-types will use the correct selector, so don't assert on data shape
                 {}),
-          })),
-        });
+          }));
+
+          const errors: {
+            data?: { type: string; name: string };
+            messageId: MessageIds;
+          }[] = [];
+          test.code.forEach(() => errors.push(...errorsTemplate));
+
+          return {
+            options: [
+              {
+                ...options,
+                filter: IGNORED_FILTER,
+              },
+            ],
+            code: `// ${JSON.stringify(options)}\n${test.code
+              .map(code => code.replace(REPLACE_REGEX, preparedName))
+              .join('\n')}`,
+            errors: errors,
+          };
+        };
 
         const prefixSingle = ['MyPrefix'];
         const prefixMulti = ['MyPrefix1', 'MyPrefix2'];
