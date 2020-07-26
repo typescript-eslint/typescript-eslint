@@ -273,7 +273,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
               type: 'array',
               items: {
                 type: 'string',
-                // enum: Object.keys(Selectors),
+                enum: util.getEnumNames(Selectors),
               },
               additionalItems: false,
             },
