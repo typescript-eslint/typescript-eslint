@@ -24,6 +24,7 @@ import {
   isIdentifier,
   isTypeAnyType,
   isTypeUnknownType,
+  getTypeName,
 } from '../util';
 
 // Truthiness utilities
@@ -435,6 +436,33 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isNullablePropertyType(
+      objType: ts.Type,
+      propertyType: ts.Type,
+    ): boolean {
+      if (propertyType.isUnion()) {
+        return propertyType.types.some(type =>
+          isNullablePropertyType(objType, type),
+        );
+      }
+      if (propertyType.isNumberLiteral() || propertyType.isStringLiteral()) {
+        const propType = checker.getTypeOfPropertyOfType(
+          objType,
+          propertyType.value.toString(),
+        );
+        if (propType) {
+          return isNullableType(propType, { allowUndefined: true });
+        }
+      }
+      const typeName = getTypeName(checker, propertyType);
+      return !!(
+        (typeName === 'string' &&
+          checker.getIndexInfoOfType(objType, ts.IndexKind.String)) ||
+        (typeName === 'number' &&
+          checker.getIndexInfoOfType(objType, ts.IndexKind.Number))
+      );
+    }
+
     // Checks whether a member expression is nullable or not regardless of it's previous node.
     //  Example:
     //  ```
@@ -450,10 +478,13 @@ export default createRule<Options, MessageId>({
       const property = node.property;
       if (prevType.isUnion() && isIdentifier(property)) {
         const isOwnNullable = prevType.types.some(type => {
+          if (node.computed) {
+            const propertyType = getNodeType(node.property);
+            return isNullablePropertyType(type, propertyType);
+          }
           const propType = checker.getTypeOfPropertyOfType(type, property.name);
           return propType && isNullableType(propType, { allowUndefined: true });
         });
-
         return (
           !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
         );

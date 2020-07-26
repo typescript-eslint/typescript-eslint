@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tsx react-typed-props.src 1`] = `
+Object {
+  "column": 12,
+  "index": 141,
+  "lineNumber": 9,
+  "message": "',' expected.",
+}
+`;

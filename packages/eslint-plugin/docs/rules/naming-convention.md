@@ -192,7 +192,7 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `variable` - matches any `var` / `let` / `const` variable name.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `const`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `function` - matches any named function declaration or named function expression.
   - Allowed `modifiers`: none.
@@ -304,6 +304,21 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
     {
       "selector": "variable",
       "format": ["camelCase", "UPPER_CASE"]
+    }
+  ]
+}
+```
+
+### Enforce that all const variables are in UPPER_CASE
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "variable",
+      "modifiers": ["const"],
+      "format": ["UPPER_CASE"]
     }
   ]
 }

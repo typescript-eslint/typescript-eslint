@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx self-closing-tag-inside-tag.src 1`] = `
+Object {
+  "column": 9,
+  "index": 15,
+  "lineNumber": 2,
+  "message": "'>' expected.",
+}
+`;

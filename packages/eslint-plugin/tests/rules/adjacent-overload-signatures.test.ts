@@ -132,6 +132,17 @@ interface Foo {
     `,
     `
 interface Foo {
+  (s: string): void;
+  (n: number): void;
+  (sn: string | number): void;
+  foo(n: number): void;
+  bar(): void;
+  baz(): void;
+  call(): void;
+}
+    `,
+    `
+interface Foo {
   foo(s: string): void;
   foo(n: number): void;
   foo(sn: string | number): void;
@@ -534,6 +545,7 @@ interface Foo {
   (sn: string | number): void;
   bar(): void;
   baz(): void;
+  call(): void;
 }
       `,
       errors: [

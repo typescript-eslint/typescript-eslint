@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments jsx-with-operators.src 1`] = `
+Object {
+  "column": 0,
+  "index": 69,
+  "lineNumber": 4,
+  "message": "Expression expected.",
+}
+`;

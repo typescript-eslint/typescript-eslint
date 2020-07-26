@@ -29,6 +29,7 @@ const schema = util.deepMerge(
             'protected-constructors',
             'asyncFunctions',
             'asyncMethods',
+            'decoratedFunctions',
           ],
         },
       },
@@ -61,6 +62,7 @@ export default util.createRule<Options, MessageIds>({
       'protected-constructors',
     );
     const isAllowedPrivateConstructors = allow.includes('private-constructors');
+    const isAllowedDecoratedFunctions = allow.includes('decoratedFunctions');
 
     /**
      * Check if the method body is empty
@@ -117,14 +119,45 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    /**
+     * @param node the node to be validated
+     * @returns true if a function has decorators
+     * @private
+     */
+    function isAllowedEmptyDecoratedFunctions(
+      node: TSESTree.FunctionExpression | TSESTree.FunctionDeclaration,
+    ): boolean {
+      if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
+        const decorators =
+          node.type === AST_NODE_TYPES.FunctionDeclaration
+            ? node.decorators
+            : node.parent?.type === AST_NODE_TYPES.MethodDefinition
+            ? node.parent.decorators
+            : undefined;
+        return !!decorators && !!decorators.length;
+      }
+
+      return false;
+    }
+
     return {
       ...rules,
       FunctionExpression(node): void {
-        if (isAllowedEmptyConstructor(node)) {
+        if (
+          isAllowedEmptyConstructor(node) ||
+          isAllowedEmptyDecoratedFunctions(node)
+        ) {
           return;
         }
 
         rules.FunctionExpression(node);
+      },
+      FunctionDeclaration(node): void {
+        if (isAllowedEmptyDecoratedFunctions(node)) {
+          return;
+        }
+
+        rules.FunctionDeclaration(node);
       },
     };
   },

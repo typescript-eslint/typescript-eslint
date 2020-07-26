@@ -47,7 +47,7 @@ describe('label', () => {
     expectToBeGlobalScope(scope);
     expect(scope.variables).toHaveLength(1);
     expect(scope.variables[0].name).toBe('foo');
-    expect(scope.through.length).toBe(3);
+    expect(scope.through).toHaveLength(3);
     expect(scope.through[2].identifier.name).toBe('foo');
     expect(scope.through[2].isRead()).toBeTruthy();
 

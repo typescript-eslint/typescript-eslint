@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "description": "TypeScript scope analyser for ESLint",
   "keywords": [
     "eslint",
@@ -31,6 +31,7 @@
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
@@ -38,16 +39,14 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "3.6.0",
-    "@typescript-eslint/visitor-keys": "3.6.0"
+    "@typescript-eslint/types": "3.7.0",
+    "@typescript-eslint/visitor-keys": "3.7.0"
   },
   "devDependencies": {
-    "@types/jest-specific-snapshot": "^0.5.4",
-    "@types/mkdirp": "^1.0.0",
-    "@typescript-eslint/typescript-estree": "3.6.0",
-    "glob": "^7.1.6",
-    "jest-specific-snapshot": "^3.0.0",
-    "make-dir": "^3.1.0",
+    "@typescript-eslint/typescript-estree": "3.7.0",
+    "glob": "*",
+    "jest-specific-snapshot": "*",
+    "make-dir": "*",
     "prettier": "*",
     "pretty-format": "^25.5.0",
     "rimraf": "*",
