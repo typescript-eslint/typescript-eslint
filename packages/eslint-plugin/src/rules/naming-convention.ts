@@ -254,7 +254,34 @@ function selectorSchema(
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
-    oneOf: [
+    anyOf: [
+      {
+        type: 'object',
+        properties: {
+          ...FORMAT_OPTIONS_PROPERTIES,
+          ...{
+            filter: {
+              oneOf: [
+                {
+                  type: 'string',
+                  minLength: 1,
+                },
+                MATCH_REGEX_SCHEMA,
+              ],
+            },
+            selector: {
+              type: 'array',
+              items: {
+                type: 'string',
+                // enum: Object.keys(Selectors),
+              },
+              additionalItems: false,
+            },
+          },
+        },
+        required: ['selector', 'format'],
+        additionalProperties: false,
+      },
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),

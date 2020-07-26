@@ -729,6 +729,27 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface foo {}
+        class bar {}
+        function fooFunctionBar() {}
+        function _fooFunctionBar() {}
+      `,
+      options: [
+        {
+          selector: ['default', 'typeLike', 'function'],
+          format: ['camelCase'],
+          custom: {
+            regex: /^unused_\w/.source,
+            match: false,
+          },
+          leadingUnderscore: 'allow',
+        },
+      ],
+    },
+    {
+      code: `
         const match = 'test'.match(/test/);
         const [, key, value] = match;
       `,
@@ -1036,6 +1057,82 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Function',
             name: 'fooBar',
+            regex: '/function/u',
+            regexMatch: 'match',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        let unused_foo = 'a';
+        const _unused_foo = 1;
+        interface IFoo {}
+        class IBar {}
+        function foo_bar() {}
+      `,
+      options: [
+        {
+          selector: ['variable', 'function'],
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+        },
+        {
+          selector: ['class', 'interface'],
+          format: ['PascalCase'],
+          custom: {
+            regex: /^I[A-Z]/.source,
+            match: false,
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'satisfyCustom',
+          line: 2,
+          data: {
+            type: 'Variable',
+            name: 'unused_foo',
+            regex: '/^unused_\\w/u',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 3,
+          data: {
+            type: 'Variable',
+            name: '_unused_foo',
+            regex: '/^unused_\\w/u',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 4,
+          data: {
+            type: 'Interface',
+            name: 'IFoo',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 5,
+          data: {
+            type: 'Class',
+            name: 'IBar',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 6,
+          data: {
+            type: 'Function',
+            name: 'foo_bar',
             regex: '/function/u',
             regexMatch: 'match',
           },
