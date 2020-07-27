@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      # TODO - delete this before merging v4 into master
+      - v4
   pull_request:
     branches:
       - '**'
@@ -346,5 +348,50 @@ jobs:
 
       - name: Publish all packages to npm
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # TODO - delete this before merging v4 into master
+  publish_v4_prerelease_version:
+    name: Publish the latest code as a v4 prerelease version
+    runs-on: ubuntu-latest
+    needs: [typecheck, test_on_primary_node_version, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
+    if: github.ref == 'refs/heads/v4'
+    steps:
+      - uses: actions/checkout@v2
+      # Fetch all history for all tags and branches in this job because lerna needs it
+      - run: |
+          git fetch --prune --unshallow
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+          yarn lerna:init
+          yarn check:clean-workspace-after-install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Publish all packages to npm
+        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v4
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
