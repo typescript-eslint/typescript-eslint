@@ -633,7 +633,7 @@ type Foo = string | {
       // valid test case is just the code
       acc.valid.push(code);
 
-      acc.invalid.push({
+      const invalid = {
         // test the fixer by removing all the spaces
         code: code.replace(new RegExp(indent, 'g'), ''),
         output: code,
@@ -661,7 +661,10 @@ type Foo = string | {
             (error): error is TSESLint.TestCaseError<MessageIds> =>
               error !== null,
           ),
-      });
+      };
+      if (invalid.errors.length > 0) {
+        acc.invalid.push(invalid);
+      }
     });
 
     return acc;
