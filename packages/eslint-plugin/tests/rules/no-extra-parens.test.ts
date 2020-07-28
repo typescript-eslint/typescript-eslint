@@ -26,6 +26,9 @@ for (a of (b, c));
 for (a of b);
 for (a in b, c);
 for (a in b);
+a<import('')>(1);
+new a<import('')>(1);
+a<(A)>(1);
       `,
     }),
     ...batchedSingleLineTests({
@@ -233,6 +236,8 @@ for (a in (b, c));
 for (a in (b));
 for (a of (b));
 typeof (a);
+a<import('')>((1));
+new a<import('')>((1));
       `,
       output: `
 a = b * c;
@@ -241,6 +246,9 @@ for (a in b, c);
 for (a in b);
 for (a of b);
 typeof a;
+a<import('')>(1);
+new a<import('')>(1);
+a<(A)>((1));
       `,
       errors: [
         {
@@ -271,6 +279,21 @@ typeof a;
         {
           messageId: 'unexpected',
           line: 7,
+          column: 8,
+        },
+        {
+          messageId: 'unexpected',
+          line: 8,
+          column: 15,
+        },
+        {
+          messageId: 'unexpected',
+          line: 9,
+          column: 19,
+        },
+        {
+          messageId: 'unexpected',
+          line: 10,
           column: 8,
         },
       ],

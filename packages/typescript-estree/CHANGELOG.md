@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.0...v3.7.1) (2020-07-27)
+
+
+### Bug Fixes
+
+* **typescript-estree:** correct AST regression introduced by TS4.0 upgrade ([#2316](https://github.com/typescript-eslint/typescript-eslint/issues/2316)) ([d7fefba](https://github.com/typescript-eslint/typescript-eslint/commit/d7fefba3741a526ff2b58dd713995c3ee5603962))
+
+
+
+
+
 # [3.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.1...v3.7.0) (2020-07-20)
 
 
