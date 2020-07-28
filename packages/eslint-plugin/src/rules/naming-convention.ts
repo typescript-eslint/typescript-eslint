@@ -251,40 +251,60 @@ function selectorSchema(
     },
   ];
 }
+
+function selectorsSchema(): JSONSchema.JSONSchema4 {
+  return {
+    type: 'object',
+    properties: {
+      ...FORMAT_OPTIONS_PROPERTIES,
+      ...{
+        filter: {
+          oneOf: [
+            {
+              type: 'string',
+              minLength: 1,
+            },
+            MATCH_REGEX_SCHEMA,
+          ],
+        },
+        selector: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: [
+              ...util.getEnumNames(MetaSelectors),
+              ...util.getEnumNames(Selectors),
+            ],
+          },
+          additionalItems: false,
+        },
+      },
+    },
+    modifiers: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: util.getEnumNames(Modifiers),
+      },
+      additionalItems: false,
+    },
+    types: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: util.getEnumNames(TypeModifiers),
+      },
+      additionalItems: false,
+    },
+    required: ['selector', 'format'],
+    additionalProperties: false,
+  };
+}
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
-    anyOf: [
-      {
-        type: 'object',
-        properties: {
-          ...FORMAT_OPTIONS_PROPERTIES,
-          ...{
-            filter: {
-              oneOf: [
-                {
-                  type: 'string',
-                  minLength: 1,
-                },
-                MATCH_REGEX_SCHEMA,
-              ],
-            },
-            selector: {
-              type: 'array',
-              items: {
-                type: 'string',
-                enum: [
-                  ...util.getEnumNames(MetaSelectors),
-                  ...util.getEnumNames(Selectors),
-                ],
-              },
-              additionalItems: false,
-            },
-          },
-        },
-        required: ['selector', 'format'],
-        additionalProperties: false,
-      },
+    oneOf: [
+      selectorsSchema(),
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),
