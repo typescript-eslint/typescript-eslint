@@ -1,11 +1,10 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-type Option = '0-based' | '1-based' | 'key-name';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
-export default util.createRule<Option[], MessageIds>({
+export default util.createRule<[], MessageIds>({
   name: 'prefer-enum-initializers',
   meta: {
     type: 'suggestion',
@@ -19,18 +18,13 @@ export default util.createRule<Option[], MessageIds>({
       defineInitializer:
         "The value of the member '{{ name }}' should be explicitly defined",
       defineInitializerSuggestion:
-        'can be suggestion fixed to {{ name }} = {{ suggestedValue }}',
+        'Can be fixed to {{ name }} = {{ suggested }}',
     },
-    schema: [
-      {
-        enum: ['0-based', '1-based', 'key-name'],
-      },
-    ],
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const config = context.options[0];
 
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node;
@@ -47,23 +41,23 @@ export default util.createRule<Option[], MessageIds>({
             suggest: [
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name },
-                fix: (fixer): RuleFix => {
-                  switch (config) {
-                    case '0-based':
-                      return fixer.replaceText(member, `${name} = ${index}`);
-                    case '1-based':
-                      return fixer.replaceText(
-                        member,
-                        `${name} = ${index + 1}`,
-                      );
-                    case 'key-name':
-                      return fixer.replaceText(member, `${name} = '${name}'`);
-                    default: {
-                      const _exhaustiveCheck: never = config;
-                      return _exhaustiveCheck;
-                    }
-                  }
+                data: { name, suggested: index },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = ${index}`);
+                },
+              },
+              {
+                messageId: 'defineInitializerSuggestion',
+                data: { name, suggested: index + 1 },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = ${index + 1}`);
+                },
+              },
+              {
+                messageId: 'defineInitializerSuggestion',
+                data: { name, suggested: `'${name}'` },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = '${name}'`);
                 },
               },
             ],
