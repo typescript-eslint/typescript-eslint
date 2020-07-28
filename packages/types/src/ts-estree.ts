@@ -1454,7 +1454,7 @@ export interface TSLiteralType extends BaseNode {
 
 export interface TSMappedType extends BaseNode {
   type: AST_NODE_TYPES.TSMappedType;
-  typeParameter: TSTypeParameterDeclaration;
+  typeParameter: TSTypeParameter;
   readonly?: boolean | '-' | '+';
   optional?: boolean | '-' | '+';
   typeAnnotation?: TypeNode;
@@ -1479,7 +1479,7 @@ export interface TSModuleBlock extends BaseNode {
 export interface TSModuleDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
   id: Identifier | Literal;
-  body?: TSModuleBlock | TSModuleDeclaration;
+  body?: TSModuleBlock;
   global?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];

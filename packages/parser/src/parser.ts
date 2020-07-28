@@ -1,11 +1,15 @@
-import { ParserOptions, TSESTree } from '@typescript-eslint/types';
+import { ParserOptions, TSESTree, Lib } from '@typescript-eslint/types';
 import {
   parseAndGenerateServices,
   ParserServices,
   TSESTreeOptions,
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
-import { analyzeScope } from './analyze-scope';
+import { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
+import debug from 'debug';
+import { ScriptTarget } from 'typescript';
+
+const log = debug('typescript-eslint:parser:parser');
 
 interface ParseForESLintResult {
   ast: TSESTree.Program & {
@@ -15,7 +19,7 @@ interface ParseForESLintResult {
   };
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
-  scopeManager: ReturnType<typeof analyzeScope>;
+  scopeManager: ScopeManager;
 }
 
 function validateBoolean(
@@ -26,6 +30,44 @@ function validateBoolean(
     return fallback;
   }
   return value;
+}
+
+const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts/;
+function getLib(services: ParserServices): Lib[] {
+  const compilerOptions = services.program.getCompilerOptions();
+  if (compilerOptions.lib) {
+    return compilerOptions.lib
+      .map(lib => {
+        const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
+        if (!match) {
+          return null;
+        }
+
+        return match[1] as Lib;
+      })
+      .filter(l => l != null) as Lib[];
+  }
+
+  const target = compilerOptions.target ?? ScriptTarget.ES5;
+  // https://github.com/Microsoft/TypeScript/blob/59ad375234dc2efe38d8ee0ba58414474c1d5169/src/compiler/utilitiesPublic.ts#L13-L32
+  switch (target) {
+    case ScriptTarget.ESNext:
+      return ['esnext.full'];
+    case ScriptTarget.ES2020:
+      return ['es2020.full'];
+    case ScriptTarget.ES2019:
+      return ['es2019.full'];
+    case ScriptTarget.ES2018:
+      return ['es2018.full'];
+    case ScriptTarget.ES2017:
+      return ['es2017.full'];
+    case ScriptTarget.ES2016:
+      return ['es2016.full'];
+    case ScriptTarget.ES2015:
+      return ['es6'];
+    default:
+      return ['lib'];
+  }
 }
 
 function parse(
@@ -41,6 +83,8 @@ function parseForESLint(
 ): ParseForESLintResult {
   if (!options || typeof options !== 'object') {
     options = {};
+  } else {
+    options = { ...options };
   }
   // https://eslint.org/docs/user-guide/configuring#specifying-parser-options
   // if sourceType is not provided by default eslint expect that it will be set to "script"
@@ -79,7 +123,20 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  const scopeManager = analyzeScope(ast, options);
+  // automatically apply the libs configured for the program
+  if (services.hasFullTypeInformation && options.lib == null) {
+    options.lib = getLib(services);
+    log('Resolved libs from program: %o', options.lib);
+  }
+
+  const analyzeOptions = {
+    ecmaVersion: options.ecmaVersion,
+    globalReturn: options.ecmaFeatures.globalReturn,
+    lib: options.lib,
+    sourceType: options.sourceType,
+  };
+  const scopeManager = analyze(ast, analyzeOptions);
+
   return { ast, services, scopeManager, visitorKeys };
 }
 

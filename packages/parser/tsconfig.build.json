@@ -9,8 +9,9 @@
   "include": ["src"],
   "references": [
     { "path": "../experimental-utils/tsconfig.build.json" },
-    { "path": "../shared-fixtures/tsconfig.build.json" },
     { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" }
+    { "path": "../typescript-estree/tsconfig.build.json" },
+    { "path": "../scope-manager/tsconfig.build.json" },
+    { "path": "../shared-fixtures/tsconfig.build.json" }
   ]
 }

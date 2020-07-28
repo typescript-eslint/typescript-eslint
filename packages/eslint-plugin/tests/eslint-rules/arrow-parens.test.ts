@@ -1,5 +1,5 @@
 import rule from 'eslint/lib/rules/arrow-parens';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,7 +8,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('arrow-parens', rule, {
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/14
-    'const foo = (t) => {};',
+    noFormat`const foo = (t) => {};`,
     'const foo = <T>(t) => {};',
     'const foo = <T>(t: T) => {};',
     'const foo = <T>((t: T) => {});',
@@ -16,7 +16,7 @@ ruleTester.run('arrow-parens', rule, {
     `
 const foo = <T>(bar: any): void => {
   // Do nothing
-}
+};
     `,
     {
       code: 'const foo = t => {};',

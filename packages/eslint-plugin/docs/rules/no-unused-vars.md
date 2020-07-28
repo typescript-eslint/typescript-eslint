@@ -1,7 +1,5 @@
 # Disallow unused variables (`no-unused-vars`)
 
-## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1856](https://github.com/typescript-eslint/typescript-eslint/issues/1856)
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars) rule.
