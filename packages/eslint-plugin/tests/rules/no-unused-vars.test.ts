@@ -729,6 +729,26 @@ export function foo() {
   return new Promise<Foo>();
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2331
+    {
+      code: `
+export interface Event<T> {
+  (
+    listener: (e: T) => any,
+    thisArgs?: any,
+    disposables?: Disposable[],
+  ): Disposable;
+}
+      `,
+      options: [
+        {
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_$',
+        },
+      ],
+    },
   ],
 
   invalid: [
