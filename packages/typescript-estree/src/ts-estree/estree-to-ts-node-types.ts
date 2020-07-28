@@ -20,6 +20,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.BreakStatement]: ts.BreakStatement;
   [AST_NODE_TYPES.CallExpression]: ts.CallExpression;
   [AST_NODE_TYPES.CatchClause]: ts.CatchClause;
+  [AST_NODE_TYPES.ChainExpression]:
+    | ts.CallExpression
+    | ts.PropertyAccessExpression
+    | ts.ElementAccessExpression;
   [AST_NODE_TYPES.ClassBody]: ts.ClassDeclaration | ts.ClassExpression;
   [AST_NODE_TYPES.ClassDeclaration]: ts.ClassDeclaration;
   [AST_NODE_TYPES.ClassExpression]: ts.ClassExpression;
@@ -113,10 +117,6 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ObjectPattern]:
     | ts.ObjectLiteralExpression
     | ts.ObjectBindingPattern;
-  [AST_NODE_TYPES.OptionalCallExpression]: ts.CallExpression;
-  [AST_NODE_TYPES.OptionalMemberExpression]:
-    | ts.PropertyAccessExpression
-    | ts.ElementAccessExpression;
   [AST_NODE_TYPES.Program]: ts.SourceFile;
   [AST_NODE_TYPES.Property]:
     | ts.PropertyAssignment

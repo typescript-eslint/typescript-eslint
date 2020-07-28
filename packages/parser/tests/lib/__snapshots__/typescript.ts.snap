@@ -17623,7 +17623,7 @@ Object {
 
 exports[`typescript fixtures/basics/export-star-as-ns-from.src 1`] = `
 Object {
-  "$id": 1,
+  "$id": 2,
   "block": Object {
     "range": Array [
       0,
@@ -17633,7 +17633,7 @@ Object {
   },
   "childScopes": Array [
     Object {
-      "$id": 0,
+      "$id": 1,
       "block": Object {
         "range": Array [
           0,
@@ -17644,15 +17644,37 @@ Object {
       "childScopes": Array [],
       "functionExpressionScope": false,
       "isStrict": true,
-      "references": Array [],
-      "throughReferences": Array [],
+      "references": Array [
+        Object {
+          "$id": 0,
+          "from": Object {
+            "$ref": 1,
+          },
+          "identifier": Object {
+            "name": "foo",
+            "range": Array [
+              12,
+              15,
+            ],
+            "type": "Identifier",
+          },
+          "kind": "r",
+          "resolved": null,
+          "writeExpr": undefined,
+        },
+      ],
+      "throughReferences": Array [
+        Object {
+          "$ref": 0,
+        },
+      ],
       "type": "module",
       "upperScope": Object {
-        "$ref": 1,
+        "$ref": 2,
       },
       "variableMap": Object {},
       "variableScope": Object {
-        "$ref": 0,
+        "$ref": 1,
       },
       "variables": Array [],
     },
@@ -17660,12 +17682,16 @@ Object {
   "functionExpressionScope": false,
   "isStrict": false,
   "references": Array [],
-  "throughReferences": Array [],
+  "throughReferences": Array [
+    Object {
+      "$ref": 0,
+    },
+  ],
   "type": "global",
   "upperScope": null,
   "variableMap": Object {},
   "variableScope": Object {
-    "$ref": 1,
+    "$ref": 2,
   },
   "variables": Array [],
 }

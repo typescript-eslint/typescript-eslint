@@ -7,7 +7,7 @@ import { parseAndGenerateServices } from '../src/parser';
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
-// eg. ['type-declaration', 'signatures', 'method-generic'] will only test /type-declaration/signatures/method-generic.ts
+// eg. ['type-declaration', 'signatures', 'method-generic.src'] will only test /type-declaration/signatures/method-generic.src.ts
 // prettier-ignore
 const ONLY = [].join(path.sep);
 

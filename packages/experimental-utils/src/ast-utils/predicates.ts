@@ -25,11 +25,11 @@ function isNotNonNullAssertionPunctuator(
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
-function isOptionalOptionalCallExpression(
+function isOptionalCallExpression(
   node: TSESTree.Node,
-): node is TSESTree.OptionalCallExpression & { optional: true } {
+): node is TSESTree.CallExpression & { optional: true } {
   return (
-    node.type === AST_NODE_TYPES.OptionalCallExpression &&
+    node.type === AST_NODE_TYPES.CallExpression &&
     // this flag means the call expression itself is option
     // i.e. it is foo.bar?.() and not foo?.bar()
     node.optional
@@ -214,15 +214,6 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
-function isMemberOrOptionalMemberExpression(
-  node: TSESTree.Node,
-): node is TSESTree.MemberExpression | TSESTree.OptionalMemberExpression {
-  return (
-    node.type === AST_NODE_TYPES.MemberExpression ||
-    node.type === AST_NODE_TYPES.OptionalMemberExpression
-  );
-}
-
 export {
   isAwaitExpression,
   isAwaitKeyword,
@@ -233,12 +224,11 @@ export {
   isFunctionType,
   isIdentifier,
   isLogicalOrOperator,
-  isMemberOrOptionalMemberExpression,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
   isOptionalChainPunctuator,
-  isOptionalOptionalCallExpression,
+  isOptionalCallExpression,
   isSetter,
   isTSConstructorType,
   isTSFunctionType,
