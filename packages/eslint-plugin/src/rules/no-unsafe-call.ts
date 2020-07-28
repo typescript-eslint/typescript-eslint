@@ -42,7 +42,7 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      ':matches(CallExpression, OptionalCallExpression) > *.callee'(
+      'CallExpression > *.callee'(
         node: TSESTree.CallExpression['callee'],
       ): void {
         checkCall(node, node, 'unsafeCall');

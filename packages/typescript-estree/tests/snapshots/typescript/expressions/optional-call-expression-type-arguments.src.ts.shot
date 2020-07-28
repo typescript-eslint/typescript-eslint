@@ -5,23 +5,13 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "arguments": Array [],
-        "callee": Object {
-          "computed": false,
-          "loc": Object {
-            "end": Object {
-              "column": 8,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "object": Object {
+        "expression": Object {
+          "arguments": Array [],
+          "callee": Object {
+            "computed": false,
             "loc": Object {
               "end": Object {
-                "column": 3,
+                "column": 8,
                 "line": 1,
               },
               "start": Object {
@@ -29,37 +19,120 @@ Object {
                 "line": 1,
               },
             },
-            "name": "foo",
+            "object": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "name": "foo",
+              "range": Array [
+                0,
+                3,
+              ],
+              "type": "Identifier",
+            },
+            "optional": true,
+            "property": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 5,
+                  "line": 1,
+                },
+              },
+              "name": "bar",
+              "range": Array [
+                5,
+                8,
+              ],
+              "type": "Identifier",
+            },
             "range": Array [
               0,
-              3,
+              8,
             ],
-            "type": "Identifier",
+            "type": "MemberExpression",
           },
-          "optional": true,
-          "property": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 13,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "optional": false,
+          "range": Array [
+            0,
+            13,
+          ],
+          "type": "CallExpression",
+          "typeParameters": Object {
             "loc": Object {
               "end": Object {
-                "column": 8,
+                "column": 11,
                 "line": 1,
               },
               "start": Object {
-                "column": 5,
+                "column": 8,
                 "line": 1,
               },
             },
-            "name": "bar",
-            "range": Array [
-              5,
-              8,
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  9,
+                  10,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 9,
+                      "line": 1,
+                    },
+                  },
+                  "name": "A",
+                  "range": Array [
+                    9,
+                    10,
+                  ],
+                  "type": "Identifier",
+                },
+                "typeParameters": undefined,
+              },
             ],
-            "type": "Identifier",
+            "range": Array [
+              8,
+              11,
+            ],
+            "type": "TSTypeParameterInstantiation",
           },
-          "range": Array [
-            0,
-            8,
-          ],
-          "type": "OptionalMemberExpression",
         },
         "loc": Object {
           "end": Object {
@@ -71,67 +144,11 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           13,
         ],
-        "type": "OptionalCallExpression",
-        "typeParameters": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 11,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 8,
-              "line": 1,
-            },
-          },
-          "params": Array [
-            Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 10,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 9,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                9,
-                10,
-              ],
-              "type": "TSTypeReference",
-              "typeName": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 10,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 9,
-                    "line": 1,
-                  },
-                },
-                "name": "A",
-                "range": Array [
-                  9,
-                  10,
-                ],
-                "type": "Identifier",
-              },
-              "typeParameters": undefined,
-            },
-          ],
-          "range": Array [
-            8,
-            11,
-          ],
-          "type": "TSTypeParameterInstantiation",
-        },
+        "type": "ChainExpression",
       },
       "loc": Object {
         "end": Object {
@@ -151,23 +168,13 @@ Object {
     },
     Object {
       "expression": Object {
-        "arguments": Array [],
-        "callee": Object {
-          "computed": false,
-          "loc": Object {
-            "end": Object {
-              "column": 8,
-              "line": 2,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 2,
-            },
-          },
-          "object": Object {
+        "expression": Object {
+          "arguments": Array [],
+          "callee": Object {
+            "computed": false,
             "loc": Object {
               "end": Object {
-                "column": 3,
+                "column": 8,
                 "line": 2,
               },
               "start": Object {
@@ -175,37 +182,101 @@ Object {
                 "line": 2,
               },
             },
-            "name": "foo",
+            "object": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 2,
+                },
+              },
+              "name": "foo",
+              "range": Array [
+                15,
+                18,
+              ],
+              "type": "Identifier",
+            },
+            "optional": true,
+            "property": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 8,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 5,
+                  "line": 2,
+                },
+              },
+              "name": "bar",
+              "range": Array [
+                20,
+                23,
+              ],
+              "type": "Identifier",
+            },
             "range": Array [
               15,
-              18,
+              23,
             ],
-            "type": "Identifier",
+            "type": "MemberExpression",
           },
-          "optional": true,
-          "property": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 18,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 2,
+            },
+          },
+          "optional": false,
+          "range": Array [
+            15,
+            33,
+          ],
+          "type": "CallExpression",
+          "typeParameters": Object {
             "loc": Object {
               "end": Object {
-                "column": 8,
+                "column": 16,
                 "line": 2,
               },
               "start": Object {
-                "column": 5,
+                "column": 8,
                 "line": 2,
               },
             },
-            "name": "bar",
-            "range": Array [
-              20,
-              23,
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 15,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 9,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  24,
+                  30,
+                ],
+                "type": "TSNumberKeyword",
+              },
             ],
-            "type": "Identifier",
+            "range": Array [
+              23,
+              31,
+            ],
+            "type": "TSTypeParameterInstantiation",
           },
-          "range": Array [
-            15,
-            23,
-          ],
-          "type": "OptionalMemberExpression",
         },
         "loc": Object {
           "end": Object {
@@ -217,48 +288,11 @@ Object {
             "line": 2,
           },
         },
-        "optional": false,
         "range": Array [
           15,
           33,
         ],
-        "type": "OptionalCallExpression",
-        "typeParameters": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 16,
-              "line": 2,
-            },
-            "start": Object {
-              "column": 8,
-              "line": 2,
-            },
-          },
-          "params": Array [
-            Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 15,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 9,
-                  "line": 2,
-                },
-              },
-              "range": Array [
-                24,
-                30,
-              ],
-              "type": "TSNumberKeyword",
-            },
-          ],
-          "range": Array [
-            23,
-            31,
-          ],
-          "type": "TSTypeParameterInstantiation",
-        },
+        "type": "ChainExpression",
       },
       "loc": Object {
         "end": Object {
