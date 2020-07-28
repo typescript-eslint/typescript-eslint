@@ -1,114 +1,54 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree } from '../ts-estree';
+import * as scopeManager from '@typescript-eslint/scope-manager';
+import { TSESTree } from '@typescript-eslint/types';
 
 namespace Scope {
-  export interface ScopeManager {
-    scopes: Scope[];
-    globalScope: Scope | null;
+  // ESLint defines global variables using the eslint-scope Variable class
+  // So a variable in the scope may be either of these
+  declare class ESLintScopeVariable {
+    public readonly defs: Definition[];
+    public readonly identifiers: TSESTree.Identifier[];
+    public readonly name: string;
+    public readonly references: Reference[];
+    public readonly scope: Scope;
 
-    acquire(node: TSESTree.Node, inner?: boolean): Scope | null;
+    /**
+     * Written to by ESLint.
+     * If this key exists, this variable is a global variable added by ESLint.
+     * If this is `true`, this variable can be assigned arbitrary values.
+     * If this is `false`, this variable is readonly.
+     */
+    public writeable?: boolean; // note that this isn't a typo - ESlint uses this spelling here
 
-    getDeclaredVariables(node: TSESTree.Node): Variable[];
+    /**
+     * Written to by ESLint.
+     * This property is undefined if there are no globals directive comments.
+     * The array of globals directive comments which defined this global variable in the source code file.
+     */
+    public eslintExplicitGlobal?: boolean;
+
+    /**
+     * Written to by ESLint.
+     * The configured value in config files. This can be different from `variable.writeable` if there are globals directive comments.
+     */
+    public eslintImplicitGlobalSetting?: 'readonly' | 'writable';
+
+    /**
+     * Written to by ESLint.
+     * If this key exists, it is a global variable added by ESLint.
+     * If `true`, this global variable was defined by a globals directive comment in the source code file.
+     */
+    public eslintExplicitGlobalComments?: TSESTree.Comment[];
   }
 
-  export interface Reference {
-    identifier: TSESTree.Identifier;
-    from: Scope;
-    resolved: Variable | null;
-    writeExpr: TSESTree.Node | null;
-    init: boolean;
-
-    isWrite(): boolean;
-
-    isRead(): boolean;
-
-    isWriteOnly(): boolean;
-
-    isReadOnly(): boolean;
-
-    isReadWrite(): boolean;
-  }
-
-  export interface Variable {
-    name: string;
-    identifiers: TSESTree.Identifier[];
-    references: Reference[];
-    defs: Definition[];
-    scope: Scope;
-    eslintUsed?: boolean;
-  }
-
-  export interface Scope {
-    type:
-      | 'block'
-      | 'catch'
-      | 'class'
-      | 'for'
-      | 'function'
-      | 'function-expression-name'
-      | 'global'
-      | 'module'
-      | 'switch'
-      | 'with'
-      | 'TDZ';
-    isStrict: boolean;
-    upper: Scope | null;
-    childScopes: Scope[];
-    variableScope: Scope;
-    block: TSESTree.Node;
-    variables: Variable[];
-    set: Map<string, Variable>;
-    references: Reference[];
-    through: Reference[];
-    functionExpressionScope: boolean;
-  }
-
-  export type DefinitionType =
-    | {
-        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        type: 'CatchClause';
-        node: TSESTree.CatchClause;
-        parent: null;
-      }
-    | {
-        type: 'ClassName';
-        node: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
-        parent: null;
-      }
-    | {
-        type: 'FunctionName';
-        node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
-        parent: null;
-      }
-    | {
-        type: 'ImplicitGlobalVariable';
-        node: TSESTree.Program;
-        parent: null;
-      }
-    | {
-        type: 'ImportBinding';
-        node:
-          | TSESTree.ImportSpecifier
-          | TSESTree.ImportDefaultSpecifier
-          | TSESTree.ImportNamespaceSpecifier;
-        parent: TSESTree.ImportDeclaration;
-      }
-    | {
-        type: 'Parameter';
-        node:
-          | TSESTree.FunctionDeclaration
-          | TSESTree.FunctionExpression
-          | TSESTree.ArrowFunctionExpression;
-        parent: null;
-      }
-    | {
-        type: 'Variable';
-        node: TSESTree.VariableDeclarator;
-        parent: TSESTree.VariableDeclaration;
-      };
-
-  export type Definition = DefinitionType & { name: TSESTree.Identifier };
+  export type ScopeManager = scopeManager.ScopeManager;
+  export type Reference = scopeManager.Reference;
+  export type Variable = scopeManager.Variable | ESLintScopeVariable;
+  export type Scope = scopeManager.Scope;
+  // TODO - in the next major, clean this up with a breaking change
+  export type DefinitionType = scopeManager.Definition;
+  export type Definition = scopeManager.Definition;
 }
 
 export { Scope };

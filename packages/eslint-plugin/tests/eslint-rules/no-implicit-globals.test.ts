@@ -14,7 +14,7 @@ ruleTester.run('no-implicit-globals', rule, {
     // https://github.com/typescript-eslint/typescript-eslint/issues/23
     `
 function foo() {
-  return "bar";
+  return 'bar';
 }
 
 module.exports = foo;
