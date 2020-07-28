@@ -1067,9 +1067,9 @@ ruleTester.run('naming-convention', rule, {
       code: `
         let unused_foo = 'a';
         const _unused_foo = 1;
+        function foo_bar() {}
         interface IFoo {}
         class IBar {}
-        function foo_bar() {}
       `,
       options: [
         {
@@ -1088,28 +1088,36 @@ ruleTester.run('naming-convention', rule, {
       ],
       errors: [
         {
-          messageId: 'satisfyCustom',
+          messageId: 'doesNotMatchFormat',
           line: 2,
           data: {
             type: 'Variable',
             name: 'unused_foo',
-            regex: '/^unused_\\w/u',
-            regexMatch: 'not match',
+            formats: 'camelCase',
           },
         },
         {
-          messageId: 'satisfyCustom',
+          messageId: 'doesNotMatchFormatTrimmed',
           line: 3,
           data: {
             type: 'Variable',
             name: '_unused_foo',
-            regex: '/^unused_\\w/u',
-            regexMatch: 'not match',
+            processedName: 'unused_foo',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          line: 4,
+          data: {
+            type: 'Function',
+            name: 'foo_bar',
+            formats: 'camelCase',
           },
         },
         {
           messageId: 'satisfyCustom',
-          line: 4,
+          line: 5,
           data: {
             type: 'Interface',
             name: 'IFoo',
@@ -1119,22 +1127,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           messageId: 'satisfyCustom',
-          line: 5,
+          line: 6,
           data: {
             type: 'Class',
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 6,
-          data: {
-            type: 'Function',
-            name: 'foo_bar',
-            regex: '/function/u',
-            regexMatch: 'match',
           },
         },
       ],
