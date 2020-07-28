@@ -44,11 +44,13 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 'Up',
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -70,12 +72,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 'Up',
   Down,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -86,12 +90,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up,
   Down = 'Down',
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -112,11 +118,13 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 0,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -138,12 +146,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 0,
   Down,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -154,12 +164,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up,
   Down = 1,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -181,12 +193,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 1,
   Down,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
@@ -197,12 +211,14 @@ enum Direction {
           suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up,
   Down = 2,
 }
       `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
           ],
         },
