@@ -62,8 +62,8 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ":matches(CallExpression, OptionalCallExpression)[arguments.length=0] > :matches(MemberExpression, OptionalMemberExpression)[property.name='sort'][computed=false]"(
-        callee: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
+        callee: TSESTree.MemberExpression,
       ): void {
         const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
         const calleeObjType = util.getConstrainedTypeAtLocation(

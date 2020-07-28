@@ -59,8 +59,6 @@ const additionalKeys: AdditionalKeys = {
   // Additional Nodes.
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
-  OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],
-  OptionalMemberExpression: ['object', 'property'],
 
   // TS-prefixed nodes
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],

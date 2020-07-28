@@ -71,7 +71,6 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
 
     const voidReturnChecks: TSESLint.RuleListener = {
       CallExpression: checkArguments,
-      OptionalCallExpression: checkArguments,
       NewExpression: checkArguments,
     };
 
@@ -94,10 +93,7 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     }
 
     function checkArguments(
-      node:
-        | TSESTree.CallExpression
-        | TSESTree.OptionalCallExpression
-        | TSESTree.NewExpression,
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const voidParams = voidFunctionParams(checker, tsNode);

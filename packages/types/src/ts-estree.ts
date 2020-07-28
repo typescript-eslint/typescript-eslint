@@ -151,6 +151,7 @@ export type Node =
   | BreakStatement
   | CallExpression
   | CatchClause
+  | ChainExpression
   | ClassBody
   | ClassDeclaration
   | ClassExpression
@@ -201,8 +202,6 @@ export type Node =
   | NewExpression
   | ObjectExpression
   | ObjectPattern
-  | OptionalCallExpression
-  | OptionalMemberExpression
   | Program
   | Property
   | RestElement
@@ -309,6 +308,7 @@ export type Node =
 export type Accessibility = 'public' | 'protected' | 'private';
 export type BindingPattern = ArrayPattern | ObjectPattern;
 export type BindingName = BindingPattern | Identifier;
+export type ChainElement = CallExpression | MemberExpression;
 export type ClassElement =
   | ClassProperty
   | MethodDefinition
@@ -354,6 +354,7 @@ export type Expression =
   | ArrowFunctionExpression
   | AssignmentExpression
   | BinaryExpression
+  | ChainExpression
   | ConditionalExpression
   | ImportExpression
   | JSXClosingElement
@@ -394,8 +395,6 @@ export type LeftHandSideExpression =
   | FunctionExpression
   | LiteralExpression
   | MemberExpression
-  | OptionalCallExpression
-  | OptionalMemberExpression
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression
@@ -430,9 +429,6 @@ export type ObjectLiteralElementLike =
   | Property
   | SpreadElement
   | TSAbstractMethodDefinition;
-export type OptionalMemberExpression =
-  | OptionalMemberExpressionComputedName
-  | OptionalMemberExpressionNonComputedName;
 export type Parameter =
   | ArrayPattern
   | AssignmentPattern
@@ -824,9 +820,13 @@ export interface BreakStatement extends BaseNode {
   label: Identifier | null;
 }
 
+export interface ChainExpression extends BaseNode {
+  type: AST_NODE_TYPES.ChainExpression;
+  expression: ChainElement;
+}
+
 export interface CallExpression extends CallExpressionBase {
   type: AST_NODE_TYPES.CallExpression;
-  optional: false;
 }
 
 export interface CatchClause extends BaseNode {
@@ -1089,13 +1089,11 @@ export interface LogicalExpression extends BinaryExpressionBase {
 export interface MemberExpressionComputedName
   extends MemberExpressionComputedNameBase {
   type: AST_NODE_TYPES.MemberExpression;
-  optional: false;
 }
 
 export interface MemberExpressionNonComputedName
   extends MemberExpressionNonComputedNameBase {
   type: AST_NODE_TYPES.MemberExpression;
-  optional: false;
 }
 
 export interface MetaProperty extends BaseNode {
@@ -1142,23 +1140,6 @@ export interface ObjectPattern extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
-}
-
-export interface OptionalCallExpression extends CallExpressionBase {
-  type: AST_NODE_TYPES.OptionalCallExpression;
-  optional: boolean;
-}
-
-export interface OptionalMemberExpressionComputedName
-  extends MemberExpressionComputedNameBase {
-  type: AST_NODE_TYPES.OptionalMemberExpression;
-  optional: boolean;
-}
-
-export interface OptionalMemberExpressionNonComputedName
-  extends MemberExpressionNonComputedNameBase {
-  type: AST_NODE_TYPES.OptionalMemberExpression;
-  optional: boolean;
 }
 
 export interface Program extends BaseNode {

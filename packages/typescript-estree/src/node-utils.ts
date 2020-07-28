@@ -443,13 +443,10 @@ export function isOptional(node: {
 /**
  * Returns true if the node is an optional chain node
  */
-export function isOptionalChain(
+export function isChainExpression(
   node: TSESTree.Node,
-): node is TSESTree.OptionalCallExpression | TSESTree.OptionalMemberExpression {
-  return (
-    node.type === AST_NODE_TYPES.OptionalCallExpression ||
-    node.type == AST_NODE_TYPES.OptionalMemberExpression
-  );
+): node is TSESTree.ChainExpression {
+  return node.type === AST_NODE_TYPES.ChainExpression;
 }
 
 /**
@@ -460,10 +457,10 @@ export function isChildOptionalChain(
     | ts.PropertyAccessExpression
     | ts.ElementAccessExpression
     | ts.CallExpression,
-  object: TSESTree.LeftHandSideExpression,
+  child: TSESTree.Node,
 ): boolean {
   if (
-    isOptionalChain(object) &&
+    isChainExpression(child) &&
     // (x?.y).z is semantically different, and as such .z is no longer optional
     node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
   ) {
@@ -479,8 +476,8 @@ export function isChildOptionalChain(
   // Post-3.9, `x?.y!.z` means `x?.y!.z`  - i.e. it just asserts that the property `y` is non-null, not the result of `x?.y`
 
   if (
-    object.type !== AST_NODE_TYPES.TSNonNullExpression ||
-    !isOptionalChain(object.expression)
+    child.type !== AST_NODE_TYPES.TSNonNullExpression ||
+    !isChainExpression(child.expression)
   ) {
     return false;
   }
