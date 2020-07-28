@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.0...v3.7.1) (2020-07-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [adjacent-overload-signatures] fix false positive on call signatures and a method named `call` ([#2313](https://github.com/typescript-eslint/typescript-eslint/issues/2313)) ([30fafb0](https://github.com/typescript-eslint/typescript-eslint/commit/30fafb09422b3aca881f4785d89b0536092d4952))
+* **eslint-plugin:** [no-extra-parens] stop reporting on calling generic functions with one argument and type parameters containing parentheses ([#2319](https://github.com/typescript-eslint/typescript-eslint/issues/2319)) ([616a841](https://github.com/typescript-eslint/typescript-eslint/commit/616a841032bec310d9f31f1c987888273df27008))
+
+
+
+
+
 # [3.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.6.1...v3.7.0) (2020-07-20)
 
 

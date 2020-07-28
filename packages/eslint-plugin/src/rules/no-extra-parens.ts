@@ -78,6 +78,25 @@ export default util.createRule<Options, MessageIds>({
         });
       }
 
+      if (
+        node.arguments.length === 1 &&
+        node.typeParameters?.params.some(
+          param =>
+            param.type === AST_NODE_TYPES.TSParenthesizedType ||
+            param.type === AST_NODE_TYPES.TSImportType,
+        )
+      ) {
+        return rule({
+          ...node,
+          arguments: [
+            {
+              ...node.arguments[0],
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          ],
+        });
+      }
+
       return rule(node);
     }
     function unaryUpdateExpression(
