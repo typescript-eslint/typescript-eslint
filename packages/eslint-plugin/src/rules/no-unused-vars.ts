@@ -84,8 +84,9 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      'TSConstructorType, TSConstructSignatureDeclaration, TSDeclareFunction, TSEmptyBodyFunctionExpression, TSFunctionType, TSMethodSignature'(
+      'TSCallSignatureDeclaration, TSConstructorType, TSConstructSignatureDeclaration, TSDeclareFunction, TSEmptyBodyFunctionExpression, TSFunctionType, TSMethodSignature'(
         node:
+          | TSESTree.TSCallSignatureDeclaration
           | TSESTree.TSConstructorType
           | TSESTree.TSConstructSignatureDeclaration
           | TSESTree.TSDeclareFunction
