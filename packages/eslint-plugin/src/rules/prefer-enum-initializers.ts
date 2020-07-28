@@ -1,10 +1,6 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import {
-  RuleFix,
-  ReportFixFunction,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
-import { TSEnumMember } from '../../../parser/node_modules/@typescript-eslint/types/dist/ts-estree';
+import { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
 type Option = '0-based' | '1-based' | 'key-name';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
@@ -52,7 +48,7 @@ export default util.createRule<Option[], MessageIds>({
               {
                 messageId: 'defineInitializerSuggestion',
                 data: { name },
-                fix: fixer => {
+                fix: (fixer): RuleFix => {
                   switch (config) {
                     case '0-based':
                       return fixer.replaceText(member, `${name} = ${index}`);
@@ -63,9 +59,10 @@ export default util.createRule<Option[], MessageIds>({
                       );
                     case 'key-name':
                       return fixer.replaceText(member, `${name} = '${name}'`);
-                    default:
+                    default: {
                       const _exhaustiveCheck: never = config;
                       return _exhaustiveCheck;
+                    }
                   }
                 },
               },
