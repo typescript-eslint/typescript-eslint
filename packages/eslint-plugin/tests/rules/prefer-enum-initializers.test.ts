@@ -35,13 +35,32 @@ enum Direction {
   Up,
 }
       `,
-      options: ['key-name'],
       errors: [
         {
           messageId: 'defineInitializer',
           data: { name: 'Up' },
           line: 3,
           suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 0,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 1,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
             {
               messageId: 'defineInitializerSuggestion',
               /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
@@ -63,93 +82,40 @@ enum Direction {
   Down,
 }
       `,
-      options: ['key-name'],
       errors: [
         {
           messageId: 'defineInitializer',
           data: { name: 'Up' },
           line: 3,
           suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 0,
+  Down,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 1,
+  Down,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
             {
               messageId: 'defineInitializerSuggestion',
               /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
   Up = 'Up',
-  Down,
-}
-      `,
-              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
-            },
-          ],
-        },
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Down' },
-          line: 4,
-          suggestions: [
-            {
-              messageId: 'defineInitializerSuggestion',
-              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
-              output: `
-enum Direction {
-  Up,
-  Down = 'Down',
-}
-      `,
-              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Direction {
-  Up,
-}
-      `,
-      options: ['0-based'],
-      errors: [
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Up' },
-          line: 3,
-          suggestions: [
-            {
-              messageId: 'defineInitializerSuggestion',
-              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
-              output: `
-enum Direction {
-  Up = 0,
-}
-      `,
-              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Direction {
-  Up,
-  Down,
-}
-      `,
-      options: ['0-based'],
-      errors: [
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Up' },
-          line: 3,
-          suggestions: [
-            {
-              messageId: 'defineInitializerSuggestion',
-              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
-              output: `
-enum Direction {
-  Up = 0,
   Down,
 }
       `,
@@ -173,6 +139,78 @@ enum Direction {
       `,
               /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up,
+  Down = 2,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up,
+  Down = 'Down',
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Direction {
+  Up = 'Up',
+  Down,
+}
+      `,
+      errors: [
+        {
+          messageId: 'defineInitializer',
+          data: { name: 'Down' },
+          line: 4,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 'Up',
+  Down = 1,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 'Up',
+  Down = 2,
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 'Up',
+  Down = 'Down',
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
           ],
         },
       ],
@@ -181,10 +219,9 @@ enum Direction {
       code: `
 enum Direction {
   Up,
-  Down,
+  Down = 'Down',
 }
       `,
-      options: ['1-based'],
       errors: [
         {
           messageId: 'defineInitializer',
@@ -196,26 +233,30 @@ enum Direction {
               /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
-  Up = 1,
-  Down,
+  Up = 0,
+  Down = 'Down',
 }
       `,
               /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
             },
-          ],
-        },
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Down' },
-          line: 4,
-          suggestions: [
             {
               messageId: 'defineInitializerSuggestion',
               /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
               output: `
 enum Direction {
-  Up,
-  Down = 2,
+  Up = 1,
+  Down = 'Down',
+}
+      `,
+              /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
+            },
+            {
+              messageId: 'defineInitializerSuggestion',
+              /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
+              output: `
+enum Direction {
+  Up = 'Up',
+  Down = 'Down',
 }
       `,
               /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
