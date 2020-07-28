@@ -51,7 +51,9 @@ import noNamespace from './no-namespace';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
+import noRedeclare from './no-redeclare';
 import noRequireImports from './no-require-imports';
+import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
@@ -152,7 +154,9 @@ export default {
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
+  'no-redeclare': noRedeclare,
   'no-require-imports': noRequireImports,
+  'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,

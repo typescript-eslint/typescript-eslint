@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "3.10.1",
+    "@typescript-eslint/scope-manager": "3.10.1",
     "debug": "^4.1.1",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^3.0.0",
