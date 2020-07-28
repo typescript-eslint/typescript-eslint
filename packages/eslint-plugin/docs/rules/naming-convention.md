@@ -361,6 +361,23 @@ This allows you to emulate the old `interface-name-prefix` rule.
 }
 ```
 
+### Enforce that variable and function names are in camelCase
+
+This allows you to lint multiple type with same pattern.
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": ["variable", "function"],
+      "format": ["camelCase"],
+      "leadingUnderscore": "allow"
+    }
+  ]
+}
+```
+
 ### Ignore properties that require quotes
 
 Sometimes you have to use a quoted name that breaks the convention (for example, HTTP headers).
