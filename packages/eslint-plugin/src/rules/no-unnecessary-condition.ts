@@ -20,7 +20,6 @@ import {
   isNullableType,
   nullThrows,
   NullThrowsReasons,
-  isMemberOrOptionalMemberExpression,
   isIdentifier,
   isTypeAnyType,
   isTypeUnknownType,
@@ -440,18 +439,16 @@ export default createRule<Options, MessageId>({
     //    ?.y // This access is considered "unnecessary" according to the types
     //  ```
     function optionChainContainsArrayIndex(
-      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+      node: TSESTree.MemberExpression | TSESTree.CallExpression,
     ): boolean {
       const lhsNode =
-        node.type === AST_NODE_TYPES.OptionalCallExpression
-          ? node.callee
-          : node.object;
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
       if (isArrayIndexExpression(lhsNode)) {
         return true;
       }
       if (
-        lhsNode.type === AST_NODE_TYPES.OptionalMemberExpression ||
-        lhsNode.type === AST_NODE_TYPES.OptionalCallExpression
+        lhsNode.type === AST_NODE_TYPES.MemberExpression ||
+        lhsNode.type === AST_NODE_TYPES.CallExpression
       ) {
         return optionChainContainsArrayIndex(lhsNode);
       }
@@ -494,7 +491,7 @@ export default createRule<Options, MessageId>({
     //  foo?.bar;
     //  ```
     function isNullableOriginFromPrev(
-      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      node: TSESTree.MemberExpression,
     ): boolean {
       const prevType = getNodeType(node.object);
       const property = node.property;
@@ -518,9 +515,10 @@ export default createRule<Options, MessageId>({
       node: TSESTree.LeftHandSideExpression,
     ): boolean {
       const type = getNodeType(node);
-      const isOwnNullable = isMemberOrOptionalMemberExpression(node)
-        ? !isNullableOriginFromPrev(node)
-        : true;
+      const isOwnNullable =
+        node.type === AST_NODE_TYPES.MemberExpression
+          ? !isNullableOriginFromPrev(node)
+          : true;
       return (
         isTypeAnyType(type) ||
         isTypeUnknownType(type) ||
@@ -529,7 +527,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkOptionalChain(
-      node: TSESTree.OptionalMemberExpression | TSESTree.OptionalCallExpression,
+      node: TSESTree.MemberExpression | TSESTree.CallExpression,
       beforeOperator: TSESTree.Node,
       fix: '' | '.',
     ): void {
@@ -547,9 +545,7 @@ export default createRule<Options, MessageId>({
       }
 
       const nodeToCheck =
-        node.type === AST_NODE_TYPES.OptionalCallExpression
-          ? node.callee
-          : node.object;
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
 
       if (isOptionableExpression(nodeToCheck)) {
         return;
@@ -575,14 +571,12 @@ export default createRule<Options, MessageId>({
     }
 
     function checkOptionalMemberExpression(
-      node: TSESTree.OptionalMemberExpression,
+      node: TSESTree.MemberExpression,
     ): void {
       checkOptionalChain(node, node.object, node.computed ? '' : '.');
     }
 
-    function checkOptionalCallExpression(
-      node: TSESTree.OptionalCallExpression,
-    ): void {
+    function checkOptionalCallExpression(node: TSESTree.CallExpression): void {
       checkOptionalChain(node, node.callee, '');
     }
 
@@ -595,8 +589,8 @@ export default createRule<Options, MessageId>({
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
-      OptionalMemberExpression: checkOptionalMemberExpression,
-      OptionalCallExpression: checkOptionalCallExpression,
+      'MemberExpression[optional = true]': checkOptionalMemberExpression,
+      'CallExpression[optional = true]': checkOptionalCallExpression,
     };
   },
 });

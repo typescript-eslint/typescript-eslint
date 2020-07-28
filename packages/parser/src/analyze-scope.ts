@@ -342,29 +342,6 @@ class Referencer extends TSESLintScope.Referencer<ScopeManager> {
   }
 
   /**
-   * Visit optional member expression.
-   * @param node The OptionalMemberExpression node to visit.
-   */
-  OptionalMemberExpression(node: TSESTree.OptionalMemberExpression): void {
-    this.visit(node.object);
-    if (node.computed) {
-      this.visit(node.property);
-    }
-  }
-
-  /**
-   * Visit optional call expression.
-   * @param node The OptionalMemberExpression node to visit.
-   */
-  OptionalCallExpression(node: TSESTree.OptionalCallExpression): void {
-    this.visitTypeParameters(node);
-
-    this.visit(node.callee);
-
-    node.arguments.forEach(this.visit, this);
-  }
-
-  /**
    * Define the variable of this function declaration only once.
    * Because to avoid confusion of `no-redeclare` rule by overloading.
    * @param node The TSDeclareFunction node to visit.

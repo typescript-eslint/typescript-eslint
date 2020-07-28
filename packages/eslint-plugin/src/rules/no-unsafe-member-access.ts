@@ -35,15 +35,13 @@ export default util.createRule({
 
     const stateCache = new Map<TSESTree.Node, State>();
 
-    function checkMemberExpression(
-      node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-    ): State {
+    function checkMemberExpression(node: TSESTree.MemberExpression): State {
       const cachedState = stateCache.get(node);
       if (cachedState) {
         return cachedState;
       }
 
-      if (util.isMemberOrOptionalMemberExpression(node.object)) {
+      if (node.object.type === AST_NODE_TYPES.MemberExpression) {
         const objectState = checkMemberExpression(node.object);
         if (objectState === State.Unsafe) {
           // if the object is unsafe, we know this will be unsafe as well
@@ -73,8 +71,8 @@ export default util.createRule({
     }
 
     return {
-      'MemberExpression, OptionalMemberExpression': checkMemberExpression,
-      ':matches(MemberExpression, OptionalMemberExpression)[computed = true] > *.property'(
+      MemberExpression: checkMemberExpression,
+      'MemberExpression[computed = true] > *.property'(
         node: TSESTree.Expression,
       ): void {
         if (
