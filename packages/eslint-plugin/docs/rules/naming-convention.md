@@ -1,7 +1,7 @@
 # Enforces naming conventions for everything across a codebase (`naming-convention`)
 
 Enforcing naming conventions helps keep the codebase consistent, and reduces overhead when thinking about how to name a variable.
-Additionally, a well designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
+Additionally, a well-designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
 
 There are many different rules that have existed over time, but they have had the problem of not having enough granularity, meaning it was hard to have a well defined style guide, and most of the time you needed 3 or more rules at once to enforce different conventions, hoping they didn't conflict.
 
@@ -39,7 +39,7 @@ type Options = {
   suffix?: string[];
 
   // selector options
-  selector: Selector;
+  selector: Selector | Selector[];
   filter?:
     | string
     | {
