@@ -43,16 +43,17 @@
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "@types/eslint-visitor-keys": "^1.0.0",
-    "@typescript-eslint/experimental-utils": "3.10.1",
     "@typescript-eslint/types": "3.10.1",
+    "@typescript-eslint/scope-manager": "3.10.1",
     "@typescript-eslint/typescript-estree": "3.10.1",
-    "eslint-visitor-keys": "^1.1.0"
+    "debug": "^4.1.1"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
+    "@typescript-eslint/experimental-utils": "3.10.1",
     "@typescript-eslint/shared-fixtures": "3.10.1",
-    "glob": "*"
+    "glob": "*",
+    "typescript": "*"
   },
   "peerDependenciesMeta": {
     "typescript": {

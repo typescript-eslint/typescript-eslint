@@ -16,9 +16,9 @@ ruleTester.run('strict', rule, {
 window.whatevs = {
   myFunc() {
     console.log('yep');
-  }
+  },
 };
-`,
+    `,
   ],
   invalid: [
     {
@@ -27,9 +27,9 @@ window.whatevs = {
 window.whatevs = {
   myFunc() {
     console.log('yep');
-  }
+  },
 };
-`,
+      `,
       parserOptions: {
         sourceType: 'script',
       },

@@ -16,28 +16,28 @@ ruleTester.run('no-restricted-globals', rule, {
     {
       code: `
 export default class Test {
-    private status: string;
-    getStatus() {
-        return this.status;
-    }
+  private status: string;
+  getStatus() {
+    return this.status;
+  }
 }
       `,
       options: ['status'],
     },
     {
       code: `
-type Handler = (event: string) => any
+type Handler = (event: string) => any;
       `,
       options: ['event'],
     },
     {
       code: `
-        const a = foo?.bar?.name
+        const a = foo?.bar?.name;
       `,
     },
     {
       code: `
-        const a = foo?.bar?.name ?? "foobar"
+        const a = foo?.bar?.name ?? 'foobar';
       `,
     },
     {
@@ -58,9 +58,8 @@ function onClick() {
   console.log(event);
 }
 
-fdescribe("foo", function() {
-});
-    `,
+fdescribe('foo', function () {});
+      `,
       options: ['event'],
       errors: [
         {
@@ -73,8 +72,8 @@ fdescribe("foo", function() {
     },
     {
       code: `
-confirm("TEST");
-    `,
+confirm('TEST');
+      `,
       options: ['confirm'],
       errors: [
         {
@@ -87,8 +86,8 @@ confirm("TEST");
     },
     {
       code: `
-var a = confirm("TEST")?.a;
-    `,
+var a = confirm('TEST')?.a;
+      `,
       options: ['confirm'],
       errors: [
         {
