@@ -58,8 +58,7 @@ export default util.createRule({
         node.type === AST_NODE_TYPES.BinaryExpression &&
         node.operator === '<' &&
         isMatchingIdentifier(node.left, name) &&
-        (node.right.type === AST_NODE_TYPES.MemberExpression ||
-          node.right.type === AST_NODE_TYPES.OptionalMemberExpression) &&
+        node.right.type === AST_NODE_TYPES.MemberExpression &&
         isMatchingIdentifier(node.right.property, 'length')
       ) {
         return node.right.object;
@@ -172,8 +171,7 @@ export default util.createRule({
         return (
           !contains(body, id) ||
           (node !== undefined &&
-            (node.type === AST_NODE_TYPES.MemberExpression ||
-              node.type === AST_NODE_TYPES.OptionalMemberExpression) &&
+            node.type === AST_NODE_TYPES.MemberExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))

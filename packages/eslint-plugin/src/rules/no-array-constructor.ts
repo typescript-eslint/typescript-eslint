@@ -27,17 +27,14 @@ export default util.createRule({
      * @param node node to evaluate
      */
     function check(
-      node:
-        | TSESTree.CallExpression
-        | TSESTree.OptionalCallExpression
-        | TSESTree.NewExpression,
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       if (
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
         !node.typeParameters &&
-        !util.isOptionalOptionalCallExpression(node)
+        !util.isOptionalCallExpression(node)
       ) {
         context.report({
           node,
@@ -60,7 +57,6 @@ export default util.createRule({
 
     return {
       CallExpression: check,
-      OptionalCallExpression: check,
       NewExpression: check,
     };
   },

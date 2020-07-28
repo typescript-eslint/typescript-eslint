@@ -4,13 +4,12 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MemberExpressionWithCallExpressionParent = (
-  | TSESTree.MemberExpression
-  | TSESTree.OptionalMemberExpression
-) & { parent: TSESTree.CallExpression | TSESTree.OptionalCallExpression };
+type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
+  parent: TSESTree.CallExpression;
+};
 
 const getMemberExpressionName = (
-  member: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+  member: TSESTree.MemberExpression,
 ): string | null => {
   if (!member.computed) {
     return member.property.name;
@@ -50,7 +49,7 @@ export default util.createRule({
     const checker = service.program.getTypeChecker();
 
     return {
-      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee'(
+      'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
         if (getMemberExpressionName(callee) !== 'reduce') {

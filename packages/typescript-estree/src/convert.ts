@@ -21,6 +21,7 @@ import {
   isOptional,
   TSError,
   unescapeStringLiteralText,
+  isChainExpression,
 } from './node-utils';
 import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
@@ -397,6 +398,38 @@ export class Converter {
         );
       }
       return convertedParam;
+    });
+  }
+
+  private convertChainExpression(
+    node: TSESTree.ChainElement,
+    tsNode:
+      | ts.PropertyAccessExpression
+      | ts.ElementAccessExpression
+      | ts.CallExpression,
+  ): TSESTree.ChainExpression | TSESTree.ChainElement {
+    let child = (node.type === AST_NODE_TYPES.MemberExpression
+      ? node.object
+      : node.callee) as TSESTree.Node;
+    const isChildOptional = isChildOptionalChain(tsNode, child);
+
+    if (!isChildOptional && !node.optional) {
+      return node;
+    }
+
+    if (isChainExpression(child)) {
+      // unwrap the chain expression child
+      child = child.expression;
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
+        node.object = child;
+      } else {
+        node.callee = child;
+      }
+    }
+
+    return this.createNode<TSESTree.ChainExpression>(tsNode, {
+      type: AST_NODE_TYPES.ChainExpression,
+      expression: node,
     });
   }
 
@@ -1774,27 +1807,15 @@ export class Converter {
         const property = this.convertChild(node.name);
         const computed = false;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, object);
+        const result = this.createNode<TSESTree.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object,
+          property,
+          computed,
+          optional: node.questionDotToken !== undefined,
+        });
 
-        if (isLocallyOptional || isChildOptional) {
-          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
-            type: AST_NODE_TYPES.OptionalMemberExpression,
-            object,
-            property,
-            computed,
-            optional: isLocallyOptional,
-          });
-        } else {
-          return this.createNode<TSESTree.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object,
-            property,
-            computed,
-            optional: false,
-          });
-        }
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.ElementAccessExpression: {
@@ -1802,27 +1823,15 @@ export class Converter {
         const property = this.convertChild(node.argumentExpression);
         const computed = true;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, object);
+        const result = this.createNode<TSESTree.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object,
+          property,
+          computed,
+          optional: node.questionDotToken !== undefined,
+        });
 
-        if (isLocallyOptional || isChildOptional) {
-          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
-            type: AST_NODE_TYPES.OptionalMemberExpression,
-            object,
-            property,
-            computed,
-            optional: isLocallyOptional,
-          });
-        } else {
-          return this.createNode<TSESTree.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object,
-            property,
-            computed,
-            optional: false,
-          });
-        }
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.CallExpression: {
@@ -1842,27 +1851,13 @@ export class Converter {
 
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
-        let result;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, callee);
-
-        if (isLocallyOptional || isChildOptional) {
-          result = this.createNode<TSESTree.OptionalCallExpression>(node, {
-            type: AST_NODE_TYPES.OptionalCallExpression,
-            callee,
-            arguments: args,
-            optional: isLocallyOptional,
-          });
-        } else {
-          result = this.createNode<TSESTree.CallExpression>(node, {
-            type: AST_NODE_TYPES.CallExpression,
-            callee,
-            arguments: args,
-            optional: false,
-          });
-        }
+        const result = this.createNode<TSESTree.CallExpression>(node, {
+          type: AST_NODE_TYPES.CallExpression,
+          callee,
+          arguments: args,
+          optional: node.questionDotToken !== undefined,
+        });
 
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
@@ -1870,7 +1865,8 @@ export class Converter {
             node,
           );
         }
-        return result;
+
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.NewExpression: {
