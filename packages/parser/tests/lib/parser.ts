@@ -1,9 +1,12 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import { parse, parseForESLint } from '../../src/parser';
-import * as scope from '../../src/analyze-scope';
 
 describe('parser', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('parse() should return just the AST from parseForESLint()', () => {
     const code = 'const valid = true;';
     expect(parse(code)).toEqual(parseForESLint(code).ast);
@@ -12,25 +15,6 @@ describe('parser', () => {
   it('parseForESLint() should work if options are `null`', () => {
     const code = 'const valid = true;';
     expect(() => parseForESLint(code, null)).not.toThrow();
-  });
-
-  it('parseForESLint() should set the sourceType to script, if an invalid one is provided', () => {
-    const code = 'const valid = true;';
-    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    const spyScope = jest.spyOn(scope, 'analyzeScope');
-    // intentionally wrong sourceType
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parseForESLint(code, { sourceType: 'foo' as any });
-    expect(spy).toHaveBeenCalledWith(code, {
-      ecmaFeatures: {},
-      jsx: false,
-      sourceType: 'script',
-      useJSXTextNode: true,
-    });
-    expect(spyScope).toHaveBeenCalledWith(expect.any(Object), {
-      ecmaFeatures: {},
-      sourceType: 'script',
-    });
   });
 
   it('parseAndGenerateServices() should be called with options', () => {
@@ -57,7 +41,8 @@ describe('parser', () => {
       extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
-    expect(spy).toHaveBeenCalledWith(code, {
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenLastCalledWith(code, {
       jsx: false,
       ...config,
     });
@@ -72,7 +57,9 @@ describe('parser', () => {
       jsx: false,
       sourceType: 'script',
       useJSXTextNode: true,
+      warnOnUnsupportedTypeScriptVersion: true,
     });
+    spy.mockClear();
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
     expect(spy).toHaveBeenCalledWith(code, {
       ecmaFeatures: {},

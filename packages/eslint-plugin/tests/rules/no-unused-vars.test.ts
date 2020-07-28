@@ -122,22 +122,22 @@ console.log(a);
     `,
     `
 import { Foo } from 'foo';
-function bar<T>() {}
+function bar<T>(): T {}
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = function <T>() {};
+const bar = function <T>(): T {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = <T>() => {};
+const bar = <T>(): T => {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-<Foo>(<T>() => {})();
+<Foo>(<T>(): T => {})();
     `,
     `
 import { Nullable } from 'nullable';
@@ -265,14 +265,14 @@ new A();
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   do(a: Nullable<Another>);
 }
     `,
     `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   other: Nullable<Another>;
 }
     `,
@@ -293,7 +293,6 @@ foo();
     `
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
-import { Another } from 'some';
 class A extends Nullable<SomeOther> {
   other: Nullable<Another>;
 }
@@ -314,7 +313,7 @@ new A();
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
   other: Nullable<Another>;
 }
     `,
@@ -322,49 +321,61 @@ interface A extends Nullable<SomeOther> {
 import { Nullable } from 'nullable';
 import { SomeOther } from 'some';
 import { Another } from 'some';
-interface A extends Nullable<SomeOther> {
+export interface A extends Nullable<SomeOther> {
   do(a: Nullable<Another>);
 }
     `,
     `
 import { Foo } from './types';
 
-class Bar<T extends Foo> {}
+class Bar<T extends Foo> {
+  prop: T;
+}
 
 new Bar<number>();
     `,
     `
 import { Foo, Bar } from './types';
 
-class Baz<T extends Foo & Bar> {}
+class Baz<T extends Foo & Bar> {
+  prop: T;
+}
 
 new Baz<any>();
     `,
     `
 import { Foo } from './types';
 
-class Bar<T = Foo> {}
+class Bar<T = Foo> {
+  prop: T;
+}
 
 new Bar<number>();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T = any> {}
+class Foo<T = any> {
+  prop: T;
+}
 
 new Foo();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T = {}> {}
+class Foo<T = {}> {
+  prop: T;
+}
 
 new Foo();
     `,
     `
 import { Foo } from './types';
 
-class Foo<T extends {} = {}> {}
+class Foo<T extends {} = {}> {
+  prop: T;
+}
 
 new Foo();
     `,
@@ -388,7 +399,7 @@ new A<Nullable>();
     `
 import { Nullable } from 'nullable';
 import { SomeOther } from 'other';
-function foo<T extends Nullable>() {}
+function foo<T extends Nullable>(): T {}
 foo<SomeOther>();
     `,
     `
@@ -473,7 +484,9 @@ export function authenticated(cb: (user: User | null) => void): void {
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/33
     `
 import { Foo } from './types';
-export class Bar<T extends Foo> {}
+export class Bar<T extends Foo> {
+  prop: T;
+}
     `,
     `
 import webpack from 'webpack';
@@ -487,7 +500,9 @@ export function foo(options: ExecaOptions): execa {
     `,
     `
 import { Foo, Bar } from './types';
-export class Baz<F = Foo & Bar> {}
+export class Baz<F = Foo & Bar> {
+  prop: F;
+}
     `,
     `
 // warning 'B' is defined but never used
@@ -504,7 +519,7 @@ enum FormFieldIds {
   PHONE = 'phone',
   EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
   fieldName: FormFieldIds;
 }
     `,
@@ -513,7 +528,7 @@ enum FormFieldIds {
   PHONE = 'phone',
   EMAIL = 'email',
 }
-interface IFoo {
+export interface IFoo {
   fieldName: FormFieldIds.EMAIL;
 }
     `,
@@ -529,13 +544,12 @@ const server: fastify.FastifyInstance<
 server.get('/ping');
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/61
-    'declare function foo();',
-    // https://github.com/typescript-eslint/typescript-eslint/issues/61
     `
 declare namespace Foo {
   function bar(line: string, index: number | null, tabSize: number): number;
   var baz: string;
 }
+console.log(Foo);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/61
     `
@@ -616,6 +630,105 @@ export default class Foo {
   }
 }
     `,
+    `
+declare function foo(a: number): void;
+    `,
+    `
+export function foo(): void;
+export function foo(): void;
+export function foo(): void {}
+    `,
+    `
+export function foo(a: number): number;
+export function foo(a: string): string;
+export function foo(a: number | string): number | string {
+  return a;
+}
+    `,
+    `
+export function foo<T>(a: number): T;
+export function foo<T>(a: string): T;
+export function foo<T>(a: number | string): T {
+  return a;
+}
+    `,
+    `
+export type T = {
+  new (): T;
+  new (arg: number): T;
+  new <T>(arg: number): T;
+};
+    `,
+    `
+export type T = new () => T;
+export type T = new (arg: number) => T;
+export type T = new <T>(arg: number) => T;
+    `,
+    `
+enum Foo {
+  a,
+}
+export type T = {
+  [Foo.a]: 1;
+};
+    `,
+    `
+namespace Foo {
+  export const Foo = 1;
+}
+
+export { Foo };
+    `,
+    `
+export namespace Foo {
+  export const item: Foo = 1;
+}
+    `,
+    // exported self-referencing types
+    `
+export interface Foo {
+  bar: string;
+  baz: Foo['bar'];
+}
+    `,
+    `
+export type Bar = Array<Bar>;
+    `,
+    // declaration merging
+    `
+function Foo() {}
+
+namespace Foo {
+  export const x = 1;
+}
+
+export { Foo };
+    `,
+    `
+class Foo {}
+
+namespace Foo {
+  export const x = 1;
+}
+
+export { Foo };
+    `,
+    `
+namespace Foo {}
+
+const Foo = 1;
+
+export { Foo };
+    `,
+    `
+type Foo = {
+  error: Error | null;
+};
+
+export function foo() {
+  return new Promise<Foo>();
+}
+    `,
   ],
 
   invalid: [
@@ -640,7 +753,7 @@ export class Foo {}
     {
       code: `
 import { Foo, Bar } from 'foo';
-function baz<Foo>() {}
+function baz<Foo>(): Foo {}
 baz<Bar>();
       `,
       errors: [
@@ -772,7 +885,7 @@ new A();
       code: `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   do(a: Nullable);
 }
       `,
@@ -793,7 +906,7 @@ interface A {
       code: `
 import { Nullable } from 'nullable';
 import { Another } from 'some';
-interface A {
+export interface A {
   other: Nullable;
 }
       `,
@@ -991,6 +1104,150 @@ export class Bar implements baz().test {}
           },
           line: 2,
           column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const Foo = 1;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  const Foo = 1;
+  console.log(Foo);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const Bar = 1;
+  console.log(Foo.Bar);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  namespace Foo {
+    export const Bar = 1;
+    console.log(Foo.Bar);
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 11,
+        },
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 3,
+          column: 13,
+        },
+      ],
+    },
+    // self-referencing types
+    {
+      code: `
+interface Foo {
+  bar: string;
+  baz: Foo['bar'];
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = Array<Foo>;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
         },
       ],
     },

@@ -15,7 +15,7 @@ ruleTester.run('no-dupe-args', rule, {
     // https://github.com/eslint/typescript-eslint-parser/issues/535
     `
 function foo({ bar }: { bar: string }) {
-    console.log(bar);
+  console.log(bar);
 }
     `,
   ],

@@ -16,6 +16,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
   let enums = true;
   let variables = true;
   let typedefs = true;
+  let ignoreTypeReferences = true;
 
   if (typeof options === 'string') {
     functions = options !== 'nofunc';
@@ -25,33 +26,17 @@ function parseOptions(options: string | Config | null): Required<Config> {
     enums = options.enums !== false;
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
+    ignoreTypeReferences = options.ignoreTypeReferences !== false;
   }
 
-  return { functions, classes, enums, variables, typedefs };
-}
-
-/**
- * Checks whether or not a given scope is a top level scope.
- */
-function isTopLevelScope(scope: TSESLint.Scope.Scope): boolean {
-  return scope.type === 'module' || scope.type === 'global';
-}
-
-/**
- * Checks whether or not a given variable declaration in an upper scope.
- */
-function isOuterScope(
-  variable: TSESLint.Scope.Variable,
-  reference: TSESLint.Scope.Reference,
-): boolean {
-  if (variable.scope.variableScope === reference.from.variableScope) {
-    // allow the same scope only if it's the top level global/module scope
-    if (!isTopLevelScope(variable.scope.variableScope)) {
-      return false;
-    }
-  }
-
-  return true;
+  return {
+    functions,
+    classes,
+    enums,
+    variables,
+    typedefs,
+    ignoreTypeReferences,
+  };
 }
 
 /**
@@ -62,17 +47,22 @@ function isFunction(variable: TSESLint.Scope.Variable): boolean {
 }
 
 /**
- * Checks whether or not a given variable is a enum declaration in an upper function scope.
+ * Checks whether or not a given variable is a type declaration.
+ */
+function isTypedef(variable: TSESLint.Scope.Variable): boolean {
+  return variable.defs[0].type === 'Type';
+}
+
+/**
+ * Checks whether or not a given variable is a enum declaration.
  */
 function isOuterEnum(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  const node = variable.defs[0].node as TSESTree.Node;
-
   return (
-    node.type === AST_NODE_TYPES.TSEnumDeclaration &&
-    isOuterScope(variable, reference)
+    variable.defs[0].type == 'TSEnumName' &&
+    variable.scope.variableScope !== reference.from.variableScope
   );
 }
 
@@ -84,7 +74,8 @@ function isOuterClass(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type === 'ClassName' && isOuterScope(variable, reference)
+    variable.defs[0].type === 'ClassName' &&
+    variable.scope.variableScope !== reference.from.variableScope
   );
 }
 
@@ -96,7 +87,8 @@ function isOuterVariable(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type === 'Variable' && isOuterScope(variable, reference)
+    variable.defs[0].type === 'Variable' &&
+    variable.scope.variableScope !== reference.from.variableScope
   );
 }
 
@@ -165,6 +157,7 @@ interface Config {
   enums?: boolean;
   variables?: boolean;
   typedefs?: boolean;
+  ignoreTypeReferences?: boolean;
 }
 type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
@@ -196,6 +189,7 @@ export default util.createRule<Options, MessageIds>({
               enums: { type: 'boolean' },
               variables: { type: 'boolean' },
               typedefs: { type: 'boolean' },
+              ignoreTypeReferences: { type: 'boolean' },
             },
             additionalProperties: false,
           },
@@ -210,6 +204,7 @@ export default util.createRule<Options, MessageIds>({
       enums: true,
       variables: true,
       typedefs: true,
+      ignoreTypeReferences: true,
     },
   ],
   create(context, optionsWithDefault) {
@@ -224,17 +219,23 @@ export default util.createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
+      if (reference.isTypeReference && options.ignoreTypeReferences) {
+        return false;
+      }
       if (isFunction(variable)) {
-        return !!options.functions;
+        return options.functions;
       }
       if (isOuterClass(variable, reference)) {
-        return !!options.classes;
+        return options.classes;
       }
       if (isOuterVariable(variable, reference)) {
-        return !!options.variables;
+        return options.variables;
       }
       if (isOuterEnum(variable, reference)) {
-        return !!options.enums;
+        return options.enums;
+      }
+      if (isTypedef(variable)) {
+        return options.typedefs;
       }
 
       return true;
