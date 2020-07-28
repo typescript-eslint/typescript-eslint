@@ -27,12 +27,6 @@ enum Direction {
   Down = 'Down',
 }
     `,
-    `
-enum Direction {
-  Up = 1,
-  Down = 'Up',
-}
-    `,
   ],
   invalid: [
     {
@@ -41,11 +35,22 @@ enum Direction {
   Up,
 }
       `,
+      options: ['key-name'],
       errors: [
         {
           messageId: 'defineInitializer',
           data: { name: 'Up' },
           line: 3,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up = 'Up',
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -56,61 +61,39 @@ enum Direction {
   Down,
 }
       `,
+      options: ['key-name'],
       errors: [
         {
           messageId: 'defineInitializer',
           data: { name: 'Up' },
           line: 3,
-        },
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Down' },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-enum Direction {
-  Up = 1,
-  Down,
-}
-      `,
-      errors: [
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Down' },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-enum Direction {
-  Up,
-  Down = 2,
-}
-      `,
-      errors: [
-        {
-          messageId: 'defineInitializer',
-          data: { name: 'Up' },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
 enum Direction {
   Up = 'Up',
   Down,
 }
       `,
-      errors: [
+            },
+          ],
+        },
         {
           messageId: 'defineInitializer',
           data: { name: 'Down' },
           line: 4,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up,
+  Down = 'Down',
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -118,14 +101,110 @@ enum Direction {
       code: `
 enum Direction {
   Up,
-  Down = 'Down',
 }
       `,
+      options: ['0-based'],
       errors: [
         {
           messageId: 'defineInitializer',
           data: { name: 'Up' },
           line: 3,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up = 0,
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Direction {
+  Up,
+  Down,
+}
+      `,
+      options: ['0-based'],
+      errors: [
+        {
+          messageId: 'defineInitializer',
+          data: { name: 'Up' },
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up = 0,
+  Down,
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'defineInitializer',
+          data: { name: 'Down' },
+          line: 4,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up,
+  Down = 1,
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Direction {
+  Up,
+  Down,
+}
+      `,
+      options: ['1-based'],
+      errors: [
+        {
+          messageId: 'defineInitializer',
+          data: { name: 'Up' },
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up = 1,
+  Down,
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'defineInitializer',
+          data: { name: 'Down' },
+          line: 4,
+          suggestions: [
+            {
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  Up,
+  Down = 2,
+}
+      `,
+            },
+          ],
         },
       ],
     },
