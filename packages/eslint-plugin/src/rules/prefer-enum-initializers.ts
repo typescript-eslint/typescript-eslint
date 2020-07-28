@@ -1,6 +1,10 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import {
+  RuleFix,
+  ReportFixFunction,
+} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import { TSEnumMember } from '../../../parser/node_modules/@typescript-eslint/types/dist/ts-estree';
 
 type Option = '0-based' | '1-based' | 'key-name';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
@@ -32,42 +36,47 @@ export default util.createRule<Option[], MessageIds>({
     const sourceCode = context.getSourceCode();
     const config = context.options[0];
 
-    return {
-      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-        const { members } = node;
-        members.forEach((member, index) => {
-          if (member.initializer == null) {
-            const name = sourceCode.getText(member);
-            context.report({
-              node: member,
-              messageId: 'defineInitializer',
-              data: {
-                name,
-              },
-              suggest: [
-                {
-                  messageId: 'defineInitializerSuggestion',
-                  data: { name },
-                  fix: (fixer): RuleFix | null => {
-                    if (config === '0-based') {
+    function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+      const { members } = node;
+
+      members.forEach((member, index) => {
+        if (member.initializer == null) {
+          const name = sourceCode.getText(member);
+          context.report({
+            node: member,
+            messageId: 'defineInitializer',
+            data: {
+              name,
+            },
+            suggest: [
+              {
+                messageId: 'defineInitializerSuggestion',
+                data: { name },
+                fix: fixer => {
+                  switch (config) {
+                    case '0-based':
                       return fixer.replaceText(member, `${name} = ${index}`);
-                    } else if (config === '1-based') {
+                    case '1-based':
                       return fixer.replaceText(
                         member,
                         `${name} = ${index + 1}`,
                       );
-                    } else if (config === 'key-name') {
+                    case 'key-name':
                       return fixer.replaceText(member, `${name} = '${name}'`);
-                    } else {
-                      return null;
-                    }
-                  },
+                    default:
+                      const _exhaustiveCheck: never = config;
+                      return _exhaustiveCheck;
+                  }
                 },
-              ],
-            });
-          }
-        });
-      },
+              },
+            ],
+          });
+        }
+      });
+    }
+
+    return {
+      TSEnumDeclaration,
     };
   },
 });
