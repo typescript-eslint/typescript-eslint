@@ -424,6 +424,18 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'catch-clause-with-annotation',
     'catch-clause-with-invalid-annotation',
+    /**
+     * Optional chain - babel doesn't yet support the new ESTree representation
+     */
+    'optional-chain',
+    'optional-chain-with-parens',
+    'optional-chain-with-non-null-assertion',
+    'optional-chain-element-access',
+    'optional-chain-element-access-with-parens',
+    'optional-chain-element-access-with-non-null-assertion',
+    'optional-chain-call',
+    'optional-chain-call-with-parens',
+    'optional-chain-call-with-non-null-assertion',
   ],
   ignoreSourceType: [
     /**
@@ -468,6 +480,12 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Optional chain - babel doesn't yet support the new ESTree representation
+     */
+    'optional-call-expression-type-arguments',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
