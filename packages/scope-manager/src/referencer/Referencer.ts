@@ -377,9 +377,7 @@ class Referencer extends Visitor {
     // don't reference the break statement's label
   }
 
-  protected CallExpression(
-    node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
-  ): void {
+  protected CallExpression(node: TSESTree.CallExpression): void {
     this.visitChildren(node, ['typeParameters']);
     this.visitType(node.typeParameters);
   }
@@ -498,9 +496,7 @@ class Referencer extends Visitor {
     this.visit(node.body);
   }
 
-  protected MemberExpression(
-    node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-  ): void {
+  protected MemberExpression(node: TSESTree.MemberExpression): void {
     this.visit(node.object);
     if (node.computed) {
       this.visit(node.property);
@@ -518,18 +514,6 @@ class Referencer extends Visitor {
   protected NewExpression(node: TSESTree.NewExpression): void {
     this.visitChildren(node, ['typeParameters']);
     this.visitType(node.typeParameters);
-  }
-
-  protected OptionalCallExpression(
-    node: TSESTree.OptionalCallExpression,
-  ): void {
-    this.CallExpression(node);
-  }
-
-  protected OptionalMemberExpression(
-    node: TSESTree.OptionalMemberExpression,
-  ): void {
-    this.MemberExpression(node);
   }
 
   protected Program(node: TSESTree.Program): void {
