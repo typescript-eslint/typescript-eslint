@@ -155,6 +155,8 @@ If these are provided, the identifier must start with one of the provided values
 ### Selector Options
 
 - `selector` (see "Allowed Selectors, Modifiers and Types" below).
+  - Accepts one or array of selectors to define an option block that applies to one or multiple selectors.
+  - For example, if you provide `{ selector: ['variable', 'function'] }`, then it will apply the same option to variable and function nodes.
 - `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
