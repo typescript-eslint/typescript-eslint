@@ -65,6 +65,7 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
@@ -78,7 +79,9 @@ export type MessageId =
   | 'literalBooleanExpression'
   | 'noOverlapBooleanExpression'
   | 'never'
-  | 'neverOptionalChain';
+  | 'neverOptionalChain'
+  | 'noStrictNullCheck';
+
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
   meta: {
@@ -95,6 +98,9 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowConstantLoopConditions: {
+            type: 'boolean',
+          },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
         },
@@ -119,18 +125,46 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap',
       never: 'Unnecessary conditional, value is `never`',
       neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
   },
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
-  create(context, [{ allowConstantLoopConditions }]) {
+  create(
+    context,
+    [
+      {
+        allowConstantLoopConditions,
+        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+      },
+    ],
+  ) {
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
     const compilerOptions = service.program.getCompilerOptions();
+    const isStrictNullChecks = isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
+
+    if (
+      !isStrictNullChecks &&
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { line: 0, column: 0 },
+          end: { line: 0, column: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     function getNodeType(node: TSESTree.Expression): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -263,7 +297,7 @@ export default createRule<Options, MessageId>({
         return;
       }
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
-      if (isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks')) {
+      if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
         const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {

@@ -1,3 +1,4 @@
+import * as path from 'path';
 import rule, {
   Options,
   MessageId,
@@ -9,10 +10,11 @@ import {
   noFormat,
 } from '../RuleTester';
 
+const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: getFixturesRootDir(),
+    tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
 });
@@ -115,6 +117,22 @@ ruleTester.run('strict-boolean-expressions', rule, {
         <T extends any>(x: T) => x ? 1 : 0;
       `,
     }),
+    {
+      code: `
+declare const x: string[] | null;
+// eslint-disable-next-line
+if (x) {
+}
+      `,
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
   ],
 
   invalid: [
@@ -313,5 +331,27 @@ ruleTester.run('strict-boolean-expressions', rule, {
         { messageId: 'conditionErrorAny', line: 4, column: 34 },
       ],
     }),
+    {
+      code: `
+declare const x: string[] | null;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+          line: 0,
+          column: 1,
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 3,
+          column: 5,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
   ],
 });
