@@ -35,6 +35,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const parserServices = util.getParserServices(context);
+    const program = parserServices.program;
     const checker = parserServices.program.getTypeChecker();
 
     function getCalleeName(
@@ -113,9 +114,25 @@ export default util.createRule({
     function checkImpliedEval(
       node: TSESTree.NewExpression | TSESTree.CallExpression,
     ): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = checker.getTypeAtLocation(tsNode);
+
       const calleeName = getCalleeName(node.callee);
       if (calleeName === null) {
         return;
+      }
+
+      const symbol = type.getSymbol();
+      if (!symbol) {
+        return;
+      }
+
+      const declarations = symbol.getDeclarations() ?? [];
+      for (const declaration of declarations) {
+        const sourceFile = declaration.getSourceFile();
+        if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          return;
+        }
       }
 
       if (calleeName === FUNCTION_CONSTRUCTOR) {
