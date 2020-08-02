@@ -243,7 +243,7 @@ const fn = (foo: () => void) => {
 };
     `,
     `
-import { Function } from "./missing";
+import { Function } from "./class";
 new Function("foo");
     `,
   ],

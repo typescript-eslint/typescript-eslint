@@ -36,6 +36,7 @@ export default util.createRule({
   create(context) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const program = parserServices.program;
 
     function getCalleeName(
       node: TSESTree.LeftHandSideExpression,
@@ -113,14 +114,29 @@ export default util.createRule({
     function checkImpliedEval(
       node: TSESTree.NewExpression | TSESTree.CallExpression,
     ): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.callee);
+      const type = checker.getTypeAtLocation(tsNode);
+
       const calleeName = getCalleeName(node.callee);
       if (calleeName === null) {
         return;
       }
 
       if (calleeName === FUNCTION_CONSTRUCTOR) {
-        context.report({ node, messageId: 'noFunctionConstructor' });
-        return;
+        const symbol = type.getSymbol();
+        if (symbol) {
+          const declarations = symbol.getDeclarations() ?? [];
+          for (const declaration of declarations) {
+            const sourceFile = declaration.getSourceFile();
+            if (program.isSourceFileDefaultLibrary(sourceFile)) {
+              context.report({ node, messageId: 'noFunctionConstructor' });
+              return;
+            }
+          }
+        } else {
+          context.report({ node, messageId: 'noFunctionConstructor' });
+          return;
+        }
       }
 
       if (node.arguments.length === 0) {
