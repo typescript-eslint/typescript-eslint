@@ -122,19 +122,6 @@ export default util.createRule({
         return;
       }
 
-      const symbol = type.getSymbol();
-      if (!symbol) {
-        return;
-      }
-
-      const declarations = symbol.getDeclarations() ?? [];
-      for (const declaration of declarations) {
-        const sourceFile = declaration.getSourceFile();
-        if (program.isSourceFileDefaultLibrary(sourceFile)) {
-          return;
-        }
-      }
-
       if (calleeName === FUNCTION_CONSTRUCTOR) {
         const symbol = type.getSymbol();
         if (symbol) {
