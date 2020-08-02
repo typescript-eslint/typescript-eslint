@@ -6,6 +6,7 @@ const ruleTester = new RuleTester({
   parserOptions: {
     tsconfigRootDir: rootDir,
     ecmaVersion: 2015,
+    sourceType: 'module',
     project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
@@ -240,6 +241,10 @@ const fn = (foo: () => void) => {
   setImmediate(foo);
   execScript(foo);
 };
+    `,
+    `
+import { Function } from './class';
+new Function('foo');
     `,
   ],
 
