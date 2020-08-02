@@ -30,7 +30,7 @@ export default util.createRule({
       unsafeArrayPatternFromTuple:
         'Unsafe array destructuring of a tuple element with an any value.',
       unsafeAssignment:
-        'Unsafe asignment of type {{sender}} to a variable of type {{receiver}}.',
+        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
       unsafeArraySpread: 'Unsafe spread of an any value in an array.',
     },
     schema: [],
