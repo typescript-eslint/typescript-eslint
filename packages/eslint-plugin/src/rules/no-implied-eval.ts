@@ -35,8 +35,8 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
     const program = parserServices.program;
+    const checker = parserServices.program.getTypeChecker();
 
     function getCalleeName(
       node: TSESTree.LeftHandSideExpression,
@@ -120,6 +120,19 @@ export default util.createRule({
       const calleeName = getCalleeName(node.callee);
       if (calleeName === null) {
         return;
+      }
+
+      const symbol = type.getSymbol();
+      if (!symbol) {
+        return;
+      }
+
+      const declarations = symbol.getDeclarations() ?? [];
+      for (const declaration of declarations) {
+        const sourceFile = declaration.getSourceFile();
+        if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          return;
+        }
       }
 
       if (calleeName === FUNCTION_CONSTRUCTOR) {
