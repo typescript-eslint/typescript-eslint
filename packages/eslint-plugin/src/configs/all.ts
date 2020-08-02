@@ -97,6 +97,7 @@ export = {
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/prefer-enum-initializers': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
     '@typescript-eslint/prefer-includes': 'error',
