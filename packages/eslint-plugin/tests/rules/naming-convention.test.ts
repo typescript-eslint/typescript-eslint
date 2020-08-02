@@ -205,33 +205,46 @@ function createInvalidTestCases(
           options: Selector,
           messageId: MessageIds,
           data: Record<string, unknown> = {},
-        ): TSESLint.InvalidTestCase<MessageIds, Options> => ({
-          options: [
-            {
-              ...options,
-              filter: IGNORED_FILTER,
-            },
-          ],
-          code: `// ${JSON.stringify(options)}\n${test.code
-            .map(code => code.replace(REPLACE_REGEX, preparedName))
-            .join('\n')}`,
-          errors: test.code.map(() => ({
+        ): TSESLint.InvalidTestCase<MessageIds, Options> => {
+          const selectors = Array.isArray(test.options.selector)
+            ? test.options.selector
+            : [test.options.selector];
+          const errorsTemplate = selectors.map(selector => ({
             messageId,
-            ...(test.options.selector !== 'default' &&
-            test.options.selector !== 'variableLike' &&
-            test.options.selector !== 'memberLike' &&
-            test.options.selector !== 'typeLike'
+            ...(selector !== 'default' &&
+            selector !== 'variableLike' &&
+            selector !== 'memberLike' &&
+            selector !== 'typeLike'
               ? {
                   data: {
-                    type: selectorTypeToMessageString(test.options.selector),
+                    type: selectorTypeToMessageString(selector),
                     name: preparedName,
                     ...data,
                   },
                 }
               : // meta-types will use the correct selector, so don't assert on data shape
                 {}),
-          })),
-        });
+          }));
+
+          const errors: {
+            data?: { type: string; name: string };
+            messageId: MessageIds;
+          }[] = [];
+          test.code.forEach(() => errors.push(...errorsTemplate));
+
+          return {
+            options: [
+              {
+                ...options,
+                filter: IGNORED_FILTER,
+              },
+            ],
+            code: `// ${JSON.stringify(options)}\n${test.code
+              .map(code => code.replace(REPLACE_REGEX, preparedName))
+              .join('\n')}`,
+            errors: errors,
+          };
+        };
 
         const prefixSingle = ['MyPrefix'];
         const prefixMulti = ['MyPrefix1', 'MyPrefix2'];
@@ -716,6 +729,27 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface foo {}
+        class bar {}
+        function fooFunctionBar() {}
+        function _fooFunctionBar() {}
+      `,
+      options: [
+        {
+          selector: ['default', 'typeLike', 'function'],
+          format: ['camelCase'],
+          custom: {
+            regex: /^unused_\w/.source,
+            match: false,
+          },
+          leadingUnderscore: 'allow',
+        },
+      ],
+    },
+    {
+      code: `
         const match = 'test'.match(/test/);
         const [, key, value] = match;
       `,
@@ -1025,6 +1059,80 @@ ruleTester.run('naming-convention', rule, {
             name: 'fooBar',
             regex: '/function/u',
             regexMatch: 'match',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        let unused_foo = 'a';
+        const _unused_foo = 1;
+        function foo_bar() {}
+        interface IFoo {}
+        class IBar {}
+      `,
+      options: [
+        {
+          selector: ['variable', 'function'],
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+        },
+        {
+          selector: ['class', 'interface'],
+          format: ['PascalCase'],
+          custom: {
+            regex: /^I[A-Z]/.source,
+            match: false,
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          line: 2,
+          data: {
+            type: 'Variable',
+            name: 'unused_foo',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+          line: 3,
+          data: {
+            type: 'Variable',
+            name: '_unused_foo',
+            processedName: 'unused_foo',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          line: 4,
+          data: {
+            type: 'Function',
+            name: 'foo_bar',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 5,
+          data: {
+            type: 'Interface',
+            name: 'IFoo',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
+          },
+        },
+        {
+          messageId: 'satisfyCustom',
+          line: 6,
+          data: {
+            type: 'Class',
+            name: 'IBar',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
           },
         },
       ],

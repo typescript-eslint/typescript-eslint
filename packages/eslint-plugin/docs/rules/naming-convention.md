@@ -1,7 +1,7 @@
 # Enforces naming conventions for everything across a codebase (`naming-convention`)
 
 Enforcing naming conventions helps keep the codebase consistent, and reduces overhead when thinking about how to name a variable.
-Additionally, a well designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
+Additionally, a well-designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
 
 There are many different rules that have existed over time, but they have had the problem of not having enough granularity, meaning it was hard to have a well defined style guide, and most of the time you needed 3 or more rules at once to enforce different conventions, hoping they didn't conflict.
 
@@ -39,7 +39,7 @@ type Options = {
   suffix?: string[];
 
   // selector options
-  selector: Selector;
+  selector: Selector | Selector[];
   filter?:
     | string
     | {
@@ -155,6 +155,8 @@ If these are provided, the identifier must start with one of the provided values
 ### Selector Options
 
 - `selector` (see "Allowed Selectors, Modifiers and Types" below).
+  - Accepts one or array of selectors to define an option block that applies to one or multiple selectors.
+  - For example, if you provide `{ selector: ['variable', 'function'] }`, then it will apply the same option to variable and function nodes.
 - `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
@@ -356,6 +358,23 @@ This allows you to emulate the old `interface-name-prefix` rule.
         "regex": "^I[A-Z]",
         "match": false
       }
+    }
+  ]
+}
+```
+
+### Enforce that variable and function names are in camelCase
+
+This allows you to lint multiple type with same pattern.
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": ["variable", "function"],
+      "format": ["camelCase"],
+      "leadingUnderscore": "allow"
     }
   ]
 }
