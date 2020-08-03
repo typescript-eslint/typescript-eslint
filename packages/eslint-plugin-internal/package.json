@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "3.7.1",
+  "version": "3.8.0",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "3.7.1",
+    "@typescript-eslint/experimental-utils": "3.8.0",
     "prettier": "*"
   }
 }

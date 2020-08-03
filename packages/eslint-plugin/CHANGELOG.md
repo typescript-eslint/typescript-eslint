@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.1...v3.8.0) (2020-08-03)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-implied-eval] don't report when `Function` is imported ([#2348](https://github.com/typescript-eslint/typescript-eslint/issues/2348)) ([fa169e7](https://github.com/typescript-eslint/typescript-eslint/commit/fa169e79661821f0e0e64a56d6db9da42c3c8654))
+* **eslint-plugin:** [no-unsafe-assignment] fix typo in message ([#2347](https://github.com/typescript-eslint/typescript-eslint/issues/2347)) ([2027bb1](https://github.com/typescript-eslint/typescript-eslint/commit/2027bb11689b76c297f93ba8a918b35fe68e5b9d))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] allow specifying an array of selectors ([#2335](https://github.com/typescript-eslint/typescript-eslint/issues/2335)) ([3ef6bd5](https://github.com/typescript-eslint/typescript-eslint/commit/3ef6bd5cadc225e42ef1330d15919a39f53f2a2b))
+* **eslint-plugin:** add `prefer-enum-initializers` rule ([#2326](https://github.com/typescript-eslint/typescript-eslint/issues/2326)) ([4f38ea3](https://github.com/typescript-eslint/typescript-eslint/commit/4f38ea39c97289db11501d6368d01db8c5787257))
+
+
+
+
+
 ## [3.7.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.0...v3.7.1) (2020-07-27)
 
 
