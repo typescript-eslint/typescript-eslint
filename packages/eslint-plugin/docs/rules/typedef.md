@@ -16,29 +16,43 @@ class ContainsText {
 }
 ```
 
-> Note: requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
-> TypeScript is often better at inferring types than easily written type annotations would allow.
-> Instead of enabling `typedef`, it is generally recommended to use the `--noImplicitAny` and/or `--strictPropertyInitialization` compiler options to enforce type annotations only when useful.
+**_Note:_** requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
+TypeScript is often better at inferring types than easily written type annotations would allow.
+
+**Instead of enabling `typedef`, it is generally recommended to use the `--noImplicitAny` and `--strictPropertyInitialization` compiler options to enforce type annotations only when useful.**
 
 ## Rule Details
 
 This rule can enforce type annotations in locations regardless of whether they're required.
 This is typically used to maintain consistency for element types that sometimes require them.
 
-> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`.
+> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
 
 ## Options
 
-This rule has an object option that may receive any of the following as booleans:
+```ts
+type Options = {
+  arrayDestructuring?: boolean;
+  arrowParameter?: boolean;
+  memberVariableDeclaration?: boolean;
+  objectDestructuring?: boolean;
+  parameter?: boolean;
+  propertyDeclaration?: boolean;
+  variableDeclaration?: boolean;
+  variableDeclarationIgnoreFunction?: boolean;
+};
 
-- `"arrayDestructuring"`
-- `"arrowParameter"`: `true` by default
-- `"memberVariableDeclaration"`: `true` by default
-- `"objectDestructuring"`
-- `"parameter"`: `true` by default
-- `"propertyDeclaration"`: `true` by default
-- `"variableDeclaration"`,
-- `"variableDeclarationIgnoreFunction"`
+const defaultOptions: Options = {
+  arrayDestructuring: false,
+  arrowParameter: false,
+  memberVariableDeclaration: false,
+  objectDestructuring: false,
+  parameter: false,
+  propertyDeclaration: false,
+  variableDeclaration: false,
+  variableDeclarationIgnoreFunction: false,
+};
+```
 
 For example, with the following configuration:
 
@@ -48,7 +62,7 @@ For example, with the following configuration:
     "@typescript-eslint/typedef": [
       "error",
       {
-        "arrowParameter": false,
+        "arrowParameter": true,
         "variableDeclaration": true
       }
     ]
@@ -56,9 +70,8 @@ For example, with the following configuration:
 }
 ```
 
-- Type annotations on arrow function parameters are not required
+- Type annotations on arrow function parameters are required
 - Type annotations on variables are required
-- Options otherwise adhere to the defaults
 
 ### `arrayDestructuring`
 
