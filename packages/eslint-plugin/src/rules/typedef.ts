@@ -50,10 +50,14 @@ export default util.createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
-      [OptionKeys.ArrowParameter]: true,
-      [OptionKeys.MemberVariableDeclaration]: true,
-      [OptionKeys.Parameter]: true,
-      [OptionKeys.PropertyDeclaration]: true,
+      [OptionKeys.ArrayDestructuring]: false,
+      [OptionKeys.ArrowParameter]: false,
+      [OptionKeys.MemberVariableDeclaration]: false,
+      [OptionKeys.ObjectDestructuring]: false,
+      [OptionKeys.Parameter]: false,
+      [OptionKeys.PropertyDeclaration]: false,
+      [OptionKeys.VariableDeclaration]: false,
+      [OptionKeys.VariableDeclarationIgnoreFunction]: false,
     },
   ],
   create(context, [options]) {
