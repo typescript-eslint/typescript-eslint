@@ -428,6 +428,33 @@ ruleTester.run('return-await', rule, {
       options: ['in-try-catch'],
       code: `
         async function test() {
+          try {
+            throw 'foo';
+          } catch (e) {
+            return Promise.resolve(1);
+          }
+        }
+      `,
+      output: `
+        async function test() {
+          try {
+            throw 'foo';
+          } catch (e) {
+            return await Promise.resolve(1);
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['in-try-catch'],
+      code: `
+        async function test() {
           return await Promise.resolve(1);
         }
       `,
