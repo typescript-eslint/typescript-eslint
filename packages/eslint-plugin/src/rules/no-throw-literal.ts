@@ -66,7 +66,8 @@ export default util.createRule({
         case AST_NODE_TYPES.Identifier:
         case AST_NODE_TYPES.CallExpression:
         case AST_NODE_TYPES.NewExpression:
-        case AST_NODE_TYPES.MemberExpression: {
+        case AST_NODE_TYPES.MemberExpression:
+        case AST_NODE_TYPES.TSAsExpression: {
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
           return checker.getTypeAtLocation(tsNode);
         }
