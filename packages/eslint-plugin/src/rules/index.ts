@@ -10,6 +10,7 @@ import commaSpacing from './comma-spacing';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
+import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
 import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
@@ -115,6 +116,7 @@ export default {
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
+  'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
   'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
