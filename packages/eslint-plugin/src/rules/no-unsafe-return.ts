@@ -82,7 +82,8 @@ export default util.createRule({
       }
 
       if (anyType !== util.AnyType.Safe) {
-        // Handle cases when the return type of the function is either unknown or unknown[].
+        // Allow cases when the declared return type of the function is either unknown or unknown[]
+        // and the function is returning any or any[].
         for (const signature of functionType.getCallSignatures()) {
           const functionReturnType = signature.getReturnType();
           if (
@@ -99,6 +100,7 @@ export default util.createRule({
           }
         }
 
+        // If the function return type was not unknown/unknown[], mark usage as unsafeReturn.
         return context.report({
           node: reportingNode,
           messageId: 'unsafeReturn',
