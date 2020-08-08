@@ -431,6 +431,13 @@ function foo(cb) {
       `,
       options: [{ allow: ['cb'] }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2360
+    `
+enum Direction {
+  left = 'left',
+  right = 'right',
+}
+    `,
   ],
   invalid: [
     {
