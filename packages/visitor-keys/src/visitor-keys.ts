@@ -1,17 +1,28 @@
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 interface VisitorKeys {
   readonly [type: string]: readonly string[] | undefined;
 }
 
-const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith({
-  // Additional estree nodes.
-  Import: [],
+type GetNodeTypeKeys<T extends AST_NODE_TYPES> = Exclude<
+  keyof Extract<TSESTree.Node, { type: T }>,
+  'type' | 'loc' | 'range' | 'parent'
+>;
+
+// strictly type the arrays of keys provided to make sure we keep this config in sync with the type defs
+type AdditionalKeys = {
+  readonly [T in AST_NODE_TYPES]?: readonly GetNodeTypeKeys<T>[];
+};
+
+const additionalKeys: AdditionalKeys = {
   // ES2020
   ImportExpression: ['source'],
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
+  AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
+  CallExpression: ['callee', 'typeParameters', 'arguments'],
   ClassDeclaration: [
     'decorators',
     'id',
@@ -30,15 +41,14 @@ const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith({
     'implements',
     'body',
   ],
-  TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
   MethodDefinition: ['decorators', 'key', 'value'],
+  NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
-  NewExpression: ['callee', 'typeParameters', 'arguments'],
-  CallExpression: ['callee', 'typeParameters', 'arguments'],
+  TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
   // JSX
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
   JSXClosingFragment: [],
@@ -126,6 +136,8 @@ const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith({
   TSUndefinedKeyword: [],
   TSUnknownKeyword: [],
   TSVoidKeyword: [],
-});
+} as const;
+
+const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
 
 export { visitorKeys, VisitorKeys };
