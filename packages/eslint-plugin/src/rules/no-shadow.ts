@@ -117,6 +117,25 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if a variable of the class name in the class scope of ClassDeclaration.
+     *
+     * ClassDeclaration creates two variables of its name into its outer scope and its class scope.
+     * So we should ignore the variable in the class scope.
+     * @param variable The variable to check.
+     * @returns Whether or not the variable of the class name in the class scope of ClassDeclaration.
+     */
+    function isDuplicatedEnumNameVariable(
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      const block = variable.scope.block;
+
+      return (
+        block.type === AST_NODE_TYPES.TSEnumDeclaration &&
+        block.id === variable.identifiers[0]
+      );
+    }
+
+    /**
      * Checks if a variable is inside the initializer of scopeVar.
      *
      * To avoid reporting at declarations such as `var a = function a() {};`.
@@ -230,6 +249,11 @@ export default util.createRule<Options, MessageIds>({
 
         // ignore variables of a class name in the class scope of ClassDeclaration
         if (isDuplicatedClassNameVariable(variable)) {
+          continue;
+        }
+
+        // ignore variables of a class name in the class scope of ClassDeclaration
+        if (isDuplicatedEnumNameVariable(variable)) {
           continue;
         }
 
