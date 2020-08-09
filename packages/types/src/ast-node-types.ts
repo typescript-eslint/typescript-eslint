@@ -32,7 +32,6 @@ enum AST_NODE_TYPES {
   FunctionExpression = 'FunctionExpression',
   Identifier = 'Identifier',
   IfStatement = 'IfStatement',
-  Import = 'Import',
   ImportDeclaration = 'ImportDeclaration',
   ImportDefaultSpecifier = 'ImportDefaultSpecifier',
   ImportExpression = 'ImportExpression',
@@ -95,42 +94,46 @@ enum AST_NODE_TYPES {
   TSArrayType = 'TSArrayType',
   TSAsExpression = 'TSAsExpression',
   TSAsyncKeyword = 'TSAsyncKeyword',
-  TSBooleanKeyword = 'TSBooleanKeyword',
   TSBigIntKeyword = 'TSBigIntKeyword',
-  TSConditionalType = 'TSConditionalType',
-  TSConstructorType = 'TSConstructorType',
+  TSBooleanKeyword = 'TSBooleanKeyword',
   TSCallSignatureDeclaration = 'TSCallSignatureDeclaration',
   TSClassImplements = 'TSClassImplements',
+  TSConditionalType = 'TSConditionalType',
+  TSConstructorType = 'TSConstructorType',
   TSConstructSignatureDeclaration = 'TSConstructSignatureDeclaration',
-  TSDeclareKeyword = 'TSDeclareKeyword',
   TSDeclareFunction = 'TSDeclareFunction',
+  TSDeclareKeyword = 'TSDeclareKeyword',
   TSEmptyBodyFunctionExpression = 'TSEmptyBodyFunctionExpression',
   TSEnumDeclaration = 'TSEnumDeclaration',
   TSEnumMember = 'TSEnumMember',
   TSExportAssignment = 'TSExportAssignment',
   TSExportKeyword = 'TSExportKeyword',
   TSExternalModuleReference = 'TSExternalModuleReference',
+  TSFunctionType = 'TSFunctionType',
+  TSImportEqualsDeclaration = 'TSImportEqualsDeclaration',
   TSImportType = 'TSImportType',
-  TSInferType = 'TSInferType',
-  TSLiteralType = 'TSLiteralType',
   TSIndexedAccessType = 'TSIndexedAccessType',
   TSIndexSignature = 'TSIndexSignature',
+  TSInferType = 'TSInferType',
   TSInterfaceBody = 'TSInterfaceBody',
   TSInterfaceDeclaration = 'TSInterfaceDeclaration',
   TSInterfaceHeritage = 'TSInterfaceHeritage',
-  TSImportEqualsDeclaration = 'TSImportEqualsDeclaration',
-  TSFunctionType = 'TSFunctionType',
+  TSIntersectionType = 'TSIntersectionType',
+  TSLiteralType = 'TSLiteralType',
+  TSMappedType = 'TSMappedType',
   TSMethodSignature = 'TSMethodSignature',
   TSModuleBlock = 'TSModuleBlock',
   TSModuleDeclaration = 'TSModuleDeclaration',
+  TSNamedTupleMember = 'TSNamedTupleMember',
   TSNamespaceExportDeclaration = 'TSNamespaceExportDeclaration',
-  TSNonNullExpression = 'TSNonNullExpression',
   TSNeverKeyword = 'TSNeverKeyword',
+  TSNonNullExpression = 'TSNonNullExpression',
   TSNullKeyword = 'TSNullKeyword',
   TSNumberKeyword = 'TSNumberKeyword',
-  TSMappedType = 'TSMappedType',
   TSObjectKeyword = 'TSObjectKeyword',
+  TSOptionalType = 'TSOptionalType',
   TSParameterProperty = 'TSParameterProperty',
+  TSParenthesizedType = 'TSParenthesizedType',
   TSPrivateKeyword = 'TSPrivateKeyword',
   TSPropertySignature = 'TSPropertySignature',
   TSProtectedKeyword = 'TSProtectedKeyword',
@@ -142,8 +145,9 @@ enum AST_NODE_TYPES {
   TSStringKeyword = 'TSStringKeyword',
   TSSymbolKeyword = 'TSSymbolKeyword',
   TSThisType = 'TSThisType',
-  TSTypeAnnotation = 'TSTypeAnnotation',
+  TSTupleType = 'TSTupleType',
   TSTypeAliasDeclaration = 'TSTypeAliasDeclaration',
+  TSTypeAnnotation = 'TSTypeAnnotation',
   TSTypeAssertion = 'TSTypeAssertion',
   TSTypeLiteral = 'TSTypeLiteral',
   TSTypeOperator = 'TSTypeOperator',
@@ -151,16 +155,27 @@ enum AST_NODE_TYPES {
   TSTypeParameterDeclaration = 'TSTypeParameterDeclaration',
   TSTypeParameterInstantiation = 'TSTypeParameterInstantiation',
   TSTypePredicate = 'TSTypePredicate',
-  TSTypeReference = 'TSTypeReference',
   TSTypeQuery = 'TSTypeQuery',
-  TSIntersectionType = 'TSIntersectionType',
-  TSTupleType = 'TSTupleType',
-  TSOptionalType = 'TSOptionalType',
-  TSParenthesizedType = 'TSParenthesizedType',
-  TSUnionType = 'TSUnionType',
+  TSTypeReference = 'TSTypeReference',
   TSUndefinedKeyword = 'TSUndefinedKeyword',
+  TSUnionType = 'TSUnionType',
   TSUnknownKeyword = 'TSUnknownKeyword',
   TSVoidKeyword = 'TSVoidKeyword',
 }
 
 export { AST_NODE_TYPES };
+
+// Below is a special type-only test which ensures that we don't accidentally leave unused keys in this enum
+// eslint-disable-next-line import/first -- purposely down here to colocate it with this hack of a test
+import type { Node } from './ts-estree';
+
+type GetKeys<T extends AST_NODE_TYPES> = keyof Extract<Node, { type: T }>;
+type AllKeys = {
+  readonly [T in AST_NODE_TYPES]: GetKeys<T>;
+};
+type TakesString<T extends Record<string, string>> = T;
+// @ts-expect-error: purposely unused
+type _Test =
+  // forcing the test onto a new line so it isn't covered by the expect error
+  // If there are any enum members that don't have a corresponding TSESTree.Node, then this line will error with "Type 'string | number | symbol' is not assignable to type 'string'."
+  void | TakesString<AllKeys>;

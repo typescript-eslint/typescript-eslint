@@ -20934,7 +20934,7 @@ Object {
               },
               "node": Object {
                 "range": Array [
-                  7,
+                  12,
                   15,
                 ],
                 "type": "ImportDefaultSpecifier",
@@ -21139,7 +21139,7 @@ Object {
               },
               "node": Object {
                 "range": Array [
-                  7,
+                  12,
                   15,
                 ],
                 "type": "ImportDefaultSpecifier",
@@ -53384,6 +53384,359 @@ Object {
   "variableMap": Object {},
   "variableScope": Object {
     "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/types/tuple-named.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      42,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          42,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "x": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "x",
+                "range": Array [
+                  4,
+                  40,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  40,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  41,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "x",
+              "range": Array [
+                4,
+                40,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "x",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/types/tuple-named-optional.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      54,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          54,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "x": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "x",
+                "range": Array [
+                  4,
+                  53,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  53,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  53,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "x",
+              "range": Array [
+                4,
+                53,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "x",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/types/tuple-named-rest.src 1`] = `
+Object {
+  "$id": 2,
+  "block": Object {
+    "range": Array [
+      0,
+      35,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 1,
+      "block": Object {
+        "range": Array [
+          0,
+          35,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 2,
+      },
+      "variableMap": Object {
+        "x": Object {
+          "$ref": 0,
+        },
+      },
+      "variableScope": Object {
+        "$ref": 1,
+      },
+      "variables": Array [
+        Object {
+          "$id": 0,
+          "defs": Array [
+            Object {
+              "name": Object {
+                "name": "x",
+                "range": Array [
+                  4,
+                  34,
+                ],
+                "type": "Identifier",
+              },
+              "node": Object {
+                "range": Array [
+                  4,
+                  34,
+                ],
+                "type": "VariableDeclarator",
+              },
+              "parent": Object {
+                "range": Array [
+                  0,
+                  34,
+                ],
+                "type": "VariableDeclaration",
+              },
+              "type": "Variable",
+            },
+          ],
+          "eslintUsed": undefined,
+          "identifiers": Array [
+            Object {
+              "name": "x",
+              "range": Array [
+                4,
+                34,
+              ],
+              "type": "Identifier",
+            },
+          ],
+          "name": "x",
+          "references": Array [],
+          "scope": Object {
+            "$ref": 1,
+          },
+        },
+      ],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 2,
+  },
+  "variables": Array [],
+}
+`;
+
+exports[`typescript fixtures/types/tuple-named-type.src 1`] = `
+Object {
+  "$id": 1,
+  "block": Object {
+    "range": Array [
+      0,
+      35,
+    ],
+    "type": "Program",
+  },
+  "childScopes": Array [
+    Object {
+      "$id": 0,
+      "block": Object {
+        "range": Array [
+          0,
+          35,
+        ],
+        "type": "Program",
+      },
+      "childScopes": Array [],
+      "functionExpressionScope": false,
+      "isStrict": true,
+      "references": Array [],
+      "throughReferences": Array [],
+      "type": "module",
+      "upperScope": Object {
+        "$ref": 1,
+      },
+      "variableMap": Object {},
+      "variableScope": Object {
+        "$ref": 0,
+      },
+      "variables": Array [],
+    },
+  ],
+  "functionExpressionScope": false,
+  "isStrict": false,
+  "references": Array [],
+  "throughReferences": Array [],
+  "type": "global",
+  "upperScope": null,
+  "variableMap": Object {},
+  "variableScope": Object {
+    "$ref": 1,
   },
   "variables": Array [],
 }

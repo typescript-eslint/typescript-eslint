@@ -42,6 +42,7 @@ export type TSNode =
   | ts.TypeQueryNode
   | ts.TypeLiteralNode
   | ts.ArrayTypeNode
+  | ts.NamedTupleMember
   | ts.TupleTypeNode
   | ts.OptionalTypeNode
   | ts.RestTypeNode

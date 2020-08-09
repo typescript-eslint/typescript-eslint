@@ -1603,12 +1603,14 @@ export class Converter {
           imported: this.convertChild(node.propertyName ?? node.name),
         });
 
-      case SyntaxKind.ImportClause:
+      case SyntaxKind.ImportClause: {
+        const local = this.convertChild(node.name);
         return this.createNode<TSESTree.ImportDefaultSpecifier>(node, {
           type: AST_NODE_TYPES.ImportDefaultSpecifier,
-          local: this.convertChild(node.name),
-          range: [node.getStart(this.ast), node.name!.end],
+          local,
+          range: local.range,
         });
+      }
 
       case SyntaxKind.ExportDeclaration:
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
@@ -2621,32 +2623,10 @@ export class Converter {
       }
 
       // TypeScript specific types
-      case SyntaxKind.OptionalType: {
-        return this.createNode<TSESTree.TSOptionalType>(node, {
-          type: AST_NODE_TYPES.TSOptionalType,
-          typeAnnotation: this.convertType(node.type),
-        });
-      }
       case SyntaxKind.ParenthesizedType: {
         return this.createNode<TSESTree.TSParenthesizedType>(node, {
           type: AST_NODE_TYPES.TSParenthesizedType,
           typeAnnotation: this.convertType(node.type),
-        });
-      }
-      case SyntaxKind.TupleType: {
-        // In TS 4.0, the `elementTypes` property was changed to `elements`.
-        // To support both at compile time, we cast to access the newer version
-        // if the former does not exist.
-        const elementTypes =
-          'elementTypes' in node
-            ? (node as any).elementTypes.map((el: ts.Node) =>
-                this.convertType(el),
-              )
-            : node.elements.map((el: ts.Node) => this.convertType(el));
-
-        return this.createNode<TSESTree.TSTupleType>(node, {
-          type: AST_NODE_TYPES.TSTupleType,
-          elementTypes,
         });
       }
       case SyntaxKind.UnionType: {
@@ -2659,12 +2639,6 @@ export class Converter {
         return this.createNode<TSESTree.TSIntersectionType>(node, {
           type: AST_NODE_TYPES.TSIntersectionType,
           types: node.types.map(el => this.convertType(el)),
-        });
-      }
-      case SyntaxKind.RestType: {
-        return this.createNode<TSESTree.TSRestType>(node, {
-          type: AST_NODE_TYPES.TSRestType,
-          typeAnnotation: this.convertType(node.type),
         });
       }
       case SyntaxKind.AsExpression: {
@@ -2732,6 +2706,57 @@ export class Converter {
           type: AST_NODE_TYPES.TSAbstractKeyword,
         });
       }
+
+      // Tuple
+      case SyntaxKind.TupleType: {
+        // In TS 4.0, the `elementTypes` property was changed to `elements`.
+        // To support both at compile time, we cast to access the newer version
+        // if the former does not exist.
+        const elementTypes =
+          'elementTypes' in node
+            ? (node as any).elementTypes.map((el: ts.Node) =>
+                this.convertType(el),
+              )
+            : node.elements.map((el: ts.Node) => this.convertType(el));
+
+        return this.createNode<TSESTree.TSTupleType>(node, {
+          type: AST_NODE_TYPES.TSTupleType,
+          elementTypes,
+        });
+      }
+      case SyntaxKind.NamedTupleMember: {
+        const member = this.createNode<TSESTree.TSNamedTupleMember>(node, {
+          type: AST_NODE_TYPES.TSNamedTupleMember,
+          elementType: this.convertType(node.type, node),
+          label: this.convertChild(node.name, node),
+          optional: node.questionToken != null,
+        });
+
+        if (node.dotDotDotToken) {
+          // adjust the start to account for the "..."
+          member.range[0] = member.label.range[0];
+          member.loc.start = member.label.loc.start;
+          return this.createNode<TSESTree.TSRestType>(node, {
+            type: AST_NODE_TYPES.TSRestType,
+            typeAnnotation: member,
+          });
+        }
+
+        return member;
+      }
+      case SyntaxKind.OptionalType: {
+        return this.createNode<TSESTree.TSOptionalType>(node, {
+          type: AST_NODE_TYPES.TSOptionalType,
+          typeAnnotation: this.convertType(node.type),
+        });
+      }
+      case SyntaxKind.RestType: {
+        return this.createNode<TSESTree.TSRestType>(node, {
+          type: AST_NODE_TYPES.TSRestType,
+          typeAnnotation: this.convertType(node.type),
+        });
+      }
+
       default:
         return this.deeplyCopy(node);
     }
