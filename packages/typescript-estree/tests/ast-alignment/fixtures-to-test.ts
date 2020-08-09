@@ -400,30 +400,32 @@ tester.addFixturePatternConfig('typescript/basics', {
     'abstract-class-with-declare-properties',
     'class-with-declare-properties',
     /**
-     * TS 3.8 import/export type
-     * babel coming soon https://github.com/babel/babel/pull/11171
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * This is intentional; we don't error on semantic problems for these cases
      */
-    'export-type-as',
-    'export-type-from-as',
-    'export-type-from',
+    'catch-clause-with-invalid-annotation',
     'export-type-star-from',
-    'export-type',
-    'import-type-default',
     'import-type-error',
-    'import-type-named-as',
-    'import-type-named',
-    'import-type-star-as-ns',
     /**
-     * TS 3.8 export * as namespace
-     * babel uses a representation that does not match the ESTree spec: https://github.com/estree/estree/pull/205
-     */
-    'export-star-as-ns-from',
-    /**
-     * TS 4.0 catch clause with type annotation
-     * Not supported in babel yet
+     * Babel reports incorrect location
+     * https://github.com/babel/babel/issues/11939
      */
     'catch-clause-with-annotation',
-    'catch-clause-with-invalid-annotation',
+
+    /**
+     * Optional chaining
+     * Babel has updated to ESTree's representation, and we haven't yet
+     * TODO: remove this with the v4 release
+     */
+    'optional-chain-call-with-non-null-assertion',
+    'optional-chain-call-with-parens',
+    'optional-chain-call',
+    'optional-chain-element-access-with-non-null-assertion',
+    'optional-chain-element-access-with-parens',
+    'optional-chain-element-access',
+    'optional-chain-with-non-null-assertion',
+    'optional-chain-with-parens',
+    'optional-chain',
   ],
   ignoreSourceType: [
     /**
@@ -439,6 +441,15 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-alias-declaration-export-function-type',
     'type-alias-declaration-export-object-type',
     'type-alias-declaration-export',
+    // babel treats type import/export as not a module
+    'export-type',
+    'export-type-as',
+    'export-type-from',
+    'export-type-from-as',
+    'import-type-default',
+    'import-type-named',
+    'import-type-named-as',
+    'import-type-star-as-ns',
   ],
 });
 
@@ -468,6 +479,14 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Optional chaining
+     * Babel has updated to ESTree's representation, and we haven't yet
+     * TODO: remove this with the v4 release
+     */
+    'optional-call-expression-type-arguments',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {

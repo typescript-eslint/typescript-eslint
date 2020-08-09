@@ -68,7 +68,6 @@ export interface EstreeToTsNodeTypes {
     | ts.ConstructorDeclaration
     | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>;
   [AST_NODE_TYPES.IfStatement]: ts.IfStatement;
-  [AST_NODE_TYPES.Import]: ts.ImportExpression;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
   [AST_NODE_TYPES.ImportExpression]: ts.CallExpression;
@@ -186,6 +185,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSMethodSignature]: ts.MethodSignature;
   [AST_NODE_TYPES.TSModuleBlock]: ts.ModuleBlock;
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
+  [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;
   [AST_NODE_TYPES.TSNamespaceExportDeclaration]: ts.NamespaceExportDeclaration;
   [AST_NODE_TYPES.TSNonNullExpression]: ts.NonNullExpression;
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
@@ -193,7 +193,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSParenthesizedType]: ts.ParenthesizedTypeNode;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
   [AST_NODE_TYPES.TSQualifiedName]: ts.QualifiedName;
-  [AST_NODE_TYPES.TSRestType]: ts.RestTypeNode;
+  [AST_NODE_TYPES.TSRestType]:
+    | ts.RestTypeNode
+    // for consistency and following babel's choices, a named tuple member with a rest gets converted to a TSRestType
+    | ts.NamedTupleMember;
   [AST_NODE_TYPES.TSThisType]: ts.ThisTypeNode;
   [AST_NODE_TYPES.TSTupleType]: ts.TupleTypeNode;
   [AST_NODE_TYPES.TSTypeAliasDeclaration]: ts.TypeAliasDeclaration;
@@ -275,5 +278,6 @@ export interface EstreeToTsNodeTypes {
  */
 export type TSESTreeToTSNode<T extends TSESTree.Node = TSESTree.Node> = Extract<
   TSNode | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>,
+  // if this errors, it means that one of the AST_NODE_TYPES is not defined in the above interface
   EstreeToTsNodeTypes[T['type']]
 >;
