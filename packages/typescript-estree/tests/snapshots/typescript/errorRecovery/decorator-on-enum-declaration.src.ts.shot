@@ -4,43 +4,6 @@ exports[`typescript errorRecovery decorator-on-enum-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "decorators": Array [
-        Object {
-          "expression": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 4,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 1,
-                "line": 1,
-              },
-            },
-            "name": "dec",
-            "range": Array [
-              1,
-              4,
-            ],
-            "type": "Identifier",
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 4,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            0,
-            4,
-          ],
-          "type": "Decorator",
-        },
-      ],
       "id": Object {
         "loc": Object {
           "end": Object {

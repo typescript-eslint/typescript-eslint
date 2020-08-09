@@ -749,6 +749,16 @@ export interface Event<T> {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2369
+    `
+export default function (@Optional() value = []) {
+  return value;
+}
+
+function Optional() {
+  return () => {};
+}
+    `,
   ],
 
   invalid: [
