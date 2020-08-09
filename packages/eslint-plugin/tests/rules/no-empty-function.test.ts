@@ -65,13 +65,6 @@ function foo() {
     },
     {
       code: `
-@decorator()
-function foo() {}
-      `,
-      options: [{ allow: ['decoratedFunctions'] }],
-    },
-    {
-      code: `
 class Foo {
   @decorator()
   foo() {}

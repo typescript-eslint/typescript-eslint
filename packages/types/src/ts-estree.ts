@@ -948,7 +948,6 @@ export interface ForStatement extends BaseNode {
 export interface FunctionDeclaration extends FunctionDeclarationBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
   body: BlockStatement;
-  decorators?: Decorator[];
 }
 
 export interface FunctionExpression extends FunctionDeclarationBase {
@@ -1343,7 +1342,6 @@ export interface TSEnumDeclaration extends BaseNode {
   const?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];
-  decorators?: Decorator[];
 }
 
 /**
@@ -1428,7 +1426,6 @@ export interface TSInterfaceDeclaration extends BaseNode {
   typeParameters?: TSTypeParameterDeclaration;
   extends?: TSInterfaceHeritage[];
   implements?: TSInterfaceHeritage[];
-  decorators?: Decorator[];
   abstract?: boolean;
   declare?: boolean;
 }

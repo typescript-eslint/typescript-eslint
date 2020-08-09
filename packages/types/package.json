@@ -30,6 +30,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
