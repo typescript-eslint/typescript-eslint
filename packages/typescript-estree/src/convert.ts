@@ -839,17 +839,6 @@ export class Converter {
           );
         }
 
-        /**
-         * Semantically, decorators are not allowed on function declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          (result as any).decorators = node.decorators.map(el =>
-            this.convertChild(el),
-          );
-        }
-
         // check for exports
         return this.fixExports(node, result);
       }
@@ -2516,14 +2505,6 @@ export class Converter {
           }
         }
 
-        /**
-         * Semantically, decorators are not allowed on interface declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
-        }
         if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
           result.abstract = true;
         }
@@ -2575,14 +2556,6 @@ export class Converter {
         });
         // apply modifiers first...
         this.applyModifiersToResult(result, node.modifiers);
-        /**
-         * Semantically, decorators are not allowed on enum declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
-        }
         // ...then check for exports
         return this.fixExports(node, result);
       }

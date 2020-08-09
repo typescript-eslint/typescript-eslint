@@ -22,6 +22,7 @@ const additionalKeys: AdditionalKeys = {
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
+  AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
   CallExpression: ['callee', 'typeParameters', 'arguments'],
   ClassDeclaration: [
     'decorators',
