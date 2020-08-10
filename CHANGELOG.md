@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.8.0...v3.9.0) (2020-08-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-throw-literal] support type assertions ([#2354](https://github.com/typescript-eslint/typescript-eslint/issues/2354)) ([470174a](https://github.com/typescript-eslint/typescript-eslint/commit/470174ad51fdb12d82129a896559075513f6c912))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-assignment/return] allow assigning any => unknown ([#2371](https://github.com/typescript-eslint/typescript-eslint/issues/2371)) ([e7528e6](https://github.com/typescript-eslint/typescript-eslint/commit/e7528e686f5fe5cce8504fc15d3cd06b8733712e))
+* **typescript-estree:** support TSv4 labelled tuple members ([#2378](https://github.com/typescript-eslint/typescript-eslint/issues/2378)) ([00d84ff](https://github.com/typescript-eslint/typescript-eslint/commit/00d84ffbcbe9d0ec98bdb2f2ce59959a27ce4dbe))
+
+
+
+
+
 # [3.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.1...v3.8.0) (2020-08-03)
 
 
