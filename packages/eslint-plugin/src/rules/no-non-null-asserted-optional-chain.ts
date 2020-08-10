@@ -7,8 +7,6 @@ import * as ts from 'typescript';
 import * as semver from 'semver';
 import * as util from '../util';
 
-type MessageIds = 'noNonNullOptionalChain' | 'suggestRemovingNonNull';
-
 const is3dot9 = semver.satisfies(
   ts.version,
   `>= 3.9.0 || >= 3.9.1-rc || >= 3.9.0-beta`,
@@ -17,7 +15,7 @@ const is3dot9 = semver.satisfies(
   },
 );
 
-export default util.createRule<[], MessageIds>({
+export default util.createRule({
   name: 'no-non-null-asserted-optional-chain',
   meta: {
     type: 'problem',
@@ -37,64 +35,22 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    // TS3.9 made a breaking change to how non-null works with optional chains.
+    // Pre-3.9,  `x?.y!.z` means `(x?.y).z` - i.e. it essentially scrubbed the optionality from the chain
+    // Post-3.9, `x?.y!.z` means `x?.y!.z`  - i.e. it just asserts that the property `y` is non-null, not the result of `x?.y`.
+    // This means that for > 3.9, x?.y!.z is valid!
+    //
+    // NOTE: these cases are still invalid for 3.9:
+    // - x?.y.z!
+    // - (x?.y)!.z
 
-    function isValidFor3dot9(node: TSESTree.ChainExpression): boolean {
-      if (!is3dot9) {
-        return false;
-      }
-
-      // TS3.9 made a breaking change to how non-null works with optional chains.
-      // Pre-3.9,  `x?.y!.z` means `(x?.y).z` - i.e. it essentially scrubbed the optionality from the chain
-      // Post-3.9, `x?.y!.z` means `x?.y!.z`  - i.e. it just asserts that the property `y` is non-null, not the result of `x?.y`.
-      // This means that for > 3.9, x?.y!.z is valid!
-      // NOTE: these cases are still invalid:
-      // - x?.y.z!
-      // - (x?.y)!.z
-
-      const parent = util.nullThrows(
-        node.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
-      const grandparent = util.nullThrows(
-        parent.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
-
-      if (
-        grandparent.type !== AST_NODE_TYPES.MemberExpression &&
-        grandparent.type !== AST_NODE_TYPES.CallExpression
-      ) {
-        return false;
-      }
-
-      const lastChildToken = util.nullThrows(
-        sourceCode.getLastToken(parent, util.isNotNonNullAssertionPunctuator),
-        util.NullThrowsReasons.MissingToken('last token', node.type),
-      );
-      if (util.isClosingParenToken(lastChildToken)) {
-        return false;
-      }
-
-      const tokenAfterNonNull = sourceCode.getTokenAfter(parent);
-      if (
-        tokenAfterNonNull != null &&
-        util.isClosingParenToken(tokenAfterNonNull)
-      ) {
-        return false;
-      }
-
-      return true;
-    }
-
-    return {
+    const baseSelectors = {
+      // non-nulling a wrapped chain will scrub all nulls introduced by the chain
+      // (x?.y)!
+      // (x?.())!
       'TSNonNullExpression > ChainExpression'(
         node: TSESTree.ChainExpression,
       ): void {
-        if (isValidFor3dot9(node)) {
-          return;
-        }
-
         // selector guarantees this assertion
         const parent = node.parent as TSESTree.TSNonNullExpression;
         context.report({
@@ -109,6 +65,84 @@ export default util.createRule<[], MessageIds>({
                   parent.range[1] - 1,
                   parent.range[1],
                 ]);
+              },
+            },
+          ],
+        });
+      },
+
+      // non-nulling at the end of a chain will scrub all nulls introduced by the chain
+      // x?.y!
+      // x?.()!
+      'ChainExpression > TSNonNullExpression'(
+        node: TSESTree.TSNonNullExpression,
+      ): void {
+        context.report({
+          node,
+          messageId: 'noNonNullOptionalChain',
+          // use a suggestion instead of a fixer, because this can obviously break type checks
+          suggest: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.removeRange([node.range[1] - 1, node.range[1]]);
+              },
+            },
+          ],
+        });
+      },
+    };
+
+    if (is3dot9) {
+      return baseSelectors;
+    }
+
+    return {
+      ...baseSelectors,
+      [[
+        // > :not(ChainExpression) because that case is handled by a previous selector
+        'MemberExpression > TSNonNullExpression.object > :not(ChainExpression)',
+        'CallExpression > TSNonNullExpression.callee > :not(ChainExpression)',
+      ].join(', ')](child: TSESTree.Node): void {
+        // selector guarantees this assertion
+        const node = child.parent as TSESTree.TSNonNullExpression;
+
+        let current = child;
+        while (current) {
+          switch (current.type) {
+            case AST_NODE_TYPES.MemberExpression:
+              if (current.optional) {
+                // found an optional chain! stop traversing
+                break;
+              }
+
+              current = current.object;
+              continue;
+
+            case AST_NODE_TYPES.CallExpression:
+              if (current.optional) {
+                // found an optional chain! stop traversing
+                break;
+              }
+
+              current = current.callee;
+              continue;
+
+            default:
+              // something that's not a ChainElement, which means this is not an optional chain we want to check
+              return;
+          }
+        }
+
+        context.report({
+          node,
+          messageId: 'noNonNullOptionalChain',
+          // use a suggestion instead of a fixer, because this can obviously break type checks
+          suggest: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              fix(fixer): TSESLint.RuleFix {
+                return fixer.removeRange([node.range[1] - 1, node.range[1]]);
               },
             },
           ],

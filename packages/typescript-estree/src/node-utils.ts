@@ -1,7 +1,6 @@
 import unescape from 'lodash/unescape';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
-import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -452,41 +451,18 @@ export function isChainExpression(
 /**
  * Returns true of the child of property access expression is an optional chain
  */
-export function isChildOptionalChain(
+export function isChildUnwrappableOptionalChain(
   node:
     | ts.PropertyAccessExpression
     | ts.ElementAccessExpression
-    | ts.CallExpression,
+    | ts.CallExpression
+    | ts.NonNullExpression,
   child: TSESTree.Node,
 ): boolean {
   if (
     isChainExpression(child) &&
     // (x?.y).z is semantically different, and as such .z is no longer optional
     node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
-  ) {
-    return true;
-  }
-
-  if (!typescriptVersionIsAtLeast['3.9']) {
-    return false;
-  }
-
-  // TS3.9 made a breaking change to how non-null works with optional chains.
-  // Pre-3.9,  `x?.y!.z` means `(x?.y).z` - i.e. it essentially scrubbed the optionality from the chain
-  // Post-3.9, `x?.y!.z` means `x?.y!.z`  - i.e. it just asserts that the property `y` is non-null, not the result of `x?.y`
-
-  if (
-    child.type !== AST_NODE_TYPES.TSNonNullExpression ||
-    !isChainExpression(child.expression)
-  ) {
-    return false;
-  }
-
-  if (
-    // make sure it's not (x.y)!.z
-    node.expression.kind === ts.SyntaxKind.NonNullExpression &&
-    (node.expression as ts.NonNullExpression).expression.kind !==
-      ts.SyntaxKind.ParenthesizedExpression
   ) {
     return true;
   }

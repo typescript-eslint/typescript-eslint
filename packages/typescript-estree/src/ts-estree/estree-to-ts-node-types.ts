@@ -23,7 +23,8 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ChainExpression]:
     | ts.CallExpression
     | ts.PropertyAccessExpression
-    | ts.ElementAccessExpression;
+    | ts.ElementAccessExpression
+    | ts.NonNullExpression;
   [AST_NODE_TYPES.ClassBody]: ts.ClassDeclaration | ts.ClassExpression;
   [AST_NODE_TYPES.ClassDeclaration]: ts.ClassDeclaration;
   [AST_NODE_TYPES.ClassExpression]: ts.ClassExpression;
