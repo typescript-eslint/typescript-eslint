@@ -445,9 +445,43 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
+    `let latencies: number[][] = [];
+
+function recordData(): void {
+    if (!latencies[0])
+        latencies[0] = [];
+    latencies[0].push(4);
+}
+
+recordData();`,
+    `let latencies: number[][] = [];
+
+function recordData(): void {
+  if (latencies[0])
+      latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();`,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
+    {
+      code: `
+const a=null;
+if(!a) {
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysTruthy')],
+    },
+    {
+      code: `
+const a=true;
+if(!a) {
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysFalsy')],
+    },
     {
       code: `
 const b1 = true;
