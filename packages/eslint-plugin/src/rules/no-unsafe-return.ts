@@ -58,16 +58,6 @@ export default util.createRule({
     ): void {
       const tsNode = esTreeNodeToTSNodeMap.get(returnNode);
       const anyType = util.isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
-      if (anyType !== util.AnyType.Safe) {
-        return context.report({
-          node: reportingNode,
-          messageId: 'unsafeReturn',
-          data: {
-            type: anyType === util.AnyType.Any ? 'any' : 'any[]',
-          },
-        });
-      }
-
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
@@ -89,6 +79,35 @@ export default util.createRule({
         : checker.getTypeAtLocation(functionTSNode);
       if (!functionType) {
         functionType = checker.getTypeAtLocation(functionTSNode);
+      }
+
+      if (anyType !== util.AnyType.Safe) {
+        // Allow cases when the declared return type of the function is either unknown or unknown[]
+        // and the function is returning any or any[].
+        for (const signature of functionType.getCallSignatures()) {
+          const functionReturnType = signature.getReturnType();
+          if (
+            anyType === util.AnyType.Any &&
+            util.isTypeUnknownType(functionReturnType)
+          ) {
+            return;
+          }
+          if (
+            anyType === util.AnyType.AnyArray &&
+            util.isTypeUnknownArrayType(functionReturnType, checker)
+          ) {
+            return;
+          }
+        }
+
+        // If the function return type was not unknown/unknown[], mark usage as unsafeReturn.
+        return context.report({
+          node: reportingNode,
+          messageId: 'unsafeReturn',
+          data: {
+            type: anyType === util.AnyType.Any ? 'any' : 'any[]',
+          },
+        });
       }
 
       for (const signature of functionType.getCallSignatures()) {

@@ -119,6 +119,15 @@ declare function Foo(props: Props): never;
       `,
       filename: 'react.tsx',
     },
+    `
+      const x: unknown = y as any;
+    `,
+    `
+      const x: unknown[] = y as any[];
+    `,
+    `
+      const x: Set<unknown> = y as Set<any>;
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({

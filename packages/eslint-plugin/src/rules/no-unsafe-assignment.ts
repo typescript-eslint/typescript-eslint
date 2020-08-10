@@ -238,6 +238,11 @@ export default util.createRule({
       );
 
       if (util.isTypeAnyType(senderType)) {
+        // handle cases when we assign any ==> unknown.
+        if (util.isTypeUnknownType(receiverType)) {
+          return false;
+        }
+
         context.report({
           node: reportingNode,
           messageId: 'anyAssignment',
