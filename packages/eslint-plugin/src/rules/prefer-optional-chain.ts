@@ -234,6 +234,12 @@ export default util.createRule({
       }
 
       if (node.type === AST_NODE_TYPES.ChainExpression) {
+        /* istanbul ignore if */ if (
+          node.expression.type === AST_NODE_TYPES.TSNonNullExpression
+        ) {
+          // this shouldn't happen
+          return '';
+        }
         return getText(node.expression);
       }
 
