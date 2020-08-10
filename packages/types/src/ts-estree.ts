@@ -308,7 +308,10 @@ export type Node =
 export type Accessibility = 'public' | 'protected' | 'private';
 export type BindingPattern = ArrayPattern | ObjectPattern;
 export type BindingName = BindingPattern | Identifier;
-export type ChainElement = CallExpression | MemberExpression;
+export type ChainElement =
+  | CallExpression
+  | MemberExpression
+  | TSNonNullExpression;
 export type ClassElement =
   | ClassProperty
   | MethodDefinition

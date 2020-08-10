@@ -14,7 +14,7 @@ import {
   getTextForTokenKind,
   getTSNodeAccessibility,
   hasModifier,
-  isChildOptionalChain,
+  isChildUnwrappableOptionalChain,
   isComma,
   isComputedProperty,
   isESTreeClassMember,
@@ -406,24 +406,36 @@ export class Converter {
     tsNode:
       | ts.PropertyAccessExpression
       | ts.ElementAccessExpression
-      | ts.CallExpression,
+      | ts.CallExpression
+      | ts.NonNullExpression,
   ): TSESTree.ChainExpression | TSESTree.ChainElement {
-    let child = (node.type === AST_NODE_TYPES.MemberExpression
-      ? node.object
-      : node.callee) as TSESTree.Node;
-    const isChildOptional = isChildOptionalChain(tsNode, child);
+    const { child, isOptional } = ((): {
+      child: TSESTree.Node;
+      isOptional: boolean;
+    } => {
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
+        return { child: node.object, isOptional: node.optional };
+      }
+      if (node.type === AST_NODE_TYPES.CallExpression) {
+        return { child: node.callee, isOptional: node.optional };
+      }
+      return { child: node.expression, isOptional: false };
+    })();
+    const isChildUnwrappable = isChildUnwrappableOptionalChain(tsNode, child);
 
-    if (!isChildOptional && !node.optional) {
+    if (!isChildUnwrappable && !isOptional) {
       return node;
     }
 
-    if (isChainExpression(child)) {
+    if (isChildUnwrappable && isChainExpression(child)) {
       // unwrap the chain expression child
-      child = child.expression;
+      const newChild = child.expression;
       if (node.type === AST_NODE_TYPES.MemberExpression) {
-        node.object = child;
+        node.object = newChild;
+      } else if (node.type === AST_NODE_TYPES.CallExpression) {
+        node.callee = newChild;
       } else {
-        node.callee = child;
+        node.expression = newChild;
       }
     }
 
@@ -2209,10 +2221,12 @@ export class Converter {
       }
 
       case SyntaxKind.NonNullExpression: {
-        return this.createNode<TSESTree.TSNonNullExpression>(node, {
+        const nnExpr = this.createNode<TSESTree.TSNonNullExpression>(node, {
           type: AST_NODE_TYPES.TSNonNullExpression,
           expression: this.convertChild(node.expression),
         });
+
+        return this.convertChainExpression(nnExpr, node);
       }
 
       case SyntaxKind.TypeLiteral: {

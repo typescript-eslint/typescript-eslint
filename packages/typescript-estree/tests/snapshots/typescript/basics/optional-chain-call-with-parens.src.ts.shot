@@ -935,11 +935,29 @@ Object {
               "expression": Object {
                 "arguments": Array [],
                 "callee": Object {
-                  "arguments": Array [],
-                  "callee": Object {
+                  "expression": Object {
+                    "arguments": Array [],
+                    "callee": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 6,
+                          "line": 10,
+                        },
+                        "start": Object {
+                          "column": 3,
+                          "line": 10,
+                        },
+                      },
+                      "name": "one",
+                      "range": Array [
+                        184,
+                        187,
+                      ],
+                      "type": "Identifier",
+                    },
                     "loc": Object {
                       "end": Object {
-                        "column": 6,
+                        "column": 10,
                         "line": 10,
                       },
                       "start": Object {
@@ -947,12 +965,12 @@ Object {
                         "line": 10,
                       },
                     },
-                    "name": "one",
+                    "optional": true,
                     "range": Array [
                       184,
-                      187,
+                      191,
                     ],
-                    "type": "Identifier",
+                    "type": "CallExpression",
                   },
                   "loc": Object {
                     "end": Object {
@@ -964,12 +982,11 @@ Object {
                       "line": 10,
                     },
                   },
-                  "optional": true,
                   "range": Array [
                     184,
                     191,
                   ],
-                  "type": "CallExpression",
+                  "type": "ChainExpression",
                 },
                 "loc": Object {
                   "end": Object {
