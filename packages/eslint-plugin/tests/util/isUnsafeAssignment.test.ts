@@ -166,5 +166,29 @@ describe('isUnsafeAssignment', () => {
 
       expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
     });
+
+    it('any to a unknown', () => {
+      const { sender, receiver, checker } = getTypes(
+        'const test: unknown = [] as any;',
+      );
+
+      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+    });
+
+    it('any[] in a generic position to a unknown[]', () => {
+      const { sender, receiver, checker } = getTypes(
+        'const test: unknown[] = [] as any[]',
+      );
+
+      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+    });
+
+    it('any in a generic position to a unknown (nested)', () => {
+      const { sender, receiver, checker } = getTypes(
+        'const test: Set<Set<Set<unknown>>> = new Set<Set<Set<any>>>();',
+      );
+
+      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+    });
   });
 });
