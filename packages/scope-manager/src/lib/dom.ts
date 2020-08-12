@@ -6578,11 +6578,11 @@ export const dom = {
     name: 'SharedWorker',
     writeable: false,
   },
-  Slotable: {
+  Slottable: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'Slotable',
+    name: 'Slottable',
     writeable: false,
   },
   SourceBufferEventMap: {
@@ -7066,6 +7066,20 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'VideoPlaybackQuality',
+    writeable: false,
+  },
+  VisualViewportEventMap: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'VisualViewportEventMap',
+    writeable: false,
+  },
+  VisualViewport: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'VisualViewport',
     writeable: false,
   },
   WEBGL_color_buffer_float: {
@@ -8426,6 +8440,13 @@ export const dom = {
     name: 'CredentialMediationRequirement',
     writeable: false,
   },
+  DOMParserSupportedType: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'DOMParserSupportedType',
+    writeable: false,
+  },
   DirectionSetting: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -9124,13 +9145,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SpeechSynthesisErrorCode',
-    writeable: false,
-  },
-  SupportedType: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'SupportedType',
     writeable: false,
   },
   TextTrackKind: {

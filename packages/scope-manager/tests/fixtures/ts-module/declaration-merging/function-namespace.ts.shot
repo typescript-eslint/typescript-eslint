@@ -18,8 +18,10 @@ ScopeManager {
       references: Array [
         Reference$3 {
           identifier: Identifier<"Foo">,
+          isRead: true,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: false,
           resolved: Variable$1,
         },
       ],
@@ -45,8 +47,10 @@ ScopeManager {
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$3,
           writeExpr: Literal$4,
         },
@@ -66,8 +70,10 @@ ScopeManager {
         Reference$2 {
           identifier: Identifier<"usage">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$4,
           writeExpr: Identifier<"Foo">,
         },

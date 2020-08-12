@@ -24,6 +24,7 @@ const fixtures = glob
     return {
       absolute,
       name,
+      ext,
       segments,
       snapshotPath,
       snapshotFile: path.join(snapshotPath, `${name}${ext}.shot`),
@@ -59,6 +60,13 @@ function nestDescribe(
       const options: Record<string, unknown> = {
         lib: [],
       };
+
+      /*
+       * What's all this!?
+       *
+       * To help with configuring individual tests, each test may use a four-slash comment to configure the scope manager
+       * This is just a rudimentary "parser" for said comments.
+       */
       for (const line of lines) {
         if (!line.startsWith('////')) {
           continue;
@@ -137,7 +145,9 @@ function nestDescribe(
       }
 
       try {
-        const { scopeManager } = parseAndAnalyze(contents, options);
+        const { scopeManager } = parseAndAnalyze(contents, options, {
+          jsx: fixture.ext.endsWith('x'),
+        });
         expect(scopeManager).toMatchSpecificSnapshot(fixture.snapshotFile);
       } catch (e) {
         expect(e).toMatchSpecificSnapshot(fixture.snapshotFile);

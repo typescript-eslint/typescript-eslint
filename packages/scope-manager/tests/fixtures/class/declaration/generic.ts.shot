@@ -59,8 +59,10 @@ ScopeManager {
       references: Array [
         Reference$1 {
           identifier: Identifier<"A">,
+          isRead: true,
           isTypeReference: true,
           isValueReference: false,
+          isWrite: false,
           resolved: null,
         },
       ],
