@@ -15,8 +15,10 @@ ScopeManager {
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$1,
           writeExpr: Literal$2,
         },

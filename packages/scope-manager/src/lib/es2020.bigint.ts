@@ -5,6 +5,13 @@
 import { ImplicitLibVariableOptions } from '../variable';
 
 export const es2020_bigint = {
+  BigIntToLocaleStringOptions: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'BigIntToLocaleStringOptions',
+    writeable: false,
+  },
   BigInt: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -52,6 +59,13 @@ export const es2020_bigint = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'DataView',
+    writeable: false,
+  },
+  Intl: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'Intl',
     writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

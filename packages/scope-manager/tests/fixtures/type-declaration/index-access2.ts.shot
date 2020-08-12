@@ -14,8 +14,10 @@ ScopeManager {
       references: Array [
         Reference$2 {
           identifier: Identifier<"T">,
+          isRead: true,
           isTypeReference: true,
           isValueReference: false,
+          isWrite: false,
           resolved: Variable$1,
         },
       ],
@@ -33,8 +35,10 @@ ScopeManager {
       references: Array [
         Reference$1 {
           identifier: Identifier<"K">,
+          isRead: true,
           isTypeReference: true,
           isValueReference: false,
+          isWrite: false,
           resolved: Variable$2,
         },
       ],
