@@ -4,7 +4,12 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
-import { createRule, getParserServices, getStaticValue } from '../util';
+import {
+  createRule,
+  getParserServices,
+  getStaticValue,
+  getConstrainedTypeAtLocation,
+} from '../util';
 
 export default createRule({
   name: 'prefer-includes',
@@ -191,23 +196,16 @@ export default createRule({
           return;
         }
 
+        //check the argument type of test methods
         const argument = callNode.arguments[0];
         const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
-        const argumentDeclarations = types
-          .getSymbolAtLocation(tsNode)
-          ?.getDeclarations();
-        if (argumentDeclarations == null || argumentDeclarations.length === 0) {
-          return;
-        }
+        const type = getConstrainedTypeAtLocation(types, tsNode);
 
-        for (const argumentDecl of argumentDeclarations) {
-          const type = types.getTypeAtLocation(argumentDecl);
-          const includesMethodDecl = type
-            .getProperty('includes')
-            ?.getDeclarations();
-          if (includesMethodDecl == null || includesMethodDecl == undefined) {
-            return;
-          }
+        const includesMethodDecl = type
+          .getProperty('includes')
+          ?.getDeclarations();
+        if (includesMethodDecl == null) {
+          return;
         }
 
         context.report({
