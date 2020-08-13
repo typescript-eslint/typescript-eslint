@@ -191,6 +191,25 @@ export default createRule({
           return;
         }
 
+        const argument = callNode.arguments[0];
+        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
+        const argumentDeclarations = types
+          .getSymbolAtLocation(tsNode)
+          ?.getDeclarations();
+        if (argumentDeclarations == null || argumentDeclarations.length === 0) {
+          return;
+        }
+
+        for (const argumentDecl of argumentDeclarations) {
+          const type = types.getTypeAtLocation(argumentDecl);
+          const includesMethodDecl = type
+            .getProperty('includes')
+            ?.getDeclarations();
+          if (includesMethodDecl == null || includesMethodDecl == undefined) {
+            return;
+          }
+        }
+
         context.report({
           node: callNode,
           messageId: 'preferStringIncludes',
