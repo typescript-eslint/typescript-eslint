@@ -115,6 +115,12 @@ ruleTester.run('prefer-includes', rule, {
         something.test(a)
       }
     `,
+    `
+      const pattern = new RegExp("bar")
+      function f(a) {
+        return pattern.test(a)
+      }
+    `,
   ]),
   invalid: addOptional([
     // positive
