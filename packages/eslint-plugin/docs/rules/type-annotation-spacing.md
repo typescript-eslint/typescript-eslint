@@ -69,6 +69,8 @@ class Foo {
     name : string;
 }
 
+type Foo = ()=>{};
+type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
@@ -113,6 +115,8 @@ class Foo {
     name : string;
 }
 
+type Foo = ()=>{};
+type Foo = () =>{};
 type Foo = () => {};
 ```
 
@@ -156,6 +160,10 @@ class Foo {
 class Foo {
     name :string;
 }
+
+type Foo = ()=>{};
+type Foo = () =>{};
+type Foo = ()=> {};
 ```
 
 Examples of **correct** code for this rule with `{ "before": true, "after": true }` options:
@@ -169,6 +177,8 @@ function foo() : string {}
 class Foo {
     name : string;
 }
+
+type Foo = () => {};
 ```
 
 ### overrides - colon
@@ -197,12 +207,12 @@ class Foo {
     name :string;
 }
 
-type Foo = {
-    name: (name:string) => string;
-}
+type Foo = () =>{};
+type Foo = ()=> {};
+type Foo = () => {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": true, "after": true, overrides: { colon: { before: true, after: true }} }` options:
+Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
 
 <!-- prettier-ignore -->
 ```ts
@@ -217,6 +227,8 @@ class Foo {
 type Foo = {
     name: (name : string)=>string;
 }
+
+type Foo = ()=>{};
 ```
 
 ### overrides - arrow
@@ -245,17 +257,9 @@ class Foo {
     name :string;
 }
 
-type Foo = {
-    name: (name : string)=>string;
-}
-
-type Foo = {
-    name: (name : string) =>string;
-}
-
-type Foo = {
-    name: (name : string)=> string;
-}
+type Foo = ()=>{};
+type Foo = () =>{};
+type Foo = ()=> {};
 ```
 
 Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
@@ -270,9 +274,7 @@ class Foo {
     name:string;
 }
 
-type Foo = {
-    name: (name:string) => string;
-}
+type Foo = () => {};
 ```
 
 ## When Not To Use It
