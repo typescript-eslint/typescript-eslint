@@ -18,6 +18,7 @@ export = {
     '@typescript-eslint/comma-spacing': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
+    '@typescript-eslint/consistent-type-imports': 'error',
     'default-param-last': 'off',
     '@typescript-eslint/default-param-last': 'error',
     'dot-notation': 'off',
