@@ -2,6 +2,7 @@ import {
   TestCaseError,
   InvalidTestCase,
 } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import * as path from 'path';
 import rule, {
   Options,
   MessageId,
@@ -453,6 +454,22 @@ function test(testVal?: boolean) {
   }
 }
     `,
+    {
+      code: `
+declare const x: string[] | null;
+// eslint-disable-next-line
+if (x) {
+}
+      `,
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1394,6 +1411,28 @@ function test(testVal?: true) {
           endColumn: 22,
         },
       ],
+    },
+    {
+      code: `
+declare const x: string[] | null;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+          line: 0,
+          column: 1,
+        },
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          column: 5,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
     },
   ],
 });
