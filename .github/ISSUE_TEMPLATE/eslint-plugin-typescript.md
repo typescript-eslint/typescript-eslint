@@ -26,16 +26,17 @@ Are you opening an issue because the rule you're trying to use is not found?
 3) If ESLint still can't find the rule, then consider reporting an issue.
 -->
 
-<!--
-Make sure you read through our FAQ before posting.
-https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md
--->
+- [ ] I have first restarting my IDE and the issue persists.
+- [ ] I have updated to the latest version of the packages.
+- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md) and my problem is not listed.
 
 **Repro**
 
 <!--
 Include a ***minimal*** reproduction case.
 The more irrelevant code/config you give, the harder it is for us to investigate.
+
+Please consider creating an isolated reproduction repo to make it easy for the volunteer maintainers debug your issue.
 -->
 
 ```JSON
@@ -50,9 +51,23 @@ The more irrelevant code/config you give, the harder it is for us to investigate
 // your repro code case
 ```
 
+<!--
+Also include your tsconfig, if you're using type-aware linting
+-->
+
 **Expected Result**
 
+<!--
+What did you expect to happen?
+Please be specific here - list the exact lines and messages you expect.
+-->
+
 **Actual Result**
+
+<!--
+What actually happened?
+Please be specific here - list the exact lines and messages that caused errors
+-->
 
 **Additional Info**
 
@@ -72,4 +87,3 @@ i.e. eslint --ext ".ts,.js" src --debug
 | `TypeScript`                       | `X.Y.Z` |
 | `ESLint`                           | `X.Y.Z` |
 | `node`                             | `X.Y.Z` |
-| `npm`                              | `X.Y.Z` |
