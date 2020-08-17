@@ -14,27 +14,26 @@ The more relevant information you can include, the faster we can find the issue 
 -->
 
 <!--
-Make sure you read through our FAQ before posting.
-https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md
+🚨 STOP 🚨 𝗦𝗧𝗢𝗣 🚨 𝑺𝑻𝑶𝑷 🚨
+
+This issue template is only for problems specifically with the `@typescript-eslint/experimental-utils` package.
+
+If you have a problem with a specific lint rule, please back out and select the `@typescript-eslint/eslint-plugin` template.
+If you have a problem with the parser, please back out and select the `@typescript-eslint/parser` template.
 -->
+
+- [ ] I have first restarting my IDE and the issue persists.
+- [ ] I have updated to the latest version of the packages.
+- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md) and my problem is not listed.
 
 **Repro**
 
 <!--
 Include a ***minimal*** reproduction case.
 The more irrelevant code/config you give, the harder it is for us to investigate.
--->
 
-```JSON
-{
-  "rules": {
-    "@typescript-eslint/<rule>": ["<setting>"]
-  },
-  "parserOptions": {
-    "...": "something"
-  }
-}
-```
+Please consider creating an isolated reproduction repo to make it easy for the volunteer maintainers debug your issue.
+-->
 
 ```TS
 // your repro code case
@@ -42,7 +41,17 @@ The more irrelevant code/config you give, the harder it is for us to investigate
 
 **Expected Result**
 
+<!--
+What did you expect to happen?
+Please be specific here - list the exact lines and messages you expect.
+-->
+
 **Actual Result**
+
+<!--
+What actually happened?
+Please be specific here - list the exact lines and messages that caused errors
+-->
 
 **Additional Info**
 
@@ -60,4 +69,3 @@ i.e. eslint --ext ".ts,.js" src --debug
 | `@typescript-eslint/experimental-utils` | `X.Y.Z` |
 | `TypeScript`                            | `X.Y.Z` |
 | `node`                                  | `X.Y.Z` |
-| `npm`                                   | `X.Y.Z` |
