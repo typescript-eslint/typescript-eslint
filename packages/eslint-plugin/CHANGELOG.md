@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.0...v3.9.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] fix false positive with nullish coalescing ([#2385](https://github.com/typescript-eslint/typescript-eslint/issues/2385)) ([092c969](https://github.com/typescript-eslint/typescript-eslint/commit/092c96967fd9b58fb2d8d325e1dbc750ccbeb746))
+* **eslint-plugin:** [prefer-includes] don't auto fix when `test` method's argument type doesn't have an 'includes' method ([#2391](https://github.com/typescript-eslint/typescript-eslint/issues/2391)) ([71c4c72](https://github.com/typescript-eslint/typescript-eslint/commit/71c4c729e90e308e0afd70af7db5e9d9ff238527))
+
+
+
+
+
 # [3.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.8.0...v3.9.0) (2020-08-10)
 
 
