@@ -486,6 +486,18 @@ if (!a) {
     },
     {
       code: `
+function sayHi(): void {
+  console.log('Hi!');
+}
+
+let speech: never = sayHi();
+if (!speech) {
+}
+      `,
+      errors: [ruleError(7, 4, 'never')],
+    },
+    {
+      code: `
 const b1 = true;
 declare const b2: boolean;
 const t1 = b1 && b2;
