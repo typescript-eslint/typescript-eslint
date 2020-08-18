@@ -501,7 +501,7 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
-      errors: [ruleError(7, 4, 'never')],
+      errors: [ruleError(7, 5, 'never')],
     },
     {
       code: `
