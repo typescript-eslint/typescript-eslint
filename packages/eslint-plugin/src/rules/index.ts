@@ -79,6 +79,7 @@ import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
+import preferRecord from './prefer-record';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
@@ -180,6 +181,7 @@ export default {
   'prefer-optional-chain': preferOptionalChain,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-readonly': preferReadonly,
+  'prefer-record': preferRecord,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,

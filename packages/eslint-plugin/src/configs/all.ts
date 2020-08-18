@@ -114,6 +114,7 @@ export = {
     '@typescript-eslint/promise-function-async': 'error',
     quotes: 'off',
     '@typescript-eslint/quotes': 'error',
+    '@typescript-eslint/prefer-record': 'error',
     '@typescript-eslint/require-array-sort-compare': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
