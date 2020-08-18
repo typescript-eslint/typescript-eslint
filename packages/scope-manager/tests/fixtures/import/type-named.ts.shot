@@ -14,8 +14,10 @@ ScopeManager {
       references: Array [
         Reference$1 {
           identifier: Identifier<"T">,
+          isRead: true,
           isTypeReference: true,
           isValueReference: false,
+          isWrite: false,
           resolved: Variable$1,
         },
       ],
@@ -46,8 +48,10 @@ ScopeManager {
         Reference$2 {
           identifier: Identifier<"unresovled">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$3,
           writeExpr: Identifier<"T">,
         },
@@ -74,8 +78,10 @@ ScopeManager {
         Reference$2,
         Reference$3 {
           identifier: Identifier<"T">,
+          isRead: true,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: false,
           resolved: null,
         },
       ],

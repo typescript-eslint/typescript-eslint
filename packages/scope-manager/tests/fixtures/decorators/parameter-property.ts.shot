@@ -14,14 +14,18 @@ ScopeManager {
       references: Array [
         Reference$1 {
           identifier: Identifier<"decorator">,
+          isRead: true,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: false,
           resolved: Variable$1,
         },
         Reference$3 {
           identifier: Identifier<"decorator">,
+          isRead: true,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: false,
           resolved: Variable$1,
         },
       ],
@@ -90,8 +94,10 @@ ScopeManager {
         Reference$2 {
           identifier: Identifier<"b">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$7,
           writeExpr: Literal$4,
         },

@@ -95,8 +95,10 @@ describe('variable definition', () => {
           references: Array [
             Reference$3 {
               identifier: Identifier<"Inferred">,
+              isRead: true,
               isTypeReference: true,
               isValueReference: false,
+              isWrite: false,
               resolved: Variable$3,
             },
           ],

@@ -465,6 +465,13 @@ function recordData(): void {
 
 recordData();
     `,
+    `
+function test(testVal?: boolean) {
+  if (testVal ?? true) {
+    console.log('test');
+  }
+}
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1412,6 +1419,26 @@ function Foo(outer: Outer, key: Bar): number | undefined {
           endLine: 11,
           column: 28,
           endColumn: 30,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2384
+    {
+      code: `
+function test(testVal?: true) {
+  if (testVal ?? true) {
+    console.log('test');
+  }
+}
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 7,
+          endColumn: 22,
         },
       ],
     },

@@ -46,6 +46,7 @@ type Lib =
   | 'es2020.promise'
   | 'es2020.string'
   | 'es2020.symbol.wellknown'
+  | 'es2020.intl'
   | 'esnext.array'
   | 'esnext.symbol'
   | 'esnext.asynciterable'

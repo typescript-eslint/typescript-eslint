@@ -27,8 +27,10 @@ ScopeManager {
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$2,
           writeExpr: Literal$3,
         },
@@ -48,8 +50,10 @@ ScopeManager {
         Reference$2 {
           identifier: Identifier<"unresolved">,
           init: true,
+          isRead: false,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: true,
           resolved: Variable$3,
           writeExpr: Identifier<"x">,
         },
@@ -66,8 +70,10 @@ ScopeManager {
         Reference$2,
         Reference$3 {
           identifier: Identifier<"x">,
+          isRead: true,
           isTypeReference: false,
           isValueReference: true,
+          isWrite: false,
           resolved: null,
         },
       ],
