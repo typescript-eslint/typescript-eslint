@@ -74,6 +74,22 @@ export default util.createRule({
       return false;
     }
 
+    function isFinallyBlock(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (
+          tsutils.isTryStatement(ancestor.parent) &&
+          !tsutils.isCatchClause(ancestor.parent) &&
+          tsutils.isBlock(ancestor)
+        ) {
+          return true;
+        }
+        ancestor = ancestor.parent;
+      }
+      return false;
+    }
+
     // function findTokensToRemove()
 
     function removeAwait(
