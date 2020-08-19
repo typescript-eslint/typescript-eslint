@@ -85,16 +85,12 @@ export default util.createRule({
       return false;
     }
 
-    function inFinallyBlock(node: ts.Node): boolean {
+    function hasFinallyBlock(node: ts.Node): boolean {
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (
-          tsutils.isTryStatement(ancestor.parent) &&
-          !tsutils.isCatchClause(ancestor.parent) &&
-          tsutils.isBlock(ancestor)
-        ) {
-          return true;
+        if (tsutils.isTryStatement(ancestor)) {
+          return !!ancestor.finallyBlock;
         }
         ancestor = ancestor.parent;
       }
@@ -198,6 +194,9 @@ export default util.createRule({
             fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && isInTryCatch) {
+          if (inCatch(expression) && !hasFinallyBlock(expression)) {
+            return;
+          }
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
