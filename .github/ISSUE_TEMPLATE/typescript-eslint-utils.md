@@ -22,7 +22,7 @@ If you have a problem with a specific lint rule, please back out and select the 
 If you have a problem with the parser, please back out and select the `@typescript-eslint/parser` template.
 -->
 
-- [ ] I have first restarting my IDE and the issue persists.
+- [ ] I have tried restarting my IDE and the issue persists.
 - [ ] I have updated to the latest version of the packages.
 - [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md) and my problem is not listed.
 
