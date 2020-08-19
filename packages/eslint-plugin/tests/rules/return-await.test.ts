@@ -129,6 +129,20 @@ ruleTester.run('return-await', rule, {
       code: `
         async function test() {
           try {
+            throw 'foo';
+          } catch (e) {
+            throw 'foo2';
+          } finally {
+            return Promise.resolve(1);
+          }
+        }
+      `,
+    },
+    {
+      options: ['in-try-catch'],
+      code: `
+        async function test() {
+          try {
             const one = await Promise.resolve(1);
             return one;
           } catch (e) {

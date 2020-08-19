@@ -85,6 +85,23 @@ export default util.createRule({
       return false;
     }
 
+    function isReturnPromiseInFinally(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (
+          tsutils.isTryStatement(ancestor.parent) &&
+          tsutils.isBlock(ancestor) &&
+          ancestor.parent.end === ancestor.end
+        ) {
+          return true;
+        }
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
     function hasFinallyBlock(node: ts.Node): boolean {
       let ancestor = node.parent;
 
@@ -197,6 +214,11 @@ export default util.createRule({
           if (inCatch(expression) && !hasFinallyBlock(expression)) {
             return;
           }
+
+          if (isReturnPromiseInFinally(expression)) {
+            return;
+          }
+
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
