@@ -85,7 +85,7 @@ export default util.createRule({
       return false;
     }
 
-    function isFinallyBlock(node: ts.Node): boolean {
+    function inFinallyBlock(node: ts.Node): boolean {
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
