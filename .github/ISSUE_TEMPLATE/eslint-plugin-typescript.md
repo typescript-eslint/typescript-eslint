@@ -26,7 +26,7 @@ Are you opening an issue because the rule you're trying to use is not found?
 3) If ESLint still can't find the rule, then consider reporting an issue.
 -->
 
-- [ ] I have first restarting my IDE and the issue persists.
+- [ ] I have tried restarting my IDE and the issue persists.
 - [ ] I have updated to the latest version of the packages.
 - [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md) and my problem is not listed.
 

@@ -66,7 +66,7 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 
 This rule helps ensure your codebase follows a consistent indentation pattern. However this involves a _lot_ of computations across every single token in a file. Across a large codebase, these can add up, and severely impact performance.
 
-We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/) to enforce a standardized formatting.
+We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
 
 <br />
 <br />
