@@ -1,11 +1,11 @@
-import rule from '../../src/rules/prefer-record';
+import rule from '../../src/rules/consistent-indexed-object-style';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('prefer-record', rule, {
+ruleTester.run('consistent-indexed-object-style', rule, {
   valid: [
     // Record
     'type Foo = Record<string, any>;',

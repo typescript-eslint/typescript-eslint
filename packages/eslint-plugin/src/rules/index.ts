@@ -8,6 +8,7 @@ import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaSpacing from './comma-spacing';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
+import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import defaultParamLast from './default-param-last';
@@ -79,7 +80,6 @@ import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
-import preferRecord from './prefer-record';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
@@ -112,6 +112,7 @@ export default {
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-spacing': commaSpacing,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
+  'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'default-param-last': defaultParamLast,
@@ -181,7 +182,6 @@ export default {
   'prefer-optional-chain': preferOptionalChain,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-readonly': preferReadonly,
-  'prefer-record': preferRecord,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,

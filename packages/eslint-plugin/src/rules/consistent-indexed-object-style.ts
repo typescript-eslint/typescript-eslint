@@ -5,11 +5,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 
 export default createRule({
-  name: 'prefer-record',
+  name: 'consistent-indexed-object-style',
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce a consistent record style',
+      description: 'Enforce or disallow the use of the record type',
       category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
