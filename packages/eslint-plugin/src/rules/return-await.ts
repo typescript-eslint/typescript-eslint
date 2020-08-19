@@ -57,14 +57,25 @@ export default util.createRule({
       };
     }
 
-    function inTryCatch(node: ts.Node): boolean {
+    function inTry(node: ts.Node): boolean {
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (
-          tsutils.isTryStatement(ancestor) ||
-          tsutils.isCatchClause(ancestor)
-        ) {
+        if (tsutils.isTryStatement(ancestor)) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
+    function inCatch(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (tsutils.isCatchClause(ancestor)) {
           return true;
         }
 
@@ -179,7 +190,7 @@ export default util.createRule({
       }
 
       if (option === 'in-try-catch') {
-        const isInTryCatch = inTryCatch(expression);
+        const isInTryCatch = inTry(expression) || inCatch(expression);
         if (isAwait && !isInTryCatch) {
           context.report({
             messageId: 'disallowedPromiseAwait',
