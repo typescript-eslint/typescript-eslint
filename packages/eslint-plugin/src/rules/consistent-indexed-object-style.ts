@@ -37,8 +37,8 @@ export default createRule({
             return;
           }
 
-          const { params } = node.typeParameters!;
-          if (params.length !== 2) {
+          const params = node.typeParameters?.params;
+          if (params?.length !== 2) {
             return;
           }
 
@@ -63,8 +63,8 @@ export default createRule({
      */
     function toRecord(node: TSESTree.TSIndexSignature): string {
       const parameter = node.parameters[0] as TSESTree.Identifier;
-      const key = sourceCode.getText(parameter.typeAnnotation?.typeAnnotation);
-      const value = sourceCode.getText(node.typeAnnotation?.typeAnnotation);
+      const key = sourceCode.getText(parameter.typeAnnotation!.typeAnnotation);
+      const value = sourceCode.getText(node.typeAnnotation!.typeAnnotation);
       return `Record<${key}, ${value}>`;
     }
 

@@ -15,6 +15,11 @@ ruleTester.run('consistent-indexed-object-style', rule, {
     `
 interface Foo {
   bar: string;
+}
+    `,
+    `
+interface Foo {
+  bar: string;
   [key: string]: any;
 }
     `,
@@ -35,6 +40,11 @@ type Foo = {
     `,
     `
 type Foo = {
+  bar: string;
+};
+    `,
+    `
+type Foo = {
   [key: string]: any;
   bar: string;
 };
@@ -51,6 +61,49 @@ type Foo = Generic<{
     // Function types
     'function foo(arg: { [key: string]: any; bar: string }) {}',
     'function foo(): { [key: string]: any; bar: string } {}',
+
+    // Never
+    // Unhandled type
+    {
+      code: 'type Foo = Misc<string, unknown>;',
+      options: ['never'],
+    },
+
+    // Invalid record
+    {
+      code: 'type Foo = Record;',
+      options: ['never'],
+    },
+    {
+      code: 'type Foo = Record<string>;',
+      options: ['never'],
+    },
+    {
+      code: 'type Foo = Record<string, number, unknown>;',
+      options: ['never'],
+    },
+
+    // Type literal
+    {
+      code: 'type Foo = { [key: string]: any };',
+      options: ['never'],
+    },
+
+    // Generic
+    {
+      code: 'type Foo = Generic<{ [key: string]: any }>;',
+      options: ['never'],
+    },
+
+    // Function types
+    {
+      code: 'function foo(arg: { [key: string]: any }) {}',
+      options: ['never'],
+    },
+    {
+      code: 'function foo(): { [key: string]: any } {}',
+      options: ['never'],
+    },
   ],
   invalid: [
     // Interface
