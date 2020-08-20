@@ -646,6 +646,11 @@ type Buz = () => (n: number) => string;
 
 export const buz: Buz = () => n => String(n);
     `,
+    `
+export abstract class Foo<T> {
+  abstract set value(element: T);
+}
+    `,
   ],
   invalid: [
     {
