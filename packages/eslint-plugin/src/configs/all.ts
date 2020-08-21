@@ -58,6 +58,7 @@ export = {
     '@typescript-eslint/no-extraneous-class': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
+    '@typescript-eslint/no-implicit-any-catch': 'error',
     '@typescript-eslint/no-implied-eval': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     'no-invalid-this': 'off',

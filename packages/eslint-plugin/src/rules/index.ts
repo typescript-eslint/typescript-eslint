@@ -31,6 +31,7 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noImplicitAnyCatch from './no-implicit-any-catch';
 import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
@@ -133,6 +134,7 @@ export default {
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
+  'no-implicit-any-catch': noImplicitAnyCatch,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
   'no-extra-semi': noExtraSemi,
