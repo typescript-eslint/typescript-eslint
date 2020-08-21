@@ -5,8 +5,6 @@
 Optional chain expressions are designed to return `undefined` if the optional property is nullish.
 Using non-null assertions after an optional chain expression is wrong, and introduces a serious type safety hole into your code.
 
-
-
 Examples of **incorrect** code for this rule:
 
 ```ts
