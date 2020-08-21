@@ -427,10 +427,11 @@ export default util.createRule<Options, MessageIds>({
       const isConstructor =
         node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.kind === 'constructor';
-      const isAbstractSetAccessor =
-        node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition &&
+      const isSetAccessor =
+        (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+          node.parent?.type === AST_NODE_TYPES.MethodDefinition) &&
         node.parent.kind === 'set';
-      if (!isConstructor && !isAbstractSetAccessor && !node.returnType) {
+      if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({
           node,
           messageId: 'missingReturnType',

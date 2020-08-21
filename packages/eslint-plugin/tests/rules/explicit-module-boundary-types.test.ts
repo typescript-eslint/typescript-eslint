@@ -651,6 +651,15 @@ export abstract class Foo<T> {
   abstract set value(element: T);
 }
     `,
+    `
+export class Foo {
+  public date?: Date;
+
+  set time(seconds: number) {
+    this.date = new Date(seconds * 1000)
+  };
+}
+    `,
   ],
   invalid: [
     {
