@@ -652,12 +652,8 @@ export abstract class Foo<T> {
 }
     `,
     `
-export class Foo {
-  public date?: Date;
-
-  set time(seconds: number) {
-    this.date = new Date(seconds * 1000);
-  }
+declare class Foo {
+  set time(seconds: number);
 }
     `,
   ],
