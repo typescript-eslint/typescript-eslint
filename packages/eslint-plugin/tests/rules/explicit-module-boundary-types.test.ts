@@ -652,7 +652,7 @@ export abstract class Foo<T> {
 }
     `,
     `
-declare class Foo {
+export declare class Foo {
   set time(seconds: number);
 }
     `,
