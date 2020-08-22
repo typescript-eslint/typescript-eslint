@@ -99,6 +99,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import commaDangle from './comma-dangle';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -202,4 +203,5 @@ export default {
   'unified-signatures': unifiedSignatures,
   'lines-between-class-members': linesBetweenClassMembers,
   'no-loss-of-precision': noLossOfPrecision,
+  'comma-dangle': commaDangle,
 };
