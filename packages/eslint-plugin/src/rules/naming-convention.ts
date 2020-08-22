@@ -278,23 +278,23 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
           },
           additionalItems: false,
         },
+        modifiers: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: util.getEnumNames(Modifiers),
+          },
+          additionalItems: false,
+        },
+        types: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: util.getEnumNames(TypeModifiers),
+          },
+          additionalItems: false,
+        },
       },
-    },
-    modifiers: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: util.getEnumNames(Modifiers),
-      },
-      additionalItems: false,
-    },
-    types: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: util.getEnumNames(TypeModifiers),
-      },
-      additionalItems: false,
     },
     required: ['selector', 'format'],
     additionalProperties: false,
