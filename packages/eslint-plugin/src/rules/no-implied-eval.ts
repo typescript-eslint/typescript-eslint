@@ -80,6 +80,14 @@ export default util.createRule({
         return true;
       }
 
+      if (
+        symbol &&
+        symbol.flags === 33554497 &&
+        symbol.escapedName === 'Function'
+      ) {
+        return true;
+      }
+
       const signatures = checker.getSignaturesOfType(
         type,
         ts.SignatureKind.Call,
