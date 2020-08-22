@@ -835,6 +835,77 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        let isFoo = 1;
+        class foo {
+          shouldBoo: number;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['variable', 'parameter', 'property', 'accessor'],
+          types: ['number'],
+          format: ['PascalCase'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private readonly FooBoo: boolean;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          types: ['boolean'],
+          modifiers: ['private', 'readonly'],
+          format: ['PascalCase'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private fooBoo: number;
+        }
+      `,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: `
+        const isfooBar = 1;
+        function fun(goodfunFoo: number) {}
+        class foo {
+          private VanFooBar: number;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private'],
+          format: ['StrictPascalCase'],
+          prefix: ['Van'],
+        },
+        {
+          selector: ['variable', 'parameter'],
+          types: ['number'],
+          format: ['camelCase'],
+          prefix: ['is', 'good'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1165,6 +1236,40 @@ ruleTester.run('naming-convention', rule, {
           },
         },
       ],
+    },
+    {
+      code: `
+        const myfoo_bar = 'abcs';
+        function fun(myfoo: string) {}
+        class foo {
+          Myfoo: string;
+        }
+      `,
+      options: [
+        {
+          selector: ['variable', 'property', 'parameter'],
+          types: ['string'],
+          format: ['PascalCase'],
+          prefix: ['my', 'My'],
+        },
+      ],
+      parserOptions,
+      errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+    },
+    {
+      code: `
+        class foo {
+          private readonly fooBar: boolean;
+        }
+      `,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private', 'readonly'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
   ],
 });
