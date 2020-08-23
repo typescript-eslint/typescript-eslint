@@ -40,13 +40,16 @@ ruleTester.run('comma-dangle', rule, {
     { code: 'type Foo = [string,\n]', options: [{ tuples: 'always' }] },
 
     // always-multiline
+    { code: 'enum Foo {Bar}', options: ['always-multiline'] },
     { code: 'enum Foo {Bar,\n}', options: ['always-multiline'] },
     { code: 'enum Foo {Bar,\n}', options: [{ enums: 'always-multiline' }] },
+    { code: 'function Foo<T>() {}', options: ['always-multiline'] },
     { code: 'function Foo<T,\n>() {}', options: ['always-multiline'] },
     {
       code: 'function Foo<T,\n>() {}',
       options: [{ generics: 'always-multiline' }],
     },
+    { code: 'type Foo = [string]', options: ['always-multiline'] },
     { code: 'type Foo = [string,\n]', options: ['always-multiline'] },
     {
       code: 'type Foo = [string,\n]',
@@ -193,16 +196,34 @@ type Qux = [string,
 
     // always-multiline
     {
+      code: 'enum Foo {Bar,}',
+      output: 'enum Foo {Bar}',
+      options: ['always-multiline'],
+      errors: [{ messageId: 'unexpected' }],
+    },
+    {
       code: 'enum Foo {Bar\n}',
       output: 'enum Foo {Bar,\n}',
       options: ['always-multiline'],
       errors: [{ messageId: 'missing' }],
     },
     {
+      code: 'function Foo<T,>() {}',
+      output: 'function Foo<T>() {}',
+      options: ['always-multiline'],
+      errors: [{ messageId: 'unexpected' }],
+    },
+    {
       code: 'function Foo<T\n>() {}',
       output: 'function Foo<T,\n>() {}',
       options: ['always-multiline'],
       errors: [{ messageId: 'missing' }],
+    },
+    {
+      code: 'type Foo = [string,]',
+      output: 'type Foo = [string]',
+      options: ['always-multiline'],
+      errors: [{ messageId: 'unexpected' }],
     },
     {
       code: 'type Foo = [string\n]',
