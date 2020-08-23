@@ -12,8 +12,12 @@ const ruleTester = new RuleTester({
 ruleTester.run('comma-dangle', rule, {
   valid: [
     // default
+    { code: 'enum Foo {}' },
+    { code: 'enum Foo {\n}' },
     { code: 'enum Foo {Bar}' },
     { code: 'function Foo<T>() {}' },
+    { code: 'type Foo = []' },
+    { code: 'type Foo = [\n]' },
 
     // never
     { code: 'enum Foo {Bar}', options: ['never'] },
@@ -87,6 +91,13 @@ type Qux = [string,
     },
   ],
   invalid: [
+    // base rule
+    {
+      code: 'const Foo = {bar: 1,}',
+      output: 'const Foo = {bar: 1}',
+      errors: [{ messageId: 'unexpected' }],
+    },
+
     // default
     {
       code: 'enum Foo {Bar,}',
