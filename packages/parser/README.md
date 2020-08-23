@@ -57,7 +57,7 @@ interface ParserOptions {
   lib?: string[];
 
   project?: string | string[];
-  projectFolderIgnoreList?: (string | RegExp)[];
+  projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -156,11 +156,12 @@ This option allows you to provide the root directory for relative tsconfig paths
 
 ### `parserOptions.projectFolderIgnoreList`
 
-Default `["/node_modules/"]`.
+Default `["**/node_modules/**"]`.
 
 This option allows you to ignore folders from being included in your provided list of `project`s.
-Any resolved project path that matches one or more of the provided regular expressions will be removed from the list.
 This is useful if you have configured glob patterns, but want to make sure you ignore certain folders.
+
+It accepts an array of globs to exclude from the `project` globs.
 
 For example, by default it will ensure that a glob like `./**/tsconfig.json` will not match any `tsconfig`s within your `node_modules` folder (some npm packages do not exclude their source files from their published packages).
 
