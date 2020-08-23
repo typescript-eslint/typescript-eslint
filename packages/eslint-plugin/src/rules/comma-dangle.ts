@@ -38,7 +38,7 @@ function normalizeOptions(options: Option): NormalizedOptions {
 }
 
 export default util.createRule<Options, MessageIds>({
-  name: 'comman-dangle',
+  name: 'comma-dangle',
   meta: {
     type: 'layout',
     docs: {

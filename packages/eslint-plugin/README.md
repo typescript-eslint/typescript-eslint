@@ -187,6 +187,7 @@ In these cases, we create what we call an extension rule; a rule within our plug
 | Name                                                                                            | Description                                                                    | :heavy_check_mark: | :wrench: | :thought_balloon: |
 | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------ | -------- | ----------------- |
 | [`@typescript-eslint/brace-style`](./docs/rules/brace-style.md)                                 | Enforce consistent brace style for blocks                                      |                    | :wrench: |                   |
+| [`@typescript-eslint/comma-dangle`](./docs/rules/comma-dangle.md)                               | Require or disallow trailing comma                                             |                    | :wrench: |                   |
 | [`@typescript-eslint/comma-spacing`](./docs/rules/comma-spacing.md)                             | Enforces consistent spacing before and after commas                            |                    | :wrench: |                   |
 | [`@typescript-eslint/default-param-last`](./docs/rules/default-param-last.md)                   | Enforce default parameters to be last                                          |                    |          |                   |
 | [`@typescript-eslint/dot-notation`](./docs/rules/dot-notation.md)                               | enforce dot notation whenever possible                                         |                    | :wrench: | :thought_balloon: |
@@ -212,7 +213,6 @@ In these cases, we create what we call an extension rule; a rule within our plug
 | [`@typescript-eslint/return-await`](./docs/rules/return-await.md)                               | Enforces consistent returning of awaited values                                |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/semi`](./docs/rules/semi.md)                                               | Require or disallow semicolons instead of ASI                                  |                    | :wrench: |                   |
 | [`@typescript-eslint/space-before-function-paren`](./docs/rules/space-before-function-paren.md) | Enforces consistent spacing before function parenthesis                        |                    | :wrench: |                   |
-| [`@typescript-eslint/comma-dangle`](./docs/rules/comma-dangle.md)                               | Require or disallow trailing comma                                             |                    | :wrench: |                   |
 
 <!-- end extension rule list -->
 
