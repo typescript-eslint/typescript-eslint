@@ -12,12 +12,12 @@ See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for m
 ```cjson
 {
   // note you must disable the base rule as it can report incorrect errors
-  "comma-dange": "off",
-  "@typescript-eslint/comma-dange": ["error"]
+  "comma-dangle": "off",
+  "@typescript-eslint/comma-dangle": ["error"]
 }
 ```
 
-In addition to the options supported by the `comma-dange` rule in ESLint core, the rule adds the following options:
+In addition to the options supported by the `comma-dangle` rule in ESLint core, the rule adds the following options:
 
 ## Options
 
@@ -29,6 +29,6 @@ This rule has a string option and an object option.
   - `"generics"` is for trailing comma in generic. (e.g. `function foo<T,>() {}`)
   - `"tuples"` is for trailing comma in tuple. (e.g. `type Foo = [string,]`)
 
-- [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dange.md#options)
+- [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md#options)
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dange.md)</sup>
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md)</sup>
