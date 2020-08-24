@@ -98,9 +98,9 @@
     "ts-jest": "^25.5.1",
     "ts-node": "^8.10.1",
     "tslint": "^6.1.2",
-    "typescript": ">=3.3.1 <4.0.0 || 4.0.0-beta"
+    "typescript": ">=3.3.1 <4.1.0"
   },
   "resolutions": {
-    "typescript": "4.0.0-beta"
+    "typescript": "4.0.2"
   }
 }
