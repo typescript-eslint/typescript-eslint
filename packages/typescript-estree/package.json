@@ -43,7 +43,7 @@
     "@typescript-eslint/types": "3.10.1",
     "@typescript-eslint/visitor-keys": "3.10.1",
     "debug": "^4.1.1",
-    "glob": "^7.1.6",
+    "globby": "^11.0.1",
     "is-glob": "^4.0.1",
     "lodash": "^4.17.15",
     "semver": "^7.3.2",
