@@ -183,14 +183,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   project?: string | string[];
 
   /**
-   * If you provide a glob (or globs) to the project option, you can use this option to blacklist
-   * certain folders from being matched by the globs.
-   * Any project path that matches one or more of the provided regular expressions will be removed from the list.
+   * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
+   * being matched by the globs.
+   * This accepts an array of globs to ignore.
    *
-   * Accepts an array of strings that are passed to new RegExp(), or an array of regular expressions.
    * By default, this is set to ["/node_modules/"]
    */
-  projectFolderIgnoreList?: (string | RegExp)[];
+  projectFolderIgnoreList?: string[];
 
   /**
    * The absolute path to the root directory for all provided `project`s.
