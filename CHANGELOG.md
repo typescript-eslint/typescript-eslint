@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.1...v3.10.0) (2020-08-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] ignore abstract setters ([#2410](https://github.com/typescript-eslint/typescript-eslint/issues/2410)) ([3764248](https://github.com/typescript-eslint/typescript-eslint/commit/3764248084455409f085c5bc4706079405cef618))
+* **eslint-plugin:** [explicit-module-boundary-types] ignore all bodyless setters ([#2413](https://github.com/typescript-eslint/typescript-eslint/issues/2413)) ([a53f8c6](https://github.com/typescript-eslint/typescript-eslint/commit/a53f8c6ff37aa47b3fc1b729e359d81ea079ff75))
+* **eslint-plugin:** [no-unnecessary-condition] better handling for unary negation ([#2382](https://github.com/typescript-eslint/typescript-eslint/issues/2382)) ([32fe2bb](https://github.com/typescript-eslint/typescript-eslint/commit/32fe2bb4fe5524355eef4f3a9bd85c824e9d7f46))
+* **typescript-estree:** ts.NamedTupleMember workaround for <TS4.0 ([#2405](https://github.com/typescript-eslint/typescript-eslint/issues/2405)) ([b62331a](https://github.com/typescript-eslint/typescript-eslint/commit/b62331ad02dcff3236e18f10eb92d59e7371d4c3))
+
+
+### Features
+
+* **eslint-plugin:** add `no-implicit-any-catch` rule ([#2202](https://github.com/typescript-eslint/typescript-eslint/issues/2202)) ([fde89d4](https://github.com/typescript-eslint/typescript-eslint/commit/fde89d4d392ef35cac2bc09f2774bfe397b20100))
+* **typescript-estree:** update allowed TS version range ([#2419](https://github.com/typescript-eslint/typescript-eslint/issues/2419)) ([e6be621](https://github.com/typescript-eslint/typescript-eslint/commit/e6be62128b3a98541fe590512892c4b501914e46))
+
+
+
+
+
 ## [3.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.0...v3.9.1) (2020-08-17)
 
 

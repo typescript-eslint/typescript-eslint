@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "3.9.1",
+  "version": "3.10.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "keywords": [
     "eslint",
@@ -39,7 +39,7 @@
     "eslint-visitor-keys": "^1.1.0"
   },
   "devDependencies": {
-    "@typescript-eslint/types": "3.9.1"
+    "@typescript-eslint/types": "3.10.0"
   },
   "funding": {
     "type": "opencollective",
