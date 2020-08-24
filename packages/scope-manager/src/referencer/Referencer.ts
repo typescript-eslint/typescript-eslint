@@ -139,6 +139,13 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  protected visitClassProperty(
+    node: TSESTree.TSAbstractClassProperty | TSESTree.ClassProperty,
+  ): void {
+    this.visitProperty(node);
+    this.visitType(node.typeAnnotation);
+  }
+
   protected visitForIn(
     node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
   ): void {
@@ -413,8 +420,7 @@ class Referencer extends Visitor {
   }
 
   protected ClassProperty(node: TSESTree.ClassProperty): void {
-    this.visitProperty(node);
-    this.visitType(node.typeAnnotation);
+    this.visitClassProperty(node);
   }
 
   protected ContinueStatement(): void {
@@ -562,7 +568,7 @@ class Referencer extends Visitor {
   protected TSAbstractClassProperty(
     node: TSESTree.TSAbstractClassProperty,
   ): void {
-    this.visitProperty(node);
+    this.visitClassProperty(node);
   }
 
   protected TSAbstractMethodDefinition(

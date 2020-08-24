@@ -759,6 +759,14 @@ function Optional() {
   return () => {};
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2417
+    `
+import { FooType } from './fileA';
+
+export abstract class Foo {
+  protected abstract readonly type: FooType;
+}
+    `,
   ],
 
   invalid: [
