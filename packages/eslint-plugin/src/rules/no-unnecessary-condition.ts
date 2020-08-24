@@ -166,6 +166,14 @@ export default createRule<Options, MessageId>({
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(node: TSESTree.Expression): void {
+      // Check if the node is Unary Negation expression and handle it
+      if (
+        node.type === AST_NODE_TYPES.UnaryExpression &&
+        node.operator === '!'
+      ) {
+        return checkIfUnaryNegationExpressionIsNecessaryConditional(node);
+      }
+
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
@@ -211,6 +219,30 @@ export default createRule<Options, MessageId>({
       if (messageId) {
         context.report({ node, messageId });
       }
+    }
+
+    /**
+     * If it is Unary Negation Expression, check the argument for alwaysTruthy / alwaysFalsy
+     */
+    function checkIfUnaryNegationExpressionIsNecessaryConditional(
+      node: TSESTree.UnaryExpression,
+    ): void {
+      if (isArrayIndexExpression(node.argument)) {
+        return;
+      }
+      const type = getNodeType(node.argument);
+      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
+        ? 'never'
+        : isPossiblyTruthy(type)
+        ? 'alwaysFalsy'
+        : isPossiblyFalsy(type)
+        ? 'alwaysTruthy'
+        : undefined;
+
+      if (messageId) {
+        context.report({ node, messageId });
+      }
+      return;
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {

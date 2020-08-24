@@ -445,7 +445,26 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2384
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (!latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
     `
 function test(testVal?: boolean) {
   if (testVal ?? true) {
@@ -456,6 +475,34 @@ function test(testVal?: boolean) {
   ],
   invalid: [
     // Ensure that it's checking in all the right places
+    {
+      code: `
+const a = null;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
+    {
+      code: `
+const a = true;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
+    },
+    {
+      code: `
+function sayHi(): void {
+  console.log('Hi!');
+}
+
+let speech: never = sayHi();
+if (!speech) {
+}
+      `,
+      errors: [ruleError(7, 5, 'never')],
+    },
     {
       code: `
 const b1 = true;
