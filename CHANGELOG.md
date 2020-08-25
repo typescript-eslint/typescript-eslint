@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] correct regression with unary negations ([#2422](https://github.com/typescript-eslint/typescript-eslint/issues/2422)) ([d1f0887](https://github.com/typescript-eslint/typescript-eslint/commit/d1f08879338c825a1a20406fe47c051a287d6519)), closes [#2421](https://github.com/typescript-eslint/typescript-eslint/issues/2421)
+
+
+
+
+
 # [3.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.1...v3.10.0) (2020-08-24)
 
 
