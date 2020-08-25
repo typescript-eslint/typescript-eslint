@@ -819,7 +819,8 @@ type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 function parseOptions(context: Context): ParsedOptions {
-  const normalizedOptions = context.options.map(opt => normalizeOption(opt));
+  debugger;
+  const normalizedOptions = context.options.map(opt => normalizeOption(opt))[0];
   return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
@@ -1257,7 +1258,8 @@ function isMetaSelector(
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
-function normalizeOption(option: Selector): NormalizedSelector {
+function normalizeOption(option: Selector): NormalizedSelector[] {
+  debugger;
   let weight = 0;
   option.modifiers?.forEach(mod => {
     weight |= Modifiers[mod];
@@ -1309,16 +1311,16 @@ function normalizeOption(option: Selector): NormalizedSelector {
     ? option.selector
     : [option.selector];
 
-  return {
-    selector: selectors
-      .map(selector =>
-        isMetaSelector(selector)
-          ? MetaSelectors[selector]
-          : Selectors[selector],
-      )
-      .reduce((accumulator, selector) => accumulator | selector),
-    ...normalizedOption,
-  };
+  const configs: NormalizedSelector[] = [];
+  selectors
+    .map(selector =>
+      isMetaSelector(selector) ? MetaSelectors[selector] : Selectors[selector],
+    )
+    .forEach(selector =>
+      configs.push({ selector: selector, ...normalizedOption }),
+    );
+
+  return configs;
 }
 
 function isCorrectType(
@@ -1326,6 +1328,7 @@ function isCorrectType(
   config: NormalizedSelector,
   context: Context,
 ): boolean {
+  debugger;
   if (config.types === null) {
     return true;
   }
