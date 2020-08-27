@@ -11,8 +11,12 @@ Examples of **incorrect** code for this rule:
 /* eslint @typescript-eslint/no-non-null-asserted-optional-chain: "error" */
 
 foo?.bar!;
-foo?.bar!.baz;
 foo?.bar()!;
+
+// Prior to TS3.9, foo?.bar!.baz meant (foo?.bar).baz - i.e. the non-null assertion is applied to the entire chain so far.
+// For TS3.9 and greater, the non-null assertion is only applied to the property itself, so it's safe.
+// The following is incorrect code if you're using less than TS3.9
+foo?.bar!.baz;
 foo?.bar!();
 foo?.bar!().baz;
 ```
@@ -27,6 +31,11 @@ foo?.bar;
 foo?.bar();
 foo?.bar();
 foo?.bar().baz;
+
+// The following is correct code if you're using TS3.9 or greater
+foo?.bar!.baz;
+foo?.bar!();
+foo?.bar!().baz;
 ```
 
 ## When Not To Use It

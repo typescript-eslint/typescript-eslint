@@ -1,5 +1,13 @@
 import * as ts from 'typescript';
 
+// Workaround for
+// https://github.com/typescript-eslint/typescript-eslint/issues/2388
+// to support both TypeScript 3.9 & 4:
+declare module 'typescript' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface NamedTupleMember extends ts.Node {}
+}
+
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
