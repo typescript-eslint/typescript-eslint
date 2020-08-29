@@ -1,5 +1,5 @@
 import rule from '../../src/rules/typedef';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -263,9 +263,8 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
-          // prettier-ignore
           [i: string];
         };
       `,
@@ -775,9 +774,8 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
-          // prettier-ignore
           [i: string];
         };
       `,
@@ -811,9 +809,8 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
         interface Test {
-          // prettier-ignore
           [i: string];
         }
       `,

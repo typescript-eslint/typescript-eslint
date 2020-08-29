@@ -1,4 +1,4 @@
-// TODO(bradzacher) - convert this to export * as TSESTree from './ts-estree'
+// TODO(Brad Zacher) - convert this to export * as TSESTree from './ts-estree'
 // https://github.com/sandersn/downlevel-dts/pull/42
 import * as TSESTree from './ts-estree';
 
