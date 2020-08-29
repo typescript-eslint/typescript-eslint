@@ -82,8 +82,13 @@ export default util.createRule({
 
       if (
         symbol &&
-        symbol.flags === 33554497 &&
-        symbol.escapedName === 'Function'
+        tsutils.isSymbolFlagSet(
+          symbol,
+          ts.SymbolFlags.FunctionScopedVariable |
+            ts.SymbolFlags.Interface |
+            ts.SymbolFlags.Transient,
+        ) &&
+        symbol.escapedName === FUNCTION_CONSTRUCTOR
       ) {
         return true;
       }
