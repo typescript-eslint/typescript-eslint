@@ -243,6 +243,10 @@ const fn = (foo: () => void) => {
 };
     `,
     `
+import { Function } from './class';
+new Function('foo');
+    `,
+    `
 const foo = (callback: Function) => {
   setTimeout(callback, 0);
 };
