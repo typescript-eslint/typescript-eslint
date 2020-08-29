@@ -51,7 +51,9 @@
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
-    "@types/marked": "^0.7.1",
+    "@types/debug": "*",
+    "@types/marked": "^1.1.0",
+    "@types/prettier": "*",
     "chalk": "^4.0.0",
     "marked": "^1.0.0",
     "prettier": "*",

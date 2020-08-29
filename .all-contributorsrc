@@ -101,6 +101,13 @@
       "contributions": []
     },
     {
+      "login": "yeonjuan",
+      "name": "YeonJuan",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/41323220?v=4",
+      "profile": "https://github.com/yeonjuan",
+      "contributions": []
+    },
+    {
       "login": "kaicataldo",
       "name": "Kai Cataldo",
       "avatar_url": "https://avatars2.githubusercontent.com/u/7041728?v=4",
@@ -126,13 +133,6 @@
       "name": "Lucas Azzola",
       "avatar_url": "https://avatars3.githubusercontent.com/u/1297597?v=4",
       "profile": "https://github.com/azz",
-      "contributions": []
-    },
-    {
-      "login": "yeonjuan",
-      "name": "YeonJuan",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/41323220?v=4",
-      "profile": "https://github.com/yeonjuan",
       "contributions": []
     },
     {
@@ -178,6 +178,13 @@
       "contributions": []
     },
     {
+      "login": "octogonz",
+      "name": "Pete Gonzalez",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/4673363?v=4",
+      "profile": "https://github.com/octogonz",
+      "contributions": []
+    },
+    {
       "login": "ldrick",
       "name": "Ricky Lippmann",
       "avatar_url": "https://avatars3.githubusercontent.com/u/3674067?v=4",
@@ -189,6 +196,13 @@
       "name": "Simen Bekkhus",
       "avatar_url": "https://avatars1.githubusercontent.com/u/1404810?v=4",
       "profile": "https://github.com/SimenB",
+      "contributions": []
+    },
+    {
+      "login": "cherryblossom000",
+      "name": "cherryblossom000",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/31467609?v=4",
+      "profile": "https://github.com/cherryblossom000",
       "contributions": []
     },
     {
@@ -231,13 +245,6 @@
       "name": "Pavel Birukov ",
       "avatar_url": "https://avatars2.githubusercontent.com/u/1861546?v=4",
       "profile": "https://github.com/pablobirukov",
-      "contributions": []
-    },
-    {
-      "login": "octogonz",
-      "name": "Pete Gonzalez",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/4673363?v=4",
-      "profile": "https://github.com/octogonz",
       "contributions": []
     },
     {
@@ -329,13 +336,6 @@
       "name": "Bence Dányi",
       "avatar_url": "https://avatars2.githubusercontent.com/u/296735?v=4",
       "profile": "https://github.com/madbence",
-      "contributions": []
-    },
-    {
-      "login": "dependabot[bot]",
-      "name": "dependabot[bot]",
-      "avatar_url": "https://avatars0.githubusercontent.com/in/29110?v=4",
-      "profile": "https://github.com/apps/dependabot",
       "contributions": []
     }
   ],
