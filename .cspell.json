@@ -94,7 +94,8 @@
     "typedef",
     "typedefs",
     "unfixable",
-    "unprefixed"
+    "unprefixed",
+    "Zacher"
   ],
   "overrides": [
     {
