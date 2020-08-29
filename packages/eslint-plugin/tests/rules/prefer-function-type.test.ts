@@ -43,6 +43,11 @@ interface Bar extends Function, Foo {
   (): void;
 }
     `,
+    `
+interface A<T> {
+  (arg: this): T;
+}
+    `,
   ],
 
   invalid: [
@@ -144,6 +149,85 @@ interface Foo<T> {
       ],
       output: `
 type Foo<T> = (bar: T) => string;
+      `,
+    },
+    {
+      code: `
+interface Foo<T> {
+  (this: T): void;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo<T> = (this: T) => void;
+      `,
+    },
+    {
+      code: `
+type Foo<T> = { (this: string): T };
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo<T> = (this: string) => T;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  (arg: this): void;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo = (arg: Foo) => void;
+      `,
+    },
+
+    {
+      code: `
+interface Foo {
+  (arg: number): this | undefined;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo = (arg: number) => Foo | undefined;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  (arg: this | Array<this>): Record<'a', this>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo = (arg: Foo | Array<Foo>) => Record<'a', Foo>;
       `,
     },
   ],
