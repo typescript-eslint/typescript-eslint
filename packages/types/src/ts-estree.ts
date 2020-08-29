@@ -186,11 +186,11 @@ export type Node =
   | JSXExpressionContainer
   | JSXFragment
   | JSXIdentifier
+  | JSXMemberExpression
   | JSXOpeningElement
   | JSXOpeningFragment
   | JSXSpreadAttribute
   | JSXSpreadChild
-  | JSXMemberExpression
   | JSXText
   | LabeledStatement
   | Literal
@@ -246,8 +246,8 @@ export type Node =
   | TSIndexedAccessType
   | TSIndexSignature
   | TSInferType
-  | TSInterfaceDeclaration
   | TSInterfaceBody
+  | TSInterfaceDeclaration
   | TSInterfaceHeritage
   | TSIntersectionType
   | TSLiteralType
@@ -255,6 +255,7 @@ export type Node =
   | TSMethodSignature
   | TSModuleBlock
   | TSModuleDeclaration
+  | TSNamedTupleMember
   | TSNamespaceExportDeclaration
   | TSNeverKeyword
   | TSNonNullExpression
@@ -264,10 +265,10 @@ export type Node =
   | TSOptionalType
   | TSParameterProperty
   | TSParenthesizedType
-  | TSPropertySignature
-  | TSPublicKeyword
   | TSPrivateKeyword
+  | TSPropertySignature
   | TSProtectedKeyword
+  | TSPublicKeyword
   | TSQualifiedName
   | TSReadonlyKeyword
   | TSRestType
@@ -291,8 +292,8 @@ export type Node =
   | TSUnionType
   | TSUnknownKeyword
   | TSVoidKeyword
-  | UpdateExpression
   | UnaryExpression
+  | UpdateExpression
   | VariableDeclaration
   | VariableDeclarator
   | WhileStatement
@@ -525,6 +526,7 @@ export type TypeNode =
   | TSIntersectionType
   | TSLiteralType
   | TSMappedType
+  | TSNamedTupleMember
   | TSNeverKeyword
   | TSNullKeyword
   | TSNumberKeyword
@@ -539,8 +541,8 @@ export type TypeNode =
   | TSTypeLiteral
   | TSTypeOperator
   | TSTypePredicate
-  | TSTypeReference
   | TSTypeQuery
+  | TSTypeReference
   | TSUndefinedKeyword
   | TSUnionType
   | TSUnknownKeyword
@@ -1601,6 +1603,13 @@ export interface TSSymbolKeyword extends BaseNode {
 
 export interface TSThisType extends BaseNode {
   type: AST_NODE_TYPES.TSThisType;
+}
+
+export interface TSNamedTupleMember extends BaseNode {
+  type: AST_NODE_TYPES.TSNamedTupleMember;
+  elementType: TypeNode;
+  label: Identifier;
+  optional: boolean;
 }
 
 export interface TSTupleType extends BaseNode {

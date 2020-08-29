@@ -69,6 +69,20 @@ type TAssign = () => Set<string>;
 const assignability2: TAssign = () => new Set(['foo']);
 ```
 
+There are cases where the rule allows to return `any` to `unknown`.
+
+Examples of `any` to `unknown` return that are allowed.
+
+```ts
+function foo1(): unknown {
+  return JSON.parse(singleObjString); // Return type for JSON.parse is any.
+}
+
+function foo2(): unknown[] {
+  return [] as any[];
+}
+```
+
 ## Related to
 
 - [`no-explicit-any`](./no-explicit-any.md)

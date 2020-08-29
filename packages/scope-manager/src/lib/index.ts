@@ -45,6 +45,7 @@ import { es2020_bigint } from './es2020.bigint';
 import { es2020_promise } from './es2020.promise';
 import { es2020_string } from './es2020.string';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
+import { es2020_intl } from './es2020.intl';
 import { esnext_array } from './esnext.array';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -104,6 +105,7 @@ const lib = {
   'es2020.promise': es2020_promise,
   'es2020.string': es2020_string,
   'es2020.symbol.wellknown': es2020_symbol_wellknown,
+  'es2020.intl': es2020_intl,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,

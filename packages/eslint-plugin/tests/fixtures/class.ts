@@ -8,3 +8,6 @@ export const console = { log() {} };
 export class Reducable {
   reduce() {}
 }
+
+// used by no-implied-eval test function imports
+export class Function {}

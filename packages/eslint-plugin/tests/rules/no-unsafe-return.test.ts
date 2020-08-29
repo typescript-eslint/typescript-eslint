@@ -77,6 +77,21 @@ function foo(): Set<number> {
         return x;
       }
     `,
+    `
+      function fn<T extends any>(x: T): unknown {
+        return x as any;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): unknown[] {
+        return x as any[];
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): Set<unknown> {
+        return x as Set<any>;
+      }
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({

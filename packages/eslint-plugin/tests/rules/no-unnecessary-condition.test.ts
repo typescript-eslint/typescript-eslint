@@ -445,6 +445,51 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (!latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+function test(testVal?: boolean) {
+  if (testVal ?? true) {
+    console.log('test');
+  }
+}
+    `,
+    `
+declare const x: string[];
+if (!x[0]) {
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2421
+    `
+const isEven = (val: number) => val % 2 === 0;
+if (!isEven(1)) {
+}
+    `,
+    `
+declare const booleanTyped: boolean;
+declare const unknownTyped: unknown;
+
+if (!(booleanTyped || unknownTyped)) {
+}
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1366,6 +1411,55 @@ function Foo(outer: Outer, key: Bar): number | undefined {
           endColumn: 30,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2384
+    {
+      code: `
+function test(testVal?: true) {
+  if (testVal ?? true) {
+    console.log('test');
+  }
+}
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 7,
+          endColumn: 22,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2255
+    {
+      code: `
+const a = null;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 6, 'alwaysTruthy')],
+    },
+    {
+      code: `
+const a = true;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 6, 'alwaysFalsy')],
+    },
+    {
+      code: `
+function sayHi(): void {
+  console.log('Hi!');
+}
+
+let speech: never = sayHi();
+if (!speech) {
+}
+      `,
+      errors: [ruleError(7, 6, 'never')],
     },
   ],
 });

@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
   JSONSchema,
-  TSESTree,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -111,7 +111,9 @@ interface Selector {
   prefix?: string[];
   suffix?: string[];
   // selector options
-  selector: IndividualAndMetaSelectorsString;
+  selector:
+    | IndividualAndMetaSelectorsString
+    | IndividualAndMetaSelectorsString[];
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
   filter?:
@@ -249,10 +251,60 @@ function selectorSchema(
     },
   ];
 }
+
+function selectorsSchema(): JSONSchema.JSONSchema4 {
+  return {
+    type: 'object',
+    properties: {
+      ...FORMAT_OPTIONS_PROPERTIES,
+      ...{
+        filter: {
+          oneOf: [
+            {
+              type: 'string',
+              minLength: 1,
+            },
+            MATCH_REGEX_SCHEMA,
+          ],
+        },
+        selector: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: [
+              ...util.getEnumNames(MetaSelectors),
+              ...util.getEnumNames(Selectors),
+            ],
+          },
+          additionalItems: false,
+        },
+      },
+    },
+    modifiers: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: util.getEnumNames(Modifiers),
+      },
+      additionalItems: false,
+    },
+    types: {
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: util.getEnumNames(TypeModifiers),
+      },
+      additionalItems: false,
+    },
+    required: ['selector', 'format'],
+    additionalProperties: false,
+  };
+}
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
     oneOf: [
+      selectorsSchema(),
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),
@@ -765,15 +817,15 @@ type ValidatorFunction = (
 ) => void;
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
+
 function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.map(opt => normalizeOption(opt));
-  const parsedOptions = util.getEnumNames(Selectors).reduce((acc, k) => {
+  return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
   }, {} as ParsedOptions);
-
-  return parsedOptions;
 }
+
 function createValidator(
   type: SelectorsString,
   context: Context,
@@ -1219,7 +1271,7 @@ function normalizeOption(option: Selector): NormalizedSelector {
     weight |= 1 << 30;
   }
 
-  return {
+  const normalizedOption = {
     // format options
     format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     custom: option.custom
@@ -1238,10 +1290,6 @@ function normalizeOption(option: Selector): NormalizedSelector {
         : null,
     prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
     suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
-    // selector options
-    selector: isMetaSelector(option.selector)
-      ? MetaSelectors[option.selector]
-      : Selectors[option.selector],
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
     types: option.types?.map(m => TypeModifiers[m]) ?? null,
     filter:
@@ -1255,6 +1303,21 @@ function normalizeOption(option: Selector): NormalizedSelector {
         : null,
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
+  };
+
+  const selectors = Array.isArray(option.selector)
+    ? option.selector
+    : [option.selector];
+
+  return {
+    selector: selectors
+      .map(selector =>
+        isMetaSelector(selector)
+          ? MetaSelectors[selector]
+          : Selectors[selector],
+      )
+      .reduce((accumulator, selector) => accumulator | selector),
+    ...normalizedOption,
   };
 }
 

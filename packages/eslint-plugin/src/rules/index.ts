@@ -31,6 +31,7 @@ import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
+import noImplicitAnyCatch from './no-implicit-any-catch';
 import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
@@ -70,6 +71,7 @@ import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
 import preferAsConst from './prefer-as-const';
+import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -132,6 +134,7 @@ export default {
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
+  'no-implicit-any-catch': noImplicitAnyCatch,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
   'no-extra-semi': noExtraSemi,
@@ -169,6 +172,7 @@ export default {
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
   'prefer-as-const': preferAsConst,
+  'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,

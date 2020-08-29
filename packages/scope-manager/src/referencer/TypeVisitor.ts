@@ -145,6 +145,11 @@ class TypeVisitor extends Visitor {
     this.visitFunctionType(node);
   }
 
+  protected TSNamedTupleMember(node: TSESTree.TSNamedTupleMember): void {
+    this.visit(node.elementType);
+    // we don't visit the label as the label only exists for the purposes of documentation
+  }
+
   protected TSPropertySignature(node: TSESTree.TSPropertySignature): void {
     this.visitPropertyKey(node);
     this.visit(node.typeAnnotation);

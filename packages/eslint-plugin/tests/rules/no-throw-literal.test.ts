@@ -101,14 +101,17 @@ function foo() {
   throw Object.assign(new Error('message'), { foo: 'bar' });
 }
     `,
-    {
-      code: `
+    `
 const foo: Error | SyntaxError = bar();
 function bar() {
   throw foo;
 }
-      `,
-    },
+    `,
+    `
+declare const foo: Error | string;
+throw foo as Error;
+    `,
+    'throw new Error() as Error;',
   ],
   invalid: [
     {
@@ -389,6 +392,13 @@ function bar() {
           messageId: 'object',
         },
       ],
+    },
+    {
+      code: `
+declare const foo: Error | string;
+throw foo as string;
+      `,
+      errors: [{ messageId: 'object' }],
     },
   ],
 });

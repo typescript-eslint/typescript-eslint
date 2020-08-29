@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] correct regression with unary negations ([#2422](https://github.com/typescript-eslint/typescript-eslint/issues/2422)) ([d1f0887](https://github.com/typescript-eslint/typescript-eslint/commit/d1f08879338c825a1a20406fe47c051a287d6519)), closes [#2421](https://github.com/typescript-eslint/typescript-eslint/issues/2421)
+
+
+
+
+
+# [3.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.1...v3.10.0) (2020-08-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] ignore abstract setters ([#2410](https://github.com/typescript-eslint/typescript-eslint/issues/2410)) ([3764248](https://github.com/typescript-eslint/typescript-eslint/commit/3764248084455409f085c5bc4706079405cef618))
+* **eslint-plugin:** [explicit-module-boundary-types] ignore all bodyless setters ([#2413](https://github.com/typescript-eslint/typescript-eslint/issues/2413)) ([a53f8c6](https://github.com/typescript-eslint/typescript-eslint/commit/a53f8c6ff37aa47b3fc1b729e359d81ea079ff75))
+* **eslint-plugin:** [no-unnecessary-condition] better handling for unary negation ([#2382](https://github.com/typescript-eslint/typescript-eslint/issues/2382)) ([32fe2bb](https://github.com/typescript-eslint/typescript-eslint/commit/32fe2bb4fe5524355eef4f3a9bd85c824e9d7f46))
+
+
+### Features
+
+* **eslint-plugin:** add `no-implicit-any-catch` rule ([#2202](https://github.com/typescript-eslint/typescript-eslint/issues/2202)) ([fde89d4](https://github.com/typescript-eslint/typescript-eslint/commit/fde89d4d392ef35cac2bc09f2774bfe397b20100))
+
+
+
+
+
+## [3.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.0...v3.9.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] fix false positive with nullish coalescing ([#2385](https://github.com/typescript-eslint/typescript-eslint/issues/2385)) ([092c969](https://github.com/typescript-eslint/typescript-eslint/commit/092c96967fd9b58fb2d8d325e1dbc750ccbeb746))
+* **eslint-plugin:** [prefer-includes] don't auto fix when `test` method's argument type doesn't have an 'includes' method ([#2391](https://github.com/typescript-eslint/typescript-eslint/issues/2391)) ([71c4c72](https://github.com/typescript-eslint/typescript-eslint/commit/71c4c729e90e308e0afd70af7db5e9d9ff238527))
+
+
+
+
+
+# [3.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.8.0...v3.9.0) (2020-08-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-throw-literal] support type assertions ([#2354](https://github.com/typescript-eslint/typescript-eslint/issues/2354)) ([470174a](https://github.com/typescript-eslint/typescript-eslint/commit/470174ad51fdb12d82129a896559075513f6c912))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-assignment/return] allow assigning any => unknown ([#2371](https://github.com/typescript-eslint/typescript-eslint/issues/2371)) ([e7528e6](https://github.com/typescript-eslint/typescript-eslint/commit/e7528e686f5fe5cce8504fc15d3cd06b8733712e))
+* **typescript-estree:** support TSv4 labelled tuple members ([#2378](https://github.com/typescript-eslint/typescript-eslint/issues/2378)) ([00d84ff](https://github.com/typescript-eslint/typescript-eslint/commit/00d84ffbcbe9d0ec98bdb2f2ce59959a27ce4dbe))
+
+
+
+
+
+# [3.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.1...v3.8.0) (2020-08-03)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-implied-eval] don't report when `Function` is imported ([#2348](https://github.com/typescript-eslint/typescript-eslint/issues/2348)) ([fa169e7](https://github.com/typescript-eslint/typescript-eslint/commit/fa169e79661821f0e0e64a56d6db9da42c3c8654))
+* **eslint-plugin:** [no-unsafe-assignment] fix typo in message ([#2347](https://github.com/typescript-eslint/typescript-eslint/issues/2347)) ([2027bb1](https://github.com/typescript-eslint/typescript-eslint/commit/2027bb11689b76c297f93ba8a918b35fe68e5b9d))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] allow specifying an array of selectors ([#2335](https://github.com/typescript-eslint/typescript-eslint/issues/2335)) ([3ef6bd5](https://github.com/typescript-eslint/typescript-eslint/commit/3ef6bd5cadc225e42ef1330d15919a39f53f2a2b))
+* **eslint-plugin:** add `prefer-enum-initializers` rule ([#2326](https://github.com/typescript-eslint/typescript-eslint/issues/2326)) ([4f38ea3](https://github.com/typescript-eslint/typescript-eslint/commit/4f38ea39c97289db11501d6368d01db8c5787257))
+
+
+
+
+
 ## [3.7.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.7.0...v3.7.1) (2020-07-27)
 
 

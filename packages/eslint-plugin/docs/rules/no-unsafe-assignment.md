@@ -56,6 +56,16 @@ const x: Set<string[]> = new Set<string[]>();
 const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
 ```
 
+There are cases where the rule allows assignment of `any` to `unknown`.
+
+Example of `any` to `unknown` assignment that are allowed.
+
+```ts
+const x: unknown = y as any;
+const x: unknown[] = y as any[];
+const x: Set<unknown> = y as Set<any>;
+```
+
 ## Related to
 
 - [`no-explicit-any`](./no-explicit-any.md)

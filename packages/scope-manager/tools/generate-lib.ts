@@ -121,7 +121,6 @@ function main(): void {
         comment: true,
         loc: true,
         range: true,
-        sourceType: 'module',
       },
     );
 
