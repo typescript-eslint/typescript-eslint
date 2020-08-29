@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] correct regression with unary negations ([#2422](https://github.com/typescript-eslint/typescript-eslint/issues/2422)) ([d1f0887](https://github.com/typescript-eslint/typescript-eslint/commit/d1f08879338c825a1a20406fe47c051a287d6519)), closes [#2421](https://github.com/typescript-eslint/typescript-eslint/issues/2421)
+
+
+
+
+
+# [3.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.1...v3.10.0) (2020-08-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] ignore abstract setters ([#2410](https://github.com/typescript-eslint/typescript-eslint/issues/2410)) ([3764248](https://github.com/typescript-eslint/typescript-eslint/commit/3764248084455409f085c5bc4706079405cef618))
+* **eslint-plugin:** [explicit-module-boundary-types] ignore all bodyless setters ([#2413](https://github.com/typescript-eslint/typescript-eslint/issues/2413)) ([a53f8c6](https://github.com/typescript-eslint/typescript-eslint/commit/a53f8c6ff37aa47b3fc1b729e359d81ea079ff75))
+* **eslint-plugin:** [no-unnecessary-condition] better handling for unary negation ([#2382](https://github.com/typescript-eslint/typescript-eslint/issues/2382)) ([32fe2bb](https://github.com/typescript-eslint/typescript-eslint/commit/32fe2bb4fe5524355eef4f3a9bd85c824e9d7f46))
+
+
+### Features
+
+* **eslint-plugin:** add `no-implicit-any-catch` rule ([#2202](https://github.com/typescript-eslint/typescript-eslint/issues/2202)) ([fde89d4](https://github.com/typescript-eslint/typescript-eslint/commit/fde89d4d392ef35cac2bc09f2774bfe397b20100))
+
+
+
+
+
 ## [3.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.0...v3.9.1) (2020-08-17)
 
 

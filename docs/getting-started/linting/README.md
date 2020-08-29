@@ -131,6 +131,7 @@ Using this config is as simple as adding it to the end of your `extends`:
     extends: [
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
++     'prettier',
 +     'prettier/@typescript-eslint',
     ],
   };

@@ -445,12 +445,49 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2384
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (!latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
     `
 function test(testVal?: boolean) {
   if (testVal ?? true) {
     console.log('test');
   }
+}
+    `,
+    `
+declare const x: string[];
+if (!x[0]) {
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2421
+    `
+const isEven = (val: number) => val % 2 === 0;
+if (!isEven(1)) {
+}
+    `,
+    `
+declare const booleanTyped: boolean;
+declare const unknownTyped: unknown;
+
+if (!(booleanTyped || unknownTyped)) {
 }
     `,
   ],
@@ -1394,6 +1431,35 @@ function test(testVal?: true) {
           endColumn: 22,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2255
+    {
+      code: `
+const a = null;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 6, 'alwaysTruthy')],
+    },
+    {
+      code: `
+const a = true;
+if (!a) {
+}
+      `,
+      errors: [ruleError(3, 6, 'alwaysFalsy')],
+    },
+    {
+      code: `
+function sayHi(): void {
+  console.log('Hi!');
+}
+
+let speech: never = sayHi();
+if (!speech) {
+}
+      `,
+      errors: [ruleError(7, 6, 'never')],
     },
   ],
 });

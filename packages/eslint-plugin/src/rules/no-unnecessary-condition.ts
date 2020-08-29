@@ -165,7 +165,18 @@ export default createRule<Options, MessageId>({
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
-    function checkNode(node: TSESTree.Expression): void {
+    function checkNode(
+      node: TSESTree.Expression,
+      isUnaryNotArgument = false,
+    ): void {
+      // Check if the node is Unary Negation expression and handle it
+      if (
+        node.type === AST_NODE_TYPES.UnaryExpression &&
+        node.operator === '!'
+      ) {
+        return checkNode(node.argument, true);
+      }
+
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
@@ -200,13 +211,15 @@ export default createRule<Options, MessageId>({
       ) {
         return;
       }
-      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
-        ? 'never'
-        : !isPossiblyTruthy(type)
-        ? 'alwaysFalsy'
-        : !isPossiblyFalsy(type)
-        ? 'alwaysTruthy'
-        : undefined;
+      let messageId: MessageId | null = null;
+
+      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
+        messageId = 'never';
+      } else if (!isPossiblyTruthy(type)) {
+        messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
+      } else if (!isPossiblyFalsy(type)) {
+        messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
+      }
 
       if (messageId) {
         context.report({ node, messageId });
@@ -225,13 +238,15 @@ export default createRule<Options, MessageId>({
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return;
       }
-      const messageId = isTypeFlagSet(type, ts.TypeFlags.Never)
-        ? 'never'
-        : !isPossiblyNullish(type)
-        ? 'neverNullish'
-        : isAlwaysNullish(type)
-        ? 'alwaysNullish'
-        : undefined;
+
+      let messageId: MessageId | null = null;
+      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
+        messageId = 'never';
+      } else if (!isPossiblyNullish(type)) {
+        messageId = 'neverNullish';
+      } else if (isAlwaysNullish(type)) {
+        messageId = 'alwaysNullish';
+      }
 
       if (messageId) {
         context.report({ node, messageId });
