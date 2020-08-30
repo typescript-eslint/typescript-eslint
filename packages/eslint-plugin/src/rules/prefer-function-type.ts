@@ -18,6 +18,8 @@ export default util.createRule({
     messages: {
       functionTypeOverCallableType:
         "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead.",
+      unexpectedThisOnFunctionOnlyInterface:
+        'this refers to the function type {{ interfaceName }}, did you intend to use a generic this parameter like <Self>(this: Self, ...) => Self instead?',
     },
     schema: [],
     type: 'suggestion',
@@ -61,45 +63,8 @@ export default util.createRule({
           return false;
       }
     }
-    /**
-     * replaces uses of the 'this' keyword to refer to the interface name
-     * so the auto suggestion works as a recursive definition.
-     * Note that if the interface takes generics then 'interfaceName' would
-     * need to be formatted like `Array<T>` in order for the replacements to work
-     * @param start start index of source code of relevant text to replace
-     * @param origColonPos the position of the colon before replacement
-     * @param text text to replace, the call signature text specifically
-     * @param thisRefs list of nodes corresponding to the 'this' type
-     * @param interfaceName name of interface, to replace 'this' with.
-     * @returns the new colon position and new text after replacement
-     */
-    function replaceThisRefs(
-      start: number,
-      origColonPos: number,
-      text: string,
-      thisRefs: TSESTree.TSThisType[],
-      interfaceName: string,
-    ): [number, string] {
-      let newText = text;
-      let newColonPos = origColonPos;
-      // go over occurrences backward to not screw up text index.
-      for (let idx = thisRefs.length - 1; idx >= 0; idx--) {
-        // range is in span of text file, subtracting start gives it in index of text.
-        const [a, b] = thisRefs[idx].range.map(n => n - start);
-        if (a < origColonPos) {
-          // replacing `this` with the interface name before the colon changes the colon position
-          // forwards by the interface name minus the length of this
-          newColonPos += interfaceName.length - 4; /*'this'.length*/
-        }
-        newText = newText.slice(0, a) + interfaceName + newText.slice(b);
-      }
-      return [newColonPos, newText];
-    }
 
     /**
-     * note that if parent is an interface with generics and tsThisTypes isn't empty
-     * then the 'this' references are not replaced, it is expected that checkMember
-     * will ensure that doesn't happen
      * @param call The call signature causing the diagnostic
      * @param parent The parent of the call
      * @returns The suggestion to report
@@ -109,27 +74,11 @@ export default util.createRule({
         | TSESTree.TSCallSignatureDeclaration
         | TSESTree.TSConstructSignatureDeclaration,
       parent: TSESTree.Node,
-      tsThisTypes?: TSESTree.TSThisType[],
     ): string {
       const start = call.range[0];
-      let colonPos = call.returnType!.range[0] - start;
-      let text = sourceCode.getText().slice(start, call.range[1]);
+      const colonPos = call.returnType!.range[0] - start;
+      const text = sourceCode.getText().slice(start, call.range[1]);
 
-      // if there are references to 'this' replace them with interface name
-      if (
-        tsThisTypes !== undefined &&
-        tsThisTypes.length > 0 &&
-        parent.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-        typeof parent.typeParameters === 'undefined'
-      ) {
-        [colonPos, text] = replaceThisRefs(
-          start,
-          colonPos,
-          text,
-          tsThisTypes,
-          parent.id.name,
-        );
-      }
       let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
         colonPos + 1,
       )}`;
@@ -158,27 +107,30 @@ export default util.createRule({
     function checkMember(
       member: TSESTree.TypeElement,
       node: TSESTree.Node,
-      tsThisTypes?: TSESTree.TSThisType[],
+      tsThisTypes: TSESTree.TSThisType[] | null = null,
     ): void {
-      if (
-        (tsThisTypes?.length ?? 0) > 0 &&
-        node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-        typeof node.typeParameters !== 'undefined'
-      ) {
-        // if the interface uses type parameters and refers to 'this' the suggested replacement
-        // is fairly complicated since now we'd have to replace each 'this' with `A<P,K>` etc.
-        // and the way it is replaced in renderSuggestion is just grabbing the entire parameter string
-        // including `extends` and defaults, so we'd have to actually parse through to re-construct
-        // the recursive type alias which for such an edge case doesn't seem worth implementing.
-        // TODO: should still probably make report without fix offered.
-        return;
-      }
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
         typeof member.returnType !== 'undefined'
       ) {
-        const suggestion = renderSuggestion(member, node, tsThisTypes);
+        if (
+          tsThisTypes !== null &&
+          tsThisTypes.length > 0 &&
+          node.type === AST_NODE_TYPES.TSInterfaceDeclaration
+        ) {
+          // the message can be confusing if we don't point directly to the `this` node instead of the whole member
+          // and in favour of generating at most one error we'll only report the first occurrence of `this` if there are multiple
+          context.report({
+            node: tsThisTypes[0],
+            messageId: 'unexpectedThisOnFunctionOnlyInterface',
+            data: {
+              interfaceName: node.id.name,
+            },
+          });
+          return;
+        }
+        const suggestion = renderSuggestion(member, node);
         const fixStart =
           node.type === AST_NODE_TYPES.TSTypeLiteral
             ? node.range[0]
@@ -216,20 +168,20 @@ export default util.createRule({
         tsThisTypes = [];
       },
       'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
-        // inside an interface keep track of all ThisType references.
-        tsThisTypes?.push(node);
+        // inside an interface keep track of all ThisType references. the selector is setup
+        // so this is only triggered when tsThisTypes is a valid array, hence null assertion.
+        tsThisTypes!.push(node);
       },
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
       ): void {
         if (!hasOneSupertype(node) && node.body.body.length === 1) {
-          checkMember(node.body.body[0], node, tsThisTypes ?? undefined);
+          checkMember(node.body.body[0], node, tsThisTypes);
         }
         // on exit check member and reset the array to nothing.
         tsThisTypes = null;
       },
       'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral): void {
-        // we don't need to check for `this` inside type literals since it's not valid.
         checkMember(node.members[0], node);
       },
     };
