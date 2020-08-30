@@ -353,8 +353,8 @@ declare module 'eslint/lib/rules/no-shadow' {
     [
       {
         builtinGlobals?: boolean;
-        hoist: 'all' | 'functions' | 'never';
-        allow: string[];
+        hoist?: 'all' | 'functions' | 'never';
+        allow?: string[];
       },
     ],
     {
@@ -386,7 +386,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
 
   const rule: TSESLint.RuleModule<
     'unusedVar',
-    (
+    [
       | 'all'
       | 'local'
       | {
@@ -397,8 +397,8 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
-        }
-    )[],
+        },
+    ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }

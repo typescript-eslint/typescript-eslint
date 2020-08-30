@@ -411,21 +411,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      * https://github.com/babel/babel/issues/11939
      */
     'catch-clause-with-annotation',
-
-    /**
-     * Optional chaining
-     * Babel has updated to ESTree's representation, and we haven't yet
-     * TODO: remove this with the v4 release
-     */
-    'optional-chain-call-with-non-null-assertion',
-    'optional-chain-call-with-parens',
-    'optional-chain-call',
-    'optional-chain-element-access-with-non-null-assertion',
-    'optional-chain-element-access-with-parens',
-    'optional-chain-element-access',
-    'optional-chain-with-non-null-assertion',
-    'optional-chain-with-parens',
-    'optional-chain',
   ],
   ignoreSourceType: [
     /**
@@ -479,14 +464,6 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * Optional chaining
-     * Babel has updated to ESTree's representation, and we haven't yet
-     * TODO: remove this with the v4 release
-     */
-    'optional-call-expression-type-arguments',
-  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {

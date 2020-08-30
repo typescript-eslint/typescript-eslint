@@ -10,6 +10,7 @@ import commaSpacing from './comma-spacing';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
+import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
 import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
@@ -51,7 +52,9 @@ import noNamespace from './no-namespace';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
+import noRedeclare from './no-redeclare';
 import noRequireImports from './no-require-imports';
+import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
@@ -115,6 +118,7 @@ export default {
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
+  'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
   'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
@@ -153,7 +157,9 @@ export default {
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
+  'no-redeclare': noRedeclare,
   'no-require-imports': noRequireImports,
+  'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,

@@ -214,6 +214,7 @@ module.exports = {
         'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
         'packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
         'packages/eslint-plugin/tests/rules/**/*.test.ts',
+        'packages/eslint-plugin/tests/eslint-rules/**/*.test.ts',
       ],
       rules: {
         '@typescript-eslint/internal/plugin-test-formatting': 'error',

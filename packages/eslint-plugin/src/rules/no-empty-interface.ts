@@ -1,8 +1,5 @@
 import * as util from '../util';
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -81,12 +78,7 @@ export default util.createRule<Options, MessageIds>({
             let useAutoFix = true;
             if (util.isDefinitionFile(filename)) {
               const scope = context.getScope();
-              if (
-                scope.block.parent &&
-                scope.block.parent.type ===
-                  AST_NODE_TYPES.TSModuleDeclaration &&
-                scope.block.parent.declare
-              ) {
+              if (scope.type === 'tsModule' && scope.block.declare) {
                 useAutoFix = false;
               }
             }

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/typedef';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -263,9 +263,8 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
-          // prettier-ignore
           [i: string];
         };
       `,
@@ -492,6 +491,11 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          arrowParameter: true,
+        },
+      ],
     },
     {
       code: 'const receivesStrings = (a, b): void => {};',
@@ -503,6 +507,11 @@ class Foo {
         {
           data: { name: 'b' },
           messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          arrowParameter: true,
         },
       ],
     },
@@ -519,6 +528,11 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          memberVariableDeclaration: true,
+        },
+      ],
     },
     {
       code: `
@@ -531,6 +545,11 @@ class Foo {
           messageId: 'expectedTypedef',
         },
       ],
+      options: [
+        {
+          memberVariableDeclaration: true,
+        },
+      ],
     },
     // Function parameters
     {
@@ -539,6 +558,11 @@ class Foo {
         {
           data: { name: 'a' },
           messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          parameter: true,
         },
       ],
     },
@@ -554,6 +578,11 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: 'function receivesNumber([a]): void {}',
@@ -561,6 +590,11 @@ class Foo {
         {
           column: 25,
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          parameter: true,
         },
       ],
     },
@@ -572,6 +606,11 @@ class Foo {
           messageId: 'expectedTypedef',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: 'function receivesString({ a }): void {}',
@@ -581,6 +620,11 @@ class Foo {
           messageId: 'expectedTypedef',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: 'function receivesStrings({ a, b }): void {}',
@@ -588,6 +632,11 @@ class Foo {
         {
           column: 26,
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          parameter: true,
         },
       ],
     },
@@ -604,6 +653,11 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: `
@@ -617,6 +671,11 @@ class Foo {
           messageId: 'expectedTypedef',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: `
@@ -628,6 +687,11 @@ class Foo {
         {
           column: 23,
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          parameter: true,
         },
       ],
     },
@@ -646,6 +710,11 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: `
@@ -661,6 +730,11 @@ class Foo {
           messageId: 'expectedTypedef',
         },
       ],
+      options: [
+        {
+          parameter: true,
+        },
+      ],
     },
     {
       code: `
@@ -672,6 +746,11 @@ class Foo {
         {
           column: 30,
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          parameter: true,
         },
       ],
     },
@@ -688,17 +767,26 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          propertyDeclaration: true,
+        },
+      ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
-          // prettier-ignore
           [i: string];
         };
       `,
       errors: [
         {
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          propertyDeclaration: true,
         },
       ],
     },
@@ -714,17 +802,26 @@ class Foo {
           messageId: 'expectedTypedefNamed',
         },
       ],
+      options: [
+        {
+          propertyDeclaration: true,
+        },
+      ],
     },
     {
-      code: `
+      code: noFormat`
         interface Test {
-          // prettier-ignore
           [i: string];
         }
       `,
       errors: [
         {
           messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          propertyDeclaration: true,
         },
       ],
     },
@@ -879,6 +976,7 @@ class Foo {
       ],
       options: [
         {
+          memberVariableDeclaration: true,
           variableDeclaration: true,
           variableDeclarationIgnoreFunction: false,
         },

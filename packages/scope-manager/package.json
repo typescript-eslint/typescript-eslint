@@ -43,12 +43,13 @@
     "@typescript-eslint/visitor-keys": "3.10.1"
   },
   "devDependencies": {
+    "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "3.10.1",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "*",
-    "pretty-format": "^25.5.0",
+    "pretty-format": "^26.4.2",
     "rimraf": "*",
     "typescript": "*"
   },
