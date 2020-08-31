@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** update parser dependency range ([#2445](https://github.com/typescript-eslint/typescript-eslint/issues/2445)) ([2cb6620](https://github.com/typescript-eslint/typescript-eslint/commit/2cb66205de797479d9b2d362652c42fe032e913b)), closes [#2444](https://github.com/typescript-eslint/typescript-eslint/issues/2444)
+
+
+
+
+
 # [4.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.1...v4.0.0) (2020-08-31)
 
 
