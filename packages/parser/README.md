@@ -51,9 +51,13 @@ The following additional configuration options are available by specifying them 
 interface ParserOptions {
   ecmaFeatures?: {
     jsx?: boolean;
+    globalReturn?: boolean;
   };
+  ecmaVersion?: number;
+  lib?: string[];
+
   project?: string | string[];
-  projectFolderIgnoreList?: (string | RegExp)[];
+  projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -76,6 +80,32 @@ Enable parsing JSX when `true`. More details can be found [here](https://www.typ
   - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
   - `.ts` files are parsed as if this is false.
   - "unknown" extensions (`.md`, `.vue`) **are parsed as if this is false**.
+
+### `parserOptions.ecmaFeatures.globalReturn`
+
+Default `false`.
+
+This options allows you to tell the parser if you want to allow global `return` statements in your codebase.
+
+### `parserOptions.ecmaVersion`
+
+Default `2018`.
+
+Accepts any valid ECMAScript version number:
+
+- A version: es3, es5, es6, es7, es8, es9, es10, es11, ..., or
+- A year: es2015, es2016, es2017, es2018, es2019, es2020, ...
+
+Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
+
+### `parserOptions.lib`
+
+Default `['es2018']`
+
+For valid options, see the [TypeScript compiler options](https://www.typescriptlang.org/tsconfig#lib).
+
+Specifies the TypeScript `lib`s that are available. This is used by the scope analyser to ensure there are global variables declared for the types exposed by TypeScript.
+If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler
 
 ### `parserOptions.project`
 
@@ -126,11 +156,12 @@ This option allows you to provide the root directory for relative tsconfig paths
 
 ### `parserOptions.projectFolderIgnoreList`
 
-Default `["/node_modules/"]`.
+Default `["**/node_modules/**"]`.
 
 This option allows you to ignore folders from being included in your provided list of `project`s.
-Any resolved project path that matches one or more of the provided regular expressions will be removed from the list.
 This is useful if you have configured glob patterns, but want to make sure you ignore certain folders.
+
+It accepts an array of globs to exclude from the `project` globs.
 
 For example, by default it will ensure that a glob like `./**/tsconfig.json` will not match any `tsconfig`s within your `node_modules` folder (some npm packages do not exclude their source files from their published packages).
 

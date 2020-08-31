@@ -26,7 +26,8 @@ function parseReadme(): {
 
   // find the table
   const rulesTables = readme.filter(
-    (token): token is marked.Tokens.Table => token.type === 'table',
+    (token): token is marked.Tokens.Table =>
+      'type' in token && token.type === 'table',
   );
   if (rulesTables.length !== 2) {
     throw Error('Could not find both rules tables in README.md');

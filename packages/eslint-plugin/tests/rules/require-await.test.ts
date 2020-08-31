@@ -209,7 +209,7 @@ const numberOne = async function (): Promise<number> {
         {
           messageId: 'missingAwait',
           data: {
-            name: 'Async arrow function',
+            name: "Async arrow function 'numberOne'",
           },
         },
       ],

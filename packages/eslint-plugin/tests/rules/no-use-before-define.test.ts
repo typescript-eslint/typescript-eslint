@@ -220,25 +220,6 @@ type Foo = string | number;
       options: [{ typedefs: false }],
     },
 
-    // test for https://github.com/bradzacher/eslint-plugin-typescript/issues/142
-    {
-      code: `
-var alias = Test;
-
-class Test {}
-      `,
-      parserOptions,
-      options: [{ classes: false }],
-    },
-    {
-      code: `
-var alias = Test;
-
-export class Test {}
-      `,
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      options: [{ classes: false }],
-    },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
     {
       code: `
@@ -861,6 +842,8 @@ enum Foo {
       errors: [
         {
           messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+          line: 4,
         },
       ],
     },
@@ -878,6 +861,8 @@ enum Foo {
       errors: [
         {
           messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+          line: 3,
         },
       ],
     },
@@ -893,6 +878,8 @@ enum Foo {
       errors: [
         {
           messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+          line: 2,
         },
       ],
     },

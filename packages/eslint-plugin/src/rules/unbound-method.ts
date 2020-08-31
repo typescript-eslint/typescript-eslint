@@ -118,9 +118,8 @@ const isNotImported = (
 const getNodeName = (node: TSESTree.Node): string | null =>
   node.type === AST_NODE_TYPES.Identifier ? node.name : null;
 
-const getMemberFullName = (
-  node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-): string => `${getNodeName(node.object)}.${getNodeName(node.property)}`;
+const getMemberFullName = (node: TSESTree.MemberExpression): string =>
+  `${getNodeName(node.object)}.${getNodeName(node.property)}`;
 
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
@@ -162,9 +161,7 @@ export default util.createRule<Options, MessageIds>({
     );
 
     return {
-      'MemberExpression, OptionalMemberExpression'(
-        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-      ): void {
+      MemberExpression(node: TSESTree.MemberExpression): void {
         if (isSafeUse(node)) {
           return;
         }
@@ -271,14 +268,12 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.IfStatement:
     case AST_NODE_TYPES.ForStatement:
     case AST_NODE_TYPES.MemberExpression:
-    case AST_NODE_TYPES.OptionalMemberExpression:
     case AST_NODE_TYPES.SwitchStatement:
     case AST_NODE_TYPES.UpdateExpression:
     case AST_NODE_TYPES.WhileStatement:
       return true;
 
     case AST_NODE_TYPES.CallExpression:
-    case AST_NODE_TYPES.OptionalCallExpression:
       return parent.callee === node;
 
     case AST_NODE_TYPES.ConditionalExpression:
@@ -299,6 +294,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.AssignmentExpression:
       return parent.operator === '=' && node === parent.left;
 
+    case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSTypeAssertion:

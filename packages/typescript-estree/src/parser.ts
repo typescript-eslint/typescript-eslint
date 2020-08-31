@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { sync as globSync } from 'glob';
+import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
 import semver from 'semver';
 import * as ts from 'typescript';
@@ -113,7 +113,7 @@ function resetExtra(): void {
  */
 function prepareAndTransformProjects(
   projectsInput: string | string[] | undefined,
-  ignoreListInput: (string | RegExp)[] | undefined,
+  ignoreListInput: string[],
 ): string[] {
   let projects: string[] = [];
 
@@ -133,47 +133,21 @@ function prepareAndTransformProjects(
   }
 
   // Transform glob patterns into paths
-  projects = projects.reduce<string[]>(
-    (projects, project) =>
-      projects.concat(
-        isGlob(project)
-          ? globSync(project, {
-              cwd: extra.tsconfigRootDir,
-            })
-          : project,
-      ),
-    [],
+  const globbedProjects = projects.filter(project => isGlob(project));
+  projects = projects
+    .filter(project => !isGlob(project))
+    .concat(
+      globSync([...globbedProjects, ...ignoreListInput], {
+        cwd: extra.tsconfigRootDir,
+      }),
+    );
+
+  log(
+    'parserOptions.project (excluding ignored) matched projects: %s',
+    projects,
   );
 
-  // Normalize and sanitize the ignore regex list
-  const ignoreRegexes: RegExp[] = [];
-  if (Array.isArray(ignoreListInput)) {
-    for (const ignore of ignoreListInput) {
-      if (ignore instanceof RegExp) {
-        ignoreRegexes.push(ignore);
-      } else if (typeof ignore === 'string') {
-        ignoreRegexes.push(new RegExp(ignore));
-      }
-    }
-  } else {
-    ignoreRegexes.push(/\/node_modules\//);
-  }
-
-  // Remove any paths that match the ignore list
-  const filtered = projects.filter(project => {
-    for (const ignore of ignoreRegexes) {
-      if (ignore.test(project)) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-
-  log('parserOptions.project matched projects: %s', projects);
-  log('ignore list applied to parserOptions.project: %s', filtered);
-
-  return filtered;
+  return projects;
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
@@ -278,9 +252,18 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
   // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
+  const projectFolderIgnoreList = (options.projectFolderIgnoreList ?? [])
+    .reduce<string[]>((acc, folder) => {
+      if (typeof folder === 'string') {
+        acc.push(folder);
+      }
+      return acc;
+    }, [])
+    // prefix with a ! for not match glob
+    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
   extra.projects = prepareAndTransformProjects(
     options.project,
-    options.projectFolderIgnoreList,
+    projectFolderIgnoreList,
   );
 
   if (

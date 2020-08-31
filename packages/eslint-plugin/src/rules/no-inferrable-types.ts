@@ -53,9 +53,12 @@ export default util.createRule<Options, MessageIds>({
       init: TSESTree.Expression,
       callName: string,
     ): boolean {
+      if (init.type === AST_NODE_TYPES.ChainExpression) {
+        return isFunctionCall(init.expression, callName);
+      }
+
       return (
-        (init.type === AST_NODE_TYPES.CallExpression ||
-          init.type === AST_NODE_TYPES.OptionalCallExpression) &&
+        init.type === AST_NODE_TYPES.CallExpression &&
         init.callee.type === AST_NODE_TYPES.Identifier &&
         init.callee.name === callName
       );
