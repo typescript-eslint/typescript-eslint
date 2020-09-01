@@ -296,7 +296,7 @@ jobs:
 
       - name: Run unit tests for eslint-plugin
         run: | 
-          yarn lerna add -D eslint@${{ matrix.eslint-version}} packages/eslint-plugin
+          yarn workspace add -D @typescript-eslint/eslint-plugin eslint@${{ matrix.eslint-version}} 
           yarn test
         working-directory: packages/eslint-plugin
         env:
