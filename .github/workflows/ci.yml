@@ -234,6 +234,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 14.x]
+        eslint-version: [5, 6, 7]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -294,7 +295,9 @@ jobs:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: yarn test
+        run: | 
+          yarn lerna add -D eslint@${{ matrix.eslint-version}} packages/eslint-plugin
+          yarn test
         working-directory: packages/eslint-plugin
         env:
           CI: true
