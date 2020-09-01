@@ -271,42 +271,49 @@ jobs:
       - name: Run unit tests for typescript-estree
         run: yarn test
         working-directory: packages/typescript-estree
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
         run: yarn test
         working-directory: packages/visitor-keys
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
         run: yarn test
         working-directory: packages/scope-manager
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
         run: yarn test
         working-directory: packages/experimental-utils
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for parser
         run: yarn test
         working-directory: packages/parser
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
         run: yarn test
         working-directory: packages/eslint-plugin
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
         run: yarn test
         working-directory: packages/eslint-plugin-tslint
+        if: ${{ always() }}
         env:
           CI: true
 
