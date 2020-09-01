@@ -260,9 +260,12 @@ jobs:
           yarn lerna:init
           yarn check:clean-workspace-after-install
 
-      - name: Build
+      - name: Install eslint version from matrix
         run: |
-          yarn build
+          yarn workspace @typescript-eslint/eslint-plugin add -D eslint@${{ matrix.eslint-version}}
+
+      - name: Build
+        run: yarn build
 
       - name: Run unit tests for typescript-estree
         run: yarn test
@@ -296,7 +299,6 @@ jobs:
 
       - name: Run unit tests for eslint-plugin
         run: | 
-          yarn workspace add -D @typescript-eslint/eslint-plugin eslint@${{ matrix.eslint-version}} 
           yarn test
         working-directory: packages/eslint-plugin
         env:
