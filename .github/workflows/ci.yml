@@ -235,6 +235,7 @@ jobs:
       matrix:
         node-version: [10.x, 14.x]
         eslint-version: [5, 6, 7]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
