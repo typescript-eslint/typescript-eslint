@@ -57,7 +57,10 @@
     "chalk": "^4.0.0",
     "marked": "^1.0.0",
     "prettier": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "eslint": "^7.0.0",
+    "eslint-6": "npm:eslint@^6.0.0",
+    "eslint-5": "npm:eslint@^5.0.0"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^4.0.0",

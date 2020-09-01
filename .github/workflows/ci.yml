@@ -234,6 +234,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 14.x]
+        eslint-version: [5, 6, 7]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -268,6 +269,7 @@ jobs:
         working-directory: packages/typescript-estree
         env:
           CI: true
+          ESLINT_VERSION: ${{matrix.eslint-version}}
 
       - name: Run unit tests for visitor-keys
         run: yarn test
