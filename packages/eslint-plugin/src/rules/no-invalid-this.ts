@@ -23,7 +23,9 @@ export default createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      unexpectedThis: "Unexpected 'this'.",
+    },
     schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],
