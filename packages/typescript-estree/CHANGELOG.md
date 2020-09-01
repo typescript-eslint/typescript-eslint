@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.1...v4.0.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* correct decorator traversal for AssignmentPattern ([#2375](https://github.com/typescript-eslint/typescript-eslint/issues/2375)) ([d738fa4](https://github.com/typescript-eslint/typescript-eslint/commit/d738fa4eff0a5c4cfc9b30b1c0502f8d1e78d7b6))
+* **typescript-estree:** correct ChainExpression interaction with parentheses and non-nulls ([#2380](https://github.com/typescript-eslint/typescript-eslint/issues/2380)) ([762bc99](https://github.com/typescript-eslint/typescript-eslint/commit/762bc99584ede4d0b8099a743991e957aec86aa8))
+
+
+### Features
+
+* support ESTree optional chaining representation ([#2308](https://github.com/typescript-eslint/typescript-eslint/issues/2308)) ([e9d2ab6](https://github.com/typescript-eslint/typescript-eslint/commit/e9d2ab638b6767700b52797e74b814ea059beaae))
+* **typescript-estree:** switch to globby ([#2418](https://github.com/typescript-eslint/typescript-eslint/issues/2418)) ([3a7ec9b](https://github.com/typescript-eslint/typescript-eslint/commit/3a7ec9bcf1873a99c6da2f19ade8ab4763b4793c)), closes [#2398](https://github.com/typescript-eslint/typescript-eslint/issues/2398)
+
+
+### BREAKING CHANGES
+
+* **typescript-estree:** - removes the ability to supply a `RegExp` to `projectFolderIgnoreList`, and changes the meaning of the string value from a regex to a glob.
+* - Removed decorators property from several Nodes that could never semantically have them (FunctionDeclaration, TSEnumDeclaration, and TSInterfaceDeclaration)
+- Removed AST_NODE_TYPES.Import. This is a minor breaking change as the node type that used this was removed ages ago.
+
+
+
+
+
+## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [3.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.1...v3.10.0) (2020-08-24)
+
+
+### Bug Fixes
+
+* **typescript-estree:** ts.NamedTupleMember workaround for <TS4.0 ([#2405](https://github.com/typescript-eslint/typescript-eslint/issues/2405)) ([b62331a](https://github.com/typescript-eslint/typescript-eslint/commit/b62331ad02dcff3236e18f10eb92d59e7371d4c3))
+
+
+### Features
+
+* **typescript-estree:** update allowed TS version range ([#2419](https://github.com/typescript-eslint/typescript-eslint/issues/2419)) ([e6be621](https://github.com/typescript-eslint/typescript-eslint/commit/e6be62128b3a98541fe590512892c4b501914e46))
+
+
+
+
+
 ## [3.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.9.0...v3.9.1) (2020-08-17)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

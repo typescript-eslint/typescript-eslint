@@ -25,18 +25,19 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      'CallExpression, OptionalCallExpression'(
-        node: TSESTree.CallExpression | TSESTree.OptionalCallExpression,
-      ): void {
+      CallExpression(node: TSESTree.CallExpression): void {
+        const parent =
+          node.parent?.type === AST_NODE_TYPES.ChainExpression
+            ? node.parent.parent
+            : node.parent;
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'require' &&
-          node.parent &&
-          (node.parent.type === AST_NODE_TYPES.VariableDeclarator ||
-            node.parent.type === AST_NODE_TYPES.CallExpression ||
-            node.parent.type === AST_NODE_TYPES.OptionalCallExpression ||
-            node.parent.type === AST_NODE_TYPES.TSAsExpression ||
-            node.parent.type === AST_NODE_TYPES.MemberExpression)
+          parent &&
+          (parent.type === AST_NODE_TYPES.VariableDeclarator ||
+            parent.type === AST_NODE_TYPES.CallExpression ||
+            parent.type === AST_NODE_TYPES.TSAsExpression ||
+            parent.type === AST_NODE_TYPES.MemberExpression)
         ) {
           context.report({
             node,

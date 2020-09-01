@@ -129,9 +129,7 @@ export default util.createRule<Options, MessageIds>({
     ): boolean {
       if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
         const decorators =
-          node.type === AST_NODE_TYPES.FunctionDeclaration
-            ? node.decorators
-            : node.parent?.type === AST_NODE_TYPES.MethodDefinition
+          node.parent?.type === AST_NODE_TYPES.MethodDefinition
             ? node.parent.decorators
             : undefined;
         return !!decorators && !!decorators.length;

@@ -90,5 +90,37 @@ thing.getSymbol();
         },
       ],
     },
+    {
+      code: `
+import ts from 'typescript';
+declare const thing: ts.Type;
+thing?.symbol;
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'doNotUseWithFixer',
+          data: {
+            type: 'Type',
+            property: 'symbol',
+            fixWith: 'getSymbol()',
+          },
+          line: 4,
+          suggestions: [
+            {
+              messageId: 'suggestedFix',
+              data: {
+                type: 'Type',
+                fixWith: 'getSymbol()',
+              },
+              output: `
+import ts from 'typescript';
+declare const thing: ts.Type;
+thing?.getSymbol();
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

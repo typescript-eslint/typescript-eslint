@@ -77,6 +77,8 @@
     "Premade",
     "prettier's",
     "recurse",
+    "redeclaration",
+    "redeclarations",
     "redeclared",
     "reimplement",
     "resync",
@@ -92,7 +94,8 @@
     "typedef",
     "typedefs",
     "unfixable",
-    "unprefixed"
+    "unprefixed",
+    "Zacher"
   ],
   "overrides": [
     {

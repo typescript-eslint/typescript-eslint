@@ -194,10 +194,9 @@ function doesImmediatelyReturnFunctionExpression({
 function isFunctionArgument(
   parent: TSESTree.Node,
   callee?: FunctionExpression,
-): parent is TSESTree.CallExpression | TSESTree.OptionalCallExpression {
+): parent is TSESTree.CallExpression {
   return (
-    (parent.type === AST_NODE_TYPES.CallExpression ||
-      parent.type === AST_NODE_TYPES.OptionalCallExpression) &&
+    parent.type === AST_NODE_TYPES.CallExpression &&
     // make sure this isn't an IIFE
     parent.callee !== callee
   );

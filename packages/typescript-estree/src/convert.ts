@@ -14,13 +14,14 @@ import {
   getTextForTokenKind,
   getTSNodeAccessibility,
   hasModifier,
-  isChildOptionalChain,
+  isChildUnwrappableOptionalChain,
   isComma,
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
   TSError,
   unescapeStringLiteralText,
+  isChainExpression,
 } from './node-utils';
 import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
@@ -397,6 +398,50 @@ export class Converter {
         );
       }
       return convertedParam;
+    });
+  }
+
+  private convertChainExpression(
+    node: TSESTree.ChainElement,
+    tsNode:
+      | ts.PropertyAccessExpression
+      | ts.ElementAccessExpression
+      | ts.CallExpression
+      | ts.NonNullExpression,
+  ): TSESTree.ChainExpression | TSESTree.ChainElement {
+    const { child, isOptional } = ((): {
+      child: TSESTree.Node;
+      isOptional: boolean;
+    } => {
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
+        return { child: node.object, isOptional: node.optional };
+      }
+      if (node.type === AST_NODE_TYPES.CallExpression) {
+        return { child: node.callee, isOptional: node.optional };
+      }
+      return { child: node.expression, isOptional: false };
+    })();
+    const isChildUnwrappable = isChildUnwrappableOptionalChain(tsNode, child);
+
+    if (!isChildUnwrappable && !isOptional) {
+      return node;
+    }
+
+    if (isChildUnwrappable && isChainExpression(child)) {
+      // unwrap the chain expression child
+      const newChild = child.expression;
+      if (node.type === AST_NODE_TYPES.MemberExpression) {
+        node.object = newChild;
+      } else if (node.type === AST_NODE_TYPES.CallExpression) {
+        node.callee = newChild;
+      } else {
+        node.expression = newChild;
+      }
+    }
+
+    return this.createNode<TSESTree.ChainExpression>(tsNode, {
+      type: AST_NODE_TYPES.ChainExpression,
+      expression: node,
     });
   }
 
@@ -803,17 +848,6 @@ export class Converter {
         if (node.typeParameters) {
           result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
             node.typeParameters,
-          );
-        }
-
-        /**
-         * Semantically, decorators are not allowed on function declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          (result as any).decorators = node.decorators.map(el =>
-            this.convertChild(el),
           );
         }
 
@@ -1774,27 +1808,15 @@ export class Converter {
         const property = this.convertChild(node.name);
         const computed = false;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, object);
+        const result = this.createNode<TSESTree.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object,
+          property,
+          computed,
+          optional: node.questionDotToken !== undefined,
+        });
 
-        if (isLocallyOptional || isChildOptional) {
-          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
-            type: AST_NODE_TYPES.OptionalMemberExpression,
-            object,
-            property,
-            computed,
-            optional: isLocallyOptional,
-          });
-        } else {
-          return this.createNode<TSESTree.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object,
-            property,
-            computed,
-            optional: false,
-          });
-        }
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.ElementAccessExpression: {
@@ -1802,27 +1824,15 @@ export class Converter {
         const property = this.convertChild(node.argumentExpression);
         const computed = true;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, object);
+        const result = this.createNode<TSESTree.MemberExpression>(node, {
+          type: AST_NODE_TYPES.MemberExpression,
+          object,
+          property,
+          computed,
+          optional: node.questionDotToken !== undefined,
+        });
 
-        if (isLocallyOptional || isChildOptional) {
-          return this.createNode<TSESTree.OptionalMemberExpression>(node, {
-            type: AST_NODE_TYPES.OptionalMemberExpression,
-            object,
-            property,
-            computed,
-            optional: isLocallyOptional,
-          });
-        } else {
-          return this.createNode<TSESTree.MemberExpression>(node, {
-            type: AST_NODE_TYPES.MemberExpression,
-            object,
-            property,
-            computed,
-            optional: false,
-          });
-        }
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.CallExpression: {
@@ -1842,27 +1852,13 @@ export class Converter {
 
         const callee = this.convertChild(node.expression);
         const args = node.arguments.map(el => this.convertChild(el));
-        let result;
 
-        const isLocallyOptional = node.questionDotToken !== undefined;
-        // the optional expression should propagate up the member expression tree
-        const isChildOptional = isChildOptionalChain(node, callee);
-
-        if (isLocallyOptional || isChildOptional) {
-          result = this.createNode<TSESTree.OptionalCallExpression>(node, {
-            type: AST_NODE_TYPES.OptionalCallExpression,
-            callee,
-            arguments: args,
-            optional: isLocallyOptional,
-          });
-        } else {
-          result = this.createNode<TSESTree.CallExpression>(node, {
-            type: AST_NODE_TYPES.CallExpression,
-            callee,
-            arguments: args,
-            optional: false,
-          });
-        }
+        const result = this.createNode<TSESTree.CallExpression>(node, {
+          type: AST_NODE_TYPES.CallExpression,
+          callee,
+          arguments: args,
+          optional: node.questionDotToken !== undefined,
+        });
 
         if (node.typeArguments) {
           result.typeParameters = this.convertTypeArgumentsToTypeParameters(
@@ -1870,7 +1866,8 @@ export class Converter {
             node,
           );
         }
-        return result;
+
+        return this.convertChainExpression(result, node);
       }
 
       case SyntaxKind.NewExpression: {
@@ -2224,10 +2221,12 @@ export class Converter {
       }
 
       case SyntaxKind.NonNullExpression: {
-        return this.createNode<TSESTree.TSNonNullExpression>(node, {
+        const nnExpr = this.createNode<TSESTree.TSNonNullExpression>(node, {
           type: AST_NODE_TYPES.TSNonNullExpression,
           expression: this.convertChild(node.expression),
         });
+
+        return this.convertChainExpression(nnExpr, node);
       }
 
       case SyntaxKind.TypeLiteral: {
@@ -2520,14 +2519,6 @@ export class Converter {
           }
         }
 
-        /**
-         * Semantically, decorators are not allowed on interface declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
-        }
         if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
           result.abstract = true;
         }
@@ -2579,14 +2570,6 @@ export class Converter {
         });
         // apply modifiers first...
         this.applyModifiersToResult(result, node.modifiers);
-        /**
-         * Semantically, decorators are not allowed on enum declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
-         */
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
-        }
         // ...then check for exports
         return this.fixExports(node, result);
       }
