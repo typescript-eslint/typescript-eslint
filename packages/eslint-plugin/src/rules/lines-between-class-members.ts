@@ -33,8 +33,8 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'whitespace',
     schema,
     messages: baseRule.meta.messages ?? {
-      never: "Unexpected blank line between class members.",
-      always: "Expected blank line between class members."
+      never: 'Unexpected blank line between class members.',
+      always: 'Expected blank line between class members.',
     },
   },
   defaultOptions: [

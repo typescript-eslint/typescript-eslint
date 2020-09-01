@@ -98,7 +98,8 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages ?? {
-      wrongIndentation: "Expected indentation of {{expected}} but found {{actual}}."
+      wrongIndentation:
+        'Expected indentation of {{expected}} but found {{actual}}.',
     },
   },
   defaultOptions: [

@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages ?? {
-      unexpected: "Duplicate name '{{name}}'."
+      unexpected: "Duplicate name '{{name}}'.",
     },
   },
   defaultOptions: [],

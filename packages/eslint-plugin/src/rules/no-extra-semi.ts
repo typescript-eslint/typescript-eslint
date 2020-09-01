@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages ?? {
-      unexpected: "Unnecessary semicolon."
+      unexpected: 'Unnecessary semicolon.',
     },
   },
   defaultOptions: [],

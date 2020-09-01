@@ -55,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages ?? {
-      noUselessConstructor: "Useless constructor."
+      noUselessConstructor: 'Useless constructor.',
     },
   },
   defaultOptions: [],

@@ -49,7 +49,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [schema],
     messages: baseRule.meta.messages ?? {
-      unexpected: "Unexpected empty {{name}}."
+      unexpected: 'Unexpected empty {{name}}.',
     },
   },
   defaultOptions: [

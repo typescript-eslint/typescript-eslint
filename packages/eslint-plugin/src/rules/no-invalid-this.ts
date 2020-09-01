@@ -24,7 +24,7 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages ?? {
-      unexpectedThis: "Unexpected 'this'."
+      unexpectedThis: "Unexpected 'this'.",
     },
     schema: baseRule.meta.schema,
   },
