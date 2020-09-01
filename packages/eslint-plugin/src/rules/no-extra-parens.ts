@@ -24,9 +24,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      unexpected: 'Unnecessary parentheses around expression.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: ['all'],
   create(context) {
