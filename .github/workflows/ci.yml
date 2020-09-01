@@ -263,7 +263,7 @@ jobs:
 
       - name: Install specific eslint version from matrix
         run: |
-          yarn add -D -W eslint@${{ matrix.eslint-version}}
+          yarn add -DW eslint@${{ matrix.eslint-version }} --ignore-scripts
 
       - name: Build
         run: yarn build
