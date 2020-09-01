@@ -43,7 +43,10 @@ export default createRule<Options, MessageIds>({
       },
     ],
     fixable: baseRule.meta.fixable,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      useDot: "[{{key}}] is better written in dot notation.",
+      useBrackets: ".{{key}} is a syntax error."
+    },
   },
   defaultOptions: [
     {
