@@ -21,7 +21,9 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+    },
   },
   defaultOptions: [{}],
   create(context) {
