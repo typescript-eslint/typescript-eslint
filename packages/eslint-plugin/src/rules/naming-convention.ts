@@ -300,6 +300,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
     additionalProperties: false,
   };
 }
+
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
@@ -819,8 +820,11 @@ type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 function parseOptions(context: Context): ParsedOptions {
-  debugger;
-  const normalizedOptions = context.options.map(opt => normalizeOption(opt))[0];
+  const normalizedOption = context.options.map(opt => normalizeOption(opt));
+  const normalizedOptions = normalizedOption.reduce(
+    (acc, val) => acc.concat(val),
+    [],
+  );
   return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
@@ -1259,7 +1263,6 @@ function isMetaSelector(
   return selector in MetaSelectors;
 }
 function normalizeOption(option: Selector): NormalizedSelector[] {
-  debugger;
   let weight = 0;
   option.modifiers?.forEach(mod => {
     weight |= Modifiers[mod];
@@ -1311,16 +1314,23 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
     ? option.selector
     : [option.selector];
 
-  const configs: NormalizedSelector[] = [];
+  const allowedType = [1 << 0, 1 << 2, 1 << 3, 1 << 4, 1 << 6];
+  const config: NormalizedSelector[] = [];
   selectors
     .map(selector =>
       isMetaSelector(selector) ? MetaSelectors[selector] : Selectors[selector],
     )
     .forEach(selector =>
-      configs.push({ selector: selector, ...normalizedOption }),
+      allowedType.includes(selector)
+        ? config.push({ selector: selector, ...normalizedOption })
+        : config.push({
+            selector: selector,
+            ...normalizedOption,
+            types: null,
+          }),
     );
 
-  return configs;
+  return config;
 }
 
 function isCorrectType(
@@ -1328,7 +1338,6 @@ function isCorrectType(
   config: NormalizedSelector,
   context: Context,
 ): boolean {
-  debugger;
   if (config.types === null) {
     return true;
   }
