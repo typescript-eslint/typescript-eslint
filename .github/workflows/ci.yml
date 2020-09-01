@@ -261,7 +261,7 @@ jobs:
           yarn lerna:init
           yarn check:clean-workspace-after-install
 
-      - name: Install specific eslint version from matrix
+      - name: Use eslint v${{ matrix.eslint-version }}
         run: |
           yarn add -DW eslint@${{ matrix.eslint-version }} --ignore-scripts
 
