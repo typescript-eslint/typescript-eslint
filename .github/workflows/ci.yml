@@ -298,8 +298,7 @@ jobs:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: | 
-          yarn test
+        run: yarn test
         working-directory: packages/eslint-plugin
         env:
           CI: true
