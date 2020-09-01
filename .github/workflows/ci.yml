@@ -260,9 +260,9 @@ jobs:
           yarn lerna:init
           yarn check:clean-workspace-after-install
 
-      - name: Install eslint version from matrix
+      - name: Install specific eslint version from matrix
         run: |
-          yarn workspace @typescript-eslint/eslint-plugin add -D eslint@${{ matrix.eslint-version}}
+          yarn add -D -W eslint@${{ matrix.eslint-version}}
 
       - name: Build
         run: yarn build
