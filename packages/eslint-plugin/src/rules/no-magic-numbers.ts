@@ -40,7 +40,10 @@ export default util.createRule<Options, MessageIds>({
         },
       },
     ],
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      useConst: "Number constants declarations must use 'const'.",
+      noMagic: 'No magic number: {{raw}}.',
+    },
   },
   defaultOptions: [
     {

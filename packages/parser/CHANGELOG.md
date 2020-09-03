@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [4.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.1...v4.0.0) (2020-08-31)
+
+
+### Features
+
+* consume new scope analysis package ([#2039](https://github.com/typescript-eslint/typescript-eslint/issues/2039)) ([3be125d](https://github.com/typescript-eslint/typescript-eslint/commit/3be125d9bdbee1984ac6037874edf619213bd3d0))
+* support ESTree optional chaining representation ([#2308](https://github.com/typescript-eslint/typescript-eslint/issues/2308)) ([e9d2ab6](https://github.com/typescript-eslint/typescript-eslint/commit/e9d2ab638b6767700b52797e74b814ea059beaae))
+* **typescript-estree:** switch to globby ([#2418](https://github.com/typescript-eslint/typescript-eslint/issues/2418)) ([3a7ec9b](https://github.com/typescript-eslint/typescript-eslint/commit/3a7ec9bcf1873a99c6da2f19ade8ab4763b4793c)), closes [#2398](https://github.com/typescript-eslint/typescript-eslint/issues/2398)
+
+
+### BREAKING CHANGES
+
+* **typescript-estree:** - removes the ability to supply a `RegExp` to `projectFolderIgnoreList`, and changes the meaning of the string value from a regex to a glob.
+
+
+
+
+
 ## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
 
 **Note:** Version bump only for package @typescript-eslint/parser

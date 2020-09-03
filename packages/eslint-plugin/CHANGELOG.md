@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** update parser dependency range ([#2445](https://github.com/typescript-eslint/typescript-eslint/issues/2445)) ([2cb6620](https://github.com/typescript-eslint/typescript-eslint/commit/2cb66205de797479d9b2d362652c42fe032e913b)), closes [#2444](https://github.com/typescript-eslint/typescript-eslint/issues/2444)
+
+
+
+
+
+# [4.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.1...v4.0.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-shadow] fix false-positive on enum declaration ([#2374](https://github.com/typescript-eslint/typescript-eslint/issues/2374)) ([9de669f](https://github.com/typescript-eslint/typescript-eslint/commit/9de669f339fef62a98f745dc08b833aa5c632e62))
+* **eslint-plugin:** [no-unused-vars] handle TSCallSignature ([#2336](https://github.com/typescript-eslint/typescript-eslint/issues/2336)) ([c70f54f](https://github.com/typescript-eslint/typescript-eslint/commit/c70f54fd3a46a12060ae3aec0faae872c431dd88))
+* correct decorator traversal for AssignmentPattern ([#2375](https://github.com/typescript-eslint/typescript-eslint/issues/2375)) ([d738fa4](https://github.com/typescript-eslint/typescript-eslint/commit/d738fa4eff0a5c4cfc9b30b1c0502f8d1e78d7b6))
+* **scope-manager:** correct analysis of abstract class properties ([#2420](https://github.com/typescript-eslint/typescript-eslint/issues/2420)) ([cd84549](https://github.com/typescript-eslint/typescript-eslint/commit/cd84549beba3cf471d75cfd9ba26f80366842ed5))
+* **typescript-estree:** correct ChainExpression interaction with parentheses and non-nulls ([#2380](https://github.com/typescript-eslint/typescript-eslint/issues/2380)) ([762bc99](https://github.com/typescript-eslint/typescript-eslint/commit/762bc99584ede4d0b8099a743991e957aec86aa8))
+
+
+### Features
+
+* consume new scope analysis package ([#2039](https://github.com/typescript-eslint/typescript-eslint/issues/2039)) ([3be125d](https://github.com/typescript-eslint/typescript-eslint/commit/3be125d9bdbee1984ac6037874edf619213bd3d0))
+* support ESTree optional chaining representation ([#2308](https://github.com/typescript-eslint/typescript-eslint/issues/2308)) ([e9d2ab6](https://github.com/typescript-eslint/typescript-eslint/commit/e9d2ab638b6767700b52797e74b814ea059beaae))
+* **eslint-plugin:** [ban-ts-comment] change default for `ts-expect-error` to `allow-with-description` ([#2351](https://github.com/typescript-eslint/typescript-eslint/issues/2351)) ([a3f163a](https://github.com/typescript-eslint/typescript-eslint/commit/a3f163abc03f0fefc6dca1f205b728a4425209e4)), closes [#2146](https://github.com/typescript-eslint/typescript-eslint/issues/2146)
+* **eslint-plugin:** [no-unnecessary-condition][strict-boolean-expressions] add option to make the rules error on files without `strictNullChecks` turned on ([#2345](https://github.com/typescript-eslint/typescript-eslint/issues/2345)) ([9273441](https://github.com/typescript-eslint/typescript-eslint/commit/9273441f7592b52620e10432cb2dd4dc5c3b4db1))
+* **eslint-plugin:** [typedef] remove all defaults ([#2352](https://github.com/typescript-eslint/typescript-eslint/issues/2352)) ([a9cd6fb](https://github.com/typescript-eslint/typescript-eslint/commit/a9cd6fb893074e4f2ca9ad3497eaddfacb3cfd25))
+* **eslint-plugin:** add `consistent-type-imports` rule ([#2367](https://github.com/typescript-eslint/typescript-eslint/issues/2367)) ([58b1c2d](https://github.com/typescript-eslint/typescript-eslint/commit/58b1c2d463f34895798b9a61340e49ffc3ec4f1a))
+
+
+### BREAKING CHANGES
+
+* - Removed decorators property from several Nodes that could never semantically have them (FunctionDeclaration, TSEnumDeclaration, and TSInterfaceDeclaration)
+- Removed AST_NODE_TYPES.Import. This is a minor breaking change as the node type that used this was removed ages ago.
+* **eslint-plugin:** Default rule options is a breaking change.
+
+
+
+
+
 ## [3.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.0...v3.10.1) (2020-08-25)
 
 

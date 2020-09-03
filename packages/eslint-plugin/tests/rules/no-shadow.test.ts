@@ -56,6 +56,58 @@ const x = 1;
   type x = string;
 }
     `,
+    {
+      code: `
+type Foo = 1;
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+      globals: {
+        Foo: 'writable',
+      },
+    },
+    {
+      code: `
+type Foo = 1;
+      `,
+      options: [
+        {
+          ignoreTypeValueShadow: false,
+          builtinGlobals: false,
+        },
+      ],
+      globals: {
+        Foo: 'writable',
+      },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2360
+    `
+enum Direction {
+  left = 'left',
+  right = 'right',
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2447
+    {
+      code: `
+const test = 1;
+type Fn = (test: string) => typeof test;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+type Fn = (Foo: string) => typeof Foo;
+      `,
+      options: [
+        {
+          ignoreFunctionTypeParameterNameValueShadow: true,
+          builtinGlobals: false,
+        },
+      ],
+      globals: {
+        Foo: 'writable',
+      },
+    },
   ],
   invalid: [
     {
@@ -106,6 +158,69 @@ const x = 1;
             name: 'x',
           },
           line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = 1;
+      `,
+      options: [
+        {
+          ignoreTypeValueShadow: false,
+          builtinGlobals: true,
+        },
+      ],
+      globals: {
+        Foo: 'writable',
+      },
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'Foo',
+          },
+          line: 2,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2447
+    {
+      code: `
+const test = 1;
+type Fn = (test: string) => typeof test;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'test',
+          },
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type Fn = (Foo: string) => typeof Foo;
+      `,
+      options: [
+        {
+          ignoreFunctionTypeParameterNameValueShadow: false,
+          builtinGlobals: true,
+        },
+      ],
+      globals: {
+        Foo: 'writable',
+      },
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'Foo',
+          },
+          line: 2,
         },
       ],
     },
@@ -431,13 +546,6 @@ function foo(cb) {
       `,
       options: [{ allow: ['cb'] }],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2360
-    `
-enum Direction {
-  left = 'left',
-  right = 'right',
-}
-    `,
   ],
   invalid: [
     {
