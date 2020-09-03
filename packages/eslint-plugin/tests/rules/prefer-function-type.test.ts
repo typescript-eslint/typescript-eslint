@@ -42,7 +42,13 @@ interface Foo {
 interface Bar extends Function, Foo {
   (): void;
 }
-    `,
+    `,`
+interface Foo {
+  // this actually isn't valid ts code but we don't want to give incorrect
+  // error messages about what 'this' refer to
+  (): { a: this };
+}
+    `
   ],
 
   invalid: [
