@@ -106,6 +106,7 @@ export default util.createRule<Options, MessageIds>({
     After it's finished traversing the AST, it then iterates through the list of found functions, and checks to see if
     any of them are part of a higher-order function
     */
+    const alreadyVisited = new Set<TSESTree.Node>();
 
     return {
       ExportDefaultDeclaration(node): void {
@@ -309,11 +310,11 @@ export default util.createRule<Options, MessageIds>({
         }
       }
     }
-
     function checkNode(node: TSESTree.Node | null): void {
-      if (node == null) {
+      if (node == null || alreadyVisited.has(node)) {
         return;
       }
+      alreadyVisited.add(node);
 
       switch (node.type) {
         case AST_NODE_TYPES.ArrowFunctionExpression:
