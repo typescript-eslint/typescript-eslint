@@ -2,6 +2,7 @@ import { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import { Referencer, ReferencerOptions } from './referencer';
 import { ScopeManager } from './ScopeManager';
+import { lib as TSLibraries } from './lib';
 
 ////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
@@ -61,12 +62,10 @@ function mapEcmaVersion(version: EcmaVersion | undefined): Lib {
     return 'es5';
   }
 
-  if (version > 2000) {
-    return `es${version}` as Lib;
-  }
+  const year = version > 2000 ? version : 2015 + (version - 6);
+  const lib = `es${year}`;
 
-  const year = 2015 + (version - 6);
-  return `es${year}` as Lib;
+  return lib in TSLibraries ? (lib as Lib) : year > 2020 ? 'esnext' : 'es5';
 }
 
 /**
