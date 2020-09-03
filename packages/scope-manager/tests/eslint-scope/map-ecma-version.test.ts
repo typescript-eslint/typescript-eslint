@@ -16,17 +16,26 @@ describe('ecma version mapping', () => {
     expectMapping(2, 'es5');
   });
 
-  it("should map to 'es{year}' when supported", () => {
+  it("should map to 'es{year}' when supported and >= 6", () => {
     expectMapping(2015, 'es2015');
     expectMapping(6, 'es2015');
     expectMapping(2020, 'es2020');
     expectMapping(11, 'es2020');
   });
+
+  it("should map to 'es5' when 5 or 3", () => {
+    expectMapping(5, 'es5');
+    expectMapping(3, 'es5');
+  });
+
+  it("should map to 'es2018' when undefined", () => {
+    expectMapping(undefined, 'es2018');
+  });
 });
 
 const fakeNode = ({} as unknown) as TSESTree.Node;
 
-function expectMapping(ecmaVersion: number, lib: Lib): void {
+function expectMapping(ecmaVersion: number | undefined, lib: Lib): void {
   (Referencer as jest.Mock).mockClear();
   analyze(fakeNode, { ecmaVersion: ecmaVersion as EcmaVersion });
   expect(Referencer).toHaveBeenCalledWith(
