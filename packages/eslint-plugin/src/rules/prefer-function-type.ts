@@ -162,15 +162,19 @@ export default util.createRule({
       }
     }
     let tsThisTypes: TSESTree.TSThisType[] | null = null;
+    let insideLiteral = false;
     return {
       TSInterfaceDeclaration(): void {
         // when entering an interface reset the count of `this`s to empty.
         tsThisTypes = [];
       },
       'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
-        // inside an interface keep track of all ThisType references. the selector is setup
-        // so this is only triggered when tsThisTypes is a valid array, hence null assertion.
-        tsThisTypes!.push(node);
+        // inside an interface keep track of all ThisType references.
+        // unless it's inside a nested type literal in which case it's invalid code anyway
+        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
+        if (!insideLiteral && tsThisTypes !== null) {
+          tsThisTypes.push(node);
+        }
       },
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
@@ -180,6 +184,13 @@ export default util.createRule({
         }
         // on exit check member and reset the array to nothing.
         tsThisTypes = null;
+      },
+      // keep track of nested literals to avoid complaining about invalid `this` uses
+      'TSInterfaceDeclaration TSTypeLiteral'(): void {
+        insideLiteral = true;
+      },
+      'TSInterfaceDeclaration TSTypeLiteral:exit'(): void {
+        insideLiteral = false;
       },
       'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral): void {
         checkMember(node.members[0], node);

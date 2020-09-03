@@ -202,5 +202,22 @@ interface Foo {
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  // isn't actually valid ts but want to not give message saying it refers to Foo.
+  (): { a: this };
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+        },
+      ],
+      output: `
+type Foo = () => { a: this };
+      `,
+    },
   ],
 });
