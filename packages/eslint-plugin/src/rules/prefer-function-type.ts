@@ -167,9 +167,7 @@ export default util.createRule({
         // when entering an interface reset the count of `this`s to empty.
         tsThisTypes = [];
       },
-      'TSInterfaceDeclaration :not(TSTypeLiteral) TSThisType'(
-        node: TSESTree.TSThisType,
-      ): void {
+      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
         // inside an interface keep track of all ThisType references. the selector is setup
         // so this is only triggered when tsThisTypes is a valid array, hence null assertion.
         tsThisTypes!.push(node);
