@@ -657,7 +657,7 @@ export declare class Foo {
 }
     `,
     `
-class A {
+export class A {
   b = A;
 }
     `,
