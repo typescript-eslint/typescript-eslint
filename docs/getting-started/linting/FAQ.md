@@ -35,7 +35,7 @@ The first step is to [check our list of "extension" rules here](../../../package
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues. [The contributing guide outlines the best way to raise an issue](../../../CONTRIBUTING.md#raising-issues).
 
-We release a new version our tooling every week. ***Please*** ensure that you [check our the latest list of "extension" rules](../../../packages/eslint-plugin/README.md#extension-rules) ***before*** filing an issue.
+We release a new version our tooling every week. **_Please_** ensure that you [check our the latest list of "extension" rules](../../../packages/eslint-plugin/README.md#extension-rules) **_before_** filing an issue.
 
 <br />
 <br />
@@ -251,4 +251,3 @@ We recommend not using this rule, and instead using a tool like [`prettier`](htt
 <br />
 <br />
 <br />
-
