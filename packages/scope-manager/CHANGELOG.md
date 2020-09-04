@@ -1,6 +1,8 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
+This file is just a history of the commits included in each release.
+**For full release notes, please see [the github releases page](https://github.com/typescript-eslint/typescript-eslint/releases)**
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
@@ -13,6 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [4.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v3.10.1...v4.0.0) (2020-08-31)
 
+## [Please see the release notes for v4.0.0](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v4.0.0)
 
 ### Bug Fixes
 
