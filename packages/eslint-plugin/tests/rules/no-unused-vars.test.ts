@@ -783,6 +783,11 @@ type StyledPaymentProps = {
 
 export const StyledPayment = styled.div<StyledPaymentProps>\`\`;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2453
+    `
+import type { foo } from './a';
+export type Bar = typeof foo;
+    `,
   ],
 
   invalid: [

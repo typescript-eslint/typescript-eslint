@@ -180,17 +180,4 @@ describe('referencing a type - negative', () => {
     const variable = scopeManager.getDeclaredVariables(node)[0];
     expect(variable.references).toHaveLength(0);
   });
-
-  it('does not record a reference when a type import is referenced from a value', () => {
-    const { ast, scopeManager } = parseAndAnalyze(
-      `
-        import type { foo } from 'module';
-        const test = foo;
-      `,
-      'module',
-    );
-    const node = getSpecificNode(ast, AST_NODE_TYPES.ImportSpecifier);
-    const variable = scopeManager.getDeclaredVariables(node)[0];
-    expect(variable.references).toHaveLength(0);
-  });
 });
