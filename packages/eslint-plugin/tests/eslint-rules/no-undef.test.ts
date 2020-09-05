@@ -111,6 +111,35 @@ function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
       var a = { b: () => {} };
       a?.b();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2462
+    `
+export default class Column {
+  isColumnString(column: unknown): column is string {
+    return typeof this.column === 'string';
+  }
+}
+    `,
+    `
+type T = string;
+function predicate(arg: any): arg is T {
+  return typeof arg === 'string';
+}
+    `,
+    `
+function predicate(arg: any): asserts arg {
+  if (arg == null) {
+    throw 'oops';
+  }
+}
+    `,
+    `
+type T = string;
+function predicate(arg: any): asserts arg is T {
+  if (typeof arg !== 'string') {
+    throw 'oops';
+  }
+}
+    `,
   ],
   invalid: [
     {
