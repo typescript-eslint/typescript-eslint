@@ -286,6 +286,21 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-loop-func' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unsafeRefs',
+    [],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-magic-numbers' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
