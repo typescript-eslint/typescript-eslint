@@ -199,6 +199,13 @@ class TypeVisitor extends Visitor {
     this.visit(node.default);
   }
 
+  protected TSTypePredicate(node: TSESTree.TSTypePredicate): void {
+    if (node.parameterName.type !== AST_NODE_TYPES.TSThisType) {
+      this.#referencer.currentScope().referenceValue(node.parameterName);
+    }
+    this.visit(node.typeAnnotation);
+  }
+
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     if (node.exprName.type === AST_NODE_TYPES.Identifier) {
