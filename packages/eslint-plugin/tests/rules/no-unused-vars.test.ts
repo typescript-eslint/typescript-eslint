@@ -775,6 +775,14 @@ export type F<A extends unknown[]> = (...a: A) => unknown;
 import { Foo } from './bar';
 export type F<A extends unknown[]> = (...a: Foo<A>) => unknown;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2452
+    `
+type StyledPaymentProps = {
+  isValid: boolean;
+};
+
+export const StyledPayment = styled.div<StyledPaymentProps>\`\`;
+    `,
   ],
 
   invalid: [
