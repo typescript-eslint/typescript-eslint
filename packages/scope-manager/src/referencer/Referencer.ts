@@ -568,8 +568,8 @@ class Referencer extends Visitor {
   protected TaggedTemplateExpression(
     node: TSESTree.TaggedTemplateExpression,
   ): void {
-    this.visit(node.quasi);
     this.visit(node.tag);
+    this.visit(node.quasi);
     this.visitType(node.typeParameters);
   }
 
