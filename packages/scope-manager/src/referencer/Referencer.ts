@@ -565,6 +565,14 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  protected TaggedTemplateExpression(
+    node: TSESTree.TaggedTemplateExpression,
+  ): void {
+    this.visit(node.quasi);
+    this.visit(node.tag);
+    this.visitType(node.typeParameters);
+  }
+
   protected TSAbstractClassProperty(
     node: TSESTree.TSAbstractClassProperty,
   ): void {
