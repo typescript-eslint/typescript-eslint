@@ -33,6 +33,7 @@ class TypeVisitor extends Visitor {
     this.visit(node.typeParameters);
 
     for (const param of node.params) {
+      let didVisitAnnotation = false;
       this.visitPattern(param, (pattern, info) => {
         // a parameter name creates a value type variable which can be referenced later via typeof arg
         this.#referencer
@@ -41,8 +42,17 @@ class TypeVisitor extends Visitor {
             pattern,
             new ParameterDefinition(pattern, node, info.rest),
           );
-        this.visit(pattern.typeAnnotation);
+
+        if (pattern.typeAnnotation) {
+          this.visit(pattern.typeAnnotation);
+          didVisitAnnotation = true;
+        }
       });
+
+      // there are a few special cases where the type annotation is owned by the parameter, not the pattern
+      if (!didVisitAnnotation && 'typeAnnotation' in param) {
+        this.visit(param.typeAnnotation);
+      }
     }
     this.visit(node.returnType);
 

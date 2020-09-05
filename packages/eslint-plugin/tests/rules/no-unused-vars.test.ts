@@ -767,6 +767,14 @@ export abstract class Foo {
   protected abstract readonly type: FooType;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2449
+    `
+export type F<A extends unknown[]> = (...a: A) => unknown;
+    `,
+    `
+import { Foo } from './bar';
+export type F<A extends unknown[]> = (...a: Foo<A>) => unknown;
+    `,
   ],
 
   invalid: [
