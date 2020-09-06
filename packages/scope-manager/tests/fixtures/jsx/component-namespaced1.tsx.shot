@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx component-namespaced 1`] = `
+exports[`jsx component-namespaced1 1`] = `
 ScopeManager {
   variables: Array [
     ImplicitGlobalConstTypeVariable,
