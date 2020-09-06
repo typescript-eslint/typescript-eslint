@@ -551,20 +551,6 @@ declare namespace Foo {
 }
 console.log(Foo);
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/61
-    `
-declare var Foo: {
-  new (value?: any): Object;
-  foo(): string;
-};
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/106
-    `
-declare class Foo {
-  constructor(value?: any): Object;
-  foo(): string;
-}
-    `,
     `
 import foo from 'foo';
 export interface Bar extends foo.i18n {}
@@ -629,9 +615,6 @@ export default class Foo {
     prop();
   }
 }
-    `,
-    `
-declare function foo(a: number): void;
     `,
     `
 export function foo(): void;
@@ -788,6 +771,24 @@ export const StyledPayment = styled.div<StyledPaymentProps>\`\`;
 import type { foo } from './a';
 export type Bar = typeof foo;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2456
+    {
+      code: `
+interface Foo {}
+type Bar = {};
+declare class Clazz {}
+declare function func();
+declare enum Enum {}
+declare namespace Name {}
+declare const v1 = 1;
+declare var v2 = 1;
+declare let v3 = 1;
+declare const { v4 };
+declare const { v4: v5 };
+declare const [v6];
+      `,
+      filename: 'foo.d.ts',
+    },
   ],
 
   invalid: [
