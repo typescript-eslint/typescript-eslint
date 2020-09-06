@@ -286,6 +286,21 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/no-loop-func' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unsafeRefs',
+    [],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-magic-numbers' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
@@ -353,8 +368,8 @@ declare module 'eslint/lib/rules/no-shadow' {
     [
       {
         builtinGlobals?: boolean;
-        hoist: 'all' | 'functions' | 'never';
-        allow: string[];
+        hoist?: 'all' | 'functions' | 'never';
+        allow?: string[];
       },
     ],
     {
@@ -386,7 +401,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
 
   const rule: TSESLint.RuleModule<
     'unusedVar',
-    (
+    [
       | 'all'
       | 'local'
       | {
@@ -397,8 +412,8 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
-        }
-    )[],
+        },
+    ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }

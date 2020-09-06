@@ -3,7 +3,8 @@
 exports[`class declaration extends 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ClassNameDefinition$1 {
           name: Identifier<"A">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
           name: Identifier<"A">,
@@ -36,7 +37,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ClassNameDefinition$3 {
           name: Identifier<"B">,
@@ -48,7 +49,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ClassNameDefinition$4 {
           name: Identifier<"B">,
@@ -67,14 +68,16 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "A" => Variable$1,
-        "B" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "A" => Variable$2,
+        "B" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$3,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$4,
       ],
     },
     ClassScope$2 {
@@ -82,12 +85,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "A" => Variable$2,
+        "A" => Variable$3,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     ClassScope$3 {
@@ -97,12 +100,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "B" => Variable$4,
+        "B" => Variable$5,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
   ],

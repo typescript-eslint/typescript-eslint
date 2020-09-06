@@ -258,6 +258,7 @@ interface RuleListener {
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
   CallExpression?: RuleFunction<TSESTree.CallExpression>;
   CatchClause?: RuleFunction<TSESTree.CatchClause>;
+  ChainExpression?: RuleFunction<TSESTree.ChainExpression>;
   ClassBody?: RuleFunction<TSESTree.ClassBody>;
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
@@ -309,8 +310,6 @@ interface RuleListener {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
-  OptionalCallExpression?: RuleFunction<TSESTree.OptionalCallExpression>;
-  OptionalMemberExpression?: RuleFunction<TSESTree.OptionalMemberExpression>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   RestElement?: RuleFunction<TSESTree.RestElement>;

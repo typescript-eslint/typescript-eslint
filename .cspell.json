@@ -38,6 +38,7 @@
   "words": [
     "Airbnb",
     "Airbnb's",
+    "ambiently",
     "ASTs",
     "autofix",
     "autofixers",
@@ -74,9 +75,12 @@
     "pluggable",
     "postprocess",
     "postprocessor",
+    "preact",
     "Premade",
     "prettier's",
     "recurse",
+    "redeclaration",
+    "redeclarations",
     "redeclared",
     "reimplement",
     "resync",
@@ -85,6 +89,7 @@
     "rulesets",
     "serializers",
     "superset",
+    "transpiling",
     "thenables",
     "transpiles",
     "tsconfigs",
@@ -92,7 +97,8 @@
     "typedef",
     "typedefs",
     "unfixable",
-    "unprefixed"
+    "unprefixed",
+    "Zacher"
   ],
   "overrides": [
     {

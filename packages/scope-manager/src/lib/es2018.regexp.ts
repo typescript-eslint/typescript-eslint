@@ -10,20 +10,17 @@ export const es2018_regexp = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RegExpMatchArray',
-    writeable: false,
   },
   RegExpExecArray: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RegExpExecArray',
-    writeable: false,
   },
   RegExp: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RegExp',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

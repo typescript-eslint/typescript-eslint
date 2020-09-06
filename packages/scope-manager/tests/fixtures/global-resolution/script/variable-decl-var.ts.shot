@@ -3,7 +3,8 @@
 exports[`global-resolution script variable-decl-var 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"top">,
@@ -41,12 +42,14 @@ ScopeManager {
         },
       ],
       set: Map {
-        "top" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "top" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     FunctionScope$2 {

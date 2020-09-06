@@ -56,6 +56,21 @@ interface AnalyzeOptions {
   impliedStrict?: boolean;
 
   /**
+   * The identifier that's used for JSX Element creation (after transpilation).
+   * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
+   * Defaults to `"React"`.
+   */
+  jsxPragma?: string;
+
+  /**
+   * The identifier that's used for JSX fragment elements (after transpilation).
+   * If `null`, assumes transpilation will always use a member on `jsxFactory` (i.e. React.Fragment).
+   * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
+   * Defaults to `null`.
+   */
+  jsxFragmentName?: string | null;
+
+  /**
    * The lib used by the project.
    * This automatically defines a type variable for any types provided by the configured TS libs.
    * For more information, see https://www.typescriptlang.org/tsconfig#lib

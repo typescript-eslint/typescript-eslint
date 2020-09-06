@@ -126,14 +126,18 @@ export default createRule({
     }
 
     return {
-      "BinaryExpression > :matches(CallExpression, OptionalCallExpression).left > :matches(MemberExpression, OptionalMemberExpression).callee[property.name='indexOf'][computed=false]"(
-        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
-      ): void {
+      [[
+        // a.indexOf(b) !== 1
+        "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]",
+        // a?.indexOf(b) !== 1
+        "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]",
+      ].join(', ')](node: TSESTree.MemberExpression): void {
         // Check if the comparison is equivalent to `includes()`.
-        const callNode = node.parent as
-          | TSESTree.CallExpression
-          | TSESTree.OptionalCallExpression;
-        const compareNode = callNode.parent as TSESTree.BinaryExpression;
+        const callNode = node.parent as TSESTree.CallExpression;
+        const compareNode = (callNode.parent?.type ===
+        AST_NODE_TYPES.ChainExpression
+          ? callNode.parent.parent
+          : callNode.parent) as TSESTree.BinaryExpression;
         const negative = isNegativeCheck(compareNode);
         if (!negative && !isPositiveCheck(compareNode)) {
           return;
@@ -184,12 +188,10 @@ export default createRule({
       },
 
       // /bar/.test(foo)
-      ':matches(CallExpression, OptionalCallExpression) > :matches(MemberExpression, OptionalMemberExpression).callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression | TSESTree.OptionalMemberExpression,
+      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
+        node: TSESTree.MemberExpression,
       ): void {
-        const callNode = node.parent as
-          | TSESTree.CallExpression
-          | TSESTree.OptionalCallExpression;
+        const callNode = node.parent as TSESTree.CallExpression;
         const text =
           callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
         if (text == null) {
@@ -218,9 +220,7 @@ export default createRule({
               argNode.type !== AST_NODE_TYPES.TemplateLiteral &&
               argNode.type !== AST_NODE_TYPES.Identifier &&
               argNode.type !== AST_NODE_TYPES.MemberExpression &&
-              argNode.type !== AST_NODE_TYPES.OptionalMemberExpression &&
-              argNode.type !== AST_NODE_TYPES.CallExpression &&
-              argNode.type !== AST_NODE_TYPES.OptionalCallExpression;
+              argNode.type !== AST_NODE_TYPES.CallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
             if (needsParen) {
@@ -229,11 +229,7 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `${
-                callNode.type === AST_NODE_TYPES.OptionalCallExpression
-                  ? '?.'
-                  : '.'
-              }includes(${JSON.stringify(text)}`,
+              `${node.optional ? '?.' : '.'}includes(${JSON.stringify(text)}`,
             );
           },
         });

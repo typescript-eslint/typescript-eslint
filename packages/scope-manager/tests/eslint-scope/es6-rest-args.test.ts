@@ -4,6 +4,7 @@ import {
   expectToBeGlobalScope,
   expectToBeIdentifier,
   expectToBeParameterDefinition,
+  getRealVariables,
   parseAndAnalyze,
 } from '../util';
 
@@ -18,19 +19,21 @@ describe('ES6 rest arguments', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
-    expect(scope.variables).toHaveLength(2);
-    expect(scope.variables[0].name).toBe('arguments');
-    expect(scope.variables[1].name).toBe('bar');
-    expectToBeIdentifier(scope.variables[1].defs[0].name);
-    expect(scope.variables[1].defs[0].name.name).toBe('bar');
-    expectToBeParameterDefinition(scope.variables[1].defs[0]);
-    expect(scope.variables[1].defs[0].rest).toBeTruthy();
+    expect(variables).toHaveLength(2);
+    expect(variables[0].name).toBe('arguments');
+    expect(variables[1].name).toBe('bar');
+    expectToBeIdentifier(variables[1].defs[0].name);
+    expect(variables[1].defs[0].name.name).toBe('bar');
+    expectToBeParameterDefinition(variables[1].defs[0]);
+    expect(variables[1].defs[0].rest).toBeTruthy();
   });
 });

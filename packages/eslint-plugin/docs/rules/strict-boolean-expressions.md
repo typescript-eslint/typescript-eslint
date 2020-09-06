@@ -79,41 +79,81 @@ const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
 
 ## Options
 
-Options may be provided as an object with:
+```ts
+type Options = {
+  allowString?: boolean;
+  allowNumber?: boolean;
+  allowNullableObject?: boolean;
+  allowNullableBoolean?: boolean;
+  allowNullableString?: boolean;
+  allowNullableNumber?: boolean;
+  allowAny?: boolean;
+};
 
-- `allowString` (`true` by default) -
-  Allows `string` in a boolean context.
-  This is safe because strings have only one falsy value (`""`).
-  Set this to `false` if you prefer the explicit `str != ""` or `str.length > 0` style.
+const defaultOptions: Options = {
+  allowString: true,
+  allowNumber: true,
+  allowNullableObject: true,
+  allowNullableBoolean: false,
+  allowNullableString: false,
+  allowNullableNumber: false,
+  allowAny: false,
+  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+};
+```
 
-- `allowNumber` (`true` by default) -
-  Allows `number` in a boolean context.
-  This is safe because numbers have only two falsy values (`0` and `NaN`).
-  Set this to `false` if you prefer the explicit `num != 0` and `!Number.isNaN(num)` style.
+### `allowString`
 
-- `allowNullableObject` (`true` by default) -
-  Allows `object | function | symbol | null | undefined` in a boolean context.
-  This is safe because objects, functions and symbols don't have falsy values.
-  Set this to `false` if you prefer the explicit `obj != null` style.
+Allows `string` in a boolean context.
+This is safe because strings have only one falsy value (`""`).
+Set this to `false` if you prefer the explicit `str != ""` or `str.length > 0` style.
 
-- `allowNullableBoolean` (`false` by default) -
-  Allows `boolean | null | undefined` in a boolean context.
-  This is unsafe because nullable booleans can be either `false` or nullish.
-  Set this to `false` if you want to enforce explicit `bool ?? false` or `bool ?? true` style.
-  Set this to `true` if you don't mind implicitly treating false the same as a nullish value.
+### `allowNumber`
 
-- `allowNullableString` (`false` by default) -
-  Allows `string | null | undefined` in a boolean context.
-  This is unsafe because nullable strings can be either an empty string or nullish.
-  Set this to `true` if you don't mind implicitly treating an empty string the same as a nullish value.
+Allows `number` in a boolean context.
+This is safe because numbers have only two falsy values (`0` and `NaN`).
+Set this to `false` if you prefer the explicit `num != 0` and `!Number.isNaN(num)` style.
 
-- `allowNullableNumber` (`false` by default) -
-  Allows `number | null | undefined` in a boolean context.
-  This is unsafe because nullable numbers can be either a falsy number or nullish.
-  Set this to `true` if you don't mind implicitly treating zero or NaN the same as a nullish value.
+### `allowNullableObject`
 
-- `allowAny` (`false` by default) -
-  Allows `any` in a boolean context.
+Allows `object | function | symbol | null | undefined` in a boolean context.
+This is safe because objects, functions and symbols don't have falsy values.
+Set this to `false` if you prefer the explicit `obj != null` style.
+
+### `allowNullableBoolean`
+
+Allows `boolean | null | undefined` in a boolean context.
+This is unsafe because nullable booleans can be either `false` or nullish.
+Set this to `false` if you want to enforce explicit `bool ?? false` or `bool ?? true` style.
+Set this to `true` if you don't mind implicitly treating false the same as a nullish value.
+
+### `allowNullableString`
+
+Allows `string | null | undefined` in a boolean context.
+This is unsafe because nullable strings can be either an empty string or nullish.
+Set this to `true` if you don't mind implicitly treating an empty string the same as a nullish value.
+
+### `allowNullableNumber`
+
+Allows `number | null | undefined` in a boolean context.
+This is unsafe because nullable numbers can be either a falsy number or nullish.
+Set this to `true` if you don't mind implicitly treating zero or NaN the same as a nullish value.
+
+### `allowAny`
+
+Allows `any` in a boolean context.
+This is unsafe for obvious reasons.
+Set this to `true` at your own risk.
+
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule a lot less useful.
+
+You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
+
+If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
 ## Related To
 

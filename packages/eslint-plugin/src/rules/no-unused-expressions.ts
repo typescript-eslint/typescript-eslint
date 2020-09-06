@@ -19,7 +19,10 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      unusedExpression:
+        'Expected an assignment or function call and instead saw an expression.',
+    },
   },
   defaultOptions: [
     {
@@ -43,7 +46,8 @@ export default util.createRule<Options, MessageIds>({
         );
       }
       return (
-        node.type === AST_NODE_TYPES.OptionalCallExpression ||
+        (node.type === AST_NODE_TYPES.ChainExpression &&
+          node.expression.type === AST_NODE_TYPES.CallExpression) ||
         node.type === AST_NODE_TYPES.ImportExpression
       );
     }

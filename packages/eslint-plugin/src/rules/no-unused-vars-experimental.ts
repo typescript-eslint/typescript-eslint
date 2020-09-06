@@ -30,6 +30,8 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-unused-vars'],
     schema: [
       {
         type: 'object',

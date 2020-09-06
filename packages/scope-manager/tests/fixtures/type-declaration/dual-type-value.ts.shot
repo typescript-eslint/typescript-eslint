@@ -3,7 +3,8 @@
 exports[`type-declaration dual-type-value 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"dual">,
@@ -23,7 +24,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Literal$3,
         },
         Reference$2 {
@@ -32,7 +33,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
         Reference$4 {
           identifier: Identifier<"dual">,
@@ -40,13 +41,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"reference1">,
@@ -58,7 +59,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$4 {
           name: Identifier<"reference2">,
@@ -74,7 +75,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Identifier<"dual">,
         },
       ],
@@ -93,16 +94,18 @@ ScopeManager {
         Reference$4,
       ],
       set: Map {
-        "dual" => Variable$1,
-        "reference1" => Variable$2,
-        "reference2" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "dual" => Variable$2,
+        "reference1" => Variable$3,
+        "reference2" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

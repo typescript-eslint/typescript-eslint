@@ -12,6 +12,5 @@ export const es2020_string = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'String',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

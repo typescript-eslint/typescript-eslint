@@ -3,7 +3,8 @@
 exports[`functions arrow scope 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"arrow">,
@@ -19,14 +20,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: ArrowFunctionExpression$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"i">,
@@ -42,7 +43,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$2,
+          resolved: Variable$3,
           writeExpr: Literal$4,
         },
         Reference$4 {
@@ -51,13 +52,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"j">,
@@ -73,14 +74,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Literal$6,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         VariableDefinition$4 {
           name: Identifier<"unresolved">,
@@ -96,7 +97,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$4,
+          resolved: Variable$5,
           writeExpr: Identifier<"j">,
         },
       ],
@@ -121,14 +122,16 @@ ScopeManager {
         },
       ],
       set: Map {
-        "arrow" => Variable$1,
-        "unresolved" => Variable$4,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "arrow" => Variable$2,
+        "unresolved" => Variable$5,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$4,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
       ],
     },
     FunctionScope$2 {
@@ -140,14 +143,14 @@ ScopeManager {
         Reference$4,
       ],
       set: Map {
-        "i" => Variable$2,
-        "j" => Variable$3,
+        "i" => Variable$3,
+        "j" => Variable$4,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

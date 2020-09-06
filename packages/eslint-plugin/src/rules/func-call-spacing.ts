@@ -77,12 +77,9 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function checkSpacing(
-      node:
-        | TSESTree.CallExpression
-        | TSESTree.OptionalCallExpression
-        | TSESTree.NewExpression,
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const isOptionalCall = util.isOptionalOptionalCallExpression(node);
+      const isOptionalCall = util.isOptionalCallExpression(node);
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
@@ -175,7 +172,6 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       CallExpression: checkSpacing,
-      OptionalCallExpression: checkSpacing,
       NewExpression: checkSpacing,
     };
   },

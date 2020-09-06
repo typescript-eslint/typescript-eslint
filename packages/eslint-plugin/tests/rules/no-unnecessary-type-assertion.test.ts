@@ -14,6 +14,16 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
+    `
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+declare const member: TSESTree.TSEnumMember;
+if (
+  member.id.type === AST_NODE_TYPES.Literal &&
+  typeof member.id.value === 'string'
+) {
+  const name = member.id as TSESTree.StringLiteral;
+}
+    `,
     'const foo = 3 as number;',
     'const foo = <number>3;',
     'const foo = <3>3;',

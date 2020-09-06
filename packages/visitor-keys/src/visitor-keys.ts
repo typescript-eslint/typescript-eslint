@@ -22,6 +22,7 @@ const additionalKeys: AdditionalKeys = {
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
+  AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
   CallExpression: ['callee', 'typeParameters', 'arguments'],
   ClassDeclaration: [
     'decorators',
@@ -59,8 +60,6 @@ const additionalKeys: AdditionalKeys = {
   // Additional Nodes.
   ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
-  OptionalCallExpression: ['callee', 'typeParameters', 'arguments'],
-  OptionalMemberExpression: ['object', 'property'],
 
   // TS-prefixed nodes
   TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],

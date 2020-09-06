@@ -41,6 +41,8 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   ['ecmaVersion', ['number']],
   ['globalReturn', ['boolean']],
   ['impliedStrict', ['boolean']],
+  ['jsxPragma', ['string']],
+  ['jsxFragmentName', ['string']],
   ['sourceType', ['string', new Set(['module', 'script'])]],
 ]);
 

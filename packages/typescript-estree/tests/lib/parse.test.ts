@@ -592,7 +592,7 @@ describe('parse()', () => {
 
     const testParse = (
       filePath: 'ignoreme' | 'includeme',
-      projectFolderIgnoreList: TSESTreeOptions['projectFolderIgnoreList'] = [],
+      projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
     ) => (): void => {
       parser.parseAndGenerateServices(code, {
         ...config,
@@ -606,14 +606,8 @@ describe('parse()', () => {
       expect(testParse('includeme')).not.toThrow();
     });
 
-    it('ignores a folder when given a string regexp', () => {
-      const ignore = ['/ignoreme/'];
-      expect(testParse('ignoreme', ignore)).toThrow();
-      expect(testParse('includeme', ignore)).not.toThrow();
-    });
-
-    it('ignores a folder when given a RegExp', () => {
-      const ignore = [/\/ignoreme\//];
+    it('ignores a folder when given a string glob', () => {
+      const ignore = ['**/ignoreme/**'];
       expect(testParse('ignoreme', ignore)).toThrow();
       expect(testParse('includeme', ignore)).not.toThrow();
     });
