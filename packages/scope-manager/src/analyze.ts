@@ -34,6 +34,21 @@ interface AnalyzeOptions {
   impliedStrict?: boolean;
 
   /**
+   * The identifier that's used for JSX Element creation (after transpilation).
+   * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
+   * Defaults to `"React"`.
+   */
+  jsxPragma?: string;
+
+  /**
+   * The identifier that's used for JSX fragment elements (after transpilation).
+   * If `null`, assumes transpilation will always use a member on `jsxFactory` (i.e. React.Fragment).
+   * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
+   * Defaults to `null`.
+   */
+  jsxFragmentName?: string | null;
+
+  /**
    * The lib used by the project.
    * This automatically defines a type variable for any types provided by the configured TS libs.
    * Defaults to the lib for the provided `ecmaVersion`.
@@ -53,6 +68,8 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   ecmaVersion: 2018,
   globalReturn: false,
   impliedStrict: false,
+  jsxPragma: 'React',
+  jsxFragmentName: null,
   lib: ['es2018'],
   sourceType: 'script',
 };
@@ -78,13 +95,16 @@ function analyze(
   const ecmaVersion =
     providedOptions?.ecmaVersion ?? DEFAULT_OPTIONS.ecmaVersion;
   const options: Required<AnalyzeOptions> = {
+    childVisitorKeys:
+      providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
+    ecmaVersion,
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
+    jsxPragma: providedOptions?.jsxPragma ?? DEFAULT_OPTIONS.jsxPragma,
+    jsxFragmentName:
+      providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
-    ecmaVersion,
-    childVisitorKeys:
-      providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
     lib: providedOptions?.lib ?? [mapEcmaVersion(ecmaVersion)],
   };
 
