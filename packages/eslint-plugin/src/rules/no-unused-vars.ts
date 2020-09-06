@@ -28,6 +28,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context) {
     const rules = baseRule.create(context);
+    const filename = context.getFilename();
 
     /**
      * Gets a list of TS module definitions for a specified variable.
@@ -207,19 +208,93 @@ export default util.createRule<Options, MessageIds>({
         }
       },
 
-      // TODO - this could probably be refined a bit
-      '*[declare=true] Identifier'(node: TSESTree.Identifier): void {
-        context.markVariableAsUsed(node.name);
-        const scope = context.getScope();
-        const { variableScope } = scope;
-        if (variableScope !== scope) {
-          const superVar = variableScope.set.get(node.name);
+      // declaration file handling
+      [declarationSelector(AST_NODE_TYPES.Program, true)](
+        node: DeclarationSelectorNode,
+      ): void {
+        if (!util.isDefinitionFile(filename)) {
+          return;
+        }
+        markDeclarationChildAsUsed(node);
+      },
+
+      // declared namespace handling
+      [declarationSelector(
+        'TSModuleDeclaration[declare = true] > TSModuleBlock',
+        false,
+      )](node: DeclarationSelectorNode): void {
+        markDeclarationChildAsUsed(node);
+      },
+    };
+
+    type DeclarationSelectorNode =
+      | TSESTree.TSInterfaceDeclaration
+      | TSESTree.TSTypeAliasDeclaration
+      | TSESTree.ClassDeclaration
+      | TSESTree.FunctionDeclaration
+      | TSESTree.TSDeclareFunction
+      | TSESTree.TSEnumDeclaration
+      | TSESTree.TSModuleDeclaration
+      | TSESTree.VariableDeclaration;
+    function declarationSelector(
+      parent: string,
+      childDeclare: boolean,
+    ): string {
+      return [
+        // Types are ambiently exported
+        `${parent} > :matches(${[
+          AST_NODE_TYPES.TSInterfaceDeclaration,
+          AST_NODE_TYPES.TSTypeAliasDeclaration,
+        ].join(', ')})`,
+        // Value things are ambiently exported if they are "declare"d
+        `${parent} > :matches(${[
+          AST_NODE_TYPES.ClassDeclaration,
+          AST_NODE_TYPES.TSDeclareFunction,
+          AST_NODE_TYPES.TSEnumDeclaration,
+          AST_NODE_TYPES.TSModuleDeclaration,
+          AST_NODE_TYPES.VariableDeclaration,
+        ].join(', ')})${childDeclare ? '[declare=true]' : ''}`,
+      ].join(', ');
+    }
+    function markDeclarationChildAsUsed(node: DeclarationSelectorNode): void {
+      const identifiers: TSESTree.Identifier[] = [];
+      switch (node.type) {
+        case AST_NODE_TYPES.TSInterfaceDeclaration:
+        case AST_NODE_TYPES.TSTypeAliasDeclaration:
+        case AST_NODE_TYPES.ClassDeclaration:
+        case AST_NODE_TYPES.FunctionDeclaration:
+        case AST_NODE_TYPES.TSDeclareFunction:
+        case AST_NODE_TYPES.TSEnumDeclaration:
+        case AST_NODE_TYPES.TSModuleDeclaration:
+          if (node.id?.type === AST_NODE_TYPES.Identifier) {
+            identifiers.push(node.id);
+          }
+          break;
+
+        case AST_NODE_TYPES.VariableDeclaration:
+          for (const declaration of node.declarations) {
+            visitPattern(declaration, pattern => {
+              identifiers.push(pattern);
+            });
+          }
+          break;
+      }
+
+      const scope = context.getScope();
+      const { variableScope } = scope;
+      if (variableScope !== scope) {
+        for (const id of identifiers) {
+          const superVar = variableScope.set.get(id.name);
           if (superVar) {
             superVar.eslintUsed = true;
           }
         }
-      },
-    };
+      } else {
+        for (const id of identifiers) {
+          context.markVariableAsUsed(id.name);
+        }
+      }
+    }
 
     function visitPattern(
       node: TSESTree.Node,
