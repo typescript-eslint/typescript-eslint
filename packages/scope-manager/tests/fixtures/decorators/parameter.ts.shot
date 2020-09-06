@@ -3,7 +3,8 @@
 exports[`decorators parameter 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         FunctionNameDefinition$1 {
           name: Identifier<"decorator">,
@@ -18,7 +19,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
         Reference$2 {
           identifier: Identifier<"decorator">,
@@ -26,7 +27,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
         Reference$3 {
           identifier: Identifier<"decorator">,
@@ -34,7 +35,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
         Reference$5 {
           identifier: Identifier<"decorator">,
@@ -42,20 +43,20 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         FunctionNameDefinition$2 {
           name: Identifier<"foo">,
@@ -67,14 +68,14 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$5 {
+    Variable$6 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"a">,
@@ -86,7 +87,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$6 {
+    Variable$7 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"b">,
@@ -98,7 +99,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$7 {
+    Variable$8 {
       defs: Array [
         ParameterDefinition$5 {
           name: Identifier<"c">,
@@ -110,7 +111,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$8 {
+    Variable$9 {
       defs: Array [
         ParameterDefinition$6 {
           name: Identifier<"d">,
@@ -126,7 +127,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$8,
+          resolved: Variable$9,
           writeExpr: Literal$3,
         },
       ],
@@ -140,14 +141,16 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "decorator" => Variable$1,
-        "foo" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "decorator" => Variable$2,
+        "foo" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$3,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$4,
       ],
     },
     FunctionScope$2 {
@@ -155,12 +158,12 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "arguments" => Variable$2,
+        "arguments" => Variable$3,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     FunctionScope$3 {
@@ -174,20 +177,20 @@ ScopeManager {
         Reference$5,
       ],
       set: Map {
-        "arguments" => Variable$4,
-        "a" => Variable$5,
-        "b" => Variable$6,
-        "c" => Variable$7,
-        "d" => Variable$8,
+        "arguments" => Variable$5,
+        "a" => Variable$6,
+        "b" => Variable$7,
+        "c" => Variable$8,
+        "d" => Variable$9,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$4,
         Variable$5,
         Variable$6,
         Variable$7,
         Variable$8,
+        Variable$9,
       ],
     },
   ],

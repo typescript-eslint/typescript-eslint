@@ -3,7 +3,8 @@
 exports[`functions arrow type-predicate1 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"foo">,
@@ -19,14 +20,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: ArrowFunctionExpression$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ParameterDefinition$2 {
           name: Identifier<"arg">,
@@ -41,7 +42,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
         Reference$3 {
           identifier: Identifier<"arg">,
@@ -49,7 +50,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: true,
@@ -64,12 +65,14 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     FunctionScope$2 {
@@ -80,12 +83,12 @@ ScopeManager {
         Reference$3,
       ],
       set: Map {
-        "arg" => Variable$2,
+        "arg" => Variable$3,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

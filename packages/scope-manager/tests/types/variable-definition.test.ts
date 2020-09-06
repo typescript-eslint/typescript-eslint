@@ -9,7 +9,7 @@ describe('variable definition', () => {
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeAliasDeclaration);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       Array [
-        Variable$1 {
+        Variable$2 {
           defs: Array [
             TypeDefinition$1 {
               name: Identifier<"TypeDecl">,
@@ -34,7 +34,7 @@ describe('variable definition', () => {
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSInterfaceDeclaration);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       Array [
-        Variable$1 {
+        Variable$2 {
           defs: Array [
             TypeDefinition$1 {
               name: Identifier<"InterfaceDecl">,
@@ -57,7 +57,7 @@ describe('variable definition', () => {
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeParameter);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       Array [
-        Variable$2 {
+        Variable$3 {
           defs: Array [
             TypeDefinition$2 {
               name: Identifier<"TypeParam">,
@@ -84,7 +84,7 @@ describe('variable definition', () => {
     );
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       Array [
-        Variable$3 {
+        Variable$4 {
           defs: Array [
             TypeDefinition$3 {
               name: Identifier<"Inferred">,
@@ -99,7 +99,7 @@ describe('variable definition', () => {
               isTypeReference: true,
               isValueReference: false,
               isWrite: false,
-              resolved: Variable$3,
+              resolved: Variable$4,
             },
           ],
           isValueVariable: false,

@@ -12,20 +12,17 @@ export const es2018_asyncgenerator = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncGenerator',
-    writeable: false,
   },
   AsyncGeneratorFunction: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncGeneratorFunction',
-    writeable: false,
   },
   AsyncGeneratorFunctionConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncGeneratorFunctionConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

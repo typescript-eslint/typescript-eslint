@@ -3,7 +3,8 @@
 exports[`jsx factory jsxFragmentName 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ImportBindingDefinition$1 {
           name: Identifier<"React">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ImportBindingDefinition$2 {
           name: Identifier<"Fragment">,
@@ -39,7 +40,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: true,
@@ -51,10 +52,14 @@ ScopeManager {
       block: Program$3,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$3,
@@ -64,14 +69,14 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "React" => Variable$1,
-        "Fragment" => Variable$2,
+        "React" => Variable$2,
+        "Fragment" => Variable$3,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
         Variable$2,
+        Variable$3,
       ],
     },
   ],

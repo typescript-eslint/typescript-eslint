@@ -3,7 +3,8 @@
 exports[`import type-named-value 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ImportBindingDefinition$1 {
           name: Identifier<"foo">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"T">,
@@ -42,10 +43,14 @@ ScopeManager {
       block: Program$3,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$3,
@@ -54,14 +59,14 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "foo" => Variable$1,
-        "T" => Variable$2,
+        "foo" => Variable$2,
+        "T" => Variable$3,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
         Variable$2,
+        Variable$3,
       ],
     },
   ],

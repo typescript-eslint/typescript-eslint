@@ -10,6 +10,5 @@ export const es2018_intl = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'Intl',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

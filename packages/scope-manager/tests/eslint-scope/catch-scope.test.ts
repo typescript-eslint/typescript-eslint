@@ -3,6 +3,7 @@ import {
   expectToBeCatchScope,
   expectToBeFunctionScope,
   expectToBeGlobalScope,
+  getRealVariables,
   parseAndAnalyze,
 } from '../util';
 
@@ -19,30 +20,35 @@ describe('catch', () => {
     expect(scopeManager.scopes).toHaveLength(5);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
-    expect(scope.variables).toHaveLength(1);
-    expect(scope.variables[0].name).toBe('arguments');
+    expect(variables).toHaveLength(1);
+    expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[2];
+    variables = getRealVariables(scope.variables);
     expectToBeBlockScope(scope);
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[3];
+    variables = getRealVariables(scope.variables);
     expectToBeCatchScope(scope);
-    expect(scope.variables).toHaveLength(1);
-    expect(scope.variables[0].name).toBe('e');
+    expect(variables).toHaveLength(1);
+    expect(variables[0].name).toBe('e');
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[4];
+    variables = getRealVariables(scope.variables);
     expectToBeBlockScope(scope);
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
   });
 });

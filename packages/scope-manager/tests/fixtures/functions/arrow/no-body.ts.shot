@@ -3,7 +3,8 @@
 exports[`functions arrow no-body 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ParameterDefinition$1 {
           name: Identifier<"a">,
@@ -18,7 +19,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
@@ -30,10 +31,14 @@ ScopeManager {
       block: Program$2,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     FunctionScope$2 {
       block: ArrowFunctionExpression$1,
@@ -42,12 +47,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "a" => Variable$1,
+        "a" => Variable$2,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
+        Variable$2,
       ],
     },
   ],

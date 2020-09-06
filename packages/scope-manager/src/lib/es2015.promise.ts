@@ -10,6 +10,5 @@ export const es2015_promise = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'PromiseConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

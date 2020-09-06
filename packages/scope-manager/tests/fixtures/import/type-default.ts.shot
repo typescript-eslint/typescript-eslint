@@ -3,7 +3,8 @@
 exports[`import type-default 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ImportBindingDefinition$1 {
           name: Identifier<"T">,
@@ -18,7 +19,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
         Reference$3 {
           identifier: Identifier<"T">,
@@ -26,13 +27,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"Ref">,
@@ -44,7 +45,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"unresolved">,
@@ -60,7 +61,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Identifier<"T">,
         },
       ],
@@ -73,10 +74,14 @@ ScopeManager {
       block: Program$4,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$4,
@@ -87,16 +92,16 @@ ScopeManager {
         Reference$3,
       ],
       set: Map {
-        "T" => Variable$1,
-        "Ref" => Variable$2,
-        "unresolved" => Variable$3,
+        "T" => Variable$2,
+        "Ref" => Variable$3,
+        "unresolved" => Variable$4,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

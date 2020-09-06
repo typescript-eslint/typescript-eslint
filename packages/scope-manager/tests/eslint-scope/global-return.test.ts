@@ -4,6 +4,7 @@ import {
   expectToBeFunctionScope,
   expectToBeModuleScope,
   expectToBeImportBindingDefinition,
+  getRealVariables,
 } from '../util';
 import { parseAndAnalyze } from '../util/parse';
 
@@ -20,19 +21,21 @@ describe('gloablReturn option', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
 
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeTruthy();
-    expect(scope.variables).toHaveLength(2);
-    expect(scope.variables[0].name).toBe('arguments');
-    expect(scope.variables[1].name).toBe('hello');
+    expect(variables).toHaveLength(2);
+    expect(variables[0].name).toBe('arguments');
+    expect(variables[1].name).toBe('hello');
   });
 
   it('creates a function scope following the global scope immediately and creates module scope', () => {
@@ -44,24 +47,27 @@ describe('gloablReturn option', () => {
     expect(scopeManager.scopes).toHaveLength(3);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
 
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
-    expect(scope.variables[0].name).toBe('arguments');
+    expect(variables).toHaveLength(1);
+    expect(variables[0].name).toBe('arguments');
 
     scope = scopeManager.scopes[2];
+    variables = getRealVariables(scope.variables);
     expectToBeModuleScope(scope);
-    expect(scope.variables).toHaveLength(1);
-    expect(scope.variables[0].name).toBe('v');
-    expectToBeImportBindingDefinition(scope.variables[0].defs[0]);
+    expect(variables).toHaveLength(1);
+    expect(variables[0].name).toBe('v');
+    expectToBeImportBindingDefinition(variables[0].defs[0]);
     expect(scope.references).toHaveLength(0);
   });
 });

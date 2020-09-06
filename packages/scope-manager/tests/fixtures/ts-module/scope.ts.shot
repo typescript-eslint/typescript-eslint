@@ -3,7 +3,8 @@
 exports[`ts-module scope 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TSModuleNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"x">,
@@ -31,14 +32,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$2,
+          resolved: Variable$3,
           writeExpr: Literal$3,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"unresolved">,
@@ -54,7 +55,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Identifier<"x">,
         },
       ],
@@ -78,14 +79,16 @@ ScopeManager {
         },
       ],
       set: Map {
-        "Foo" => Variable$1,
-        "unresolved" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+        "unresolved" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$3,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$4,
       ],
     },
     TSModuleScope$2 {
@@ -95,12 +98,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "x" => Variable$2,
+        "x" => Variable$3,
       },
       type: "tsModule",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

@@ -3,7 +3,8 @@
 exports[`type-declaration tuple-labelled 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"T1">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"T2">,
@@ -39,13 +40,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"A">,
@@ -67,16 +68,18 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "T1" => Variable$1,
-        "T2" => Variable$2,
-        "A" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "T1" => Variable$2,
+        "T2" => Variable$3,
+        "A" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

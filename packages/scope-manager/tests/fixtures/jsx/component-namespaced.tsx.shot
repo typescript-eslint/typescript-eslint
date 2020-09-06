@@ -3,7 +3,8 @@
 exports[`jsx component-namespaced 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"X">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: ObjectExpression$2,
         },
         Reference$3 {
@@ -28,20 +29,20 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"Foo">,
@@ -57,7 +58,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Literal$5,
         },
       ],
@@ -75,14 +76,16 @@ ScopeManager {
         Reference$3,
       ],
       set: Map {
-        "X" => Variable$1,
-        "Foo" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "X" => Variable$2,
+        "Foo" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$3,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$4,
       ],
     },
     FunctionScope$2 {
@@ -90,12 +93,12 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "arguments" => Variable$2,
+        "arguments" => Variable$3,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

@@ -3,7 +3,8 @@
 exports[`type-declaration signatures method-computed-name 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"x">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Literal$2,
         },
         Reference$2 {
@@ -28,13 +29,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"T">,
@@ -49,7 +50,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
         Reference$4 {
           identifier: Identifier<"T">,
@@ -57,13 +58,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"A">,
@@ -75,7 +76,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"arg">,
@@ -97,16 +98,18 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "x" => Variable$1,
-        "T" => Variable$2,
-        "A" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "x" => Variable$2,
+        "T" => Variable$3,
+        "A" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
     FunctionTypeScope$2 {
@@ -117,12 +120,12 @@ ScopeManager {
         Reference$4,
       ],
       set: Map {
-        "arg" => Variable$4,
+        "arg" => Variable$5,
       },
       type: "functionType",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
   ],
