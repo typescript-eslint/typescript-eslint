@@ -140,6 +140,65 @@ function predicate(arg: any): asserts arg is T {
   }
 }
     `,
+    {
+      code: `
+function Foo() {}
+<Foo />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+type T = 1;
+function Foo() {}
+<Foo<T> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = 1;
+function Foo() {}
+<Foo attr={x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = {};
+function Foo() {}
+<Foo {...x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = {};
+function Foo() {}
+<Foo>{x}</Foo>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -172,6 +231,108 @@ function predicate(arg: any): asserts arg is T {
           data: {
             name: 'a',
           },
+        },
+      ],
+    },
+    {
+      code: '<Foo />;',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Foo',
+          },
+          line: 1,
+          column: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo attr={x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo {...x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo<T> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'T',
+          },
+          line: 3,
+          column: 6,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo>{x}</Foo>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 7,
         },
       ],
     },

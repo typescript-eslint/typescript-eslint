@@ -803,6 +803,51 @@ export type Test<U> = U extends (arg: {
   ? I
   : never;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+        import React from 'react';
+
+        export const ComponentFoo: React.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+        import { h } from 'some-other-jsx-lib';
+
+        export const ComponentFoo: h.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: 'h',
+      },
+    },
+    {
+      code: `
+        import { Fragment } from 'react';
+
+        export const ComponentFoo: Fragment = () => {
+          return <>Foo Foo</>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxFragmentName: 'Fragment',
+      },
+    },
   ],
 
   invalid: [
@@ -1319,6 +1364,60 @@ type Foo = Array<Foo>;
           line: 2,
           data: {
             varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+import React from 'react';
+import { Fragment } from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          data: {
+            varName: 'Fragment',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+import React from 'react';
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: 'h',
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'React',
             action: 'defined',
             additional: '',
           },

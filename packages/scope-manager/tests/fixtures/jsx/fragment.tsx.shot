@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx fragment 1`] = `
+ScopeManager {
+  variables: Array [],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+  ],
+}
+`;

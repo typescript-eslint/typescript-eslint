@@ -5,9 +5,13 @@ import {
   TSESTreeOptions,
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
-import { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
+import {
+  analyze,
+  AnalyzeOptions,
+  ScopeManager,
+} from '@typescript-eslint/scope-manager';
 import debug from 'debug';
-import { ScriptTarget } from 'typescript';
+import { CompilerOptions, ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 
@@ -33,8 +37,7 @@ function validateBoolean(
 }
 
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts/;
-function getLib(services: ParserServices): Lib[] {
-  const compilerOptions = services.program.getCompilerOptions();
+function getLib(compilerOptions: CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib
       .map(lib => {
@@ -100,6 +103,14 @@ function parseForESLint(
     useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
+  const analyzeOptions: AnalyzeOptions = {
+    ecmaVersion: options.ecmaVersion,
+    globalReturn: options.ecmaFeatures.globalReturn,
+    jsxPragma: options.jsxPragma,
+    jsxFragmentName: options.jsxFragmentName,
+    lib: options.lib,
+    sourceType: options.sourceType,
+  };
 
   if (typeof options.filePath === 'string') {
     const tsx = options.filePath.endsWith('.tsx');
@@ -123,18 +134,40 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  // automatically apply the libs configured for the program
-  if (services.hasFullTypeInformation && options.lib == null) {
-    options.lib = getLib(services);
-    log('Resolved libs from program: %o', options.lib);
+  if (services.hasFullTypeInformation) {
+    // automatically apply the options configured for the program
+    const compilerOptions = services.program.getCompilerOptions();
+    if (analyzeOptions.lib == null) {
+      analyzeOptions.lib = getLib(compilerOptions);
+      log('Resolved libs from program: %o', analyzeOptions.lib);
+    }
+    if (parserOptions.jsx === true) {
+      if (
+        analyzeOptions.jsxPragma === undefined &&
+        compilerOptions.jsxFactory != null
+      ) {
+        // in case the user has specified something like "preact.h"
+        const factory = compilerOptions.jsxFactory.split('.')[0].trim();
+        analyzeOptions.jsxPragma = factory;
+        log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
+      }
+      if (
+        analyzeOptions.jsxFragmentName === undefined &&
+        compilerOptions.jsxFragmentFactory != null
+      ) {
+        // in case the user has specified something like "preact.Fragment"
+        const fragFactory = compilerOptions.jsxFragmentFactory
+          .split('.')[0]
+          .trim();
+        analyzeOptions.jsxFragmentName = fragFactory;
+        log(
+          'Resolved jsxFragmentName from program: %s',
+          analyzeOptions.jsxFragmentName,
+        );
+      }
+    }
   }
 
-  const analyzeOptions = {
-    ecmaVersion: options.ecmaVersion,
-    globalReturn: options.ecmaFeatures.globalReturn,
-    lib: options.lib,
-    sourceType: options.sourceType,
-  };
   const scopeManager = analyze(ast, analyzeOptions);
 
   return { ast, services, scopeManager, visitorKeys };

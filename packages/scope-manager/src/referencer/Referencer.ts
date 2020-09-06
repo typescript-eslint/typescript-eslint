@@ -22,18 +22,26 @@ import { lib as TSLibraries } from '../lib';
 import { Scope, GlobalScope } from '../scope';
 
 interface ReferencerOptions extends VisitorOptions {
+  jsxPragma: string;
+  jsxFragmentName: string | null;
   lib: Lib[];
 }
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
   #isInnerMethodDefinition: boolean;
+  #jsxPragma: string;
+  #jsxFragmentName: string | null;
+  #hasReferencedJsxFactory = false;
+  #hasReferencedJsxFragmentFactory = false;
   #lib: Lib[];
   public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
     super(options);
     this.scopeManager = scopeManager;
+    this.#jsxPragma = options.jsxPragma;
+    this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
     this.#isInnerMethodDefinition = false;
   }
@@ -97,6 +105,46 @@ class Referencer extends Visitor {
         globalScope.defineImplicitVariable(variable);
       }
     }
+  }
+
+  /**
+   * Searches for a variable named "name" in the upper scopes and adds a pseudo-reference from itself to itself
+   */
+  private referenceInSomeUpperScope(name: string): boolean {
+    let scope = this.scopeManager.currentScope;
+    while (scope) {
+      const variable = scope.set.get(name);
+      if (!variable) {
+        scope = scope.upper;
+        continue;
+      }
+
+      scope.referenceValue(variable.identifiers[0]);
+      return true;
+    }
+
+    return false;
+  }
+
+  private referenceJsxPragma(): void {
+    if (this.#hasReferencedJsxFactory) {
+      return;
+    }
+    this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
+      this.#jsxPragma,
+    );
+  }
+
+  private referenceJsxFragment(): void {
+    if (
+      this.#jsxFragmentName === null ||
+      this.#hasReferencedJsxFragmentFactory
+    ) {
+      return;
+    }
+    this.#hasReferencedJsxFragmentFactory = this.referenceInSomeUpperScope(
+      this.#jsxFragmentName,
+    );
   }
 
   ///////////////////
@@ -496,6 +544,34 @@ class Referencer extends Visitor {
     );
 
     ImportVisitor.visit(this, node);
+  }
+
+  protected JSXAttribute(node: TSESTree.JSXAttribute): void {
+    this.visit(node.value);
+  }
+
+  protected JSXFragment(node: TSESTree.JSXFragment): void {
+    this.referenceJsxPragma();
+    this.referenceJsxFragment();
+    this.visitChildren(node);
+  }
+
+  protected JSXIdentifier(node: TSESTree.JSXIdentifier): void {
+    this.currentScope().referenceValue(node);
+  }
+
+  protected JSXMemberExpression(node: TSESTree.JSXMemberExpression): void {
+    this.visit(node.object);
+    // we don't ever reference the property as it's always going to be a property on the thing
+  }
+
+  protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
+    this.referenceJsxPragma();
+    this.visit(node.name);
+    this.visitType(node.typeParameters);
+    for (const attr of node.attributes) {
+      this.visit(attr);
+    }
   }
 
   protected LabeledStatement(node: TSESTree.LabeledStatement): void {

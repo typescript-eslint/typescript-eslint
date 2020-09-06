@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx factory default-jsxFragmentName 1`] = `
+ScopeManager {
+  variables: Array [
+    Variable$1 {
+      defs: Array [
+        ImportBindingDefinition$1 {
+          name: Identifier<"React">,
+          node: ImportDefaultSpecifier$1,
+        },
+      ],
+      name: "React",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"React">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$1,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$2 {
+      defs: Array [
+        ImportBindingDefinition$2 {
+          name: Identifier<"Fragment">,
+          node: ImportSpecifier$2,
+        },
+      ],
+      name: "Fragment",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {},
+      type: "global",
+      upper: null,
+      variables: Array [],
+    },
+    ModuleScope$2 {
+      block: Program$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "React" => Variable$1,
+        "Fragment" => Variable$2,
+      },
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$1,
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;
