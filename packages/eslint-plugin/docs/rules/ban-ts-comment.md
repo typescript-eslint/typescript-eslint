@@ -29,7 +29,7 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  'ts-expect-error': true,
+  'ts-expect-error': 'allow-with-description',
   'ts-ignore': true,
   'ts-nocheck': true,
   'ts-check': false,

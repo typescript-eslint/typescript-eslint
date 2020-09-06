@@ -11,16 +11,6 @@ interface Options {
 
 export const defaultMinimumDescriptionLength = 3;
 
-const defaultOptions: [Options] = [
-  {
-    'ts-expect-error': true,
-    'ts-ignore': true,
-    'ts-nocheck': true,
-    'ts-check': false,
-    minimumDescriptionLength: defaultMinimumDescriptionLength,
-  },
-];
-
 type MessageIds =
   | 'tsDirectiveComment'
   | 'tsDirectiveCommentRequiresDescription';
@@ -98,7 +88,15 @@ export default util.createRule<[Options], MessageIds>({
       },
     ],
   },
-  defaultOptions,
+  defaultOptions: [
+    {
+      'ts-expect-error': 'allow-with-description',
+      'ts-ignore': true,
+      'ts-nocheck': true,
+      'ts-check': false,
+      minimumDescriptionLength: defaultMinimumDescriptionLength,
+    },
+  ],
   create(context, [options]) {
     const tsCommentRegExp = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();

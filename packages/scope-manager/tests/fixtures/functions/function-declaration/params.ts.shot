@@ -3,7 +3,8 @@
 exports[`functions function-declaration params 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"outer">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Literal$2,
         },
         Reference$6 {
@@ -28,13 +29,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         FunctionNameDefinition$2 {
           name: Identifier<"foo">,
@@ -46,14 +47,14 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"a">,
@@ -68,7 +69,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$4,
+          resolved: Variable$5,
         },
         Reference$7 {
           identifier: Identifier<"a">,
@@ -76,13 +77,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$4,
+          resolved: Variable$5,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$5 {
+    Variable$6 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"b">,
@@ -94,7 +95,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$6 {
+    Variable$7 {
       defs: Array [
         ParameterDefinition$5 {
           name: Identifier<"c">,
@@ -106,7 +107,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$7 {
+    Variable$8 {
       defs: Array [
         ParameterDefinition$6 {
           name: Identifier<"d">,
@@ -122,14 +123,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$7,
+          resolved: Variable$8,
           writeExpr: Literal$4,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$8 {
+    Variable$9 {
       defs: Array [
         ParameterDefinition$7 {
           name: Identifier<"e">,
@@ -145,14 +146,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$8,
+          resolved: Variable$9,
           writeExpr: Identifier<"a">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$9 {
+    Variable$10 {
       defs: Array [
         ParameterDefinition$8 {
           name: Identifier<"f">,
@@ -168,14 +169,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$9,
+          resolved: Variable$10,
           writeExpr: Identifier<"outer">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$10 {
+    Variable$11 {
       defs: Array [
         ParameterDefinition$9 {
           name: Identifier<"g">,
@@ -187,7 +188,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$11 {
+    Variable$12 {
       defs: Array [
         VariableDefinition$10 {
           name: Identifier<"unresolved">,
@@ -203,7 +204,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$11,
+          resolved: Variable$12,
           writeExpr: Identifier<"g">,
         },
       ],
@@ -228,16 +229,18 @@ ScopeManager {
         },
       ],
       set: Map {
-        "outer" => Variable$1,
-        "foo" => Variable$2,
-        "unresolved" => Variable$11,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "outer" => Variable$2,
+        "foo" => Variable$3,
+        "unresolved" => Variable$12,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
-        Variable$11,
+        Variable$3,
+        Variable$12,
       ],
     },
     FunctionScope$2 {
@@ -252,19 +255,18 @@ ScopeManager {
         Reference$7,
       ],
       set: Map {
-        "arguments" => Variable$3,
-        "a" => Variable$4,
-        "b" => Variable$5,
-        "c" => Variable$6,
-        "d" => Variable$7,
-        "e" => Variable$8,
-        "f" => Variable$9,
-        "g" => Variable$10,
+        "arguments" => Variable$4,
+        "a" => Variable$5,
+        "b" => Variable$6,
+        "c" => Variable$7,
+        "d" => Variable$8,
+        "e" => Variable$9,
+        "f" => Variable$10,
+        "g" => Variable$11,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$3,
         Variable$4,
         Variable$5,
         Variable$6,
@@ -272,6 +274,7 @@ ScopeManager {
         Variable$8,
         Variable$9,
         Variable$10,
+        Variable$11,
       ],
     },
   ],

@@ -20,7 +20,9 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'code',
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      wrongQuotes: 'Strings must use {{description}}.',
+    },
     schema: baseRule.meta.schema,
   },
   defaultOptions: [

@@ -22,7 +22,10 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      missingSemi: 'Missing semicolon.',
+      extraSemi: 'Extra semicolon.',
+    },
   },
   defaultOptions: [
     'always',

@@ -3,7 +3,8 @@
 exports[`type-declaration interface2 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"A">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"B">,
@@ -45,14 +46,16 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "A" => Variable$1,
-        "B" => Variable$2,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "A" => Variable$2,
+        "B" => Variable$3,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
+        Variable$3,
       ],
     },
   ],

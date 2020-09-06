@@ -15,6 +15,7 @@ export type Options = [
     allowNullableString?: boolean;
     allowNullableNumber?: boolean;
     allowAny?: boolean;
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
@@ -28,7 +29,8 @@ export type MessageId =
   | 'conditionErrorNumber'
   | 'conditionErrorNullableNumber'
   | 'conditionErrorObject'
-  | 'conditionErrorNullableObject';
+  | 'conditionErrorNullableObject'
+  | 'noStrictNullCheck';
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -51,6 +53,9 @@ export default util.createRule<Options, MessageId>({
           allowNullableString: { type: 'boolean' },
           allowNullableNumber: { type: 'boolean' },
           allowAny: { type: 'boolean' },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -86,6 +91,8 @@ export default util.createRule<Options, MessageId>({
       conditionErrorNullableObject:
         'Unexpected nullable object value in conditional. ' +
         'An explicit null check is required.',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
   },
   defaultOptions: [
@@ -93,11 +100,34 @@ export default util.createRule<Options, MessageId>({
       allowString: true,
       allowNumber: true,
       allowNullableObject: true,
+      allowNullableBoolean: false,
+      allowNullableString: false,
+      allowNullableNumber: false,
+      allowAny: false,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
   create(context, [options]) {
     const service = util.getParserServices(context);
     const checker = service.program.getTypeChecker();
+    const compilerOptions = service.program.getCompilerOptions();
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
+
+    if (
+      !isStrictNullChecks &&
+      options.allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { line: 0, column: 0 },
+          end: { line: 0, column: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     const checkedNodes = new Set<TSESTree.Node>();
 

@@ -14,27 +14,23 @@ export const es2017_sharedmemory = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'SharedArrayBuffer',
-    writeable: false,
   },
   SharedArrayBufferConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SharedArrayBufferConstructor',
-    writeable: false,
   },
   ArrayBufferTypes: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ArrayBufferTypes',
-    writeable: false,
   },
   Atomics: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: true,
     name: 'Atomics',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

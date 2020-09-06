@@ -3,7 +3,8 @@
 exports[`ts-enum literal-member-ref 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TSEnumNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TSEnumNameDefinition$2 {
           name: Identifier<"Foo">,
@@ -27,7 +28,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TSEnumMemberDefinition$3 {
           name: Literal$2,
@@ -42,13 +43,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$3,
+          resolved: Variable$4,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         TSEnumMemberDefinition$4 {
           name: Identifier<"b">,
@@ -67,12 +68,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "Foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     TSEnumScope$2 {
@@ -82,16 +85,16 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "Foo" => Variable$2,
-        "a" => Variable$3,
-        "b" => Variable$4,
+        "Foo" => Variable$3,
+        "a" => Variable$4,
+        "b" => Variable$5,
       },
       type: "tsEnum",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
         Variable$3,
         Variable$4,
+        Variable$5,
       ],
     },
   ],

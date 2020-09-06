@@ -59,10 +59,8 @@ export default createRule({
     const checker = program.getTypeChecker();
 
     return {
-      ':matches(MemberExpression, OptionalMemberExpression)[computed = false]'(
-        node:
-          | TSESTree.MemberExpressionNonComputedName
-          | TSESTree.OptionalMemberExpressionNonComputedName,
+      'MemberExpression[computed = false]'(
+        node: TSESTree.MemberExpressionNonComputedName,
       ): void {
         for (const banned of BANNED_PROPERTIES) {
           if (node.property.name !== banned.property) {

@@ -1,35 +1,11 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import fs from 'fs';
-import glob from 'glob';
 import * as parser from '../../src/parser';
-import {
-  createScopeSnapshotTestBlock,
-  formatSnapshotName,
-} from '../tools/test-utils';
-
-const FIXTURES_DIR =
-  '../../node_modules/@typescript-eslint/shared-fixtures/fixtures/tsx';
-const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.tsx`);
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 describe('TSX', () => {
-  testFiles.forEach(filename => {
-    const code = fs.readFileSync(filename, 'utf8');
-    const config = {
-      useJSXTextNode: true,
-      ecmaFeatures: {
-        jsx: true,
-      },
-    };
-    it(
-      formatSnapshotName(filename, FIXTURES_DIR, '.tsx'),
-      createScopeSnapshotTestBlock(code, config),
-    );
-  });
-
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
     const linter = new TSESLint.Linter();
     linter.defineParser('@typescript-eslint/parser', parser);

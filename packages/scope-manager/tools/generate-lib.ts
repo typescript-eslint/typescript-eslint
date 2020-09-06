@@ -155,7 +155,6 @@ function main(): void {
           isTypeVariable: variable.isTypeVariable,
           isValueVariable: variable.isValueVariable,
           name: variable.name,
-          writeable: false,
         })},`,
       );
     }

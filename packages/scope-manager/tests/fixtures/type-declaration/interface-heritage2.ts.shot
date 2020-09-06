@@ -3,7 +3,8 @@
 exports[`type-declaration interface-heritage2 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"unreferenced">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TSModuleNameDefinition$2 {
           name: Identifier<"Member">,
@@ -30,13 +31,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"unreferenced">,
@@ -48,7 +49,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         TypeDefinition$4 {
           name: Identifier<"Foo">,
@@ -69,16 +70,18 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "unreferenced" => Variable$1,
-        "Member" => Variable$2,
-        "Foo" => Variable$4,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "unreferenced" => Variable$2,
+        "Member" => Variable$3,
+        "Foo" => Variable$5,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
-        Variable$4,
+        Variable$3,
+        Variable$5,
       ],
     },
     TSModuleScope$2 {
@@ -86,12 +89,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "unreferenced" => Variable$3,
+        "unreferenced" => Variable$4,
       },
       type: "tsModule",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
   ],

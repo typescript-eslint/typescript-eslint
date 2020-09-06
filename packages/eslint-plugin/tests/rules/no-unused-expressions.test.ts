@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-unused-expressions';
-import { RuleTester } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -255,7 +255,7 @@ namespace Foo {
       ]),
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   const foo = true;
 

@@ -3,7 +3,8 @@
 exports[`destructuring array-assignment 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"obj">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: ObjectExpression$2,
         },
         Reference$4 {
@@ -28,13 +29,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"b">,
@@ -50,14 +51,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$2,
+          resolved: Variable$3,
           writeExpr: ArrayExpression$4,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"c">,
@@ -73,7 +74,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: ArrayExpression$4,
         },
       ],
@@ -92,16 +93,18 @@ ScopeManager {
         Reference$4,
       ],
       set: Map {
-        "obj" => Variable$1,
-        "b" => Variable$2,
-        "c" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "obj" => Variable$2,
+        "b" => Variable$3,
+        "c" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

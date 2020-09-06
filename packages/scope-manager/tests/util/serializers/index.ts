@@ -14,6 +14,7 @@ const serializers = [
   ScopeManager.serializer,
   TSESTreeNode.serializer,
   Variable.serializer,
+  Variable.implicitLibVarSerializer,
 ];
 
 for (const serializer of serializers) {

@@ -446,7 +446,7 @@ abstract class ScopeBase<
   }
 
   public referenceValue(
-    node: TSESTree.Identifier,
+    node: TSESTree.Identifier | TSESTree.JSXIdentifier,
     assign: ReferenceFlag = ReferenceFlag.Read,
     writeExpr?: TSESTree.Expression | null,
     maybeImplicitGlobal?: ReferenceImplicitGlobal | null,

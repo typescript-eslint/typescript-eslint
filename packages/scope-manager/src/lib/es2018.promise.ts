@@ -10,6 +10,5 @@ export const es2018_promise = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Promise',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;
