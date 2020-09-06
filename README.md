@@ -28,7 +28,7 @@
 - [Supported ESLint version](#supported-eslint-version)
 - [Supported Node version](#supported-node-version)
 - [License](#license)
-- [Contributors](#contributors)
+- [Contributors](#code-contributors)
 - [Contributing Guide](#contributing-guide)
 
 ## Getting Started / Installation
