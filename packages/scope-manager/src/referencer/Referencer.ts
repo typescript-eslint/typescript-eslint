@@ -105,6 +105,14 @@ class Referencer extends Visitor {
         globalScope.defineImplicitVariable(variable);
       }
     }
+
+    // for const assertions (`{} as const` / `<const>{}`)
+    globalScope.defineImplicitVariable({
+      name: 'const',
+      eslintImplicitGlobalSetting: 'readonly',
+      isTypeVariable: true,
+      isValueVariable: false,
+    });
   }
 
   /**

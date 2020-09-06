@@ -3,7 +3,8 @@
 exports[`jsx factory default-jsxPragma 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ImportBindingDefinition$1 {
           name: Identifier<"React">,
@@ -18,7 +19,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
@@ -30,10 +31,14 @@ ScopeManager {
       block: Program$2,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$2,
@@ -50,12 +55,12 @@ ScopeManager {
         },
       ],
       set: Map {
-        "React" => Variable$1,
+        "React" => Variable$2,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
+        Variable$2,
       ],
     },
   ],

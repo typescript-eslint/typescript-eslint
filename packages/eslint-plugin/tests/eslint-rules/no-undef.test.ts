@@ -199,6 +199,10 @@ function Foo() {}
         },
       },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2477
+    `
+const x = 1 as const;
+    `,
   ],
   invalid: [
     {

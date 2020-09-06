@@ -12,20 +12,17 @@ export const es2015_generator = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Generator',
-    writeable: false,
   },
   GeneratorFunction: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'GeneratorFunction',
-    writeable: false,
   },
   GeneratorFunctionConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'GeneratorFunctionConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

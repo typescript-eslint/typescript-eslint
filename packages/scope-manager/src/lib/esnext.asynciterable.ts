@@ -14,27 +14,23 @@ export const esnext_asynciterable = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SymbolConstructor',
-    writeable: false,
   },
   AsyncIterator: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncIterator',
-    writeable: false,
   },
   AsyncIterable: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncIterable',
-    writeable: false,
   },
   AsyncIterableIterator: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AsyncIterableIterator',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

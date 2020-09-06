@@ -3,7 +3,8 @@
 exports[`jsx component 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         FunctionNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [],
       name: "arguments",
       references: Array [],
@@ -40,12 +41,14 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "Foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     FunctionScope$2 {
@@ -53,12 +56,12 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "arguments" => Variable$2,
+        "arguments" => Variable$3,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

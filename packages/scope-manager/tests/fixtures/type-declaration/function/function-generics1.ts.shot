@@ -3,7 +3,8 @@
 exports[`type-declaration function function-generics1 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"T">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"A">,
@@ -36,7 +37,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"U">,
@@ -51,13 +52,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$3,
+          resolved: Variable$4,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"arg">,
@@ -76,14 +77,16 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "T" => Variable$1,
-        "A" => Variable$2,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "T" => Variable$2,
+        "A" => Variable$3,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
+        Variable$3,
       ],
     },
     TypeScope$2 {
@@ -91,12 +94,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "U" => Variable$3,
+        "U" => Variable$4,
       },
       type: "type",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
     FunctionTypeScope$3 {
@@ -107,12 +110,12 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "arg" => Variable$4,
+        "arg" => Variable$5,
       },
       type: "functionType",
       upper: TypeScope$2,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
   ],

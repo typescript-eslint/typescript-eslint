@@ -3,7 +3,8 @@
 exports[`type-declaration conditional3 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"Test">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"U">,
@@ -30,13 +31,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"k">,
@@ -48,7 +49,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         TypeDefinition$4 {
           name: Identifier<"I">,
@@ -63,7 +64,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$4,
+          resolved: Variable$5,
         },
       ],
       isValueVariable: false,
@@ -76,12 +77,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "Test" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Test" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     TypeScope$2 {
@@ -89,12 +92,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "U" => Variable$2,
+        "U" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     ConditionalTypeScope$3 {
@@ -105,12 +108,12 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "I" => Variable$4,
+        "I" => Variable$5,
       },
       type: "conditionalType",
       upper: TypeScope$2,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
     FunctionTypeScope$4 {
@@ -118,12 +121,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "k" => Variable$3,
+        "k" => Variable$4,
       },
       type: "functionType",
       upper: ConditionalTypeScope$3,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
   ],

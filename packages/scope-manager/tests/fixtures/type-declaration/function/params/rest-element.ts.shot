@@ -3,7 +3,8 @@
 exports[`type-declaration function params rest-element 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"Fn">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"A">,
@@ -30,13 +31,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"a">,
@@ -55,12 +56,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "Fn" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Fn" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     TypeScope$2 {
@@ -68,12 +71,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "A" => Variable$2,
+        "A" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     FunctionTypeScope$3 {
@@ -83,12 +86,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "a" => Variable$3,
+        "a" => Variable$4,
       },
       type: "functionType",
       upper: TypeScope$2,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
   ],

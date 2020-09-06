@@ -3,7 +3,8 @@
 exports[`type-declaration conditional2 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"T">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"U">,
@@ -30,13 +31,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"Unresolved">,
@@ -64,14 +65,16 @@ ScopeManager {
         },
       ],
       set: Map {
-        "T" => Variable$1,
-        "Unresolved" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "T" => Variable$2,
+        "Unresolved" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$3,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$4,
       ],
     },
     ConditionalTypeScope$2 {
@@ -81,12 +84,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "U" => Variable$2,
+        "U" => Variable$3,
       },
       type: "conditionalType",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

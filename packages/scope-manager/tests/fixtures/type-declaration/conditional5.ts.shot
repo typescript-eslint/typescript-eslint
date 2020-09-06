@@ -3,7 +3,8 @@
 exports[`type-declaration conditional5 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"Test">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"U">,
@@ -30,13 +31,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"arg">,
@@ -48,7 +49,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"arg2">,
@@ -60,7 +61,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$5 {
+    Variable$6 {
       defs: Array [
         TypeDefinition$5 {
           name: Identifier<"I">,
@@ -75,7 +76,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$5,
+          resolved: Variable$6,
         },
       ],
       isValueVariable: false,
@@ -88,12 +89,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "Test" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Test" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     TypeScope$2 {
@@ -101,12 +104,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "U" => Variable$2,
+        "U" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     ConditionalTypeScope$3 {
@@ -117,12 +120,12 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "I" => Variable$5,
+        "I" => Variable$6,
       },
       type: "conditionalType",
       upper: TypeScope$2,
       variables: Array [
-        Variable$5,
+        Variable$6,
       ],
     },
     FunctionTypeScope$4 {
@@ -130,12 +133,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "arg" => Variable$3,
+        "arg" => Variable$4,
       },
       type: "functionType",
       upper: ConditionalTypeScope$3,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
     FunctionTypeScope$5 {
@@ -143,12 +146,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "arg2" => Variable$4,
+        "arg2" => Variable$5,
       },
       type: "functionType",
       upper: FunctionTypeScope$4,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
   ],
