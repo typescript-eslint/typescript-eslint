@@ -48,7 +48,6 @@ declare module 'eslint/lib/rules/camelcase' {
 declare module 'eslint/lib/rules/indent' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  type Listener = (node: TSESTree.Node) => void;
   type ElementList = number | 'first' | 'off';
   const rule: TSESLint.RuleModule<
     'wrongIndentation',
