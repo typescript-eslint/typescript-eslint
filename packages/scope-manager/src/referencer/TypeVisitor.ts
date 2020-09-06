@@ -2,6 +2,7 @@ import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
 import { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 import { ParameterDefinition, TypeDefinition } from '../definition';
+import { ScopeType } from '../scope';
 
 class TypeVisitor extends Visitor {
   readonly #referencer: Referencer;
@@ -119,6 +120,44 @@ class TypeVisitor extends Visitor {
       }
     }
     this.visit(node.typeAnnotation);
+  }
+
+  protected TSInferType(node: TSESTree.TSInferType): void {
+    const typeParameter = node.typeParameter;
+    let scope = this.#referencer.currentScope();
+
+    /*
+    In cases where there is a sub-type scope created within a conditional type, then the generic should be defined in the
+    conditional type's scope, not the child type scope.
+    If we define it within the child type's scope then it won't be able to be referenced outside the child type
+    */
+    if (
+      scope.type === ScopeType.functionType ||
+      scope.type === ScopeType.mappedType
+    ) {
+      // search up the scope tree to figure out if we're in a nested type scope
+      let currentScope = scope.upper;
+      while (currentScope) {
+        if (
+          currentScope.type === ScopeType.functionType ||
+          currentScope.type === ScopeType.mappedType
+        ) {
+          // ensure valid type parents only
+          currentScope = currentScope.upper;
+          continue;
+        }
+        if (currentScope.type === ScopeType.conditionalType) {
+          scope = currentScope;
+          break;
+        }
+        break;
+      }
+    }
+
+    scope.defineIdentifier(
+      typeParameter.name,
+      new TypeDefinition(typeParameter.name, typeParameter),
+    );
   }
 
   protected TSInterfaceDeclaration(

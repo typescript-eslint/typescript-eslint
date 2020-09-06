@@ -789,6 +789,20 @@ declare const [v6];
       `,
       filename: 'foo.d.ts',
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2459
+    `
+export type Test<U> = U extends (k: infer I) => void ? I : never;
+    `,
+    `
+export type Test<U> = U extends { [k: string]: infer I } ? I : never;
+    `,
+    `
+export type Test<U> = U extends (arg: {
+  [k: string]: (arg2: infer I) => void;
+}) => void
+  ? I
+  : never;
+    `,
   ],
 
   invalid: [
