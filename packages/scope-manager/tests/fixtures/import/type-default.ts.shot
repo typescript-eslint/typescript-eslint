@@ -20,8 +20,16 @@ ScopeManager {
           isWrite: false,
           resolved: Variable$1,
         },
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$1,
+        },
       ],
-      isValueVariable: false,
+      isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$2 {
@@ -76,14 +84,7 @@ ScopeManager {
       references: Array [
         Reference$1,
         Reference$2,
-        Reference$3 {
-          identifier: Identifier<"T">,
-          isRead: true,
-          isTypeReference: false,
-          isValueReference: true,
-          isWrite: false,
-          resolved: null,
-        },
+        Reference$3,
       ],
       set: Map {
         "T" => Variable$1,
