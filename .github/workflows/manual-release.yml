@@ -38,8 +38,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Install dependencies
+    - name: Install dependencies (and run build)
       run: yarn --frozen-lockfile
 
     - name: (WIP) Determine what version to release
       run: npx lerna version --loglevel=silly --conventional-commits --exact
+
+    # - name: Publish the updated versions to NPM (--yes will skip the confirmation prompt)
+    #   run: npx lerna publish from-package --yes
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
