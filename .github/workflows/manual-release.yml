@@ -50,14 +50,16 @@ jobs:
       run: |
         yarn build
 
-    - name: (WIP) Determine what version to release (--yes will skip the confirmation prompt)
-      run: npx lerna version --loglevel=silly --conventional-commits --exact --yes
+    - name: (WIP) Determine what version to release (--yes skips the confirmation prompt)
+      run: npx lerna version --loglevel=silly --conventional-commits --exact --yes --no-git-tag-version --no-push
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - run: |
         git diff
         git status
 
-    # - name: Publish the updated versions to NPM (--yes will skip the confirmation prompt)
+    # - name: Publish the updated versions to NPM (--yes skips the confirmation prompt)
     #   run: npx lerna publish from-package --yes
     #   env:
     #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
