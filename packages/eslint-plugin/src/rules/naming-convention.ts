@@ -820,11 +820,9 @@ type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 function parseOptions(context: Context): ParsedOptions {
-  const normalizedOption = context.options.map(opt => normalizeOption(opt));
-  const normalizedOptions = normalizedOption.reduce(
-    (acc, val) => acc.concat(val),
-    [],
-  );
+  const normalizedOptions = context.options
+    .map(opt => normalizeOption(opt))
+    .reduce((acc, val) => acc.concat(val), []);
   return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
@@ -1262,6 +1260,7 @@ function isMetaSelector(
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
+
 function normalizeOption(option: Selector): NormalizedSelector[] {
   let weight = 0;
   option.modifiers?.forEach(mod => {
@@ -1314,14 +1313,21 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
     ? option.selector
     : [option.selector];
 
-  const allowedType = [1 << 0, 1 << 2, 1 << 3, 1 << 4, 1 << 6];
+  const selectorsAllowedToHaveTypes: (Selectors | MetaSelectors)[] = [
+    Selectors.variable,
+    Selectors.parameter,
+    Selectors.property,
+    Selectors.parameterProperty,
+    Selectors.accessor,
+  ];
+
   const config: NormalizedSelector[] = [];
   selectors
     .map(selector =>
       isMetaSelector(selector) ? MetaSelectors[selector] : Selectors[selector],
     )
     .forEach(selector =>
-      allowedType.includes(selector)
+      selectorsAllowedToHaveTypes.includes(selector)
         ? config.push({ selector: selector, ...normalizedOption })
         : config.push({
             selector: selector,
