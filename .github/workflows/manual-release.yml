@@ -50,16 +50,17 @@ jobs:
       run: |
         yarn build
 
-    - name: (WIP) Determine what version to release (--yes skips the confirmation prompt)
-      run: npx lerna version --loglevel=silly --conventional-commits --exact --yes --no-git-tag-version --no-push
+    - name: Determine what version to release and publish to Github (--yes skips the confirmation prompt)
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
+      run: |
+        # Required for github release to work
+        git config --global user.email "james@henry.sc"
+        git config --global user.name "James Henry"
 
-    - run: |
-        git diff
-        git status
+        npx lerna version --loglevel=silly --yes --conventional-commits --exact --force-publish --github-release -m "chore: publish %s"
 
-    # - name: Publish the updated versions to NPM (--yes skips the confirmation prompt)
-    #   run: npx lerna publish from-package --yes
-    #   env:
-    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - name: Publish the updated versions to NPM (--yes skips the confirmation prompt)
+      run: npx lerna publish from-package --yes
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
