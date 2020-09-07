@@ -17,8 +17,6 @@ jobs:
         # We need to fetch all tags and branches
         fetch-depth: 0
 
-    - run: git log -n 3
-
     - name: Verify head of master hasn't changed
       run: |
         # We ensure that the latest commit on master is still the one we expected when
@@ -52,8 +50,12 @@ jobs:
       run: |
         yarn build
 
-    - name: (WIP) Determine what version to release
-      run: npx lerna version --loglevel=silly --conventional-commits --exact
+    - name: (WIP) Determine what version to release (--yes will skip the confirmation prompt)
+      run: npx lerna version --loglevel=silly --conventional-commits --exact --yes
+
+    - run: |
+        git diff
+        git status
 
     # - name: Publish the updated versions to NPM (--yes will skip the confirmation prompt)
     #   run: npx lerna publish from-package --yes

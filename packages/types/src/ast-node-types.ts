@@ -169,10 +169,13 @@ export { AST_NODE_TYPES };
 import type { Node } from './ts-estree';
 
 type GetKeys<T extends AST_NODE_TYPES> = keyof Extract<Node, { type: T }>;
+
 type AllKeys = {
   readonly [T in AST_NODE_TYPES]: GetKeys<T>;
 };
+
 type TakesString<T extends Record<string, string>> = T;
+
 // @ts-expect-error: purposely unused
 type _Test =
   // forcing the test onto a new line so it isn't covered by the expect error
