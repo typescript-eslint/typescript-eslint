@@ -12,8 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        # Check out the branch that was specified as part of the trigger
+        ref: ${{ github.ref }}
         # We need to fetch all tags and branches
         fetch-depth: 0
+
+    - run: git log -n 3
 
     - name: Verify head of master hasn't changed
       run: |
@@ -38,8 +42,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Install dependencies (and run build)
-      run: yarn --frozen-lockfile
+    - name: Install dependencies
+      run: |
+        yarn --ignore-engines --frozen-lockfile --ignore-scripts
+        yarn lerna:init
+        yarn check:clean-workspace-after-install
+
+    - name: Run build
+      run: |
+        yarn build
 
     - name: (WIP) Determine what version to release
       run: npx lerna version --loglevel=silly --conventional-commits --exact
