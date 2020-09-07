@@ -1,9 +1,18 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-This file is just a history of the commits included in each release.
-**For full release notes, please see [the github releases page](https://github.com/typescript-eslint/typescript-eslint/releases)**
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [4.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.1...v4.1.0) (2020-09-07)
+
+
+### Features
+
+* **scope-manager:** add support for JSX scope analysis ([#2498](https://github.com/typescript-eslint/typescript-eslint/issues/2498)) ([f887ab5](https://github.com/typescript-eslint/typescript-eslint/commit/f887ab51f58c1b3571f9a14832864bc0ca59623f)), closes [#2455](https://github.com/typescript-eslint/typescript-eslint/issues/2455) [#2477](https://github.com/typescript-eslint/typescript-eslint/issues/2477)
+
+
+
+
 
 ## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
 
