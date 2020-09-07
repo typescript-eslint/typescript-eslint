@@ -96,6 +96,10 @@ export default util.createRule<Options, MessageIds>({
     // tracks functions that were found whilst traversing
     const foundFunctions: FunctionNode[] = [];
 
+    // all nodes visited, avoids infinite recursion for cyclic references
+    // (such as class member referring to itself)
+    const alreadyVisited = new Set<TSESTree.Node>();
+
     /*
     # How the rule works:
 
@@ -311,9 +315,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkNode(node: TSESTree.Node | null): void {
-      if (node == null) {
+      if (node == null || alreadyVisited.has(node)) {
         return;
       }
+      alreadyVisited.add(node);
 
       switch (node.type) {
         case AST_NODE_TYPES.ArrowFunctionExpression:

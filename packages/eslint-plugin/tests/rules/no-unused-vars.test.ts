@@ -848,6 +848,18 @@ export type Test<U> = U extends (arg: {
         jsxFragmentName: 'Fragment',
       },
     },
+    `
+declare module 'foo' {
+  type Test = 1;
+}
+    `,
+    `
+declare module 'foo' {
+  type Test = 1;
+  const x: Test = 1;
+  export = x;
+}
+    `,
   ],
 
   invalid: [
@@ -1418,6 +1430,26 @@ export const ComponentFoo = () => {
           line: 2,
           data: {
             varName: 'React',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Test = any;
+  const x = 1;
+  export = x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          data: {
+            varName: 'Test',
             action: 'defined',
             additional: '',
           },

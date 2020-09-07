@@ -199,6 +199,27 @@ function Foo() {}
         },
       },
     },
+    // intrinsic elements should not cause errors
+    {
+      code: `
+<div />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+<span></span>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2477
     `
 const x = 1 as const;

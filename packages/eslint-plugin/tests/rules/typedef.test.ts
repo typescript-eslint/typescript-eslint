@@ -15,6 +15,22 @@ ruleTester.run('typedef', rule, {
   valid: [
     // Array destructuring
     {
+      code: 'function foo(...[a]: string[]) {}',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = (...[a]: string[]) => {};',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
       code: 'const [a]: [number] = [1];',
       options: [
         {
