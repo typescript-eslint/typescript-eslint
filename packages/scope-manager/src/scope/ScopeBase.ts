@@ -15,6 +15,7 @@ import {
   ReferenceTypeFlag,
 } from '../referencer/Reference';
 import { Variable } from '../variable';
+import { TSModuleScope } from './TSModuleScope';
 
 /**
  * Test if scope is strict
@@ -124,6 +125,14 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
 
 const generator = createIdGenerator();
 
+type VariableScope = GlobalScope | FunctionScope | ModuleScope | TSModuleScope;
+const VARIABLE_SCOPE_TYPES = new Set([
+  ScopeType.global,
+  ScopeType.function,
+  ScopeType.module,
+  ScopeType.tsModule,
+]);
+
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
 abstract class ScopeBase<
   TType extends ScopeType,
@@ -209,11 +218,11 @@ abstract class ScopeBase<
    */
   public readonly variables: Variable[] = [];
   /**
-   * For 'global', 'function', and 'module' scopes, this is a self-reference.
+   * For scopes that can contain variable declarations, this is a self-reference.
    * For other scope types this is the *variableScope* value of the parent scope.
    * @public
    */
-  public readonly variableScope: GlobalScope | FunctionScope | ModuleScope;
+  public readonly variableScope: VariableScope;
 
   constructor(
     scopeManager: ScopeManager,
@@ -228,12 +237,9 @@ abstract class ScopeBase<
     this.#dynamic =
       this.type === ScopeType.global || this.type === ScopeType.with;
     this.block = block;
-    this.variableScope =
-      this.type === 'global' ||
-      this.type === 'function' ||
-      this.type === 'module'
-        ? (this as AnyScope['variableScope'])
-        : upperScopeAsScopeBase.variableScope;
+    this.variableScope = this.isVariableScope()
+      ? this
+      : upperScopeAsScopeBase.variableScope;
     this.upper = upperScope;
 
     /**
@@ -250,6 +256,10 @@ abstract class ScopeBase<
     this.#declaredVariables = scopeManager.declaredVariables;
 
     registerScope(scopeManager, this as Scope);
+  }
+
+  private isVariableScope(): this is VariableScope {
+    return VARIABLE_SCOPE_TYPES.has(this.type);
   }
 
   public shouldStaticallyClose(): boolean {

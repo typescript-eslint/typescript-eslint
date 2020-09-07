@@ -29,6 +29,7 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     const filename = context.getFilename();
+    const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
     /**
      * Gets a list of TS module definitions for a specified variable.
@@ -209,7 +210,7 @@ export default util.createRule<Options, MessageIds>({
       },
 
       // declaration file handling
-      [declarationSelector(AST_NODE_TYPES.Program, true)](
+      [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,
       ): void {
         if (!util.isDefinitionFile(filename)) {
@@ -219,13 +220,43 @@ export default util.createRule<Options, MessageIds>({
       },
 
       // declared namespace handling
-      [declarationSelector(
+      [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
         false,
       )](node: DeclarationSelectorNode): void {
+        const moduleDecl = util.nullThrows(
+          node.parent?.parent,
+          util.NullThrowsReasons.MissingParent,
+        ) as TSESTree.TSModuleDeclaration;
+
+        // declared modules with an `export =` statement will only export that one thing
+        // all other statements are not automatically exported in this case
+        if (checkModuleDeclForExportEquals(moduleDecl)) {
+          return;
+        }
+
         markDeclarationChildAsUsed(node);
       },
     };
+
+    function checkModuleDeclForExportEquals(
+      node: TSESTree.TSModuleDeclaration,
+    ): boolean {
+      const cached = MODULE_DECL_CACHE.get(node);
+      if (cached != null) {
+        return cached;
+      }
+
+      for (const statement of node.body?.body ?? []) {
+        if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
+          MODULE_DECL_CACHE.set(node, true);
+          return true;
+        }
+      }
+
+      MODULE_DECL_CACHE.set(node, false);
+      return false;
+    }
 
     type DeclarationSelectorNode =
       | TSESTree.TSInterfaceDeclaration
@@ -236,7 +267,7 @@ export default util.createRule<Options, MessageIds>({
       | TSESTree.TSEnumDeclaration
       | TSESTree.TSModuleDeclaration
       | TSESTree.VariableDeclaration;
-    function declarationSelector(
+    function ambientDeclarationSelector(
       parent: string,
       childDeclare: boolean,
     ): string {

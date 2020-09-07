@@ -558,6 +558,10 @@ class Referencer extends Visitor {
     this.visit(node.value);
   }
 
+  protected JSXClosingElement(): void {
+    // should not be counted as a reference
+  }
+
   protected JSXFragment(node: TSESTree.JSXFragment): void {
     this.referenceJsxPragma();
     this.referenceJsxFragment();
@@ -575,7 +579,16 @@ class Referencer extends Visitor {
 
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
-    this.visit(node.name);
+    if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
+      if (node.name.name[0].toUpperCase() === node.name.name[0]) {
+        // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
+        // not a variable by JSX transforms:
+        // <div /> => React.createElement("div", null)
+        this.visit(node.name);
+      }
+    } else {
+      this.visit(node.name);
+    }
     this.visitType(node.typeParameters);
     for (const attr of node.attributes) {
       this.visit(attr);
