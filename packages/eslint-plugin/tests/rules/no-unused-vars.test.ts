@@ -860,6 +860,9 @@ declare module 'foo' {
   export = x;
 }
     `,
+    `
+declare global {}
+    `,
   ],
 
   invalid: [
