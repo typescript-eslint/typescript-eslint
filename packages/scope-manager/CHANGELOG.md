@@ -1,9 +1,31 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-This file is just a history of the commits included in each release.
-**For full release notes, please see [the github releases page](https://github.com/typescript-eslint/typescript-eslint/releases)**
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [4.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.1...v4.1.0) (2020-09-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unused-vars] correct detection of unused vars in a declared module with `export =` ([#2505](https://github.com/typescript-eslint/typescript-eslint/issues/2505)) ([3d07a99](https://github.com/typescript-eslint/typescript-eslint/commit/3d07a99faa0a5fc1b44acdb43ddbfc90a5105833))
+* **scope-manager:** add `const` as a global type variable ([#2499](https://github.com/typescript-eslint/typescript-eslint/issues/2499)) ([eb3f6e3](https://github.com/typescript-eslint/typescript-eslint/commit/eb3f6e39391d62ac424baa305a15e61806b2fd65))
+* **scope-manager:** correctly handle inferred types in nested type scopes ([#2497](https://github.com/typescript-eslint/typescript-eslint/issues/2497)) ([95f6bf4](https://github.com/typescript-eslint/typescript-eslint/commit/95f6bf4818cdec48a0583bf82f928c598af22736))
+* **scope-manager:** don't create references for intrinsic JSX elements ([#2504](https://github.com/typescript-eslint/typescript-eslint/issues/2504)) ([cdb9807](https://github.com/typescript-eslint/typescript-eslint/commit/cdb9807a5a368a136856cd03048b68e0f2dfb405))
+* **scope-manager:** fallback to lib 'esnext' or 'es5' when ecma version is unsupported ([#2474](https://github.com/typescript-eslint/typescript-eslint/issues/2474)) ([20a7dcc](https://github.com/typescript-eslint/typescript-eslint/commit/20a7dcc808a39cd447d6e52fc5a1e1373d7122e9))
+* **scope-manager:** support rest function type parameters ([#2491](https://github.com/typescript-eslint/typescript-eslint/issues/2491)) ([9d8b4c4](https://github.com/typescript-eslint/typescript-eslint/commit/9d8b4c479c98623e4198aa07639321929a8a876f)), closes [#2449](https://github.com/typescript-eslint/typescript-eslint/issues/2449)
+* **scope-manager:** support tagged template string generic type parameters ([#2492](https://github.com/typescript-eslint/typescript-eslint/issues/2492)) ([a2686c0](https://github.com/typescript-eslint/typescript-eslint/commit/a2686c04293ab9070c1500a0dab7e205bd1fa9d2))
+* **scope-manager:** support type predicates ([#2493](https://github.com/typescript-eslint/typescript-eslint/issues/2493)) ([a40f54c](https://github.com/typescript-eslint/typescript-eslint/commit/a40f54c39d59096a0d12a492807dcd52fbcdc384)), closes [#2462](https://github.com/typescript-eslint/typescript-eslint/issues/2462)
+* **scope-manager:** treat type imports as both values and types ([#2494](https://github.com/typescript-eslint/typescript-eslint/issues/2494)) ([916e95a](https://github.com/typescript-eslint/typescript-eslint/commit/916e95a505689746dda38a67148c95cc7d207d9f)), closes [#2453](https://github.com/typescript-eslint/typescript-eslint/issues/2453)
+
+
+### Features
+
+* **scope-manager:** add support for JSX scope analysis ([#2498](https://github.com/typescript-eslint/typescript-eslint/issues/2498)) ([f887ab5](https://github.com/typescript-eslint/typescript-eslint/commit/f887ab51f58c1b3571f9a14832864bc0ca59623f)), closes [#2455](https://github.com/typescript-eslint/typescript-eslint/issues/2455) [#2477](https://github.com/typescript-eslint/typescript-eslint/issues/2477)
+
+
+
+
 
 ## [4.0.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.0...v4.0.1) (2020-08-31)
 
