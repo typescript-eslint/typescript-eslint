@@ -1,4 +1,3 @@
-import unescape from 'lodash/unescape';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 
@@ -406,15 +405,6 @@ export function findFirstMatchingAncestor(
  */
 export function hasJSXAncestor(node: ts.Node): boolean {
   return !!findFirstMatchingAncestor(node, isJSXToken);
-}
-
-/**
- * Unescape the text content of string literals, e.g. &amp; -> &
- * @param text The escaped string literal text.
- * @returns The unescaped string literal text.
- */
-export function unescapeStringLiteralText(text: string): string {
-  return unescape(text);
 }
 
 /**

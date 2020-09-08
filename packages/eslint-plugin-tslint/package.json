@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "4.1.0",
-    "lodash": "^4.17.15"
+    "lodash.memoize": "^4.1.2"
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0",
@@ -47,7 +47,7 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@types/lodash": "*",
+    "@types/lodash.memoize": "*",
     "@typescript-eslint/parser": "4.1.0"
   }
 }

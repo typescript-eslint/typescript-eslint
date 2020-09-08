@@ -20,7 +20,6 @@ import {
   isESTreeClassMember,
   isOptional,
   TSError,
-  unescapeStringLiteralText,
   isChainExpression,
 } from './node-utils';
 import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
@@ -1927,11 +1926,7 @@ export class Converter {
           value: '',
         });
         result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        if ('name' in parent && parent.name === node) {
-          result.value = node.text;
-        } else {
-          result.value = unescapeStringLiteralText(node.text);
-        }
+        result.value = node.text;
         return result;
       }
 
