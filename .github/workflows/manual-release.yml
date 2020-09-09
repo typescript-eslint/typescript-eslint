@@ -12,6 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        # Check out as an admin to allow for pushing back to master
+        token: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
         # Check out the branch that was specified as part of the trigger
         ref: ${{ github.ref }}
         # We need to fetch all tags and branches
@@ -51,14 +53,12 @@ jobs:
         yarn build
 
     - name: Determine what version to release and publish to Github (--yes skips the confirmation prompt)
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Required for github release to work
-        git config user.name github-actions
-        git config user.email github-actions@github.com
+        git config user.name 'James Henry'
+        git config user.email 'james@henry.sc'
 
-        npx lerna version --loglevel=silly --yes --conventional-commits --exact --force-publish --github-release -m "chore: publish %s"
+        GH_TOKEN=${{ secrets.JAMES_HENRY_GH_TOKEN }} npx lerna version --loglevel=silly --yes --conventional-commits --exact --force-publish --github-release -m "chore: publish %s"
 
     - name: Publish the updated versions to NPM (--yes skips the confirmation prompt)
       run: npx lerna publish from-package --yes
