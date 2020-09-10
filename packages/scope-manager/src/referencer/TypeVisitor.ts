@@ -94,9 +94,11 @@ class TypeVisitor extends Visitor {
     // which are only accessible from inside the conditional parameter
     this.#referencer.scopeManager.nestConditionalTypeScope(node);
 
-    this.visitChildren(node);
+    this.visitChildren(node, ['falseType']);
 
     this.#referencer.close(node);
+
+    this.visit(node.falseType);
   }
 
   protected TSConstructorType(node: TSESTree.TSConstructorType): void {
