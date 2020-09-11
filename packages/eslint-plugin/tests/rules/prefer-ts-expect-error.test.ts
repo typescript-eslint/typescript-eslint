@@ -83,7 +83,7 @@ if (false) {
     },
     {
       code: '/* @ts-ignore */',
-      output: '/* @ts-ignore */',
+      output: '/* @ts-expect-error */',
       errors: [
         {
           messageId: 'preferExpectErrorComment',
@@ -94,7 +94,7 @@ if (false) {
     },
     {
       code: '/* @ts-ignore in a single block */',
-      output: '/* @ts-ignore in a single block */',
+      output: '/* @ts-expect-error in a single block */',
       errors: [
         {
           messageId: 'preferExpectErrorComment',
@@ -114,7 +114,7 @@ if (false) {
       output: `
 {
   /*
-@ts-ignore in a multiline block
+@ts-expect-error in a multiline block
 */
 }
       `,
@@ -134,7 +134,7 @@ if (false) {
       `,
       output: `
 /*
-// @ts-ignore in a block with single line comments
+// @ts-expect-error in a block with single line comments
 */
       `,
       errors: [
