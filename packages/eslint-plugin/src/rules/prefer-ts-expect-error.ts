@@ -32,7 +32,6 @@ export default util.createRule<[], MessageIds>({
         const comments = sourceCode.getAllComments();
         comments.forEach(comment => {
           if (tsIgnoreRegExp.test(comment.value)) {
-            const isLineComment = comment.type == AST_TOKEN_TYPES.Line;
             const lineCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
               fixer.replaceText(
                 comment,
@@ -51,7 +50,10 @@ export default util.createRule<[], MessageIds>({
             context.report({
               node: comment,
               messageId: 'preferExpectErrorComment',
-              fix: isLineComment ? lineCommentRuleFixer : blockCommentRuleFixer,
+              fix:
+                comment.type === AST_TOKEN_TYPES.Line
+                  ? lineCommentRuleFixer
+                  : blockCommentRuleFixer,
             });
           }
         });
