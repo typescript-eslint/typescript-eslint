@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import rule from '../../src/rules/prefer-function-type';
-import { RuleTester } from '../RuleTester';
+import rule, { phrases } from '../../src/rules/prefer-function-type';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -56,6 +56,9 @@ interface Foo {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
         },
       ],
       output: `
@@ -72,6 +75,9 @@ type Foo = {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
         },
       ],
       output: `
@@ -88,6 +94,9 @@ function foo(bar: { (s: string): number }): number {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
         },
       ],
       output: `
@@ -106,6 +115,9 @@ function foo(bar: { (s: string): number } | undefined): number {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
         },
       ],
       output: `
@@ -124,6 +136,9 @@ interface Foo extends Function {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
         },
       ],
       output: `
@@ -140,6 +155,9 @@ interface Foo<T> {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
         },
       ],
       output: `
@@ -156,6 +174,9 @@ interface Foo<T> {
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
         },
       ],
       output: `
@@ -170,6 +191,9 @@ type Foo<T> = { (this: string): T };
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
         },
       ],
       output: `
@@ -186,6 +210,9 @@ interface Foo {
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
           type: AST_NODE_TYPES.TSThisType,
+          data: {
+            interfaceName: 'Foo',
+          },
         },
       ],
     },
@@ -199,6 +226,9 @@ interface Foo {
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
           type: AST_NODE_TYPES.TSThisType,
+          data: {
+            interfaceName: 'Foo',
+          },
         },
       ],
     },
@@ -206,17 +236,36 @@ interface Foo {
       code: `
 interface Foo {
   // isn't actually valid ts but want to not give message saying it refers to Foo.
-  (): { a: this };
+  (): {
+    a: {
+      nested: this;
+    };
+    between: this;
+    b: {
+      nested: string;
+    };
+  };
 }
       `,
       errors: [
         {
           messageId: 'functionTypeOverCallableType',
           type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
         },
       ],
-      output: `
-type Foo = () => { a: this };
+      output: noFormat`
+type Foo = () => {
+    a: {
+      nested: this;
+    };
+    between: this;
+    b: {
+      nested: string;
+    };
+  };
       `,
     },
   ],

@@ -5,6 +5,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+export const phrases = {
+  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
+  [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
+} as const;
+
 export default util.createRule({
   name: 'prefer-function-type',
   meta: {
@@ -17,9 +22,9 @@ export default util.createRule({
     fixable: 'code',
     messages: {
       functionTypeOverCallableType:
-        "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead.",
+        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
       unexpectedThisOnFunctionOnlyInterface:
-        'this refers to the function type {{ interfaceName }}, did you intend to use a generic this parameter like <Self>(this: Self, ...) => Self instead?',
+        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
     },
     schema: [],
     type: 'suggestion',
@@ -106,7 +111,7 @@ export default util.createRule({
      */
     function checkMember(
       member: TSESTree.TypeElement,
-      node: TSESTree.Node,
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       tsThisTypes: TSESTree.TSThisType[] | null = null,
     ): void {
       if (
@@ -146,11 +151,7 @@ export default util.createRule({
           node: member,
           messageId: 'functionTypeOverCallableType',
           data: {
-            type:
-              node.type === AST_NODE_TYPES.TSTypeLiteral
-                ? 'Type literal'
-                : 'Interface',
-            sigSuggestion: suggestion,
+            literalOrInterface: phrases[node.type],
           },
           fix(fixer) {
             return fixer.replaceTextRange(
@@ -162,7 +163,7 @@ export default util.createRule({
       }
     }
     let tsThisTypes: TSESTree.TSThisType[] | null = null;
-    let insideLiteral = false;
+    let literalNesting = 0;
     return {
       TSInterfaceDeclaration(): void {
         // when entering an interface reset the count of `this`s to empty.
@@ -172,7 +173,7 @@ export default util.createRule({
         // inside an interface keep track of all ThisType references.
         // unless it's inside a nested type literal in which case it's invalid code anyway
         // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
-        if (!insideLiteral && tsThisTypes !== null) {
+        if (literalNesting === 0 && tsThisTypes !== null) {
           tsThisTypes.push(node);
         }
       },
@@ -187,10 +188,10 @@ export default util.createRule({
       },
       // keep track of nested literals to avoid complaining about invalid `this` uses
       'TSInterfaceDeclaration TSTypeLiteral'(): void {
-        insideLiteral = true;
+        literalNesting += 1;
       },
       'TSInterfaceDeclaration TSTypeLiteral:exit'(): void {
-        insideLiteral = false;
+        literalNesting -= 1;
       },
       'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral): void {
         checkMember(node.members[0], node);
