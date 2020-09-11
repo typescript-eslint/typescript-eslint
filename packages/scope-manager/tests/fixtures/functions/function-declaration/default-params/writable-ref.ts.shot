@@ -3,7 +3,8 @@
 exports[`functions function-declaration default-params writable-ref 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         FunctionNameDefinition$1 {
           name: Identifier<"foo">,
@@ -15,14 +16,14 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ParameterDefinition$2 {
           name: Identifier<"a">,
@@ -34,7 +35,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"b">,
@@ -50,7 +51,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$4,
+          resolved: Variable$5,
           writeExpr: Literal$2,
         },
       ],
@@ -64,12 +65,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     FunctionScope$2 {
@@ -79,16 +82,16 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "arguments" => Variable$2,
-        "a" => Variable$3,
-        "b" => Variable$4,
+        "arguments" => Variable$3,
+        "a" => Variable$4,
+        "b" => Variable$5,
       },
       type: "function",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
         Variable$3,
         Variable$4,
+        Variable$5,
       ],
     },
   ],

@@ -656,6 +656,11 @@ export declare class Foo {
   set time(seconds: number);
 }
     `,
+    `
+export class A {
+  b = A;
+}
+    `,
   ],
   invalid: [
     {

@@ -3,7 +3,8 @@
 exports[`class expression computed-member 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"outer1">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Literal$2,
         },
         Reference$4 {
@@ -28,13 +29,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"outer2">,
@@ -50,7 +51,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$2,
+          resolved: Variable$3,
           writeExpr: Literal$4,
         },
         Reference$5 {
@@ -59,13 +60,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"A">,
@@ -81,14 +82,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: ClassExpression$6,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [],
       name: "arguments",
       references: Array [],
@@ -106,16 +107,18 @@ ScopeManager {
         Reference$3,
       ],
       set: Map {
-        "outer1" => Variable$1,
-        "outer2" => Variable$2,
-        "A" => Variable$3,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "outer1" => Variable$2,
+        "outer2" => Variable$3,
+        "A" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
     ClassScope$2 {
@@ -135,12 +138,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "arguments" => Variable$4,
+        "arguments" => Variable$5,
       },
       type: "function",
       upper: ClassScope$2,
       variables: Array [
-        Variable$4,
+        Variable$5,
       ],
     },
   ],

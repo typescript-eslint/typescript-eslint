@@ -10,13 +10,11 @@ export const es2015_proxy = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ProxyHandler',
-    writeable: false,
   },
   ProxyConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ProxyConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

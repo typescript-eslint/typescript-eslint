@@ -410,7 +410,7 @@ export default util.createRule<Options, MessageIds>({
         // transform it to a BlockStatement
         return rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.BlockStatement,
-          body: node.body,
+          body: node.body as any,
 
           // location data
           parent: node.parent,

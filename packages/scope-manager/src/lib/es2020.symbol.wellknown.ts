@@ -14,13 +14,11 @@ export const es2020_symbol_wellknown = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SymbolConstructor',
-    writeable: false,
   },
   RegExp: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RegExp',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

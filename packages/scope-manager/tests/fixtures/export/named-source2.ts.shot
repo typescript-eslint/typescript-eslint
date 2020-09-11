@@ -2,16 +2,22 @@
 
 exports[`export named-source2 1`] = `
 ScopeManager {
-  variables: Array [],
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+  ],
   scopes: Array [
     GlobalScope$1 {
       block: Program$1,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$1,

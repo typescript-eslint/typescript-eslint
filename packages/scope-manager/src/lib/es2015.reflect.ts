@@ -10,6 +10,5 @@ export const es2015_reflect = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'Reflect',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

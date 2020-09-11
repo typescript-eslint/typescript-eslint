@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration function params rest-element 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"Fn">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "Fn",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"A">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "A",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"A">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$3 {
+          name: Identifier<"a">,
+          node: TSFunctionType$3,
+        },
+      ],
+      name: "a",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Fn" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+    TypeScope$2 {
+      block: TSTypeAliasDeclaration$1,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "A" => Variable$3,
+      },
+      type: "type",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+    FunctionTypeScope$3 {
+      block: TSFunctionType$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "a" => Variable$4,
+      },
+      type: "functionType",
+      upper: TypeScope$2,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

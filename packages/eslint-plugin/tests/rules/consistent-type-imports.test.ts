@@ -180,6 +180,51 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+        import React from 'react';
+
+        export const ComponentFoo: React.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+        import { h } from 'some-other-jsx-lib';
+
+        export const ComponentFoo: h.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: 'h',
+      },
+    },
+    {
+      code: `
+        import { Fragment } from 'react';
+
+        export const ComponentFoo: Fragment = () => {
+          return <>Foo Foo</>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxFragmentName: 'Fragment',
+      },
+    },
   ],
   invalid: [
     {

@@ -3,7 +3,8 @@
 exports[`class expression new 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"A">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: ClassExpression$2,
         },
         Reference$2 {
@@ -28,7 +29,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
@@ -44,12 +45,14 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "A" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "A" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     ClassScope$2 {

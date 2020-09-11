@@ -3,7 +3,8 @@
 exports[`type-declaration signatures property-computed-name2 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TSEnumNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TSEnumNameDefinition$2 {
           name: Identifier<"Foo">,
@@ -36,7 +37,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TSEnumMemberDefinition$3 {
           name: Identifier<"a">,
@@ -48,7 +49,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         TypeDefinition$4 {
           name: Identifier<"A">,
@@ -69,14 +70,16 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "Foo" => Variable$1,
-        "A" => Variable$4,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+        "A" => Variable$5,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$4,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
       ],
     },
     TSEnumScope$2 {
@@ -84,14 +87,14 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "Foo" => Variable$2,
-        "a" => Variable$3,
+        "Foo" => Variable$3,
+        "a" => Variable$4,
       },
       type: "tsEnum",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

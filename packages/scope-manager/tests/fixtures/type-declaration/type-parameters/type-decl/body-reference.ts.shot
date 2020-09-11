@@ -3,7 +3,8 @@
 exports[`type-declaration type-parameters type-decl body-reference 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"Foo">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         TypeDefinition$2 {
           name: Identifier<"T">,
@@ -30,7 +31,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$2,
+          resolved: Variable$3,
         },
       ],
       isValueVariable: false,
@@ -43,12 +44,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "Foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     TypeScope$2 {
@@ -58,12 +61,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "T" => Variable$2,
+        "T" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

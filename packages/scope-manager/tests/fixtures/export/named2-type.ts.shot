@@ -3,7 +3,8 @@
 exports[`export named2-type 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"A">,
@@ -18,7 +19,7 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
@@ -30,10 +31,14 @@ ScopeManager {
       block: Program$2,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$2,
@@ -42,12 +47,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "A" => Variable$1,
+        "A" => Variable$2,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
+        Variable$2,
       ],
     },
   ],

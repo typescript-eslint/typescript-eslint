@@ -3,7 +3,8 @@
 exports[`class declaration abstract-property 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         TypeDefinition$1 {
           name: Identifier<"T">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
@@ -36,7 +37,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         ClassNameDefinition$3 {
           name: Identifier<"Foo">,
@@ -55,14 +56,16 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "T" => Variable$1,
-        "Foo" => Variable$2,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "T" => Variable$2,
+        "Foo" => Variable$3,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
+        Variable$3,
       ],
     },
     ClassScope$2 {
@@ -72,12 +75,12 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "Foo" => Variable$3,
+        "Foo" => Variable$4,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$3,
+        Variable$4,
       ],
     },
   ],

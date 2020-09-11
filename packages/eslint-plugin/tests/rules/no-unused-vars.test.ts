@@ -551,20 +551,6 @@ declare namespace Foo {
 }
 console.log(Foo);
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/61
-    `
-declare var Foo: {
-  new (value?: any): Object;
-  foo(): string;
-};
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/106
-    `
-declare class Foo {
-  constructor(value?: any): Object;
-  foo(): string;
-}
-    `,
     `
 import foo from 'foo';
 export interface Bar extends foo.i18n {}
@@ -629,9 +615,6 @@ export default class Foo {
     prop();
   }
 }
-    `,
-    `
-declare function foo(a: number): void;
     `,
     `
 export function foo(): void;
@@ -765,6 +748,116 @@ import { FooType } from './fileA';
 
 export abstract class Foo {
   protected abstract readonly type: FooType;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2449
+    `
+export type F<A extends unknown[]> = (...a: A) => unknown;
+    `,
+    `
+import { Foo } from './bar';
+export type F<A extends unknown[]> = (...a: Foo<A>) => unknown;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2452
+    `
+type StyledPaymentProps = {
+  isValid: boolean;
+};
+
+export const StyledPayment = styled.div<StyledPaymentProps>\`\`;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2453
+    `
+import type { foo } from './a';
+export type Bar = typeof foo;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2456
+    {
+      code: `
+interface Foo {}
+type Bar = {};
+declare class Clazz {}
+declare function func();
+declare enum Enum {}
+declare namespace Name {}
+declare const v1 = 1;
+declare var v2 = 1;
+declare let v3 = 1;
+declare const { v4 };
+declare const { v4: v5 };
+declare const [v6];
+      `,
+      filename: 'foo.d.ts',
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2459
+    `
+export type Test<U> = U extends (k: infer I) => void ? I : never;
+    `,
+    `
+export type Test<U> = U extends { [k: string]: infer I } ? I : never;
+    `,
+    `
+export type Test<U> = U extends (arg: {
+  [k: string]: (arg2: infer I) => void;
+}) => void
+  ? I
+  : never;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+        import React from 'react';
+
+        export const ComponentFoo: React.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+        import { h } from 'some-other-jsx-lib';
+
+        export const ComponentFoo: h.FC = () => {
+          return <div>Foo Foo</div>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: 'h',
+      },
+    },
+    {
+      code: `
+        import { Fragment } from 'react';
+
+        export const ComponentFoo: Fragment = () => {
+          return <>Foo Foo</>;
+        };
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxFragmentName: 'Fragment',
+      },
+    },
+    `
+declare module 'foo' {
+  type Test = 1;
+}
+    `,
+    `
+declare module 'foo' {
+  type Test = 1;
+  const x: Test = 1;
+  export = x;
 }
     `,
   ],
@@ -1283,6 +1376,80 @@ type Foo = Array<Foo>;
           line: 2,
           data: {
             varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+import React from 'react';
+import { Fragment } from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          data: {
+            varName: 'Fragment',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+import React from 'react';
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: 'h',
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'React',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Test = any;
+  const x = 1;
+  export = x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          data: {
+            varName: 'Test',
             action: 'defined',
             additional: '',
           },

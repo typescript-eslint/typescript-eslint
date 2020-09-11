@@ -627,5 +627,20 @@ namespace A {}
         },
       ],
     },
+    {
+      code: `
+type something = string;
+const something = 2;
+      `,
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'something',
+          },
+          line: 3,
+        },
+      ],
+    },
   ],
 });

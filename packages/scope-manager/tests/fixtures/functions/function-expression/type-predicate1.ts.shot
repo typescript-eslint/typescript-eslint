@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`functions function-expression type-predicate1 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"foo">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$2,
+          writeExpr: FunctionExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"arg">,
+          node: FunctionExpression$2,
+        },
+      ],
+      name: "arg",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"arg">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+        Reference$3 {
+          identifier: Identifier<"arg">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionExpression$2,
+      isStrict: false,
+      references: Array [
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "arguments" => Variable$3,
+        "arg" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

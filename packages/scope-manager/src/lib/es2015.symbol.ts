@@ -10,6 +10,5 @@ export const es2015_symbol = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SymbolConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

@@ -3,7 +3,8 @@
 exports[`export default4 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [],
       name: "arguments",
       references: Array [],
@@ -16,10 +17,14 @@ ScopeManager {
       block: Program$1,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$1,
@@ -35,12 +40,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "arguments" => Variable$1,
+        "arguments" => Variable$2,
       },
       type: "function",
       upper: ModuleScope$2,
       variables: Array [
-        Variable$1,
+        Variable$2,
       ],
     },
   ],
