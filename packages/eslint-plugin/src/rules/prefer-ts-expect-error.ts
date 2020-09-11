@@ -1,5 +1,9 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  RuleFixer,
+  RuleFix,
+} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 
 type MessageIds = 'preferExpectErrorComment';
 
@@ -22,30 +26,25 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const tsIgnoreRegExp = /^\/*\s*@ts-ignore/;
+    const tsIgnoreRegExp = /^((\/)*\s*(\/\*)*\s*)*\s*@ts-ignore/;
     const sourceCode = context.getSourceCode();
-
     return {
       Program(): void {
         const comments = sourceCode.getAllComments();
-
         comments.forEach(comment => {
-          if (comment.type !== AST_TOKEN_TYPES.Line) {
-            return;
-          }
-
           if (tsIgnoreRegExp.test(comment.value)) {
+            const isCommentSingleLine = comment.type == AST_TOKEN_TYPES.Line;
+            const commentLineRuleFixer = (fixer: RuleFixer): RuleFix =>
+              fixer.replaceText(
+                comment,
+                `//${comment.value.replace('@ts-ignore', '@ts-expect-error')}`,
+              );
+
             context.report({
               node: comment,
               messageId: 'preferExpectErrorComment',
-              fix: fixer =>
-                fixer.replaceText(
-                  comment,
-                  `//${comment.value.replace(
-                    '@ts-ignore',
-                    '@ts-expect-error',
-                  )}`,
-                ),
+              // We currently do not support fixer for comment blocks.
+              fix: isCommentSingleLine ? commentLineRuleFixer : null,
             });
           }
         });

@@ -10,12 +10,12 @@ ruleTester.run('prefer-ts-expect-error', rule, {
     '// @ts-nocheck',
     '// @ts-check',
     '// just a comment containing @ts-ignore somewhere',
-    '/* @ts-ignore */',
-    '/** @ts-ignore */',
     `
-/*
-// @ts-ignore in a block
-*/
+{
+  /*
+        just a comment containing @ts-ignore somewhere in a block
+      */
+}
     `,
     '// @ts-expect-error',
     `
@@ -78,6 +78,70 @@ if (false) {
           messageId: 'preferExpectErrorComment',
           line: 3,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-ignore */',
+      output: '/* @ts-ignore */',
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-ignore in a single block */',
+      output: '/* @ts-ignore in a single block */',
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+{
+  /*
+@ts-ignore in a multiline block
+*/
+}
+      `,
+      output: `
+{
+  /*
+@ts-ignore in a multiline block
+*/
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+// @ts-ignore in a block with single line comments
+*/
+      `,
+      output: `
+/*
+// @ts-ignore in a block with single line comments
+*/
+      `,
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 2,
+          column: 1,
         },
       ],
     },
