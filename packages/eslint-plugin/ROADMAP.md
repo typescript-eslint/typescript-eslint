@@ -388,7 +388,10 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-invalid-this`]: https://palantir.github.io/tslint/rules/no-invalid-this
 [`no-misused-new`]: https://palantir.github.io/tslint/rules/no-misused-new
 [`no-null-keyword`]: https://palantir.github.io/tslint/rules/no-null-keyword
+[`no-null-undefined-union`]: https://palantir.github.io/tslint/rules/no-null-undefined-union
 [`no-object-literal-type-assertion`]: https://palantir.github.io/tslint/rules/no-object-literal-type-assertion
+[`no-promise-as-boolean`]: https://palantir.github.io/tslint/rules/no-promise-as-boolean
+[`no-restricted-globals`]: https://palantir.github.io/tslint/rules/no-restricted-globals
 [`no-return-await`]: https://palantir.github.io/tslint/rules/no-return-await
 [`no-shadowed-variable`]: https://palantir.github.io/tslint/rules/no-shadowed-variable
 [`no-sparse-arrays`]: https://palantir.github.io/tslint/rules/no-sparse-arrays
@@ -396,6 +399,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-string-throw`]: https://palantir.github.io/tslint/rules/no-string-throw
 [`no-submodule-imports`]: https://palantir.github.io/tslint/rules/no-submodule-imports
 [`no-switch-case-fall-through`]: https://palantir.github.io/tslint/rules/no-switch-case-fall-through
+[`no-tautology-expression`]: https://palantir.github.io/tslint/rules/no-tautology-expression
 [`no-this-assignment`]: https://palantir.github.io/tslint/rules/no-this-assignment
 [`no-unbound-method`]: https://palantir.github.io/tslint/rules/no-unbound-method
 [`no-unnecessary-class`]: https://palantir.github.io/tslint/rules/no-unnecessary-class
@@ -410,7 +414,9 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`prefer-object-spread`]: https://palantir.github.io/tslint/rules/prefer-object-spread
 [`radix`]: https://palantir.github.io/tslint/rules/radix
 [`restrict-plus-operands`]: https://palantir.github.io/tslint/rules/restrict-plus-operands
+[`static-this`]: https://palantir.github.io/tslint/rules/static-this
 [`strict-boolean-expressions`]: https://palantir.github.io/tslint/rules/strict-boolean-expressions
+[`strict-string-expressions`]: https://palantir.github.io/tslint/rules/strict-string-expressions
 [`strict-type-predicates`]: https://palantir.github.io/tslint/rules/strict-type-predicates
 [`switch-default`]: https://palantir.github.io/tslint/rules/switch-default
 [`triple-equals`]: https://palantir.github.io/tslint/rules/triple-equals
@@ -466,6 +472,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-reference-import`]: https://palantir.github.io/tslint/rules/no-reference-import
 [`no-trailing-whitespace`]: https://palantir.github.io/tslint/rules/no-trailing-whitespace
 [`no-unnecessary-callback-wrapper`]: https://palantir.github.io/tslint/rules/no-unnecessary-callback-wrapper
+[`no-unnecessary-else`]: https://palantir.github.io/tslint/rules/no-unnecessary-else
 [`no-unnecessary-initializer`]: https://palantir.github.io/tslint/rules/no-unnecessary-initializer
 [`no-unnecessary-qualifier`]: https://palantir.github.io/tslint/rules/no-unnecessary-qualifier
 [`number-literal-format`]: https://palantir.github.io/tslint/rules/number-literal-format
