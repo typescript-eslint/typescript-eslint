@@ -260,7 +260,8 @@ export default util.createRule<Options, MessageIds>({
           variable.identifiers.length === 0 ||
           (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
             !isInInitializer(variable, reference)) ||
-          !isForbidden(variable, reference)
+          !isForbidden(variable, reference) ||
+          reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
           return;
         }
