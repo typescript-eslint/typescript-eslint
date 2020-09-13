@@ -24,6 +24,15 @@ if (false) {
   console.log('hello');
 }
     `,
+    `
+/**
+ * Explaining comment
+ *
+ * @ts-expect-error
+ *
+ * Not last line
+ * */
+    `,
   ],
   invalid: [
     {
@@ -88,6 +97,27 @@ if (false) {
         {
           messageId: 'preferExpectErrorComment',
           line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * Explaining comment
+ *
+ * @ts-ignore */
+      `,
+      output: `
+/**
+ * Explaining comment
+ *
+ * @ts-expect-error */
+      `,
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 2,
           column: 1,
         },
       ],

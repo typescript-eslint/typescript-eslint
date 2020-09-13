@@ -1,5 +1,8 @@
 import * as util from '../util';
-import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import {
   RuleFixer,
   RuleFix,
@@ -25,13 +28,23 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const tsIgnoreRegExp = /^((\/)*\s*(\/\*)*\s*)*\s*@ts-ignore/;
+    const tsIgnoreRegExp = /(^|\n)((\*)*(\/)*\s*(\/\*)*\s*)*\s*@ts-ignore/;
     const sourceCode = context.getSourceCode();
+
+    function getLastCommentLine(comment: TSESTree.Comment): string {
+      if (comment.type === AST_TOKEN_TYPES.Line) {
+        return comment.value;
+      }
+
+      // For multiline comments - we look at only the last line.
+      const commentlines = comment.value.split('/\n');
+      return commentlines[commentlines.length - 1];
+    }
     return {
       Program(): void {
         const comments = sourceCode.getAllComments();
         comments.forEach(comment => {
-          if (tsIgnoreRegExp.test(comment.value)) {
+          if (tsIgnoreRegExp.test(getLastCommentLine(comment))) {
             const lineCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
               fixer.replaceText(
                 comment,

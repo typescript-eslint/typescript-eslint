@@ -20,14 +20,13 @@ Examples of **incorrect** code for this rule:
 // @ts-ignore
 const str: string = 1;
 
-{
-  /* @ts-ignore */
-}
-const value: number = 'value';
-
 /**
- * @ts-ignore
- */
+ * Explaining comment
+ *
+ * @ts-ignore */
+const multiLine: number = 'value';
+
+/** @ts-ignore */
 const block: string = 1;
 
 const isOptionEnabled = (key: string): boolean => {
@@ -42,14 +41,13 @@ Examples of **correct** code for this rule:
 // @ts-expect-error
 const str: string = 1;
 
-{
-  /* @ts-expect-error */
-}
-const value: number = 'value';
-
 /**
- * @ts-expect-error
- */
+ * Explaining comment
+ *
+ * @ts-expect-error */
+const multiLine: number = 'value';
+
+/** @ts-expect-error */
 const block: string = 1;
 
 const isOptionEnabled = (key: string): boolean => {
