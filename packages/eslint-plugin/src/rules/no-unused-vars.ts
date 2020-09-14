@@ -219,6 +219,19 @@ export default util.createRule<Options, MessageIds>({
         markDeclarationChildAsUsed(node);
       },
 
+      // global augmentation can be in any file, and they do not need exports
+      'TSModuleDeclaration[declare = true][global = true]'(): void {
+        context.markVariableAsUsed('global');
+      },
+
+      // children of a namespace that is a child of a declared namespace are auto-exported
+      [ambientDeclarationSelector(
+        'TSModuleDeclaration[declare = true] > TSModuleBlock TSModuleDeclaration > TSModuleBlock',
+        false,
+      )](node: DeclarationSelectorNode): void {
+        markDeclarationChildAsUsed(node);
+      },
+
       // declared namespace handling
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
@@ -229,9 +242,12 @@ export default util.createRule<Options, MessageIds>({
           util.NullThrowsReasons.MissingParent,
         ) as TSESTree.TSModuleDeclaration;
 
-        // declared modules with an `export =` statement will only export that one thing
+        // declared ambient modules with an `export =` statement will only export that one thing
         // all other statements are not automatically exported in this case
-        if (checkModuleDeclForExportEquals(moduleDecl)) {
+        if (
+          moduleDecl.id.type === AST_NODE_TYPES.Literal &&
+          checkModuleDeclForExportEquals(moduleDecl)
+        ) {
           return;
         }
 
@@ -284,7 +300,7 @@ export default util.createRule<Options, MessageIds>({
           AST_NODE_TYPES.TSEnumDeclaration,
           AST_NODE_TYPES.TSModuleDeclaration,
           AST_NODE_TYPES.VariableDeclaration,
-        ].join(', ')})${childDeclare ? '[declare=true]' : ''}`,
+        ].join(', ')})${childDeclare ? '[declare = true]' : ''}`,
       ].join(', ');
     }
     function markDeclarationChildAsUsed(node: DeclarationSelectorNode): void {

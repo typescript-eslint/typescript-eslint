@@ -860,6 +860,32 @@ declare module 'foo' {
   export = x;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2523
+    `
+declare global {
+  interface Foo {}
+}
+    `,
+    `
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeSeven: () => R;
+    }
+  }
+}
+    `,
+    `
+export declare namespace Foo {
+  namespace Bar {
+    namespace Baz {
+      namespace Bam {
+        const x = 1;
+      }
+    }
+  }
+}
+    `,
   ],
 
   invalid: [
@@ -1451,6 +1477,58 @@ declare module 'foo' {
           data: {
             varName: 'Test',
             action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+// not declared
+export namespace Foo {
+  namespace Bar {
+    namespace Baz {
+      namespace Bam {
+        const x = 1;
+      }
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 4,
+          data: {
+            varName: 'Bar',
+            action: 'defined',
+            additional: '',
+          },
+        },
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          data: {
+            varName: 'Baz',
+            action: 'defined',
+            additional: '',
+          },
+        },
+        {
+          messageId: 'unusedVar',
+          line: 6,
+          data: {
+            varName: 'Bam',
+            action: 'defined',
+            additional: '',
+          },
+        },
+        {
+          messageId: 'unusedVar',
+          line: 7,
+          data: {
+            varName: 'x',
+            action: 'assigned a value',
             additional: '',
           },
         },

@@ -46,9 +46,11 @@ namespace Scope {
   export type Reference = scopeManager.Reference;
   export type Variable = scopeManager.Variable | ESLintScopeVariable;
   export type Scope = scopeManager.Scope;
+  export const ScopeType = scopeManager.ScopeType;
   // TODO - in the next major, clean this up with a breaking change
   export type DefinitionType = scopeManager.Definition;
   export type Definition = scopeManager.Definition;
+  export const DefinitionType = scopeManager.DefinitionType;
 }
 
 export { Scope };
