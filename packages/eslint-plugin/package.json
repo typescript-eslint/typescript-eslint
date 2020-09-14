@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -42,8 +42,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "4.1.0",
-    "@typescript-eslint/scope-manager": "4.1.0",
+    "@typescript-eslint/experimental-utils": "4.1.1",
+    "@typescript-eslint/scope-manager": "4.1.1",
     "debug": "^4.1.1",
     "functional-red-black-tree": "^1.0.1",
     "regexpp": "^3.0.0",

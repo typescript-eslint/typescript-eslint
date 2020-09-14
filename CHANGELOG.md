@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] allow an array of selectors with types and modifiers ([#2415](https://github.com/typescript-eslint/typescript-eslint/issues/2415)) ([7ca54c3](https://github.com/typescript-eslint/typescript-eslint/commit/7ca54c3e4601ad07db5b882a67965cd67a18c4b3))
+* **eslint-plugin:** [no-implied-eval] handle the `Function` type ([#2435](https://github.com/typescript-eslint/typescript-eslint/issues/2435)) ([e1401dc](https://github.com/typescript-eslint/typescript-eslint/commit/e1401dc5897d01da516802cfb2333cf4bc6d0e93))
+* **eslint-plugin:** [no-unused-vars] better handling for declared modules ([#2553](https://github.com/typescript-eslint/typescript-eslint/issues/2553)) ([02d72d4](https://github.com/typescript-eslint/typescript-eslint/commit/02d72d480be7a8f7ddc66a028338cfb996886f3c)), closes [#2523](https://github.com/typescript-eslint/typescript-eslint/issues/2523)
+* **eslint-plugin:** [no-use-before-define] false positive for function type arguments ([#2554](https://github.com/typescript-eslint/typescript-eslint/issues/2554)) ([189162d](https://github.com/typescript-eslint/typescript-eslint/commit/189162d46ecb116c420232937a7f86df913f4e79)), closes [#2527](https://github.com/typescript-eslint/typescript-eslint/issues/2527)
+* **eslint-plugin:** [prefer-function-type] handle `this` return ([#2437](https://github.com/typescript-eslint/typescript-eslint/issues/2437)) ([7c6fcee](https://github.com/typescript-eslint/typescript-eslint/commit/7c6fcee657dffd041e389e0aeaa4f3e278e92986))
+* **eslint-plugin:** [return-await] don't error for `in-try-catch` if the return is in a `catch` without a `finally` ([#2356](https://github.com/typescript-eslint/typescript-eslint/issues/2356)) ([efdd521](https://github.com/typescript-eslint/typescript-eslint/commit/efdd5213ceaef332cf0b2c26573176f844d22a09))
+* **types:** artificial fix needed to trigger release ([b577daf](https://github.com/typescript-eslint/typescript-eslint/commit/b577daf27cd87870b6e095e4e995519f96d321dd))
+* **types:** artificial fix needed to trigger release ([fc62ba8](https://github.com/typescript-eslint/typescript-eslint/commit/fc62ba8622ed634e4c2d8399a4e880f983747181))
+
+
+
+
+
 # [4.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.1...v4.1.0) (2020-09-07)
 
 

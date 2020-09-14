@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
+
+
+### Bug Fixes
+
+* **types:** artificial fix needed to trigger release ([b577daf](https://github.com/typescript-eslint/typescript-eslint/commit/b577daf27cd87870b6e095e4e995519f96d321dd))
+
+
+
+
+
 # [4.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.1...v4.1.0) (2020-09-07)
 
 
