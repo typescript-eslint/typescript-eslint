@@ -278,28 +278,29 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
           },
           additionalItems: false,
         },
+        modifiers: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: util.getEnumNames(Modifiers),
+          },
+          additionalItems: false,
+        },
+        types: {
+          type: 'array',
+          items: {
+            type: 'string',
+            enum: util.getEnumNames(TypeModifiers),
+          },
+          additionalItems: false,
+        },
       },
-    },
-    modifiers: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: util.getEnumNames(Modifiers),
-      },
-      additionalItems: false,
-    },
-    types: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: util.getEnumNames(TypeModifiers),
-      },
-      additionalItems: false,
     },
     required: ['selector', 'format'],
     additionalProperties: false,
   };
 }
+
 const SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: {
@@ -819,7 +820,9 @@ type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 function parseOptions(context: Context): ParsedOptions {
-  const normalizedOptions = context.options.map(opt => normalizeOption(opt));
+  const normalizedOptions = context.options
+    .map(opt => normalizeOption(opt))
+    .reduce((acc, val) => acc.concat(val), []);
   return util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
@@ -1257,7 +1260,8 @@ function isMetaSelector(
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
-function normalizeOption(option: Selector): NormalizedSelector {
+
+function normalizeOption(option: Selector): NormalizedSelector[] {
   let weight = 0;
   option.modifiers?.forEach(mod => {
     weight |= Modifiers[mod];
@@ -1309,16 +1313,30 @@ function normalizeOption(option: Selector): NormalizedSelector {
     ? option.selector
     : [option.selector];
 
-  return {
-    selector: selectors
-      .map(selector =>
-        isMetaSelector(selector)
-          ? MetaSelectors[selector]
-          : Selectors[selector],
-      )
-      .reduce((accumulator, selector) => accumulator | selector),
-    ...normalizedOption,
-  };
+  const selectorsAllowedToHaveTypes: (Selectors | MetaSelectors)[] = [
+    Selectors.variable,
+    Selectors.parameter,
+    Selectors.property,
+    Selectors.parameterProperty,
+    Selectors.accessor,
+  ];
+
+  const config: NormalizedSelector[] = [];
+  selectors
+    .map(selector =>
+      isMetaSelector(selector) ? MetaSelectors[selector] : Selectors[selector],
+    )
+    .forEach(selector =>
+      selectorsAllowedToHaveTypes.includes(selector)
+        ? config.push({ selector: selector, ...normalizedOption })
+        : config.push({
+            selector: selector,
+            ...normalizedOption,
+            types: null,
+          }),
+    );
+
+  return config;
 }
 
 function isCorrectType(

@@ -835,6 +835,77 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        let isFoo = 1;
+        class foo {
+          shouldBoo: number;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['variable', 'parameter', 'property', 'accessor'],
+          types: ['number'],
+          format: ['PascalCase'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private readonly FooBoo: boolean;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          types: ['boolean'],
+          modifiers: ['private', 'readonly'],
+          format: ['PascalCase'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private fooBoo: number;
+        }
+      `,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: `
+        const isfooBar = 1;
+        function fun(goodfunFoo: number) {}
+        class foo {
+          private VanFooBar: number;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private'],
+          format: ['StrictPascalCase'],
+          prefix: ['Van'],
+        },
+        {
+          selector: ['variable', 'parameter'],
+          types: ['number'],
+          format: ['camelCase'],
+          prefix: ['is', 'good'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -871,19 +942,16 @@ ruleTester.run('naming-convention', rule, {
         declare const any_camelCase01: any;
         declare const any_camelCase02: any | null;
         declare const any_camelCase03: any | null | undefined;
-
         declare const string_camelCase01: string;
         declare const string_camelCase02: string | null;
         declare const string_camelCase03: string | null | undefined;
         declare const string_camelCase04: 'a' | null | undefined;
         declare const string_camelCase05: string | 'a' | null | undefined;
-
         declare const number_camelCase06: number;
         declare const number_camelCase07: number | null;
         declare const number_camelCase08: number | null | undefined;
         declare const number_camelCase09: 1 | null | undefined;
         declare const number_camelCase10: number | 2 | null | undefined;
-
         declare const boolean_camelCase11: boolean;
         declare const boolean_camelCase12: boolean | null;
         declare const boolean_camelCase13: boolean | null | undefined;
@@ -955,7 +1023,6 @@ ruleTester.run('naming-convention', rule, {
           | undefined;
         declare const array_camelCase6: [] | null | undefined;
         declare const array_camelCase7: [number] | null | undefined;
-
         declare const array_camelCase8:
           | readonly number[]
           | Array<string>
@@ -1165,6 +1232,55 @@ ruleTester.run('naming-convention', rule, {
           },
         },
       ],
+    },
+    {
+      code: `
+        const myfoo_bar = 'abcs';
+        function fun(myfoo: string) {}
+        class foo {
+          Myfoo: string;
+        }
+      `,
+      options: [
+        {
+          selector: ['variable', 'property', 'parameter'],
+          types: ['string'],
+          format: ['PascalCase'],
+          prefix: ['my', 'My'],
+        },
+      ],
+      parserOptions,
+      errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+    },
+    {
+      code: `
+        class foo {
+          private readonly fooBar: boolean;
+        }
+      `,
+      options: [
+        {
+          selector: ['property', 'accessor'],
+          modifiers: ['private', 'readonly'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        function my_foo_bar() {}
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: ['variable', 'function'],
+          types: ['string'],
+          format: ['PascalCase'],
+          prefix: ['my', 'My'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormatTrimmed' }],
     },
   ],
 });
