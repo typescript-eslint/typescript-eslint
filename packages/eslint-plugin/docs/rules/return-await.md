@@ -90,7 +90,7 @@ async function validInTryCatch1() {
   } catch (e) {}
 }
 
-async function invalidInTryCatch2() {
+async function validInTryCatch2() {
   try {
     throw new Error('error');
   } catch (e) {
@@ -98,7 +98,7 @@ async function invalidInTryCatch2() {
   }
 }
 
-async function invalidInTryCatch3() {
+async function validInTryCatch3() {
   try {
     throw new Error('error');
   } catch (e) {
@@ -108,7 +108,7 @@ async function invalidInTryCatch3() {
   }
 }
 
-async function invalidInTryCatch4() {
+async function validInTryCatch4() {
   try {
     throw new Error('error');
   } catch (e) {
