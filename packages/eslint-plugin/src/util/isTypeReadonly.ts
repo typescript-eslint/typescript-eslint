@@ -6,7 +6,7 @@ import {
   isPropertyReadonlyInType,
 } from 'tsutils';
 import * as ts from 'typescript';
-import { nullThrows, NullThrowsReasons } from '.';
+import { getTypeOfPropertyOfType, nullThrows, NullThrowsReasons } from '.';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -100,9 +100,10 @@ function isTypeReadonlyObject(
     // as we might be able to bail out early due to a mutable property before
     // doing this deep, potentially expensive check.
     for (const property of properties) {
-      const propertyType = nullThrows(
-        checker.getTypeOfPropertyOfType(type, property.getName()),
-        NullThrowsReasons.MissingToken(`property "${property.name}"`, 'type'),
+      const propertyType = getTypeOfPropertyOfType(
+        checker,
+        type,
+        property.name,
       );
 
       // handle recursive types.

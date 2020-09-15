@@ -24,6 +24,7 @@ import {
   isTypeAnyType,
   isTypeUnknownType,
   getTypeName,
+  getTypeOfPropertyOfType,
 } from '../util';
 
 // Truthiness utilities
@@ -499,7 +500,8 @@ export default createRule<Options, MessageId>({
         );
       }
       if (propertyType.isNumberLiteral() || propertyType.isStringLiteral()) {
-        const propType = checker.getTypeOfPropertyOfType(
+        const propType = getTypeOfPropertyOfType(
+          checker,
           objType,
           propertyType.value.toString(),
         );
@@ -535,7 +537,11 @@ export default createRule<Options, MessageId>({
             const propertyType = getNodeType(node.property);
             return isNullablePropertyType(type, propertyType);
           }
-          const propType = checker.getTypeOfPropertyOfType(type, property.name);
+          const propType = getTypeOfPropertyOfType(
+            checker,
+            type,
+            property.name,
+          );
           return propType && isNullableType(propType, { allowUndefined: true });
         });
         return (

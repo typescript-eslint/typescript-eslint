@@ -238,6 +238,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       }
       function foo(arg: Readonly<Foo>) {}
     `,
+    `
+      const sym = Symbol('sym');
+
+      interface WithSymbol {
+        [sym]: number;
+      }
+
+      const willNotCrash = (foo: Readonly<WithSymbol>) => {};
+    `,
   ],
   invalid: [
     // arrays
@@ -640,6 +649,25 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 8,
           column: 22,
           endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        const sym = Symbol('sym');
+
+        interface WithSymbol {
+          [sym]: number;
+        }
+
+        const willNot = (foo: WithSymbol) => {};
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 26,
+          endColumn: 41,
         },
       ],
     },
