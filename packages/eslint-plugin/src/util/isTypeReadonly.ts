@@ -100,10 +100,9 @@ function isTypeReadonlyObject(
     // as we might be able to bail out early due to a mutable property before
     // doing this deep, potentially expensive check.
     for (const property of properties) {
-      const propertyType = getTypeOfPropertyOfType(
-        checker,
-        type,
-        property.name,
+      const propertyType = nullThrows(
+        getTypeOfPropertyOfType(checker, type, property),
+        NullThrowsReasons.MissingToken(`property "${property.name}"`, 'type'),
       );
 
       // handle recursive types.
