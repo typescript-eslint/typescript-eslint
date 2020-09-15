@@ -906,6 +906,20 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        class SomeClass {
+          static OtherConstant = 'hello';
+        }
+
+        export const { OtherConstant: otherConstant } = SomeClass;
+      `,
+      parserOptions,
+      options: [
+        { selector: 'property', format: ['PascalCase'] },
+        { selector: 'variable', format: ['camelCase'] },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1281,6 +1295,26 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       errors: [{ messageId: 'doesNotMatchFormatTrimmed' }],
+    },
+    {
+      code: `
+        class SomeClass {
+          static otherConstant = 'hello';
+        }
+
+        export const { otherConstant } = SomeClass;
+      `,
+      parserOptions,
+      options: [
+        { selector: 'property', format: ['PascalCase'] },
+        { selector: 'variable', format: ['camelCase'] },
+      ],
+      errors: [
+        {
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
     },
   ],
 });

@@ -579,7 +579,7 @@ export default util.createRule<Options, MessageIds>({
 
       // #region property
 
-      'Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
+      ':not(ObjectPattern) > Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
         node: TSESTree.PropertyNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
