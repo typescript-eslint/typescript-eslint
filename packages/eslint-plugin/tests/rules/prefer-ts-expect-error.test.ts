@@ -59,8 +59,8 @@ if (false) {
       ],
     },
     {
-      code: '/////@ts-ignore: Suppress next line',
-      output: '/////@ts-expect-error: Suppress next line',
+      code: '///@ts-ignore: Suppress next line',
+      output: '///@ts-expect-error: Suppress next line',
       errors: [
         {
           messageId: 'preferExpectErrorComment',
@@ -135,37 +135,12 @@ if (false) {
     },
     {
       code: `
-{
-  /*
-@ts-ignore in a multiline block
-*/
-}
-      `,
-      output: `
-{
-  /*
-@ts-expect-error in a multiline block
-*/
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
 /*
-// @ts-ignore in a block with single line comments
-*/
+// @ts-ignore in a block with single line comments */
       `,
       output: `
 /*
-// @ts-expect-error in a block with single line comments
-*/
+// @ts-expect-error in a block with single line comments */
       `,
       errors: [
         {

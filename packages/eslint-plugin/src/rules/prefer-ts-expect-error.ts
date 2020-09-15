@@ -28,23 +28,36 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const tsIgnoreRegExp = /(^|\n)((\*)*(\/)*\s*(\/\*)*\s*)*\s*@ts-ignore/;
+    const tsIgnoreRegExpSingleLine = /^\s*\/?\s*@ts-ignore/;
+    const tsIgnoreRegExpMultiLine = /^\s*(?:\/|\*)*\s*@ts-ignore/;
     const sourceCode = context.getSourceCode();
 
+    function isLineComment(comment: TSESTree.Comment): boolean {
+      return comment.type === AST_TOKEN_TYPES.Line;
+    }
+
     function getLastCommentLine(comment: TSESTree.Comment): string {
-      if (comment.type === AST_TOKEN_TYPES.Line) {
+      if (isLineComment(comment)) {
         return comment.value;
       }
 
       // For multiline comments - we look at only the last line.
-      const commentlines = comment.value.split('/\n');
+      const commentlines = comment.value.split('\n');
       return commentlines[commentlines.length - 1];
     }
+
+    function isValidTsIgnorePresent(comment: TSESTree.Comment): boolean {
+      const line = getLastCommentLine(comment);
+      return isLineComment(comment)
+        ? tsIgnoreRegExpSingleLine.test(line)
+        : tsIgnoreRegExpMultiLine.test(line);
+    }
+
     return {
       Program(): void {
         const comments = sourceCode.getAllComments();
         comments.forEach(comment => {
-          if (tsIgnoreRegExp.test(getLastCommentLine(comment))) {
+          if (isValidTsIgnorePresent(comment)) {
             const lineCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
               fixer.replaceText(
                 comment,
@@ -63,10 +76,9 @@ export default util.createRule<[], MessageIds>({
             context.report({
               node: comment,
               messageId: 'preferExpectErrorComment',
-              fix:
-                comment.type === AST_TOKEN_TYPES.Line
-                  ? lineCommentRuleFixer
-                  : blockCommentRuleFixer,
+              fix: isLineComment(comment)
+                ? lineCommentRuleFixer
+                : blockCommentRuleFixer,
             });
           }
         });
