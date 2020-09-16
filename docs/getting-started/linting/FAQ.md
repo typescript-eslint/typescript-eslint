@@ -10,7 +10,7 @@
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
 - [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
 - [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
-- [How do I check to see what versions are installed](#how-do-i-check-to-see-what-versions-are-installed)
+- [How do I check to see what versions are installed?](#how-do-i-check-to-see-what-versions-are-installed)
 - [My linting feels really slow](#my-linting-feels-really-slow)
 
 ---
