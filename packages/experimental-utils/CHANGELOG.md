@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-use-before-define] false positive for function type arguments ([#2554](https://github.com/typescript-eslint/typescript-eslint/issues/2554)) ([189162d](https://github.com/typescript-eslint/typescript-eslint/commit/189162d46ecb116c420232937a7f86df913f4e79)), closes [#2527](https://github.com/typescript-eslint/typescript-eslint/issues/2527)
+
+
+
+
+
 # [4.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.0.1...v4.1.0) (2020-09-07)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
