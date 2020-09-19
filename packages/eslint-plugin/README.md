@@ -219,6 +219,7 @@ In these cases, we create what we call an extension rule; a rule within our plug
 | [`@typescript-eslint/return-await`](./docs/rules/return-await.md)                               | Enforces consistent returning of awaited values                                      |                    | :wrench: | :thought_balloon: |
 | [`@typescript-eslint/semi`](./docs/rules/semi.md)                                               | Require or disallow semicolons instead of ASI                                        |                    | :wrench: |                   |
 | [`@typescript-eslint/space-before-function-paren`](./docs/rules/space-before-function-paren.md) | Enforces consistent spacing before function parenthesis                              |                    | :wrench: |                   |
+| [`@typescript-eslint/space-infix-ops`](./docs/rules/space-infix-ops.md)                         | This rule is aimed at ensuring there are spaces around infix operators.              |                    | :wrench: |                   |
 
 <!-- end extension rule list -->
 
