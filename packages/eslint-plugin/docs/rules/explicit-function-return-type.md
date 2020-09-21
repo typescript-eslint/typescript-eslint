@@ -209,14 +209,14 @@ function fn() {
 Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
 
 ```ts
-const func = (value: number) => ({ type: "X", value } as any);
-const func = (value: number) => ({ type: "X", value } as Action);
+const func = (value: number) => ({ type: 'X', value } as any);
+const func = (value: number) => ({ type: 'X', value } as Action);
 ```
 
 Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
 
 ```ts
-const func = (value: number) => ({ foo: "bar", value } as const);
+const func = (value: number) => ({ foo: 'bar', value } as const);
 const func = () => x as const;
 ```
 
