@@ -3,7 +3,8 @@
 exports[`import equals2 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"x">,
@@ -19,7 +20,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Literal$2,
         },
         Reference$2 {
@@ -28,13 +29,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ImportBindingDefinition$2 {
           name: Identifier<"foo">,
@@ -52,10 +53,14 @@ ScopeManager {
       block: Program$4,
       isStrict: false,
       references: Array [],
-      set: Map {},
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
       type: "global",
       upper: null,
-      variables: Array [],
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
     },
     ModuleScope$2 {
       block: Program$4,
@@ -65,14 +70,14 @@ ScopeManager {
         Reference$2,
       ],
       set: Map {
-        "x" => Variable$1,
-        "foo" => Variable$2,
+        "x" => Variable$2,
+        "foo" => Variable$3,
       },
       type: "module",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$1,
         Variable$2,
+        Variable$3,
       ],
     },
   ],

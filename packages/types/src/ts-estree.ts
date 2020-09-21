@@ -457,6 +457,20 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
+export type ProgramStatement =
+  | ClassDeclaration
+  | ExportAllDeclaration
+  | ExportDefaultDeclaration
+  | ExportNamedDeclaration
+  | ImportDeclaration
+  | Statement
+  | TSDeclareFunction
+  | TSEnumDeclaration
+  | TSExportAssignment
+  | TSImportEqualsDeclaration
+  | TSInterfaceDeclaration
+  | TSNamespaceExportDeclaration
+  | TSTypeAliasDeclaration;
 export type Property = PropertyComputedName | PropertyNonComputedName;
 export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
 export type PropertyNameComputed = Expression;
@@ -1146,7 +1160,7 @@ export interface ObjectPattern extends BaseNode {
 
 export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
-  body: Statement[];
+  body: ProgramStatement[];
   sourceType: 'module' | 'script';
   comments?: Comment[];
   tokens?: Token[];
@@ -1473,7 +1487,7 @@ export interface TSMethodSignatureNonComputedName
 
 export interface TSModuleBlock extends BaseNode {
   type: AST_NODE_TYPES.TSModuleBlock;
-  body: Statement[];
+  body: ProgramStatement[];
 }
 
 export interface TSModuleDeclaration extends BaseNode {

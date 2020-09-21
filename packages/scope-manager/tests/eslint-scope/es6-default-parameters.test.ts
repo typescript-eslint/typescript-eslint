@@ -1,4 +1,4 @@
-import { parseAndAnalyze } from '../util';
+import { getRealVariables, parseAndAnalyze } from '../util';
 
 function forEach<T extends string>(
   obj: Record<T, string>,
@@ -27,15 +27,16 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, a, b]
+        expect(variables).toHaveLength(numVars); // [arguments?, a, b]
         expect(scope.references).toHaveLength(1);
 
         const reference = scope.references[0];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('b');
-        expect(reference.resolved).toBe(scope.variables[numVars - 1]);
+        expect(reference.resolved).toBe(variables[numVars - 1]);
         expect(reference.writeExpr).not.toBeUndefined();
         expect(reference.isWrite()).toBeTruthy();
         expect(reference.isRead()).toBeFalsy();
@@ -69,15 +70,18 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, b]
+        expect(variables).toHaveLength(numVars); // [arguments?, b]
         expect(scope.references).toHaveLength(2); // [b, a]
 
         const reference = scope.references[1];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -111,15 +115,18 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, b]
+        expect(variables).toHaveLength(numVars); // [arguments?, b]
         expect(scope.references).toHaveLength(2); // [b, a]
 
         const reference = scope.references[1];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -153,15 +160,18 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, b]
+        expect(variables).toHaveLength(numVars); // [arguments?, b]
         expect(scope.references).toHaveLength(2); // [b, a]
 
         const reference = scope.references[1];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -194,15 +204,18 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(3); // [global, foo, anonymous]
 
         const scope = scopeManager.scopes[2];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(1); // [arguments]
+        expect(variables).toHaveLength(1); // [arguments]
         expect(scope.references).toHaveLength(1); // [a]
 
         const reference = scope.references[0];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -236,15 +249,18 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, b, a]
+        expect(variables).toHaveLength(numVars); // [arguments?, b, a]
         expect(scope.references).toHaveLength(2); // [b, a]
 
         const reference = scope.references[1];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -278,17 +294,16 @@ describe('ES6 default parameters:', () => {
         expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
         const scope = scopeManager.scopes[1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(numVars); // [arguments?, b, a]
+        expect(variables).toHaveLength(numVars); // [arguments?, b, a]
         expect(scope.references).toHaveLength(2); // [b, a]
 
         const reference = scope.references[1];
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(
-          scope.variables[scope.variables.length - 1],
-        );
+        expect(reference.resolved).toBe(variables[variables.length - 1]);
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();
@@ -328,7 +343,9 @@ describe('ES6 default parameters:', () => {
 
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('a');
-        expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+        expect(reference.resolved).toBe(
+          getRealVariables(scopeManager.scopes[0].variables)[0],
+        );
         expect(reference.writeExpr).toBeUndefined();
         expect(reference.isWrite()).toBeFalsy();
         expect(reference.isRead()).toBeTruthy();

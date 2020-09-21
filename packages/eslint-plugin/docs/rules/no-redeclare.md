@@ -21,12 +21,12 @@ See [`eslint/no-redeclare` options](https://eslint.org/docs/rules/no-redeclare#o
 This rule adds the following options:
 
 ```ts
-interface Options extends BaseNoShadowOptions {
+interface Options extends BaseNoRedeclareOptions {
   ignoreDeclarationMerge?: boolean;
 }
 
 const defaultOptions: Options = {
-  ...baseNoShadowDefaultOptions,
+  ...baseNoRedeclareDefaultOptions,
   ignoreDeclarationMerge: true,
 };
 ```
@@ -64,6 +64,16 @@ namespace Bar {}
 
 function Baz() {}
 namespace Baz {}
+```
+
+**Note:** Even with this option set to true, this rule will report if you name a type and a variable the same name. **_This is intentional_**.
+Declaring a variable and a type and a variable the same is usually an accident, and it can lead to hard-to-understand code.
+If you have a rare case where you're intentionally naming a type the same name as a variable, use a disable comment. For example:
+
+```ts
+type something = string;
+// eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
+const something = 2;
 ```
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)</sup>

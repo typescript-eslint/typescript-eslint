@@ -35,11 +35,11 @@ Examples of **correct** code for this rule:
 ```ts
 declare const properlyTyped: { prop: { a: string } };
 
-nestedAny.prop.a;
-nestedAny.prop['a'];
+properlyTyped.prop.a;
+properlyTyped.prop['a'];
 
 const key = 'a';
-nestedAny.prop[key];
+properlyTyped.prop[key];
 
 const arr = [1, 2, 3];
 arr[1];

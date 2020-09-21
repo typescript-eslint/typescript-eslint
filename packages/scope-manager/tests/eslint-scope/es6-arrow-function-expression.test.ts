@@ -2,6 +2,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import {
   expectToBeFunctionScope,
   expectToBeGlobalScope,
+  getRealVariables,
   parseAndAnalyze,
 } from '../util';
 
@@ -18,20 +19,22 @@ describe('ES6 arrow function expression', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(2);
+    expect(variables).toHaveLength(2);
 
     // There's no "arguments"
-    expect(scope.variables[0].name).toBe('i');
-    expect(scope.variables[1].name).toBe('j');
+    expect(variables[0].name).toBe('i');
+    expect(variables[1].name).toBe('j');
   });
 
   it('generate bindings for parameters', () => {
@@ -40,22 +43,24 @@ describe('ES6 arrow function expression', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(4);
+    expect(variables).toHaveLength(4);
 
     // There's no "arguments"
-    expect(scope.variables[0].name).toBe('a');
-    expect(scope.variables[1].name).toBe('b');
-    expect(scope.variables[2].name).toBe('c');
-    expect(scope.variables[3].name).toBe('d');
+    expect(variables[0].name).toBe('a');
+    expect(variables[1].name).toBe('b');
+    expect(variables[2].name).toBe('c');
+    expect(variables[3].name).toBe('d');
   });
 
   it('inherits upper scope strictness', () => {
@@ -67,17 +72,18 @@ describe('ES6 arrow function expression', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeTruthy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
-
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
     expect(scope.isStrict).toBeTruthy();
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
   });
 
   it('is strict when a strictness directive is used', () => {
@@ -90,17 +96,18 @@ describe('ES6 arrow function expression', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     let scope = scopeManager.scopes[0];
+    let variables = getRealVariables(scope.variables);
     expectToBeGlobalScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
-
+    variables = getRealVariables(scope.variables);
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
     expect(scope.isStrict).toBeTruthy();
-    expect(scope.variables).toHaveLength(0);
+    expect(variables).toHaveLength(0);
   });
 
   it('works with no body', () => {
@@ -109,10 +116,11 @@ describe('ES6 arrow function expression', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     const scope = scopeManager.scopes[1];
+    const variables = getRealVariables(scope.variables);
 
     expectToBeFunctionScope(scope);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
     expect(scope.isStrict).toBeFalsy();
-    expect(scope.variables).toHaveLength(1);
+    expect(variables).toHaveLength(1);
   });
 });

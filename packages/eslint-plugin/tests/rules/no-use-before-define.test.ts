@@ -290,6 +290,63 @@ enum Foo {
       `,
       options: [{ enums: false }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2502
+    {
+      code: `
+import * as React from 'react';
+
+<div />;
+      `,
+      parserOptions: {
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+import React from 'react';
+
+<div />;
+      `,
+      parserOptions: {
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+import { h } from 'preact';
+
+<div />;
+      `,
+      parserOptions: {
+        sourceType: 'module',
+        jsxPragma: 'h',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const React = require('react');
+
+<div />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2527
+    `
+type T = (value: unknown) => value is Id;
+    `,
   ],
   invalid: [
     {

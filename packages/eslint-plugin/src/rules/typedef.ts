@@ -142,6 +142,12 @@ export default util.createRule<[Options], MessageIds>({
     return {
       ArrayPattern(node): void {
         if (
+          node.parent?.type === AST_NODE_TYPES.RestElement &&
+          node.parent.typeAnnotation
+        ) {
+          return;
+        }
+        if (
           options[OptionKeys.ArrayDestructuring] &&
           !node.typeAnnotation &&
           !isForOfStatementContext(node)

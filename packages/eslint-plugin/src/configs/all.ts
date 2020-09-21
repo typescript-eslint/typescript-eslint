@@ -65,6 +65,8 @@ export = {
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': 'error',
     '@typescript-eslint/no-invalid-void-type': 'error',
+    'no-loop-func': 'off',
+    '@typescript-eslint/no-loop-func': 'error',
     'no-loss-of-precision': 'off',
     '@typescript-eslint/no-loss-of-precision': 'error',
     'no-magic-numbers': 'off',

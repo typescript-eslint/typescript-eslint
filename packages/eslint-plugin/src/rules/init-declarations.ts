@@ -24,7 +24,12 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      initialized:
+        "Variable '{{idName}}' should be initialized on declaration.",
+      notInitialized:
+        "Variable '{{idName}}' should not be initialized on declaration.",
+    },
   },
   defaultOptions: ['always'],
   create(context) {

@@ -12,6 +12,5 @@ export const es2019_object = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ObjectConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;
