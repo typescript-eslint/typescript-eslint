@@ -33,7 +33,7 @@ export default util.createRule<[Options], MessageIds>({
         'void is only valid as a return type or generic type variable',
       invalidVoidNotReturn: 'void is only valid as a return type',
       invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of this parameter',
+        'void is only valid as return type or type of `this` parameter',
       invalidVoidNotReturnOrThisParamOrGeneric:
         'void is only valid as a return type or generic type variable or in this parameter',
     },
