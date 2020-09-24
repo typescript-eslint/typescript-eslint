@@ -3,7 +3,8 @@
 exports[`global-resolution script class 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ClassNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -18,13 +19,13 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: false,
-          resolved: Variable$1,
+          resolved: Variable$2,
         },
       ],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
@@ -45,12 +46,14 @@ ScopeManager {
         Reference$1,
       ],
       set: Map {
-        "Foo" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     ClassScope$2 {
@@ -58,12 +61,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "Foo" => Variable$2,
+        "Foo" => Variable$3,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
   ],

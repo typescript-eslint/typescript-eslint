@@ -10,7 +10,10 @@ type RuleNode =
   | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral
   | TSESTree.TSInterfaceBody;
-type Member = TSESTree.ClassElement | TSESTree.Statement | TSESTree.TypeElement;
+type Member =
+  | TSESTree.ClassElement
+  | TSESTree.ProgramStatement
+  | TSESTree.TypeElement;
 
 export default util.createRule({
   name: 'adjacent-overload-signatures',

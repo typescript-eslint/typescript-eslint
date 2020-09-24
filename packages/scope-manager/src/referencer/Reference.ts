@@ -43,7 +43,7 @@ class Reference {
    * Identifier syntax node.
    * @public
    */
-  public readonly identifier: TSESTree.Identifier;
+  public readonly identifier: TSESTree.Identifier | TSESTree.JSXIdentifier;
   /**
    * `true` if this writing reference is a variable initializer or a default value.
    * @public
@@ -82,7 +82,7 @@ class Reference {
   }
 
   constructor(
-    identifier: TSESTree.Identifier,
+    identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
     scope: Scope,
     flag: ReferenceFlag,
     writeExpr?: TSESTree.Node | null,

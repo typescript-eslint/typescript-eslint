@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx component 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$1 {
+          identifier: JSXIdentifier$2,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$3,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

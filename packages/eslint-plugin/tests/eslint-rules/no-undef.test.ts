@@ -111,6 +111,119 @@ function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
       var a = { b: () => {} };
       a?.b();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2462
+    `
+export default class Column {
+  isColumnString(column: unknown): column is string {
+    return typeof this.column === 'string';
+  }
+}
+    `,
+    `
+type T = string;
+function predicate(arg: any): arg is T {
+  return typeof arg === 'string';
+}
+    `,
+    `
+function predicate(arg: any): asserts arg {
+  if (arg == null) {
+    throw 'oops';
+  }
+}
+    `,
+    `
+type T = string;
+function predicate(arg: any): asserts arg is T {
+  if (typeof arg !== 'string') {
+    throw 'oops';
+  }
+}
+    `,
+    {
+      code: `
+function Foo() {}
+<Foo />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+type T = 1;
+function Foo() {}
+<Foo<T> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = 1;
+function Foo() {}
+<Foo attr={x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = {};
+function Foo() {}
+<Foo {...x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const x = {};
+function Foo() {}
+<Foo>{x}</Foo>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    // intrinsic elements should not cause errors
+    {
+      code: `
+<div />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+<span></span>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2477
+    `
+const x = 1 as const;
+    `,
   ],
   invalid: [
     {
@@ -143,6 +256,108 @@ function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
           data: {
             name: 'a',
           },
+        },
+      ],
+    },
+    {
+      code: '<Foo />;',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Foo',
+          },
+          line: 1,
+          column: 2,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo attr={x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo {...x} />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo<T> />;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'T',
+          },
+          line: 3,
+          column: 6,
+        },
+      ],
+    },
+    {
+      code: `
+function Foo() {}
+<Foo>{x}</Foo>;
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'x',
+          },
+          line: 3,
+          column: 7,
         },
       ],
     },

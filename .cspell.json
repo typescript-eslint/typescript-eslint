@@ -38,6 +38,7 @@
   "words": [
     "Airbnb",
     "Airbnb's",
+    "ambiently",
     "ASTs",
     "autofix",
     "autofixers",
@@ -74,6 +75,7 @@
     "pluggable",
     "postprocess",
     "postprocessor",
+    "preact",
     "Premade",
     "prettier's",
     "recurse",
@@ -87,6 +89,7 @@
     "rulesets",
     "serializers",
     "superset",
+    "transpiling",
     "thenables",
     "transpiles",
     "tsconfigs",

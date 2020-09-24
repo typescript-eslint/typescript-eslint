@@ -1,4 +1,4 @@
-import { parseAndAnalyze } from '../util';
+import { getRealVariables, parseAndAnalyze } from '../util';
 
 describe('References:', () => {
   describe('When there is a `let` declaration on global,', () => {
@@ -8,15 +8,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -33,15 +34,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[0].variables)[0],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -57,15 +61,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[0].variables)[0],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -79,15 +86,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -104,15 +112,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[0].variables)[0],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -126,8 +137,9 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
@@ -151,8 +163,9 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
@@ -176,15 +189,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, A]
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [A, b]
+      expect(variables).toHaveLength(2); // [A, b]
       expect(scope.references).toHaveLength(2); // [b, A]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('A');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -201,15 +215,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(3); // [global, A, foo]
 
       const scope = scopeManager.scopes[2];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, A]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('A');
-      expect(reference.resolved).toBe(scopeManager.scopes[0].variables[0]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[0].variables)[0],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -227,15 +244,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, a]
+      expect(variables).toHaveLength(2); // [arguments, a]
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[1]);
+      expect(reference.resolved).toBe(variables[1]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -254,15 +272,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(3); // [global, foo, bar]
 
       const scope = scopeManager.scopes[2];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scopeManager.scopes[1].variables[1]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[1].variables)[1],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -280,15 +301,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(2); // [global, foo]
 
       const scope = scopeManager.scopes[1];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, a]
+      expect(variables).toHaveLength(2); // [arguments, a]
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[1]);
+      expect(reference.resolved).toBe(variables[1]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -307,15 +329,18 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(3); // [global, foo, bar]
 
       const scope = scopeManager.scopes[2];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(variables).toHaveLength(2); // [arguments, b]
       expect(scope.references).toHaveLength(2); // [b, a]
 
       const reference = scope.references[1];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scopeManager.scopes[1].variables[1]);
+      expect(reference.resolved).toBe(
+        getRealVariables(scopeManager.scopes[1].variables)[1],
+      );
       expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBeFalsy();
       expect(reference.isRead()).toBeTruthy();
@@ -329,15 +354,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -349,15 +375,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -369,15 +396,16 @@ describe('References:', () => {
       expect(scopeManager.scopes).toHaveLength(1);
 
       const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
 
-      expect(scope.variables).toHaveLength(1);
+      expect(variables).toHaveLength(1);
       expect(scope.references).toHaveLength(1);
 
       const reference = scope.references[0];
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBe(scope.variables[0]);
+      expect(reference.resolved).toBe(variables[0]);
       expect(reference.writeExpr).not.toBeUndefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
@@ -426,8 +454,9 @@ describe('References:', () => {
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
 
         const scope = scopeManager.scopes[scopeManager.scopes.length - 1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables.length).toBeGreaterThanOrEqual(1);
+        expect(variables.length).toBeGreaterThanOrEqual(1);
         expect(scope.references.length).toBeGreaterThanOrEqual(1);
 
         scope.references.forEach(reference => {
@@ -459,8 +488,9 @@ describe('References:', () => {
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
 
         const scope = scopeManager.scopes[scopeManager.scopes.length - 1];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables).toHaveLength(1);
+        expect(variables).toHaveLength(1);
         expect(scope.references.length).toBeGreaterThanOrEqual(1);
 
         scope.references.forEach(reference => {
@@ -494,11 +524,12 @@ describe('References:', () => {
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
 
         const scope = scopeManager.scopes[0];
+        const variables = getRealVariables(scope.variables);
 
-        expect(scope.variables.length).toBeGreaterThanOrEqual(1);
-        expect(scope.variables[0].name).toBe('a');
+        expect(variables.length).toBeGreaterThanOrEqual(1);
+        expect(variables[0].name).toBe('a');
 
-        const references = scope.variables[0].references;
+        const references = variables[0].references;
 
         expect(references.length).toBeGreaterThanOrEqual(1);
 

@@ -48,7 +48,6 @@ declare module 'eslint/lib/rules/camelcase' {
 declare module 'eslint/lib/rules/indent' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  type Listener = (node: TSESTree.Node) => void;
   type ElementList = number | 'first' | 'off';
   const rule: TSESLint.RuleModule<
     'wrongIndentation',
@@ -281,6 +280,21 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
     [],
     {
       Program(node: TSESTree.Program): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-loop-func' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'unsafeRefs',
+    [],
+    {
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
     }
   >;
   export = rule;
@@ -711,6 +725,39 @@ declare module 'eslint/lib/rules/no-loss-of-precision' {
     [],
     {
       Literal(node: TSESTree.Literal): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/comma-dangle' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  type StringOptions =
+    | 'always-multiline'
+    | 'always'
+    | 'never'
+    | 'only-multiline';
+  type Selectors =
+    | 'arrays'
+    | 'objects'
+    | 'imports'
+    | 'exports'
+    | 'functions'
+    | 'enums'
+    | 'generics'
+    | 'tuples';
+  type ObjectOptions = Partial<Record<Selectors, StringOptions | 'ignore'>>;
+
+  const rule: TSESLint.RuleModule<
+    'unexpected' | 'missing',
+    [StringOptions | ObjectOptions],
+    {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void;
+      TSTypeParameterDeclaration(
+        node: TSESTree.TSTypeParameterDeclaration,
+      ): void;
+      TSTupleType(node: TSESTree.TSTupleType): void;
     }
   >;
   export = rule;

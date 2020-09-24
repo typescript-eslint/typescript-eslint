@@ -80,6 +80,16 @@ export default util.createRule({
         return true;
       }
 
+      if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
+        const declarations = symbol.getDeclarations() ?? [];
+        for (const declaration of declarations) {
+          const sourceFile = declaration.getSourceFile();
+          if (program.isSourceFileDefaultLibrary(sourceFile)) {
+            return true;
+          }
+        }
+      }
+
       const signatures = checker.getSignaturesOfType(
         type,
         ts.SignatureKind.Call,

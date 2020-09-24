@@ -3,7 +3,8 @@
 exports[`class declaration generic 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ClassNameDefinition$1 {
           name: Identifier<"Foo">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
@@ -27,7 +28,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         TypeDefinition$3 {
           name: Identifier<"A">,
@@ -39,7 +40,7 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         TypeDefinition$4 {
           name: Identifier<"Unresolved">,
@@ -67,14 +68,16 @@ ScopeManager {
         },
       ],
       set: Map {
-        "Foo" => Variable$1,
-        "Unresolved" => Variable$4,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+        "Unresolved" => Variable$5,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
-        Variable$4,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
       ],
     },
     ClassScope$2 {
@@ -82,14 +85,14 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "Foo" => Variable$2,
-        "A" => Variable$3,
+        "Foo" => Variable$3,
+        "A" => Variable$4,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],

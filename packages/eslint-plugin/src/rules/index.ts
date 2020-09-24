@@ -6,6 +6,7 @@ import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
+import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentTypeAssertions from './consistent-type-assertions';
@@ -45,6 +46,7 @@ import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
 import noLossOfPrecision from './no-loss-of-precision';
+import noLoopFunc from './no-loop-func';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -113,8 +115,8 @@ export default {
   'ban-types': banTypes,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
+  'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
-  'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-imports': consistentTypeImports,
@@ -124,31 +126,34 @@ export default {
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
-  indent: indent,
   'init-declarations': initDeclarations,
   'keyword-spacing': keywordSpacing,
+  'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,
   'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
   'no-base-to-string': noBaseToString,
+  'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-dupe-class-members': noDupeClassMembers,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
   'no-explicit-any': noExplicitAny,
-  'no-implicit-any-catch': noImplicitAnyCatch,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
   'no-extra-semi': noExtraSemi,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
+  'no-implicit-any-catch': noImplicitAnyCatch,
   'no-implied-eval': noImpliedEval,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
+  'no-loop-func': noLoopFunc,
+  'no-loss-of-precision': noLossOfPrecision,
   'no-magic-numbers': noMagicNumbers,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
@@ -193,21 +198,20 @@ export default {
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
-  quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
-  semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
-  typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-  'lines-between-class-members': linesBetweenClassMembers,
-  'no-loss-of-precision': noLossOfPrecision,
+  indent: indent,
+  quotes: quotes,
+  semi: semi,
+  typedef: typedef,
 };

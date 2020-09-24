@@ -1,4 +1,8 @@
-import { expectToBeGlobalScope, parseAndAnalyze } from '../util';
+import {
+  expectToBeGlobalScope,
+  getRealVariables,
+  parseAndAnalyze,
+} from '../util';
 import { DefinitionType } from '../../src/definition';
 
 describe('implicit global reference', () => {
@@ -12,7 +16,9 @@ describe('implicit global reference', () => {
 
     expect(
       scopes.map(scope =>
-        scope.variables.map(variable => variable.defs.map(def => def.type)),
+        getRealVariables(scope.variables).map(variable =>
+          variable.defs.map(def => def.type),
+        ),
       ),
     ).toEqual([[[DefinitionType.Variable]]]);
 
@@ -32,7 +38,9 @@ describe('implicit global reference', () => {
 
     expect(
       scopes.map(scope =>
-        scope.variables.map(variable => variable.defs.map(def => def.type)),
+        getRealVariables(scope.variables).map(variable =>
+          variable.defs.map(def => def.type),
+        ),
       ),
     ).toEqual([[]]);
 
@@ -54,7 +62,9 @@ describe('implicit global reference', () => {
 
     expect(
       scopes.map(scope =>
-        scope.variables.map(variable => variable.defs.map(def => def.type)),
+        getRealVariables(scope.variables).map(variable =>
+          variable.defs.map(def => def.type),
+        ),
       ),
     ).toEqual([[[DefinitionType.FunctionName]], [[]]]);
 
@@ -74,7 +84,9 @@ describe('implicit global reference', () => {
     const scopes = scopeManager.scopes;
 
     expect(
-      scopes.map(scope => scope.variables.map(variable => variable.name)),
+      scopes.map(scope =>
+        getRealVariables(scope.variables).map(variable => variable.name),
+      ),
     ).toEqual([['outer'], ['arguments']]);
 
     expectToBeGlobalScope(scopes[0]);
@@ -96,7 +108,9 @@ describe('implicit global reference', () => {
     const scopes = scopeManager.scopes;
 
     expect(
-      scopes.map(scope => scope.variables.map(variable => variable.name)),
+      scopes.map(scope =>
+        getRealVariables(scope.variables).map(variable => variable.name),
+      ),
     ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
 
     expectToBeGlobalScope(scopes[0]);
@@ -115,7 +129,9 @@ describe('implicit global reference', () => {
     const scopes = scopeManager.scopes;
 
     expect(
-      scopes.map(scope => scope.variables.map(variable => variable.name)),
+      scopes.map(scope =>
+        getRealVariables(scope.variables).map(variable => variable.name),
+      ),
     ).toEqual([['outer'], ['arguments'], []]);
 
     expectToBeGlobalScope(scopes[0]);
@@ -137,7 +153,9 @@ describe('implicit global reference', () => {
     const scopes = scopeManager.scopes;
 
     expect(
-      scopes.map(scope => scope.variables.map(variable => variable.name)),
+      scopes.map(scope =>
+        getRealVariables(scope.variables).map(variable => variable.name),
+      ),
     ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments'], []]);
 
     expectToBeGlobalScope(scopes[0]);

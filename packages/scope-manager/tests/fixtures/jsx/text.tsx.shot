@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx text 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"Foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"Foo">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$2,
+          writeExpr: Literal$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+  ],
+}
+`;

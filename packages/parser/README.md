@@ -54,6 +54,9 @@ interface ParserOptions {
     globalReturn?: boolean;
   };
   ecmaVersion?: number;
+
+  jsxPragma?: string;
+  jsxFragmentName?: string | null;
   lib?: string[];
 
   project?: string | string[];
@@ -98,6 +101,27 @@ Accepts any valid ECMAScript version number:
 
 Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
 
+### `parserOptions.jsxPragma`
+
+Default `'React'`
+
+The identifier that's used for JSX Elements creation (after transpilation).
+If you're using a library other than React (like `preact`), then you should change this value.
+
+This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
+
+If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
+
+### `parserOptions.jsxFragmentName`
+
+Default `null`
+
+The identifier that's used for JSX fragment elements (after transpilation).
+If `null`, assumes transpilation will always use a member of the configured `jsxPragma`.
+This should not be a member expression - just the root identifier (i.e. use `"h"` instead of `"h.Fragment"`).
+
+If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
+
 ### `parserOptions.lib`
 
 Default `['es2018']`
@@ -105,7 +129,8 @@ Default `['es2018']`
 For valid options, see the [TypeScript compiler options](https://www.typescriptlang.org/tsconfig#lib).
 
 Specifies the TypeScript `lib`s that are available. This is used by the scope analyser to ensure there are global variables declared for the types exposed by TypeScript.
-If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler
+
+If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
 
 ### `parserOptions.project`
 
