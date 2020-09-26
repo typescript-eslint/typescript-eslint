@@ -104,6 +104,12 @@ type Foo = Generic<{
       code: 'function foo(): { [key: string]: any } {}',
       options: ['never'],
     },
+
+    // Namespace
+    {
+      code: 'type T = A.B;',
+      options: ['never'],
+    },
   ],
   invalid: [
     // Interface

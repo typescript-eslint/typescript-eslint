@@ -32,7 +32,10 @@ export default createRule({
     if (context.options[0] === 'never') {
       return {
         TSTypeReference(node): void {
-          const typeName = node.typeName as TSESTree.Identifier;
+          const typeName = node.typeName;
+          if (typeName.type !== AST_NODE_TYPES.Identifier) {
+            return;
+          }
           if (typeName.name !== 'Record') {
             return;
           }
