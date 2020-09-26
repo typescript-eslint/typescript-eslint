@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-use */
+/* eslint sort-keys: error */
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
@@ -8,7 +10,6 @@ import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
-import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
@@ -29,25 +30,26 @@ import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noBaseToString from './no-base-to-string';
+import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noDupeClassMembers from './no-dupe-class-members';
+import noDuplicateImports from './no-duplicate-imports';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
-import noImplicitAnyCatch from './no-implicit-any-catch';
-import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
+import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
-import preferLiteralEnumMember from './prefer-literal-enum-member';
+import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
-import noLossOfPrecision from './no-loss-of-precision';
 import noLoopFunc from './no-loop-func';
+import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -76,11 +78,13 @@ import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
+import noVoidExpression from './no-void-expression';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
+import preferLiteralEnumMember from './prefer-literal-enum-member';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
@@ -106,7 +110,6 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
-import noDuplicateImports from './no-duplicate-imports';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -129,6 +132,7 @@ export default {
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
+  indent: indent,
   'init-declarations': initDeclarations,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
@@ -140,6 +144,7 @@ export default {
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-dupe-class-members': noDupeClassMembers,
+  'no-duplicate-imports': noDuplicateImports,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -180,11 +185,12 @@ export default {
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
-  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-vars': noUnusedVars,
+  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
+  'no-void-expression': noVoidExpression,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
@@ -194,28 +200,26 @@ export default {
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
-  'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-readonly': preferReadonly,
+  'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
+  quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
+  semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
+  typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-  'no-duplicate-imports': noDuplicateImports,
-  indent: indent,
-  quotes: quotes,
-  semi: semi,
-  typedef: typedef,
 };
