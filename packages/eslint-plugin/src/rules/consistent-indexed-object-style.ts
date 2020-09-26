@@ -48,10 +48,7 @@ export default createRule({
             fix(fixer) {
               const key = sourceCode.getText(params[0]);
               const type = sourceCode.getText(params[1]);
-              return fixer.replaceTextRange(
-                node.range,
-                `{ [key: ${key}]: ${type} }`,
-              );
+              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
           });
         },
@@ -84,7 +81,7 @@ export default createRule({
           node,
           messageId: 'preferRecord',
           fix(fixer) {
-            return fixer.replaceTextRange(node.range, toRecord(member));
+            return fixer.replaceText(node, toRecord(member));
           },
         });
       },
@@ -106,8 +103,8 @@ export default createRule({
           messageId: 'preferRecord',
           fix(fixer) {
             const { name } = node.id;
-            return fixer.replaceTextRange(
-              node.range,
+            return fixer.replaceText(
+              node,
               `type ${name} = ${toRecord(index)};`,
             );
           },
