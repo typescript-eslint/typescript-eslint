@@ -2,6 +2,7 @@ import rule, { MessageId, Options } from '../../src/rules/no-void-expression';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,
+  noFormat,
   RuleTester,
 } from '../RuleTester';
 
@@ -22,6 +23,18 @@ ruleTester.run('no-void-expression', rule, {
         foo && console.log(foo);
         foo || console.log(foo);
         (foo && console.log(true)) || console.log(false);
+        foo ? console.log(true) : console.log(false);
+      `,
+    }),
+
+    ...batchedSingleLineTests({
+      options: [{ ignoreArrowShorthand: true }],
+      code: `
+        () => console.log('foo');
+        foo => foo && console.log(foo);
+        foo => foo || console.log(foo);
+        foo => (foo && console.log(true)) || console.log(false);
+        foo => (foo ? console.log(true) : console.log(false));
       `,
     }),
   ],
@@ -30,7 +43,6 @@ ruleTester.run('no-void-expression', rule, {
     ...batchedSingleLineTests<MessageId, Options>({
       code: `
         const x = console.log('foo');
-        (() => console.log('foo'))();
         return console.log('foo');
         console.error(console.log('foo'));
         [console.log('foo')];
@@ -38,14 +50,34 @@ ruleTester.run('no-void-expression', rule, {
         void console.log('foo');
       `,
       errors: [
-        { messageId: 'invalidVoidExpr', line: 2, column: 11 },
-        { messageId: 'invalidVoidExpr', line: 3, column: 16 },
-        { messageId: 'invalidVoidExpr', line: 4, column: 16 },
-        { messageId: 'invalidVoidExpr', line: 5, column: 23 },
-        { messageId: 'invalidVoidExpr', line: 6, column: 10 },
-        { messageId: 'invalidVoidExpr', line: 7, column: 15 },
-        { messageId: 'invalidVoidExpr', line: 8, column: 14 },
+        { line: 2, column: 11, messageId: 'invalidVoidExpr' },
+        { line: 3, column: 16, messageId: 'invalidVoidExpr' },
+        { line: 4, column: 23, messageId: 'invalidVoidExpr' },
+        { line: 5, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 6, column: 15, messageId: 'invalidVoidExpr' },
+        { line: 7, column: 14, messageId: 'invalidVoidExpr' },
       ],
     }),
+
+    {
+      code: "() => console.log('foo');",
+      errors: [{ line: 1, column: 7, messageId: 'invalidVoidArrowExpr' }],
+      output: noFormat`() => { console.log('foo'); };`,
+    },
+    {
+      code: 'foo => foo && console.log(foo);',
+      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: 'foo => foo || console.log(foo);',
+      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: 'foo => (foo ? console.log(true) : console.log(false));',
+      errors: [
+        { line: 1, column: 15, messageId: 'invalidVoidExpr' },
+        { line: 1, column: 35, messageId: 'invalidVoidExpr' },
+      ],
+    },
   ],
 });

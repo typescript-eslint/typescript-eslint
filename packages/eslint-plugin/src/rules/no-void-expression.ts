@@ -8,11 +8,11 @@ import * as util from '../util';
 
 export type Options = [
   {
-    // ignoreArrowShorthand: boolean;
+    ignoreArrowShorthand: boolean;
   },
 ];
 
-export type MessageId = 'invalidVoidExpr';
+export type MessageId = 'invalidVoidExpr' | 'invalidVoidArrowExpr';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-void-expression',
@@ -25,7 +25,8 @@ export default util.createRule<Options, MessageId>({
       requiresTypeChecking: true,
     },
     messages: {
-      invalidVoidExpr: '',
+      invalidVoidExpr: 'TODO',
+      invalidVoidArrowExpr: 'TODO',
     },
     schema: [
       {
@@ -41,10 +42,10 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      // ignoreArrowShorthand: false,
+      ignoreArrowShorthand: false,
     },
   ],
-  create(context) {
+  create(context, [options]) {
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
         node:
@@ -52,12 +53,26 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
+        const sourceCode = context.getSourceCode();
         const parserServices = util.getParserServices(context);
         const checker = parserServices.program.getTypeChecker();
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+
         if (!isParentAllowed(node)) {
           if (tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+            if (node.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+              // this would be reported by this rule btw. such irony
+              return context.report({
+                node,
+                messageId: 'invalidVoidArrowExpr',
+                fix: fixer => {
+                  const nodeText = sourceCode.getText(node);
+                  return fixer.replaceText(node, `{ ${nodeText}; }`);
+                },
+              });
+            }
+
             context.report({
               node,
               messageId: 'invalidVoidExpr',
@@ -81,6 +96,9 @@ export default util.createRule<Options, MessageId>({
         case AST_NODE_TYPES.ConditionalExpression:
           // e.g. `cond ? console.log(true) : console.log(false);`
           return isParentAllowed(node.parent);
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+          // e.g. `() => console.log("foo")`
+          return options.ignoreArrowShorthand;
         default:
           return false;
       }
