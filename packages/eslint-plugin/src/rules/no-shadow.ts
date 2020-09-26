@@ -12,6 +12,7 @@ type Options = [
     builtinGlobals?: boolean;
     hoist?: 'all' | 'functions' | 'never';
     ignoreTypeValueShadow?: boolean;
+    ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
 ];
 
@@ -45,6 +46,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreTypeValueShadow: {
             type: 'boolean',
           },
+          ignoreFunctionTypeParameterNameValueShadow: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -59,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
       builtinGlobals: false,
       hoist: 'functions',
       ignoreTypeValueShadow: true,
+      ignoreFunctionTypeParameterNameValueShadow: true,
     },
   ],
   create(context, [options]) {
@@ -77,15 +82,37 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        !('isValueVariable' in shadowed) ||
-        !('isValueVariable' in variable)
-      ) {
-        // one of them is an eslint global variable
+      if (!('isValueVariable' in variable)) {
+        // this shouldn't happen...
         return false;
       }
 
-      return variable.isValueVariable !== shadowed.isValueVariable;
+      const isShadowedValue =
+        'isValueVariable' in shadowed ? shadowed.isValueVariable : true;
+      return variable.isValueVariable !== isShadowedValue;
+    }
+
+    function isFunctionTypeParameterNameValueShadow(
+      variable: TSESLint.Scope.Variable,
+      shadowed: TSESLint.Scope.Variable,
+    ): boolean {
+      if (options.ignoreFunctionTypeParameterNameValueShadow !== true) {
+        return false;
+      }
+
+      if (!('isValueVariable' in variable)) {
+        // this shouldn't happen...
+        return false;
+      }
+
+      const isShadowedValue =
+        'isValueVariable' in shadowed ? shadowed.isValueVariable : true;
+      if (!isShadowedValue) {
+        return false;
+      }
+
+      const id = variable.identifiers[0];
+      return util.isFunctionType(id.parent);
     }
 
     /**
@@ -117,12 +144,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if a variable of the class name in the class scope of ClassDeclaration.
+     * Checks if a variable of the class name in the class scope of TSEnumDeclaration.
      *
-     * ClassDeclaration creates two variables of its name into its outer scope and its class scope.
+     * TSEnumDeclaration creates two variables of its name into its outer scope and its class scope.
      * So we should ignore the variable in the class scope.
      * @param variable The variable to check.
-     * @returns Whether or not the variable of the class name in the class scope of ClassDeclaration.
+     * @returns Whether or not the variable of the class name in the class scope of TSEnumDeclaration.
      */
     function isDuplicatedEnumNameVariable(
       variable: TSESLint.Scope.Variable,
@@ -270,6 +297,11 @@ export default util.createRule<Options, MessageIds>({
 
         // ignore type value variable shadowing if configured
         if (isTypeValueShadow(variable, shadowed)) {
+          continue;
+        }
+
+        // ignore function type parameter name shadowing if configured
+        if (isFunctionTypeParameterNameValueShadow(variable, shadowed)) {
           continue;
         }
 

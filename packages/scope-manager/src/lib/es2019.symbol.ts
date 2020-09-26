@@ -10,6 +10,5 @@ export const es2019_symbol = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Symbol',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

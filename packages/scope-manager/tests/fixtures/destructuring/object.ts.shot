@@ -3,7 +3,8 @@
 exports[`destructuring object 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         VariableDefinition$1 {
           name: Identifier<"shorthand">,
@@ -19,14 +20,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$1,
+          resolved: Variable$2,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         VariableDefinition$2 {
           name: Identifier<"value">,
@@ -42,14 +43,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$2,
+          resolved: Variable$3,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [
         VariableDefinition$3 {
           name: Identifier<"world">,
@@ -65,14 +66,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$3,
+          resolved: Variable$4,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         VariableDefinition$4 {
           name: Identifier<"a">,
@@ -88,14 +89,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$4,
+          resolved: Variable$5,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$5 {
+    Variable$6 {
       defs: Array [
         VariableDefinition$5 {
           name: Identifier<"b">,
@@ -111,14 +112,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$5,
+          resolved: Variable$6,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$6 {
+    Variable$7 {
       defs: Array [
         VariableDefinition$6 {
           name: Identifier<"c">,
@@ -134,14 +135,14 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$6,
+          resolved: Variable$7,
           writeExpr: Identifier<"object">,
         },
       ],
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$7 {
+    Variable$8 {
       defs: Array [
         VariableDefinition$7 {
           name: Identifier<"d">,
@@ -157,7 +158,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$7,
+          resolved: Variable$8,
           writeExpr: Identifier<"object">,
         },
       ],
@@ -187,24 +188,26 @@ ScopeManager {
         },
       ],
       set: Map {
-        "shorthand" => Variable$1,
-        "value" => Variable$2,
-        "world" => Variable$3,
-        "a" => Variable$4,
-        "b" => Variable$5,
-        "c" => Variable$6,
-        "d" => Variable$7,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "shorthand" => Variable$2,
+        "value" => Variable$3,
+        "world" => Variable$4,
+        "a" => Variable$5,
+        "b" => Variable$6,
+        "c" => Variable$7,
+        "d" => Variable$8,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
         Variable$4,
         Variable$5,
         Variable$6,
         Variable$7,
+        Variable$8,
       ],
     },
   ],

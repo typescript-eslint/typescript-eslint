@@ -3,7 +3,8 @@
 exports[`class declaration abstract 1`] = `
 ScopeManager {
   variables: Array [
-    Variable$1 {
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
       defs: Array [
         ClassNameDefinition$1 {
           name: Identifier<"A">,
@@ -15,7 +16,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$2 {
+    Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
           name: Identifier<"A">,
@@ -27,14 +28,14 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$3 {
+    Variable$4 {
       defs: Array [],
       name: "arguments",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$4 {
+    Variable$5 {
       defs: Array [
         ParameterDefinition$3 {
           name: Identifier<"a">,
@@ -46,7 +47,7 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$5 {
+    Variable$6 {
       defs: Array [
         ParameterDefinition$4 {
           name: Identifier<"b">,
@@ -65,12 +66,14 @@ ScopeManager {
       isStrict: false,
       references: Array [],
       set: Map {
-        "A" => Variable$1,
+        "const" => ImplicitGlobalConstTypeVariable,
+        "A" => Variable$2,
       },
       type: "global",
       upper: null,
       variables: Array [
-        Variable$1,
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
       ],
     },
     ClassScope$2 {
@@ -78,12 +81,12 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "A" => Variable$2,
+        "A" => Variable$3,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: Array [
-        Variable$2,
+        Variable$3,
       ],
     },
     FunctionScope$3 {
@@ -91,16 +94,16 @@ ScopeManager {
       isStrict: true,
       references: Array [],
       set: Map {
-        "arguments" => Variable$3,
-        "a" => Variable$4,
-        "b" => Variable$5,
+        "arguments" => Variable$4,
+        "a" => Variable$5,
+        "b" => Variable$6,
       },
       type: "function",
       upper: ClassScope$2,
       variables: Array [
-        Variable$3,
         Variable$4,
         Variable$5,
+        Variable$6,
       ],
     },
   ],

@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx factory jsxPragma 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        ImportBindingDefinition$1 {
+          name: Identifier<"React">,
+          node: ImportDefaultSpecifier$1,
+        },
+      ],
+      name: "React",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ImportBindingDefinition$2 {
+          name: Identifier<"h">,
+          node: ImportSpecifier$2,
+        },
+      ],
+      name: "h",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"h">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+      ],
+    },
+    ModuleScope$2 {
+      block: Program$3,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2 {
+          identifier: JSXIdentifier$4,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "React" => Variable$2,
+        "h" => Variable$3,
+      },
+      type: "module",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$2,
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

@@ -35,6 +35,10 @@ function createSerializer<TConstructor extends ConstructorSignature>(
       // If `type` is a base class, we should print out the name of the subclass
       const constructorName = Object.getPrototypeOf(thing).constructor.name;
 
+      if (constructorName === 'ImplicitLibVariable' && thing.name === 'const') {
+        return 'ImplicitGlobalConstTypeVariable';
+      }
+
       const name = `${constructorName}${id}`;
 
       if (thing.$id) {

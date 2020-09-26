@@ -10,20 +10,17 @@ export const esnext_array = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'FlatArray',
-    writeable: false,
   },
   ReadonlyArray: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ReadonlyArray',
-    writeable: false,
   },
   Array: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Array',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

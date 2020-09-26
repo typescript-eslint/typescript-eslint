@@ -28,6 +28,8 @@ interface ParserOptions {
   ecmaVersion?: EcmaVersion;
 
   // scope-manager specific
+  jsxPragma?: string;
+  jsxFragmentName?: string | null;
   lib?: Lib[];
 
   // typescript-estree specific

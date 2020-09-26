@@ -10,6 +10,5 @@ export const esnext_symbol = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Symbol',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;

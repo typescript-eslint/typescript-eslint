@@ -28,6 +28,12 @@ const defaultOptions: Options = 'in-try-catch';
 ### `in-try-catch`
 
 Requires that a returned promise must be `await`ed in `try-catch-finally` blocks, and disallows it elsewhere.
+Specifically:
+
+- if you `return` a promise within a `try`, then it must be `await`ed.
+- if you `return` a promise within a `catch`, and there **_is no_** `finally`, then it **_must not_** be `await`ed.
+- if you `return` a promise within a `catch`, and there **_is a_** `finally`, then it **_must_** be `await`ed.
+- if you `return` a promise within a `finally`, then it **_must not_** be `await`ed.
 
 Examples of **incorrect** code with `in-try-catch`:
 
@@ -39,10 +45,38 @@ async function invalidInTryCatch1() {
 }
 
 async function invalidInTryCatch2() {
-  return await Promise.resolve('try');
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return await Promise.resolve('catch');
+  }
 }
 
 async function invalidInTryCatch3() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return Promise.resolve('catch');
+  } finally {
+    console.log('cleanup');
+  }
+}
+
+async function invalidInTryCatch4() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    throw new Error('error2');
+  } finally {
+    return await Promise.resolve('finally');
+  }
+}
+
+async function invalidInTryCatch5() {
+  return await Promise.resolve('try');
+}
+
+async function invalidInTryCatch6() {
   return await 'value';
 }
 ```
@@ -57,10 +91,38 @@ async function validInTryCatch1() {
 }
 
 async function validInTryCatch2() {
-  return Promise.resolve('try');
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return Promise.resolve('catch');
+  }
 }
 
 async function validInTryCatch3() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return await Promise.resolve('catch');
+  } finally {
+    console.log('cleanup');
+  }
+}
+
+async function validInTryCatch4() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    throw new Error('error2');
+  } finally {
+    return Promise.resolve('finally');
+  }
+}
+
+async function validInTryCatch5() {
+  return Promise.resolve('try');
+}
+
+async function validInTryCatch6() {
   return 'value';
 }
 ```

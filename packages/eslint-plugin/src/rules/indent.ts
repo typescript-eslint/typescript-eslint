@@ -97,7 +97,10 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    messages: baseRule.meta.messages ?? {
+      wrongIndentation:
+        'Expected indentation of {{expected}} but found {{actual}}.',
+    },
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent
@@ -407,7 +410,7 @@ export default util.createRule<Options, MessageIds>({
         // transform it to a BlockStatement
         return rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.BlockStatement,
-          body: node.body,
+          body: node.body as any,
 
           // location data
           parent: node.parent,

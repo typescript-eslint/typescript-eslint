@@ -10,20 +10,17 @@ export const esnext_promise = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'AggregateError',
-    writeable: false,
   },
   AggregateErrorConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AggregateErrorConstructor',
-    writeable: false,
   },
   PromiseConstructor: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'PromiseConstructor',
-    writeable: false,
   },
 } as Record<string, ImplicitLibVariableOptions>;
