@@ -18,12 +18,11 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-void-expression', rule, {
   valid: [
     ...batchedSingleLineTests<Options>({
-      options: [{ ignoreVoidOperator: false }],
       code: `
+        () => Math.random();
         console.log('foo');
         foo && console.log(foo);
         foo || console.log(foo);
-        (foo && console.log(true)) || console.log(false);
         foo ? console.log(true) : console.log(false);
       `,
     }),
@@ -34,12 +33,12 @@ ruleTester.run('no-void-expression', rule, {
         () => console.log('foo');
         foo => foo && console.log(foo);
         foo => foo || console.log(foo);
-        foo => (foo && console.log(true)) || console.log(false);
         foo => (foo ? console.log(true) : console.log(false));
       `,
     }),
 
     ...batchedSingleLineTests<Options>({
+      options: [{ ignoreVoidOperator: true }],
       code: `
         void console.log('foo');
         void foo && console.log(foo);
@@ -50,75 +49,164 @@ ruleTester.run('no-void-expression', rule, {
         foo || void console.log(foo);
         (foo && void console.log(true)) || void console.log(false);
         foo ? void console.log(true) : void console.log(false);
+        return void console.log('foo');
       `,
     }),
   ],
 
   invalid: [
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ ignoreVoidOperator: false }],
       code: `
         const x = console.log('foo');
-        return console.log('foo');
         console.error(console.log('foo'));
         [console.log('foo')];
         ({ x: console.log('foo') });
         void console.log('foo');
+        console.log('foo') ? true : false;
+        (console.log('foo') && true) || false;
+        (cond && console.log('ok')) || console.log('error');
+        !console.log('foo');
       `,
       errors: [
         { line: 2, column: 11, messageId: 'invalidVoidExpr' },
-        { line: 3, column: 16, messageId: 'invalidVoidExpr' },
-        { line: 4, column: 23, messageId: 'invalidVoidExpr' },
-        { line: 5, column: 10, messageId: 'invalidVoidExpr' },
-        { line: 6, column: 15, messageId: 'invalidVoidExpr' },
-        { line: 7, column: 14, messageId: 'invalidVoidExpr' },
+        { line: 3, column: 23, messageId: 'invalidVoidExpr' },
+        { line: 4, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 5, column: 15, messageId: 'invalidVoidExpr' },
+        { line: 6, column: 14, messageId: 'invalidVoidExpr' },
+        { line: 7, column: 9, messageId: 'invalidVoidExpr' },
+        { line: 8, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 9, column: 18, messageId: 'invalidVoidExpr' },
+        { line: 10, column: 10, messageId: 'invalidVoidExpr' },
       ],
     }),
 
     {
-      options: [{ ignoreVoidOperator: false }],
       code: "() => console.log('foo');",
-      errors: [{ line: 1, column: 7, messageId: 'invalidVoidArrowExpr' }],
+      errors: [{ line: 1, column: 7, messageId: 'invalidVoidExprArrow' }],
       output: noFormat`() => { console.log('foo'); };`,
     },
     {
-      options: [{ ignoreVoidOperator: false }],
       code: 'foo => foo && console.log(foo);',
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExpr' }],
+      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
+      output: noFormat`foo => { foo && console.log(foo); };`,
     },
     {
-      options: [{ ignoreVoidOperator: false }],
       code: 'foo => foo || console.log(foo);',
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExpr' }],
+      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
+      output: noFormat`foo => { foo || console.log(foo); };`,
     },
     {
-      options: [{ ignoreVoidOperator: false }],
       code: 'foo => (foo ? console.log(true) : console.log(false));',
       errors: [
-        { line: 1, column: 15, messageId: 'invalidVoidExpr' },
-        { line: 1, column: 35, messageId: 'invalidVoidExpr' },
+        { line: 1, column: 15, messageId: 'invalidVoidExprArrow' },
+        { line: 1, column: 35, messageId: 'invalidVoidExprArrow' },
       ],
+      output: noFormat`foo => { foo ? console.log(true) : console.log(false); };`,
+    },
+    {
+      code: `
+        function f() {
+          return console.log('foo');
+          console.log('bar');
+        }
+      `,
+      errors: [{ line: 3, column: 18, messageId: 'invalidVoidExprReturn' }],
+      output: noFormat`
+        function f() {
+          console.log('foo'); return;
+          console.log('bar');
+        }
+      `,
+    },
+    {
+      code: `
+        function f() {
+          console.log('foo');
+          return console.log('bar');
+        }
+      `,
+      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturnLast' }],
+      output: `
+        function f() {
+          console.log('foo');
+          console.log('bar');
+        }
+      `,
+    },
+    {
+      code: `
+        const f = () => {
+          if (cond) {
+            return console.error('foo');
+          }
+          console.log('bar');
+        };
+      `,
+      errors: [{ line: 4, column: 20, messageId: 'invalidVoidExprReturn' }],
+      output: noFormat`
+        const f = () => {
+          if (cond) {
+            console.error('foo'); return;
+          }
+          console.log('bar');
+        };
+      `,
+    },
+    {
+      code: `
+        const f = function () {
+          if (cond) return console.error('foo');
+          console.log('bar');
+        };
+      `,
+      errors: [{ line: 3, column: 28, messageId: 'invalidVoidExprReturn' }],
+      output: noFormat`
+        const f = function () {
+          if (cond) { console.error('foo'); return; }
+          console.log('bar');
+        };
+      `,
     },
 
     {
+      options: [{ ignoreVoidOperator: true }],
       code: "return console.log('foo');",
-      errors: [{ line: 1, column: 8, messageId: 'invalidVoidExpr' }],
+      errors: [
+        { line: 1, column: 8, messageId: 'invalidVoidExprReturnWrapVoid' },
+      ],
       output: "return void console.log('foo');",
     },
     {
+      options: [{ ignoreVoidOperator: true }],
       code: "console.error(console.log('foo'));",
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExpr' }],
+      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprWrapVoid' }],
       output: "console.error(void console.log('foo'));",
     },
     {
-      code: "const x = console.log('foo');",
-      errors: [{ line: 1, column: 11, messageId: 'invalidVoidExpr' }],
-      output: "const x = void console.log('foo');",
+      options: [{ ignoreVoidOperator: true }],
+      code: "console.log('foo') ? true : false;",
+      errors: [{ line: 1, column: 1, messageId: 'invalidVoidExprWrapVoid' }],
+      output: "void console.log('foo') ? true : false;",
     },
     {
-      code: "() => console.log('foo');",
-      errors: [{ line: 1, column: 7, messageId: 'invalidVoidExpr' }],
-      output: "() => void console.log('foo');",
+      options: [{ ignoreVoidOperator: true }],
+      code: "const x = foo ?? console.log('foo');",
+      errors: [{ line: 1, column: 18, messageId: 'invalidVoidExprWrapVoid' }],
+      output: "const x = foo ?? void console.log('foo');",
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: 'foo => foo || console.log(foo);',
+      errors: [
+        { line: 1, column: 15, messageId: 'invalidVoidExprArrowWrapVoid' },
+      ],
+      output: 'foo => foo || void console.log(foo);',
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: "!!console.log('foo');",
+      errors: [{ line: 1, column: 3, messageId: 'invalidVoidExprWrapVoid' }],
+      output: "!!void console.log('foo');",
     },
   ],
 });
