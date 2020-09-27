@@ -224,8 +224,8 @@ export default util.createRule<Options, MessageId>({
     /**
      * Inspects the void expression's ancestors and finds closest invalid one.
      * By default anything other than an ExpressionStatement is invalid.
-     * Parent expressions which can be used for their side effects are ignored
-     * and their parents are checked instead.
+     * Parent expressions which can be used for their short-circuiting behavior
+     * are ignored and their parents are checked instead.
      * @param node The void expression node to check.
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
