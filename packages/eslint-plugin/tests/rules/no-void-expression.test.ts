@@ -40,15 +40,15 @@ ruleTester.run('no-void-expression', rule, {
     ...batchedSingleLineTests<Options>({
       options: [{ ignoreVoidOperator: true }],
       code: `
-        void console.log('foo');
-        void foo && console.log(foo);
-        void foo || console.log(foo);
-        void (foo && console.log(true)) || console.log(false);
-        void (foo ? console.log(true) : console.log(false));
-        foo && void console.log(foo);
-        foo || void console.log(foo);
-        (foo && void console.log(true)) || void console.log(false);
-        foo ? void console.log(true) : void console.log(false);
+        !void console.log('foo');
+        +void (foo && console.log(foo));
+        -void (foo || console.log(foo));
+        () => void ((foo && void console.log(true)) || console.log(false));
+        const x = void (foo ? console.log(true) : console.log(false));
+        !(foo && void console.log(foo));
+        !!(foo || void console.log(foo));
+        const x = (foo && void console.log(true)) || void console.log(false);
+        () => (foo ? void console.log(true) : void console.log(false));
         return void console.log('foo');
       `,
     }),
