@@ -8,7 +8,7 @@ The `eslint-recommended` ruleset is meant to be used after extending `eslint:rec
 
 This config is automatically included if you use either the `recommended` or `recommended-requiring-type-checking` configs.
 
-```cjson
+```jsonc
 {
   "extends": [
     "eslint:recommended",
@@ -40,7 +40,7 @@ We will not add new rules to the `recommended` set unless we release a major pac
 
 If you disagree with a rule (or it disagrees with your codebase), consider using your local config to change the rule config so it works for your project.
 
-```cjson
+```jsonc
 {
   "extends": ["plugin:@typescript-eslint/recommended"],
   "rules": {

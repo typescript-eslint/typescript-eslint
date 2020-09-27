@@ -7,7 +7,7 @@ It adds support for TypeScript's `this` parameters.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-invalid-this": "off",
