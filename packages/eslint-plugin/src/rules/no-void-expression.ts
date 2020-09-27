@@ -127,7 +127,6 @@ export default util.createRule<Options, MessageId>({
             fix(fixer) {
               const arrowBody = arrowFunction.body;
               const arrowBodyText = sourceCode.getText(arrowBody);
-              isParenthesized;
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, sourceCode)) {
                 const [bodyOpeningParen, bodyClosingParen] = [
