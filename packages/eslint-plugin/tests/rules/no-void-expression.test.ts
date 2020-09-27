@@ -179,20 +179,53 @@ ruleTester.run('no-void-expression', rule, {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "console.error(console.log('foo'));",
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprWrapVoid' }],
-      output: "console.error(void console.log('foo'));",
+      errors: [
+        {
+          line: 1,
+          column: 15,
+          messageId: 'invalidVoidExprWrapVoid',
+          suggestions: [
+            {
+              messageId: 'voidExprWrapVoid',
+              output: "console.error(void console.log('foo'));",
+            },
+          ],
+        },
+      ],
     },
     {
       options: [{ ignoreVoidOperator: true }],
       code: "console.log('foo') ? true : false;",
-      errors: [{ line: 1, column: 1, messageId: 'invalidVoidExprWrapVoid' }],
-      output: "void console.log('foo') ? true : false;",
+      errors: [
+        {
+          line: 1,
+          column: 1,
+          messageId: 'invalidVoidExprWrapVoid',
+          suggestions: [
+            {
+              messageId: 'voidExprWrapVoid',
+              output: "void console.log('foo') ? true : false;",
+            },
+          ],
+        },
+      ],
     },
     {
       options: [{ ignoreVoidOperator: true }],
       code: "const x = foo ?? console.log('foo');",
-      errors: [{ line: 1, column: 18, messageId: 'invalidVoidExprWrapVoid' }],
-      output: "const x = foo ?? void console.log('foo');",
+      errors: [
+        {
+          line: 1,
+          column: 18,
+          messageId: 'invalidVoidExprWrapVoid',
+          suggestions: [
+            {
+              messageId: 'voidExprWrapVoid',
+              output: "const x = foo ?? void console.log('foo');",
+            },
+          ],
+        },
+      ],
     },
     {
       options: [{ ignoreVoidOperator: true }],
@@ -205,8 +238,19 @@ ruleTester.run('no-void-expression', rule, {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "!!console.log('foo');",
-      errors: [{ line: 1, column: 3, messageId: 'invalidVoidExprWrapVoid' }],
-      output: "!!void console.log('foo');",
+      errors: [
+        {
+          line: 1,
+          column: 3,
+          messageId: 'invalidVoidExprWrapVoid',
+          suggestions: [
+            {
+              messageId: 'voidExprWrapVoid',
+              output: "!!void console.log('foo');",
+            },
+          ],
+        },
+      ],
     },
   ],
 });

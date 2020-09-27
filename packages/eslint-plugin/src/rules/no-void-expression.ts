@@ -26,7 +26,8 @@ export type MessageId =
   | 'invalidVoidExprArrowWrapVoid'
   | 'invalidVoidExprReturn'
   | 'invalidVoidExprReturnLast'
-  | 'invalidVoidExprReturnWrapVoid';
+  | 'invalidVoidExprReturnWrapVoid'
+  | 'voidExprWrapVoid';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-void-expression',
@@ -60,6 +61,7 @@ export default util.createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator',
     },
     schema: [
       {
@@ -210,7 +212,7 @@ export default util.createRule<Options, MessageId>({
           return context.report({
             node,
             messageId: 'invalidVoidExprWrapVoid',
-            fix: wrapVoidFix,
+            suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
         }
         context.report({
