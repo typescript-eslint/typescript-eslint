@@ -188,7 +188,6 @@ export default util.createRule<Options, MessageId>({
           }
 
           // move before the `return` keyword
-          // this would be reported by this rule btw. such irony
           return context.report({
             node,
             messageId: 'invalidVoidExprReturn',
@@ -208,6 +207,7 @@ export default util.createRule<Options, MessageId>({
 
         // handle generic case
         if (options.ignoreVoidOperator) {
+          // this would be reported by this rule btw. such irony
           return context.report({
             node,
             messageId: 'invalidVoidExprWrapVoid',
