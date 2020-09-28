@@ -102,7 +102,7 @@ type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 #### `allowAsThisParameter`
 
 This option allows specifying a `this` parameter of a function to be `void` when set to `true`.
-TypeScript [recommends using this pattern](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks) to explicitly label function types that do not use a this argument.
+This pattern can be useful to explicitly label function types that do not use a `this` argument. [See the TypeScript docs for more information](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks).
 
 This option is `false` by default.
 
