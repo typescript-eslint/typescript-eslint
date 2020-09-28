@@ -9,6 +9,7 @@ import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
+import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeImports from './consistent-type-imports';
@@ -117,6 +118,7 @@ export default {
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
+  'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-imports': consistentTypeImports,
