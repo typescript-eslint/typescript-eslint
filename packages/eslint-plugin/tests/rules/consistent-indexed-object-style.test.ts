@@ -62,6 +62,14 @@ type Foo = Generic<{
     'function foo(arg: { [key: string]: any; bar: string }) {}',
     'function foo(): { [key: string]: any; bar: string } {}',
 
+    // Invalid syntax allowed by the parser
+    'type Foo = { [key: string] };',
+    `
+interface Foo {
+  [key: string];
+}
+    `,
+
     // Never
     // Unhandled type
     {

@@ -58,60 +58,57 @@ export default createRule({
       };
     }
 
-    /**
-     * Convert an index signature node to record code as string.
-     */
-    function toRecord(node: TSESTree.TSIndexSignature): string {
-      const parameter = node.parameters[0] as TSESTree.Identifier;
-      const key = sourceCode.getText(parameter.typeAnnotation!.typeAnnotation);
-      const value = sourceCode.getText(node.typeAnnotation!.typeAnnotation);
-      return `Record<${key}, ${value}>`;
+    function checkMembers(
+      members: TSESTree.TypeElement[],
+      node: TSESTree.Node,
+      prefix: string,
+      postfix: string,
+    ): void {
+      if (members.length !== 1) {
+        return;
+      }
+      const [member] = members;
+
+      if (member.type !== AST_NODE_TYPES.TSIndexSignature) {
+        return;
+      }
+
+      const [parameter] = member.parameters;
+
+      if (parameter.type !== AST_NODE_TYPES.Identifier) {
+        return;
+      }
+      const keyType = parameter.typeAnnotation;
+      if (!keyType) {
+        return;
+      }
+
+      const valueType = member.typeAnnotation;
+      if (!valueType) {
+        return;
+      }
+
+      context.report({
+        node,
+        messageId: 'preferRecord',
+        fix(fixer) {
+          const key = sourceCode.getText(keyType.typeAnnotation);
+          const value = sourceCode.getText(valueType.typeAnnotation);
+          return fixer.replaceText(
+            node,
+            `${prefix}Record<${key}, ${value}>${postfix}`,
+          );
+        },
+      });
     }
 
     return {
       TSTypeLiteral(node): void {
-        if (node.members.length !== 1) {
-          return;
-        }
-
-        const [member] = node.members;
-
-        if (member.type !== AST_NODE_TYPES.TSIndexSignature) {
-          return;
-        }
-
-        context.report({
-          node,
-          messageId: 'preferRecord',
-          fix(fixer) {
-            return fixer.replaceText(node, toRecord(member));
-          },
-        });
+        checkMembers(node.members, node, '', '');
       },
 
       TSInterfaceDeclaration(node): void {
-        const { body } = node.body;
-
-        if (body.length !== 1) {
-          return;
-        }
-
-        const [index] = body;
-        if (index.type !== AST_NODE_TYPES.TSIndexSignature) {
-          return;
-        }
-
-        context.report({
-          node,
-          messageId: 'preferRecord',
-          fix(fixer) {
-            const { name } = node.id;
-            return fixer.replaceText(
-              node,
-              `type ${name} = ${toRecord(index)};`,
-            );
-          },
-        });
+        checkMembers(node.body.body, node, `type ${node.id.name} = `, ';');
       },
     };
   },
