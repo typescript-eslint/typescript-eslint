@@ -16,13 +16,13 @@ type Foo = Record<string, unknown>;
 
 ## Options
 
-- `"record"`: Set to `"always"` to only allow the `Record` type. Set to `"never"` to only allow index signatures. (Defaults to `"always"`)
+- `"record"`: Set to `"record"` to only allow the `Record` type. Set to `"index-signature"` to only allow index signatures. (Defaults to `"record"`)
 
 For example:
 
 ```CJSON
 {
-    "@typescript-eslint/consistent-type-definitions": ["error", "never"]
+    "@typescript-eslint/consistent-type-definitions": ["error", "index-signature"]
 }
 ```
 
@@ -30,7 +30,7 @@ For example:
 
 This rule enforces a consistent way to define records.
 
-Examples of **incorrect** code with `always` option.
+Examples of **incorrect** code with `record` option.
 
 ```ts
 interface Foo {
@@ -42,19 +42,19 @@ type Foo = {
 };
 ```
 
-Examples of **correct** code with `always` option.
+Examples of **correct** code with `record` option.
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **incorrect** code with `never` option.
+Examples of **incorrect** code with `index-signature` option.
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **correct** code with `never` option.
+Examples of **correct** code with `index-signature` option.
 
 ```ts
 interface Foo {

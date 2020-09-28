@@ -21,15 +21,15 @@ export default createRule({
     fixable: 'code',
     schema: [
       {
-        enum: ['always', 'never'],
+        enum: ['record', 'index-signature'],
       },
     ],
   },
-  defaultOptions: ['always'],
+  defaultOptions: ['record'],
   create(context) {
     const sourceCode = context.getSourceCode();
 
-    if (context.options[0] === 'never') {
+    if (context.options[0] === 'index-signature') {
       return {
         TSTypeReference(node): void {
           const typeName = node.typeName;

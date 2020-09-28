@@ -7,6 +7,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('consistent-indexed-object-style', rule, {
   valid: [
+    // 'record' (default)
     // Record
     'type Foo = Record<string, any>;',
 
@@ -70,53 +71,53 @@ interface Foo {
 }
     `,
 
-    // Never
+    // 'index-signature'
     // Unhandled type
     {
       code: 'type Foo = Misc<string, unknown>;',
-      options: ['never'],
+      options: ['index-signature'],
     },
 
     // Invalid record
     {
       code: 'type Foo = Record;',
-      options: ['never'],
+      options: ['index-signature'],
     },
     {
       code: 'type Foo = Record<string>;',
-      options: ['never'],
+      options: ['index-signature'],
     },
     {
       code: 'type Foo = Record<string, number, unknown>;',
-      options: ['never'],
+      options: ['index-signature'],
     },
 
     // Type literal
     {
       code: 'type Foo = { [key: string]: any };',
-      options: ['never'],
+      options: ['index-signature'],
     },
 
     // Generic
     {
       code: 'type Foo = Generic<{ [key: string]: any }>;',
-      options: ['never'],
+      options: ['index-signature'],
     },
 
     // Function types
     {
       code: 'function foo(arg: { [key: string]: any }) {}',
-      options: ['never'],
+      options: ['index-signature'],
     },
     {
       code: 'function foo(): { [key: string]: any } {}',
-      options: ['never'],
+      options: ['index-signature'],
     },
 
     // Namespace
     {
       code: 'type T = A.B;',
-      options: ['never'],
+      options: ['index-signature'],
     },
   ],
   invalid: [
@@ -163,7 +164,7 @@ type Foo = Record<string, any>;
     // Type literal
     {
       code: 'type Foo = Record<string, any>;',
-      options: ['never'],
+      options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 12 }],
     },
@@ -171,7 +172,7 @@ type Foo = Record<string, any>;
     // Generic
     {
       code: 'type Foo = Generic<Record<string, any>>;',
-      options: ['never'],
+      options: ['index-signature'],
       output: 'type Foo = Generic<{ [key: string]: any }>;',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 20 }],
     },
@@ -179,13 +180,13 @@ type Foo = Record<string, any>;
     // Function types
     {
       code: 'function foo(arg: Record<string, any>) {}',
-      options: ['never'],
+      options: ['index-signature'],
       output: 'function foo(arg: { [key: string]: any }) {}',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 19 }],
     },
     {
       code: 'function foo(): Record<string, any> {}',
-      options: ['never'],
+      options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 17 }],
     },
