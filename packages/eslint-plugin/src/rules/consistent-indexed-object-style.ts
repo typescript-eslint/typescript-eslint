@@ -4,7 +4,10 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
-export default createRule({
+type MessageIds = 'preferRecord' | 'preferIndexSignature';
+type Options = ['record' | 'index-signature'];
+
+export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',
   meta: {
     type: 'suggestion',
