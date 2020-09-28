@@ -538,3 +538,56 @@ async function foo(bar: () => void | Promise<void>) {
     },
   ],
 });
+
+ruleTester.run('allowAsThisParameter: true', rule, {
+  valid: [
+    {
+      code: 'function f(this: void) {}',
+      options: [{ allowAsThisParameter: true }],
+    },
+    {
+      code: `
+class Test {
+  public static helper(this: void) {}
+  method(this: void) {}
+}
+      `,
+      options: [{ allowAsThisParameter: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: 'type alias = void;',
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: true },
+      ],
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParamOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'type alias = void;',
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
+      ],
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParam',
+        },
+      ],
+    },
+    {
+      code: 'type alias = Array<void>;',
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
+      ],
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParam',
+        },
+      ],
+    },
+  ],
+});
