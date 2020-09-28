@@ -65,9 +65,15 @@ type Foo = Generic<{
 
     // Invalid syntax allowed by the parser
     'type Foo = { [key: string] };',
+    'type Foo = { [] };',
     `
 interface Foo {
   [key: string];
+}
+    `,
+    `
+interface Foo {
+  [];
 }
     `,
 

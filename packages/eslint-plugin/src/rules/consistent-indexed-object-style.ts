@@ -78,6 +78,10 @@ export default createRule<Options, MessageIds>({
 
       const [parameter] = member.parameters;
 
+      if (!parameter) {
+        return;
+      }
+
       if (parameter.type !== AST_NODE_TYPES.Identifier) {
         return;
       }
