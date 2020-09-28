@@ -64,7 +64,7 @@ interface InvalidTestCase<
   /**
    * Expected errors.
    */
-  readonly errors: TestCaseError<TMessageIds>[];
+  readonly errors: readonly TestCaseError<TMessageIds>[];
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
@@ -114,8 +114,8 @@ interface RunTests<
   TOptions extends Readonly<unknown[]>
 > {
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: (ValidTestCase<TOptions> | string)[];
-  readonly invalid: InvalidTestCase<TMessageIds, TOptions>[];
+  readonly valid: readonly (ValidTestCase<TOptions> | string)[];
+  readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
 }
 interface RuleTesterConfig {
   // should be require.resolve(parserPackageName)

@@ -7,7 +7,7 @@ This version adds support for generic type parameters on function calls.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "keyword-spacing": "off",
