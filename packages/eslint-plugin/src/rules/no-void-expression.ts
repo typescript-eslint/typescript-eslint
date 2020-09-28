@@ -42,10 +42,11 @@ export default util.createRule<Options, MessageId>({
     messages: {
       invalidVoidExpr:
         'Placing a void expression inside another expression is forbidden. ' +
-        "Move it to it's own statement instead.",
+        'Move it to its own statement instead.',
       invalidVoidExprWrapVoid:
         'Void expressions used inside another expression ' +
-        'must be marked explicitly with the `void` operator.',
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
       invalidVoidExprArrow:
         'Returning a void expression from an arrow function shorthand is forbidden. ' +
         'Please add braces to the arrow function.',

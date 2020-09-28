@@ -64,7 +64,16 @@ An object option can be specified. Each boolean flag makes the rule less strict.
 
 ### `ignoreArrowShorthand`
 
-`"no-void-expression": ["error", { "ignoreArrowShorthand": true }]`
+`false` by default.
+
+```json
+{
+  "@typescript-eslint/no-void-expression": [
+    "error",
+    { "ignoreArrowShorthand": true }
+  ]
+}
+```
 
 It might be undesirable to wrap every arrow function shorthand expression with braces.
 Especially when using Prettier formatter, which spreads such code across 3 lines instead of 1.
@@ -77,7 +86,16 @@ promise.then(value => window.postMessage(value));
 
 ### `ignoreVoidOperator`
 
-`"no-void-expression": ["error", { "ignoreVoidOperator": true }]`
+`false` by default.
+
+```json
+{
+  "@typescript-eslint/no-void-expression": [
+    "error",
+    { "ignoreVoidOperator": true }
+  ]
+}
+```
 
 It might be preferable to only use some distinct syntax
 to explicitly mark the confusing but valid usage of void expressions.
@@ -90,17 +108,17 @@ It also enables a suggestion fix to wrap the void expression with `void` operato
 Examples of additional **correct** code with this option enabled:
 
 ```ts
-// now it's obvious that we don't expect any response (fixable)
+// now it's obvious that we don't expect any response
 promise.then(value => void window.postMessage(value));
 
-// now it's explicit that we don't want to return anything (fixable)
+// now it's explicit that we don't want to return anything
 function doSomething() {
   if (!somethingToDo) return void console.error('Nothing to do!');
 
   console.log('Doing a thing...');
 }
 
-// we are sure that we want to always log `undefined` (fixable via suggestion)
+// we are sure that we want to always log `undefined`
 console.log(void alert('Hello, world!'));
 ```
 
