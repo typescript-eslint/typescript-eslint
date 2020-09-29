@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-use */
+/* eslint @typescript-eslint/no-void-expression: [error, { ignoreVoidOperator: true }] */
 import {
   AST_NODE_TYPES,
   TSESLint,
@@ -113,7 +115,7 @@ export default util.createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle wrapping with `void`
           if (options.ignoreVoidOperator) {
-            return context.report({
+            return void context.report({
               node,
               messageId: 'invalidVoidExprArrowWrapVoid',
               fix: wrapVoidFix,
@@ -122,7 +124,7 @@ export default util.createRule<Options, MessageId>({
 
           // handle wrapping with braces
           const arrowFunction = invalidAncestor;
-          return context.report({
+          return void context.report({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
@@ -148,7 +150,7 @@ export default util.createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle wrapping with `void`
           if (options.ignoreVoidOperator) {
-            return context.report({
+            return void context.report({
               node,
               messageId: 'invalidVoidExprReturnWrapVoid',
               fix: wrapVoidFix,
@@ -176,7 +178,7 @@ export default util.createRule<Options, MessageId>({
 
           // remove the `return` keyword
           if (isTopLevelReturn && isLastReturn) {
-            return context.report({
+            return void context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
@@ -189,7 +191,7 @@ export default util.createRule<Options, MessageId>({
           }
 
           // move before the `return` keyword
-          return context.report({
+          return void context.report({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
@@ -208,8 +210,7 @@ export default util.createRule<Options, MessageId>({
 
         // handle generic case
         if (options.ignoreVoidOperator) {
-          // this would be reported by this rule btw. such irony
-          return context.report({
+          return void context.report({
             node,
             messageId: 'invalidVoidExprWrapVoid',
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
