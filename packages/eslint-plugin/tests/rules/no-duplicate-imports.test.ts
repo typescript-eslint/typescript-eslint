@@ -49,6 +49,19 @@ ruleTester.run('no-dupe-class-members', rule, {
         export type * as bar from 'foo';
       `,
     },
+    {
+      code: `
+        import type { bar } from 'foo';
+        export type { foo } from 'foo';
+      `,
+    },
+    {
+      code: `
+        import type { foo } from 'foo';
+        export type { bar } from 'bar';
+      `,
+      options: [{includeExports: true}],
+    },
   ],
   invalid: [
     {
@@ -71,6 +84,14 @@ ruleTester.run('no-dupe-class-members', rule, {
         import type { bar } from 'foo';
       `,
       errors: [{ messageId: 'importType' }],
+    },
+    {
+      code: `
+        export type { foo } from 'foo';
+        import type { bar } from 'foo';
+      `,
+      options: [{includeExports: true}],
+      errors: [{ messageId: 'importTypeAs' }],
     },
     {
       code: `
