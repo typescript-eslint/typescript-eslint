@@ -60,7 +60,7 @@ ruleTester.run('no-dupe-class-members', rule, {
         import type { foo } from 'foo';
         export type { bar } from 'bar';
       `,
-      options: [{includeExports: true}],
+      options: [{ includeExports: true }],
     },
   ],
   invalid: [
@@ -90,7 +90,7 @@ ruleTester.run('no-dupe-class-members', rule, {
         export type { foo } from 'foo';
         import type { bar } from 'foo';
       `,
-      options: [{includeExports: true}],
+      options: [{ includeExports: true }],
       errors: [{ messageId: 'importTypeAs' }],
     },
     {
