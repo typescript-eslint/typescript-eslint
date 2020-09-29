@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.2.0...v4.3.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** added safe getTypeOfPropertyOfType wrapper ([#2567](https://github.com/typescript-eslint/typescript-eslint/issues/2567)) ([7cba2de](https://github.com/typescript-eslint/typescript-eslint/commit/7cba2de138542563d678fbfc738cd1b3ebf01e07))
+* **experimental-utils:** treat RuleTester arrays as readonly ([#2601](https://github.com/typescript-eslint/typescript-eslint/issues/2601)) ([8025777](https://github.com/typescript-eslint/typescript-eslint/commit/80257776b78bd2b2b4389d6bd530b009a75fb520))
+
+
+### Features
+
+* **eslint-plugin:** [no-invalid-void-type] add option to allow `this: void` ([#2481](https://github.com/typescript-eslint/typescript-eslint/issues/2481)) ([ddf5660](https://github.com/typescript-eslint/typescript-eslint/commit/ddf5660846784003cab4b10ae7a5e510b9dd562b))
+
+
+
+
+
 # [4.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.1...v4.2.0) (2020-09-21)
 
 

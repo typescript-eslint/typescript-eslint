@@ -54,10 +54,12 @@ type stillVoid = void | never;
 ```ts
 interface Options {
   allowInGenericTypeArguments?: boolean | string[];
+  allowAsThisParameter?: boolean;
 }
 
 const defaultOptions: Options = {
   allowInGenericTypeArguments: true,
+  allowAsThisParameter: false,
 };
 ```
 
@@ -95,6 +97,23 @@ The following patterns are not considered warnings with `{ allowInGenericTypeArg
 ```ts
 type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
+```
+
+#### `allowAsThisParameter`
+
+This option allows specifying a `this` parameter of a function to be `void` when set to `true`.
+This pattern can be useful to explicitly label function types that do not use a `this` argument. [See the TypeScript docs for more information](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks).
+
+This option is `false` by default.
+
+The following patterns are considered warnings with `{ allowAsThisParameter: false }` but valid with `{ allowAsThisParameter: true }`:
+
+```ts
+function doThing(this: void) {}
+class Example {
+  static helper(this: void) {}
+  callback(this: void) {}
+}
 ```
 
 ## When Not To Use It
