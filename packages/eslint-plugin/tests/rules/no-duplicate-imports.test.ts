@@ -62,6 +62,13 @@ ruleTester.run('no-dupe-class-members', rule, {
       `,
       options: [{ includeExports: true }],
     },
+    {
+      code: `
+        import type { foo } from 'foo';
+        export type { bar };
+      `,
+      options: [{ includeExports: true }],
+    },
   ],
   invalid: [
     {
@@ -125,6 +132,22 @@ ruleTester.run('no-dupe-class-members', rule, {
         import bar from 'foo';
       `,
       errors: [{ messageId: 'import' }],
+    },
+    {
+      code: `
+        import foo from 'foo';
+        export * from 'foo';
+      `,
+      options: [{ includeExports: true }],
+      errors: [{ messageId: 'exportAs' }],
+    },
+    {
+      code: `
+        import foo from 'foo';
+        export { foo } from 'foo';
+      `,
+      options: [{ includeExports: true }],
+      errors: [{ messageId: 'exportAs' }],
     },
   ],
 });
