@@ -54,10 +54,10 @@ export default util.createRule<Options, MessageId>({
         'Void expressions returned from an arrow function shorthand ' +
         'must be marked explicitly with the `void` operator.',
       invalidVoidExprReturn:
-        'Returning a void expression from a function is forbidden.' +
+        'Returning a void expression from a function is forbidden. ' +
         'Please move it before the `return` statement.',
       invalidVoidExprReturnLast:
-        'Returning a void expression from a function is forbidden.' +
+        'Returning a void expression from a function is forbidden. ' +
         'Please remove the `return` statement.',
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
