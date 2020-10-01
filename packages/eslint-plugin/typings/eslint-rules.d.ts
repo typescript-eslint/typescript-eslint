@@ -708,6 +708,7 @@ declare module 'eslint/lib/rules/dot-notation' {
         allowKeywords?: boolean;
         allowPattern?: string;
         allowPrivateClassPropertyAccess?: boolean;
+        allowProtectedClassPropertyAccess?: boolean;
       },
     ],
     {
