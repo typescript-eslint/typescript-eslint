@@ -26,6 +26,15 @@ declare module 'typescript' {
 
   interface Type {
     /**
+     * Private, unique identifier for the type as cached by the TypeScript program.
+     *
+     * @remarks
+     * This should rarely be used, and then only to check for reference equality
+     * between types (since we don't have an available isAssignableTo API).
+     */
+    id?: string;
+
+    /**
      * If the type is `any`, and this is set to "error", then TS was unable to resolve the type
      */
     intrinsicName?: string;
