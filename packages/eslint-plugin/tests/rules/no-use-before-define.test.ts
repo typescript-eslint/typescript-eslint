@@ -219,7 +219,29 @@ type Foo = string | number;
       `,
       options: [{ typedefs: false }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2572
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.FOO;
+}
 
+class Foo {
+  public static readonly FOO = '';
+}
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
+    {
+      code: `
+const foo = 2;
+
+interface Bar {
+  type: typeof foo;
+}
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
     {
       code: `

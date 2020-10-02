@@ -93,6 +93,16 @@ function isOuterVariable(
 }
 
 /**
+ * Checks whether or not a given reference is a type reference.
+ */
+function isTypeReference(reference: TSESLint.Scope.Reference): boolean {
+  return (
+    reference.isTypeReference ||
+    reference.identifier.parent?.parent?.type === AST_NODE_TYPES.TSTypeQuery
+  );
+}
+
+/**
  * Checks whether or not a given location is inside of the range of a given node.
  */
 function isInRange(
@@ -219,7 +229,7 @@ export default util.createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
-      if (reference.isTypeReference && options.ignoreTypeReferences) {
+      if (isTypeReference(reference) && options.ignoreTypeReferences) {
         return false;
       }
       if (isFunction(variable)) {
