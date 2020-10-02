@@ -54,8 +54,6 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      */
     function getBaseTypeOfLiteralType(type: ts.Type): BaseLiteral {
-      // eslint-disable-next-line no-debugger
-      debugger;
       if (type.isNumberLiteral()) {
         return 'number';
       }
@@ -74,13 +72,6 @@ export default util.createRule<Options, MessageIds>({
 
       if (type.isIntersection()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
-        // eslint-disable-next-line no-console
-        console.log({ types });
-        /**
-         * unknown & string === string
-           string & string === string
-           'string literal' & string === 'string literal'
-         */
         return types.some(value => value === 'string') ? 'string' : 'invalid';
       }
 
