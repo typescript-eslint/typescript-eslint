@@ -22,7 +22,7 @@ For example:
 
 ```CJSON
 {
-    "@typescript-eslint/consistent-type-definitions": ["error", "index-signature"]
+    "@typescript-eslint/consistent-indexed-object-style": ["error", "index-signature"]
 }
 ```
 
