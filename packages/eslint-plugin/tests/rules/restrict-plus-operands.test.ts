@@ -24,6 +24,10 @@ ruleTester.run('restrict-plus-operands', rule, {
     'var foo = 1n + 1n;',
     'var foo = BigInt(1) + 1n;',
     `
+      var foo = 1n;
+      foo + 2n;
+    `,
+    `
 function test(s: string, n: number): number {
   return 2;
 }
