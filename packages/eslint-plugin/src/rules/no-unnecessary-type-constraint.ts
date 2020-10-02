@@ -65,24 +65,6 @@ export default util.createRule({
 
     const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
 
-    const report = (
-      node: TypeParameterWithConstraint,
-      constraint: string,
-      inArrowFunction: boolean,
-    ): void => {
-      context.report({
-        data: { constraint },
-        fix(fixer) {
-          return fixer.replaceTextRange(
-            [node.name.range[1], node.constraint.range[1]],
-            inArrowFunction && inJsx ? ',' : '',
-          );
-        },
-        messageId: 'unnecessaryConstraint',
-        node,
-      });
-    };
-
     const checkNode = (
       node: TypeParameterWithConstraint,
       inArrowFunction: boolean,
@@ -94,7 +76,17 @@ export default util.createRule({
 
       for (const [filter, type] of keywordFilters) {
         if (filter(constraintType)) {
-          report(node, type, inArrowFunction);
+          context.report({
+            data: { constraint: type },
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                [node.name.range[1], node.constraint.range[1]],
+                inArrowFunction && inJsx ? ',' : '',
+              );
+            },
+            messageId: 'unnecessaryConstraint',
+            node,
+          });
           return;
         }
       }
