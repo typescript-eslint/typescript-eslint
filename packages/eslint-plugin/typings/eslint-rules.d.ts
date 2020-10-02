@@ -729,3 +729,36 @@ declare module 'eslint/lib/rules/no-loss-of-precision' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/comma-dangle' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  type StringOptions =
+    | 'always-multiline'
+    | 'always'
+    | 'never'
+    | 'only-multiline';
+  type Selectors =
+    | 'arrays'
+    | 'objects'
+    | 'imports'
+    | 'exports'
+    | 'functions'
+    | 'enums'
+    | 'generics'
+    | 'tuples';
+  type ObjectOptions = Partial<Record<Selectors, StringOptions | 'ignore'>>;
+
+  const rule: TSESLint.RuleModule<
+    'unexpected' | 'missing',
+    [StringOptions | ObjectOptions],
+    {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void;
+      TSTypeParameterDeclaration(
+        node: TSESTree.TSTypeParameterDeclaration,
+      ): void;
+      TSTupleType(node: TSESTree.TSTupleType): void;
+    }
+  >;
+  export = rule;
+}

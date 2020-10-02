@@ -11,7 +11,7 @@ See the [ESLint documentation](https://eslint.org/docs/rules/lines-between-class
 
 ## Rule Changes
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "lines-between-class-members": "off",

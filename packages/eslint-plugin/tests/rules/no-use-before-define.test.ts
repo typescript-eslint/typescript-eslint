@@ -343,6 +343,10 @@ const React = require('react');
         },
       },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2527
+    `
+type T = (value: unknown) => value is Id;
+    `,
   ],
   invalid: [
     {

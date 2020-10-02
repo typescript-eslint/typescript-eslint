@@ -6,6 +6,7 @@ export * from './isTypeReadonly';
 export * from './misc';
 export * from './nullThrows';
 export * from './objectIterators';
+export * from './propertyTypes';
 export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules

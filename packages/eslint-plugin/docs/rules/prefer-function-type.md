@@ -24,6 +24,13 @@ interface Foo extends Function {
 }
 ```
 
+```ts
+interface MixinMethod {
+  // returns the function itself, not the `this` argument.
+  (arg: string): this;
+}
+```
+
 Examples of **correct** code for this rule:
 
 ```ts
@@ -46,6 +53,23 @@ interface Foo {
 interface Bar extends Foo {
   (): void;
 }
+```
+
+```ts
+// returns the `this` argument of function, retaining it's type.
+type MixinMethod = <TSelf>(this: TSelf, arg: string) => TSelf;
+// a function that returns itself is much clearer in this form.
+type ReturnsSelf = (arg: string) => ReturnsSelf;
+```
+
+```ts
+// multiple call signatures (overloads) is allowed:
+interface Overloaded {
+  (data: string): number;
+  (id: number): string;
+}
+// this is equivelent to Overloaded interface.
+type Intersection = ((data: string) => number) & ((id: number) => string);
 ```
 
 ## When Not To Use It

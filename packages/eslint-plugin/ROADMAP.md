@@ -44,73 +44,73 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 
 ### Functionality
 
-| TSLint rule                          |     | ESLint rule                                                                                          |
-| ------------------------------------ | :-: | ---------------------------------------------------------------------------------------------------- |
-| [`await-promise`]                    | ✅  | [`@typescript-eslint/await-thenable`]                                                                |
-| [`ban-comma-operator`]               | 🌟  | [`no-sequences`][no-sequences]                                                                       |
-| [`ban`]                              | 🌟  | [`no-restricted-properties`][no-restricted-properties]                                               |
-| [`curly`]                            | 🌟  | [`curly`][curly]                                                                                     |
-| [`forin`]                            | 🌟  | [`guard-for-in`][guard-for-in]                                                                       |
-| [`function-constructor`]             | 🌟  | [`no-new-func`][no-new-func]                                                                         |
-| [`import-blacklist`]                 | 🌟  | [`no-restricted-imports`][no-restricted-imports]                                                     |
-| [`label-position`]                   | 🌟  | [`no-unused-labels`][no-unused-labels] (similar)                                                     |
-| [`no-arg`]                           | 🌟  | [`no-caller`][no-caller] (also blocks `arguments.caller`)                                            |
-| [`no-async-without-await`]           | ✅  | [`@typescript-eslint/require-await`]                                                                 |
-| [`no-bitwise`]                       | 🌟  | [`no-bitwise`][no-bitwise]                                                                           |
-| [`no-conditional-assignment`]        | 🌟  | [`no-cond-assign`][no-cond-assign]<sup>[1]</sup>                                                     |
-| [`no-console`]                       | 🌟  | [`no-console`][no-console] (configuration works slightly differently)                                |
-| [`no-construct`]                     | 🌟  | [`no-new-wrappers`][no-new-wrappers]                                                                 |
-| [`no-debugger`]                      | 🌟  | [`no-debugger`][no-debugger]                                                                         |
-| [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                                                             |
-| [`no-duplicate-switch-case`]         | 🌟  | [`no-duplicate-case`][no-duplicate-case]                                                             |
-| [`no-duplicate-variable`]            | 🌟  | [`no-redeclare`][no-redeclare]                                                                       |
-| [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                                                             |
-| [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                                               |
-| [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                                                 |
-| [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                                                          |
-| [`no-for-in-array`]                  | ✅  | [`@typescript-eslint/no-for-in-array`]                                                               |
-| [`no-implicit-dependencies`]         | 🔌  | [`import/no-extraneous-dependencies`]                                                                |
-| [`no-inferred-empty-object-type`]    | 🛑  | N/A                                                                                                  |
-| [`no-invalid-template-strings`]      | 🌟  | [`no-template-curly-in-string`][no-template-curly-in-string]                                         |
-| [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                                                 |
-| [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                                                |
-| [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                                                     |
-| [`no-null-undefined-union`]          | 🛑  | N/A                                                                                                  |
-| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                                    |
-| [`no-promise-as-boolean`]            | ✅  | [`@typescript-eslint/no-misused-promises`]                                                           |
-| [`no-restricted-globals`]            | ✅  | [`no-restricted-globals`][no-restricted-globals]                                                     |
-| [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                                                 |
-| [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                             |
-| [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                               |
-| [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                       |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                                                              |
-| [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                  |
-| [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                   |
-| [`no-tautology-expression`]          | 🛑  | N/A                                                                                                  |
-| [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                                                 |
-| [`no-unbound-method`]                | ✅  | [`@typescript-eslint/unbound-method`]                                                                |
-| [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                                                           |
-| [`no-unsafe-any`]                    | 🌓  | [`@typescript-eslint/no-unsafe-member-access`]<sup>[2]</sup>                                         |
-| [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                                                             |
-| [`no-unused-expression`]             | 🌟  | [`no-unused-expressions`][no-unused-expressions]                                                     |
-| [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                                                |
-| [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                                                          |
-| [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                                                   |
-| [`no-void-expression`]               | 🛑  | N/A (unrelated to the similarly named ESLint rule `no-void`)                                         |
-| [`prefer-conditional-expression`]    | 🛑  | N/A                                                                                                  |
-| [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                                                       |
-| [`radix`]                            | 🌟  | [`radix`][radix]                                                                                     |
-| [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                                                        |
-| [`static-this`]                      | 🛑  | N/A                                                                                                  |
-| [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                                                    |
-| [`strict-string-expressions`]        | ✅  | [`@typescript-eslint/restrict-plus-operands`] & [`@typescript-eslint/restrict-template-expressions`] |
-| [`strict-type-predicates`]           | 🛑  | N/A                                                                                                  |
-| [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                                                       |
-| [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                                                   |
-| [`typeof-compare`]                   | 🌟  | [`valid-typeof`][valid-typeof]                                                                       |
-| [`unnecessary-constructor`]          | 🌟  | [`no-useless-constructor`][no-useless-constructor]                                                   |
-| [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                                                 |
-| [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                                                             |
+| TSLint rule                          |     | ESLint rule                                                                                               |
+| ------------------------------------ | :-: | --------------------------------------------------------------------------------------------------------- |
+| [`await-promise`]                    | ✅  | [`@typescript-eslint/await-thenable`]                                                                     |
+| [`ban-comma-operator`]               | 🌟  | [`no-sequences`][no-sequences]                                                                            |
+| [`ban`]                              | 🌟  | [`no-restricted-globals`][no-restricted-globals] & [`no-restricted-properties`][no-restricted-properties] |
+| [`curly`]                            | 🌟  | [`curly`][curly]                                                                                          |
+| [`forin`]                            | 🌟  | [`guard-for-in`][guard-for-in]                                                                            |
+| [`function-constructor`]             | 🌟  | [`no-new-func`][no-new-func]                                                                              |
+| [`import-blacklist`]                 | 🌟  | [`no-restricted-imports`][no-restricted-imports]                                                          |
+| [`label-position`]                   | 🌟  | [`no-unused-labels`][no-unused-labels] (similar)                                                          |
+| [`no-arg`]                           | 🌟  | [`no-caller`][no-caller] (also blocks `arguments.caller`)                                                 |
+| [`no-async-without-await`]           | ✅  | [`@typescript-eslint/require-await`]                                                                      |
+| [`no-bitwise`]                       | 🌟  | [`no-bitwise`][no-bitwise]                                                                                |
+| [`no-conditional-assignment`]        | 🌟  | [`no-cond-assign`][no-cond-assign]<sup>[1]</sup>                                                          |
+| [`no-console`]                       | 🌟  | [`no-console`][no-console] (configuration works slightly differently)                                     |
+| [`no-construct`]                     | 🌟  | [`no-new-wrappers`][no-new-wrappers]                                                                      |
+| [`no-debugger`]                      | 🌟  | [`no-debugger`][no-debugger]                                                                              |
+| [`no-duplicate-super`]               | 🌟  | [`constructor-super`][constructor-super]                                                                  |
+| [`no-duplicate-switch-case`]         | 🌟  | [`no-duplicate-case`][no-duplicate-case]                                                                  |
+| [`no-duplicate-variable`]            | 🌟  | [`no-redeclare`][no-redeclare]                                                                            |
+| [`no-dynamic-delete`]                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                                                                  |
+| [`no-empty`]                         | 🌟  | [`no-empty`][no-empty]                                                                                    |
+| [`no-eval`]                          | 🌟  | [`no-eval`][no-eval]                                                                                      |
+| [`no-floating-promises`]             | ✅  | [`@typescript-eslint/no-floating-promises`]                                                               |
+| [`no-for-in-array`]                  | ✅  | [`@typescript-eslint/no-for-in-array`]                                                                    |
+| [`no-implicit-dependencies`]         | 🔌  | [`import/no-extraneous-dependencies`]                                                                     |
+| [`no-inferred-empty-object-type`]    | 🛑  | N/A                                                                                                       |
+| [`no-invalid-template-strings`]      | 🌟  | [`no-template-curly-in-string`][no-template-curly-in-string]                                              |
+| [`no-invalid-this`]                  | 🌟  | [`no-invalid-this`][no-invalid-this]                                                                      |
+| [`no-misused-new`]                   | ✅  | [`@typescript-eslint/no-misused-new`]                                                                     |
+| [`no-null-keyword`]                  | 🔌  | [`no-null/no-null`] (doesn’t handle `null` type)                                                          |
+| [`no-null-undefined-union`]          | 🛑  | N/A                                                                                                       |
+| [`no-object-literal-type-assertion`] | ✅  | [`@typescript-eslint/consistent-type-assertions`]                                                         |
+| [`no-promise-as-boolean`]            | ✅  | [`@typescript-eslint/no-misused-promises`]                                                                |
+| [`no-restricted-globals`]            | ✅  | [`no-restricted-globals`][no-restricted-globals]                                                          |
+| [`no-return-await`]                  | 🌟  | [`no-return-await`][no-return-await]                                                                      |
+| [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
+| [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
+| [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                                                                   |
+| [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
+| [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
+| [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
+| [`no-this-assignment`]               | ✅  | [`@typescript-eslint/no-this-alias`]                                                                      |
+| [`no-unbound-method`]                | ✅  | [`@typescript-eslint/unbound-method`]                                                                     |
+| [`no-unnecessary-class`]             | ✅  | [`@typescript-eslint/no-extraneous-class`]                                                                |
+| [`no-unsafe-any`]                    | 🌓  | [`@typescript-eslint/no-unsafe-member-access`]<sup>[2]</sup>                                              |
+| [`no-unsafe-finally`]                | 🌟  | [`no-unsafe-finally`][no-unsafe-finally]                                                                  |
+| [`no-unused-expression`]             | 🌟  | [`no-unused-expressions`][no-unused-expressions]                                                          |
+| [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                                                     |
+| [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                                                               |
+| [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                                                        |
+| [`no-void-expression`]               | 🛑  | N/A (unrelated to the similarly named ESLint rule `no-void`)                                              |
+| [`prefer-conditional-expression`]    | 🛑  | N/A                                                                                                       |
+| [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                                                            |
+| [`radix`]                            | 🌟  | [`radix`][radix]                                                                                          |
+| [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                                                             |
+| [`static-this`]                      | 🛑  | N/A                                                                                                       |
+| [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                                                         |
+| [`strict-string-expressions`]        | ✅  | [`@typescript-eslint/restrict-plus-operands`] & [`@typescript-eslint/restrict-template-expressions`]      |
+| [`strict-type-predicates`]           | 🛑  | N/A                                                                                                       |
+| [`switch-default`]                   | 🌟  | [`default-case`][default-case]                                                                            |
+| [`triple-equals`]                    | 🌟  | [`eqeqeq`][eqeqeq]                                                                                        |
+| [`typeof-compare`]                   | 🌟  | [`valid-typeof`][valid-typeof]                                                                            |
+| [`unnecessary-constructor`]          | 🌟  | [`no-useless-constructor`][no-useless-constructor]                                                        |
+| [`use-default-type-parameter`]       | ✅  | [`@typescript-eslint/no-unnecessary-type-arguments`]                                                      |
+| [`use-isnan`]                        | 🌟  | [`use-isnan`][use-isnan]                                                                                  |
 
 <sup>[1]</sup> The ESLint rule also supports silencing with an extra set of parentheses (`if ((foo = bar)) {}`)<br>
 <sup>[2]</sup> Only checks member expressions
@@ -388,7 +388,10 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-invalid-this`]: https://palantir.github.io/tslint/rules/no-invalid-this
 [`no-misused-new`]: https://palantir.github.io/tslint/rules/no-misused-new
 [`no-null-keyword`]: https://palantir.github.io/tslint/rules/no-null-keyword
+[`no-null-undefined-union`]: https://palantir.github.io/tslint/rules/no-null-undefined-union
 [`no-object-literal-type-assertion`]: https://palantir.github.io/tslint/rules/no-object-literal-type-assertion
+[`no-promise-as-boolean`]: https://palantir.github.io/tslint/rules/no-promise-as-boolean
+[`no-restricted-globals`]: https://palantir.github.io/tslint/rules/no-restricted-globals
 [`no-return-await`]: https://palantir.github.io/tslint/rules/no-return-await
 [`no-shadowed-variable`]: https://palantir.github.io/tslint/rules/no-shadowed-variable
 [`no-sparse-arrays`]: https://palantir.github.io/tslint/rules/no-sparse-arrays
@@ -396,6 +399,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-string-throw`]: https://palantir.github.io/tslint/rules/no-string-throw
 [`no-submodule-imports`]: https://palantir.github.io/tslint/rules/no-submodule-imports
 [`no-switch-case-fall-through`]: https://palantir.github.io/tslint/rules/no-switch-case-fall-through
+[`no-tautology-expression`]: https://palantir.github.io/tslint/rules/no-tautology-expression
 [`no-this-assignment`]: https://palantir.github.io/tslint/rules/no-this-assignment
 [`no-unbound-method`]: https://palantir.github.io/tslint/rules/no-unbound-method
 [`no-unnecessary-class`]: https://palantir.github.io/tslint/rules/no-unnecessary-class
@@ -410,7 +414,9 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`prefer-object-spread`]: https://palantir.github.io/tslint/rules/prefer-object-spread
 [`radix`]: https://palantir.github.io/tslint/rules/radix
 [`restrict-plus-operands`]: https://palantir.github.io/tslint/rules/restrict-plus-operands
+[`static-this`]: https://palantir.github.io/tslint/rules/static-this
 [`strict-boolean-expressions`]: https://palantir.github.io/tslint/rules/strict-boolean-expressions
+[`strict-string-expressions`]: https://palantir.github.io/tslint/rules/strict-string-expressions
 [`strict-type-predicates`]: https://palantir.github.io/tslint/rules/strict-type-predicates
 [`switch-default`]: https://palantir.github.io/tslint/rules/switch-default
 [`triple-equals`]: https://palantir.github.io/tslint/rules/triple-equals
@@ -466,6 +472,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`no-reference-import`]: https://palantir.github.io/tslint/rules/no-reference-import
 [`no-trailing-whitespace`]: https://palantir.github.io/tslint/rules/no-trailing-whitespace
 [`no-unnecessary-callback-wrapper`]: https://palantir.github.io/tslint/rules/no-unnecessary-callback-wrapper
+[`no-unnecessary-else`]: https://palantir.github.io/tslint/rules/no-unnecessary-else
 [`no-unnecessary-initializer`]: https://palantir.github.io/tslint/rules/no-unnecessary-initializer
 [`no-unnecessary-qualifier`]: https://palantir.github.io/tslint/rules/no-unnecessary-qualifier
 [`number-literal-format`]: https://palantir.github.io/tslint/rules/number-literal-format

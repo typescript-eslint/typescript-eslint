@@ -10,6 +10,7 @@
 - [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
 - [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
 - [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
+- [How do I check to see what versions are installed?](#how-do-i-check-to-see-what-versions-are-installed)
 - [My linting feels really slow](#my-linting-feels-really-slow)
 
 ---
@@ -187,6 +188,37 @@ Instead, our tooling exists to **_augment_** TypeScript's built in checks with l
 The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
 
 You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring#specifying-environments).
+
+As of our v4.0.0 release, this also applies to types. If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types. For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
+
+We strongly recommend that you do not use the `no-undef` lint rule on TypeScript projects. The checks it provides are already provided by TypeScript without the need for configuration - TypeScript just does this significantly better.
+
+<br />
+<br />
+<br />
+
+---
+
+<br />
+<br />
+<br />
+
+## How do I check to see what versions are installed?
+
+If you have multiple versions of our tooling, it can cause various bugs for you. This is because ESLint may load a different version each run depending on how you run it - leading to inconsistent lint results.
+
+Installing our tooling in the root of your project does not mean that only one version is installed. One or more of your dependencies may have its own dependency on our tooling, meaning `npm`/`yarn` will additionally install that version for use by that package. For example, `react-scripts` (part of `create-react-app`) has a dependency on our tooling.
+
+You can check what versions are installed in your project using the following commands:
+
+```bash
+$ npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+$ yarn list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+```
+
+If you see more than one version installed, then you will have to either use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force a single version, or you will have to downgrade your root versions to match the dependency versions.
+
+**The best course of action in this case is to wait until your dependency releases a new version with support for our latest versions.**
 
 <br />
 <br />

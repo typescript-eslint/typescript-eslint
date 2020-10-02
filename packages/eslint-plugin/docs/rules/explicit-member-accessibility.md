@@ -258,6 +258,10 @@ class Animal {
 class Animal {
   constructor(public animalName: string) {}
 }
+
+class Animal {
+  constructor(animalName: string) {}
+}
 ```
 
 e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'no-public' } } ]`
