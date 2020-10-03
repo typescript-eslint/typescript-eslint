@@ -517,6 +517,20 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
 let foo: string | undefined;
 foo += 'some data';
       `,
