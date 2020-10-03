@@ -46,7 +46,7 @@ Example configuration:
     {
       "types": {
         // add a custom message to help explain why not to use it
-        "Foo": "Don't use Far because it is unsafe",
+        "Foo": "Don't use Foo because it is unsafe",
 
         // add a custom message, AND tell the plugin how to fix it
         "String": {

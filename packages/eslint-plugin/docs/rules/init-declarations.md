@@ -7,7 +7,7 @@ It adds support for TypeScript's `declare` variables.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "init-declarations": "off",

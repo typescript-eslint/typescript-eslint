@@ -57,20 +57,60 @@ export default util.createRule({
       };
     }
 
-    function inTryCatch(node: ts.Node): boolean {
+    function inTry(node: ts.Node): boolean {
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (
-          tsutils.isTryStatement(ancestor) ||
-          tsutils.isCatchClause(ancestor)
-        ) {
+        if (tsutils.isTryStatement(ancestor)) {
           return true;
         }
 
         ancestor = ancestor.parent;
       }
 
+      return false;
+    }
+
+    function inCatch(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (tsutils.isCatchClause(ancestor)) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
+    function isReturnPromiseInFinally(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (
+          tsutils.isTryStatement(ancestor.parent) &&
+          tsutils.isBlock(ancestor) &&
+          ancestor.parent.end === ancestor.end
+        ) {
+          return true;
+        }
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
+    function hasFinallyBlock(node: ts.Node): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor && !ts.isFunctionLike(ancestor)) {
+        if (tsutils.isTryStatement(ancestor)) {
+          return !!ancestor.finallyBlock;
+        }
+        ancestor = ancestor.parent;
+      }
       return false;
     }
 
@@ -163,7 +203,7 @@ export default util.createRule({
       }
 
       if (option === 'in-try-catch') {
-        const isInTryCatch = inTryCatch(expression);
+        const isInTryCatch = inTry(expression) || inCatch(expression);
         if (isAwait && !isInTryCatch) {
           context.report({
             messageId: 'disallowedPromiseAwait',
@@ -171,6 +211,14 @@ export default util.createRule({
             fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && isInTryCatch) {
+          if (inCatch(expression) && !hasFinallyBlock(expression)) {
+            return;
+          }
+
+          if (isReturnPromiseInFinally(expression)) {
+            return;
+          }
+
           context.report({
             messageId: 'requiredPromiseAwait',
             node,

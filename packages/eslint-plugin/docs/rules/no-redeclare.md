@@ -21,12 +21,12 @@ See [`eslint/no-redeclare` options](https://eslint.org/docs/rules/no-redeclare#o
 This rule adds the following options:
 
 ```ts
-interface Options extends BaseNoShadowOptions {
+interface Options extends BaseNoRedeclareOptions {
   ignoreDeclarationMerge?: boolean;
 }
 
 const defaultOptions: Options = {
-  ...baseNoShadowDefaultOptions,
+  ...baseNoRedeclareDefaultOptions,
   ignoreDeclarationMerge: true,
 };
 ```

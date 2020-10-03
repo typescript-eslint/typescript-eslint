@@ -5,6 +5,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
+export const phrases = {
+  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
+  [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
+} as const;
+
 export default util.createRule({
   name: 'prefer-function-type',
   meta: {
@@ -17,7 +22,9 @@ export default util.createRule({
     fixable: 'code',
     messages: {
       functionTypeOverCallableType:
-        "{{ type }} has only a call signature - use '{{ sigSuggestion }}' instead.",
+        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
+      unexpectedThisOnFunctionOnlyInterface:
+        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
     },
     schema: [],
     type: 'suggestion',
@@ -104,13 +111,30 @@ export default util.createRule({
      */
     function checkMember(
       member: TSESTree.TypeElement,
-      node: TSESTree.Node,
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
+      tsThisTypes: TSESTree.TSThisType[] | null = null,
     ): void {
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
         typeof member.returnType !== 'undefined'
       ) {
+        if (
+          tsThisTypes !== null &&
+          tsThisTypes.length > 0 &&
+          node.type === AST_NODE_TYPES.TSInterfaceDeclaration
+        ) {
+          // the message can be confusing if we don't point directly to the `this` node instead of the whole member
+          // and in favour of generating at most one error we'll only report the first occurrence of `this` if there are multiple
+          context.report({
+            node: tsThisTypes[0],
+            messageId: 'unexpectedThisOnFunctionOnlyInterface',
+            data: {
+              interfaceName: node.id.name,
+            },
+          });
+          return;
+        }
         const suggestion = renderSuggestion(member, node);
         const fixStart =
           node.type === AST_NODE_TYPES.TSTypeLiteral
@@ -127,11 +151,7 @@ export default util.createRule({
           node: member,
           messageId: 'functionTypeOverCallableType',
           data: {
-            type:
-              node.type === AST_NODE_TYPES.TSTypeLiteral
-                ? 'Type literal'
-                : 'Interface',
-            sigSuggestion: suggestion,
+            literalOrInterface: phrases[node.type],
           },
           fix(fixer) {
             return fixer.replaceTextRange(
@@ -142,12 +162,36 @@ export default util.createRule({
         });
       }
     }
-
+    let tsThisTypes: TSESTree.TSThisType[] | null = null;
+    let literalNesting = 0;
     return {
-      TSInterfaceDeclaration(node): void {
-        if (!hasOneSupertype(node) && node.body.body.length === 1) {
-          checkMember(node.body.body[0], node);
+      TSInterfaceDeclaration(): void {
+        // when entering an interface reset the count of `this`s to empty.
+        tsThisTypes = [];
+      },
+      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
+        // inside an interface keep track of all ThisType references.
+        // unless it's inside a nested type literal in which case it's invalid code anyway
+        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
+        if (literalNesting === 0 && tsThisTypes !== null) {
+          tsThisTypes.push(node);
         }
+      },
+      'TSInterfaceDeclaration:exit'(
+        node: TSESTree.TSInterfaceDeclaration,
+      ): void {
+        if (!hasOneSupertype(node) && node.body.body.length === 1) {
+          checkMember(node.body.body[0], node, tsThisTypes);
+        }
+        // on exit check member and reset the array to nothing.
+        tsThisTypes = null;
+      },
+      // keep track of nested literals to avoid complaining about invalid `this` uses
+      'TSInterfaceDeclaration TSTypeLiteral'(): void {
+        literalNesting += 1;
+      },
+      'TSInterfaceDeclaration TSTypeLiteral:exit'(): void {
+        literalNesting -= 1;
       },
       'TSTypeLiteral[members.length = 1]'(node: TSESTree.TSTypeLiteral): void {
         checkMember(node.members[0], node);

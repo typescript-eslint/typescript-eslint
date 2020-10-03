@@ -621,6 +621,9 @@ type Foo = string | {
   (acc, testCase) => {
     const indent = '    ';
 
+    const validCases = [...acc.valid];
+    const invalidCases = [...acc.invalid];
+
     const codeCases = testCase.code.map(code =>
       [
         '', // newline to make test error messages nicer
@@ -631,7 +634,7 @@ type Foo = string | {
 
     codeCases.forEach(code => {
       // valid test case is just the code
-      acc.valid.push(code);
+      validCases.push(code);
 
       const invalid = {
         // test the fixer by removing all the spaces
@@ -663,11 +666,11 @@ type Foo = string | {
           ),
       };
       if (invalid.errors.length > 0) {
-        acc.invalid.push(invalid);
+        invalidCases.push(invalid);
       }
     });
 
-    return acc;
+    return { ...acc, valid: validCases, invalid: invalidCases };
   },
   { valid: [], invalid: [] },
 );
