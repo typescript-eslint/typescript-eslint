@@ -62,6 +62,18 @@ cond ? console.log('true') : console.error('false');
 
 An object option can be specified. Each boolean flag makes the rule less strict.
 
+```ts
+type Options = {
+  ignoreArrowShorthand?: boolean;
+  ignoreVoidOperator?: boolean;
+};
+
+const defaults: Options = {
+  ignoreArrowShorthand: false,
+  ignoreVoidOperator: false,
+};
+```
+
 ### `ignoreArrowShorthand`
 
 `false` by default.
