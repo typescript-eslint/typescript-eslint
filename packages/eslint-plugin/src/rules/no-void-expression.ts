@@ -132,10 +132,8 @@ export default util.createRule<Options, MessageId>({
               const arrowBodyText = sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, sourceCode)) {
-                const [bodyOpeningParen, bodyClosingParen] = [
-                  sourceCode.getTokenBefore(arrowBody, isOpeningParenToken)!,
-                  sourceCode.getTokenAfter(arrowBody, isClosingParenToken)!,
-                ];
+                const bodyOpeningParen = sourceCode.getTokenBefore(arrowBody, isOpeningParenToken)!;
+                const bodyClosingParen = sourceCode.getTokenAfter(arrowBody, isClosingParenToken)!;
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
                   newArrowBodyText,
