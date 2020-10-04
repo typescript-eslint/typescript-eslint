@@ -232,12 +232,10 @@ export default util.createRule<Options, MessageId>({
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
     function findInvalidAncestor(node: TSESTree.Node): TSESTree.Node | null {
-      const { parent } = node;
-
-      if (parent == null) {
-        // if there is no parent then let's say it's valid
-        return null;
-      }
+      const parent = util.nullThrows(
+        node.parent,
+        util.NullThrowsReasons.MissingParent,
+      );
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
         // e.g. `{ console.log("foo"); }`
