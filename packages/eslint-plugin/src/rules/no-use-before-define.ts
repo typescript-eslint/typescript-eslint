@@ -93,12 +93,25 @@ function isOuterVariable(
 }
 
 /**
+ * Recursively checks whether or not a given reference has a type query declaration among it's parents
+ */
+function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
+  if (node.type === AST_NODE_TYPES.TSTypeQuery) {
+    return true;
+  } else if (!node.parent) {
+    return false;
+  }
+
+  return referenceContainsTypeQuery(node.parent);
+}
+
+/**
  * Checks whether or not a given reference is a type reference.
  */
 function isTypeReference(reference: TSESLint.Scope.Reference): boolean {
   return (
     reference.isTypeReference ||
-    reference.identifier.parent?.parent?.type === AST_NODE_TYPES.TSTypeQuery
+    referenceContainsTypeQuery(reference.identifier)
   );
 }
 
@@ -229,7 +242,7 @@ export default util.createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
-      if (isTypeReference(reference) && options.ignoreTypeReferences) {
+      if (options.ignoreTypeReferences && isTypeReference(reference)) {
         return false;
       }
       if (isFunction(variable)) {
