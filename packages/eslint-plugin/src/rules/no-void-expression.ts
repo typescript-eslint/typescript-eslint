@@ -1,5 +1,3 @@
-/* eslint-disable eslint-comments/no-use */
-/* eslint @typescript-eslint/no-void-expression: [error, { ignoreVoidOperator: true }] */
 import {
   AST_NODE_TYPES,
   TSESLint,
@@ -115,7 +113,7 @@ export default util.createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle wrapping with `void`
           if (options.ignoreVoidOperator) {
-            return void context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprArrowWrapVoid',
               fix: wrapVoidFix,
@@ -124,7 +122,7 @@ export default util.createRule<Options, MessageId>({
 
           // handle wrapping with braces
           const arrowFunction = invalidAncestor;
-          return void context.report({
+          return context.report({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
@@ -132,8 +130,14 @@ export default util.createRule<Options, MessageId>({
               const arrowBodyText = sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, sourceCode)) {
-                const bodyOpeningParen = sourceCode.getTokenBefore(arrowBody, isOpeningParenToken)!;
-                const bodyClosingParen = sourceCode.getTokenAfter(arrowBody, isClosingParenToken)!;
+                const bodyOpeningParen = sourceCode.getTokenBefore(
+                  arrowBody,
+                  isOpeningParenToken,
+                )!;
+                const bodyClosingParen = sourceCode.getTokenAfter(
+                  arrowBody,
+                  isClosingParenToken,
+                )!;
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
                   newArrowBodyText,
@@ -148,7 +152,7 @@ export default util.createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle wrapping with `void`
           if (options.ignoreVoidOperator) {
-            return void context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprReturnWrapVoid',
               fix: wrapVoidFix,
@@ -176,7 +180,7 @@ export default util.createRule<Options, MessageId>({
 
           // remove the `return` keyword
           if (isTopLevelReturn && isLastReturn) {
-            return void context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
@@ -189,7 +193,7 @@ export default util.createRule<Options, MessageId>({
           }
 
           // move before the `return` keyword
-          return void context.report({
+          return context.report({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
@@ -208,7 +212,8 @@ export default util.createRule<Options, MessageId>({
 
         // handle generic case
         if (options.ignoreVoidOperator) {
-          return void context.report({
+          // this would be reported by this rule btw. such irony
+          return context.report({
             node,
             messageId: 'invalidVoidExprWrapVoid',
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
