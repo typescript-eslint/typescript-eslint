@@ -127,7 +127,9 @@ promise.then(value => void window.postMessage(value));
 
 // now it's explicit that we don't want to return anything
 function doSomething() {
-  if (!somethingToDo) return void console.error('Nothing to do!');
+  if (!somethingToDo) {
+    return void console.error('Nothing to do!');
+  }
 
   console.log('Doing a thing...');
 }
