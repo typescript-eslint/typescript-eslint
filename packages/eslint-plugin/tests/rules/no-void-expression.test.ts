@@ -119,6 +119,23 @@ ruleTester.run('no-void-expression', rule, {
       `,
     },
     {
+      code: noFormat`
+        function f() {
+          console.log('foo')
+          return ['bar', 'baz'].forEach(console.log)
+          console.log('quux')
+        }
+      `,
+      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturn' }],
+      output: noFormat`
+        function f() {
+          console.log('foo')
+          ;['bar', 'baz'].forEach(console.log); return;
+          console.log('quux')
+        }
+      `,
+    },
+    {
       code: `
         function f() {
           console.log('foo');
@@ -130,6 +147,21 @@ ruleTester.run('no-void-expression', rule, {
         function f() {
           console.log('foo');
           console.log('bar');
+        }
+      `,
+    },
+    {
+      code: noFormat`
+        function f() {
+          console.log('foo')
+          return ['bar', 'baz'].forEach(console.log)
+        }
+      `,
+      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturnLast' }],
+      output: noFormat`
+        function f() {
+          console.log('foo')
+          ;['bar', 'baz'].forEach(console.log);
         }
       `,
     },

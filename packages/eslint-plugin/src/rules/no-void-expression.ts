@@ -1,16 +1,12 @@
 import {
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
-import {
-  isClosingParenToken,
-  isOpeningParenToken,
-  isParenthesized,
-} from '../util';
 
 export type Options = [
   {
@@ -109,10 +105,11 @@ export default util.createRule<Options, MessageId>({
           return fixer.replaceText(node, newNodeText);
         };
 
-        // handle arrow function shorthand
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-          // handle wrapping with `void`
+          // handle arrow function shorthand
+
           if (options.ignoreVoidOperator) {
+            // handle wrapping with `void`
             return context.report({
               node,
               messageId: 'invalidVoidExprArrowWrapVoid',
@@ -129,14 +126,14 @@ export default util.createRule<Options, MessageId>({
               const arrowBody = arrowFunction.body;
               const arrowBodyText = sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (isParenthesized(arrowBody, sourceCode)) {
+              if (util.isParenthesized(arrowBody, sourceCode)) {
                 const bodyOpeningParen = sourceCode.getTokenBefore(
                   arrowBody,
-                  isOpeningParenToken,
+                  util.isOpeningParenToken,
                 )!;
                 const bodyClosingParen = sourceCode.getTokenAfter(
                   arrowBody,
-                  isClosingParenToken,
+                  util.isClosingParenToken,
                 )!;
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
@@ -148,10 +145,11 @@ export default util.createRule<Options, MessageId>({
           });
         }
 
-        // handle return statement
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
-          // handle wrapping with `void`
+          // handle return statement
+
           if (options.ignoreVoidOperator) {
+            // handle wrapping with `void`
             return context.report({
               node,
               messageId: 'invalidVoidExprReturnWrapVoid',
@@ -159,34 +157,21 @@ export default util.createRule<Options, MessageId>({
             });
           }
 
-          // handle moving to it's own statement
           const returnStmt = invalidAncestor;
-          let isTopLevelReturn = false;
-          let isLastReturn = false;
-          if (returnStmt.parent?.type === AST_NODE_TYPES.BlockStatement) {
-            const block = returnStmt.parent;
-            const blockType = block.parent?.type;
-            if (
-              blockType === AST_NODE_TYPES.FunctionDeclaration ||
-              blockType === AST_NODE_TYPES.FunctionExpression ||
-              blockType === AST_NODE_TYPES.ArrowFunctionExpression
-            ) {
-              isTopLevelReturn = true;
-            }
-            if (block.body.indexOf(returnStmt) === block.body.length - 1) {
-              isLastReturn = true;
-            }
-          }
 
-          // remove the `return` keyword
-          if (isTopLevelReturn && isLastReturn) {
+          if (isFinalReturn(returnStmt)) {
+            // remove the `return` keyword
             return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
                 const returnValue = returnStmt.argument!;
                 const returnValueText = sourceCode.getText(returnValue);
-                const newReturnStmtText = `${returnValueText};`;
+                let newReturnStmtText = `${returnValueText};`;
+                if (isPreventingASI(returnValue, sourceCode)) {
+                  // put a semicolon at the beginning of the line
+                  newReturnStmtText = `;${newReturnStmtText}`;
+                }
                 return fixer.replaceText(returnStmt, newReturnStmtText);
               },
             });
@@ -200,6 +185,10 @@ export default util.createRule<Options, MessageId>({
               const returnValue = returnStmt.argument!;
               const returnValueText = sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
+              if (isPreventingASI(returnValue, sourceCode)) {
+                // put a semicolon at the beginning of the line
+                newReturnStmtText = `;${newReturnStmtText}`;
+              }
               if (returnStmt.parent?.type !== AST_NODE_TYPES.BlockStatement) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
@@ -282,6 +271,62 @@ export default util.createRule<Options, MessageId>({
 
       // any other parent is invalid
       return parent;
+    }
+
+    /** Checks whether the return statement is the last statement in a function body. */
+    function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
+      // the parent must be a block
+      const block = util.nullThrows(
+        node.parent,
+        util.NullThrowsReasons.MissingParent,
+      );
+      if (block.type !== AST_NODE_TYPES.BlockStatement) {
+        // e.g. `if (cond) return;` (not in a block)
+        return false;
+      }
+
+      // the block's parent must be a function
+      const blockParent = util.nullThrows(
+        block.parent,
+        util.NullThrowsReasons.MissingParent,
+      );
+      if (
+        ![
+          AST_NODE_TYPES.FunctionDeclaration,
+          AST_NODE_TYPES.FunctionExpression,
+          AST_NODE_TYPES.ArrowFunctionExpression,
+        ].includes(blockParent.type)
+      ) {
+        // e.g. `if (cond) { return; }`
+        // not in a top-level function block
+        return false;
+      }
+
+      // must be the last child of the block
+      if (block.body.indexOf(node) < block.body.length - 1) {
+        // not the last statement in the block
+        return false;
+      }
+
+      return true;
+    }
+
+    /**
+     * Checks whether the given node, if placed on its own line,
+     * would prevent automatic semicolon insertion on the line before.
+     *
+     * This happens if the line begins with `(`, `[` or `` ` ``
+     */
+    function isPreventingASI(
+      node: TSESTree.Expression,
+      sourceCode: Readonly<TSESLint.SourceCode>,
+    ): boolean {
+      const startToken = util.nullThrows(
+        sourceCode.getFirstToken(node),
+        util.NullThrowsReasons.MissingToken('first token', node.type),
+      );
+
+      return ['(', '[', '`'].includes(startToken.value);
     }
   },
 });
