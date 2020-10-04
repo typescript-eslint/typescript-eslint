@@ -1,5 +1,3 @@
-/* eslint-disable eslint-comments/no-use */
-/* eslint sort-keys: error */
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
