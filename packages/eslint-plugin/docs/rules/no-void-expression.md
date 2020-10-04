@@ -21,7 +21,9 @@ promise.then(value => window.postMessage(value));
 
 // it looks like we are returning the result of `console.error` (fixable)
 function doSomething() {
-  if (!somethingToDo) return console.error('Nothing to do!');
+  if (!somethingToDo) {
+    return console.error('Nothing to do!');
+  }
 
   console.log('Doing a thing...');
 }
