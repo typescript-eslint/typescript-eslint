@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.3.0...v4.4.0) (2020-10-05)
+
+
+### Features
+
+* **eslint-plugin:** add `consistent-indexed-object-style` rule ([#2401](https://github.com/typescript-eslint/typescript-eslint/issues/2401)) ([d7dc108](https://github.com/typescript-eslint/typescript-eslint/commit/d7dc108580cdcb9890ac0539e7223aedbff4a0ed))
+* **eslint-plugin:** add extension rule `no-duplicate-imports` ([#2609](https://github.com/typescript-eslint/typescript-eslint/issues/2609)) ([498f397](https://github.com/typescript-eslint/typescript-eslint/commit/498f397ff3898dde631f37311615b555f38a414e))
+
+
+
+
+
 # [4.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.2.0...v4.3.0) (2020-09-28)
 
 
