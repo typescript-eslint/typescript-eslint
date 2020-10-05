@@ -85,6 +85,11 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('keyword-spacing', rule, {
   valid: [
+    {
+      code: 'function foo () { return <Foo>this.bar(); }',
+      options: [{ overrides: { this: { before: false } } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
     //----------------------------------------------------------------------
     // as (typing)
     //----------------------------------------------------------------------
@@ -114,6 +119,13 @@ ruleTester.run('keyword-spacing', rule, {
     },
   ],
   invalid: [
+    {
+      code: 'function foo () { return <Foo> this.bar(); }',
+      output: 'function foo () { return <Foo>this.bar(); }',
+      options: [{ overrides: { this: { before: false } } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: unexpectedBefore('this'),
+    },
     //----------------------------------------------------------------------
     // as (typing)
     //----------------------------------------------------------------------
