@@ -35,7 +35,8 @@ export default util.createRule<Options, MessageIds>({
   create(context, [option]) {
     const rules = baseRule.create(context);
     const includeExports = option.includeExports;
-    const typeImports = new Set();
+    const typeMemberImports = new Set();
+    const typeDefaultImports = new Set();
     const typeExports = new Set();
 
     function report(
@@ -62,16 +63,32 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
+    function isAllMemberImport(node: TSESTree.ImportDeclaration): boolean {
+      return node.specifiers.every(
+        specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
+      );
+    }
+
     function checkTypeImport(node: TSESTree.ImportDeclaration): void {
       if (isStringLiteral(node.source)) {
         const value = node.source.value;
-        if (typeImports.has(value)) {
+        const isMemberImport = isAllMemberImport(node);
+        if (
+          isMemberImport
+            ? typeMemberImports.has(value)
+            : typeDefaultImports.has(value)
+        ) {
           report('importType', node, value);
         }
+
         if (includeExports && typeExports.has(value)) {
           report('importTypeAs', node, value);
         }
-        typeImports.add(value);
+        if (isMemberImport) {
+          typeMemberImports.add(value);
+        } else {
+          typeDefaultImports.add(value);
+        }
       }
     }
 
@@ -83,7 +100,7 @@ export default util.createRule<Options, MessageIds>({
         if (typeExports.has(value)) {
           report('exportType', node, value);
         }
-        if (typeImports.has(value)) {
+        if (typeMemberImports.has(value) || typeDefaultImports.has(value)) {
           report('exportTypeAs', node, value);
         }
         typeExports.add(value);
