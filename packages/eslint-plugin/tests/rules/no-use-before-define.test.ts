@@ -357,7 +357,7 @@ declare global {
     }
   }
 }
-    `
+    `,
   ],
   invalid: [
     {

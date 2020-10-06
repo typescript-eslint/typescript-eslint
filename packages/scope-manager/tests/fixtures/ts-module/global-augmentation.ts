@@ -1,4 +1,3 @@
 //// @sourceType = module
 
-declare global {
-}
+declare global {}
