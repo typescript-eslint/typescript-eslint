@@ -347,6 +347,17 @@ const React = require('react');
     `
 type T = (value: unknown) => value is Id;
     `,
+    `
+global.foo = true;
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      foo?: boolean;
+    }
+  }
+}
+    `,
   ],
   invalid: [
     {
