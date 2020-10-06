@@ -80,7 +80,7 @@ const defaults = {
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
   allowDirectConstAssertionInArrowFunctions: true,
-  allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+  allowConciseArrowFunctionExpressionsStartingWithVoid: false,
 };
 ```
 
