@@ -106,6 +106,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import noDuplicateImports from './no-duplicate-imports';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -212,6 +213,7 @@ export default {
   'type-annotation-spacing': typeAnnotationSpacing,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'no-duplicate-imports': noDuplicateImports,
   indent: indent,
   quotes: quotes,
   semi: semi,
