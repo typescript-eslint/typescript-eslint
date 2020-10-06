@@ -5,13 +5,31 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('no-dupe-class-members', rule, {
+ruleTester.run('no-duplicate-imports', rule, {
   valid: [
     {
       code: "import type foo from 'foo';",
     },
     {
       code: "import type { foo } from 'foo';",
+    },
+    {
+      code: `
+        import type { foo } from 'foo';
+        import type Bar from 'foo';
+      `,
+    },
+    {
+      code: `
+        import type Foo from 'foo';
+        import type { bar } from 'foo';
+      `,
+    },
+    {
+      code: `
+        import type Foo from 'foo';
+        import type { bar as Bar } from 'foo';
+      `,
     },
     {
       code: `
@@ -69,6 +87,14 @@ ruleTester.run('no-dupe-class-members', rule, {
       `,
       options: [{ includeExports: true }],
     },
+    {
+      code: `
+        import type Foo from 'foo';
+        import type { bar } from 'foo';
+        export type { bar };
+      `,
+      options: [{ includeExports: true }],
+    },
   ],
   invalid: [
     {
@@ -112,6 +138,15 @@ ruleTester.run('no-dupe-class-members', rule, {
       code: `
         import type { foo } from 'foo';
         export type { foo } from 'foo';
+      `,
+      options: [{ includeExports: true }],
+      errors: [{ messageId: 'exportTypeAs' }],
+    },
+    {
+      code: `
+        import type Foo from 'foo';
+        import type { bar } from 'foo';
+        export type { bar } from 'foo';
       `,
       options: [{ includeExports: true }],
       errors: [{ messageId: 'exportTypeAs' }],
