@@ -61,14 +61,13 @@ throw new CustomError();
     `
 class CustomError1 extends Error {}
 class CustomError2 extends CustomError1 {}
-throw new CustomError();
+throw new CustomError2();
     `,
     'throw (foo = new Error());',
     'throw (1, 2, new Error());',
     "throw 'literal' && new Error();",
     "throw new Error() || 'literal';",
-    "throw foo ? new Error() : 'literal';",
-    "throw foo ? 'literal' : new Error();",
+    'throw foo ? new Error() : new Error();',
     `
 function* foo() {
   let index = 0;
@@ -112,6 +111,18 @@ declare const foo: Error | string;
 throw foo as Error;
     `,
     'throw new Error() as Error;',
+    `
+declare const nullishError: Error | undefined;
+throw nullishError ?? new Error();
+    `,
+    `
+declare const nullishError: Error | undefined;
+throw nullishError || new Error();
+    `,
+    `
+declare const nullishError: Error | undefined;
+throw nullishError ? nullishError : new Error();
+    `,
   ],
   invalid: [
     {
@@ -207,19 +218,31 @@ throw a + 'b';
     },
     {
       code: "throw 'literal' && 'not an Error';",
-      errors: [
-        {
-          messageId: 'object',
-        },
-      ],
+      errors: [{ messageId: 'object' }],
+    },
+    {
+      code: "throw 'literal' || new Error();",
+      errors: [{ messageId: 'object' }],
+    },
+    {
+      code: "throw new Error() && 'literal';",
+      errors: [{ messageId: 'object' }],
+    },
+    {
+      code: "throw 'literal' ?? new Error();",
+      errors: [{ messageId: 'object' }],
     },
     {
       code: "throw foo ? 'not an Error' : 'literal';",
-      errors: [
-        {
-          messageId: 'object',
-        },
-      ],
+      errors: [{ messageId: 'object' }],
+    },
+    {
+      code: "throw foo ? new Error() : 'literal';",
+      errors: [{ messageId: 'object' }],
+    },
+    {
+      code: "throw foo ? 'literal' : new Error();",
+      errors: [{ messageId: 'object' }],
     },
     {
       code: 'throw `${err}`;',
