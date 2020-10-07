@@ -12,7 +12,7 @@ ruleTester.run('ts-expect-error', rule, {
 /*
 // @ts-expect-error running with long description in a block
 */
-      `,
+    `,
     {
       code: '// @ts-expect-error',
       options: [{ 'ts-expect-error': false }],
