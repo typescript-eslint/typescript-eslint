@@ -1,7 +1,4 @@
-import {
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 interface Options {
@@ -101,29 +98,19 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
-    /**
-     * Test for whether a single line comment's text contains a directive.
-     */
     const commentDirectiveRegExSingleLine = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
-
-    /**
-     * Test for whether a multi-line comment's last line contains a directive.
-     */
     const commentDirectiveRegExMultiLine = /^\s*(?:\/|\*)*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();
-
-    function isLineComment(comment: TSESTree.Comment): boolean {
-      return comment.type === AST_TOKEN_TYPES.Line;
-    }
 
     return {
       Program(): void {
         const comments = sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          const [, directive, description] = isLineComment(comment)
-            ? commentDirectiveRegExSingleLine.exec(comment.value) ?? []
-            : commentDirectiveRegExMultiLine.exec(comment.value) ?? [];
+          const [, directive, description] =
+            comment.type === AST_TOKEN_TYPES.Line
+              ? commentDirectiveRegExSingleLine.exec(comment.value) ?? []
+              : commentDirectiveRegExMultiLine.exec(comment.value) ?? [];
 
           const fullDirective = `ts-${directive}` as keyof Options;
 
