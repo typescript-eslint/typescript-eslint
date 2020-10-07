@@ -41,7 +41,7 @@ const defaultOptions: Options = {
 
 A value of `true` for a particular directive means that this rule will report if it finds any usage of said directive.
 
-For example, with the defaults above the following patterns are considered warnings for single line or a comment block lines:
+For example, with the defaults above the following patterns are considered warnings for single line or comment block lines:
 
 ```ts
 if (false) {
