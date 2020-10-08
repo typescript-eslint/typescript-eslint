@@ -1,7 +1,7 @@
 import {
-  TSESTree,
-  TSESLint,
   AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import baseRule from 'eslint/lib/rules/no-unused-vars';
@@ -327,18 +327,22 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const scope = context.getScope();
-      const { variableScope } = scope;
-      if (variableScope !== scope) {
-        for (const id of identifiers) {
-          const superVar = variableScope.set.get(id.name);
-          if (superVar) {
-            superVar.eslintUsed = true;
-          }
-        }
-      } else {
-        for (const id of identifiers) {
-          context.markVariableAsUsed(id.name);
+      let scope = context.getScope();
+      const shouldUseUpperScope = [
+        AST_NODE_TYPES.TSModuleDeclaration,
+        AST_NODE_TYPES.TSDeclareFunction,
+      ].includes(node.type);
+
+      if (scope.variableScope !== scope) {
+        scope = scope.variableScope;
+      } else if (shouldUseUpperScope && scope.upper) {
+        scope = scope.upper;
+      }
+
+      for (const id of identifiers) {
+        const superVar = scope.set.get(id.name);
+        if (superVar) {
+          superVar.eslintUsed = true;
         }
       }
     }
