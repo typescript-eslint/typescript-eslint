@@ -132,7 +132,9 @@ declare function parse(
 Example usage:
 
 ```js
-import { parse } from '@typescript-eslint/typescript-estree';
+import TypescriptEstree from '@typescript-eslint/typescript-estree';
+
+const { parse } = TypescriptEstree;
 
 const code = `const hello: string = 'world';`;
 const ast = parse(code, {
@@ -227,7 +229,9 @@ declare function parseAndGenerateServices(
 Example usage:
 
 ```js
-import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
+import TypescriptEstree from '@typescript-eslint/typescript-estree';
+
+const { parseAndGenerateServices } = TypescriptEstree;
 
 const code = `const hello: string = 'world';`;
 const ast = parseAndGenerateServices(code, {
