@@ -74,13 +74,14 @@ function foo(): T {
 
 Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`.
 
-```ts
+```tsx
 const x: T = { ... };
 const y = { ... } as any;
 const z = { ... } as unknown;
 foo({ ... } as T);
 new Clazz({ ... } as T);
 function foo() { throw { bar: 5 } as Foo }
+const foo = <Foo props={{ ... } as Bar}/>;
 ```
 
 ## When Not To Use It
