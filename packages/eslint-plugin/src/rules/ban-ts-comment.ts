@@ -107,10 +107,12 @@ export default util.createRule<[Options], MessageIds>({
         const comments = sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          const [, directive, description] =
-            comment.type === AST_TOKEN_TYPES.Line
-              ? commentDirectiveRegExSingleLine.exec(comment.value) ?? []
-              : commentDirectiveRegExMultiLine.exec(comment.value) ?? [];
+          let regExp = commentDirectiveRegExSingleLine;
+
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
+            regExp = commentDirectiveRegExMultiLine;
+          }
+          const [, directive, description] = regExp.exec(comment.value) ?? [];
 
           const fullDirective = `ts-${directive}` as keyof Options;
 
