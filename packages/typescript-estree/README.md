@@ -267,12 +267,6 @@ A couple of years after work on this parser began, the TypeScript Team at Micros
 
 I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see [the code](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree/tests/ast-alignment) for more details.
 
-## Build/Test Commands
-
-- `npm test` - run all tests
-- `npm run unit-tests` - run only unit tests
-- `npm run ast-alignment-tests` - run only Babylon AST alignment tests
-
 ## Debugging
 
 If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
