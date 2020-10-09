@@ -889,15 +889,16 @@ export declare namespace Foo {
     {
       code: `
 declare namespace A {
-  export interface A {};
+  export interface A {}
 }
-            `,
+      `,
       filename: 'foo.d.ts',
     },
     {
       code: `
-declare function A(A: string) {}
-            `,
+declare function A(A: string) {
+};
+      `,
       filename: 'foo.d.ts',
     },
   ],
