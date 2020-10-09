@@ -10,7 +10,7 @@ ruleTester.run('ts-expect-error', rule, {
     '// just a comment containing @ts-expect-error somewhere',
     `
 /*
-// @ts-expect-error running with long description in a block
+ @ts-expect-error running with long description in a block
 */
     `,
     {
@@ -180,7 +180,7 @@ ruleTester.run('ts-ignore', rule, {
     {
       code: `
 /*
-// @ts-ignore running with long description in a block
+ @ts-ignore running with long description in a block
 */
       `,
       options: [
@@ -230,7 +230,7 @@ ruleTester.run('ts-ignore', rule, {
     {
       code: `
 /*
-// @ts-ignore
+ @ts-ignore
 */
       `,
       options: [{ 'ts-ignore': true }],
@@ -347,7 +347,7 @@ ruleTester.run('ts-nocheck', rule, {
     {
       code: `
 /*
-// @ts-nocheck running with long description in a block
+ @ts-nocheck running with long description in a block
 */
       `,
       options: [
@@ -397,7 +397,7 @@ ruleTester.run('ts-nocheck', rule, {
     {
       code: `
 /*
-// @ts-nocheck
+ @ts-nocheck
 */
       `,
       options: [{ 'ts-nocheck': true }],
@@ -480,7 +480,7 @@ ruleTester.run('ts-check', rule, {
     '// just a comment containing @ts-check somewhere',
     `
 /*
-// @ts-check running with long description in a block
+ @ts-check running with long description in a block
 */
     `,
     {
@@ -523,7 +523,7 @@ ruleTester.run('ts-check', rule, {
     {
       code: `
 /*
-// @ts-check
+ @ts-check
 */
       `,
       options: [{ 'ts-check': true }],
