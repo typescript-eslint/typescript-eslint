@@ -98,6 +98,10 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
+    /*
+      Taken from the regex used in the official TypeScript repo -
+      https://github.com/microsoft/TypeScript/blob/master/src/compiler/scanner.ts#L281-L289
+    */
     const commentDirectiveRegExSingleLine = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const commentDirectiveRegExMultiLine = /^\s*(?:\/|\*)*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();
