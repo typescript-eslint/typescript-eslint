@@ -896,8 +896,7 @@ declare namespace A {
     },
     {
       code: `
-declare function A(A: string) {
-};
+declare function A(A: string): string;
       `,
       filename: 'foo.d.ts',
     },
