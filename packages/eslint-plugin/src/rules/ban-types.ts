@@ -28,7 +28,7 @@ function removeSpaces(str: string): string {
   return str.replace(/ /g, '');
 }
 
-function stringifyTypeName(
+function stringifyNode(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): string {
@@ -175,7 +175,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkBannedTypes(
       typeNode: TSESTree.Node,
-      name = stringifyTypeName(typeNode, context.getSourceCode()),
+      name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
       const bannedType = bannedTypes.get(name);
 
@@ -223,8 +223,12 @@ export default util.createRule<Options, MessageIds>({
 
         checkBannedTypes(node);
       },
-      TSTypeReference({ typeName }): void {
-        checkBannedTypes(typeName);
+      TSTypeReference(node): void {
+        checkBannedTypes(node.typeName);
+
+        if (node.typeParameters) {
+          checkBannedTypes(node);
+        }
       },
     };
   },

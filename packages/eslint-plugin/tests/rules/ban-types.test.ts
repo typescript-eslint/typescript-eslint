@@ -487,6 +487,48 @@ let bar: object = {};
         },
       ],
     },
+    {
+      code: 'type Foo = Bar<any>;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Bar<any>',
+            customMessage: " Don't use `any` as a type parameter to `Bar`",
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+      options: [
+        {
+          types: {
+            'Bar<any>': "Don't use `any` as a type parameter to `Bar`",
+          },
+        },
+      ],
+    },
+    {
+      code: noFormat`type Foo = Bar<A,B>;`,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Bar<A,B>',
+            customMessage: " Don't pass `A, B` as parameters to `Bar`",
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+      options: [
+        {
+          types: {
+            'Bar<A, B>': "Don't pass `A, B` as parameters to `Bar`",
+          },
+        },
+      ],
+    },
     ...objectReduceKey(
       TYPE_KEYWORDS,
       (acc: TSESLint.InvalidTestCase<MessageIds, Options>[], key) => {
