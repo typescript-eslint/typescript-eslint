@@ -96,13 +96,21 @@ function isOuterVariable(
  * Recursively checks whether or not a given reference has a type query declaration among it's parents
  */
 function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
-  if (node.type === AST_NODE_TYPES.TSTypeQuery) {
-    return true;
-  } else if (!node.parent) {
-    return false;
-  }
+  switch (node.type) {
+    case AST_NODE_TYPES.TSTypeQuery:
+      return true;
 
-  return referenceContainsTypeQuery(node.parent);
+    case AST_NODE_TYPES.TSQualifiedName:
+    case AST_NODE_TYPES.Identifier:
+      if (!node.parent) {
+        return false;
+      }
+      return referenceContainsTypeQuery(node.parent);
+
+    default:
+      // if we find a different node, there's no chance that we're in a TSTypeQuery
+      return false;
+  }
 }
 
 /**
