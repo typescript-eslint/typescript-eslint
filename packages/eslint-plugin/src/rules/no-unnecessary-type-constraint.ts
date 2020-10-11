@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as semver from 'semver';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -10,8 +13,6 @@ type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
   'constraint'
 >;
-
-type KeywordFilter = (type: ts.Type) => boolean;
 
 const is3dot5 = semver.satisfies(
   ts.version,
@@ -34,34 +35,31 @@ export default util.createRule({
       category: 'Best Practices',
       description: 'Disallows unnecessary constraints on generic types',
       recommended: false,
-      requiresTypeChecking: true,
       suggestion: true,
     },
     fixable: 'code',
     messages: {
       unnecessaryConstraint:
-        'Constraining a generic type to {{constraint}} does nothing and is unnecessary.',
+        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
     },
     schema: [],
     type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
-
-    const keywordFilters: [KeywordFilter, string][] = [];
-    if (is3dot5) {
-      keywordFilters.push([util.isTypeUnknownType, 'unknown']);
-
-      if (is3dot9) {
-        keywordFilters.push([util.isTypeAnyType, 'any']);
-      }
-    }
-
-    if (!keywordFilters.length) {
+    if (!is3dot5) {
       return {};
     }
+
+    // In theory, we could use the type checker for more advanced constraint types...
+    // ...but in practice, these types are rare, and likely not worth requiring type info.
+    // https://github.com/typescript-eslint/typescript-eslint/pull/2516#discussion_r495731858
+    const unnecessaryConstraints = is3dot9
+      ? new Map([
+          [AST_NODE_TYPES.TSAnyKeyword, 'any'],
+          [AST_NODE_TYPES.TSUnknownKeyword, 'unknown'],
+        ])
+      : new Map([[AST_NODE_TYPES.TSUnknownKeyword, 'unknown']]);
 
     const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
 
@@ -69,26 +67,23 @@ export default util.createRule({
       node: TypeParameterWithConstraint,
       inArrowFunction: boolean,
     ): void => {
-      const constraint = parserServices.esTreeNodeToTSNodeMap.get(
-        node.constraint,
-      );
-      const constraintType = checker.getTypeAtLocation(constraint);
+      const constraint = unnecessaryConstraints.get(node.constraint.type);
 
-      for (const [filter, type] of keywordFilters) {
-        if (filter(constraintType)) {
-          context.report({
-            data: { constraint: type },
-            fix(fixer) {
-              return fixer.replaceTextRange(
-                [node.name.range[1], node.constraint.range[1]],
-                inArrowFunction && inJsx ? ',' : '',
-              );
-            },
-            messageId: 'unnecessaryConstraint',
-            node,
-          });
-          return;
-        }
+      if (constraint) {
+        context.report({
+          data: {
+            constraint,
+            name: node.name.name,
+          },
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              [node.name.range[1], node.constraint.range[1]],
+              inArrowFunction && inJsx ? ',' : '',
+            );
+          },
+          messageId: 'unnecessaryConstraint',
+          node,
+        });
       }
     };
 

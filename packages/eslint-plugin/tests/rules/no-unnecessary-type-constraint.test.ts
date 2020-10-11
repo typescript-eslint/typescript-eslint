@@ -19,6 +19,11 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
     'function data<T, U>() {}',
     'function data<T extends number>() {}',
     'function data<T extends number | string>() {}',
+    'function data<T extends any | number>() {}',
+    `
+type TODO = any;
+function data<T extends TODO>() {}
+    `,
     'const data = () => {};',
     'const data = <T>() => {};',
     'const data = <T, U>() => {};',
@@ -30,7 +35,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'function data<T extends any>() {}',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
           column: 15,
@@ -43,7 +48,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'function data<T extends any, U>() {}',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
           column: 15,
@@ -56,7 +61,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'function data<T, U extends any>() {}',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'U' },
           messageId: 'unnecessaryConstraint',
           endColumn: 31,
           column: 18,
@@ -69,7 +74,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'function data<T extends any, U extends T>() {}',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
           column: 15,
@@ -82,7 +87,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'const data = <T extends any>() => {};',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
           column: 15,
@@ -93,38 +98,12 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       output: noFormat`const data = <T,>() => {};`,
     },
     {
-      code: 'function data<T extends any | number>() {}',
-      errors: [
-        {
-          data: { constraint: 'any' },
-          messageId: 'unnecessaryConstraint',
-          endColumn: 37,
-          column: 15,
-          line: 1,
-        },
-      ],
-      output: 'function data<T>() {}',
-    },
-    {
       code: 'function data<T extends unknown>() {}',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 32,
-          column: 15,
-          line: 1,
-        },
-      ],
-      output: 'function data<T>() {}',
-    },
-    {
-      code: 'function data<T extends unknown | number>() {}',
-      errors: [
-        {
-          data: { constraint: 'unknown' },
-          messageId: 'unnecessaryConstraint',
-          endColumn: 41,
           column: 15,
           line: 1,
         },
@@ -135,22 +114,9 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'const data = <T extends any>() => {};',
       errors: [
         {
-          data: { constraint: 'any' },
+          data: { constraint: 'any', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
-          column: 15,
-          line: 1,
-        },
-      ],
-      output: 'const data = <T>() => {};',
-    },
-    {
-      code: 'const data = <T extends any | number>() => {};',
-      errors: [
-        {
-          data: { constraint: 'any' },
-          messageId: 'unnecessaryConstraint',
-          endColumn: 37,
           column: 15,
           line: 1,
         },
@@ -161,22 +127,9 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'const data = <T extends unknown>() => {};',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 32,
-          column: 15,
-          line: 1,
-        },
-      ],
-      output: 'const data = <T>() => {};',
-    },
-    {
-      code: 'const data = <T extends unknown | number>() => {};',
-      errors: [
-        {
-          data: { constraint: 'unknown' },
-          messageId: 'unnecessaryConstraint',
-          endColumn: 41,
           column: 15,
           line: 1,
         },
@@ -187,7 +140,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'class Data<T extends unknown> {}',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 29,
           column: 12,
@@ -200,7 +153,7 @@ ruleTester.run('no-unnecessary-type-constraint', rule, {
       code: 'const Data = class<T extends unknown> {};',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 37,
           column: 20,
@@ -217,7 +170,7 @@ class Data {
       `,
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 27,
           column: 10,
@@ -238,7 +191,7 @@ const Data = class {
       `,
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 27,
           column: 10,
@@ -255,7 +208,7 @@ const Data = class {
       code: 'interface Data<T extends unknown> {}',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 33,
           column: 16,
@@ -268,7 +221,7 @@ const Data = class {
       code: 'type Data<T extends unknown> = {};',
       errors: [
         {
-          data: { constraint: 'unknown' },
+          data: { constraint: 'unknown', name: 'T' },
           messageId: 'unnecessaryConstraint',
           endColumn: 28,
           column: 11,
