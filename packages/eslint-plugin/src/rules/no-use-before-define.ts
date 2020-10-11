@@ -93,6 +93,37 @@ function isOuterVariable(
 }
 
 /**
+ * Recursively checks whether or not a given reference has a type query declaration among it's parents
+ */
+function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSTypeQuery:
+      return true;
+
+    case AST_NODE_TYPES.TSQualifiedName:
+    case AST_NODE_TYPES.Identifier:
+      if (!node.parent) {
+        return false;
+      }
+      return referenceContainsTypeQuery(node.parent);
+
+    default:
+      // if we find a different node, there's no chance that we're in a TSTypeQuery
+      return false;
+  }
+}
+
+/**
+ * Checks whether or not a given reference is a type reference.
+ */
+function isTypeReference(reference: TSESLint.Scope.Reference): boolean {
+  return (
+    reference.isTypeReference ||
+    referenceContainsTypeQuery(reference.identifier)
+  );
+}
+
+/**
  * Checks whether or not a given location is inside of the range of a given node.
  */
 function isInRange(
@@ -219,7 +250,7 @@ export default util.createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
-      if (reference.isTypeReference && options.ignoreTypeReferences) {
+      if (options.ignoreTypeReferences && isTypeReference(reference)) {
         return false;
       }
       if (isFunction(variable)) {
