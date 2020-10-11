@@ -21,18 +21,9 @@ function createError(
 function parseWithBabelParser(text: string, jsx = true): any {
   const babel = require('@babel/parser');
   const plugins: ParserPlugin[] = [
-    'asyncGenerators',
-    'bigInt',
     'classProperties',
     'decorators-legacy',
-    'dynamicImport',
     'estree',
-    'importMeta',
-    'logicalAssignment',
-    'nullishCoalescingOperator',
-    'numericSeparator',
-    'objectRestSpread',
-    'optionalChaining',
     'typescript',
   ];
   if (jsx) {
