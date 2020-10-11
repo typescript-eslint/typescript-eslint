@@ -140,7 +140,8 @@ export default util.createRule<Options, MessageIds>({
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||
-          node.parent.type === AST_NODE_TYPES.AssignmentPattern)
+          node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
+          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer)
       ) {
         return;
       }
