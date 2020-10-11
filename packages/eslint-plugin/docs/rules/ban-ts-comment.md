@@ -50,8 +50,7 @@ if (false) {
 }
 if (false) {
   /*
-  @ts-ignore: Unreachable code error
-  */
+  @ts-ignore: Unreachable code error */
   console.log('hello');
 }
 ```
@@ -91,8 +90,7 @@ if (false) {
 }
 if (false) {
   /*
-  @ts-expect-error: Unreachable code error
-  */
+  @ts-expect-error: Unreachable code error */
   console.log('hello');
 }
 ```
