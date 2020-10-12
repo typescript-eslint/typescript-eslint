@@ -87,15 +87,19 @@ export default util.createRule<Options, MessageIds>({
             param.type === AST_NODE_TYPES.TSParameterProperty
               ? param.parameter
               : param;
+
+          if (
+            !ignoreInferredTypes &&
+            actualParam.typeAnnotation == null
+          ) {
+            continue;
+          }
+
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
           const isReadOnly = util.isTypeReadonly(checker, type);
-          const isIgnored =
-            !isReadOnly &&
-            ignoreInferredTypes &&
-            actualParam.typeAnnotation == null;
 
-          if (!isReadOnly && !isIgnored) {
+          if (!isReadOnly) {
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
