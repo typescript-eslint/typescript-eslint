@@ -247,6 +247,30 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
       const willNotCrash = (foo: Readonly<WithSymbol>) => {};
     `,
+    {
+      code: `
+        interface CallbackOptions {
+          prop: string;
+        }
+
+        /* eslint-disable prefer-readonly-parameter-types -- These are
+         * expected to error, but for the purposes of this test it should
+         * be assumed that the types are defined by an external dependency.
+         * See: https://github.com/typescript-eslint/typescript-eslint/issues/2079
+         */
+        type Callback = (options: CallbackOptions) => void;
+
+        const acceptsCallback = (callback: Callback) => {};
+        /* eslint-enable prefer-readonly-parameter-types */
+
+        foo(options => {});
+      `,
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -668,6 +692,38 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 8,
           column: 26,
           endColumn: 41,
+        },
+      ],
+    },
+    {
+      code: `
+        interface CallbackOptions {
+          prop: string;
+        }
+
+        /* eslint-disable prefer-readonly-parameter-types -- These are
+         * expected to error, but for the purposes of this test it should
+         * be assumed that the types are defined by an external dependency.
+         * See: https://github.com/typescript-eslint/typescript-eslint/issues/2079
+         */
+        type Callback = (options: CallbackOptions) => void;
+
+        const acceptsCallback = (callback: Callback) => {};
+        /* eslint-enable prefer-readonly-parameter-types */
+
+        foo((options: CallbackOptions) => {});
+      `,
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 16,
+          column: 14,
+          endColumn: 38,
         },
       ],
     },
