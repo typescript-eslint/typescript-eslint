@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.0...v4.4.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [ban-ts-comment] support block comments ([#2644](https://github.com/typescript-eslint/typescript-eslint/issues/2644)) ([9c3c686](https://github.com/typescript-eslint/typescript-eslint/commit/9c3c686b59b4b8fd02c479a534b5ca9b33c5ff40))
+* **eslint-plugin:** [ban-types] allow banning types with specific parameters ([#2662](https://github.com/typescript-eslint/typescript-eslint/issues/2662)) ([77732a2](https://github.com/typescript-eslint/typescript-eslint/commit/77732a2f3979f638e471b6de327b2ea0e976d568))
+* **eslint-plugin:** [consistent-type-assertions] check type assertion in jsx props ([#2653](https://github.com/typescript-eslint/typescript-eslint/issues/2653)) ([393e925](https://github.com/typescript-eslint/typescript-eslint/commit/393e92573fbde849369af1d10b9f25299ec92eaf))
+* **eslint-plugin:** [no-duplicate-imports] distinguish member, default ([#2637](https://github.com/typescript-eslint/typescript-eslint/issues/2637)) ([c71f423](https://github.com/typescript-eslint/typescript-eslint/commit/c71f423b89bf034caf2a4f1bb3ed0389b72f3aa9))
+* **eslint-plugin:** [no-throw-literal] false positive with logical expressions ([#2645](https://github.com/typescript-eslint/typescript-eslint/issues/2645)) ([57aa6c7](https://github.com/typescript-eslint/typescript-eslint/commit/57aa6c7642320074ed2b6a15e7f38e66a2fb13d1))
+* **eslint-plugin:** [no-unused-vars] fix false positives for duplicated names in namespaces ([#2659](https://github.com/typescript-eslint/typescript-eslint/issues/2659)) ([0d696c7](https://github.com/typescript-eslint/typescript-eslint/commit/0d696c72c5c9c3446902a63509d499ee95483e81))
+* **eslint-plugin:** [no-use-before-define] correctly handle typeof type references ([#2623](https://github.com/typescript-eslint/typescript-eslint/issues/2623)) ([8e44c78](https://github.com/typescript-eslint/typescript-eslint/commit/8e44c78a20410457851e5b7fe9a24777876c0aaf))
+* **scope-manager:** don't create a variable for global augmentation ([#2639](https://github.com/typescript-eslint/typescript-eslint/issues/2639)) ([6bc9325](https://github.com/typescript-eslint/typescript-eslint/commit/6bc93257ec876214743a165093b6666d713379f6))
+
+
+
+
+
 # [4.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.3.0...v4.4.0) (2020-10-05)
 
 
