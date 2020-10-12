@@ -117,6 +117,20 @@ function createHash(content: string): string {
   return content;
 }
 
+function updateCachedFileList(
+  tsconfigPath: CanonicalPath,
+  program: ts.Program,
+  extra: Extra,
+): Set<CanonicalPath> {
+  const fileList = extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect
+    ? new Set(
+        program.getSourceFiles().map(sf => getCanonicalFileName(sf.fileName)),
+      )
+    : new Set(program.getRootFileNames().map(f => getCanonicalFileName(f)));
+  programFileListCache.set(tsconfigPath, fileList);
+  return fileList;
+}
+
 /**
  * Calculate project environments using options provided by consumer and paths from config
  * @param code The code being linted
@@ -154,21 +168,12 @@ function getProgramsForProjects(
    * before we go into the process of attempting to find and update every program
    * see if we know of a program that contains this file
    */
-  for (const rawTsconfigPath of extra.projects) {
-    const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
-    const existingWatch = knownWatchProgramMap.get(tsconfigPath);
-    if (!existingWatch) {
-      continue;
-    }
-
+  for (const [tsconfigPath, existingWatch] of knownWatchProgramMap.entries()) {
     let fileList = programFileListCache.get(tsconfigPath);
     let updatedProgram: ts.Program | null = null;
     if (!fileList) {
       updatedProgram = existingWatch.getProgram().getProgram();
-      fileList = new Set(
-        updatedProgram.getRootFileNames().map(f => getCanonicalFileName(f)),
-      );
-      programFileListCache.set(tsconfigPath, fileList);
+      fileList = updateCachedFileList(tsconfigPath, updatedProgram, extra);
     }
 
     if (fileList.has(filePath)) {
@@ -209,18 +214,39 @@ function getProgramsForProjects(
 
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
-      results.push(updatedProgram);
 
+      // cache and check the file list
+      const fileList = updateCachedFileList(
+        tsconfigPath,
+        updatedProgram,
+        extra,
+      );
+      if (fileList.has(filePath)) {
+        log('Found updated program for file. %s', filePath);
+        // we can return early because we know this program contains the file
+        return [updatedProgram];
+      }
+
+      results.push(updatedProgram);
       continue;
     }
 
     const programWatch = createWatchProgram(tsconfigPath, extra);
     const program = programWatch.getProgram().getProgram();
+    program.getTypeChecker();
 
     // cache watch program and return current program
     knownWatchProgramMap.set(tsconfigPath, programWatch);
+
+    // cache and check the file list
+    const fileList = updateCachedFileList(tsconfigPath, program, extra);
+    if (fileList.has(filePath)) {
+      log('Found program for file. %s', filePath);
+      // we can return early because we know this program contains the file
+      return [program];
+    }
+
     // sets parent pointers in source files
-    program.getTypeChecker();
     results.push(program);
   }
 
@@ -323,6 +349,13 @@ function createWatchProgram(
     }),
   );
   watchCompilerHost.trace = log;
+
+  /**
+   * TODO(bradzacher): this needs refinement and development, but we're allowing users to opt-in to this for now
+   * See https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   */
+  watchCompilerHost.useSourceOfProjectReferenceRedirect = (): boolean =>
+    extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
