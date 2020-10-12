@@ -232,11 +232,11 @@ function getProgramsForProjects(
     }
 
     const programWatch = createWatchProgram(tsconfigPath, extra);
-    const program = programWatch.getProgram().getProgram();
-    program.getTypeChecker();
-
-    // cache watch program and return current program
     knownWatchProgramMap.set(tsconfigPath, programWatch);
+
+    const program = programWatch.getProgram().getProgram();
+    // sets parent pointers in source files
+    program.getTypeChecker();
 
     // cache and check the file list
     const fileList = updateCachedFileList(tsconfigPath, program, extra);
@@ -246,7 +246,6 @@ function getProgramsForProjects(
       return [program];
     }
 
-    // sets parent pointers in source files
     results.push(program);
   }
 
