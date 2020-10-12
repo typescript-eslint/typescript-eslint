@@ -8,11 +8,9 @@ const ruleTester = new RuleTester({
 ruleTester.run('ts-expect-error', rule, {
   valid: [
     '// just a comment containing @ts-expect-error somewhere',
-    '/* @ts-expect-error */',
-    '/** @ts-expect-error */',
     `
 /*
-// @ts-expect-error in a block
+ @ts-expect-error running with long description in a block
 */
     `,
     {
@@ -40,6 +38,46 @@ ruleTester.run('ts-expect-error', rule, {
   invalid: [
     {
       code: '// @ts-expect-error',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-expect-error */',
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+@ts-expect-error
+*/
+      `,
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/** @ts-expect-error */',
       options: [{ 'ts-expect-error': true }],
       errors: [
         {
@@ -130,13 +168,6 @@ if (false) {
 ruleTester.run('ts-ignore', rule, {
   valid: [
     '// just a comment containing @ts-ignore somewhere',
-    '/* @ts-ignore */',
-    '/** @ts-ignore */',
-    `
-/*
-// @ts-ignore in a block
-*/
-    `,
     {
       code: '// @ts-ignore',
       options: [{ 'ts-ignore': false }],
@@ -145,6 +176,19 @@ ruleTester.run('ts-ignore', rule, {
       code:
         '// @ts-ignore I think that I am exempted from any need to follow the rules!',
       options: [{ 'ts-ignore': 'allow-with-description' }],
+    },
+    {
+      code: `
+/*
+ @ts-ignore running with long description in a block
+*/
+      `,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
+          minimumDescriptionLength: 21,
+        },
+      ],
     },
   ],
   invalid: [
@@ -162,6 +206,46 @@ ruleTester.run('ts-ignore', rule, {
     },
     {
       code: '// @ts-ignore',
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-ignore */',
+      options: [{ 'ts-ignore': true }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ @ts-ignore
+*/
+      `,
+      options: [{ 'ts-ignore': true }],
+      errors: [
+        {
+          data: { directive: 'ignore' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/** @ts-ignore */',
+      options: [{ 'ts-ignore': true }],
       errors: [
         {
           data: { directive: 'ignore' },
@@ -251,13 +335,6 @@ if (false) {
 ruleTester.run('ts-nocheck', rule, {
   valid: [
     '// just a comment containing @ts-nocheck somewhere',
-    '/* @ts-nocheck */',
-    '/** @ts-nocheck */',
-    `
-/*
-// @ts-nocheck in a block
-*/
-    `,
     {
       code: '// @ts-nocheck',
       options: [{ 'ts-nocheck': false }],
@@ -266,6 +343,19 @@ ruleTester.run('ts-nocheck', rule, {
       code:
         '// @ts-nocheck no doubt, people will put nonsense here from time to time just to get the rule to stop reporting, perhaps even long messages with other nonsense in them like other // @ts-nocheck or // @ts-ignore things',
       options: [{ 'ts-nocheck': 'allow-with-description' }],
+    },
+    {
+      code: `
+/*
+ @ts-nocheck running with long description in a block
+*/
+      `,
+      options: [
+        {
+          'ts-nocheck': 'allow-with-description',
+          minimumDescriptionLength: 21,
+        },
+      ],
     },
   ],
   invalid: [
@@ -283,6 +373,46 @@ ruleTester.run('ts-nocheck', rule, {
     },
     {
       code: '// @ts-nocheck',
+      errors: [
+        {
+          data: { directive: 'nocheck' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-nocheck */',
+      options: [{ 'ts-nocheck': true }],
+      errors: [
+        {
+          data: { directive: 'nocheck' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ @ts-nocheck
+*/
+      `,
+      options: [{ 'ts-nocheck': true }],
+      errors: [
+        {
+          data: { directive: 'nocheck' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/** @ts-nocheck */',
+      options: [{ 'ts-nocheck': true }],
       errors: [
         {
           data: { directive: 'nocheck' },
@@ -348,11 +478,9 @@ if (false) {
 ruleTester.run('ts-check', rule, {
   valid: [
     '// just a comment containing @ts-check somewhere',
-    '/* @ts-check */',
-    '/** @ts-check */',
     `
 /*
-// @ts-check in a block
+ @ts-check running with long description in a block
 */
     `,
     {
@@ -370,6 +498,46 @@ ruleTester.run('ts-check', rule, {
   invalid: [
     {
       code: '// @ts-check',
+      options: [{ 'ts-check': true }],
+      errors: [
+        {
+          data: { directive: 'check' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/* @ts-check */',
+      options: [{ 'ts-check': true }],
+      errors: [
+        {
+          data: { directive: 'check' },
+          messageId: 'tsDirectiveComment',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ @ts-check
+*/
+      `,
+      options: [{ 'ts-check': true }],
+      errors: [
+        {
+          data: { directive: 'check' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '/** @ts-check */',
       options: [{ 'ts-check': true }],
       errors: [
         {
