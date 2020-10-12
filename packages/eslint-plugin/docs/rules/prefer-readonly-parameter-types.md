@@ -189,6 +189,7 @@ type AcceptsCallback = (callback: Callback) => void;
 
 export const acceptsCallback: AcceptsCallback;
 ```
+
 </details>
 
 Examples of **correct** code for this rule with `{ignoreInferredTypes: true}`:
@@ -196,7 +197,7 @@ Examples of **correct** code for this rule with `{ignoreInferredTypes: true}`:
 ```ts
 import { acceptsCallback } from 'external-dependency';
 
-acceceptsCallback((options) => {});
+acceceptsCallback(options => {});
 ```
 
 <details>
@@ -211,4 +212,5 @@ type AcceptsCallback = (callback: Callback) => void;
 
 export const acceptsCallback: AcceptsCallback;
 ```
+
 </details>
