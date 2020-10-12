@@ -351,7 +351,7 @@ function createWatchProgram(
   watchCompilerHost.trace = log;
 
   /**
-   * TODO(bradzacher): this needs refinement and development, but we're allowing users to opt-in to this for now
+   * TODO: this needs refinement and development, but we're allowing users to opt-in to this for now for testing and feedback.
    * See https://github.com/typescript-eslint/typescript-eslint/issues/2094
    */
   watchCompilerHost.useSourceOfProjectReferenceRedirect = (): boolean =>
