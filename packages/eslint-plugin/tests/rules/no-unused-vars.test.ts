@@ -886,6 +886,20 @@ export declare namespace Foo {
   }
 }
     `,
+    {
+      code: `
+declare namespace A {
+  export interface A {}
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare function A(A: string): string;
+      `,
+      filename: 'foo.d.ts',
+    },
   ],
 
   invalid: [
