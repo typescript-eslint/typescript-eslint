@@ -173,9 +173,6 @@ export default util.createRule({
       const useAutoFix = !util.isTypeAnyType(type);
       const removeFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
         removeAwait(fixer, node);
-      const insertFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
-        insertAwait(fixer, node);
-
       if (isAwait && !isThenable) {
         context.report({
           messageId: 'nonPromiseAwait',
@@ -199,16 +196,7 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix: insertFix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'requiredPromiseAwait',
-                      fix: insertFix,
-                    },
-                  ],
-                }),
+            fix: fixer => insertAwait(fixer, node),
           });
         }
 
@@ -220,16 +208,7 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix: removeFix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'disallowedPromiseAwait',
-                      fix: removeFix,
-                    },
-                  ],
-                }),
+            fix: fixer => removeAwait(fixer, node),
           });
         }
 
@@ -242,16 +221,7 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix: removeFix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'disallowedPromiseAwait',
-                      fix: removeFix,
-                    },
-                  ],
-                }),
+            fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && isInTryCatch) {
           if (inCatch(expression) && !hasFinallyBlock(expression)) {
@@ -265,16 +235,7 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix: insertFix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'requiredPromiseAwait',
-                      fix: insertFix,
-                    },
-                  ],
-                }),
+            fix: fixer => insertAwait(fixer, node),
           });
         }
 
