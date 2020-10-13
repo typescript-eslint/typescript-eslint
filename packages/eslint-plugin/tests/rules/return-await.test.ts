@@ -314,43 +314,51 @@ ruleTester.run('return-await', rule, {
     },
     {
       code: `
-        const fn = (): any => null;
-        async function test() {
-          return await fn();
-        }
-      `,
-      // output matches input because return type any is suggestion only
-      output: `
-        const fn = (): any => null;
-        async function test() {
-          return await fn();
-        }
-      `,
+const fn = (): any => null;
+async function test() {
+  return await fn();
+}
+      `.trimRight(),
       errors: [
         {
           line: 4,
           messageId: 'nonPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'nonPromiseAwait',
+              output: `
+const fn = (): any => null;
+async function test() {
+  return fn();
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
     {
       code: `
-        const fn = (): unknown => null;
-        async function test() {
-          return await fn();
-        }
-      `,
-      // output matches input because return type unknown is suggestion only
-      output: `
-        const fn = (): unknown => null;
-        async function test() {
-          return await fn();
-        }
-      `,
+const fn = (): unknown => null;
+async function test() {
+  return await fn();
+}
+      `.trimRight(),
       errors: [
         {
           line: 4,
           messageId: 'nonPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'nonPromiseAwait',
+              output: `
+const fn = (): unknown => null;
+async function test() {
+  return fn();
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
