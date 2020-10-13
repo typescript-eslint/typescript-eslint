@@ -37,35 +37,51 @@ if (false) {
   invalid: [
     {
       code: '// @ts-ignore',
-      output: '// @ts-expect-error',
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '// @ts-ignore: Suppress next line',
-      output: '// @ts-expect-error: Suppress next line',
 
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: '// @ts-expect-error',
+            },
+          ],
         },
       ],
     },
     {
-      code: '///@ts-ignore: Suppress next line',
-      output: '///@ts-expect-error: Suppress next line',
+      code: '// @ts-ignore: Suppress next line',
+
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: '// @ts-expect-error: Suppress next line',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '///@ts-ignore: Suppress next line',
+      errors: [
+        {
+          messageId: 'preferExpectErrorComment',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: '///@ts-expect-error: Suppress next line',
+            },
+          ],
         },
       ],
     },
@@ -75,29 +91,39 @@ if (false) {
   // @ts-ignore: Unreachable code error
   console.log('hello');
 }
-      `,
-      output: `
-if (false) {
-  // @ts-expect-error: Unreachable code error
-  console.log('hello');
-}
-      `,
+      `.trimRight(),
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 3,
           column: 3,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: `
+if (false) {
+  // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
     {
       code: '/* @ts-ignore */',
-      output: '/* @ts-expect-error */',
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: '/* @ts-expect-error */',
+            },
+          ],
         },
       ],
     },
@@ -107,29 +133,39 @@ if (false) {
  * Explaining comment
  *
  * @ts-ignore */
-      `,
-      output: `
-/**
- * Explaining comment
- *
- * @ts-expect-error */
-      `,
+      `.trimRight(),
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 2,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: `
+/**
+ * Explaining comment
+ *
+ * @ts-expect-error */
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
     {
       code: '/* @ts-ignore in a single block */',
-      output: '/* @ts-expect-error in a single block */',
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: '/* @ts-expect-error in a single block */',
+            },
+          ],
         },
       ],
     },
@@ -137,16 +173,21 @@ if (false) {
       code: `
 /*
 // @ts-ignore in a block with single line comments */
-      `,
-      output: `
-/*
-// @ts-expect-error in a block with single line comments */
-      `,
+      `.trimRight(),
       errors: [
         {
           messageId: 'preferExpectErrorComment',
           line: 2,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'preferExpectErrorComment',
+              output: `
+/*
+// @ts-expect-error in a block with single line comments */
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
