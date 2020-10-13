@@ -1,7 +1,7 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -169,11 +169,27 @@ export default util.createRule({
         return;
       }
 
+      // any could be thenable; do not auto-fix
+      const useAutoFix = !util.isTypeAnyType(type);
+      const removeFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
+        removeAwait(fixer, node);
+      const insertFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
+        insertAwait(fixer, node);
+
       if (isAwait && !isThenable) {
         context.report({
           messageId: 'nonPromiseAwait',
           node,
-          fix: fixer => removeAwait(fixer, node),
+          ...(useAutoFix
+            ? { fix: removeFix }
+            : {
+                suggest: [
+                  {
+                    messageId: 'nonPromiseAwait',
+                    fix: removeFix,
+                  },
+                ],
+              }),
         });
         return;
       }
@@ -183,7 +199,16 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            ...(useAutoFix
+              ? { fix: insertFix }
+              : {
+                  suggest: [
+                    {
+                      messageId: 'requiredPromiseAwait',
+                      fix: insertFix,
+                    },
+                  ],
+                }),
           });
         }
 
@@ -195,7 +220,16 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            fix: fixer => removeAwait(fixer, node),
+            ...(useAutoFix
+              ? { fix: removeFix }
+              : {
+                  suggest: [
+                    {
+                      messageId: 'disallowedPromiseAwait',
+                      fix: removeFix,
+                    },
+                  ],
+                }),
           });
         }
 
@@ -208,7 +242,16 @@ export default util.createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            fix: fixer => removeAwait(fixer, node),
+            ...(useAutoFix
+              ? { fix: removeFix }
+              : {
+                  suggest: [
+                    {
+                      messageId: 'disallowedPromiseAwait',
+                      fix: removeFix,
+                    },
+                  ],
+                }),
           });
         } else if (!isAwait && isInTryCatch) {
           if (inCatch(expression) && !hasFinallyBlock(expression)) {
@@ -222,7 +265,16 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            ...(useAutoFix
+              ? { fix: insertFix }
+              : {
+                  suggest: [
+                    {
+                      messageId: 'requiredPromiseAwait',
+                      fix: insertFix,
+                    },
+                  ],
+                }),
           });
         }
 

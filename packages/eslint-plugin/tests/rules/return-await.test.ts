@@ -1,5 +1,5 @@
 import rule from '../../src/rules/return-await';
-import { getFixturesRootDir, RuleTester, noFormat } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -308,6 +308,27 @@ ruleTester.run('return-await', rule, {
       errors: [
         {
           line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        const fn = (): any => null;
+        async function test() {
+          return await fn();
+        }
+      `,
+      // output matches input because return type any is suggestion only
+      output: `
+        const fn = (): any => null;
+        async function test() {
+          return await fn();
+        }
+      `,
+      errors: [
+        {
+          line: 4,
           messageId: 'nonPromiseAwait',
         },
       ],
