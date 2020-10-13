@@ -82,7 +82,7 @@ export default util.createRule<[], MessageIds>({
                   fix: isLineComment(comment)
                     ? lineCommentRuleFixer
                     : blockCommentRuleFixer,
-                }
+                },
               ],
             });
           }
