@@ -334,6 +334,27 @@ ruleTester.run('return-await', rule, {
       ],
     },
     {
+      code: `
+        const fn = (): unknown => null;
+        async function test() {
+          return await fn();
+        }
+      `,
+      // output matches input because return type unknown is suggestion only
+      output: `
+        const fn = (): unknown => null;
+        async function test() {
+          return await fn();
+        }
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+    },
+    {
       code: 'const test = async () => await Promise.resolve(1);',
       output: 'const test = async () => Promise.resolve(1);',
       errors: [

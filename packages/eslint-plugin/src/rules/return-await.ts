@@ -169,21 +169,24 @@ export default util.createRule({
         return;
       }
 
-      // any could be thenable; do not auto-fix
-      const useAutoFix = !util.isTypeAnyType(type);
-      const removeFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
-        removeAwait(fixer, node);
       if (isAwait && !isThenable) {
+        // any/unknown could be thenable; do not auto-fix
+        const useAutoFix = !(
+          util.isTypeAnyType(type) || util.isTypeUnknownType(type)
+        );
+        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
+          removeAwait(fixer, node);
+
         context.report({
           messageId: 'nonPromiseAwait',
           node,
           ...(useAutoFix
-            ? { fix: removeFix }
+            ? { fix }
             : {
                 suggest: [
                   {
                     messageId: 'nonPromiseAwait',
-                    fix: removeFix,
+                    fix,
                   },
                 ],
               }),
