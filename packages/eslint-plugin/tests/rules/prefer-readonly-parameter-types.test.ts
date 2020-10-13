@@ -249,21 +249,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     `,
     {
       code: `
+        type Callback<T> = (options: T) => void;
+
+        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+
         interface CallbackOptions {
           prop: string;
         }
 
-        /* eslint-disable prefer-readonly-parameter-types -- These are
-         * expected to error, but for the purposes of this test it should
-         * be assumed that the types are defined by an external dependency.
-         * See: https://github.com/typescript-eslint/typescript-eslint/issues/2079
-         */
-        type Callback = (options: CallbackOptions) => void;
-
-        const acceptsCallback = (callback: Callback) => {};
-        /* eslint-enable prefer-readonly-parameter-types */
-
-        foo(options => {});
+        acceptsCallback<CallbackOptions>(options => {});
       `,
       options: [
         {
@@ -697,21 +691,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       code: `
+        type Callback<T> = (options: T) => void;
+
+        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+
         interface CallbackOptions {
           prop: string;
         }
 
-        /* eslint-disable prefer-readonly-parameter-types -- These are
-         * expected to error, but for the purposes of this test it should
-         * be assumed that the types are defined by an external dependency.
-         * See: https://github.com/typescript-eslint/typescript-eslint/issues/2079
-         */
-        type Callback = (options: CallbackOptions) => void;
-
-        const acceptsCallback = (callback: Callback) => {};
-        /* eslint-enable prefer-readonly-parameter-types */
-
-        foo((options: CallbackOptions) => {});
+        acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
       `,
       options: [
         {
@@ -721,9 +709,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          line: 16,
-          column: 14,
-          endColumn: 38,
+          line: 10,
+          column: 43,
+          endColumn: 67,
         },
       ],
     },
