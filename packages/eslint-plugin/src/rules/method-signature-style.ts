@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
       return '';
     }
 
-    function isNodeParentModuleDeclaration(node: TSESTree.Node): Boolean {
+    function isNodeParentModuleDeclaration(node: any): Boolean {
       if (node.parent?.type === AST_NODE_TYPES.TSModuleDeclaration) {
         return true;
       }
