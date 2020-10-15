@@ -349,7 +349,8 @@ interface Foo {
       ],
     },
     {
-      code: `declare global {
+      code: noFormat`
+      declare global {
         namespace jest {
           interface Matchers<R, T> {
             // Add overloads specific to the DOM
@@ -357,15 +358,16 @@ interface Foo {
             toHaveProps(props: Partial<DomPropsOf<T>>): R;
           }
         }
-      }`,
+      }
+      `,
       errors: [
         {
           messageId: 'errorMethod',
-          line: 5,
+          line: 6,
         },
         {
           messageId: 'errorMethod',
-          line: 6,
+          line: 7,
         },
       ],
     },

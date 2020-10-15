@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
       return '';
     }
 
-    function isNodeParentModuleDeclaration(node: any): Boolean {
+    function isNodeParentModuleDeclaration(node: any): boolean {
       if (node.parent?.type === AST_NODE_TYPES.TSModuleDeclaration) {
         return true;
       }
@@ -123,7 +123,7 @@ export default util.createRule<Options, MessageIds>({
                   getMethodKey(element) === getMethodKey(methodNode),
               )
             : [];
-        let isParentModule = isNodeParentModuleDeclaration(methodNode);
+        const isParentModule = isNodeParentModuleDeclaration(methodNode);
 
         if (duplicatedKeyMethodNodes.length > 0) {
           if (isParentModule) {
