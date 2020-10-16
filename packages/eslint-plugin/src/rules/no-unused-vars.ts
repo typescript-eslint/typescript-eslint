@@ -26,7 +26,7 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [{}],
-  create(context) {
+  create(context, [varsIgnorePattern]) {
     const rules = baseRule.create(context);
     const filename = context.getFilename();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
@@ -197,15 +197,20 @@ export default util.createRule<Options, MessageIds>({
           return false;
         });
         if (isOnlySelfReferenced) {
-          context.report({
-            node: variable.identifiers[0],
-            messageId: 'unusedVar',
-            data: {
-              varName: variable.name,
-              action: 'defined',
-              additional: '',
-            },
-          });
+          if (
+            varsIgnorePattern &&
+            varsIgnorePattern.toString() !== variable.name
+          ) {
+            context.report({
+              node: variable.identifiers[0],
+              messageId: 'unusedVar',
+              data: {
+                varName: variable.name,
+                action: 'defined',
+                additional: '',
+              },
+            });
+          }
         }
       },
 
