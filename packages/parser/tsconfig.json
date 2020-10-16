@@ -1,16 +1,16 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "composite": false,
+    "composite": true,
     "rootDir": "."
   },
   "include": ["src", "tests", "tools"],
   "exclude": ["tests/fixtures"],
   "references": [
-    { "path": "../experimental-utils/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../shared-fixtures/tsconfig.build.json" },
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" }
+    { "path": "../experimental-utils/tsconfig.json" },
+    { "path": "../scope-manager/tsconfig.json" },
+    { "path": "../shared-fixtures/tsconfig.json" },
+    { "path": "../types/tsconfig.json" },
+    { "path": "../typescript-estree/tsconfig.json" }
   ]
 }

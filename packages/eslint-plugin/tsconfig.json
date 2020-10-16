@@ -1,13 +1,12 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "composite": true
   },
   "include": ["src", "typings", "tests", "tools"],
   "references": [
-    { "path": "../experimental-utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" }
+    { "path": "../experimental-utils/tsconfig.json" },
+    { "path": "../parser/tsconfig.json" },
+    { "path": "../scope-manager/tsconfig.json" }
   ]
 }

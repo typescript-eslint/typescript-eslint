@@ -232,11 +232,31 @@ function getProgramsForProjects(
     }
 
     const programWatch = createWatchProgram(tsconfigPath, extra);
-    knownWatchProgramMap.set(tsconfigPath, programWatch);
-
     const program = programWatch.getProgram().getProgram();
     // sets parent pointers in source files
     program.getTypeChecker();
+
+    knownWatchProgramMap.set(tsconfigPath, programWatch);
+
+    if (extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect) {
+      console.log(
+        new Set(
+          program
+            .getSourceFiles()
+            .map(sf => sf.fileName)
+            .filter(n => !n.includes('/node_modules/'))
+            .sort(),
+        ),
+      );
+
+      // if the program has project references, this program will be able to service all of its references
+      const references = program.getResolvedProjectReferences();
+      for (const referencedPath of getAllReferences(references)) {
+        knownWatchProgramMap.set(referencedPath, programWatch);
+      }
+
+      console.log(knownWatchProgramMap.keys());
+    }
 
     // cache and check the file list
     const fileList = updateCachedFileList(tsconfigPath, program, extra);
@@ -250,6 +270,29 @@ function getProgramsForProjects(
   }
 
   return results;
+}
+
+function getAllReferences(
+  references: readonly (ts.ResolvedProjectReference | undefined)[] | undefined,
+  paths = new Set<CanonicalPath>(),
+): Set<CanonicalPath> {
+  if (!references) {
+    return new Set();
+  }
+
+  for (const ref of references) {
+    if (!ref) {
+      continue;
+    }
+    const path = getCanonicalFileName(ref?.sourceFile.fileName);
+    if (paths.has(path)) {
+      continue;
+    }
+    paths.add(path);
+    getAllReferences(ref.references, paths);
+  }
+
+  return paths;
 }
 
 const isRunningNoTimeoutFix = semver.satisfies(ts.version, '>=3.9.0-beta', {

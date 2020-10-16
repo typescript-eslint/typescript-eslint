@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "composite": false,
+    "composite": true,
     "rootDir": "."
   },
   "include": ["src", "typings", "tests", "tools"]
