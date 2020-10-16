@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     schema: [],
-    messages: baseRule?.meta.messages,
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
