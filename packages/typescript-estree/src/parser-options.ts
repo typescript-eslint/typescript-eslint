@@ -12,6 +12,7 @@ export interface Extra {
   debugLevel: Set<DebugModule>;
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
   errorOnUnknownASTType: boolean;
+  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
   extraFileExtensions: string[];
   filePath: string;
   jsx: boolean;
@@ -110,6 +111,18 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
    */
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
+   * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
+   * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
+   *
+   * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
+   *
+   * See: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   */
+  EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 
   /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
