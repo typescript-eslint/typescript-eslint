@@ -1,6 +1,6 @@
 import { TSESTree } from '@typescript-eslint/typescript-estree';
 import * as parser from '../../src/parser';
-import { ParserOptions } from '../../src/parser-options';
+import { ParserOptions } from '../../src/parser';
 
 const defaultConfig = {
   loc: true,

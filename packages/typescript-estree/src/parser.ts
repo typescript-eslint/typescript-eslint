@@ -93,6 +93,7 @@ function resetExtra(): void {
     debugLevel: new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: false,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
     extraFileExtensions: [],
     filePath: getFileName(),
     jsx: false,
@@ -168,7 +169,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     if (
       extra.debugLevel.has('eslint') ||
       // make sure we don't turn off the eslint debug if it was enabled via --debug
-      debug.enabled('eslint:*')
+      debug.enabled('eslint:*,-eslint:code-path')
     ) {
       // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/bin/eslint.js#L25
       namespaces.push('eslint:*,-eslint:code-path');
@@ -284,6 +285,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.createDefaultProgram =
     typeof options.createDefaultProgram === 'boolean' &&
     options.createDefaultProgram;
+
+  extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
+    typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
+      'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
 }
 
 function warnAboutTSVersion(): void {

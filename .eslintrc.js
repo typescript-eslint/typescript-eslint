@@ -26,6 +26,7 @@ module.exports = {
     ],
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true,
   },
   rules: {
     //
