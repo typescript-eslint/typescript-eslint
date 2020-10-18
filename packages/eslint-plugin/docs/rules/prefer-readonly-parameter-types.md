@@ -124,10 +124,12 @@ interface Foo {
 ```ts
 interface Options {
   checkParameterProperties?: boolean;
+  ignoreInferredTypes?: boolean;
 }
 
 const defaultOptions: Options = {
   checkParameterProperties: true,
+  ignoreInferredTypes: false,
 };
 ```
 
@@ -162,3 +164,53 @@ class Foo {
   ) {}
 }
 ```
+
+### `ignoreInferredTypes`
+
+This option allows you to ignore parameters which don't explicitly specify a type. This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
+
+Examples of **incorrect** code for this rule with `{ignoreInferredTypes: true}`:
+
+```ts
+import { acceptsCallback, CallbackOptions } from 'external-dependency';
+
+acceceptsCallback((options: CallbackOptions) => {});
+```
+
+<details>
+<summary>external-dependency.d.ts</summary>
+
+```ts
+export interface CallbackOptions {
+  prop: string;
+}
+type Callback = (options: CallbackOptions) => void;
+type AcceptsCallback = (callback: Callback) => void;
+
+export const acceptsCallback: AcceptsCallback;
+```
+
+</details>
+
+Examples of **correct** code for this rule with `{ignoreInferredTypes: true}`:
+
+```ts
+import { acceptsCallback } from 'external-dependency';
+
+acceceptsCallback(options => {});
+```
+
+<details>
+<summary>external-dependency.d.ts</summary>
+
+```ts
+export interface CallbackOptions {
+  prop: string;
+}
+type Callback = (options: CallbackOptions) => void;
+type AcceptsCallback = (callback: Callback) => void;
+
+export const acceptsCallback: AcceptsCallback;
+```
+
+</details>
