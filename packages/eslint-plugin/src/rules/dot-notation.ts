@@ -38,6 +38,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             default: false,
           },
+          allowProtectedClassPropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
@@ -48,6 +52,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowPrivateClassPropertyAccess: false,
+      allowProtectedClassPropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
     },
@@ -56,20 +61,30 @@ export default createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
+    const allowProtectedClassPropertyAccess =
+      options.allowProtectedClassPropertyAccess;
 
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (allowPrivateClassPropertyAccess && node.computed) {
+        if (
+          (allowPrivateClassPropertyAccess ||
+            allowProtectedClassPropertyAccess) &&
+          node.computed
+        ) {
           // for perf reasons - only fetch the symbol if we have to
           const objectSymbol = typeChecker.getSymbolAtLocation(
             parserServices.esTreeNodeToTSNodeMap.get(node.property),
           );
+          const modifierKind = objectSymbol?.getDeclarations()?.[0]
+            ?.modifiers?.[0].kind;
           if (
-            objectSymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind ===
-            ts.SyntaxKind.PrivateKeyword
+            (allowPrivateClassPropertyAccess &&
+              modifierKind == ts.SyntaxKind.PrivateKeyword) ||
+            (allowProtectedClassPropertyAccess &&
+              modifierKind == ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
           }
