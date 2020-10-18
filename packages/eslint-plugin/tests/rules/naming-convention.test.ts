@@ -1316,5 +1316,20 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        declare class Foo {
+          Bar(Baz: string): void;
+        }
+      `,
+      parserOptions,
+      options: [{ selector: 'parameter', format: ['camelCase'] }],
+      errors: [
+        {
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+    },
   ],
 });
