@@ -349,7 +349,7 @@ interface Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
         declare global {
           namespace jest {
             interface Matchers<R, T> {
