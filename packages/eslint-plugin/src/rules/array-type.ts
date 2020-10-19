@@ -1,6 +1,5 @@
 import {
   AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
@@ -129,31 +128,6 @@ export default util.createRule<Options, MessageIds>({
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
-    const isArraySimpleOption =
-      defaultOption === 'array-simple' && readonlyOption === 'array-simple';
-    const isArrayOption =
-      defaultOption === 'array' && readonlyOption === 'array';
-    const isGenericOption =
-      defaultOption === 'generic' && readonlyOption === 'generic';
-
-    /**
-     * Check if whitespace is needed before this node
-     * @param node the node to be evaluated.
-     */
-    function requireWhitespaceBefore(node: TSESTree.Node): boolean {
-      const prevToken = sourceCode.getTokenBefore(node);
-      if (!prevToken) {
-        return false;
-      }
-
-      const nextToken = sourceCode.getTokenAfter(prevToken);
-      if (nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken)) {
-        return false;
-      }
-
-      return prevToken.type === AST_TOKEN_TYPES.Identifier;
-    }
-
     /**
      * @param node the node to be evaluated.
      */
@@ -169,121 +143,80 @@ export default util.createRule<Options, MessageIds>({
       return 'T';
     }
 
-    /**
-     * @param node the node to be evaluated
-     */
-    function getTypeOpNodeRange(
-      node: TSESTree.Node | null,
-    ): [number, number] | undefined {
-      if (!node) {
-        return undefined;
-      }
-
-      const firstToken = sourceCode.getFirstToken(node)!;
-      const nextToken = sourceCode.getTokenAfter(firstToken)!;
-      return [firstToken.range[0], nextToken.range[0]];
-    }
-
     return {
       TSArrayType(node): void {
-        if (
-          isArrayOption ||
-          (isArraySimpleOption && isSimpleType(node.elementType))
-        ) {
-          return;
-        }
-
         const isReadonly =
           node.parent &&
           node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
           node.parent.operator === 'readonly';
 
-        const isReadonlyGeneric =
-          readonlyOption === 'generic' && defaultOption !== 'generic';
-
-        const isReadonlyArray =
-          readonlyOption !== 'generic' && defaultOption === 'generic';
+        const currentOption = isReadonly ? readonlyOption : defaultOption;
 
         if (
-          (isReadonlyGeneric && !isReadonly) ||
-          (isReadonlyArray && isReadonly)
+          currentOption === 'array' ||
+          (currentOption === 'array-simple' && isSimpleType(node.elementType))
         ) {
           return;
         }
 
         const messageId =
-          defaultOption === 'generic'
+          currentOption === 'generic'
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
-        const typeOpNode = isReadonly ? node.parent! : null;
+        const errorNode = isReadonly ? node.parent! : node;
 
         context.report({
-          node: isReadonly ? node.parent! : node,
+          node: errorNode,
           messageId,
           data: {
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
-            const toFix = [
-              fixer.replaceTextRange([node.range[1] - 2, node.range[1]], '>'),
-            ];
-            const startText = requireWhitespaceBefore(node);
-            const typeOpNodeRange = getTypeOpNodeRange(typeOpNode);
+            const typeNode =
+              node.elementType.type === AST_NODE_TYPES.TSParenthesizedType
+                ? node.elementType.typeAnnotation
+                : node.elementType;
 
-            if (typeOpNodeRange) {
-              toFix.unshift(fixer.removeRange(typeOpNodeRange));
-            } else {
-              toFix.push(
-                fixer.insertTextBefore(node, `${startText ? ' ' : ''}`),
-              );
-            }
+            const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
 
-            toFix.push(
-              fixer.insertTextBefore(
-                node,
-                `${isReadonly ? 'Readonly' : ''}Array<`,
+            return [
+              fixer.replaceTextRange(
+                [errorNode.range[0], typeNode.range[0]],
+                `${arrayType}<`,
               ),
-            );
-
-            if (node.elementType.type === AST_NODE_TYPES.TSParenthesizedType) {
-              const first = sourceCode.getFirstToken(node.elementType);
-              const last = sourceCode.getLastToken(node.elementType);
-              if (!first || !last) {
-                return null;
-              }
-
-              toFix.push(fixer.remove(first));
-              toFix.push(fixer.remove(last));
-            }
-
-            return toFix;
+              fixer.replaceTextRange(
+                [typeNode.range[1], errorNode.range[1]],
+                '>',
+              ),
+            ];
           },
         });
       },
 
       TSTypeReference(node): void {
         if (
-          isGenericOption ||
-          node.typeName.type !== AST_NODE_TYPES.Identifier
+          node.typeName.type !== AST_NODE_TYPES.Identifier ||
+          !(
+            node.typeName.name === 'Array' ||
+            node.typeName.name === 'ReadonlyArray'
+          )
         ) {
           return;
         }
 
         const isReadonlyArrayType = node.typeName.name === 'ReadonlyArray';
-        const isArrayType = node.typeName.name === 'Array';
+        const currentOption = isReadonlyArrayType
+          ? readonlyOption
+          : defaultOption;
 
-        if (
-          !(isArrayType || isReadonlyArrayType) ||
-          (readonlyOption === 'generic' && isReadonlyArrayType) ||
-          (defaultOption === 'generic' && !isReadonlyArrayType)
-        ) {
+        if (currentOption === 'generic') {
           return;
         }
 
         const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
         const typeParams = node.typeParameters?.params;
         const messageId =
-          defaultOption === 'array'
+          currentOption === 'array'
             ? 'errorStringArray'
             : 'errorStringArraySimple';
 
@@ -305,7 +238,7 @@ export default util.createRule<Options, MessageIds>({
 
         if (
           typeParams.length !== 1 ||
-          (defaultOption === 'array-simple' && !isSimpleType(typeParams[0]))
+          (currentOption === 'array-simple' && !isSimpleType(typeParams[0]))
         ) {
           return;
         }
