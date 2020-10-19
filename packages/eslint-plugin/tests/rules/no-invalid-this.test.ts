@@ -277,6 +277,28 @@ class A {
 }
     `,
 
+    // Class Properties.
+    `
+class A {
+  b = 0;
+  c = this.b;
+}
+    `,
+
+    `
+class A {
+  b = new Array(this, 1, 2, 3);
+}
+    `,
+
+    `
+class A {
+  b = () => {
+    console.log(this);
+  };
+}
+    `,
+
     // Array methods.
 
     `
@@ -613,6 +635,9 @@ obj.foo = function () {
 
       errors,
     },
+
+    // Class Methods.
+
     {
       code: `
 class A {
@@ -622,6 +647,36 @@ class A {
       z(x => console.log(x, this));
     };
   }
+}
+      `,
+
+      errors,
+    },
+
+    // Class Properties.
+
+    {
+      code: `
+class A {
+  b = new Array(1, 2, function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  });
+}
+      `,
+
+      errors,
+    },
+
+    {
+      code: `
+class A {
+  b = () => {
+    function c() {
+      console.log(this);
+      z(x => console.log(x, this));
+    }
+  };
 }
       `,
 

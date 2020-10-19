@@ -36,19 +36,17 @@ function validateBoolean(
   return value;
 }
 
-const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts/;
+const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts$/;
 function getLib(compilerOptions: CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib
-      .map(lib => {
-        const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-        if (!match) {
-          return null;
-        }
+    return compilerOptions.lib.reduce((acc, lib) => {
+      const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
+      if (match) {
+        acc.push(match[1] as Lib);
+      }
 
-        return match[1] as Lib;
-      })
-      .filter(l => l != null) as Lib[];
+      return acc;
+    }, [] as Lib[]);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;

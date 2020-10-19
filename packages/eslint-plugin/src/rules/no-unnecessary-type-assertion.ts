@@ -241,12 +241,12 @@ export default util.createRule<Options, MessageIds>({
             fix(fixer) {
               return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
                 ? fixer.removeRange([
-                    originalNode.getStart(),
-                    originalNode.expression.getStart(),
+                    node.range[0],
+                    node.expression.range[0] - 1,
                   ])
                 : fixer.removeRange([
-                    originalNode.expression.end,
-                    originalNode.end,
+                    node.expression.range[1] + 1,
+                    node.range[1],
                   ]);
             },
           });

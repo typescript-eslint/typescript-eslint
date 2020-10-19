@@ -23,10 +23,12 @@ This rule adds the following options:
 ```ts
 interface Options extends BaseDotNotationOptions {
   allowPrivateClassPropertyAccess?: boolean;
+  allowProtectedClassPropertyAccess?: boolean;
 }
 const defaultOptions: Options = {
   ...baseDotNotationDefaultOptions,
   allowPrivateClassPropertyAccess: false,
+  allowProtectedClassPropertyAccess: false,
 };
 ```
 
@@ -41,6 +43,19 @@ class X {
 
 const x = new X();
 x['priv_prop'] = 123;
+```
+
+### `allowProtectedClassPropertyAccess`
+
+Example of a correct code when `allowProtectedClassPropertyAccess` is set to `true`
+
+```ts
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
 ```
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)</sup>

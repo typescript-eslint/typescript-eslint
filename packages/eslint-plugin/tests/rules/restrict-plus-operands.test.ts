@@ -91,6 +91,26 @@ function foo<T extends 1>(a: T) {
   return a + 1;
 }
     `,
+    `
+declare const a: {} & string;
+declare const b: string;
+const x = a + b;
+    `,
+    `
+declare const a: unknown & string;
+declare const b: string;
+const x = a + b;
+    `,
+    `
+declare const a: string & string;
+declare const b: string;
+const x = a + b;
+    `,
+    `
+declare const a: 'string literal' & string;
+declare const b: string;
+const x = a + b;
+    `,
     {
       code: `
 let foo: number = 0;
@@ -408,6 +428,104 @@ function foo<T extends 1>(a: T) {
           messageId: 'notStrings',
           line: 3,
           column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: boolean & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: number & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: symbol & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: object & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: never & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: any & string;
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: string;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notStrings',
+          line: 4,
+          column: 19,
         },
       ],
     },
