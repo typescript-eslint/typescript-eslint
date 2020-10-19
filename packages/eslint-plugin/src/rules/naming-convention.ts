@@ -529,10 +529,11 @@ export default util.createRule<Options, MessageIds>({
       // #endregion function
 
       // #region parameter
-
-      'FunctionDeclaration, TSDeclareFunction, FunctionExpression, ArrowFunctionExpression'(
+      'FunctionDeclaration, TSDeclareFunction, TSEmptyBodyFunctionExpression, FunctionExpression, ArrowFunctionExpression'(
         node:
           | TSESTree.FunctionDeclaration
+          | TSESTree.TSDeclareFunction
+          | TSESTree.TSEmptyBodyFunctionExpression
           | TSESTree.FunctionExpression
           | TSESTree.ArrowFunctionExpression,
       ): void {

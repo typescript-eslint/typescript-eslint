@@ -83,6 +83,7 @@ if (!Promise.resolve()) {
       options: [{ checksConditionals: false }],
     },
     'false || (true && Promise.resolve());',
+    '(true && Promise.resolve()) || false;',
     `
 async function test() {
   if (await Promise.resolve()) {
@@ -139,6 +140,30 @@ if (returnsPromise?.()) {
     `
 declare const returnsPromise: { call: () => Promise<void> } | null;
 if (returnsPromise?.call()) {
+}
+    `,
+    'Promise.resolve() ?? false;',
+    `
+function test(a: Promise<void> | undefinded) {
+  const foo = a ?? Promise.reject();
+}
+    `,
+    `
+function test(p: Promise<boolean> | undefined, bool: boolean) {
+  if (p ?? bool) {
+  }
+}
+    `,
+    `
+async function test(p: Promise<boolean | undefined>, bool: boolean) {
+  if ((await p) ?? bool) {
+  }
+}
+    `,
+    `
+async function test(p: Promise<boolean> | undefined) {
+  if (await (p ?? Promise.reject())) {
+  }
 }
     `,
   ],
@@ -224,15 +249,6 @@ if (!Promise.resolve()) {
     },
     {
       code: 'Promise.resolve() || false;',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: '(true && Promise.resolve()) || false;',
       errors: [
         {
           line: 1,
@@ -357,6 +373,62 @@ fnWithCallback('val', (err, res) => {
         {
           line: 8,
           messageId: 'voidReturn',
+        },
+      ],
+    },
+    {
+      code: `
+function test(bool: boolean, p: Promise<void>) {
+  if (bool || p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(bool: boolean, p: Promise<void>) {
+  if (bool && p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a: any, p: Promise<void>) {
+  if (a ?? p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(p: Promise<void> | undefined) {
+  if (p ?? Promise.reject()) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
         },
       ],
     },

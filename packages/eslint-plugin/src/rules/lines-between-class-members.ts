@@ -13,7 +13,7 @@ const schema = util.deepMerge(
   {
     1: {
       exceptAfterOverload: {
-        type: 'booleean',
+        type: 'boolean',
         default: true,
       },
     },
