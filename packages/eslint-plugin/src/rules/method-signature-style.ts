@@ -97,6 +97,21 @@ export default util.createRule<Options, MessageIds>({
       return '';
     }
 
+    function isNodeParentModuleDeclaration(node: TSESTree.Node): boolean {
+      if (!node.parent) {
+        return false;
+      }
+
+      if (node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) {
+        return true;
+      }
+
+      if (node.parent.type === AST_NODE_TYPES.Program) {
+        return false;
+      }
+      return isNodeParentModuleDeclaration(node.parent);
+    }
+
     return {
       TSMethodSignature(methodNode): void {
         if (mode === 'method') {
@@ -112,61 +127,79 @@ export default util.createRule<Options, MessageIds>({
                   getMethodKey(element) === getMethodKey(methodNode),
               )
             : [];
+        const isParentModule = isNodeParentModuleDeclaration(methodNode);
 
         if (duplicatedKeyMethodNodes.length > 0) {
-          context.report({
-            node: methodNode,
-            messageId: 'errorMethod',
-            *fix(fixer) {
-              const methodNodes = [
-                methodNode,
-                ...duplicatedKeyMethodNodes,
-              ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
-              const typeString = methodNodes.reduce((str, node, idx, nodes) => {
-                const params = getMethodParams(node);
-                const returnType = getMethodReturnType(node);
-                return `${str}(${params} => ${returnType})${
-                  idx !== nodes.length - 1 ? ' & ' : ''
-                }`;
-              }, '');
-              const key = getMethodKey(methodNode);
-              const delimiter = getDelimiter(methodNode);
-              yield fixer.replaceText(
-                methodNode,
-                `${key}: ${typeString}${delimiter}`,
-              );
-              for (const node of duplicatedKeyMethodNodes) {
-                const lastToken = sourceCode.getLastToken(node);
-                if (lastToken) {
-                  const nextToken = sourceCode.getTokenAfter(lastToken);
-                  if (nextToken) {
-                    yield fixer.remove(node);
-                    yield fixer.replaceTextRange(
-                      [lastToken.range[1], nextToken.range[0]],
-                      '',
-                    );
+          if (isParentModule) {
+            context.report({
+              node: methodNode,
+              messageId: 'errorMethod',
+            });
+          } else {
+            context.report({
+              node: methodNode,
+              messageId: 'errorMethod',
+              *fix(fixer) {
+                const methodNodes = [
+                  methodNode,
+                  ...duplicatedKeyMethodNodes,
+                ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
+                const typeString = methodNodes.reduce(
+                  (str, node, idx, nodes) => {
+                    const params = getMethodParams(node);
+                    const returnType = getMethodReturnType(node);
+                    return `${str}(${params} => ${returnType})${
+                      idx !== nodes.length - 1 ? ' & ' : ''
+                    }`;
+                  },
+                  '',
+                );
+                const key = getMethodKey(methodNode);
+                const delimiter = getDelimiter(methodNode);
+                yield fixer.replaceText(
+                  methodNode,
+                  `${key}: ${typeString}${delimiter}`,
+                );
+                for (const node of duplicatedKeyMethodNodes) {
+                  const lastToken = sourceCode.getLastToken(node);
+                  if (lastToken) {
+                    const nextToken = sourceCode.getTokenAfter(lastToken);
+                    if (nextToken) {
+                      yield fixer.remove(node);
+                      yield fixer.replaceTextRange(
+                        [lastToken.range[1], nextToken.range[0]],
+                        '',
+                      );
+                    }
                   }
                 }
-              }
-            },
-          });
+              },
+            });
+          }
           return;
         }
 
-        context.report({
-          node: methodNode,
-          messageId: 'errorMethod',
-          fix: fixer => {
-            const key = getMethodKey(methodNode);
-            const params = getMethodParams(methodNode);
-            const returnType = getMethodReturnType(methodNode);
-            const delimiter = getDelimiter(methodNode);
-            return fixer.replaceText(
-              methodNode,
-              `${key}: ${params} => ${returnType}${delimiter}`,
-            );
-          },
-        });
+        if (isParentModule) {
+          context.report({
+            node: methodNode,
+            messageId: 'errorMethod',
+          });
+        } else {
+          context.report({
+            node: methodNode,
+            messageId: 'errorMethod',
+            fix: fixer => {
+              const key = getMethodKey(methodNode);
+              const params = getMethodParams(methodNode);
+              const returnType = getMethodReturnType(methodNode);
+              const delimiter = getDelimiter(methodNode);
+              return fixer.replaceText(
+                methodNode,
+                `${key}: ${params} => ${returnType}${delimiter}`,
+              );
+            },
+          });
+        }
       },
       TSPropertySignature(propertyNode): void {
         const typeNode = propertyNode.typeAnnotation?.typeAnnotation;
