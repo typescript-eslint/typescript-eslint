@@ -201,7 +201,7 @@ export default util.createRule<Options, MessageIds>({
             ? new RegExp(options.varsIgnorePattern, 'u')
             : null;
         if (isOnlySelfReferenced) {
-          if (varIgnorePattern && varIgnorePattern.test(variable.name)) {
+          if (varIgnorePattern?.test(variable.name)) {
             return;
           }
           context.report({
@@ -213,7 +213,6 @@ export default util.createRule<Options, MessageIds>({
               additional: '',
             },
           });
-          // }
         }
       },
 
