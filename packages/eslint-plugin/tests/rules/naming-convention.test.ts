@@ -639,6 +639,22 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        const CONSTANT_VALUE = 42;
+        function inner() {
+          const localConstant = 2;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'variable',
+          modifiers: ['const', 'global'],
+          format: ['UPPER_CASE'],
+        },
+      ],
+    },
+    {
+      code: `
         declare const ANY_UPPER_CASE: any;
         declare const ANY_UPPER_CASE: any | null;
         declare const ANY_UPPER_CASE: any | null | undefined;

@@ -87,6 +87,7 @@ enum Modifiers {
   protected = 1 << 4,
   private = 1 << 5,
   abstract = 1 << 6,
+  global = 1 << 7,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -309,7 +310,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),
-      ...selectorSchema('variable', true, ['const']),
+      ...selectorSchema('variable', true, ['const', 'global']),
       ...selectorSchema('function', false),
       ...selectorSchema('parameter', true),
 
@@ -501,6 +502,11 @@ export default util.createRule<Options, MessageIds>({
           parent.kind === 'const'
         ) {
           modifiers.add(Modifiers.const);
+        }
+
+        const scope = context.getScope();
+        if (scope.type === 'global' || scope.type === 'module') {
+          modifiers.add(Modifiers.global);
         }
 
         identifiers.forEach(i => {
