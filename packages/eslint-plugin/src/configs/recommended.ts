@@ -3,7 +3,7 @@
 // YOU CAN REGENERATE IT USING yarn generate:configs
 
 export = {
-  extends: ['./configs/base', './configs/eslint-recommended'],
+  extends: [require.resolve('./base'), require.resolve('./eslint-recommended')],
   rules: {
     '@typescript-eslint/adjacent-overload-signatures': 'error',
     '@typescript-eslint/ban-ts-comment': 'error',
