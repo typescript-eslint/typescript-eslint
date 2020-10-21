@@ -235,6 +235,11 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         s.slice(0, -4) === "car"
       }
     `,
+    `
+      function f(x: string, s: string) {
+        x.endsWith('foo') && x.slice(0, -4) === 'bar'
+      }
+    `,
   ]),
   invalid: addOptional([
     // String indexing.
