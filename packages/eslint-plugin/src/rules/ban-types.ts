@@ -223,6 +223,11 @@ export default util.createRule<Options, MessageIds>({
 
         checkBannedTypes(node);
       },
+      TSTupleType(node): void {
+        if (node.elementTypes.length === 0) {
+          checkBannedTypes(node);
+        }
+      },
       TSTypeReference(node): void {
         checkBannedTypes(node.typeName);
 
