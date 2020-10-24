@@ -137,6 +137,8 @@ export = {
     '@typescript-eslint/semi': 'error',
     'space-before-function-paren': 'off',
     '@typescript-eslint/space-before-function-paren': 'error',
+    'space-infix-ops': 'off',
+    '@typescript-eslint/space-infix-ops': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
