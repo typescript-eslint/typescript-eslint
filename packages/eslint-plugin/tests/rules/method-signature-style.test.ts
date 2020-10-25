@@ -371,5 +371,61 @@ interface Foo {
         },
       ],
     },
+    {
+      code: noFormat`
+type Foo = {
+  foo(): one;
+  foo(): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+type Foo = {
+  foo: (() => one) & (() => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const Foo: {
+  foo(): one;
+  foo(): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+declare const Foo: {
+  foo: (() => one) & (() => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
   ],
 });

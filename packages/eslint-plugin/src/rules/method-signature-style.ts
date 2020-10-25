@@ -118,15 +118,20 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const duplicatedKeyMethodNodes: TSESTree.TSMethodSignature[] =
-          methodNode.parent?.type === AST_NODE_TYPES.TSInterfaceBody
-            ? methodNode.parent.body.filter(
-                (element): element is TSESTree.TSMethodSignature =>
-                  element.type === AST_NODE_TYPES.TSMethodSignature &&
-                  element !== methodNode &&
-                  getMethodKey(element) === getMethodKey(methodNode),
-              )
+        const parent = methodNode.parent;
+        const members =
+          parent?.type === AST_NODE_TYPES.TSInterfaceBody
+            ? parent.body
+            : parent?.type === AST_NODE_TYPES.TSTypeLiteral
+            ? parent.members
             : [];
+
+        const duplicatedKeyMethodNodes: TSESTree.TSMethodSignature[] = members.filter(
+          (element): element is TSESTree.TSMethodSignature =>
+            element.type === AST_NODE_TYPES.TSMethodSignature &&
+            element !== methodNode &&
+            getMethodKey(element) === getMethodKey(methodNode),
+        );
         const isParentModule = isNodeParentModuleDeclaration(methodNode);
 
         if (duplicatedKeyMethodNodes.length > 0) {
