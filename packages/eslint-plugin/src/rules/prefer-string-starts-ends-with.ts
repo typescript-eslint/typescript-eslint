@@ -575,7 +575,8 @@ export default createRule({
         const isStartsWith =
           !isEndsWith &&
           callNode.arguments.length === 2 &&
-          isNumber(callNode.arguments[0], 0);
+          isNumber(callNode.arguments[0], 0) &&
+          !isNegativeIndexExpression(callNode.arguments[1], node.object);
         if (!isStartsWith && !isEndsWith) {
           return;
         }
