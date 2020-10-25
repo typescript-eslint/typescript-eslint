@@ -28,7 +28,7 @@ type Options = {
 The rule accepts a single object as options, with the following keys:
 
 - `types` - An object whose keys are the types you want to ban, and the values are error messages.
-  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), or the empty object literal (`{}`).
+  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
   - The values can be a string, which is the error message to be reported, `false` to specifically disable this type
     or it can be an object with the following properties:
     - `message: string` - the message to display when the type is matched.
