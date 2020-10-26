@@ -1,13 +1,9 @@
 import rule from '../../src/rules/no-unnecessary-type-constraint';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
-
-const rootDir = getFixturesRootDir();
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
 });
