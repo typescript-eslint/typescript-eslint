@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [method-signature-style] correct fixer for overloads in an object literal type ([#2708](https://github.com/typescript-eslint/typescript-eslint/issues/2708)) ([0763913](https://github.com/typescript-eslint/typescript-eslint/commit/0763913c4a0d1061465ae3329704f1a7de4b9326))
+* **eslint-plugin:** [method-signature-style] don't auto-fix interfaces within namespaces ([#2678](https://github.com/typescript-eslint/typescript-eslint/issues/2678)) ([e012049](https://github.com/typescript-eslint/typescript-eslint/commit/e01204931e460f5e6731abc443c88d666ca0b07a))
+* **eslint-plugin:** [prefer-string-starts-ends-with] Check negative indices in the second position for slice ([#2696](https://github.com/typescript-eslint/typescript-eslint/issues/2696)) ([66e9c6e](https://github.com/typescript-eslint/typescript-eslint/commit/66e9c6e29f9f56bbd178ba6405f47053be591258))
+
+
+### Features
+
+* **eslint-plugin:** [ban-types] support banning `[]` ([#2704](https://github.com/typescript-eslint/typescript-eslint/issues/2704)) ([ef8b5a7](https://github.com/typescript-eslint/typescript-eslint/commit/ef8b5a7e09cca4bdacf205da28f99f2b1a419d00)), closes [#2582](https://github.com/typescript-eslint/typescript-eslint/issues/2582)
+* **eslint-plugin:** add `no-unnecessary-type-constraint` rule ([#2516](https://github.com/typescript-eslint/typescript-eslint/issues/2516)) ([880ac75](https://github.com/typescript-eslint/typescript-eslint/commit/880ac753b90d63034f0a33f8f512d9fabc17c8f9))
+* **eslint-plugin:** add extension rule `space-infix-ops` ([#2593](https://github.com/typescript-eslint/typescript-eslint/issues/2593)) ([343d20d](https://github.com/typescript-eslint/typescript-eslint/commit/343d20db23a1640e3bca8cf52b7db1fa46e092e6))
+
+
+
+
+
 # [4.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.1...v4.5.0) (2020-10-19)
 
 
