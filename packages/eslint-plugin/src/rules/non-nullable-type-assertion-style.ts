@@ -35,12 +35,13 @@ export default util.createRule({
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
 
-      return tsutils.isTypeFlagSet(
-        type,
-        ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-      )
-        ? undefined
-        : tsutils.unionTypeParts(type);
+      if (
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        return undefined;
+      }
+
+      return tsutils.unionTypeParts(type);
     };
 
     const sameTypeWithoutNullish = (
