@@ -48,24 +48,20 @@ export default util.createRule({
       assertedTypes: ts.Type[],
       originalTypes: ts.Type[],
     ): boolean => {
-      const assertedTypeIds = new Set(assertedTypes.map(type => type.id));
       const nonNullishOriginalTypes = originalTypes.filter(
         type =>
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined,
       );
-      const nonNullishOriginalTypeIds = new Set(
-        nonNullishOriginalTypes.map(type => type.id),
-      );
 
       for (const assertedType of assertedTypes) {
-        if (!nonNullishOriginalTypeIds.has(assertedType.id)) {
+        if (!nonNullishOriginalTypes.includes(assertedType)) {
           return false;
         }
       }
 
       for (const originalType of nonNullishOriginalTypes) {
-        if (!assertedTypeIds.has(originalType.id)) {
+        if (!assertedTypes.includes(originalType)) {
           return false;
         }
       }
