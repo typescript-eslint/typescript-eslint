@@ -346,6 +346,23 @@ function checkFunctionExpressionReturnType(
   checkFunctionReturnType(node, options, sourceCode, report);
 }
 
+function blockReturnsJSX(node: TSESTree.BlockStatement) {
+  return node.body.some(statement => {
+    if (statement.type === 'ReturnStatement') {
+      return statement.argument?.type === 'JSXElement';
+    }
+    return false;
+  });
+}
+function isJSXReturningFunction(node: FunctionNode) {
+  if (node.body.type === 'BlockStatement') {
+    return blockReturnsJSX(node.body);
+  } else if (node.body.type === 'JSXElement') {
+    return true;
+  }
+  return false;
+}
+
 export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
@@ -353,4 +370,5 @@ export {
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,
+  isJSXReturningFunction,
 };

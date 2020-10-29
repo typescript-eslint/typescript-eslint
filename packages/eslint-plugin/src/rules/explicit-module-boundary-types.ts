@@ -10,6 +10,7 @@ import {
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,
+  isJSXReturningFunction,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -18,6 +19,7 @@ type Options = [
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
+    allowJSXFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
     shouldTrackReferences?: boolean;
   },
@@ -66,6 +68,9 @@ export default util.createRule<Options, MessageIds>({
           allowHigherOrderFunctions: {
             type: 'boolean',
           },
+          allowJSXFunctions: {
+            type: 'boolean',
+          },
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
@@ -84,6 +89,7 @@ export default util.createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
       allowHigherOrderFunctions: true,
+      allowJSXFunctions: false,
       allowTypedFunctionExpressions: true,
     },
   ],
@@ -455,7 +461,8 @@ export default util.createRule<Options, MessageIds>({
       if (
         isAllowedName(node.parent) ||
         isTypedFunctionExpression(node, options) ||
-        ancestorHasReturnType(node)
+        ancestorHasReturnType(node) ||
+        isJSXReturningFunction(node)
       ) {
         return;
       }
@@ -477,7 +484,11 @@ export default util.createRule<Options, MessageIds>({
       }
       checkedFunctions.add(node);
 
-      if (isAllowedName(node.parent) || ancestorHasReturnType(node)) {
+      if (
+        isAllowedName(node.parent) ||
+        ancestorHasReturnType(node) ||
+        isJSXReturningFunction(node)
+      ) {
         return;
       }
 

@@ -661,6 +661,55 @@ export class A {
   b = A;
 }
     `,
+    {
+      code: `
+export function MyComponent(): JSX.Element {
+  return <div>Hello</div>;
+}
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+export function MyComponent() {
+  return <div>Hello</div>;
+}
+      `,
+      options: [{ allowJSXFunctions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+export const MyComponent = () => {
+  return <div>Hello</div>;
+}
+      `,
+      options: [{ allowJSXFunctions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+export const MyComponent = () => <div>Hello</div>;
+      `,
+      options: [{ allowJSXFunctions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
   ],
   invalid: [
     {
