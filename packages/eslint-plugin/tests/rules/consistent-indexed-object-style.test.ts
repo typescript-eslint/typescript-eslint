@@ -140,6 +140,32 @@ type Foo = Record<string, any>;
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
+    // Interface with generic parameter
+    {
+      code: `
+interface Foo<A> {
+  [key: string]: A;
+}
+      `,
+      output: `
+type Foo<A> = Record<string, A>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Interface with multiple generic parameters
+    {
+      code: `
+interface Foo<A, B> {
+  [key: A]: B;
+}
+      `,
+      output: `
+type Foo<A, B> = Record<A, B>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
     // Type literal
     {
       code: 'type Foo = { [key: string]: any };',
@@ -173,6 +199,14 @@ type Foo = Record<string, any>;
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 12 }],
+    },
+
+    // Type literal with generic parameter
+    {
+      code: 'type Foo<T> = Record<string, T>;',
+      options: ['index-signature'],
+      output: 'type Foo<T> = { [key: string]: T };',
+      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 15 }],
     },
 
     // Generic

@@ -115,7 +115,20 @@ export default createRule<Options, MessageIds>({
       },
 
       TSInterfaceDeclaration(node): void {
-        checkMembers(node.body.body, node, `type ${node.id.name} = `, ';');
+        let genericTypes = '';
+
+        if ((node.typeParameters?.params ?? []).length > 0) {
+          genericTypes = `<${node.typeParameters?.params
+            .map(p => p.name.name)
+            .join(', ')}>`;
+        }
+
+        checkMembers(
+          node.body.body,
+          node,
+          `type ${node.id.name}${genericTypes} = `,
+          ';',
+        );
       },
     };
   },
