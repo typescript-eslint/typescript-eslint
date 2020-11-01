@@ -3,6 +3,7 @@ import {
   TSESLint,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 type MessageIds = 'noShadow';
@@ -67,6 +68,16 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    /**
+     * Check if a scope is a TypeScript module augmenting the global namespace.
+     */
+    function isGlobalAugmentation(scope: TSESLint.Scope.Scope): boolean {
+      return (
+        (scope.type === ScopeType.tsModule && !!scope.block.global) ||
+        (!!scope.upper && isGlobalAugmentation(scope.upper))
+      );
+    }
+
     /**
      * Check if variable is a `this` parameter.
      */
@@ -261,6 +272,11 @@ export default util.createRule<Options, MessageIds>({
      * @param {Scope} scope Fixme
      */
     function checkForShadows(scope: TSESLint.Scope.Scope): void {
+      // ignore global augmentation
+      if (isGlobalAugmentation(scope)) {
+        return;
+      }
+
       const variables = scope.variables;
 
       for (const variable of variables) {
