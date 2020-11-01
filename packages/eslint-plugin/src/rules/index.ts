@@ -14,7 +14,6 @@ import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
 import dotNotation from './dot-notation';
-import enumMembersSpacing from './space-infix-ops';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
@@ -103,6 +102,7 @@ import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
+import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
@@ -128,7 +128,6 @@ export default {
   'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
   'dot-notation': dotNotation,
-  'space-infix-ops': enumMembersSpacing,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
@@ -217,6 +216,7 @@ export default {
   'return-await': returnAwait,
   semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
+  'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
