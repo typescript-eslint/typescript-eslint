@@ -108,6 +108,7 @@ ruleTester.run('ban-types', rule, {
         },
       ],
     },
+    'let a: [];',
   ],
   invalid: [
     {
@@ -525,6 +526,94 @@ let bar: object = {};
         {
           types: {
             'Bar<A, B>': "Don't pass `A, B` as parameters to `Bar`",
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: noFormat`let a:  [ ] ;`,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 9,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [];',
+      output: 'let a: any[];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': {
+              message: '`[]` does only allow empty arrays.',
+              fixWith: 'any[]',
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [[]];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 9,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
           },
         },
       ],

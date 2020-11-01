@@ -789,3 +789,25 @@ declare module 'eslint/lib/rules/no-duplicate-imports' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/space-infix-ops' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingSpace',
+    [
+      {
+        int32Hint: boolean;
+      },
+    ],
+    {
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      AssignmentPattern(node: TSESTree.AssignmentPattern): void;
+      BinaryExpression(node: TSESTree.BinaryExpression): void;
+      LogicalExpression(node: TSESTree.LogicalExpression): void;
+      ConditionalExpression(node: TSESTree.ConditionalExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+    }
+  >;
+  export = rule;
+}

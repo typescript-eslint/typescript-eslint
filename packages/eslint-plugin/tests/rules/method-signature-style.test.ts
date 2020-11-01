@@ -348,5 +348,84 @@ interface Foo {
         },
       ],
     },
+    {
+      code: noFormat`
+        declare global {
+          namespace jest {
+            interface Matchers<R, T> {
+              // Add overloads specific to the DOM
+              toHaveProp<K extends keyof DomPropsOf<T>>(name: K, value?: DomPropsOf<T>[K]): R;
+              toHaveProps(props: Partial<DomPropsOf<T>>): R;
+            }
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 6,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 7,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = {
+  foo(): one;
+  foo(): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+type Foo = {
+  foo: (() => one) & (() => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const Foo: {
+  foo(): one;
+  foo(): two;
+  foo(): three;
+}
+      `,
+      output: noFormat`
+declare const Foo: {
+  foo: (() => one) & (() => two) & (() => three);
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 4,
+        },
+        {
+          messageId: 'errorMethod',
+          line: 5,
+        },
+      ],
+    },
   ],
 });
