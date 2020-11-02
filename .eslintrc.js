@@ -221,6 +221,15 @@ module.exports = {
         '@typescript-eslint/internal/plugin-test-formatting': 'error',
       },
     },
+    // files which list all the things
+    {
+      files: ['packages/eslint-plugin/src/rules/index.ts'],
+      rules: {
+        // enforce alphabetical ordering
+        'sort-keys': 'error',
+        'import/order': ['error', { alphabetize: { order: 'asc' } }],
+      },
+    },
     // tools and tests
     {
       files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
