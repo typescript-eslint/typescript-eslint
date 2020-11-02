@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-indexed-object-style] fix wrong autofix behaviour with generics ([#2722](https://github.com/typescript-eslint/typescript-eslint/issues/2722)) ([73d9713](https://github.com/typescript-eslint/typescript-eslint/commit/73d97130afe79b8a458c215581ce86c62009ad8b))
+* **eslint-plugin:** [no-shadow] ignore global module augmentation ([#2729](https://github.com/typescript-eslint/typescript-eslint/issues/2729)) ([d8c67a5](https://github.com/typescript-eslint/typescript-eslint/commit/d8c67a564a4cada5add8587f655aee2305cbc562))
+
+
+
+
+
 # [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
 
 

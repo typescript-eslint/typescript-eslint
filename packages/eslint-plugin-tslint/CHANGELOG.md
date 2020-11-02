@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+
+
+
+
 # [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
