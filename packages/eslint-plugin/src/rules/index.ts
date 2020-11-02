@@ -29,6 +29,7 @@ import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
+import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDuplicateImports from './no-duplicate-imports';
 import noDynamicDelete from './no-dynamic-delete';
@@ -77,7 +78,6 @@ import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
-import noVoidExpression from './no-void-expression';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -143,6 +143,7 @@ export default {
   'no-array-constructor': noArrayConstructor,
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
+  'no-confusing-void-expression': noConfusingVoidExpression,
   'no-dupe-class-members': noDupeClassMembers,
   'no-duplicate-imports': noDuplicateImports,
   'no-dynamic-delete': noDynamicDelete,
@@ -191,7 +192,6 @@ export default {
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
-  'no-void-expression': noVoidExpression,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,

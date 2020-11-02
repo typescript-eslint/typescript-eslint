@@ -25,7 +25,7 @@ export type MessageId =
   | 'voidExprWrapVoid';
 
 export default util.createRule<Options, MessageId>({
-  name: 'no-void-expression',
+  name: 'no-confusing-void-expression',
   meta: {
     docs: {
       description:

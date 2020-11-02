@@ -1,4 +1,7 @@
-import rule, { MessageId, Options } from '../../src/rules/no-void-expression';
+import rule, {
+  MessageId,
+  Options,
+} from '../../src/rules/no-confusing-void-expression';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,
@@ -15,7 +18,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-void-expression', rule, {
+ruleTester.run('no-confusing-void-expression', rule, {
   valid: [
     ...batchedSingleLineTests<Options>({
       code: `
