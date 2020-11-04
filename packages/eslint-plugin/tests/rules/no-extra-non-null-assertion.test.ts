@@ -33,6 +33,15 @@ function foo(bar?: { n: number }) {
 checksCounter?.textContent!.trim();
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2732
+    {
+      code: `
+function foo(key: string | null) {
+  const obj = {};
+  return obj?.[key!];
+}
+      `,
+    },
   ],
   invalid: [
     {
