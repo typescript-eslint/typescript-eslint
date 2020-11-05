@@ -59,6 +59,16 @@ export type W<T> = {
       `,
       options: ['type'],
     },
+    {
+      code: `
+declare global {
+  interface Array<T> {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      options: ['type'],
+    },
   ],
   invalid: [
     {

@@ -68,7 +68,9 @@ export default util.createRule({
           });
         }
       },
-      TSInterfaceDeclaration(node): void {
+      ':not(TSModuleDeclaration > TSModuleBlock) > TSInterfaceDeclaration'(
+        node: TSESTree.TSInterfaceDeclaration,
+      ): void {
         if (option === 'type') {
           context.report({
             node: node.id,
