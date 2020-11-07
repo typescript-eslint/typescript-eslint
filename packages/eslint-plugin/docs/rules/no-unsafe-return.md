@@ -1,7 +1,8 @@
-# Disallows returning any from a function (`no-unsafe-return`)
+# Disallows returning unsafe types from a function (`no-unsafe-return`)
 
-Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Returned `any` typed values not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Despite your best intentions, unsafe types (such as `any` and `never`) type can sometimes leak into your codebase.
+Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Returned `never` typed values are often the source of the variable's type being narrowed down to `never`.
 
 ## Rule Details
 
@@ -11,6 +12,12 @@ This rule also compares the return type to the function's declared/inferred retu
 Examples of **incorrect** code for this rule:
 
 ```ts
+function bar(a: string) {
+  if (typeof a === 'string') {
+    return 'b';
+  }
+  return a;
+}
 function foo1() {
   return 1 as any;
 }
@@ -52,6 +59,12 @@ const assignability2: TAssign = () => new Set<any>([true]);
 Examples of **correct** code for this rule:
 
 ```ts
+function bar(a: string | number) {
+  if (typeof a === 'string') {
+    return 'b';
+  }
+  return a;
+}
 function foo1() {
   return 1;
 }

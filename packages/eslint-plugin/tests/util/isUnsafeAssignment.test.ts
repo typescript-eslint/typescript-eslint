@@ -59,6 +59,19 @@ describe('isUnsafeAssignment', () => {
       );
     });
 
+    it('never to anything', () => {
+      const { sender, receiver, checker } = getTypes(
+        'const test: string = (1 as never);',
+      );
+
+      expectTypesAre(
+        isUnsafeAssignment(sender, receiver, checker),
+        checker,
+        'never',
+        'string',
+      );
+    });
+
     it('any in a generic position to a non-any', () => {
       const { sender, receiver, checker } = getTypes(
         'const test: Set<string> = new Set<any>();',

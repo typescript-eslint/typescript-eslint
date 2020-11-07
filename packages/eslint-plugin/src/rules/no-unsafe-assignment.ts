@@ -19,19 +19,21 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows assigning any to variables and properties',
+      description:
+        'Disallows assigning unsafe types to variables and properties',
       category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an any value.',
-      unsafeArrayPattern: 'Unsafe array destructuring of an any array value.',
+      assignment: 'Unsafe assignment of an {{ type }} value.',
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{ type }} array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an any value.',
+        'Unsafe array destructuring of a tuple element with an {{ type }} value.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an any value in an array.',
+      unsafeArraySpread: 'Unsafe spread of an {{ type }} value in an array.',
     },
     schema: [],
   },
@@ -39,6 +41,14 @@ export default util.createRule({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+
+    function isAnyOrNeverType(type: ts.Type, checker: ts.TypeChecker): boolean {
+      const isAny =
+        util.isTypeAnyType(type) || util.isTypeAnyArrayType(type, checker);
+      const isNever =
+        util.isTypeNeverType(type) || util.isTypeNeverArrayType(type, checker);
+      return isAny || isNever;
+    }
 
     // returns true if the assignment reported
     function checkArrayDestructureHelper(
@@ -61,12 +71,19 @@ export default util.createRule({
       senderType: ts.Type,
       senderNode: ts.Node,
     ): boolean {
-      // any array
+      // any or never array
       // const [x] = ([] as any[]);
-      if (util.isTypeAnyArrayType(senderType, checker)) {
+      // const [x] = ([] as never[]);
+      if (
+        util.isTypeAnyArrayType(senderType, checker) ||
+        util.isTypeNeverArrayType(senderType, checker)
+      ) {
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
+          data: {
+            type: checker.typeToString(senderType),
+          },
         });
         return false;
       }
@@ -77,8 +94,9 @@ export default util.createRule({
 
       const tupleElements = util.getTypeArguments(senderType, checker);
 
-      // tuple with any
+      // tuple with any or never
       // const [x] = [1 as any];
+      // const [x] = [1 as never];
       let didReport = false;
       for (
         let receiverIndex = 0;
@@ -100,11 +118,17 @@ export default util.createRule({
           continue;
         }
 
-        // check for the any type first so we can handle [[[x]]] = [any]
-        if (util.isTypeAnyType(senderType)) {
+        // check for the any or never type first so we can handle [[[x]]] = [any] or [[[x]]] = [never]
+        if (
+          util.isTypeAnyType(senderType) ||
+          util.isTypeNeverType(senderType)
+        ) {
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: {
+              type: checker.typeToString(senderType),
+            },
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -191,11 +215,14 @@ export default util.createRule({
           continue;
         }
 
-        // check for the any type first so we can handle {x: {y: z}} = {x: any}
-        if (util.isTypeAnyType(senderType)) {
+        // check for the any type first so we can handle {x: {y: z}} = {x: any} or {x: {y: z}} = {x: never}
+        if (isAnyOrNeverType(senderType, checker)) {
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: {
+              type: checker.typeToString(senderType),
+            },
           });
           didReport = true;
         } else if (
@@ -237,15 +264,21 @@ export default util.createRule({
         esTreeNodeToTSNodeMap.get(senderNode),
       );
 
-      if (util.isTypeAnyType(senderType)) {
-        // handle cases when we assign any ==> unknown.
-        if (util.isTypeUnknownType(receiverType)) {
+      if (util.isTypeAnyType(senderType) || util.isTypeNeverType(senderType)) {
+        // handle cases when we assign any or never ==> unknown.
+        if (
+          util.isTypeUnknownType(receiverType) ||
+          util.isTypeUnknownArrayType(receiverType, checker)
+        ) {
           return false;
         }
 
         context.report({
           node: reportingNode,
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
+          data: {
+            type: checker.typeToString(senderType),
+          },
         });
         return true;
       }
@@ -344,13 +377,13 @@ export default util.createRule({
       'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
         const resetNode = esTreeNodeToTSNodeMap.get(node.argument);
         const restType = checker.getTypeAtLocation(resetNode);
-        if (
-          util.isTypeAnyType(restType) ||
-          util.isTypeAnyArrayType(restType, checker)
-        ) {
+        if (isAnyOrNeverType(restType, checker)) {
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
+            data: {
+              type: checker.typeToString(restType),
+            },
           });
         }
       },

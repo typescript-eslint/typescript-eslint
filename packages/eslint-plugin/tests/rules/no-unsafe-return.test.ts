@@ -92,11 +92,25 @@ function foo(): Set<number> {
         return x as Set<any>;
       }
     `,
+    `
+function foo(): never {
+  throw new Error('');
+}
+    `,
+    `
+function bar(a: string | number) {
+  if (typeof a === 'string') {
+    return 'b';
+  }
+  return a;
+}
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
       code: noFormat`
 function foo() { return (1 as any); }
+function foo() { return (1 as never); }
 function foo() { return Object.create(null); }
 const foo = () => { return (1 as any) };
 const foo = () => Object.create(null);
@@ -111,9 +125,9 @@ const foo = () => Object.create(null);
           column: 18,
         },
         {
-          messageId: 'unsafeReturn',
+          messageId: 'unsafeReturnNever',
           data: {
-            type: 'any',
+            sender: 'never',
           },
           line: 3,
           column: 18,
@@ -124,7 +138,7 @@ const foo = () => Object.create(null);
             type: 'any',
           },
           line: 4,
-          column: 21,
+          column: 18,
         },
         {
           messageId: 'unsafeReturn',
@@ -132,6 +146,14 @@ const foo = () => Object.create(null);
             type: 'any',
           },
           line: 5,
+          column: 21,
+        },
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any',
+          },
+          line: 6,
           column: 19,
         },
       ],
@@ -289,6 +311,25 @@ receiver(function test() {
           data: {
             sender: 'Set<any>',
             receiver: 'Set<string>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function bar(a: string) {
+  if (typeof a === 'string') {
+    return 'b';
+  }
+  return a;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturnNever',
+          line: 6,
+          data: {
+            sender: 'never',
           },
         },
       ],

@@ -10,7 +10,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows returning any from a function',
+      description: 'Disallows returning unsafe types from a function',
       category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
@@ -19,6 +19,7 @@ export default util.createRule({
       unsafeReturn: 'Unsafe return of an {{type}} typed value',
       unsafeReturnAssignment:
         'Unsafe return of type {{sender}} from function with return type {{receiver}}.',
+      unsafeReturnNever: 'Unsafe return of type {{sender}} from function.',
     },
     schema: [],
   },
@@ -112,7 +113,21 @@ export default util.createRule({
 
       for (const signature of functionType.getCallSignatures()) {
         const functionReturnType = signature.getReturnType();
-        if (returnNodeType === functionReturnType) {
+
+        if (util.isTypeNeverType(returnNodeType)) {
+          return context.report({
+            node: reportingNode,
+            messageId: 'unsafeReturnNever',
+            data: {
+              sender: checker.typeToString(returnNodeType),
+            },
+          });
+        }
+
+        if (
+          checker.typeToString(returnNodeType) ===
+          checker.typeToString(functionReturnType)
+        ) {
           // don't bother checking if they're the same
           // either the function is explicitly declared to return the same type
           // or there was no declaration, so the return type is implicit

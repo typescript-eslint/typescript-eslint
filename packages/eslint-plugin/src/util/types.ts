@@ -350,6 +350,13 @@ export function isTypeAnyType(type: ts.Type): boolean {
 }
 
 /**
+ * @returns true if the type is `never`
+ */
+export function isTypeNeverType(type: ts.Type): boolean {
+  return isTypeFlagSet(type, ts.TypeFlags.Never);
+}
+
+/**
  * @returns true if the type is `any[]`
  */
 export function isTypeAnyArrayType(
@@ -359,6 +366,22 @@ export function isTypeAnyArrayType(
   return (
     checker.isArrayType(type) &&
     isTypeAnyType(
+      // getTypeArguments was only added in TS3.7
+      getTypeArguments(type, checker)[0],
+    )
+  );
+}
+
+/**
+ * @returns true if the type is `never[]`
+ */
+export function isTypeNeverArrayType(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    checker.isArrayType(type) &&
+    isTypeNeverType(
       // getTypeArguments was only added in TS3.7
       getTypeArguments(type, checker)[0],
     )
@@ -405,7 +428,7 @@ export function isAnyOrAnyArrayTypeDiscriminated(
 }
 
 /**
- * Does a simple check to see if there is an any being assigned to a non-any type.
+ * Does a simple check to see if there is an any or never being assigned to a non-any type.
  *
  * This also checks generic positions to ensure there's no unsafe sub-assignments.
  * Note: in the case of generic positions, it makes the assumption that the two types are the same.
@@ -415,22 +438,22 @@ export function isAnyOrAnyArrayTypeDiscriminated(
  * @returns false if it's safe, or an object with the two types if it's unsafe
  */
 export function isUnsafeAssignment(
-  type: ts.Type,
+  sender: ts.Type,
   receiver: ts.Type,
   checker: ts.TypeChecker,
 ): false | { sender: ts.Type; receiver: ts.Type } {
-  if (isTypeAnyType(type)) {
-    // Allow assignment of any ==> unknown.
+  if (isTypeAnyType(sender) || isTypeNeverType(sender)) {
+    // Allow assignment of any or never ==> unknown.
     if (isTypeUnknownType(receiver)) {
       return false;
     }
 
-    if (!isTypeAnyType(receiver)) {
-      return { sender: type, receiver };
+    if (!isTypeAnyType(receiver) && !isTypeNeverType(receiver)) {
+      return { sender, receiver };
     }
   }
 
-  if (isTypeReference(type) && isTypeReference(receiver)) {
+  if (isTypeReference(sender) && isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
     /*
@@ -444,13 +467,13 @@ export function isUnsafeAssignment(
     const b: Test2 = a;
     */
 
-    if (type.target !== receiver.target) {
+    if (sender.target !== receiver.target) {
       // if the type references are different, assume safe, as we won't know how to compare the two types
       // the generic positions might not be equivalent for both types
       return false;
     }
 
-    const typeArguments = type.typeArguments ?? [];
+    const typeArguments = sender.typeArguments ?? [];
     const receiverTypeArguments = receiver.typeArguments ?? [];
 
     for (let i = 0; i < typeArguments.length; i += 1) {
@@ -459,7 +482,7 @@ export function isUnsafeAssignment(
 
       const unsafe = isUnsafeAssignment(arg, receiverArg, checker);
       if (unsafe) {
-        return { sender: type, receiver };
+        return { sender, receiver };
       }
     }
 

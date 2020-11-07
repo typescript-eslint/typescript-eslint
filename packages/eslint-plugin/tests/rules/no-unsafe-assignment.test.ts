@@ -128,44 +128,57 @@ declare function Foo(props: Props): never;
     `
       const x: Set<unknown> = y as Set<any>;
     `,
+    `
+const x = 1;
+if (typeof x === "number") {
+  const y = x;
+}
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
       code: noFormat`
 const x = (1 as any);
 const x = (1 as any), y = 1;
+const x = (1 as never);
 function foo(a = (1 as any)) {}
 class Foo { constructor(private a = (1 as any)) {} }
 class Foo { private a = (1 as any) }
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 2,
           column: 7,
           endColumn: 21,
         },
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 3,
           column: 7,
           endColumn: 21,
         },
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 4,
+          column: 7,
+          endColumn: 23,
+        },
+        {
+          messageId: 'assignment',
+          line: 5,
           column: 14,
           endColumn: 28,
         },
         {
-          messageId: 'anyAssignment',
-          line: 5,
+          messageId: 'assignment',
+          line: 6,
           column: 33,
           endColumn: 47,
         },
         {
-          messageId: 'anyAssignment',
-          line: 6,
+          messageId: 'assignment',
+          line: 7,
           column: 13,
           endColumn: 35,
         },
@@ -178,7 +191,7 @@ const [x] = [] as any[];
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 2,
           column: 7,
           endColumn: 21,
@@ -194,6 +207,7 @@ const [x] = [] as any[];
     ...batchedSingleLineTests({
       code: noFormat`
 const x: Set<string> = new Set<any>();
+const x: Set<string> = new Set<never>();
 const x: Map<string, string> = new Map<string, any>();
 const x: Set<string[]> = new Set<any[]>();
 const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
@@ -210,10 +224,18 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
         {
           messageId: 'unsafeAssignment',
           data: {
+            sender: 'Set<never>',
+            receiver: 'Set<string>',
+          },
+          line: 3,
+        },
+        {
+          messageId: 'unsafeAssignment',
+          data: {
             sender: 'Map<string, any>',
             receiver: 'Map<string, string>',
           },
-          line: 3,
+          line: 4,
         },
         {
           messageId: 'unsafeAssignment',
@@ -221,7 +243,7 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
             sender: 'Set<any[]>',
             receiver: 'Set<string[]>',
           },
-          line: 4,
+          line: 5,
         },
         {
           messageId: 'unsafeAssignment',
@@ -229,12 +251,13 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
             sender: 'Set<Set<Set<any>>>',
             receiver: 'Set<Set<Set<string>>>',
           },
-          line: 5,
+          line: 6,
         },
       ],
     }),
     ...assignmentTest([
       ['[x] = [1] as [any]', 2, 3],
+      ['[x] = [1] as [never]', 2, 3],
       ['[[[[x]]]] = [[[[1 as any]]]]', 5, 6],
       ['[[[[x]]]] = [1 as any]', 2, 9, true],
       ['[{x}] = [{x: 1}] as [{x: any}]', 3, 4],
@@ -254,6 +277,7 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
     ...batchedSingleLineTests({
       code: `
 const x = [...(1 as any)];
+const x = [...(1 as never)];
 const x = [...([] as any[])];
       `,
       errors: [
@@ -267,12 +291,19 @@ const x = [...([] as any[])];
           messageId: 'unsafeArraySpread',
           line: 3,
           column: 12,
+          endColumn: 27,
+        },
+        {
+          messageId: 'unsafeArraySpread',
+          line: 4,
+          column: 12,
           endColumn: 28,
         },
       ],
     }),
     ...assignmentTest([
       ['{x} = {x: 1} as {x: any}', 2, 3],
+      ['{x} = {x: 1} as {x: never}', 2, 3],
       ['{x: y} = {x: 1} as {x: any}', 5, 6],
       ['{x: {y}} = {x: {y: 1}} as {x: {y: any}}', 6, 7],
       ['{x: [y]} = {x: {y: 1}} as {x: [any]}', 6, 7],
@@ -280,26 +311,33 @@ const x = [...([] as any[])];
     ...batchedSingleLineTests({
       code: `
 const x = { y: 1 as any };
+const x = { y: 1 as never };
 const x = { y: { z: 1 as any } };
 const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };
 const x = { ...(1 as any) };
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 2,
           column: 13,
           endColumn: 24,
         },
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 3,
+          column: 13,
+          endColumn: 26,
+        },
+        {
+          messageId: 'assignment',
+          line: 4,
           column: 18,
           endColumn: 29,
         },
         {
           messageId: 'unsafeAssignment',
-          line: 4,
+          line: 5,
           column: 43,
           endColumn: 70,
           data: {
@@ -309,8 +347,8 @@ const x = { ...(1 as any) };
         },
         {
           // spreading an any widens the object type to any
-          messageId: 'anyAssignment',
-          line: 5,
+          messageId: 'assignment',
+          line: 6,
           column: 7,
           endColumn: 28,
         },
@@ -325,7 +363,7 @@ declare function Foo(props: Props): never;
       filename: 'react.tsx',
       errors: [
         {
-          messageId: 'anyAssignment',
+          messageId: 'assignment',
           line: 4,
           column: 9,
           endColumn: 17,
