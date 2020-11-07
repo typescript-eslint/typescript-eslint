@@ -130,7 +130,7 @@ declare function Foo(props: Props): never;
     `,
     `
 const x = 1;
-if (typeof x === "number") {
+if (typeof x === 'number') {
   const y = x;
 }
     `,
