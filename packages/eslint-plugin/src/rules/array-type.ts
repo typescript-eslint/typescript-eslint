@@ -244,7 +244,14 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const parens = typeNeedsParentheses(type);
+        const typeParens = typeNeedsParentheses(type);
+        const parentParens =
+          readonlyPrefix && node.parent?.type === AST_NODE_TYPES.TSArrayType;
+
+        const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
+          typeParens ? '(' : ''
+        }`;
+        const end = `${typeParens ? ')' : ''}[]${parentParens ? ')' : ''}`;
 
         context.report({
           node,
@@ -254,14 +261,8 @@ export default util.createRule<Options, MessageIds>({
           },
           fix(fixer) {
             return [
-              fixer.replaceTextRange(
-                [node.range[0], type.range[0]],
-                `${readonlyPrefix}${parens ? '(' : ''}`,
-              ),
-              fixer.replaceTextRange(
-                [type.range[1], node.range[1]],
-                parens ? ')[]' : '[]',
-              ),
+              fixer.replaceTextRange([node.range[0], type.range[0]], start),
+              fixer.replaceTextRange([type.range[1], node.range[1]], end),
             ];
           },
         });

@@ -1648,6 +1648,19 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: 'type Foo = ReadonlyArray<object>[];',
+      output: 'type Foo = (readonly object[])[];',
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { type: 'object' },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
   ],
 });
 
