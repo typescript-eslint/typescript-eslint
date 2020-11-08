@@ -89,6 +89,10 @@ export default util.createRule({
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
+            /**
+             * remove automatically fix when the interface is within a declare global
+             * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
+             */
             fix: isNodeGrandparentGlobalModuleDeclaration(node)
               ? null
               : (fixer): TSESLint.RuleFix[] => {
