@@ -170,6 +170,7 @@ export type TSNode =
   | ts.InputFiles
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
+  | ts.TemplateLiteralTypeNode
 
   // JSDoc: Unsupported
   | ts.JSDoc

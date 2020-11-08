@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import type babelParser from '@babel/parser';
 import { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
 import * as parser from '../../src/parser';
@@ -19,7 +20,7 @@ function createError(
 }
 
 function parseWithBabelParser(text: string, jsx = true): any {
-  const babel = require('@babel/parser');
+  const babel: typeof babelParser = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'classProperties',
     'decorators-legacy',

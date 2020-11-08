@@ -2272,6 +2272,7 @@ export class Converter {
         const result = this.createNode<TSESTree.TSMappedType>(node, {
           type: AST_NODE_TYPES.TSMappedType,
           typeParameter: this.convertType(node.typeParameter),
+          nameType: this.convertType(node.nameType) ?? null,
         });
 
         if (node.readonlyToken) {
@@ -2738,6 +2739,21 @@ export class Converter {
           type: AST_NODE_TYPES.TSRestType,
           typeAnnotation: this.convertType(node.type),
         });
+      }
+
+      // Template Literal Types
+      case SyntaxKind.TemplateLiteralType: {
+        const result = this.createNode<TSESTree.TSTemplateLiteralType>(node, {
+          type: AST_NODE_TYPES.TSTemplateLiteralType,
+          quasis: [this.convertChild(node.head)],
+          types: [],
+        });
+
+        node.templateSpans.forEach(templateSpan => {
+          result.types.push(this.convertChild(templateSpan.type));
+          result.quasis.push(this.convertChild(templateSpan.literal));
+        });
+        return result;
       }
 
       default:

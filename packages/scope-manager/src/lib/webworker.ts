@@ -209,6 +209,12 @@ export const webworker = {
     isValueVariable: false,
     name: 'GetNotificationOptions',
   },
+  HkdfParams: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'HkdfParams',
+  },
   HmacImportParams: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1001,12 +1007,6 @@ export const webworker = {
     isValueVariable: true,
     name: 'Headers',
   },
-  HkdfCtrParams: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'HkdfCtrParams',
-  },
   IDBArrayKey: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1376,7 +1376,7 @@ export const webworker = {
   ReadableByteStreamController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableByteStreamController',
   },
   ReadableStream: {
@@ -1388,25 +1388,25 @@ export const webworker = {
   ReadableStreamBYOBReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamBYOBReader',
   },
   ReadableStreamBYOBRequest: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamBYOBRequest',
   },
   ReadableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamDefaultController',
   },
   ReadableStreamDefaultReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamDefaultReader',
   },
   ReadableStreamReader: {
@@ -1568,7 +1568,7 @@ export const webworker = {
   TransformStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'TransformStreamDefaultController',
   },
   URL: {
@@ -1844,13 +1844,13 @@ export const webworker = {
   WritableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'WritableStreamDefaultController',
   },
   WritableStreamDefaultWriter: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'WritableStreamDefaultWriter',
   },
   XMLHttpRequestEventMap: {

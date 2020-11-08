@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unused-vars';
-import { RuleTester } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -384,6 +384,17 @@ type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
 export const map: { [name in Foo]: Bar } = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+    `,
+    // 4.1 remapped mapped type
+    noFormat`
+type Foo = 'a' | 'b' | 'c';
+type Bar = number;
+
+export const map: { [name in Foo as string]: Bar } = {
   a: 1,
   b: 2,
   c: 3,
@@ -900,6 +911,22 @@ declare function A(A: string): string;
       `,
       filename: 'foo.d.ts',
     },
+    // 4.1 template literal types
+    noFormat`
+type Color = 'red' | 'blue';
+type Quantity = 'one' | 'two';
+export type SeussFish = \`\${Quantity | Color} fish\`;
+    `,
+    noFormat`
+type VerticalAlignment = "top" | "middle" | "bottom";
+type HorizontalAlignment = "left" | "center" | "right";
+
+export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
+    `,
+    noFormat`
+type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
+export type HELLO = EnthusiasticGreeting<"heLLo">;
+    `,
   ],
 
   invalid: [
