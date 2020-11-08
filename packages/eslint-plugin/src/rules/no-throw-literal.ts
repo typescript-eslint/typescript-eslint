@@ -13,6 +13,7 @@ export default util.createRule({
       description: 'Disallow throwing literals as exceptions',
       category: 'Best Practices',
       recommended: false,
+      extendsBaseRule: true,
       requiresTypeChecking: true,
     },
     schema: [],

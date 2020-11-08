@@ -18,7 +18,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'disallow `this` keywords outside of classes or class-like objects',
+        'Disallow `this` keywords outside of classes or class-like objects',
       category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
