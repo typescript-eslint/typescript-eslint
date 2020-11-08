@@ -143,10 +143,15 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.1.0", "@babel/parser@^7.10.4", "@babel/parser@^7.11.0", "@babel/parser@^7.11.3", "@babel/parser@^7.11.4":
+"@babel/parser@^7.1.0", "@babel/parser@^7.10.4", "@babel/parser@^7.11.0", "@babel/parser@^7.11.4":
   version "7.11.4"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.11.4.tgz#6fa1a118b8b0d80d0267b719213dc947e88cc0ca"
   integrity sha512-MggwidiH+E9j5Sh8pbrX5sJvMcsqS5o+7iB42M9/k0CD63MjYbdP4nhSh7uB5wnv2/RVzTZFTxzF/kIa5mrCqA==
+
+"@babel/parser@^7.12.5":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.12.5.tgz#b4af32ddd473c0bfa643bd7ff0728b8e71b81ea0"
+  integrity sha512-FVM6RZQ0mn2KCf1VUED7KepYeUWoVShczewOCfm3nzoBybaih51h+sYVVGthW9M6lPByEPTQf+xm27PBdlpwmQ==
 
 "@babel/plugin-syntax-async-generators@^7.8.4":
   version "7.8.4"
@@ -260,6 +265,15 @@
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.11.0.tgz#2ae6bf1ba9ae8c3c43824e5861269871b206e90d"
   integrity sha512-O53yME4ZZI0jO1EVGtF1ePGl0LHirG4P1ibcD80XyzZcKhcMFeCXmh4Xb1ifGBIV233Qg12x4rBfQgA+tmOukA==
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.10.4"
+    lodash "^4.17.19"
+    to-fast-properties "^2.0.0"
+
+"@babel/types@^7.12.6":
+  version "7.12.6"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.12.6.tgz#ae0e55ef1cce1fbc881cd26f8234eb3e657edc96"
+  integrity sha512-hwyjw6GvjBLiyy3W0YQf0Z5Zf4NpYejUnKFcfcUhZCSffoBBp30w6wP2Wn6pk31jMYZvcOrB/1b7cGXvEoKogA==
   dependencies:
     "@babel/helper-validator-identifier" "^7.10.4"
     lodash "^4.17.19"
@@ -1536,10 +1550,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@types/babel__code-frame@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@types/babel__code-frame/-/babel__code-frame-7.0.1.tgz#baf2529c4abbfb5e4008c845efcfe39a187e2f99"
-  integrity sha512-FFfbQozKxYmOnCKFYV+EQprjBI7u2yaNc2ly/K9AhzyC8MzXtCtSRqptpw+HUJxhwCOo5mLwf1ATmzyhOaVbDg==
+"@types/babel__code-frame@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@types/babel__code-frame/-/babel__code-frame-7.0.2.tgz#e0c0f1648cbc09a9d4e5b4ed2ae9a6f7c8f5aeb0"
+  integrity sha512-imO+jT/yjOKOAS5GQZ8SDtwiIloAGGr6OaZDKB0V5JVaSfGZLat5K5/ZRtyKW6R60XHV3RHYPTFfhYb+wDKyKg==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.9"
@@ -3514,13 +3528,14 @@ dot-prop@^5.1.0, dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-downlevel-dts@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.6.0.tgz#1e52db9fa3ad9e3919a36545412f0b41a44289d1"
-  integrity sha512-Jy3ZZcXWPzTn5jJRW5WpdEtIq8+UowWWi5TEBgHHvzw320kouV//2KgVhfcuOpP93KS3UAokTxnZKU4L75kRSQ==
+downlevel-dts@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.7.0.tgz#155c24310dad8a4820ad077e64b15a8c461aa932"
+  integrity sha512-tcjGqElN0/oad/LJBlaxmZ3zOYEQOBbGuirKzif8s1jeRiWBdNX9H6OBFlRjOQkosXgV+qSjs4osuGCivyZ4Jw==
   dependencies:
+    semver "^7.3.2"
     shelljs "^0.8.3"
-    typescript "^4.1.0-dev.20200804"
+    typescript "^4.1.0-dev.20201026"
 
 duplexer@^0.1.1:
   version "0.1.2"
@@ -8669,10 +8684,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@*, typescript@4.0.2, "typescript@>=3.3.1 <4.1.0", typescript@^4.1.0-dev.20200804:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.2.tgz#7ea7c88777c723c681e33bf7988be5d008d05ac2"
-  integrity sha512-e4ERvRV2wb+rRZ/IQeb3jm2VxBsirQLpQhdxplZ2MEzGvDkkMmPglecnNDfSUBivMjP93vRbngYYDQqQ/78bcQ==
+typescript@*, typescript@4.1.1-rc, "typescript@>=3.3.1 <4.2.0 || 4.1.1-rc", typescript@^4.1.0-dev.20201026:
+  version "4.1.1-rc"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.1-rc.tgz#4a335244b9b2754995849ca4b607c74d6ee73719"
+  integrity sha512-tgNcFrLIjlaMWEc7bKC0bxLNIt8BIAauY/HLUOQDyTP75HGskETtXOt46x4EKAHRKhWVLMc7yM02puTHa/yhCA==
 
 uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.6"

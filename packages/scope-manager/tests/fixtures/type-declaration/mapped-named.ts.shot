@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration mapped-named 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"A">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"k">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "k",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+        Reference$3 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"Record">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "T" => Variable$2,
+        "A" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    MappedTypeScope$2 {
+      block: TSMappedType$5,
+      isStrict: true,
+      references: Array [
+        Reference$2,
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "k" => Variable$4,
+      },
+      type: "mappedType",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

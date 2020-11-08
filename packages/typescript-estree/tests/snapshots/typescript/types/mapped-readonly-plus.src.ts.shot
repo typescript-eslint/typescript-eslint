@@ -50,6 +50,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "nameType": null,
                 "optional": "+",
                 "range": Array [
                   9,

@@ -200,6 +200,7 @@ export interface EstreeToTsNodeTypes {
     | ts.NamedTupleMember;
   [AST_NODE_TYPES.TSThisType]: ts.ThisTypeNode;
   [AST_NODE_TYPES.TSTupleType]: ts.TupleTypeNode;
+  [AST_NODE_TYPES.TSTemplateLiteralType]: ts.TemplateLiteralTypeNode;
   [AST_NODE_TYPES.TSTypeAliasDeclaration]: ts.TypeAliasDeclaration;
   [AST_NODE_TYPES.TSTypeAnnotation]: undefined;
   [AST_NODE_TYPES.TSTypeAssertion]: ts.TypeAssertion;

@@ -145,12 +145,6 @@ export const es2015_iterable = {
     isValueVariable: false,
     name: 'PromiseConstructor',
   },
-  Reflect: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Reflect',
-  },
   String: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,

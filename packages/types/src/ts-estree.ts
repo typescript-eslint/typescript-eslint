@@ -274,6 +274,7 @@ export type Node =
   | TSStaticKeyword
   | TSStringKeyword
   | TSSymbolKeyword
+  | TSTemplateLiteralType
   | TSThisType
   | TSTupleType
   | TSTypeAliasDeclaration
@@ -549,6 +550,7 @@ export type TypeNode =
   | TSRestType
   | TSStringKeyword
   | TSSymbolKeyword
+  | TSTemplateLiteralType
   | TSThisType
   | TSTupleType
   | TSTypeLiteral
@@ -1472,6 +1474,7 @@ export interface TSMappedType extends BaseNode {
   readonly?: boolean | '-' | '+';
   optional?: boolean | '-' | '+';
   typeAnnotation?: TypeNode;
+  nameType: TypeNode | null;
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {
@@ -1497,6 +1500,13 @@ export interface TSModuleDeclaration extends BaseNode {
   global?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];
+}
+
+export interface TSNamedTupleMember extends BaseNode {
+  type: AST_NODE_TYPES.TSNamedTupleMember;
+  elementType: TypeNode;
+  label: Identifier;
+  optional: boolean;
 }
 
 export interface TSNamespaceExportDeclaration extends BaseNode {
@@ -1596,15 +1606,14 @@ export interface TSSymbolKeyword extends BaseNode {
   type: AST_NODE_TYPES.TSSymbolKeyword;
 }
 
-export interface TSThisType extends BaseNode {
-  type: AST_NODE_TYPES.TSThisType;
+export interface TSTemplateLiteralType extends BaseNode {
+  type: AST_NODE_TYPES.TSTemplateLiteralType;
+  quasis: TemplateElement[];
+  types: TypeNode[];
 }
 
-export interface TSNamedTupleMember extends BaseNode {
-  type: AST_NODE_TYPES.TSNamedTupleMember;
-  elementType: TypeNode;
-  label: Identifier;
-  optional: boolean;
+export interface TSThisType extends BaseNode {
+  type: AST_NODE_TYPES.TSThisType;
 }
 
 export interface TSTupleType extends BaseNode {

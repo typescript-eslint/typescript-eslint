@@ -419,6 +419,30 @@ export const es5 = {
     isValueVariable: false,
     name: 'InstanceType',
   },
+  Uppercase: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'Uppercase',
+  },
+  Lowercase: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'Lowercase',
+  },
+  Capitalize: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'Capitalize',
+  },
+  Uncapitalize: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'Uncapitalize',
+  },
   ThisType: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
