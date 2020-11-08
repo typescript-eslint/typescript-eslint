@@ -59,16 +59,6 @@ export type W<T> = {
       `,
       options: ['type'],
     },
-    {
-      code: `
-declare global {
-  interface Array<T> {
-    foo(x: (x: number) => T): T[];
-  }
-}
-      `,
-      options: ['type'],
-    },
   ],
   invalid: [
     {
@@ -204,6 +194,24 @@ export type W<T> = {
           messageId: 'typeOverInterface',
           line: 2,
           column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  interface Array<T> {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      output: null,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 3,
+          column: 13,
         },
       ],
     },

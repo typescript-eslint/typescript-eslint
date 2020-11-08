@@ -1,4 +1,5 @@
 import {
+  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
@@ -30,6 +31,21 @@ export default util.createRule({
   defaultOptions: ['interface'],
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
+
+    function isNodeGrandparentGlobalModuleDeclaration(
+      node: TSESTree.Node,
+    ): boolean {
+      if (
+        node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
+        node.parent.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
+        node.parent.parent?.declare &&
+        node.parent.parent?.global
+      ) {
+        return true;
+      }
+
+      return false;
+    }
 
     return {
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
@@ -68,39 +84,42 @@ export default util.createRule({
           });
         }
       },
-      ':not(TSModuleDeclaration > TSModuleBlock) > TSInterfaceDeclaration'(
-        node: TSESTree.TSInterfaceDeclaration,
-      ): void {
+      TSInterfaceDeclaration(node): void {
         if (option === 'type') {
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
-            fix(fixer) {
-              const typeNode = node.typeParameters ?? node.id;
-              const fixes: TSESLint.RuleFix[] = [];
+            fix: isNodeGrandparentGlobalModuleDeclaration(node)
+              ? null
+              : (fixer): TSESLint.RuleFix[] => {
+                  const typeNode = node.typeParameters ?? node.id;
+                  const fixes: TSESLint.RuleFix[] = [];
 
-              const firstToken = sourceCode.getFirstToken(node);
-              if (firstToken) {
-                fixes.push(fixer.replaceText(firstToken, 'type'));
-                fixes.push(
-                  fixer.replaceTextRange(
-                    [typeNode.range[1], node.body.range[0]],
-                    ' = ',
-                  ),
-                );
-              }
+                  const firstToken = sourceCode.getFirstToken(node);
+                  if (firstToken) {
+                    fixes.push(fixer.replaceText(firstToken, 'type'));
+                    fixes.push(
+                      fixer.replaceTextRange(
+                        [typeNode.range[1], node.body.range[0]],
+                        ' = ',
+                      ),
+                    );
+                  }
 
-              if (node.extends) {
-                node.extends.forEach(heritage => {
-                  const typeIdentifier = sourceCode.getText(heritage);
-                  fixes.push(
-                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                  );
-                });
-              }
+                  if (node.extends) {
+                    node.extends.forEach(heritage => {
+                      const typeIdentifier = sourceCode.getText(heritage);
+                      fixes.push(
+                        fixer.insertTextAfter(
+                          node.body,
+                          ` & ${typeIdentifier}`,
+                        ),
+                      );
+                    });
+                  }
 
-              return fixes;
-            },
+                  return fixes;
+                },
           });
         }
       },
