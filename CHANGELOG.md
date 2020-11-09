@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.1...v4.7.0) (2020-11-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [array-type] parenthesize ReadonlyArray fix ([#2747](https://github.com/typescript-eslint/typescript-eslint/issues/2747)) ([83385ac](https://github.com/typescript-eslint/typescript-eslint/commit/83385ac351f45d3bcbd19f72711838e9a8473827))
+* **eslint-plugin:** [no-extra-non-null-assertion] false positive with non-nullable computed key ([#2737](https://github.com/typescript-eslint/typescript-eslint/issues/2737)) ([e82698c](https://github.com/typescript-eslint/typescript-eslint/commit/e82698c0ec796e460e40c3dd90a30bd100db05c2))
+
+
+### Features
+
+* **eslint-plugin:** add rule `no-void-expression` ([#2605](https://github.com/typescript-eslint/typescript-eslint/issues/2605)) ([c8a4dad](https://github.com/typescript-eslint/typescript-eslint/commit/c8a4dadeab8a64fb4768deda8f65475435dd2cad))
+* support TS4.1 features ([#2748](https://github.com/typescript-eslint/typescript-eslint/issues/2748)) ([2be354b](https://github.com/typescript-eslint/typescript-eslint/commit/2be354bb15f9013a2da1b13a0c0836e9ef057e16)), closes [#2583](https://github.com/typescript-eslint/typescript-eslint/issues/2583)
+
+
+
+
+
 ## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
 
 
