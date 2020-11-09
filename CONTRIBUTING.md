@@ -36,6 +36,7 @@ Developing in this repo is easy:
 
 - First fork the repo, and then clone it locally.
 - Create a new branch.
+- Install yarn global, run `npm install -g yarn`
 - In the root of the project, run `yarn install`.
   - This will install the dependencies, link the packages and do a build.
 - Make the required changes.
