@@ -32,19 +32,19 @@ export default util.createRule({
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
 
-    function isNodeGrandparentGlobalModuleDeclaration(
-      node: TSESTree.Node,
-    ): boolean {
-      if (
-        node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
-        node.parent.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-        node.parent.parent?.declare &&
-        node.parent.parent?.global
-      ) {
-        return true;
-      }
-
-      return false;
+    /**
+     * Iterates from the highest parent to the currently traversed node
+     * to determine whether any node in tree is globally declared module declaration
+     */
+    function isCurrentlyTraversedNodeWithinModuleDeclaration(): boolean {
+      return context
+        .getAncestors()
+        .some(
+          node =>
+            node.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            node.declare &&
+            node.global,
+        );
     }
 
     return {
@@ -93,7 +93,7 @@ export default util.createRule({
              * remove automatically fix when the interface is within a declare global
              * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
              */
-            fix: isNodeGrandparentGlobalModuleDeclaration(node)
+            fix: isCurrentlyTraversedNodeWithinModuleDeclaration()
               ? null
               : (fixer): TSESLint.RuleFix[] => {
                   const typeNode = node.typeParameters ?? node.id;

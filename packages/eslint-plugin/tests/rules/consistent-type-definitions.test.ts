@@ -263,5 +263,23 @@ declare global {
         },
       ],
     },
+    {
+      code: `
+declare global {
+  namespace Foo {
+    interface Bar {}
+  }
+}
+      `,
+      output: null,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 4,
+          column: 15,
+        },
+      ],
+    },
   ],
 });
