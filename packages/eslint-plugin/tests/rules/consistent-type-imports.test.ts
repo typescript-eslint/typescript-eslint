@@ -315,6 +315,19 @@ ruleTester.run('consistent-type-imports', rule, {
     },
     {
       code: `
+        import type { Foo } from 'foo';
+        const key = 'k';
+        class A {
+          @deco
+          get [key]() {}
+
+          set [key](value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
         import * as foo from 'foo';
         @deco
         class A {
@@ -1232,6 +1245,31 @@ import  { Value4 } from 'default_and_named_import';
       parserOptions: withMetaParserOptions,
     },
     {
+      code: `
+        import type { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: noFormat`
+        import  { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
       code: noFormat`
         import type { Type } from 'foo';
         import { Foo, Bar } from 'foo';
@@ -1262,6 +1300,7 @@ import  { Value4 } from 'default_and_named_import';
     },
     {
       code: `
+        import { V } from 'foo';
         import type { Foo, Bar, T } from 'foo';
         @deco
         class A {
@@ -1269,10 +1308,9 @@ import  { Value4 } from 'default_and_named_import';
           foo(@deco bar: Bar) {}
         }
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: `
-        import { Foo, Bar} from 'foo';
-import type { T } from 'foo';
+        import { V , Foo, Bar} from 'foo';
+        import type { T } from 'foo';
         @deco
         class A {
           constructor(foo: Foo) {}
@@ -1283,6 +1321,33 @@ import type { T } from 'foo';
         {
           messageId: 'someImportsInDecoMeta',
           data: { typeImports: '"Foo" and "Bar"' },
+          line: 3,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type { Foo, T } from 'foo';
+        import { V } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: `
+        import type { T } from 'foo';
+        import { V , Foo} from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
           line: 2,
           column: 9,
         },
