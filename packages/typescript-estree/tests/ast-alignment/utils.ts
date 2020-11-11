@@ -266,14 +266,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.asserts = false;
         }
       },
-      ImportDeclaration(node) {
-        /**
-         * TS 3.8: import type
-         */
-        if (!node.importKind) {
-          node.importKind = 'value';
-        }
-      },
     },
   );
 }
