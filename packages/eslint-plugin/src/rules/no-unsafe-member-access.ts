@@ -72,7 +72,7 @@ export default util.createRule({
 
     return {
       // ignore MemberExpression if it's parent is TSClassImplements or TSInterfaceHeritage
-      'MemberExpression:not(TSClassImplements > MemberExpression):not(TSInterfaceHeritage > MemberExpression)': checkMemberExpression,
+      ':not(TSClassImplements, TSInterfaceHeritage) > MemberExpression': checkMemberExpression,
       'MemberExpression[computed = true] > *.property'(
         node: TSESTree.Expression,
       ): void {
