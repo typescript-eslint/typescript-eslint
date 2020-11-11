@@ -66,6 +66,12 @@ function foo(x?: string[]) {
   x?.[(1 as any)++];
 }
     `,
+    `
+class B implements FG.A {}
+    `,
+    `
+interface B extends FG.A {}
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
