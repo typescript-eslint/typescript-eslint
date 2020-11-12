@@ -8,18 +8,25 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
-describe('parse()', () => {
+describe('parseWithNodeMaps()', () => {
   describe('basic functionality', () => {
     it('should parse an empty string', () => {
-      expect(parser.parse('').body).toEqual([]);
-      expect(parser.parse('', {}).body).toEqual([]);
+      expect(parser.parseWithNodeMaps('').ast.body).toEqual([]);
+      expect(parser.parseWithNodeMaps('', {}).ast.body).toEqual([]);
+    });
+
+    it('parse() should be the same as parseWithNodeMaps().ast', () => {
+      const code = 'const x: number = 1;';
+      expect(parser.parseWithNodeMaps(code).ast).toMatchObject(
+        parser.parse(code),
+      );
     });
   });
 
   describe('modules', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
-        parser.parse('function fn(a, a) {\n}');
+        parser.parseWithNodeMaps('function fn(a, a) {\n}');
       } catch (err) {
         expect(err.column).toEqual(16);
       }
@@ -85,7 +92,7 @@ describe('parse()', () => {
 
       const loggerFn = jest.fn(() => {});
 
-      parser.parse('let foo = bar;', {
+      parser.parseWithNodeMaps('let foo = bar;', {
         loggerFn,
         comment: true,
         tokens: true,
@@ -105,7 +112,9 @@ describe('parse()', () => {
       });
     });
   });
+});
 
+describe('parseAndGenerateServices', () => {
   describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
     const code = '@test const foo = 2';
     const options: TSESTreeOptions = {
@@ -116,9 +125,9 @@ describe('parse()', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
     };
 
-    it('should throw on invalid option when used in parse', () => {
+    it('should throw on invalid option when used in parseWithNodeMaps', () => {
       expect(() => {
-        parser.parse(code, options);
+        parser.parseWithNodeMaps(code, options);
       }).toThrow(
         `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
       );
@@ -168,6 +177,31 @@ describe('parse()', () => {
         ...baseConfig,
         preserveNodeMaps: undefined,
       });
+
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
+      expect(resultWithNoOptionSet).toMatchObject(
+        resultWithOptionSetExplicitlyToUndefined,
+      );
+    });
+
+    it('should not impact the use of parseWithNodeMaps()', () => {
+      const resultWithNoOptionSet = parser.parseWithNodeMaps(code, baseConfig);
+      const resultWithOptionSetToTrue = parser.parseWithNodeMaps(code, {
+        ...baseConfig,
+        preserveNodeMaps: true,
+      });
+      const resultWithOptionSetToFalse = parser.parseWithNodeMaps(code, {
+        ...baseConfig,
+        preserveNodeMaps: false,
+      });
+      const resultWithOptionSetExplicitlyToUndefined = parser.parseWithNodeMaps(
+        code,
+        {
+          ...baseConfig,
+          preserveNodeMaps: undefined,
+        },
+      );
 
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);

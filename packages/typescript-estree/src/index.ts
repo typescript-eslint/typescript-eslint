@@ -1,9 +1,4 @@
-export {
-  AST,
-  parse,
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-} from './parser';
+export * from './parser';
 export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
