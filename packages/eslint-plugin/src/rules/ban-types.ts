@@ -93,6 +93,9 @@ const defaultTypes: Types = {
       '`{}` actually means "any non-nullish value".',
       '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
+      '- If you want a type meaning "an empty object", you probably want to use the following instead:',
+      '  type NoElements<T> = { [P in keyof T]: never };',
+      '  type EmptyObject = NoElements<Record<string, never>>;',
     ].join('\n'),
   },
   object: {
