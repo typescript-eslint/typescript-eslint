@@ -321,11 +321,24 @@ interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
+interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
+  ast: AST<T>;
+  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
+  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
+}
 
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
+  const { ast } = parseWithNodeMaps(code, options);
+  return ast;
+}
+
+function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
+  code: string,
+  options?: T,
+): ParseWithNodeMapsResult<T> {
   /**
    * Reset the parse configuration
    */
@@ -367,8 +380,13 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree } = astConverter(ast, extra, false);
-  return estree as AST<T>;
+  const { estree, astMaps } = astConverter(ast, extra, false);
+
+  return {
+    ast: estree as AST<T>,
+    esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+    tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
+  };
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
@@ -450,4 +468,11 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-export { AST, parse, parseAndGenerateServices, ParseAndGenerateServicesResult };
+export {
+  AST,
+  parse,
+  parseAndGenerateServices,
+  parseWithNodeMaps,
+  ParseAndGenerateServicesResult,
+  ParseWithNodeMapsResult,
+};
