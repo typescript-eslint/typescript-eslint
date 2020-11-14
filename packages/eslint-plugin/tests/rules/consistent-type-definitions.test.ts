@@ -197,5 +197,89 @@ export type W<T> = {
         },
       ],
     },
+    {
+      code: `
+namespace JSX {
+  interface Array<T> {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      output: noFormat`
+namespace JSX {
+  type Array<T> = {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 3,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+global {
+  interface Array<T> {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      output: noFormat`
+global {
+  type Array<T> = {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 3,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  interface Array<T> {
+    foo(x: (x: number) => T): T[];
+  }
+}
+      `,
+      output: null,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 3,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  namespace Foo {
+    interface Bar {}
+  }
+}
+      `,
+      output: null,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 4,
+          column: 15,
+        },
+      ],
+    },
   ],
 });
