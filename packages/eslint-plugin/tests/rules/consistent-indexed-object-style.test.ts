@@ -76,7 +76,8 @@ interface Foo {
   [];
 }
     `,
-
+    'type Foo = { [key: string]: string | Foo };',
+    'type Foo = { [key: string]: Foo };',
     // 'index-signature'
     // Unhandled type
     {

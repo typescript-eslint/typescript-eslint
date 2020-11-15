@@ -94,13 +94,16 @@ export default createRule<Options, MessageIds>({
       if (!valueType) {
         return;
       }
-
+      const value = sourceCode.getText(valueType.typeAnnotation);
+      const name = node.parent?.id?.name;
+      if (value.includes(name)) {
+        return;
+      }
       context.report({
         node,
         messageId: 'preferRecord',
         fix(fixer) {
           const key = sourceCode.getText(keyType.typeAnnotation);
-          const value = sourceCode.getText(valueType.typeAnnotation);
           return fixer.replaceText(
             node,
             `${prefix}Record<${key}, ${value}>${postfix}`,
