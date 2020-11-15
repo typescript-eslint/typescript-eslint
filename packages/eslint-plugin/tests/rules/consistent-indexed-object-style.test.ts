@@ -173,6 +173,11 @@ type Foo<A, B> = Record<A, B>;
       output: 'type Foo = Record<string, any>;',
       errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
+    {
+      code: 'type Foo = { [key: string]: AnotherFoo };',
+      output: 'type Foo = Record<string, AnotherFoo>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
 
     // Generic
     {

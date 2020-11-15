@@ -96,7 +96,8 @@ export default createRule<Options, MessageIds>({
       }
       const value = sourceCode.getText(valueType.typeAnnotation);
       const name = node.parent?.id?.name;
-      if (value.includes(name)) {
+      const valueArray = value.split('|').map(v => v.trim());
+      if (valueArray.indexOf(name) != -1) {
         return;
       }
       context.report({
