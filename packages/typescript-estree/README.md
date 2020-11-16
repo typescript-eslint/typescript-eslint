@@ -220,6 +220,18 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   createDefaultProgram?: boolean;
 }
 
+interface ParserServices {
+  program: ts.Program;
+  esTreeNodeToTSNodeMap: WeakMap<TSESTree.Node, ts.Node | ts.Token>;
+  tsNodeToESTreeNodeMap: WeakMap<ts.Node | ts.Token, TSESTree.Node>;
+  hasFullTypeInformation: boolean;
+}
+
+interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
+  ast: TSESTree.Program;
+  services: ParserServices;
+}
+
 const PARSE_AND_GENERATE_SERVICES_DEFAULT_OPTIONS: ParseOptions = {
   ...PARSE_DEFAULT_OPTIONS,
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
@@ -233,7 +245,7 @@ const PARSE_AND_GENERATE_SERVICES_DEFAULT_OPTIONS: ParseOptions = {
 declare function parseAndGenerateServices(
   code: string,
   options: ParseOptions = PARSE_DEFAULT_OPTIONS,
-): TSESTree.Program;
+): ParseAndGenerateServicesResult;
 ```
 
 Example usage:
@@ -242,12 +254,45 @@ Example usage:
 import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 
 const code = `const hello: string = 'world';`;
-const ast = parseAndGenerateServices(code, {
+const { ast, services } = parseAndGenerateServices(code, {
   filePath: '/some/path/to/file/foo.ts',
   loc: true,
   project: './tsconfig.json',
   range: true,
 });
+```
+
+#### `parseWithNodeMaps(code, options)`
+
+Parses the given string of code with the options provided and returns both the ESTree-compatible AST as well as the node maps.
+This allows you to work with both ASTs without the overhead of types that may come with `parseAndGenerateServices`.
+
+```ts
+interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
+  ast: TSESTree.Program;
+  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
+  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
+}
+
+declare function parseWithNodeMaps(
+  code: string,
+  options: ParseOptions = PARSE_DEFAULT_OPTIONS,
+): ParseWithNodeMapsResult;
+```
+
+Example usage:
+
+```js
+import { parseWithNodeMaps } from '@typescript-eslint/typescript-estree';
+
+const code = `const hello: string = 'world';`;
+const { ast, esTreeNodeToTSNodeMap, tsNodeToESTreeNodeMap } = parseWithNodeMaps(
+  code,
+  {
+    loc: true,
+    range: true,
+  },
+);
 ```
 
 ### `TSESTree`, `AST_NODE_TYPES` and `AST_TOKEN_TYPES`

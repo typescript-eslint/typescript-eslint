@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.7.0...v4.8.0) (2020-11-16)
+
+
+### Features
+
+* **typescript-estree:** add `parseWithNodeMaps` API ([#2760](https://github.com/typescript-eslint/typescript-eslint/issues/2760)) ([9441d50](https://github.com/typescript-eslint/typescript-eslint/commit/9441d5030211f1c32f5ae8e61d5565cab8bb6823)), closes [#1852](https://github.com/typescript-eslint/typescript-eslint/issues/1852)
+
+
+
+
+
 # [4.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.1...v4.7.0) (2020-11-09)
 
 
