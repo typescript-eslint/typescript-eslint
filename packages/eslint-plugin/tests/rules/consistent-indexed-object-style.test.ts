@@ -78,6 +78,7 @@ interface Foo {
     `,
     'type Foo = { [key: string]: string | Foo };',
     'type Foo = { [key: string]: Foo };',
+
     // 'index-signature'
     // Unhandled type
     {
@@ -172,6 +173,21 @@ type Foo<A, B> = Record<A, B>;
       code: 'type Foo = { [key: string]: any };',
       output: 'type Foo = Record<string, any>;',
       errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+    {
+      code: 'type T = { [k: string]: AT };',
+      output: 'type T = Record<string, AT>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 10 }],
+    },
+    {
+      code: 'type T = { [k: string]: TA };',
+      output: 'type T = Record<string, TA>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 10 }],
+    },
+    {
+      code: 'type T = { [k: string]: A.T };',
+      output: 'type T = Record<string, A.T>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 10 }],
     },
     {
       code: 'type Foo = { [key: string]: AnotherFoo };',

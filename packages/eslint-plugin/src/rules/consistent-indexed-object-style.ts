@@ -94,16 +94,47 @@ export default createRule<Options, MessageIds>({
       if (!valueType) {
         return;
       }
-      const value = sourceCode.getText(valueType.typeAnnotation);
-      const name = node.parent?.id?.name;
-      const valueArray = value.split('|').map(v => v.trim());
-      if (valueArray.indexOf(name) != -1) {
-        return;
+      const scope = context.getScope();
+      if (scope.block.type == AST_NODE_TYPES.Program) {
+        const body = scope.block.body[0];
+        if (body.type == AST_NODE_TYPES.TSTypeAliasDeclaration) {
+          const name = body?.id.name;
+          const memberTypes = member.typeAnnotation?.typeAnnotation;
+          if (memberTypes) {
+            if (memberTypes.type == AST_NODE_TYPES.TSTypeReference) {
+              const memberType = memberTypes.typeName;
+              if (
+                memberType.type == AST_NODE_TYPES.Identifier &&
+                memberType.name == name
+              ) {
+                return;
+              }
+            } else if (memberTypes.type == AST_NODE_TYPES.TSUnionType) {
+              const membersArray = memberTypes.types;
+              let flag = false;
+              membersArray.forEach((m: TSESTree.Node) => {
+                if (m.type == AST_NODE_TYPES.TSTypeReference) {
+                  if (
+                    m.typeName.type == AST_NODE_TYPES.Identifier &&
+                    m.typeName.name == name
+                  ) {
+                    flag = true;
+                  }
+                }
+              });
+              if (flag) {
+                return;
+              }
+            }
+          }
+        }
       }
+
       context.report({
         node,
         messageId: 'preferRecord',
         fix(fixer) {
+          const value = sourceCode.getText(valueType.typeAnnotation);
           const key = sourceCode.getText(keyType.typeAnnotation);
           return fixer.replaceText(
             node,
