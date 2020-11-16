@@ -94,37 +94,36 @@ export default createRule<Options, MessageIds>({
       if (!valueType) {
         return;
       }
+
       const scope = context.getScope();
-      if (scope.block.type == AST_NODE_TYPES.Program) {
+      if (
+        scope.block.type == AST_NODE_TYPES.Program &&
+        scope.block.body[0].type == AST_NODE_TYPES.TSTypeAliasDeclaration
+      ) {
         const body = scope.block.body[0];
-        if (body.type == AST_NODE_TYPES.TSTypeAliasDeclaration) {
-          const name = body?.id.name;
-          const memberTypes = member.typeAnnotation?.typeAnnotation;
-          if (memberTypes) {
-            if (memberTypes.type == AST_NODE_TYPES.TSTypeReference) {
-              const memberType = memberTypes.typeName;
+        const name = body?.id.name;
+        const memberTypes = member.typeAnnotation?.typeAnnotation;
+        if (memberTypes) {
+          if (
+            memberTypes.type == AST_NODE_TYPES.TSTypeReference &&
+            memberTypes.typeName.type == AST_NODE_TYPES.Identifier &&
+            memberTypes.typeName.name == name
+          ) {
+            return;
+          } else if (memberTypes.type == AST_NODE_TYPES.TSUnionType) {
+            const membersArray = memberTypes.types;
+            let flag = false;
+            membersArray.forEach((m: TSESTree.Node) => {
               if (
-                memberType.type == AST_NODE_TYPES.Identifier &&
-                memberType.name == name
+                m.type == AST_NODE_TYPES.TSTypeReference &&
+                m.typeName.type == AST_NODE_TYPES.Identifier &&
+                m.typeName.name == name
               ) {
-                return;
+                flag = true;
               }
-            } else if (memberTypes.type == AST_NODE_TYPES.TSUnionType) {
-              const membersArray = memberTypes.types;
-              let flag = false;
-              membersArray.forEach((m: TSESTree.Node) => {
-                if (m.type == AST_NODE_TYPES.TSTypeReference) {
-                  if (
-                    m.typeName.type == AST_NODE_TYPES.Identifier &&
-                    m.typeName.name == name
-                  ) {
-                    flag = true;
-                  }
-                }
-              });
-              if (flag) {
-                return;
-              }
+            });
+            if (flag) {
+              return;
             }
           }
         }
