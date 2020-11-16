@@ -214,6 +214,27 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
+function isLoop(
+  node: TSESTree.Node | undefined | null,
+): node is
+  | TSESTree.DoWhileStatement
+  | TSESTree.ForStatement
+  | TSESTree.ForInStatement
+  | TSESTree.ForOfStatement
+  | TSESTree.WhileStatement {
+  if (!node) {
+    return false;
+  }
+
+  return (
+    node.type === AST_NODE_TYPES.DoWhileStatement ||
+    node.type === AST_NODE_TYPES.ForStatement ||
+    node.type === AST_NODE_TYPES.ForInStatement ||
+    node.type === AST_NODE_TYPES.ForOfStatement ||
+    node.type === AST_NODE_TYPES.WhileStatement
+  );
+}
+
 export {
   isAwaitExpression,
   isAwaitKeyword,
@@ -223,6 +244,7 @@ export {
   isFunctionOrFunctionType,
   isFunctionType,
   isIdentifier,
+  isLoop,
   isLogicalOrOperator,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
