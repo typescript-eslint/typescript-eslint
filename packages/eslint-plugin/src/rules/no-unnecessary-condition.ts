@@ -33,6 +33,8 @@ const isTruthyLiteral = (type: ts.Type): boolean =>
   isBooleanLiteralType(type, true) || (isLiteralType(type) && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
+  isTypeUnknownType(type) ||
+  isTypeAnyType(type) ||
   unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
