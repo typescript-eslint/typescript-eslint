@@ -74,6 +74,7 @@ The default options provide a set of "best practices", intended to provide safet
   - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
 - Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
   - This is a point of confusion for many developers, who think it means "any object type".
+  - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
 - Avoid the `object` type, as it is currently hard to use due to not being able to assert that keys exist.
   - See [microsoft/TypeScript#21732](https://github.com/microsoft/TypeScript/issues/21732).
 
