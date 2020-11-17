@@ -21,6 +21,29 @@ describe('parseWithNodeMaps()', () => {
         parser.parse(code),
       );
     });
+
+    it('should simple code', () => {
+      const result = parser.parseWithNodeMaps('1;');
+      expect(result.ast).toMatchInlineSnapshot(`
+        Object {
+          "body": Array [
+            Object {
+              "expression": Object {
+                "raw": "1",
+                "type": "Literal",
+                "value": 1,
+              },
+              "type": "ExpressionStatement",
+            },
+          ],
+          "sourceType": "script",
+          "type": "Program",
+        }
+      `);
+      const tsNode = result.esTreeNodeToTSNodeMap.get(result.ast.body[0]);
+      expect(tsNode).toBeDefined();
+      expect(result.tsNodeToESTreeNodeMap.get(tsNode)).toBeDefined();
+    });
   });
 
   describe('modules', () => {

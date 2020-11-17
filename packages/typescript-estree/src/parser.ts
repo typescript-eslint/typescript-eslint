@@ -331,13 +331,14 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
-  const { ast } = parseWithNodeMaps(code, options);
+  const { ast } = parseWithNodeMapsInternal(code, options, false);
   return ast;
 }
 
-function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
+function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
-  options?: T,
+  options: T | undefined,
+  shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
   /**
    * Reset the parse configuration
@@ -380,13 +381,20 @@ function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree, astMaps } = astConverter(ast, extra, false);
+  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
 
   return {
     ast: estree as AST<T>,
     esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
     tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
   };
+}
+
+function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
+  code: string,
+  options?: T,
+): ParseWithNodeMapsResult<T> {
+  return parseWithNodeMapsInternal(code, options, true);
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
