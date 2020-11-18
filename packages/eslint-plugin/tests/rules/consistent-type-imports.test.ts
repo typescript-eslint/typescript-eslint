@@ -1092,8 +1092,7 @@ import  { Value4 } from 'default_and_named_import';
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/2775
-      code:
-      `
+      code: `
         import Default, * as Rest from 'module';
         const a: Rest.A = '';
       `,
@@ -1113,8 +1112,7 @@ import Default from 'module';
       ],
     },
     {
-      code:
-      `
+      code: `
         import Default, * as Rest from 'module';
         const a: Default = '';
       `,
@@ -1134,8 +1132,7 @@ import  * as Rest from 'module';
       ],
     },
     {
-      code:
-      `
+      code: `
         import Default, * as Rest from 'module';
         const a: Default = '';
         const b: Rest.A = '';
@@ -1155,6 +1152,6 @@ import type Default from 'module';
           column: 9,
         },
       ],
-    }
+    },
   ],
 });
