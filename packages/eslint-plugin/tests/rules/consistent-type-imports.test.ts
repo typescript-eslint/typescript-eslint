@@ -225,6 +225,11 @@ ruleTester.run('consistent-type-imports', rule, {
         jsxFragmentName: 'Fragment',
       },
     },
+    `
+      import Default, * as Rest from 'module';
+      const a: typeof Default = Default;
+      const b: typeof Rest = Rest;
+    `,
   ],
   invalid: [
     {
@@ -1085,5 +1090,71 @@ import  { Value4 } from 'default_and_named_import';
         },
       ],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2775
+      code:
+      `
+        import Default, * as Rest from 'module';
+        const a: Rest.A = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: noFormat`
+        import type * as Rest from 'module';
+import Default from 'module';
+        const a: Rest.A = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code:
+      `
+        import Default, * as Rest from 'module';
+        const a: Default = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: noFormat`
+        import type Default from 'module';
+import  * as Rest from 'module';
+        const a: Default = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code:
+      `
+        import Default, * as Rest from 'module';
+        const a: Default = '';
+        const b: Rest.A = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: noFormat`
+        import type * as Rest from 'module';
+import type Default from 'module';
+        const a: Default = '';
+        const b: Rest.A = '';
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+      ],
+    }
   ],
 });

@@ -252,15 +252,16 @@ export default util.createRule<Options, MessageIds>({
           ? node.specifiers[0]
           : null;
       const namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null =
-        node.specifiers[0].type === AST_NODE_TYPES.ImportNamespaceSpecifier
-          ? node.specifiers[0]
-          : null;
+        node.specifiers.find(
+          (specifier): specifier is TSESTree.ImportNamespaceSpecifier =>
+            specifier.type === AST_NODE_TYPES.ImportNamespaceSpecifier,
+        ) ?? null;
       const namedSpecifiers: TSESTree.ImportSpecifier[] = node.specifiers.filter(
         (specifier): specifier is TSESTree.ImportSpecifier =>
           specifier.type === AST_NODE_TYPES.ImportSpecifier,
       );
 
-      if (namespaceSpecifier) {
+      if (namespaceSpecifier && !defaultSpecifier) {
         // e.g.
         // import * as types from 'foo'
         yield* fixToTypeImportByInsertType(fixer, node, false);
@@ -268,7 +269,8 @@ export default util.createRule<Options, MessageIds>({
       } else if (defaultSpecifier) {
         if (
           report.typeSpecifiers.includes(defaultSpecifier) &&
-          namedSpecifiers.length === 0
+          namedSpecifiers.length === 0 &&
+          !namespaceSpecifier
         ) {
           // e.g.
           // import Type from 'foo'
@@ -279,7 +281,8 @@ export default util.createRule<Options, MessageIds>({
         if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
-          )
+          ) &&
+          !namespaceSpecifier
         ) {
           // e.g.
           // import {Type1, Type2} from 'foo'
@@ -336,11 +339,40 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
+      const fixesRemoveTypeNamespaceSpecifier: TSESLint.RuleFix[] = [];
+      if (
+        namespaceSpecifier &&
+        report.typeSpecifiers.includes(namespaceSpecifier)
+      ) {
+        // e.g.
+        // import Foo, * as Type from 'foo'
+        // import DefType, * as Type from 'foo'
+        // import DefType, * as Type from 'foo'
+        const commaToken = util.nullThrows(
+          sourceCode.getTokenBefore(namespaceSpecifier, util.isCommaToken),
+          util.NullThrowsReasons.MissingToken(',', node.type),
+        );
+
+        // import Def, * as Ns from 'foo'
+        //           ^^^^^^^^^ remove
+        fixesRemoveTypeNamespaceSpecifier.push(
+          fixer.removeRange([commaToken.range[0], namespaceSpecifier.range[1]]),
+        );
+
+        // import type * as Ns from 'foo'
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ insert
+        yield fixer.insertTextBefore(
+          node,
+          `import type ${sourceCode.getText(
+            namespaceSpecifier,
+          )} from ${sourceCode.getText(node.source)};\n`,
+        );
+      }
       if (
         defaultSpecifier &&
         report.typeSpecifiers.includes(defaultSpecifier)
       ) {
-        if (typeNamedSpecifiers.length === namedSpecifiers.length) {
+        if (report.typeSpecifiers.length === node.specifiers.length) {
           const importToken = util.nullThrows(
             sourceCode.getFirstToken(node, isImportToken),
             util.NullThrowsReasons.MissingToken('import', node.type),
@@ -363,6 +395,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       yield* fixesNamedSpecifiers.removeTypeNamedSpecifiers;
+      yield* fixesRemoveTypeNamespaceSpecifier;
 
       yield* afterFixes;
 
@@ -376,6 +409,12 @@ export default util.createRule<Options, MessageIds>({
         typeNamedSpecifiersText: string;
         removeTypeNamedSpecifiers: TSESLint.RuleFix[];
       } {
+        if (allNamedSpecifiers.length === 0) {
+          return {
+            typeNamedSpecifiersText: '',
+            removeTypeNamedSpecifiers: [],
+          };
+        }
         const typeNamedSpecifiersTexts: string[] = [];
         const removeTypeNamedSpecifiers: TSESLint.RuleFix[] = [];
         if (typeNamedSpecifiers.length === allNamedSpecifiers.length) {
