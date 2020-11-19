@@ -29,6 +29,13 @@ export default createRule({
         if (node.initializer.type === AST_NODE_TYPES.Literal) {
           return;
         }
+        // TemplateLiteral without expressions
+        if (
+          node.initializer.type === AST_NODE_TYPES.TemplateLiteral &&
+          node.initializer.expressions.length === 0
+        ) {
+          return;
+        }
         // -1 and +1
         if (
           node.initializer.type === AST_NODE_TYPES.UnaryExpression &&
