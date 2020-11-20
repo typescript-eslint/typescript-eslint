@@ -109,6 +109,6 @@
     "typescript": ">=3.3.1 <4.2.0 || 4.1.1-rc"
   },
   "resolutions": {
-    "typescript": "4.1.1-rc"
+    "typescript": "4.1.2"
   }
 }
