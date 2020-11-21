@@ -1,5 +1,4 @@
 import {
-  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -61,11 +60,9 @@ export default util.createRule<Options, MessageIds>({
       importName: string;
     }[] = [];
 
-    function hasMatchingReference(
-      value: string | number | bigint | boolean | RegExp | null,
-    ): void {
+    function hasMatchingReference(source: TSESTree.Literal): void {
       references.forEach(reference => {
-        if (reference.importName === value) {
+        if (reference.importName === source.value) {
           context.report({
             node: reference.comment,
             messageId: 'tripleSlashReference',
@@ -79,29 +76,14 @@ export default util.createRule<Options, MessageIds>({
     return {
       ImportDeclaration(node): void {
         if (programNode) {
-          hasMatchingReference(node.source.value);
+          hasMatchingReference(node.source);
         }
       },
       TSImportEqualsDeclaration(node): void {
         if (programNode) {
-          const source = node.moduleReference;
-          let value: string | number | bigint | boolean | RegExp | null;
-
-          switch (source.type) {
-            case AST_NODE_TYPES.Identifier:
-              value = source.name;
-              break;
-
-            case AST_NODE_TYPES.TSQualifiedName:
-              value = (source.left as TSESTree.Identifier).name;
-              break;
-
-            case AST_NODE_TYPES.TSExternalModuleReference:
-              value = (source.expression as TSESTree.Literal).value;
-              break;
-          }
-
-          hasMatchingReference(value);
+          const source = (node.moduleReference as TSESTree.TSExternalModuleReference)
+            .expression as TSESTree.Literal;
+          hasMatchingReference(source);
         }
       },
       Program(node): void {
