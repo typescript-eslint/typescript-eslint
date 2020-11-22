@@ -1,8 +1,3 @@
-/**
- * @fileoverview Rule to require or disallow newlines between statements. Original plugin by Toru Nagashima.
- * @author jun-sheaf
- */
-
 import {
   AST_NODE_TYPES,
   TSESTree,
