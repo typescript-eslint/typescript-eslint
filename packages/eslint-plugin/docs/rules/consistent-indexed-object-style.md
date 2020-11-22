@@ -46,14 +46,6 @@ Examples of **correct** code with `record` option.
 
 ```ts
 type Foo = Record<string, unknown>;
-
-interface Foo {
-  readonly [key: string]: unknown;
-}
-
-type Foo = {
-  readonly [key: string]: unknown;
-};
 ```
 
 Examples of **incorrect** code with `index-signature` option.
