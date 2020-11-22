@@ -393,6 +393,7 @@ export type JSXExpression =
   | JSXExpressionContainer;
 export type JSXTagNameExpression = JSXIdentifier | JSXMemberExpression;
 export type LeftHandSideExpression =
+  | SequenceExpression
   | CallExpression
   | ClassExpression
   | ClassDeclaration
