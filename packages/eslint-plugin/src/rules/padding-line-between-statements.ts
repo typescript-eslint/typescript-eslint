@@ -26,12 +26,6 @@ interface PaddingOption {
   prev: string | string[];
   next: string | string[];
 }
-type RuleCtx = Readonly<
-  RuleContext<
-    'unexpectedBlankLine' | 'expectedBlankLine',
-    readonly PaddingOption[]
-  >
->;
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -301,7 +295,7 @@ function verifyForAny(): void {
  * @private
  */
 function verifyForNever(
-  context: RuleCtx,
+  context: RuleContext<string, readonly unknown[]>,
   _: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
@@ -346,7 +340,7 @@ function verifyForNever(
  * @private
  */
 function verifyForAlways(
-  context: RuleCtx,
+  context: RuleContext<string, readonly unknown[]>,
   prevNode: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
@@ -523,9 +517,9 @@ export default util.createRule({
     },
   },
   defaultOptions: [],
-  create(context: RuleCtx) {
+  create(context) {
     const sourceCode = context.getSourceCode();
-    const configureList = context.options || [];
+    const configureList = (context.options || []) as PaddingOption[];
 
     type Scope = null | {
       upper: Scope;
