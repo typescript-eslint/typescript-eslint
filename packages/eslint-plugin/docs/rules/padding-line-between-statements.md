@@ -1,6 +1,6 @@
 # require or disallow padding lines between statements (`padding-line-between-statements`)
 
-This rule extends the base [eslint/padding-line-between-statements](https://eslint.org/docs/rules/padding-line-between-statements#require-or-disallow-padding-lines-between-statements-padding-line-between-statements) rule. It requires or disallows padding (i.e. blank lines) between two given types of statements. Padding generally helps readability.
+This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements#require-or-disallow-padding-lines-between-statements-padding-line-between-statements) rule. It requires or disallows padding (i.e. blank lines) between two given types of statements. Padding generally helps readability.
 
 ## Changes from the Original Rule
 

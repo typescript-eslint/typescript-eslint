@@ -26,6 +26,8 @@ interface PaddingOption {
   prev: string | string[];
   next: string | string[];
 }
+type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
+type Options = PaddingOption[];
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -295,7 +297,7 @@ function verifyForAny(): void {
  * @private
  */
 function verifyForNever(
-  context: RuleContext<string, readonly unknown[]>,
+  context: RuleContext<MessageIds, Options>,
   _: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
@@ -340,7 +342,7 @@ function verifyForNever(
  * @private
  */
 function verifyForAlways(
-  context: RuleContext<string, readonly unknown[]>,
+  context: RuleContext<MessageIds, Options>,
   prevNode: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
@@ -470,7 +472,7 @@ const StatementTypes: Record<string, NodeTestObject> = {
 // Rule Definition
 //------------------------------------------------------------------------------
 
-export default util.createRule({
+export default util.createRule<Options, MessageIds>({
   name: 'padding-line-between-statements',
   meta: {
     type: 'layout',
@@ -519,7 +521,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const configureList = (context.options || []) as PaddingOption[];
+    const configureList = context.options || [];
 
     type Scope = null | {
       upper: Scope;
