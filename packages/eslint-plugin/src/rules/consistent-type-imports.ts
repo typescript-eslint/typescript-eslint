@@ -381,16 +381,31 @@ export default util.createRule<Options, MessageIds>({
           //        ^^^^ insert
           yield fixer.insertTextAfter(importToken, ' type');
         } else {
-          yield fixer.insertTextBefore(
-            node,
-            `import type ${sourceCode.getText(
-              defaultSpecifier,
-            )} from ${sourceCode.getText(node.source)};\n`,
+          const commaToken = util.nullThrows(
+            sourceCode.getTokenAfter(defaultSpecifier, util.isCommaToken),
+            util.NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
           );
           // import Type , {...} from 'foo'
-          //        ^^^^^^ remove
-          yield fixer.remove(defaultSpecifier);
-          yield fixer.remove(sourceCode.getTokenAfter(defaultSpecifier)!);
+          //        ^^^^^ pick
+          const defaultText = sourceCode.text
+            .slice(defaultSpecifier.range[0], commaToken.range[0])
+            .trim();
+          yield fixer.insertTextBefore(
+            node,
+            `import type ${defaultText} from ${sourceCode.getText(
+              node.source,
+            )};\n`,
+          );
+          const afterToken = util.nullThrows(
+            sourceCode.getTokenAfter(commaToken, { includeComments: true }),
+            util.NullThrowsReasons.MissingToken('any token', node.type),
+          );
+          // import Type , {...} from 'foo'
+          //        ^^^^^^^ remove
+          yield fixer.removeRange([
+            defaultSpecifier.range[0],
+            afterToken.range[0],
+          ]);
         }
       }
 
@@ -603,7 +618,11 @@ export default util.createRule<Options, MessageIds>({
         ),
         util.NullThrowsReasons.MissingToken('type', node.type),
       );
-      return fixer.remove(typeToken);
+      const afterToken = util.nullThrows(
+        sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+        util.NullThrowsReasons.MissingToken('any token', node.type),
+      );
+      return fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
     }
   },
 });
