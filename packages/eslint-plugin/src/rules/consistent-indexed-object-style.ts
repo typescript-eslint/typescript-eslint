@@ -76,6 +76,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (member.readonly) {
+        return;
+      }
+
       const [parameter] = member.parameters;
 
       if (!parameter) {

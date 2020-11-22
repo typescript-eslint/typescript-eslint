@@ -51,6 +51,18 @@ type Foo = {
 };
     `,
 
+    // Readonly
+    `
+interface Foo {
+  readonly [key: string]: any;
+}
+    `,
+    `
+type Foo = {
+  readonly [key: string]: any;
+};
+    `,
+
     // Generic
     `
 type Foo = Generic<{
