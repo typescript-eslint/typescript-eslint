@@ -88,13 +88,8 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
     }
     if (expression.type === AST_NODE_TYPES.CallExpression) {
       let node: TSESTree.Node = expression.callee;
-      let depth = 0;
-      while (node.type === AST_NODE_TYPES.SequenceExpression && depth < 500) {
+      while (node.type === AST_NODE_TYPES.SequenceExpression) {
         node = node.expressions[node.expressions.length - 1];
-        depth++;
-      }
-      if (depth === 500) {
-        throw new Error('Sequence expressions nested too deeply.');
       }
       return util.isFunction(node);
     }
@@ -274,10 +269,7 @@ function getActualLastToken(
   node: TSESTree.Node,
   sourceCode: SourceCode,
 ): TSESTree.Token | null {
-  const semiToken = sourceCode.getLastToken(node);
-  if (!semiToken) {
-    return semiToken;
-  }
+  const semiToken = sourceCode.getLastToken(node)!;
   const prevToken = sourceCode.getTokenBefore(semiToken);
   const nextToken = sourceCode.getTokenAfter(semiToken);
   const isSemicolonLessStyle =

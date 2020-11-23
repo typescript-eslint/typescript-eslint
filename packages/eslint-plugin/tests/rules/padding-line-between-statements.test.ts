@@ -875,6 +875,10 @@ ruleTester.run('padding-line-between-statements', rule, {
       code: '+(function(){\n})()\nvar a = 2;',
       options: [{ blankLine: 'never', prev: 'iife', next: '*' }],
     },
+    {
+      code: '(1, 2, 3, function(){\n})()\n\nvar a = 2;',
+      options: [{ blankLine: 'always', prev: 'iife', next: '*' }],
+    },
 
     //----------------------------------------------------------------------
     // import
@@ -3659,6 +3663,14 @@ var a = 1
       output: 'void (function(){\n})?.()\n\nvar a = 2;',
       options: [{ blankLine: 'always', prev: 'iife', next: '*' }],
       parserOptions: { ecmaVersion: 2020 },
+      errors: [{ messageId: 'expectedBlankLine' }],
+    },
+
+    // Sequenced function
+    {
+      code: '(1,2,3,function(){\n})()\nvar a = 2;',
+      output: '(1,2,3,function(){\n})()\n\nvar a = 2;',
+      options: [{ blankLine: 'always', prev: 'iife', next: '*' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
 
