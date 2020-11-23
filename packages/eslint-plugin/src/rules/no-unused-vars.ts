@@ -7,8 +7,8 @@ import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import { getNameLocationInGlobalDirectiveComment } from 'eslint/lib/rules/utils/ast-utils';
 import * as util from '../util';
 
-type MessageIds = 'unusedVar';
-type Options = [
+export type MessageIds = 'unusedVar';
+export type Options = [
   | 'all'
   | 'local'
   | {
@@ -180,50 +180,61 @@ export default util.createRule<Options, MessageIds>({
       const unusedVariablesReturn: TSESLint.Scope.Variable[] = [];
       for (const variable of unusedVariablesOriginal) {
         // explicit global variables don't have definitions.
+        if (variable.defs.length === 0) {
+          unusedVariablesReturn.push(variable);
+          continue;
+        }
         const def = variable.defs[0];
-        if (def) {
-          // skip catch variables
-          if (def.type === TSESLint.Scope.DefinitionType.CatchClause) {
-            if (options.caughtErrors === 'none') {
-              continue;
-            }
-            // skip ignored parameters
-            if (
-              'name' in def.name &&
-              options.caughtErrorsIgnorePattern?.test(def.name.name)
-            ) {
-              continue;
-            }
-          }
 
-          if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
-            // if "args" option is "none", skip any parameter
-            if (options.args === 'none') {
-              continue;
-            }
-            // skip ignored parameters
-            if (
-              'name' in def.name &&
-              options.argsIgnorePattern?.test(def.name.name)
-            ) {
-              continue;
-            }
-            // if "args" option is "after-used", skip used variables
-            if (
-              options.args === 'after-used' &&
-              util.isFunction(def.name.parent) &&
-              !isAfterLastUsedArg(variable)
-            ) {
-              continue;
-            }
-          } else {
-            // skip ignored variables
-            if (
-              'name' in def.name &&
-              options.varsIgnorePattern?.test(def.name.name)
-            ) {
-              continue;
-            }
+        if (
+          variable.scope.type === TSESLint.Scope.ScopeType.global &&
+          options.vars === 'local'
+        ) {
+          // skip variables in the global scope if configured to
+          continue;
+        }
+
+        // skip catch variables
+        if (def.type === TSESLint.Scope.DefinitionType.CatchClause) {
+          if (options.caughtErrors === 'none') {
+            continue;
+          }
+          // skip ignored parameters
+          if (
+            'name' in def.name &&
+            options.caughtErrorsIgnorePattern?.test(def.name.name)
+          ) {
+            continue;
+          }
+        }
+
+        if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
+          // if "args" option is "none", skip any parameter
+          if (options.args === 'none') {
+            continue;
+          }
+          // skip ignored parameters
+          if (
+            'name' in def.name &&
+            options.argsIgnorePattern?.test(def.name.name)
+          ) {
+            continue;
+          }
+          // if "args" option is "after-used", skip used variables
+          if (
+            options.args === 'after-used' &&
+            util.isFunction(def.name.parent) &&
+            !isAfterLastUsedArg(variable)
+          ) {
+            continue;
+          }
+        } else {
+          // skip ignored variables
+          if (
+            'name' in def.name &&
+            options.varsIgnorePattern?.test(def.name.name)
+          ) {
+            continue;
           }
         }
 

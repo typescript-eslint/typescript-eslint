@@ -92,11 +92,8 @@ class UnusedVarsVisitor<
     // On Program node, get the outermost scope to avoid return Node.js special function scope or ES modules scope.
     const inner = currentNode.type !== AST_NODE_TYPES.Program;
 
-    for (
-      let node: TSESTree.Node | undefined = currentNode;
-      node;
-      node = node.parent
-    ) {
+    let node: TSESTree.Node | undefined = currentNode;
+    while (node) {
       const scope = this.#scopeManager.acquire(node, inner);
 
       if (scope) {
@@ -105,13 +102,16 @@ class UnusedVarsVisitor<
         }
         return scope as T;
       }
+
+      node = node.parent;
     }
 
     return this.#scopeManager.scopes[0] as T;
   }
 
-  private markVariableAsUsed(variable: TSESLint.Scope.Variable): void;
-  private markVariableAsUsed(identifier: TSESTree.Identifier): void;
+  private markVariableAsUsed(
+    variableOrIdentifier: TSESLint.Scope.Variable | TSESTree.Identifier,
+  ): void;
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
   private markVariableAsUsed(
     variableOrIdentifierOrName:
@@ -153,6 +153,17 @@ class UnusedVarsVisitor<
     }
   }
 
+  private visitFunction(
+    node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+  ): void {
+    const scope = this.getScope(node);
+    // skip implicit "arguments" variable
+    const variable = scope.set.get('arguments');
+    if (variable?.defs.length === 0) {
+      this.markVariableAsUsed(variable);
+    }
+  }
+
   private visitFunctionTypeSignature(
     node:
       | TSESTree.TSCallSignatureDeclaration
@@ -172,6 +183,19 @@ class UnusedVarsVisitor<
     }
   }
 
+  private visitSetter(
+    node: TSESTree.MethodDefinition | TSESTree.Property,
+  ): void {
+    if (node.kind === 'set') {
+      // ignore setter parameters because they're syntactically required to exist
+      for (const param of (node.value as TSESTree.FunctionLike).params) {
+        this.visitPattern(param, id => {
+          this.markVariableAsUsed(id);
+        });
+      }
+    }
+  }
+
   //#endregion HELPERS
 
   //#region VISITORS
@@ -188,38 +212,75 @@ class UnusedVarsVisitor<
     }
   }
 
+  protected FunctionDeclaration = this.visitFunction;
+
+  protected FunctionExpression = this.visitFunction;
+
+  protected ForInStatement(node: TSESTree.ForInStatement): void {
+    /**
+     * (Brad Zacher): I hate that this has to exist.
+     * But it is required for compat with the base ESLint rule.
+     *
+     * In 2015, ESLint decided to add an exception for these two specific cases
+     * ```
+     * for (var key in object) return;
+     *
+     * var key;
+     * for (key in object) return;
+     * ```
+     *
+     * I disagree with it, but what are you going to do...
+     *
+     * https://github.com/eslint/eslint/issues/2342
+     */
+
+    let idOrVariable;
+    if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
+      const variable = this.#scopeManager.getDeclaredVariables(node.left)[0];
+      if (!variable) {
+        return;
+      }
+      idOrVariable = variable;
+    }
+    if (node.left.type === AST_NODE_TYPES.Identifier) {
+      idOrVariable = node.left;
+    }
+
+    if (idOrVariable == null) {
+      return;
+    }
+
+    let body = node.body;
+    if (node.body.type === AST_NODE_TYPES.BlockStatement) {
+      if (node.body.body.length !== 1) {
+        return;
+      }
+      body = node.body.body[0];
+    }
+
+    if (body.type !== AST_NODE_TYPES.ReturnStatement) {
+      return;
+    }
+
+    this.markVariableAsUsed(idOrVariable);
+  }
+
   protected Identifier(node: TSESTree.Identifier): void {
     const scope = this.getScope(node);
-    if (scope.type === TSESLint.Scope.ScopeType.function) {
-      switch (node.name) {
-        case 'this': {
-          // this parameters should always be considered used as they're pseudo-parameters
-          if ('params' in scope.block && scope.block.params.includes(node)) {
-            this.markVariableAsUsed(node);
-          }
-
-          break;
-        }
-
-        case 'arguments': {
-          // skip implicit "arguments" variable
-          this.markVariableAsUsed(node);
-          break;
-        }
+    if (
+      scope.type === TSESLint.Scope.ScopeType.function &&
+      node.name === 'this'
+    ) {
+      // this parameters should always be considered used as they're pseudo-parameters
+      if ('params' in scope.block && scope.block.params.includes(node)) {
+        this.markVariableAsUsed(node);
       }
     }
   }
 
-  protected MethodDefinition(node: TSESTree.MethodDefinition): void {
-    if (node.kind === 'set') {
-      // ignore setter parameters because they're syntactically required to exist
-      for (const param of node.value.params) {
-        this.visitPattern(param, id => {
-          this.markVariableAsUsed(id);
-        });
-      }
-    }
-  }
+  protected MethodDefinition = this.visitSetter;
+
+  protected Property = this.visitSetter;
 
   protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
 
@@ -330,6 +391,13 @@ const MERGABLE_TYPES = new Set([
 function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
+    // parameters can never be exported.
+    // their `node` prop points to the function decl, which can be exported
+    // so we need to special case them
+    if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
+      continue;
+    }
+
     if (
       (MERGABLE_TYPES.has(def.node.type) &&
         def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
@@ -355,7 +423,7 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
       node = node.parent!;
-    } else if (definition.type === 'Parameter') {
+    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
@@ -636,48 +704,6 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     );
   }
 
-  /**
-   * (bradzacher): I hate that this has to exist.
-   * But it is required for compat with the base ESLint rule.
-   *
-   * In 2015, ESLint decided to add an exception for this specific code
-   * ```
-   * for (var key in object) return;
-   * ```
-   *
-   * I disagree with it, but what are you going to do.
-   *
-   * https://github.com/eslint/eslint/issues/2342
-   */
-  function isForInRef(ref: TSESLint.Scope.Reference): boolean {
-    let target = ref.identifier.parent!;
-
-    // "for (var ...) { return; }"
-    if (target.type === AST_NODE_TYPES.VariableDeclarator) {
-      target = target.parent!.parent!;
-    }
-
-    if (target.type !== AST_NODE_TYPES.ForInStatement) {
-      return false;
-    }
-
-    // "for (...) { return; }"
-    if (target.body.type === AST_NODE_TYPES.BlockStatement) {
-      target = target.body.body[0];
-
-      // "for (...) return;"
-    } else {
-      target = target.body;
-    }
-
-    // For empty loop body
-    if (!target) {
-      return false;
-    }
-
-    return target.type === AST_NODE_TYPES.ReturnStatement;
-  }
-
   const functionNodes = getFunctionDefinitions(variable);
   const isFunctionDefinition = functionNodes.size > 0;
 
@@ -690,10 +716,6 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
   let rhsNode: TSESTree.Node | null = null;
 
   return variable.references.some(ref => {
-    if (isForInRef(ref)) {
-      return true;
-    }
-
     const forItself = isReadForItself(ref, rhsNode);
 
     rhsNode = getRhsNode(ref, rhsNode);
