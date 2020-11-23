@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.1...v4.8.2) (2020-11-23)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-literal-enum-member] allow pure template literal strings ([#2786](https://github.com/typescript-eslint/typescript-eslint/issues/2786)) ([f3bf6a1](https://github.com/typescript-eslint/typescript-eslint/commit/f3bf6a1791c9dc64bb18d45712f07767c9f96cbd))
+* **typescript-estree:** fix type-only regression for consumers not yet on TS 4.1 ([#2789](https://github.com/typescript-eslint/typescript-eslint/issues/2789)) ([50a46c6](https://github.com/typescript-eslint/typescript-eslint/commit/50a46c60fb81d8434aa4268a13d17d8fcf499e21))
+
+
+
+
+
 ## [4.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.0...v4.8.1) (2020-11-17)
 
 
