@@ -1,3 +1,7 @@
+/* eslint-disable eslint-comments/no-use */
+// this rule tests new lines which prettier tries to fix, breaking the tests
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint-enable eslint-comments/no-use */
 import rule from '../../src/rules/padding-line-between-statements';
 import { RuleTester } from '../RuleTester';
 
@@ -626,17 +630,29 @@ ruleTester.run('padding-line-between-statements', rule, {
     //----------------------------------------------------------------------
 
     {
-      code: 'type a=1\n\nfoo()',
+      code: 'type a=number\n\nfoo()',
       options: [
         { blankLine: 'never', prev: '*', next: '*' },
         { blankLine: 'always', prev: 'type', next: '*' },
       ],
     },
     {
-      code: 'let a=1\nfoo()',
+      code: 'let a=number\nfoo()',
       options: [
         { blankLine: 'never', prev: '*', next: '*' },
         { blankLine: 'always', prev: 'type', next: '*' },
+      ],
+    },
+
+    //----------------------------------------------------------------------
+    // interface
+    //----------------------------------------------------------------------
+
+    {
+      code: 'interface Test{\na:number;\n}\n\nfoo()',
+      options: [
+        { blankLine: 'never', prev: '*', next: '*' },
+        { blankLine: 'always', prev: 'interface', next: '*' },
       ],
     },
 
@@ -2140,10 +2156,10 @@ ruleTester.run('padding-line-between-statements', rule, {
     // https://github.com/eslint/eslint/issues/6834
     {
       code: `
-                var a = 1
+var a = 1
 
-                ;(b || c).doSomething()
-            `,
+;(b || c).doSomething()
+      `,
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2155,9 +2171,9 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
     {
       code: `
-                var a = 1
-                ;(b || c).doSomething()
-            `,
+var a = 1
+;(b || c).doSomething()
+      `,
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2169,10 +2185,10 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
     {
       code: `
-                var a = 1
-                ;
-                (b || c).doSomething();
-            `,
+var a = 1
+;
+(b || c).doSomething();
+      `,
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2207,11 +2223,11 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
     {
       code: `
-                var a = 1
+var a = 1
 
-                ;
-                (b || c).doSomething();
-            `,
+;
+(b || c).doSomething();
+      `,
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2573,7 +2589,7 @@ ruleTester.run('padding-line-between-statements', rule, {
      * {
      *     code: "var a = 2;\n\n// foo\nmodule.exports = a;",
      *     options: [
-     *         { blankLine: "never", prev: "*", next: "module.exports" }
+     *         { blankLine: "never", prev: "*", next: "exports" }
      *     ]
      * },
      */
@@ -2983,7 +2999,7 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
 
     //----------------------------------------------------------------------
-    // module.exports
+    // exports
     //----------------------------------------------------------------------
 
     {
@@ -3363,19 +3379,30 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
 
     //----------------------------------------------------------------------
-    // const
+    // type
     //----------------------------------------------------------------------
 
     {
-      code: 'type a=1\n\nfoo()',
-      output: 'type a=1\nfoo()',
+      code: 'type a=number\n\nfoo()',
+      output: 'type a=number\nfoo()',
       options: [{ blankLine: 'never', prev: 'type', next: '*' }],
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code: 'type a=1\nfoo()',
-      output: 'type a=1\n\nfoo()',
+      code: 'type a=number\nfoo()',
+      output: 'type a=number\n\nfoo()',
       options: [{ blankLine: 'always', prev: 'type', next: '*' }],
+      errors: [{ messageId: 'expectedBlankLine' }],
+    },
+
+    //----------------------------------------------------------------------
+    // interface
+    //----------------------------------------------------------------------
+
+    {
+      code: 'interface Test{\na:number;\n}\nfoo()',
+      output: 'interface Test{\na:number;\n}\n\nfoo()',
+      options: [{ blankLine: 'always', prev: 'interface', next: '*' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
 
@@ -4461,14 +4488,14 @@ ruleTester.run('padding-line-between-statements', rule, {
     // https://github.com/eslint/eslint/issues/6834
     {
       code: `
-                var a = 1
-                ;(b || c).doSomething()
-            `,
+var a = 1
+;(b || c).doSomething()
+      `,
       output: `
-                var a = 1
+var a = 1
 
-                ;(b || c).doSomething()
-            `,
+;(b || c).doSomething()
+      `,
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -4481,14 +4508,14 @@ ruleTester.run('padding-line-between-statements', rule, {
     },
     {
       code: `
-                var a = 1
+var a = 1
 
-                ;(b || c).doSomething()
-            `,
+;(b || c).doSomething()
+      `,
       output: `
-                var a = 1
-                ;(b || c).doSomething()
-            `,
+var a = 1
+;(b || c).doSomething()
+      `,
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {

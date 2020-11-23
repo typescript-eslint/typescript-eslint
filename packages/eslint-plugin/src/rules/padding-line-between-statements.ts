@@ -37,6 +37,18 @@ const PADDING_LINE_SEQUENCE = new RegExp(
 );
 
 /**
+ * Skips a chain expression node
+ * @param {TSESTree.Node} node The node to test
+ * @returns {TSESTree.Node} A non-chain expression
+ * @private
+ */
+function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
+  return node && node.type === AST_NODE_TYPES.ChainExpression
+    ? node.expression
+    : node;
+}
+
+/**
  * Creates tester which check if a node starts with specific keyword.
  * @param {string} keyword The keyword to test.
  * @returns {Object} the created tester.
@@ -70,7 +82,10 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
  */
 function isIIFEStatement(node: TSESTree.Node): boolean {
   if (node.type === AST_NODE_TYPES.ExpressionStatement) {
-    const expression = node.expression;
+    let expression = skipChainExpression(node.expression);
+    if (expression.type === AST_NODE_TYPES.UnaryExpression) {
+      expression = skipChainExpression(expression.argument);
+    }
     if (expression.type === AST_NODE_TYPES.CallExpression) {
       let node: TSESTree.Node = expression.callee;
       let depth = 0;
@@ -96,10 +111,16 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
 function isCJSRequire(node: TSESTree.Node): boolean {
   if (node.type === AST_NODE_TYPES.VariableDeclaration) {
     const declaration = node.declarations[0];
-    if (declaration?.init?.type === AST_NODE_TYPES.CallExpression) {
-      const callee = declaration.init.callee;
-      if (callee.type === AST_NODE_TYPES.Identifier) {
-        return callee.name === 'require';
+    if (declaration?.init) {
+      let call = declaration?.init;
+      while (call.type === AST_NODE_TYPES.MemberExpression) {
+        call = call.object;
+      }
+      if (
+        call.type === AST_NODE_TYPES.CallExpression &&
+        call.callee.type === AST_NODE_TYPES.Identifier
+      ) {
+        return call.callee.name === 'require';
       }
     }
   }
@@ -116,14 +137,19 @@ function isCJSExport(node: TSESTree.Node): boolean {
   if (node.type === AST_NODE_TYPES.ExpressionStatement) {
     const expression = node.expression;
     if (expression.type === AST_NODE_TYPES.AssignmentExpression) {
-      const left = expression.left;
-      return (
-        left.type === AST_NODE_TYPES.MemberExpression &&
-        left.object.type === AST_NODE_TYPES.Identifier &&
-        left.object.name === 'module' &&
-        left.property.type === AST_NODE_TYPES.Identifier &&
-        left.property.name === 'exports'
-      );
+      let left = expression.left;
+      if (left.type === AST_NODE_TYPES.MemberExpression) {
+        while (left.object.type === AST_NODE_TYPES.MemberExpression) {
+          left = left.object;
+        }
+        return (
+          left.object.type === AST_NODE_TYPES.Identifier &&
+          (left.object.name === 'exports' ||
+            (left.object.name === 'module' &&
+              left.property.type === AST_NODE_TYPES.Identifier &&
+              left.property.name === 'exports'))
+        );
+      }
     }
   }
   return false;
@@ -216,6 +242,19 @@ function isDirectivePrologue(
     return true;
   }
   return false;
+}
+
+/**
+ * Check whether the given node is an expression
+ * @param {TSESTree.Node} node The node to check.
+ * @param {SourceCode} sourceCode The source code object to get tokens.
+ * @returns {boolean} `true` if the node is an expression
+ */
+function isExpression(node: TSESTree.Node, sourceCode: SourceCode): boolean {
+  return (
+    node.type === AST_NODE_TYPES.ExpressionStatement &&
+    !isDirectivePrologue(node, sourceCode)
+  );
 }
 
 /**
@@ -419,23 +458,8 @@ const StatementTypes: Record<string, NodeTestObject> = {
   exports: { test: isCJSExport },
   require: { test: isCJSRequire },
   directive: { test: isDirectivePrologue },
-  expression: {
-    test: (node, sourceCode): boolean =>
-      node.type === AST_NODE_TYPES.ExpressionStatement &&
-      !isDirectivePrologue(node, sourceCode),
-  },
+  expression: { test: isExpression },
   iife: { test: isIIFEStatement },
-  'multiline-block-like': {
-    test: (node, sourceCode): boolean =>
-      node.loc.start.line !== node.loc.end.line &&
-      isBlockLikeStatement(node, sourceCode),
-  },
-  'multiline-expression': {
-    test: (node, sourceCode): boolean =>
-      node.loc.start.line !== node.loc.end.line &&
-      node.type === AST_NODE_TYPES.ExpressionStatement &&
-      !isDirectivePrologue(node, sourceCode),
-  },
 
   block: newNodeTypeTester(AST_NODE_TYPES.BlockStatement),
   empty: newNodeTypeTester(AST_NODE_TYPES.EmptyStatement),
@@ -475,6 +499,7 @@ export default util.createRule<Options, MessageIds>({
       description: 'require or disallow padding lines between statements',
       category: 'Stylistic Issues',
       recommended: false,
+      extendsBaseRule: true,
     },
     fixable: 'whitespace',
     schema: {
@@ -578,7 +603,7 @@ export default util.createRule<Options, MessageIds>({
           }
           type = type.slice(10);
         }
-        return 'type' in StatementTypes
+        return type in StatementTypes
           ? StatementTypes[type].test(innerStatementNode, sourceCode)
           : newKeywordTester(type).test(innerStatementNode, sourceCode);
       });
@@ -658,19 +683,17 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Save this node as the current previous statement.
-      if (scopeInfo) {
-        const prevNode = scopeInfo.prevNode;
+      const prevNode = scopeInfo!.prevNode;
 
-        // Verify.
-        if (prevNode) {
-          const type = getPaddingType(prevNode, node);
-          const paddingLines = getPaddingLineSequences(prevNode, node);
+      // Verify.
+      if (prevNode) {
+        const type = getPaddingType(prevNode, node);
+        const paddingLines = getPaddingLineSequences(prevNode, node);
 
-          type.verify(context, prevNode, node, paddingLines);
-        }
-
-        scopeInfo.prevNode = node;
+        type.verify(context, prevNode, node, paddingLines);
       }
+
+      scopeInfo!.prevNode = node;
     }
 
     /**
