@@ -19,19 +19,24 @@ type MessageIds =
 // #region Options Type Config
 
 enum PredefinedFormats {
-  camelCase = 1 << 0,
-  strictCamelCase = 1 << 1,
-  PascalCase = 1 << 2,
-  StrictPascalCase = 1 << 3,
-  snake_case = 1 << 4,
-  UPPER_CASE = 1 << 5,
+  camelCase = 1,
+  strictCamelCase,
+  PascalCase,
+  StrictPascalCase,
+  snake_case,
+  UPPER_CASE,
 }
 type PredefinedFormatsString = keyof typeof PredefinedFormats;
 
 enum UnderscoreOptions {
-  forbid = 1 << 0,
-  allow = 1 << 1,
-  require = 1 << 2,
+  forbid = 1,
+  allow,
+  require,
+
+  // special cases as it's common practice to use double underscore
+  requireDouble,
+  allowDouble,
+  allowSingleOrDouble,
 }
 type UnderscoreOptionsString = keyof typeof UnderscoreOptions;
 
@@ -483,7 +488,7 @@ export default util.createRule<Options, MessageIds>({
       unexpectedUnderscore:
         '{{type}} name `{{name}}` must not have a {{position}} underscore.',
       missingUnderscore:
-        '{{type}} name `{{name}}` must have a {{position}} underscore.',
+        '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
       missingAffix:
         '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
       satisfyCustom:
@@ -1143,6 +1148,7 @@ function createValidator(
     processedName,
     position,
     custom,
+    count,
   }: {
     affixes?: string[];
     formats?: PredefinedFormats[];
@@ -1150,12 +1156,14 @@ function createValidator(
     processedName?: string;
     position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
     custom?: NonNullable<NormalizedSelector['custom']>;
+    count?: 'one' | 'two';
   }): Record<string, unknown> {
     return {
       type: selectorTypeToMessageString(type),
       name: originalName,
       processedName,
       position,
+      count,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
       regex: custom?.regex?.toString(),
@@ -1186,47 +1194,107 @@ function createValidator(
       return name;
     }
 
-    const hasUnderscore =
-      position === 'leading' ? name.startsWith('_') : name.endsWith('_');
-    const trimUnderscore =
+    const hasSingleUnderscore =
+      position === 'leading'
+        ? (): boolean => name.startsWith('_')
+        : (): boolean => name.endsWith('_');
+    const trimSingleUnderscore =
       position === 'leading'
         ? (): string => name.slice(1)
         : (): string => name.slice(0, -1);
 
-    switch (option) {
-      case UnderscoreOptions.allow:
-        // no check - the user doesn't care if it's there or not
-        break;
+    const hasDoubleUnderscore =
+      position === 'leading'
+        ? (): boolean => name.startsWith('__')
+        : (): boolean => name.endsWith('__');
+    const trimDoubleUnderscore =
+      position === 'leading'
+        ? (): string => name.slice(2)
+        : (): string => name.slice(0, -2);
 
-      case UnderscoreOptions.forbid:
-        if (hasUnderscore) {
+    switch (option) {
+      // ALLOW - no conditions as the user doesn't care if it's there or not
+      case UnderscoreOptions.allow: {
+        if (hasSingleUnderscore()) {
+          return trimSingleUnderscore();
+        }
+
+        return name;
+      }
+
+      case UnderscoreOptions.allowDouble: {
+        if (hasDoubleUnderscore()) {
+          return trimDoubleUnderscore();
+        }
+
+        return name;
+      }
+
+      case UnderscoreOptions.allowSingleOrDouble: {
+        if (hasDoubleUnderscore()) {
+          return trimDoubleUnderscore();
+        }
+
+        if (hasSingleUnderscore()) {
+          return trimSingleUnderscore();
+        }
+
+        return name;
+      }
+
+      // FORBID
+      case UnderscoreOptions.forbid: {
+        if (hasSingleUnderscore()) {
           context.report({
             node,
             messageId: 'unexpectedUnderscore',
             data: formatReportData({
               originalName,
               position,
+              count: 'one',
             }),
           });
           return null;
         }
-        break;
 
-      case UnderscoreOptions.require:
-        if (!hasUnderscore) {
+        return name;
+      }
+
+      // REQUIRE
+      case UnderscoreOptions.require: {
+        if (!hasSingleUnderscore()) {
           context.report({
             node,
             messageId: 'missingUnderscore',
             data: formatReportData({
               originalName,
               position,
+              count: 'one',
             }),
           });
           return null;
         }
-    }
 
-    return hasUnderscore ? trimUnderscore() : name;
+        return trimSingleUnderscore();
+      }
+
+      case UnderscoreOptions.requireDouble: {
+        if (!hasDoubleUnderscore()) {
+          context.report({
+            node,
+            messageId: 'missingUnderscore',
+            data: formatReportData({
+              originalName,
+              position,
+              count: 'two',
+            }),
+          });
+          return null;
+        }
+
+        return trimDoubleUnderscore();
+      }
+    }
   }
 
   /**
