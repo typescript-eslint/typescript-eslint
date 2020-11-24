@@ -163,6 +163,10 @@ If these are provided, the identifier must start with one of the provided values
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
   - The following `modifiers` are allowed:
     - `const` - matches a variable declared as being `const` (`const x = 1`).
+    - `destructured` - matches a variable declared via an object destructuring pattern (`const {x, z = 2}`).
+      - Note that this does not match renamed destructured properties (`const {x: y, a: b = 2}`).
+    - `global` - matches a variable/function declared in the top-level scope.
+    - `exported` - matches anything that is exported from the module.
     - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
     - `readonly`, `static`, `abstract`, `protected`, `private` - matches any member explicitly declared with the given modifier.
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
@@ -200,10 +204,10 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `variable` - matches any `var` / `let` / `const` variable name.
-  - Allowed `modifiers`: `const`.
+  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `function` - matches any named function declaration or named function expression.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `global`, `exported`.
   - Allowed `types`: none.
 - `parameter` - matches any function parameter. Does not match parameter properties.
   - Allowed `modifiers`: none.
@@ -236,16 +240,16 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: none.
   - Allowed `types`: none.
 - `class` - matches any class declaration.
-  - Allowed `modifiers`: `abstract`.
+  - Allowed `modifiers`: `abstract`, `exported`.
   - Allowed `types`: none.
 - `interface` - matches any interface declaration.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `exported`.
   - Allowed `types`: none.
 - `typeAlias` - matches any type alias declaration.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `exported`.
   - Allowed `types`: none.
 - `enum` - matches any enum declaration.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `exported`.
   - Allowed `types`: none.
 - `typeParameter` - matches any generic type parameter declaration.
   - Allowed `modifiers`: none.
@@ -442,6 +446,25 @@ You can use the `filter` option to ignore names that require quoting:
         "regex": "[- ]",
         "match": false
       }
+    }
+  ]
+}
+```
+
+### Ignore destructured names
+
+Sometimes you might want to allow destructured properties to retain their original name, even if it breaks your naming convention.
+
+You can use the `destructured` modifier to match these names, and explicitly set `format: null` to apply no formatting:
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "variable",
+      "modifiers": ["destructured"],
+      "format": null
     }
   ]
 }

@@ -4,6 +4,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -95,13 +96,23 @@ type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
 
 enum Modifiers {
+  // const variable
   const = 1 << 0,
+  // readonly members
   readonly = 1 << 1,
+  // static members
   static = 1 << 2,
+  // member accessibility
   public = 1 << 3,
   protected = 1 << 4,
   private = 1 << 5,
   abstract = 1 << 6,
+  // destructured variable
+  destructured = 1 << 7,
+  // variables declared in the top-level scope
+  global = 1 << 8,
+  // things that are exported
+  exported = 1 << 9,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -324,8 +335,13 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false),
-      ...selectorSchema('variable', true, ['const']),
-      ...selectorSchema('function', false),
+      ...selectorSchema('variable', true, [
+        'const',
+        'destructured',
+        'global',
+        'exported',
+      ]),
+      ...selectorSchema('function', false, ['global', 'exported']),
       ...selectorSchema('parameter', true),
 
       ...selectorSchema('memberLike', false, [
@@ -412,11 +428,11 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ]),
       ...selectorSchema('enumMember', false),
 
-      ...selectorSchema('typeLike', false, ['abstract']),
-      ...selectorSchema('class', false, ['abstract']),
-      ...selectorSchema('interface', false),
-      ...selectorSchema('typeAlias', false),
-      ...selectorSchema('enum', false),
+      ...selectorSchema('typeLike', false, ['abstract', 'exported']),
+      ...selectorSchema('class', false, ['abstract', 'exported']),
+      ...selectorSchema('interface', false, ['exported']),
+      ...selectorSchema('typeAlias', false, ['exported']),
+      ...selectorSchema('enum', false, ['exported']),
       ...selectorSchema('typeParameter', false),
     ],
   },
@@ -550,22 +566,40 @@ export default util.createRule<Options, MessageIds>({
         if (!validator) {
           return;
         }
+        const identifiers = getIdentifiersFromPattern(node.id);
 
-        const identifiers: TSESTree.Identifier[] = [];
-        getIdentifiersFromPattern(node.id, identifiers);
-
-        const modifiers = new Set<Modifiers>();
+        const baseModifiers = new Set<Modifiers>();
         const parent = node.parent;
-        if (
-          parent &&
-          parent.type === AST_NODE_TYPES.VariableDeclaration &&
-          parent.kind === 'const'
-        ) {
-          modifiers.add(Modifiers.const);
+        if (parent?.type === AST_NODE_TYPES.VariableDeclaration) {
+          if (parent.kind === 'const') {
+            baseModifiers.add(Modifiers.const);
+          }
+          if (isGlobal(context.getScope())) {
+            baseModifiers.add(Modifiers.global);
+          }
         }
 
-        identifiers.forEach(i => {
-          validator(i, modifiers);
+        identifiers.forEach(id => {
+          const modifiers = new Set(baseModifiers);
+          if (
+            // `const { x }`
+            // does not match `const { x: y }`
+            (id.parent?.type === AST_NODE_TYPES.Property &&
+              id.parent.shorthand) ||
+            // `const { x = 2 }`
+            // does not match const `{ x: y = 2 }`
+            (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
+              id.parent.parent?.type === AST_NODE_TYPES.Property &&
+              id.parent.parent.shorthand)
+          ) {
+            modifiers.add(Modifiers.destructured);
+          }
+
+          if (isExported(parent, id.name, context.getScope())) {
+            modifiers.add(Modifiers.exported);
+          }
+
+          validator(id, modifiers);
         });
       },
 
@@ -584,7 +618,17 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        validator(node.id);
+        const modifiers = new Set<Modifiers>();
+        // functions create their own nested scope
+        const scope = context.getScope().upper;
+        if (isGlobal(scope)) {
+          modifiers.add(Modifiers.global);
+        }
+        if (isExported(node, node.id.name, scope)) {
+          modifiers.add(Modifiers.exported);
+        }
+
+        validator(node.id, modifiers);
       },
 
       // #endregion function
@@ -608,8 +652,7 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
 
-          const identifiers: TSESTree.Identifier[] = [];
-          getIdentifiersFromPattern(param, identifiers);
+          const identifiers = getIdentifiersFromPattern(param);
 
           identifiers.forEach(i => {
             validator(i);
@@ -629,8 +672,7 @@ export default util.createRule<Options, MessageIds>({
 
         const modifiers = getMemberModifiers(node);
 
-        const identifiers: TSESTree.Identifier[] = [];
-        getIdentifiersFromPattern(node.parameter, identifiers);
+        const identifiers = getIdentifiersFromPattern(node.parameter);
 
         identifiers.forEach(i => {
           validator(i, modifiers);
@@ -765,6 +807,11 @@ export default util.createRule<Options, MessageIds>({
           modifiers.add(Modifiers.abstract);
         }
 
+        // classes create their own nested scope
+        if (isExported(node, id.name, context.getScope().upper)) {
+          modifiers.add(Modifiers.exported);
+        }
+
         validator(id, modifiers);
       },
 
@@ -778,7 +825,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        validator(node.id);
+        const modifiers = new Set<Modifiers>();
+        if (isExported(node, node.id.name, context.getScope())) {
+          modifiers.add(Modifiers.exported);
+        }
+
+        validator(node.id, modifiers);
       },
 
       // #endregion interface
@@ -791,7 +843,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        validator(node.id);
+        const modifiers = new Set<Modifiers>();
+        if (isExported(node, node.id.name, context.getScope())) {
+          modifiers.add(Modifiers.exported);
+        }
+
+        validator(node.id, modifiers);
       },
 
       // #endregion typeAlias
@@ -804,7 +861,13 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        validator(node.id);
+        const modifiers = new Set<Modifiers>();
+        // enums create their own nested scope
+        if (isExported(node, node.id.name, context.getScope().upper)) {
+          modifiers.add(Modifiers.exported);
+        }
+
+        validator(node.id, modifiers);
       },
 
       // #endregion enum
@@ -829,55 +892,54 @@ export default util.createRule<Options, MessageIds>({
 
 function getIdentifiersFromPattern(
   pattern: TSESTree.DestructuringPattern,
-  identifiers: TSESTree.Identifier[],
-): void {
-  switch (pattern.type) {
-    case AST_NODE_TYPES.Identifier:
-      identifiers.push(pattern);
-      break;
+): TSESTree.Identifier[] {
+  const identifiers: TSESTree.Identifier[] = [];
+  const visitor = new PatternVisitor({}, pattern, id => identifiers.push(id));
+  visitor.visit(pattern);
+  return identifiers;
+}
 
-    case AST_NODE_TYPES.ArrayPattern:
-      pattern.elements.forEach(element => {
-        if (element !== null) {
-          getIdentifiersFromPattern(element, identifiers);
-        }
-      });
-      break;
-
-    case AST_NODE_TYPES.ObjectPattern:
-      pattern.properties.forEach(property => {
-        if (property.type === AST_NODE_TYPES.RestElement) {
-          getIdentifiersFromPattern(property, identifiers);
-        } else {
-          // this is a bit weird, but it's because ESTree doesn't have a new node type
-          // for object destructuring properties - it just reuses Property...
-          // https://github.com/estree/estree/blob/9ae284b71130d53226e7153b42f01bf819e6e657/es2015.md#L206-L211
-          // However, the parser guarantees this is safe (and there is error handling)
-          getIdentifiersFromPattern(
-            property.value as TSESTree.DestructuringPattern,
-            identifiers,
-          );
-        }
-      });
-      break;
-
-    case AST_NODE_TYPES.RestElement:
-      getIdentifiersFromPattern(pattern.argument, identifiers);
-      break;
-
-    case AST_NODE_TYPES.AssignmentPattern:
-      getIdentifiersFromPattern(pattern.left, identifiers);
-      break;
-
-    case AST_NODE_TYPES.MemberExpression:
-      // ignore member expressions, as the everything must already be defined
-      break;
-
-    default:
-      // https://github.com/typescript-eslint/typescript-eslint/issues/1282
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      throw new Error(`Unexpected pattern type ${pattern!.type}`);
+function isExported(
+  node: TSESTree.Node | undefined,
+  name: string,
+  scope: TSESLint.Scope.Scope | null,
+): boolean {
+  if (
+    node?.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+    node?.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration
+  ) {
+    return true;
   }
+
+  if (scope == null) {
+    return false;
+  }
+
+  const variable = scope.set.get(name);
+  if (variable) {
+    for (const ref of variable.references) {
+      const refParent = ref.identifier.parent;
+      if (
+        refParent?.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+        refParent?.type === AST_NODE_TYPES.ExportSpecifier
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function isGlobal(scope: TSESLint.Scope.Scope | null): boolean {
+  if (scope == null) {
+    return false;
+  }
+
+  return (
+    scope.type === TSESLint.Scope.ScopeType.global ||
+    scope.type === TSESLint.Scope.ScopeType.module
+  );
 }
 
 type ValidatorFunction = (
