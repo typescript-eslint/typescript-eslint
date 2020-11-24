@@ -4,11 +4,33 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
-import baseRule from 'eslint/lib/rules/no-unused-vars';
+import { getNameLocationInGlobalDirectiveComment } from 'eslint/lib/rules/utils/ast-utils';
 import * as util from '../util';
 
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = 'unusedVar';
+export type Options = [
+  | 'all'
+  | 'local'
+  | {
+      vars?: 'all' | 'local';
+      varsIgnorePattern?: string;
+      args?: 'all' | 'after-used' | 'none';
+      ignoreRestSiblings?: boolean;
+      argsIgnorePattern?: string;
+      caughtErrors?: 'all' | 'none';
+      caughtErrorsIgnorePattern?: string;
+    },
+];
+
+interface TranslatedOptions {
+  vars: 'all' | 'local';
+  varsIgnorePattern?: RegExp;
+  args: 'all' | 'after-used' | 'none';
+  ignoreRestSiblings: boolean;
+  argsIgnorePattern?: RegExp;
+  caughtErrors: 'all' | 'none';
+  caughtErrorsIgnorePattern?: RegExp;
+}
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unused-vars',
@@ -20,195 +42,211 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'warn',
       extendsBaseRule: true,
     },
-    schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
+    schema: [
+      {
+        oneOf: [
+          {
+            enum: ['all', 'local'],
+          },
+          {
+            type: 'object',
+            properties: {
+              vars: {
+                enum: ['all', 'local'],
+              },
+              varsIgnorePattern: {
+                type: 'string',
+              },
+              args: {
+                enum: ['all', 'after-used', 'none'],
+              },
+              ignoreRestSiblings: {
+                type: 'boolean',
+              },
+              argsIgnorePattern: {
+                type: 'string',
+              },
+              caughtErrors: {
+                enum: ['all', 'none'],
+              },
+              caughtErrorsIgnorePattern: {
+                type: 'string',
+              },
+            },
+            additionalProperties: false,
+          },
+        ],
+      },
+    ],
+    messages: {
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
     },
   },
   defaultOptions: [{}],
   create(context) {
-    const rules = baseRule.create(context);
     const filename = context.getFilename();
+    const sourceCode = context.getSourceCode();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
-    /**
-     * Gets a list of TS module definitions for a specified variable.
-     * @param variable eslint-scope variable object.
-     */
-    function getModuleNameDeclarations(
-      variable: TSESLint.Scope.Variable,
-    ): TSESTree.TSModuleDeclaration[] {
-      const moduleDeclarations: TSESTree.TSModuleDeclaration[] = [];
+    const options = ((): TranslatedOptions => {
+      const options: TranslatedOptions = {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: false,
+        caughtErrors: 'none',
+      };
 
-      variable.defs.forEach(def => {
-        if (def.type === 'TSModuleName') {
-          moduleDeclarations.push(def.node);
+      const firstOption = context.options[0];
+
+      if (firstOption) {
+        if (typeof firstOption === 'string') {
+          options.vars = firstOption;
+        } else {
+          options.vars = firstOption.vars ?? options.vars;
+          options.args = firstOption.args ?? options.args;
+          options.ignoreRestSiblings =
+            firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
+          options.caughtErrors =
+            firstOption.caughtErrors ?? options.caughtErrors;
+
+          if (firstOption.varsIgnorePattern) {
+            options.varsIgnorePattern = new RegExp(
+              firstOption.varsIgnorePattern,
+              'u',
+            );
+          }
+
+          if (firstOption.argsIgnorePattern) {
+            options.argsIgnorePattern = new RegExp(
+              firstOption.argsIgnorePattern,
+              'u',
+            );
+          }
+
+          if (firstOption.caughtErrorsIgnorePattern) {
+            options.caughtErrorsIgnorePattern = new RegExp(
+              firstOption.caughtErrorsIgnorePattern,
+              'u',
+            );
+          }
         }
-      });
-
-      return moduleDeclarations;
-    }
-
-    /**
-     * Determine if an identifier is referencing an enclosing name.
-     * This only applies to declarations that create their own scope (modules, functions, classes)
-     * @param ref The reference to check.
-     * @param nodes The candidate function nodes.
-     * @returns True if it's a self-reference, false if not.
-     */
-    function isBlockSelfReference(
-      ref: TSESLint.Scope.Reference,
-      nodes: TSESTree.Node[],
-    ): boolean {
-      let scope: TSESLint.Scope.Scope | null = ref.from;
-
-      while (scope) {
-        if (nodes.indexOf(scope.block) >= 0) {
-          return true;
-        }
-
-        scope = scope.upper;
       }
+      return options;
+    })();
 
-      return false;
-    }
+    function collectUnusedVariables(): TSESLint.Scope.Variable[] {
+      /**
+       * Determines if a variable has a sibling rest property
+       * @param variable eslint-scope variable object.
+       * @returns True if the variable is exported, false if not.
+       */
+      function hasRestSpreadSibling(
+        variable: TSESLint.Scope.Variable,
+      ): boolean {
+        if (options.ignoreRestSiblings) {
+          return variable.defs.some(def => {
+            const propertyNode = def.name.parent!;
+            const patternNode = propertyNode.parent!;
 
-    function isExported(
-      variable: TSESLint.Scope.Variable,
-      target: AST_NODE_TYPES,
-    ): boolean {
-      // TS will require that all merged namespaces/interfaces are exported, so we only need to find one
-      return variable.defs.some(
-        def =>
-          def.node.type === target &&
-          (def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration ||
-            def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration),
-      );
-    }
-
-    return {
-      ...rules,
-      'TSCallSignatureDeclaration, TSConstructorType, TSConstructSignatureDeclaration, TSDeclareFunction, TSEmptyBodyFunctionExpression, TSFunctionType, TSMethodSignature'(
-        node:
-          | TSESTree.TSCallSignatureDeclaration
-          | TSESTree.TSConstructorType
-          | TSESTree.TSConstructSignatureDeclaration
-          | TSESTree.TSDeclareFunction
-          | TSESTree.TSEmptyBodyFunctionExpression
-          | TSESTree.TSFunctionType
-          | TSESTree.TSMethodSignature,
-      ): void {
-        // function type signature params create variables because they can be referenced within the signature,
-        // but they obviously aren't unused variables for the purposes of this rule.
-        for (const param of node.params) {
-          visitPattern(param, name => {
-            context.markVariableAsUsed(name.name);
+            return (
+              propertyNode.type === AST_NODE_TYPES.Property &&
+              patternNode.type === AST_NODE_TYPES.ObjectPattern &&
+              patternNode.properties[patternNode.properties.length - 1].type ===
+                AST_NODE_TYPES.RestElement
+            );
           });
         }
-      },
-      TSEnumDeclaration(): void {
-        // enum members create variables because they can be referenced within the enum,
-        // but they obviously aren't unused variables for the purposes of this rule.
-        const scope = context.getScope();
-        for (const variable of scope.variables) {
-          context.markVariableAsUsed(variable.name);
-        }
-      },
-      TSMappedType(node): void {
-        // mapped types create a variable for their type name, but it's not necessary to reference it,
-        // so we shouldn't consider it as unused for the purpose of this rule.
-        context.markVariableAsUsed(node.typeParameter.name.name);
-      },
-      TSModuleDeclaration(): void {
-        const childScope = context.getScope();
-        const scope = util.nullThrows(
-          context.getScope().upper,
-          util.NullThrowsReasons.MissingToken(childScope.type, 'upper scope'),
-        );
-        for (const variable of scope.variables) {
-          const moduleNodes = getModuleNameDeclarations(variable);
 
+        return false;
+      }
+
+      /**
+       * Checks whether the given variable is after the last used parameter.
+       * @param variable The variable to check.
+       * @returns `true` if the variable is defined after the last used parameter.
+       */
+      function isAfterLastUsedArg(variable: TSESLint.Scope.Variable): boolean {
+        const def = variable.defs[0];
+        const params = context.getDeclaredVariables(def.node);
+        const posteriorParams = params.slice(params.indexOf(variable) + 1);
+
+        // If any used parameters occur after this parameter, do not report.
+        return !posteriorParams.some(
+          v => v.references.length > 0 || v.eslintUsed,
+        );
+      }
+
+      const unusedVariablesOriginal = util.collectUnusedVariables(context);
+      const unusedVariablesReturn: TSESLint.Scope.Variable[] = [];
+      for (const variable of unusedVariablesOriginal) {
+        // explicit global variables don't have definitions.
+        if (variable.defs.length === 0) {
+          unusedVariablesReturn.push(variable);
+          continue;
+        }
+        const def = variable.defs[0];
+
+        if (
+          variable.scope.type === TSESLint.Scope.ScopeType.global &&
+          options.vars === 'local'
+        ) {
+          // skip variables in the global scope if configured to
+          continue;
+        }
+
+        // skip catch variables
+        if (def.type === TSESLint.Scope.DefinitionType.CatchClause) {
+          if (options.caughtErrors === 'none') {
+            continue;
+          }
+          // skip ignored parameters
           if (
-            moduleNodes.length === 0 ||
-            // ignore unreferenced module definitions, as the base rule will report on them
-            variable.references.length === 0 ||
-            // ignore exported nodes
-            isExported(variable, AST_NODE_TYPES.TSModuleDeclaration)
+            'name' in def.name &&
+            options.caughtErrorsIgnorePattern?.test(def.name.name)
           ) {
             continue;
           }
+        }
 
-          // check if the only reference to a module's name is a self-reference in its body
-          // this won't be caught by the base rule because it doesn't understand TS modules
-          const isOnlySelfReferenced = variable.references.every(ref => {
-            return isBlockSelfReference(ref, moduleNodes);
-          });
-
-          if (isOnlySelfReferenced) {
-            context.report({
-              node: variable.identifiers[0],
-              messageId: 'unusedVar',
-              data: {
-                varName: variable.name,
-                action: 'defined',
-                additional: '',
-              },
-            });
+        if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
+          // if "args" option is "none", skip any parameter
+          if (options.args === 'none') {
+            continue;
           }
-        }
-      },
-      [[
-        'TSParameterProperty > AssignmentPattern > Identifier.left',
-        'TSParameterProperty > Identifier.parameter',
-      ].join(', ')](node: TSESTree.Identifier): void {
-        // just assume parameter properties are used as property usage tracking is beyond the scope of this rule
-        context.markVariableAsUsed(node.name);
-      },
-      ':matches(FunctionDeclaration, FunctionExpression, ArrowFunctionExpression) > Identifier[name="this"].params'(
-        node: TSESTree.Identifier,
-      ): void {
-        // this parameters should always be considered used as they're pseudo-parameters
-        context.markVariableAsUsed(node.name);
-      },
-      'TSInterfaceDeclaration, TSTypeAliasDeclaration'(
-        node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeAliasDeclaration,
-      ): void {
-        const variable = context.getScope().set.get(node.id.name);
-        if (!variable) {
-          return;
-        }
-        if (
-          variable.references.length === 0 ||
-          // ignore exported nodes
-          isExported(variable, node.type)
-        ) {
-          return;
-        }
-
-        // check if the type is only self-referenced
-        // this won't be caught by the base rule because it doesn't understand self-referencing types
-        const isOnlySelfReferenced = variable.references.every(ref => {
+          // skip ignored parameters
           if (
-            ref.identifier.range[0] >= node.range[0] &&
-            ref.identifier.range[1] <= node.range[1]
+            'name' in def.name &&
+            options.argsIgnorePattern?.test(def.name.name)
           ) {
-            return true;
+            continue;
           }
-          return false;
-        });
-        if (isOnlySelfReferenced) {
-          context.report({
-            node: variable.identifiers[0],
-            messageId: 'unusedVar',
-            data: {
-              varName: variable.name,
-              action: 'defined',
-              additional: '',
-            },
-          });
+          // if "args" option is "after-used", skip used variables
+          if (
+            options.args === 'after-used' &&
+            util.isFunction(def.name.parent) &&
+            !isAfterLastUsedArg(variable)
+          ) {
+            continue;
+          }
+        } else {
+          // skip ignored variables
+          if (
+            'name' in def.name &&
+            options.varsIgnorePattern?.test(def.name.name)
+          ) {
+            continue;
+          }
         }
-      },
 
+        if (!hasRestSpreadSibling(variable)) {
+          unusedVariablesReturn.push(variable);
+        }
+      }
+
+      return unusedVariablesReturn;
+    }
+
+    return {
       // declaration file handling
       [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,
@@ -217,11 +255,6 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         markDeclarationChildAsUsed(node);
-      },
-
-      // global augmentation can be in any file, and they do not need exports
-      'TSModuleDeclaration[declare = true][global = true]'(): void {
-        context.markVariableAsUsed('global');
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported
@@ -252,6 +285,111 @@ export default util.createRule<Options, MessageIds>({
         }
 
         markDeclarationChildAsUsed(node);
+      },
+
+      // collect
+      'Program:exit'(programNode): void {
+        /**
+         * Generates the message data about the variable being defined and unused,
+         * including the ignore pattern if configured.
+         * @param unusedVar eslint-scope variable object.
+         * @returns The message data to be used with this unused variable.
+         */
+        function getDefinedMessageData(
+          unusedVar: TSESLint.Scope.Variable,
+        ): Record<string, unknown> {
+          const defType = unusedVar?.defs[0]?.type;
+          let type;
+          let pattern;
+
+          if (
+            defType === TSESLint.Scope.DefinitionType.CatchClause &&
+            options.caughtErrorsIgnorePattern
+          ) {
+            type = 'args';
+            pattern = options.caughtErrorsIgnorePattern.toString();
+          } else if (
+            defType === TSESLint.Scope.DefinitionType.Parameter &&
+            options.argsIgnorePattern
+          ) {
+            type = 'args';
+            pattern = options.argsIgnorePattern.toString();
+          } else if (
+            defType !== TSESLint.Scope.DefinitionType.Parameter &&
+            options.varsIgnorePattern
+          ) {
+            type = 'vars';
+            pattern = options.varsIgnorePattern.toString();
+          }
+
+          const additional = type
+            ? `. Allowed unused ${type} must match ${pattern}`
+            : '';
+
+          return {
+            varName: unusedVar.name,
+            action: 'defined',
+            additional,
+          };
+        }
+
+        /**
+         * Generate the warning message about the variable being
+         * assigned and unused, including the ignore pattern if configured.
+         * @param unusedVar eslint-scope variable object.
+         * @returns The message data to be used with this unused variable.
+         */
+        function getAssignedMessageData(
+          unusedVar: TSESLint.Scope.Variable,
+        ): Record<string, unknown> {
+          const additional = options.varsIgnorePattern
+            ? `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`
+            : '';
+
+          return {
+            varName: unusedVar.name,
+            action: 'assigned a value',
+            additional,
+          };
+        }
+
+        const unusedVars = collectUnusedVariables();
+
+        for (let i = 0, l = unusedVars.length; i < l; ++i) {
+          const unusedVar = unusedVars[i];
+
+          // Report the first declaration.
+          if (unusedVar.defs.length > 0) {
+            context.report({
+              node: unusedVar.references.length
+                ? unusedVar.references[unusedVar.references.length - 1]
+                    .identifier
+                : unusedVar.identifiers[0],
+              messageId: 'unusedVar',
+              data: unusedVar.references.some(ref => ref.isWrite())
+                ? getAssignedMessageData(unusedVar)
+                : getDefinedMessageData(unusedVar),
+            });
+
+            // If there are no regular declaration, report the first `/*globals*/` comment directive.
+          } else if (
+            'eslintExplicitGlobalComments' in unusedVar &&
+            unusedVar.eslintExplicitGlobalComments
+          ) {
+            const directiveComment = unusedVar.eslintExplicitGlobalComments[0];
+
+            context.report({
+              node: programNode,
+              loc: getNameLocationInGlobalDirectiveComment(
+                sourceCode,
+                directiveComment,
+                unusedVar.name,
+              ),
+              messageId: 'unusedVar',
+              data: getDefinedMessageData(unusedVar),
+            });
+          }
+        }
       },
     };
 
@@ -390,6 +528,31 @@ function foo( // foo should be unused
 function bar( // bar should be unused
   _arg: typeof bar
 ) {}
+
+
+--- if an interface is merged into a namespace  ---
+--- NOTE - TS gets these cases wrong
+
+namespace Test {
+    interface Foo { // Foo should be unused here
+        a: string;
+    }
+    export namespace Foo {
+       export type T = 'b';
+    }
+}
+type T = Test.Foo; // Error: Namespace 'Test' has no exported member 'Foo'.
+
+
+namespace Test {
+    export interface Foo {
+        a: string;
+    }
+    namespace Foo { // Foo should be unused here
+       export type T = 'b';
+    }
+}
+type T = Test.Foo.T; // Error: Namespace 'Test' has no exported member 'Foo'.
 
 */
 
