@@ -1175,6 +1175,46 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const UnusedVar = 1;
+        function UnusedFunc(
+          // this line is intentionally broken out
+          UnusedParam: string,
+        ) {}
+        class UnusedClass {}
+        interface UnusedInterface {}
+        type UnusedType<
+          // this line is intentionally broken out
+          UnusedTypeParam
+        > = {};
+        
+        export const used_var = 1;
+        export function used_func(
+          // this line is intentionally broken out
+          used_param: string,
+        ) {
+          return used_param;
+        }
+        export class used_class {}
+        export interface used_interface {}
+        export type used_type<
+          // this line is intentionally broken out
+          used_typeparam
+        > = used_typeparam;
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['snake_case'],
+        },
+        {
+          selector: 'default',
+          modifiers: ['unused'],
+          format: ['PascalCase'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1822,6 +1862,33 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        const UnusedVar = 1;
+        function UnusedFunc(
+          // this line is intentionally broken out
+          UnusedParam: string,
+        ) {}
+        class UnusedClass {}
+        interface UnusedInterface {}
+        type UnusedType<
+          // this line is intentionally broken out
+          UnusedTypeParam
+        > = {};
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'default',
+          modifiers: ['unused'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: Array(7).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
 });
