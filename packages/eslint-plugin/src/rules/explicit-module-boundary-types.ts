@@ -390,6 +390,10 @@ export default util.createRule<Options, MessageIds>({
     function ancestorHasReturnType(node: FunctionNode): boolean {
       let ancestor = node.parent;
 
+      if (ancestor?.type === AST_NODE_TYPES.Property) {
+        ancestor = ancestor.value;
+      }
+
       // if the ancestor is not a return, then this function was not returned at all, so we can exit early
       const isReturnStatement =
         ancestor?.type === AST_NODE_TYPES.ReturnStatement;
