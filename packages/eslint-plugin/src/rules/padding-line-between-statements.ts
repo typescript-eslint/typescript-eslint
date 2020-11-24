@@ -57,7 +57,10 @@ function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
 function newKeywordTester(keyword: string): NodeTestObject {
   return {
     test(node, sourceCode): boolean {
-      return sourceCode.getFirstToken(node)?.value === keyword;
+      const keywords = keyword.split(' ');
+      return keywords.every(
+        (keyword, i) => sourceCode.getFirstToken(node, i)?.value === keyword,
+      );
     },
   };
 }

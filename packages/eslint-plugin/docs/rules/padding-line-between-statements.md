@@ -2,21 +2,13 @@
 
 This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements#require-or-disallow-padding-lines-between-statements-padding-line-between-statements) rule. It requires or disallows padding (i.e. blank lines) between two given types of statements. Padding generally helps readability.
 
-## Changes from the Original Rule
-
-- The `cjs-export` option was renamed to `exports`.
-- The `cjs-import` option was renamed to `require`.
-- Unknown `STATEMENT_TYPE`s (see the [Rule Details](#rule-details)) will be casted as if they are a keyword.
-  - If `singleline-` is prepended to the `STATEMENT_TYPE`, then the unknown `STATEMENT_TYPE` will be treated only when `STATEMENT_TYPE` is single line.
-  - If `multiline-` is prepended to the `STATEMENT_TYPE`, then the unknown `STATEMENT_TYPE` will be treated only when `STATEMENT_TYPE` is multiple lines.
-
 ## Rule Details
 
 This rule follows the same structure as `eslint`'s, however we have a few changes:
 
 - The `cjs-export` option was renamed to `exports`.
 - The `cjs-import` option was renamed to `require`.
-- Unknown `STATEMENT_TYPE`s (see the [Rule Details](#rule-details)) will be casted as if they are a keyword.
+- Unknown `STATEMENT_TYPE`s (see the [Rule Details](#rule-details)) will be casted as if they are a keyword. Spaces denote sequences of keywords.
 - If `singleline-` is prepended to the `STATEMENT_TYPE`, then the `STATEMENT_TYPE` will be treated only when `STATEMENT_TYPE` is single line.
 - If `multiline-` is prepended to the `STATEMENT_TYPE`, then the `STATEMENT_TYPE` will be treated only when `STATEMENT_TYPE` is multiple lines.
 
