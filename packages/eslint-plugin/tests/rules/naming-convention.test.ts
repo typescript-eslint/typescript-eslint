@@ -214,7 +214,9 @@ function createInvalidTestCases(
             ...(selector !== 'default' &&
             selector !== 'variableLike' &&
             selector !== 'memberLike' &&
-            selector !== 'typeLike'
+            selector !== 'typeLike' &&
+            selector !== 'property' &&
+            selector !== 'method'
               ? {
                   data: {
                     type: selectorTypeToMessageString(selector),
@@ -444,12 +446,6 @@ const cases: Cases = [
   // #region property
   {
     code: [
-      'const ignored = { % };',
-      'const ignored = { "%": 1 };',
-      'interface Ignored { % }',
-      'interface Ignored { "%": string }',
-      'type Ignored = { % }',
-      'type Ignored = { "%": string }',
       'class Ignored { private % }',
       'class Ignored { private "%" = 1 }',
       'class Ignored { private readonly % = 1 }',
@@ -459,16 +455,24 @@ const cases: Cases = [
       'class Ignored { declare % }',
     ],
     options: {
-      selector: 'property',
+      selector: 'classProperty',
+    },
+  },
+  {
+    code: ['const ignored = { % };', 'const ignored = { "%": 1 };'],
+    options: {
+      selector: 'objectLiteralProperty',
     },
   },
   {
     code: [
-      'class Ignored { abstract private static readonly % = 1; ignoredDueToModifiers = 1; }',
+      'interface Ignored { % }',
+      'interface Ignored { "%": string }',
+      'type Ignored = { % }',
+      'type Ignored = { "%": string }',
     ],
     options: {
-      selector: 'property',
-      modifiers: ['static', 'readonly'],
+      selector: 'typeProperty',
     },
   },
   // #endregion property
@@ -496,13 +500,6 @@ const cases: Cases = [
   // #region method
   {
     code: [
-      'const ignored = { %() {} };',
-      'const ignored = { "%"() {} };',
-      'const ignored = { %: () => {} };',
-      'interface Ignored { %(): string }',
-      'interface Ignored { "%"(): string }',
-      'type Ignored = { %(): string }',
-      'type Ignored = { "%"(): string }',
       'class Ignored { private %() {} }',
       'class Ignored { private "%"() {} }',
       'class Ignored { private readonly %() {} }',
@@ -513,16 +510,28 @@ const cases: Cases = [
       'class Ignored { declare %() }',
     ],
     options: {
-      selector: 'method',
+      selector: 'classMethod',
     },
   },
   {
     code: [
-      'class Ignored { abstract private static %() {}; ignoredDueToModifiers() {}; }',
+      'const ignored = { %() {} };',
+      'const ignored = { "%"() {} };',
+      'const ignored = { %: () => {} };',
     ],
     options: {
-      selector: 'method',
-      modifiers: ['abstract', 'static'],
+      selector: 'objectLiteralMethod',
+    },
+  },
+  {
+    code: [
+      'interface Ignored { %(): string }',
+      'interface Ignored { "%"(): string }',
+      'type Ignored = { %(): string }',
+      'type Ignored = { "%"(): string }',
+    ],
+    options: {
+      selector: 'typeMethod',
     },
   },
   // #endregion method
@@ -538,15 +547,6 @@ const cases: Cases = [
     ],
     options: {
       selector: 'accessor',
-    },
-  },
-  {
-    code: [
-      'class Ignored { private static get %() {}; get ignoredDueToModifiers() {}; }',
-    ],
-    options: {
-      selector: 'accessor',
-      modifiers: ['private', 'static'],
     },
   },
   // #endregion accessor
@@ -565,13 +565,6 @@ const cases: Cases = [
     code: ['class % {}', 'abstract class % {}', 'const ignored = class % {}'],
     options: {
       selector: 'class',
-    },
-  },
-  {
-    code: ['abstract class % {}; class ignoredDueToModifier {}'],
-    options: {
-      selector: 'class',
-      modifiers: ['abstract'],
     },
   },
   // #endregion class
@@ -914,10 +907,101 @@ ruleTester.run('naming-convention', rule, {
 
         export const { OtherConstant: otherConstant } = SomeClass;
       `,
-      parserOptions,
       options: [
         { selector: 'property', format: ['PascalCase'] },
         { selector: 'variable', format: ['camelCase'] },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract readonly some_name = 1;
+          IgnoredDueToModifiers = 1;
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'classProperty',
+          format: ['snake_case'],
+          modifiers: ['static', 'readonly'],
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          constructor(private readonly some_name, IgnoredDueToModifiers) {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'parameterProperty',
+          format: ['snake_case'],
+          modifiers: ['readonly'],
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract some_name() {}
+          IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'classMethod',
+          format: ['snake_case'],
+          modifiers: ['abstract', 'static'],
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static get some_name() {}
+          get IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'accessor',
+          format: ['snake_case'],
+          modifiers: ['private', 'static'],
+        },
+      ],
+    },
+    {
+      code: `
+        abstract class some_name {}
+        class IgnoredDueToModifier {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'class',
+          format: ['snake_case'],
+          modifiers: ['abstract'],
+        },
       ],
     },
   ],
@@ -1239,8 +1323,7 @@ ruleTester.run('naming-convention', rule, {
           line: 3,
           messageId: 'doesNotMatchFormat',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            type: 'Property',
+            type: 'Object Literal Property',
             name: 'Property Name',
             formats: 'strictCamelCase',
           },
@@ -1330,6 +1413,103 @@ ruleTester.run('naming-convention', rule, {
           messageId: 'doesNotMatchFormat',
         },
       ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract readonly some_name = 1;
+          IgnoredDueToModifiers = 1;
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'classProperty',
+          format: ['UPPER_CASE'],
+          modifiers: ['static', 'readonly'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        class Ignored {
+          constructor(private readonly some_name, IgnoredDueToModifiers) {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'parameterProperty',
+          format: ['UPPER_CASE'],
+          modifiers: ['readonly'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract some_name() {}
+          IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'classMethod',
+          format: ['UPPER_CASE'],
+          modifiers: ['abstract', 'static'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        class Ignored {
+          private static get some_name() {}
+          get IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'accessor',
+          format: ['UPPER_CASE'],
+          modifiers: ['private', 'static'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+    },
+    {
+      code: `
+        abstract class some_name {}
+        class IgnoredDueToModifier {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'class',
+          format: ['UPPER_CASE'],
+          modifiers: ['abstract'],
+        },
+      ],
+      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
   ],
 });
