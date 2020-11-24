@@ -52,6 +52,15 @@ class PatternVisitor extends VisitorBase {
     this.#callback = callback;
   }
 
+  private visitAssignment(
+    node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
+  ): void {
+    this.#assignments.push(node);
+    this.visit(node.left);
+    this.rightHandNodes.push(node.right);
+    this.#assignments.pop();
+  }
+
   protected ArrayExpression(node: TSESTree.ArrayExpression): void {
     node.elements.forEach(this.visit, this);
   }
@@ -62,19 +71,9 @@ class PatternVisitor extends VisitorBase {
     }
   }
 
-  protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
-    this.#assignments.push(node);
-    this.visit(node.left);
-    this.rightHandNodes.push(node.right);
-    this.#assignments.pop();
-  }
+  protected AssignmentExpression = this.visitAssignment;
 
-  protected AssignmentPattern(pattern: TSESTree.AssignmentPattern): void {
-    this.#assignments.push(pattern);
-    this.visit(pattern.left);
-    this.rightHandNodes.push(pattern.right);
-    this.#assignments.pop();
-  }
+  protected AssignmentPattern = this.visitAssignment;
 
   protected CallExpression(node: TSESTree.CallExpression): void {
     // arguments are right hand nodes.
