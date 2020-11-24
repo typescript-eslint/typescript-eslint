@@ -41,21 +41,24 @@ enum Selectors {
   parameter = 1 << 2,
 
   // memberLike
-  property = 1 << 3,
-  parameterProperty = 1 << 4,
-  method = 1 << 5,
-  accessor = 1 << 6,
-  enumMember = 1 << 7,
+  parameterProperty = 1 << 3,
+  accessor = 1 << 4,
+  enumMember = 1 << 5,
+  classMethod = 1 << 6,
+  objectLiteralMethod = 1 << 7,
+  typeMethod = 1 << 8,
+  classProperty = 1 << 9,
+  objectLiteralProperty = 1 << 10,
+  typeProperty = 1 << 11,
 
   // typeLike
-  class = 1 << 8,
-  interface = 1 << 9,
-  typeAlias = 1 << 10,
-  enum = 1 << 11,
-  typeParameter = 1 << 12,
+  class = 1 << 12,
+  interface = 1 << 13,
+  typeAlias = 1 << 14,
+  enum = 1 << 15,
+  typeParameter = 1 << 17,
 }
 type SelectorsString = keyof typeof Selectors;
-const SELECTOR_COUNT = util.getEnumNames(Selectors).length;
 
 enum MetaSelectors {
   default = -1,
@@ -64,10 +67,14 @@ enum MetaSelectors {
     Selectors.function |
     Selectors.parameter,
   memberLike = 0 |
-    Selectors.property |
+    Selectors.classProperty |
+    Selectors.objectLiteralProperty |
+    Selectors.typeProperty |
     Selectors.parameterProperty |
     Selectors.enumMember |
-    Selectors.method |
+    Selectors.classMethod |
+    Selectors.objectLiteralMethod |
+    Selectors.typeMethod |
     Selectors.accessor,
   typeLike = 0 |
     Selectors.class |
@@ -75,6 +82,14 @@ enum MetaSelectors {
     Selectors.typeAlias |
     Selectors.enum |
     Selectors.typeParameter,
+  method = 0 |
+    Selectors.classMethod |
+    Selectors.objectLiteralMethod |
+    Selectors.typeProperty,
+  property = 0 |
+    Selectors.classProperty |
+    Selectors.objectLiteralProperty |
+    Selectors.typeMethod,
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
@@ -321,7 +336,23 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'readonly',
         'abstract',
       ]),
-      ...selectorSchema('property', true, [
+      ...selectorSchema('classProperty', true, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'readonly',
+        'abstract',
+      ]),
+      ...selectorSchema('objectLiteralProperty', true, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'readonly',
+        'abstract',
+      ]),
+      ...selectorSchema('typeProperty', true, [
         'private',
         'protected',
         'public',
@@ -334,6 +365,36 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'protected',
         'public',
         'readonly',
+      ]),
+      ...selectorSchema('property', true, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'readonly',
+        'abstract',
+      ]),
+
+      ...selectorSchema('classMethod', false, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'abstract',
+      ]),
+      ...selectorSchema('objectLiteralMethod', false, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'abstract',
+      ]),
+      ...selectorSchema('typeMethod', false, [
+        'private',
+        'protected',
+        'public',
+        'static',
+        'abstract',
       ]),
       ...selectorSchema('method', false, [
         'private',
@@ -584,7 +645,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.PropertyNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
-        handleMember(validators.property, node, modifiers);
+        handleMember(validators.objectLiteralProperty, node, modifiers);
       },
 
       ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
@@ -593,7 +654,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.TSAbstractClassPropertyNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
-        handleMember(validators.property, node, modifiers);
+        handleMember(validators.classProperty, node, modifiers);
       },
 
       'TSPropertySignature[computed = false]'(
@@ -604,7 +665,7 @@ export default util.createRule<Options, MessageIds>({
           modifiers.add(Modifiers.readonly);
         }
 
-        handleMember(validators.property, node, modifiers);
+        handleMember(validators.typeProperty, node, modifiers);
       },
 
       // #endregion property
@@ -615,14 +676,13 @@ export default util.createRule<Options, MessageIds>({
         'Property[computed = false][kind = "init"][value.type = "ArrowFunctionExpression"]',
         'Property[computed = false][kind = "init"][value.type = "FunctionExpression"]',
         'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
-        'TSMethodSignature[computed = false]',
       ].join(', ')](
         node:
           | TSESTree.PropertyNonComputedName
           | TSESTree.TSMethodSignatureNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
-        handleMember(validators.method, node, modifiers);
+        handleMember(validators.objectLiteralMethod, node, modifiers);
       },
 
       [[
@@ -638,7 +698,14 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.TSAbstractMethodDefinitionNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
-        handleMember(validators.method, node, modifiers);
+        handleMember(validators.classMethod, node, modifiers);
+      },
+
+      'TSMethodSignature[computed = false]'(
+        node: TSESTree.TSMethodSignatureNonComputedName,
+      ): void {
+        const modifiers = new Set<Modifiers>([Modifiers.public]);
+        handleMember(validators.typeMethod, node, modifiers);
       },
 
       // #endregion method
@@ -851,21 +918,20 @@ function createValidator(
         return b.modifierWeight - a.modifierWeight;
       }
 
-      /*
-      meta selectors will always be larger numbers than the normal selectors they contain, as they are the sum of all
-      of the selectors that they contain.
-      to give normal selectors a higher priority, shift them all SELECTOR_COUNT bits to the left before comparison, so
-      they are instead always guaranteed to be larger than the meta selectors.
-      */
-      const aSelector = isMetaSelector(a.selector)
-        ? a.selector
-        : a.selector << SELECTOR_COUNT;
-      const bSelector = isMetaSelector(b.selector)
-        ? b.selector
-        : b.selector << SELECTOR_COUNT;
+      const aIsMeta = isMetaSelector(a.selector);
+      const bIsMeta = isMetaSelector(b.selector);
 
+      // non-meta selectors should go ahead of meta selectors
+      if (aIsMeta && !bIsMeta) {
+        return 1;
+      }
+      if (!aIsMeta && bIsMeta) {
+        return -1;
+      }
+
+      // both aren't meta selectors
       // sort descending - the meta selectors are "least important"
-      return bSelector - aSelector;
+      return b.selector - a.selector;
     });
 
   return (
@@ -1314,13 +1380,14 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
     ? option.selector
     : [option.selector];
 
-  const selectorsAllowedToHaveTypes: (Selectors | MetaSelectors)[] = [
-    Selectors.variable,
-    Selectors.parameter,
-    Selectors.property,
-    Selectors.parameterProperty,
-    Selectors.accessor,
-  ];
+  const selectorsAllowedToHaveTypes =
+    Selectors.variable |
+    Selectors.parameter |
+    Selectors.classProperty |
+    Selectors.objectLiteralProperty |
+    Selectors.typeProperty |
+    Selectors.parameterProperty |
+    Selectors.accessor;
 
   const config: NormalizedSelector[] = [];
   selectors
@@ -1328,7 +1395,7 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
       isMetaSelector(selector) ? MetaSelectors[selector] : Selectors[selector],
     )
     .forEach(selector =>
-      selectorsAllowedToHaveTypes.includes(selector)
+      (selectorsAllowedToHaveTypes & selector) !== 0
         ? config.push({ selector: selector, ...normalizedOption })
         : config.push({
             selector: selector,

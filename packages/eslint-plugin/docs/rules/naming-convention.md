@@ -154,21 +154,27 @@ If these are provided, the identifier must start with one of the provided values
 
 ### Selector Options
 
-- `selector` (see "Allowed Selectors, Modifiers and Types" below).
+- `selector` allows you to specify what types of identifiers to target.
   - Accepts one or array of selectors to define an option block that applies to one or multiple selectors.
   - For example, if you provide `{ selector: ['variable', 'function'] }`, then it will apply the same option to variable and function nodes.
+  - See [Allowed Selectors, Modifiers and Types](#allowed-selectors-modifiers-and-types) below for the complete list of allowed selectors.
 - `modifiers` allows you to specify which modifiers to granularly apply to, such as the accessibility (`private`/`public`/`protected`), or if the thing is `static`, etc.
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private', 'static', 'readonly'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
+  - The following `modifiers` are allowed:
+    - `const` - matches a variable declared as being `const` (`const x = 1`).
+    - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
+    - `readonly`, `static`, `abstract`, `protected`, `private` - matches any member explicitly declared with the given modifier.
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
   - The name must match _one_ of the types.
   - **_NOTE - Using this option will require that you lint with type information._**
   - For example, this lets you do things like enforce that `boolean` variables are prefixed with a verb.
-  - `boolean` matches any type assignable to `boolean | null | undefined`
-  - `string` matches any type assignable to `string | null | undefined`
-  - `number` matches any type assignable to `number | null | undefined`
-  - `array` matches any type assignable to `Array<unknown> | null | undefined`
-  - `function` matches any type assignable to `Function | null | undefined`
+  - The following `types` are allowed:
+    - `boolean` matches any type assignable to `boolean | null | undefined`
+    - `string` matches any type assignable to `string | null | undefined`
+    - `number` matches any type assignable to `number | null | undefined`
+    - `array` matches any type assignable to `Array<unknown> | null | undefined`
+    - `function` matches any type assignable to `Function | null | undefined`
 
 The ordering of selectors does not matter. The implementation will automatically sort the selectors to ensure they match from most-specific to least specific. It will keep checking selectors in that order until it finds one that matches the name.
 
@@ -202,13 +208,25 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
 - `parameter` - matches any function parameter. Does not match parameter properties.
   - Allowed `modifiers`: none.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
-- `property` - matches any object, class, or object type property. Does not match properties that have direct function expression or arrow function expression values.
+- `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
+- `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
+- `typeProperty` - matches any object type property. Does not match properties that have direct function expression or arrow function expression values.
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `parameterProperty` - matches any parameter property.
   - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
-- `method` - matches any object, class, or object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+- `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `types`: none.
+- `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `types`: none.
+- `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
   - Allowed `types`: none.
 - `accessor` - matches any accessor.
@@ -248,6 +266,12 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
   - Allowed `types`: none.
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
   - Allowed `modifiers`: `abstract`.
+  - Allowed `types`: none.
+- `property` - matches the same as `classProperty`, `objectLiteralProperty`, `typeProperty`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
+- `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
   - Allowed `types`: none.
 
 ## Examples
