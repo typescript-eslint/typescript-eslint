@@ -797,7 +797,7 @@ declare module 'eslint/lib/rules/space-infix-ops' {
     'missingSpace',
     [
       {
-        int32Hint: boolean;
+        int32Hint?: boolean;
       },
     ],
     {
@@ -807,6 +807,25 @@ declare module 'eslint/lib/rules/space-infix-ops' {
       LogicalExpression(node: TSESTree.LogicalExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/prefer-const' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useConst',
+    [
+      {
+        destructuring?: 'any' | 'all';
+        ignoreReadBeforeAssign?: boolean;
+      },
+    ],
+    {
+      'Program:exit'(node: TSESTree.Program): void;
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
     }
   >;
   export = rule;

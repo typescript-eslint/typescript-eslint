@@ -386,10 +386,22 @@ class Referencer extends Visitor {
   }
 
   protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
-    if (PatternVisitor.isPattern(node.left)) {
+    let left = node.left;
+    switch (left.type) {
+      case AST_NODE_TYPES.TSAsExpression:
+      case AST_NODE_TYPES.TSTypeAssertion:
+        // explicitly visit the type annotation
+        this.visit(left.typeAnnotation);
+      // intentional fallthrough
+      case AST_NODE_TYPES.TSNonNullExpression:
+        // unwrap the expression
+        left = left.expression;
+    }
+
+    if (PatternVisitor.isPattern(left)) {
       if (node.operator === '=') {
         this.visitPattern(
-          node.left,
+          left,
           (pattern, info) => {
             const maybeImplicitGlobal = !this.currentScope().isStrict
               ? {
@@ -413,15 +425,15 @@ class Referencer extends Visitor {
           },
           { processRightHandNodes: true },
         );
-      } else if (node.left.type === AST_NODE_TYPES.Identifier) {
+      } else if (left.type === AST_NODE_TYPES.Identifier) {
         this.currentScope().referenceValue(
-          node.left,
+          left,
           ReferenceFlag.ReadWrite,
           node.right,
         );
       }
     } else {
-      this.visit(node.left);
+      this.visit(left);
     }
     this.visit(node.right);
   }
