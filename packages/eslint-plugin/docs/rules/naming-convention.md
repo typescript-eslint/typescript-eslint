@@ -167,6 +167,7 @@ If these are provided, the identifier must start with one of the provided values
       - Note that this does not match renamed destructured properties (`const {x: y, a: b = 2}`).
     - `global` - matches a variable/function declared in the top-level scope.
     - `exported` - matches anything that is exported from the module.
+    - `unused` - matches anything that is not used.
     - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
     - `readonly`, `static`, `abstract`, `protected`, `private` - matches any member explicitly declared with the given modifier.
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
@@ -204,13 +205,13 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `variable` - matches any `var` / `let` / `const` variable name.
-  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`.
+  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`, `unused`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `function` - matches any named function declaration or named function expression.
-  - Allowed `modifiers`: `global`, `exported`.
+  - Allowed `modifiers`: `global`, `exported`, `unused`.
   - Allowed `types`: none.
 - `parameter` - matches any function parameter. Does not match parameter properties.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `unused`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
@@ -240,19 +241,19 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: none.
   - Allowed `types`: none.
 - `class` - matches any class declaration.
-  - Allowed `modifiers`: `abstract`, `exported`.
+  - Allowed `modifiers`: `abstract`, `exported`, `unused`.
   - Allowed `types`: none.
 - `interface` - matches any interface declaration.
-  - Allowed `modifiers`: `exported`.
+  - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.
 - `typeAlias` - matches any type alias declaration.
-  - Allowed `modifiers`: `exported`.
+  - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.
 - `enum` - matches any enum declaration.
-  - Allowed `modifiers`: `exported`.
+  - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.
 - `typeParameter` - matches any generic type parameter declaration.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `unused`.
   - Allowed `types`: none.
 
 ##### Group Selectors
@@ -263,13 +264,13 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
   - Allowed `types`: none.
 - `variableLike` - matches the same as `variable`, `function` and `parameter`.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `unused`.
   - Allowed `types`: none.
 - `memberLike` - matches the same as `property`, `parameterProperty`, `method`, `accessor`, `enumMember`.
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
   - Allowed `types`: none.
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
-  - Allowed `modifiers`: `abstract`.
+  - Allowed `modifiers`: `abstract`, `unused`.
   - Allowed `types`: none.
 - `property` - matches the same as `classProperty`, `objectLiteralProperty`, `typeProperty`.
   - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.

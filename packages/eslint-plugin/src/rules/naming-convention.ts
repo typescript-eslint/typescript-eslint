@@ -113,6 +113,8 @@ enum Modifiers {
   global = 1 << 8,
   // things that are exported
   exported = 1 << 9,
+  // things that are unused
+  unused = 1 << 10,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -334,15 +336,16 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       selectorsSchema(),
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
-      ...selectorSchema('variableLike', false),
+      ...selectorSchema('variableLike', false, ['unused']),
       ...selectorSchema('variable', true, [
         'const',
         'destructured',
         'global',
         'exported',
+        'unused',
       ]),
-      ...selectorSchema('function', false, ['global', 'exported']),
-      ...selectorSchema('parameter', true),
+      ...selectorSchema('function', false, ['global', 'exported', 'unused']),
+      ...selectorSchema('parameter', true, ['unused']),
 
       ...selectorSchema('memberLike', false, [
         'private',
@@ -428,12 +431,12 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ]),
       ...selectorSchema('enumMember', false),
 
-      ...selectorSchema('typeLike', false, ['abstract', 'exported']),
-      ...selectorSchema('class', false, ['abstract', 'exported']),
-      ...selectorSchema('interface', false, ['exported']),
-      ...selectorSchema('typeAlias', false, ['exported']),
-      ...selectorSchema('enum', false, ['exported']),
-      ...selectorSchema('typeParameter', false),
+      ...selectorSchema('typeLike', false, ['abstract', 'exported', 'unused']),
+      ...selectorSchema('class', false, ['abstract', 'exported', 'unused']),
+      ...selectorSchema('interface', false, ['exported', 'unused']),
+      ...selectorSchema('typeAlias', false, ['exported', 'unused']),
+      ...selectorSchema('enum', false, ['exported', 'unused']),
+      ...selectorSchema('typeParameter', false, ['unused']),
     ],
   },
   additionalItems: false,
@@ -558,6 +561,27 @@ export default util.createRule<Options, MessageIds>({
       return modifiers;
     }
 
+    const unusedVariables = util.collectUnusedVariables(context);
+    function isUnused(
+      name: string,
+      initialScope: TSESLint.Scope.Scope | null = context.getScope(),
+    ): boolean {
+      let variable: TSESLint.Scope.Variable | null = null;
+      let scope: TSESLint.Scope.Scope | null = initialScope;
+      while (scope) {
+        variable = scope.set.get(name) ?? null;
+        if (variable) {
+          break;
+        }
+        scope = scope.upper;
+      }
+      if (!variable) {
+        return false;
+      }
+
+      return unusedVariables.has(variable);
+    }
+
     return {
       // #region variable
 
@@ -574,6 +598,7 @@ export default util.createRule<Options, MessageIds>({
           if (parent.kind === 'const') {
             baseModifiers.add(Modifiers.const);
           }
+
           if (isGlobal(context.getScope())) {
             baseModifiers.add(Modifiers.global);
           }
@@ -581,6 +606,7 @@ export default util.createRule<Options, MessageIds>({
 
         identifiers.forEach(id => {
           const modifiers = new Set(baseModifiers);
+
           if (
             // `const { x }`
             // does not match `const { x: y }`
@@ -597,6 +623,10 @@ export default util.createRule<Options, MessageIds>({
 
           if (isExported(parent, id.name, context.getScope())) {
             modifiers.add(Modifiers.exported);
+          }
+
+          if (isUnused(id.name)) {
+            modifiers.add(Modifiers.unused);
           }
 
           validator(id, modifiers);
@@ -621,11 +651,17 @@ export default util.createRule<Options, MessageIds>({
         const modifiers = new Set<Modifiers>();
         // functions create their own nested scope
         const scope = context.getScope().upper;
+
         if (isGlobal(scope)) {
           modifiers.add(Modifiers.global);
         }
+
         if (isExported(node, node.id.name, scope)) {
           modifiers.add(Modifiers.exported);
+        }
+
+        if (isUnused(node.id.name, scope)) {
+          modifiers.add(Modifiers.unused);
         }
 
         validator(node.id, modifiers);
@@ -655,7 +691,13 @@ export default util.createRule<Options, MessageIds>({
           const identifiers = getIdentifiersFromPattern(param);
 
           identifiers.forEach(i => {
-            validator(i);
+            const modifiers = new Set<Modifiers>();
+
+            if (isUnused(i.name)) {
+              modifiers.add(Modifiers.unused);
+            }
+
+            validator(i, modifiers);
           });
         });
       },
@@ -803,13 +845,19 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const modifiers = new Set<Modifiers>();
+        // classes create their own nested scope
+        const scope = context.getScope().upper;
+
         if (node.abstract) {
           modifiers.add(Modifiers.abstract);
         }
 
-        // classes create their own nested scope
-        if (isExported(node, id.name, context.getScope().upper)) {
+        if (isExported(node, id.name, scope)) {
           modifiers.add(Modifiers.exported);
+        }
+
+        if (isUnused(id.name, scope)) {
+          modifiers.add(Modifiers.unused);
         }
 
         validator(id, modifiers);
@@ -826,8 +874,14 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const modifiers = new Set<Modifiers>();
-        if (isExported(node, node.id.name, context.getScope())) {
+        const scope = context.getScope();
+
+        if (isExported(node, node.id.name, scope)) {
           modifiers.add(Modifiers.exported);
+        }
+
+        if (isUnused(node.id.name, scope)) {
+          modifiers.add(Modifiers.unused);
         }
 
         validator(node.id, modifiers);
@@ -844,8 +898,14 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const modifiers = new Set<Modifiers>();
-        if (isExported(node, node.id.name, context.getScope())) {
+        const scope = context.getScope();
+
+        if (isExported(node, node.id.name, scope)) {
           modifiers.add(Modifiers.exported);
+        }
+
+        if (isUnused(node.id.name, scope)) {
+          modifiers.add(Modifiers.unused);
         }
 
         validator(node.id, modifiers);
@@ -863,8 +923,14 @@ export default util.createRule<Options, MessageIds>({
 
         const modifiers = new Set<Modifiers>();
         // enums create their own nested scope
-        if (isExported(node, node.id.name, context.getScope().upper)) {
+        const scope = context.getScope().upper;
+
+        if (isExported(node, node.id.name, scope)) {
           modifiers.add(Modifiers.exported);
+        }
+
+        if (isUnused(node.id.name, scope)) {
+          modifiers.add(Modifiers.unused);
         }
 
         validator(node.id, modifiers);
@@ -882,7 +948,14 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        validator(node.name);
+        const modifiers = new Set<Modifiers>();
+        const scope = context.getScope();
+
+        if (isUnused(node.name.name, scope)) {
+          modifiers.add(Modifiers.unused);
+        }
+
+        validator(node.name, modifiers);
       },
 
       // #endregion typeParameter
