@@ -376,6 +376,12 @@ export type Expression =
   | TSUnaryExpression
   | YieldExpression;
 export type ForInitialiser = Expression | VariableDeclaration;
+export type FunctionLike =
+  | ArrowFunctionExpression
+  | FunctionDeclaration
+  | FunctionExpression
+  | TSDeclareFunction
+  | TSEmptyBodyFunctionExpression;
 export type ImportClause =
   | ImportDefaultSpecifier
   | ImportNamespaceSpecifier

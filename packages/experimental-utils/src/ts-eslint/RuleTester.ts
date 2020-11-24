@@ -1,7 +1,7 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import { ParserOptions } from './ParserOptions';
-import { RuleModule } from './Rule';
+import { RuleCreateFunction, RuleModule } from './Rule';
 
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
@@ -19,7 +19,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * The additional global variables.
    */
-  readonly globals?: Record<string, 'readonly' | 'writable' | 'off'>;
+  readonly globals?: Record<string, 'readonly' | 'writable' | 'off' | true>;
   /**
    * Options for the test case.
    */
@@ -157,6 +157,18 @@ declare class RuleTesterBase {
    * @param callback the test callback
    */
   static it?: (text: string, callback: () => void) => void;
+
+  /**
+   * Define a rule for one particular run of tests.
+   * @param name The name of the rule to define.
+   * @param rule The rule definition.
+   */
+  defineRule<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
+    name: string,
+    rule:
+      | RuleModule<TMessageIds, TOptions>
+      | RuleCreateFunction<TMessageIds, TOptions>,
+  ): void;
 }
 
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}

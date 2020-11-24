@@ -811,3 +811,17 @@ declare module 'eslint/lib/rules/space-infix-ops' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/utils/ast-utils' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const utils: {
+    getNameLocationInGlobalDirectiveComment(
+      sourceCode: TSESLint.SourceCode,
+      comment: TSESTree.Comment,
+      name: string,
+    ): TSESTree.SourceLocation;
+  };
+
+  export = utils;
+}
