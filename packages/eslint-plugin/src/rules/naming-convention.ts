@@ -62,7 +62,10 @@ enum Selectors {
   interface = 1 << 13,
   typeAlias = 1 << 14,
   enum = 1 << 15,
-  typeParameter = 1 << 17,
+  typeParameter = 1 << 16,
+
+  // un-grouped
+  import = 1 << 17,
 }
 type SelectorsString = keyof typeof Selectors;
 
@@ -120,6 +123,12 @@ enum Modifiers {
   exported = 1 << 9,
   // things that are unused
   unused = 1 << 10,
+
+  // imports
+  default = 1 << 11,
+  namespace = 1 << 12,
+  named = 1 << 13,
+  renamed = 1 << 14,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -351,6 +360,14 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ]),
       ...selectorSchema('function', false, ['global', 'exported', 'unused']),
       ...selectorSchema('parameter', true, ['unused']),
+
+      ...selectorSchema('import', false, [
+        'namespace',
+        'named',
+        'default',
+        'renamed',
+        'unused',
+      ]),
 
       ...selectorSchema('memberLike', false, [
         'private',
@@ -964,6 +981,60 @@ export default util.createRule<Options, MessageIds>({
       },
 
       // #endregion typeParameter
+
+      // #region import
+
+      ImportDeclaration(node): void {
+        const validator = validators.import;
+        if (!validator) {
+          return;
+        }
+
+        node.specifiers.forEach(specifier => {
+          const identifier = specifier.local;
+          const modifiers = new Set<Modifiers>();
+
+          switch (specifier.type) {
+            case AST_NODE_TYPES.ImportDefaultSpecifier:
+              modifiers.add(Modifiers.default);
+              break;
+
+            case AST_NODE_TYPES.ImportNamespaceSpecifier:
+              modifiers.add(Modifiers.namespace);
+              break;
+
+            case AST_NODE_TYPES.ImportSpecifier:
+              modifiers.add(Modifiers.named);
+              if (specifier.local.name !== specifier.imported.name) {
+                modifiers.add(Modifiers.renamed);
+              }
+
+              break;
+          }
+
+          if (isUnused(identifier.name, context.getScope())) {
+            modifiers.add(Modifiers.unused);
+          }
+
+          validator(identifier, modifiers);
+        });
+      },
+      TSImportEqualsDeclaration(node): void {
+        const validator = validators.import;
+        if (!validator) {
+          return;
+        }
+
+        const modifiers = new Set<Modifiers>([Modifiers.default]);
+
+        if (isUnused(node.id.name, context.getScope())) {
+          modifiers.add(Modifiers.unused);
+        }
+
+        validator(node.id, modifiers);
+      },
+
+      // #endregion import
     };
   },
 });
@@ -1021,7 +1092,7 @@ function isGlobal(scope: TSESLint.Scope.Scope | null): boolean {
 }
 
 type ValidatorFunction = (
-  node: TSESTree.Identifier | TSESTree.Literal,
+  node: TSESTree.Identifier | TSESTree.StringLiteral | TSESTree.NumberLiteral,
   modifiers?: Set<Modifiers>,
 ) => void;
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
@@ -1041,7 +1112,7 @@ function createValidator(
   type: SelectorsString,
   context: Context,
   allConfigs: NormalizedSelector[],
-): (node: TSESTree.Identifier | TSESTree.Literal) => void {
+): ValidatorFunction {
   // make sure the "highest priority" configs are checked first
   const selectorType = Selectors[type];
   const configs = allConfigs
@@ -1074,10 +1145,7 @@ function createValidator(
       return b.selector - a.selector;
     });
 
-  return (
-    node: TSESTree.Identifier | TSESTree.Literal,
-    modifiers: Set<Modifiers> = new Set<Modifiers>(),
-  ): void => {
+  return (node, modifiers = new Set<Modifiers>()): void => {
     const originalName =
       node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
 
