@@ -1,11 +1,10 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, {
-  MessageIds,
-  Options,
+import rule, { MessageIds, Options } from '../../src/rules/naming-convention';
+import {
   PredefinedFormatsString,
-  Selector,
   selectorTypeToMessageString,
-} from '../../src/rules/naming-convention';
+  Selector,
+} from '../../src/rules/naming-convention-utils';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
