@@ -248,14 +248,27 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
         ts.SyntaxKind.FunctionExpression
       );
     case ts.SyntaxKind.MethodDeclaration:
-    case ts.SyntaxKind.MethodSignature:
-      return !(
-        ignoreStatic &&
-        tsutils.hasModifier(
-          valueDeclaration.modifiers,
-          ts.SyntaxKind.StaticKeyword,
+    case ts.SyntaxKind.MethodSignature: {
+      const decl = valueDeclaration as
+        | ts.MethodDeclaration
+        | ts.MethodSignature;
+      const firstParam = decl.parameters[0];
+      const thisArgIsVoid =
+        firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+        firstParam?.name.escapedText === 'this' &&
+        firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
+
+      return (
+        !thisArgIsVoid &&
+        !(
+          ignoreStatic &&
+          tsutils.hasModifier(
+            valueDeclaration.modifiers,
+            ts.SyntaxKind.StaticKeyword,
+          )
         )
       );
+    }
   }
 
   return false;

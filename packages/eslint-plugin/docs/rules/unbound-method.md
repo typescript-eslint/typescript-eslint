@@ -23,6 +23,14 @@ myLog();
 
 // This log might later be called with an incorrect scope
 const { log } = instance;
+
+// arith.double may refer to `this` internally
+const arith = {
+  double(x: number): number {
+    return x * 2;
+  },
+};
+const { double } = arith;
 ```
 
 Examples of **correct** code for this rule
@@ -45,6 +53,14 @@ logBound();
 // .bind and lambdas will also add a correct scope
 const dotBindLog = instance.logBound.bind(instance);
 const innerLog = () => instance.logBound();
+
+// arith.double explicitly declares that it does not refer to `this` internally
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+const { double } = arith;
 ```
 
 ## Options
