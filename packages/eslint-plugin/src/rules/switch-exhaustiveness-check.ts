@@ -6,6 +6,7 @@ import {
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
+  requiresQuoting,
 } from '../util';
 import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 
@@ -33,24 +34,6 @@ export default createRule({
     const service = getParserServices(context);
     const checker = service.program.getTypeChecker();
     const compilerOptions = service.program.getCompilerOptions();
-
-    function requiresQuoting(name: string): boolean {
-      if (name.length === 0) {
-        return true;
-      }
-
-      if (!ts.isIdentifierStart(name.charCodeAt(0), compilerOptions.target)) {
-        return true;
-      }
-
-      for (let i = 1; i < name.length; i += 1) {
-        if (!ts.isIdentifierPart(name.charCodeAt(i), compilerOptions.target)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
@@ -93,7 +76,7 @@ export default createRule({
         if (
           symbolName &&
           (missingBranchName || missingBranchName === '') &&
-          requiresQuoting(missingBranchName.toString())
+          requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
           caseTest = `${symbolName}['${missingBranchName}']`;
         }
