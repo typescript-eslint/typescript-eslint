@@ -33,8 +33,20 @@ type Options = {
     regex: string;
     match: boolean;
   };
-  leadingUnderscore?: 'forbid' | 'allow' | 'require';
-  trailingUnderscore?: 'forbid' | 'allow' | 'require';
+  leadingUnderscore?:
+    | 'forbid'
+    | 'require'
+    | 'requireDouble'
+    | 'allow'
+    | 'allowDouble'
+    | 'allowSingleOrDouble';
+  trailingUnderscore?:
+    | 'forbid'
+    | 'require'
+    | 'requireDouble'
+    | 'allow'
+    | 'allowDouble'
+    | 'allowSingleOrDouble';
   prefix?: string[];
   suffix?: string[];
 
@@ -141,8 +153,11 @@ Alternatively, `filter` accepts a regular expression (anything accepted into `ne
 The `leadingUnderscore` / `trailingUnderscore` options control whether leading/trailing underscores are considered valid. Accepts one of the following values:
 
 - `forbid` - a leading/trailing underscore is not allowed at all.
-- `allow` - existence of a leading/trailing underscore is not explicitly enforced.
-- `require` - a leading/trailing underscore must be included.
+- `require` - a single leading/trailing underscore must be included.
+- `requireDouble` - two leading/trailing underscores must be included.
+- `allow` - existence of a single leading/trailing underscore is not explicitly enforced.
+- `allowDouble` - existence of a double leading/trailing underscore is not explicitly enforced.
+- `allowSingleOrDouble` - existence of a single or a double leading/trailing underscore is not explicitly enforced.
 
 #### `prefix` / `suffix`
 

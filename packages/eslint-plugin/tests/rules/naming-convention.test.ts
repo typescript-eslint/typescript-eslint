@@ -128,6 +128,11 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
             format,
             leadingUnderscore: 'require',
           }),
+          createCase(`__${name}`, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'requireDouble',
+          }),
           createCase(`_${name}`, {
             ...test.options,
             format,
@@ -137,6 +142,36 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
             ...test.options,
             format,
             leadingUnderscore: 'allow',
+          }),
+          createCase(`__${name}`, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowDouble',
+          }),
+          createCase(`_${name}`, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(`__${name}`, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            leadingUnderscore: 'allowSingleOrDouble',
           }),
 
           // trailingUnderscore
@@ -150,6 +185,11 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
             format,
             trailingUnderscore: 'require',
           }),
+          createCase(`${name}__`, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'requireDouble',
+          }),
           createCase(`${name}_`, {
             ...test.options,
             format,
@@ -159,6 +199,36 @@ function createValidTestCases(cases: Cases): TSESLint.ValidTestCase<Options>[] {
             ...test.options,
             format,
             trailingUnderscore: 'allow',
+          }),
+          createCase(`${name}__`, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowDouble',
+          }),
+          createCase(`${name}_`, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(`${name}__`, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowSingleOrDouble',
+          }),
+          createCase(name, {
+            ...test.options,
+            format,
+            trailingUnderscore: 'allowSingleOrDouble',
           }),
 
           // prefix
@@ -283,7 +353,27 @@ function createInvalidTestCases(
               leadingUnderscore: 'require',
             },
             'missingUnderscore',
-            { position: 'leading' },
+            { position: 'leading', count: 'one' },
+          ),
+          createCase(
+            name,
+            {
+              ...test.options,
+              format,
+              leadingUnderscore: 'requireDouble',
+            },
+            'missingUnderscore',
+            { position: 'leading', count: 'two' },
+          ),
+          createCase(
+            `_${name}`,
+            {
+              ...test.options,
+              format,
+              leadingUnderscore: 'requireDouble',
+            },
+            'missingUnderscore',
+            { position: 'leading', count: 'two' },
           ),
 
           // trailingUnderscore
@@ -305,7 +395,27 @@ function createInvalidTestCases(
               trailingUnderscore: 'require',
             },
             'missingUnderscore',
-            { position: 'trailing' },
+            { position: 'trailing', count: 'one' },
+          ),
+          createCase(
+            name,
+            {
+              ...test.options,
+              format,
+              trailingUnderscore: 'requireDouble',
+            },
+            'missingUnderscore',
+            { position: 'trailing', count: 'two' },
+          ),
+          createCase(
+            `${name}_`,
+            {
+              ...test.options,
+              format,
+              trailingUnderscore: 'requireDouble',
+            },
+            'missingUnderscore',
+            { position: 'trailing', count: 'two' },
           ),
 
           // prefix
@@ -1188,7 +1298,7 @@ ruleTester.run('naming-convention', rule, {
           // this line is intentionally broken out
           UnusedTypeParam
         > = {};
-        
+
         export const used_var = 1;
         export function used_func(
           // this line is intentionally broken out
