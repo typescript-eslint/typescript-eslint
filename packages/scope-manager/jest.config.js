@@ -10,11 +10,11 @@ module.exports = {
   },
   testEnvironment: 'node',
   transform: {
-    [/^.+\.tsx?$/.source]: 'ts-jest',
+    ['^.+\\.tsx?$']: 'ts-jest',
   },
   testRegex: [
-    /.\/tests\/.+\.test\.ts$/.source,
-    /.\/tests\/eslint-scope\/[^/]+\.test\.ts$/.source,
+    './tests/.+\\.test\\.ts$',
+    './tests/eslint-scope/[^/]+\\.test\\.ts$',
   ],
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
