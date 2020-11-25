@@ -183,6 +183,7 @@ If these are provided, the identifier must start with one of the provided values
     - `global` - matches a variable/function declared in the top-level scope.
     - `exported` - matches anything that is exported from the module.
     - `unused` - matches anything that is not used.
+    - `requiresQuotes` - matches any name that requires quotes as it is not a valid identifier (i.e. has a space, a dash, etc in it).
     - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
     - `readonly`, `static`, `abstract`, `protected`, `private` - matches any member explicitly declared with the given modifier.
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
@@ -229,31 +230,31 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: `unused`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `typeProperty` - matches any object type property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `parameterProperty` - matches any parameter property.
   - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: none.
 - `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: none.
 - `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: none.
 - `accessor` - matches any accessor.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `enumMember` - matches any enum member.
-  - Allowed `modifiers`: none.
+  - Allowed `modifiers`: `requiresQuotes`.
   - Allowed `types`: none.
 - `class` - matches any class declaration.
   - Allowed `modifiers`: `abstract`, `exported`, `unused`.
@@ -276,22 +277,22 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
 Group Selectors are provided for convenience, and essentially bundle up sets of individual selectors.
 
 - `default` - matches everything.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: all modifiers.
   - Allowed `types`: none.
 - `variableLike` - matches the same as `variable`, `function` and `parameter`.
   - Allowed `modifiers`: `unused`.
   - Allowed `types`: none.
 - `memberLike` - matches the same as `property`, `parameterProperty`, `method`, `accessor`, `enumMember`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: none.
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
   - Allowed `modifiers`: `abstract`, `unused`.
   - Allowed `types`: none.
 - `property` - matches the same as `classProperty`, `objectLiteralProperty`, `typeProperty`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
   - Allowed `types`: none.
 
 ## Examples
@@ -424,12 +425,36 @@ This allows you to lint multiple type with same pattern.
 }
 ```
 
-### Ignore properties that require quotes
+### Ignore properties that **_require_** quotes
 
 Sometimes you have to use a quoted name that breaks the convention (for example, HTTP headers).
-If this is a common thing in your codebase, then you can use the `filter` option in one of two ways:
+If this is a common thing in your codebase, then you have a few options.
 
-You can use the `filter` option to ignore specific names only:
+If you simply want to allow all property names that require quotes, you can use the `requiresQuotes` modifier to match any property name that _requires_ quoting, and use `format: null` to ignore the name.
+
+```jsonc
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": [
+        "classProperty",
+        "objectLiteralProperty",
+        "typeProperty",
+        "classMethod",
+        "objectLiteralMethod",
+        "typeMethod",
+        "accessor",
+        "enumMember"
+      ],
+      "format": null,
+      "modifiers": ["requiresQuotes"]
+    }
+  ]
+}
+```
+
+If you have a small and known list of exceptions, you can use the `filter` option to ignore these specific names only:
 
 ```jsonc
 {
@@ -448,7 +473,7 @@ You can use the `filter` option to ignore specific names only:
 }
 ```
 
-You can use the `filter` option to ignore names that require quoting:
+You can use the `filter` option to ignore names with specific characters:
 
 ```jsonc
 {
@@ -466,6 +491,10 @@ You can use the `filter` option to ignore names that require quoting:
   ]
 }
 ```
+
+Note that there is no way to ignore any name that is quoted - only names that are required to be quoted.
+This is intentional - adding quotes around a name is not an escape hatch for proper naming.
+If you want an escape hatch for a specific name - you should can use an [`eslint-disable` comment](https://eslint.org/docs/user-guide/configuring#disabling-rules-with-inline-comments).
 
 ### Ignore destructured names
 

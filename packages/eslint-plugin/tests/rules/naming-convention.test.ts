@@ -1325,6 +1325,113 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['snake_case'],
+        },
+        {
+          selector: 'default',
+          format: null,
+          modifiers: ['requiresQuotes'],
+        },
+      ],
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['snake_case'],
+        },
+        {
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+          format: null,
+          modifiers: ['requiresQuotes'],
+        },
+        // making sure the `requoresQuotes` modifier appropriately overrides this
+        {
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+          format: ['PascalCase'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1999,6 +2106,49 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       errors: Array(7).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['snake_case'],
+        },
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+        },
+      ],
+      errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
 });

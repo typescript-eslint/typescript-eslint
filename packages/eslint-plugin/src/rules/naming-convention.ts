@@ -120,6 +120,8 @@ enum Modifiers {
   exported = 1 << 9,
   // things that are unused
   unused = 1 << 10,
+  // properties that require quoting
+  requiresQuotes = 1 << 11,
 }
 type ModifiersString = keyof typeof Modifiers;
 
@@ -359,6 +361,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'readonly',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('classProperty', true, [
         'private',
@@ -367,6 +370,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'readonly',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('objectLiteralProperty', true, [
         'private',
@@ -375,6 +379,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'readonly',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('typeProperty', true, [
         'private',
@@ -383,6 +388,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'readonly',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('parameterProperty', true, [
         'private',
@@ -397,6 +403,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'readonly',
         'abstract',
+        'requiresQuotes',
       ]),
 
       ...selectorSchema('classMethod', false, [
@@ -405,6 +412,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'static',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('objectLiteralMethod', false, [
         'private',
@@ -412,6 +420,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'static',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('typeMethod', false, [
         'private',
@@ -419,6 +428,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'static',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('method', false, [
         'private',
@@ -426,6 +436,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'static',
         'abstract',
+        'requiresQuotes',
       ]),
       ...selectorSchema('accessor', true, [
         'private',
@@ -433,8 +444,9 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'static',
         'abstract',
+        'requiresQuotes',
       ]),
-      ...selectorSchema('enumMember', false),
+      ...selectorSchema('enumMember', false, ['requiresQuotes']),
 
       ...selectorSchema('typeLike', false, ['abstract', 'exported', 'unused']),
       ...selectorSchema('class', false, ['abstract', 'exported', 'unused']),
@@ -516,6 +528,9 @@ export default util.createRule<Options, MessageIds>({
 
     const validators = parseOptions(context);
 
+    const compilerOptions = util
+      .getParserServices(context, true)
+      .program.getCompilerOptions();
     function handleMember(
       validator: ValidatorFunction | null,
       node:
@@ -533,6 +548,10 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const key = node.key;
+      if (requiresQuoting(key, compilerOptions.target)) {
+        modifiers.add(Modifiers.requiresQuotes);
+      }
+
       validator(key, modifiers);
     }
 
@@ -829,7 +848,13 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const id = node.id;
-        validator(id);
+        const modifiers = new Set<Modifiers>();
+
+        if (requiresQuoting(id, compilerOptions.target)) {
+          modifiers.add(Modifiers.requiresQuotes);
+        }
+
+        validator(id, modifiers);
       },
 
       // #endregion enumMember
@@ -1020,8 +1045,17 @@ function isGlobal(scope: TSESLint.Scope.Scope | null): boolean {
   );
 }
 
-type ValidatorFunction = (
+function requiresQuoting(
   node: TSESTree.Identifier | TSESTree.Literal,
+  target: ts.ScriptTarget | undefined,
+): boolean {
+  const name =
+    node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
+  return util.requiresQuoting(name, target);
+}
+
+type ValidatorFunction = (
+  node: TSESTree.Identifier | TSESTree.StringLiteral | TSESTree.NumberLiteral,
   modifiers?: Set<Modifiers>,
 ) => void;
 type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
