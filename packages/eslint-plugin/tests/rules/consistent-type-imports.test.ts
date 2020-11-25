@@ -225,6 +225,11 @@ ruleTester.run('consistent-type-imports', rule, {
         jsxFragmentName: 'Fragment',
       },
     },
+    `
+      import Default, * as Rest from 'module';
+      const a: typeof Default = Default;
+      const b: typeof Rest = Rest;
+    `,
   ],
   invalid: [
     {
@@ -362,11 +367,11 @@ ruleTester.run('consistent-type-imports', rule, {
       ],
     },
     {
-      code: noFormat`
+      code: `
         import * as A from 'foo';
         let foo: A.Foo;
       `,
-      output: noFormat`
+      output: `
         import type * as A from 'foo';
         let foo: A.Foo;
       `,
@@ -381,22 +386,21 @@ ruleTester.run('consistent-type-imports', rule, {
     {
       // default and named
       code: `
-        import A, { B } from 'foo';
-        let foo: A;
-        let bar: B;
+import A, { B } from 'foo';
+let foo: A;
+let bar: B;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { B } from 'foo';
+      output: `
+import type { B } from 'foo';
 import type A from 'foo';
-        let foo: A;
-        let bar: B;
+let foo: A;
+let bar: B;
       `,
       errors: [
         {
           messageId: 'typeOverValue',
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
@@ -405,7 +409,7 @@ import type A from 'foo';
         import A, {} from 'foo';
         let foo: A;
       `,
-      output: noFormat`
+      output: `
         import type A from 'foo';
         let foo: A;
       `,
@@ -419,110 +423,105 @@ import type A from 'foo';
     },
     {
       code: `
-        import { A, B } from 'foo';
-        const foo: A = B();
+import { A, B } from 'foo';
+const foo: A = B();
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: noFormat`
-        import type { A} from 'foo';
+import type { A} from 'foo';
 import { B } from 'foo';
-        const foo: A = B();
+const foo: A = B();
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"A"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: `
-        import { A, B, C } from 'foo';
-        const foo: A = B();
-        let bar: C;
+import { A, B, C } from 'foo';
+const foo: A = B();
+let bar: C;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { A, C } from 'foo';
+      output: `
+import type { A, C } from 'foo';
 import { B } from 'foo';
-        const foo: A = B();
-        let bar: C;
+const foo: A = B();
+let bar: C;
       `,
       errors: [
         {
           messageId: 'someImportsAreOnlyTypes',
           data: { typeImports: '"A" and "C"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: `
-        import { A, B, C, D } from 'foo';
-        const foo: A = B();
-        type T = { bar: C; baz: D };
+import { A, B, C, D } from 'foo';
+const foo: A = B();
+type T = { bar: C; baz: D };
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { A, C, D } from 'foo';
+      output: `
+import type { A, C, D } from 'foo';
 import { B } from 'foo';
-        const foo: A = B();
-        type T = { bar: C; baz: D };
+const foo: A = B();
+type T = { bar: C; baz: D };
       `,
       errors: [
         {
           messageId: 'someImportsAreOnlyTypes',
           data: { typeImports: '"A", "C" and "D"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: `
-        import A, { B, C, D } from 'foo';
-        B();
-        type T = { foo: A; bar: C; baz: D };
+import A, { B, C, D } from 'foo';
+B();
+type T = { foo: A; bar: C; baz: D };
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { C, D } from 'foo';
+      output: `
+import type { C, D } from 'foo';
 import type A from 'foo';
-import  { B } from 'foo';
-        B();
-        type T = { foo: A; bar: C; baz: D };
+import { B } from 'foo';
+B();
+type T = { foo: A; bar: C; baz: D };
       `,
       errors: [
         {
           messageId: 'someImportsAreOnlyTypes',
           data: { typeImports: '"A", "C" and "D"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: `
-        import A, { B } from 'foo';
-        B();
-        type T = A;
+import A, { B } from 'foo';
+B();
+type T = A;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type A from 'foo';
-import  { B } from 'foo';
-        B();
-        type T = A;
+      output: `
+import type A from 'foo';
+import { B } from 'foo';
+B();
+type T = A;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"A"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
@@ -560,198 +559,192 @@ import  { B } from 'foo';
     },
     {
       code: `
-        import A, { /* comment */ B } from 'foo';
-        type T = B;
+import A, { /* comment */ B } from 'foo';
+type T = B;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { /* comment */ B } from 'foo';
+      output: `
+import type { /* comment */ B } from 'foo';
 import A from 'foo';
-        type T = B;
+type T = B;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"B"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: noFormat`
-        import { A, B, C } from 'foo';
-        import { D, E, F, } from 'bar';
-        type T = A | D;
+import { A, B, C } from 'foo';
+import { D, E, F, } from 'bar';
+type T = A | D;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: noFormat`
-        import type { A} from 'foo';
+import type { A} from 'foo';
 import { B, C } from 'foo';
-        import type { D} from 'bar';
+import type { D} from 'bar';
 import { E, F, } from 'bar';
-        type T = A | D;
+type T = A | D;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"A"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"D"' },
           line: 3,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: noFormat`
-        import { A, B, C } from 'foo';
-        import { D, E, F, } from 'bar';
-        type T = B | E;
+import { A, B, C } from 'foo';
+import { D, E, F, } from 'bar';
+type T = B | E;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: noFormat`
-        import type { B} from 'foo';
+import type { B} from 'foo';
 import { A, C } from 'foo';
-        import type { E} from 'bar';
+import type { E} from 'bar';
 import { D, F, } from 'bar';
-        type T = B | E;
+type T = B | E;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"B"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"E"' },
           line: 3,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       code: noFormat`
-        import { A, B, C } from 'foo';
-        import { D, E, F, } from 'bar';
-        type T = C | F;
+import { A, B, C } from 'foo';
+import { D, E, F, } from 'bar';
+type T = C | F;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: noFormat`
-        import type { C } from 'foo';
+import type { C } from 'foo';
 import { A, B } from 'foo';
-        import type { F} from 'bar';
+import type { F} from 'bar';
 import { D, E } from 'bar';
-        type T = C | F;
+type T = C | F;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"C"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"F"' },
           line: 3,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       // all type fix cases
       code: `
-        import { Type1, Type2 } from 'named_types';
-        import Type from 'default_type';
-        import * as Types from 'namespace_type';
-        import Default, { Named } from 'default_and_named_type';
-        type T = Type1 | Type2 | Type | Types.A | Default | Named;
+import { Type1, Type2 } from 'named_types';
+import Type from 'default_type';
+import * as Types from 'namespace_type';
+import Default, { Named } from 'default_and_named_type';
+type T = Type1 | Type2 | Type | Types.A | Default | Named;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: noFormat`
-        import type { Type1, Type2 } from 'named_types';
-        import type Type from 'default_type';
-        import type * as Types from 'namespace_type';
-        import type { Named } from 'default_and_named_type';
+      output: `
+import type { Type1, Type2 } from 'named_types';
+import type Type from 'default_type';
+import type * as Types from 'namespace_type';
+import type { Named } from 'default_and_named_type';
 import type Default from 'default_and_named_type';
-        type T = Type1 | Type2 | Type | Types.A | Default | Named;
+type T = Type1 | Type2 | Type | Types.A | Default | Named;
       `,
       errors: [
         {
           messageId: 'typeOverValue',
           line: 2,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'typeOverValue',
           line: 3,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'typeOverValue',
           line: 4,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'typeOverValue',
           line: 5,
-          column: 9,
+          column: 1,
         },
       ],
     },
     {
       // some type fix cases
       code: `
-        import { Value1, Type1 } from 'named_import';
-        import Type2, { Value2 } from 'default_import';
-        import Value3, { Type3 } from 'default_import2';
-        import Type4, { Type5, Value4 } from 'default_and_named_import';
-        type T = Type1 | Type2 | Type3 | Type4 | Type5;
+import { Value1, Type1 } from 'named_import';
+import Type2, { Value2 } from 'default_import';
+import Value3, { Type3 } from 'default_import2';
+import Type4, { Type5, Value4 } from 'default_and_named_import';
+type T = Type1 | Type2 | Type3 | Type4 | Type5;
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: noFormat`
-        import type { Type1 } from 'named_import';
+import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
-        import type Type2 from 'default_import';
-import  { Value2 } from 'default_import';
-        import type { Type3 } from 'default_import2';
+import type Type2 from 'default_import';
+import { Value2 } from 'default_import';
+import type { Type3 } from 'default_import2';
 import Value3 from 'default_import2';
-        import type { Type5} from 'default_and_named_import';
+import type { Type5} from 'default_and_named_import';
 import type Type4 from 'default_and_named_import';
-import  { Value4 } from 'default_and_named_import';
-        type T = Type1 | Type2 | Type3 | Type4 | Type5;
+import { Value4 } from 'default_and_named_import';
+type T = Type1 | Type2 | Type3 | Type4 | Type5;
       `,
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"Type1"' },
           line: 2,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"Type2"' },
           line: 3,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"Type3"' },
           line: 4,
-          column: 9,
+          column: 1,
         },
         {
           messageId: 'someImportsAreOnlyTypes',
           data: { typeImports: '"Type4" and "Type5"' },
           line: 5,
-          column: 9,
+          column: 1,
         },
       ],
     },
@@ -795,8 +788,8 @@ import  { Value4 } from 'default_and_named_import';
         let foo: Foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  Foo from 'foo';
+      output: `
+        import Foo from 'foo';
         let foo: Foo;
       `,
       errors: [
@@ -813,8 +806,8 @@ import  { Value4 } from 'default_and_named_import';
         let foo: Foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  { Foo } from 'foo';
+      output: `
+        import { Foo } from 'foo';
         let foo: Foo;
       `,
       errors: [
@@ -897,8 +890,8 @@ import  { Value4 } from 'default_and_named_import';
         type T = typeof Type.foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  Type from 'foo';
+      output: `
+        import Type from 'foo';
 
         type T = typeof Type;
         type T = typeof Type.foo;
@@ -919,8 +912,8 @@ import  { Value4 } from 'default_and_named_import';
         type T = typeof Type.foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  { Type } from 'foo';
+      output: `
+        import { Type } from 'foo';
 
         type T = typeof Type;
         type T = typeof Type.foo;
@@ -941,8 +934,8 @@ import  { Value4 } from 'default_and_named_import';
         type T = typeof Type.foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  * as Type from 'foo';
+      output: `
+        import * as Type from 'foo';
 
         type T = typeof Type;
         type T = typeof Type.foo;
@@ -1022,8 +1015,8 @@ import  { Value4 } from 'default_and_named_import';
         export type { Type }; // is a type-only export
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  Type from 'foo';
+      output: `
+        import Type from 'foo';
 
         export { Type }; // is a type-only export
         export default Type; // is a type-only export
@@ -1046,8 +1039,8 @@ import  { Value4 } from 'default_and_named_import';
         export type { Type }; // is a type-only export
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  { Type } from 'foo';
+      output: `
+        import { Type } from 'foo';
 
         export { Type }; // is a type-only export
         export default Type; // is a type-only export
@@ -1070,8 +1063,8 @@ import  { Value4 } from 'default_and_named_import';
         export type { Type }; // is a type-only export
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
-        import  * as Type from 'foo';
+      output: `
+        import * as Type from 'foo';
 
         export { Type }; // is a type-only export
         export default Type; // is a type-only export
@@ -1082,6 +1075,143 @@ import  { Value4 } from 'default_and_named_import';
           messageId: 'valueOverType',
           line: 2,
           column: 9,
+        },
+      ],
+    },
+    {
+      // type with comments
+      code: noFormat`
+import type /*comment*/ * as AllType from 'foo';
+import type // comment
+DefType from 'foo';
+import type /*comment*/ { Type } from 'foo';
+
+type T = { a: AllType; b: DefType; c: Type };
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+      output: noFormat`
+import /*comment*/ * as AllType from 'foo';
+import // comment
+DefType from 'foo';
+import /*comment*/ { Type } from 'foo';
+
+type T = { a: AllType; b: DefType; c: Type };
+      `,
+      errors: [
+        {
+          messageId: 'valueOverType',
+          line: 2,
+          column: 1,
+        },
+        {
+          messageId: 'valueOverType',
+          line: 3,
+          column: 1,
+        },
+        {
+          messageId: 'valueOverType',
+          line: 5,
+          column: 1,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2775
+      code: `
+import Default, * as Rest from 'module';
+const a: Rest.A = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      output: `
+import type * as Rest from 'module';
+import Default from 'module';
+const a: Rest.A = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import Default, * as Rest from 'module';
+const a: Default = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      output: `
+import type Default from 'module';
+import * as Rest from 'module';
+const a: Default = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import Default, * as Rest from 'module';
+const a: Default = '';
+const b: Rest.A = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      output: `
+import type * as Rest from 'module';
+import type Default from 'module';
+const a: Default = '';
+const b: Rest.A = '';
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      // type with comments
+      code: `
+import Default, /*comment*/ * as Rest from 'module';
+const a: Default = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      output: `
+import type Default from 'module';
+import /*comment*/ * as Rest from 'module';
+const a: Default = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      // type with comments
+      code: noFormat`
+import Default /*comment1*/, /*comment2*/ { Data } from 'module';
+const a: Default = '';
+      `,
+      options: [{ prefer: 'type-imports' }],
+      output: noFormat`
+import type Default /*comment1*/ from 'module';
+import /*comment2*/ { Data } from 'module';
+const a: Default = '';
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
         },
       ],
     },
