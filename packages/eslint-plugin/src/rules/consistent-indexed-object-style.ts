@@ -101,10 +101,10 @@ export default createRule<Options, MessageIds>({
         fix(fixer) {
           const key = sourceCode.getText(keyType.typeAnnotation);
           const value = sourceCode.getText(valueType.typeAnnotation);
-          return fixer.replaceText(
-            node,
-            `${prefix}Record<${key}, ${value}>${postfix}`,
-          );
+          const record = member.readonly
+            ? `Readonly<Record<${key}, ${value}>>`
+            : `Record<${key}, ${value}>`;
+          return fixer.replaceText(node, `${prefix}${record}${postfix}`);
         },
       });
     }
