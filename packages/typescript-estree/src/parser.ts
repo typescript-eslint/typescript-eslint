@@ -12,7 +12,12 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
-import { ASTAndProgram, ensureAbsolutePath } from './create-program/shared';
+import {
+  ASTAndProgram,
+  CanonicalPath,
+  ensureAbsolutePath,
+  getCanonicalFileName,
+} from './create-program/shared';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -109,46 +114,53 @@ function resetExtra(): void {
   };
 }
 
+function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
+  return getCanonicalFileName(ensureAbsolutePath(tsconfigPath, extra));
+}
+
 /**
- * Normalizes, sanitizes, resolves and filters the provided
+ * Normalizes, sanitizes, resolves and filters the provided project paths
  */
 function prepareAndTransformProjects(
   projectsInput: string | string[] | undefined,
   ignoreListInput: string[],
-): string[] {
-  let projects: string[] = [];
+): CanonicalPath[] {
+  const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths
   if (typeof projectsInput === 'string') {
-    projects.push(projectsInput);
+    sanitizedProjects.push(projectsInput);
   } else if (Array.isArray(projectsInput)) {
     for (const project of projectsInput) {
       if (typeof project === 'string') {
-        projects.push(project);
+        sanitizedProjects.push(project);
       }
     }
   }
 
-  if (projects.length === 0) {
-    return projects;
+  if (sanitizedProjects.length === 0) {
+    return [];
   }
 
   // Transform glob patterns into paths
-  const globbedProjects = projects.filter(project => isGlob(project));
-  projects = projects
-    .filter(project => !isGlob(project))
-    .concat(
-      globSync([...globbedProjects, ...ignoreListInput], {
-        cwd: extra.tsconfigRootDir,
-      }),
-    );
+  const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
+  const globProjects = sanitizedProjects.filter(project => isGlob(project));
+  const uniqueCanonicalProjectPaths = new Set(
+    nonGlobProjects
+      .concat(
+        globSync([...globProjects, ...ignoreListInput], {
+          cwd: extra.tsconfigRootDir,
+        }),
+      )
+      .map(project => getTsconfigPath(project, extra)),
+  );
 
   log(
     'parserOptions.project (excluding ignored) matched projects: %s',
-    projects,
+    uniqueCanonicalProjectPaths,
   );
 
-  return projects;
+  return Array.from(uniqueCanonicalProjectPaths);
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
@@ -252,8 +264,9 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
-  const projectFolderIgnoreList = (options.projectFolderIgnoreList ?? [])
+  const projectFolderIgnoreList = (
+    options.projectFolderIgnoreList ?? ['**/node_modules/**']
+  )
     .reduce<string[]>((acc, folder) => {
       if (typeof folder === 'string') {
         acc.push(folder);
@@ -262,6 +275,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     }, [])
     // prefix with a ! for not match glob
     .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
   extra.projects = prepareAndTransformProjects(
     options.project,
     projectFolderIgnoreList,

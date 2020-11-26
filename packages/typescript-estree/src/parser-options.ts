@@ -1,6 +1,7 @@
 import { DebugLevel } from '@typescript-eslint/types';
 import { Program } from 'typescript';
 import { TSESTree, TSNode, TSESTreeToTSNode, TSToken } from './ts-estree';
+import { CanonicalPath } from './create-program/shared';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 
@@ -19,7 +20,7 @@ export interface Extra {
   loc: boolean;
   log: (message: string) => void;
   preserveNodeMaps?: boolean;
-  projects: string[];
+  projects: CanonicalPath[];
   range: boolean;
   strict: boolean;
   tokens: null | TSESTree.Token[];
