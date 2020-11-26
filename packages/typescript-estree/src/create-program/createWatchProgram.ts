@@ -9,7 +9,6 @@ import {
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
-  getTsconfigPath,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -197,9 +196,7 @@ function getProgramsForProjects(
    * - the required program hasn't been created yet, or
    * - the file is new/renamed, and the program hasn't been updated.
    */
-  for (const rawTsconfigPath of extra.projects) {
-    const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
-
+  for (const tsconfigPath of extra.projects) {
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
 
     if (existingWatch) {
