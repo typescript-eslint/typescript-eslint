@@ -1194,6 +1194,28 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        export function Foo(
+          { aName },
+          { anotherName = 1 },
+          { ignored: IgnoredDueToModifiers1 },
+          { ignored: IgnoredDueToModifiers1 = 2 },
+          IgnoredDueToModifiers2,
+        ) {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'parameter',
+          modifiers: ['destructured'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: `
         class Ignored {
           private static abstract readonly some_name = 1;
           IgnoredDueToModifiers = 1;
@@ -1965,9 +1987,10 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
         const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
+        const { ignored: IgnoredDueToModifiers1 } = {};
+        const { ignored: IgnoredDueToModifiers2 = 3 } = {};
+        const IgnoredDueToModifiers3 = 1;
       `,
       options: [
         {
@@ -1978,6 +2001,29 @@ ruleTester.run('naming-convention', rule, {
           selector: 'variable',
           format: ['UPPER_CASE'],
           modifiers: ['destructured'],
+        },
+      ],
+      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        export function Foo(
+          { aName },
+          { anotherName = 1 },
+          { ignored: IgnoredDueToModifiers1 },
+          { ignored: IgnoredDueToModifiers1 = 2 },
+          IgnoredDueToModifiers2,
+        ) {}
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'parameter',
+          modifiers: ['destructured'],
+          format: ['UPPER_CASE'],
         },
       ],
       errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),

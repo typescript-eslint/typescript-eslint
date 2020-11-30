@@ -192,31 +192,31 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: `global`, `exported`, `unused`.
   - Allowed `types`: none.
 - `parameter` - matches any function parameter. Does not match parameter properties.
-  - Allowed `modifiers`: `unused`.
+  - Allowed `modifiers`: `destructured`, `unused`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `public`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `typeProperty` - matches any object type property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `public`, `readonly`, `requiresQuotes`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `parameterProperty` - matches any parameter property.
   - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: none.
 - `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `public`, `requiresQuotes`.
   - Allowed `types`: none.
 - `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `public`, `requiresQuotes`.
   - Allowed `types`: none.
 - `accessor` - matches any accessor.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `enumMember` - matches any enum member.
   - Allowed `modifiers`: `requiresQuotes`.

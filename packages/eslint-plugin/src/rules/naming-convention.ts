@@ -174,6 +174,19 @@ export default util.createRule<Options, MessageIds>({
       return unusedVariables.has(variable);
     }
 
+    function isDestructured(id: TSESTree.Identifier): boolean {
+      return (
+        // `const { x }`
+        // does not match `const { x: y }`
+        (id.parent?.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
+        // `const { x = 2 }`
+        // does not match const `{ x: y = 2 }`
+        (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
+          id.parent.parent?.type === AST_NODE_TYPES.Property &&
+          id.parent.parent.shorthand)
+      );
+    }
+
     return {
       // #region variable
 
@@ -199,17 +212,7 @@ export default util.createRule<Options, MessageIds>({
         identifiers.forEach(id => {
           const modifiers = new Set(baseModifiers);
 
-          if (
-            // `const { x }`
-            // does not match `const { x: y }`
-            (id.parent?.type === AST_NODE_TYPES.Property &&
-              id.parent.shorthand) ||
-            // `const { x = 2 }`
-            // does not match const `{ x: y = 2 }`
-            (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
-              id.parent.parent?.type === AST_NODE_TYPES.Property &&
-              id.parent.parent.shorthand)
-          ) {
+          if (isDestructured(id)) {
             modifiers.add(Modifiers.destructured);
           }
 
@@ -284,6 +287,10 @@ export default util.createRule<Options, MessageIds>({
 
           identifiers.forEach(i => {
             const modifiers = new Set<Modifiers>();
+
+            if (isDestructured(i)) {
+              modifiers.add(Modifiers.destructured);
+            }
 
             if (isUnused(i.name)) {
               modifiers.add(Modifiers.unused);
