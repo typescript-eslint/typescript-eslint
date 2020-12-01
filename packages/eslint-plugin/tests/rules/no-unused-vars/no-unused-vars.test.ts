@@ -960,6 +960,8 @@ interface _Foo {
       // ignored by pattern, even though it's only self-referenced
       options: [{ varsIgnorePattern: '^_' }],
     },
+    // https://github.com/ocavue/typescript-eslint-issue-2831/blob/master/index.ts
+    'export const classes = [class C1 {}, class C2 {}, class C3 {}];',
   ],
 
   invalid: [

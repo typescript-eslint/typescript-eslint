@@ -153,6 +153,19 @@ class UnusedVarsVisitor<
     }
   }
 
+  private visitClass(
+    node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
+  ): void {
+    // skip a variable of class itself name in the class scope
+    const scope = this.getScope<TSESLint.Scope.Scopes.ClassScope>(node);
+    for (const variable of scope.variables) {
+      if (variable.identifiers[0] === scope.block.id) {
+        this.markVariableAsUsed(variable);
+        return;
+      }
+    }
+  }
+
   private visitFunction(
     node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
   ): void {
@@ -201,16 +214,9 @@ class UnusedVarsVisitor<
   //#region VISITORS
   // NOTE - This is a simple visitor - meaning it does not support selectors
 
-  protected ClassDeclaration(node: TSESTree.ClassDeclaration): void {
-    // skip a variable of class itself name in the class scope
-    const scope = this.getScope<TSESLint.Scope.Scopes.ClassScope>(node);
-    for (const variable of scope.variables) {
-      if (variable.identifiers[0] === scope.block.id) {
-        this.markVariableAsUsed(variable);
-        return;
-      }
-    }
-  }
+  protected ClassDeclaration = this.visitClass;
+
+  protected ClassExpression = this.visitClass;
 
   protected FunctionDeclaration = this.visitFunction;
 
