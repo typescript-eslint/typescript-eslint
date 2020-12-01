@@ -427,5 +427,24 @@ declare const Foo: {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2834
+    {
+      code: `
+interface MyInterface {
+  methodReturningImplicitAny();
+}
+      `,
+      output: `
+interface MyInterface {
+  methodReturningImplicitAny: () => any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'errorMethod',
+          line: 3,
+        },
+      ],
+    },
   ],
 });
