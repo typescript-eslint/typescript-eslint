@@ -82,7 +82,11 @@ export default util.createRule<Options, MessageIds>({
     function getMethodReturnType(
       node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
     ): string {
-      return sourceCode.getText(node.returnType!.typeAnnotation);
+      return node.returnType == null
+        ? // if the method has no return type, it implicitly has an `any` return type
+          // we just make it explicit here so we can do the fix
+          'any'
+        : sourceCode.getText(node.returnType.typeAnnotation);
     }
 
     function getDelimiter(node: TSESTree.Node): string {
@@ -149,16 +153,13 @@ export default util.createRule<Options, MessageIds>({
                   methodNode,
                   ...duplicatedKeyMethodNodes,
                 ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
-                const typeString = methodNodes.reduce(
-                  (str, node, idx, nodes) => {
+                const typeString = methodNodes
+                  .map(node => {
                     const params = getMethodParams(node);
                     const returnType = getMethodReturnType(node);
-                    return `${str}(${params} => ${returnType})${
-                      idx !== nodes.length - 1 ? ' & ' : ''
-                    }`;
-                  },
-                  '',
-                );
+                    return `(${params} => ${returnType})`;
+                  })
+                  .join(' & ');
                 const key = getMethodKey(methodNode);
                 const delimiter = getDelimiter(methodNode);
                 yield fixer.replaceText(
