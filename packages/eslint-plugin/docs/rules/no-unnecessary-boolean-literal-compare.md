@@ -8,6 +8,10 @@ This rule ensures that you do not include unnecessary comparisons with boolean l
 A comparison is considered unnecessary if it checks a boolean literal against any variable with just the `boolean` type.
 A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `someObject | boolean`).
 
+**Warning**: Do not use this rule when `strictNullChecks` is disabled.
+ESLint is not able to distinguish between `false` and `undefined` or `null` values.
+This can cause unintended code changes when using autofix.
+
 **Note**: Throughout this page, only strict equality (`===` and `!==`) are
 used in the examples. However, the implementation of the rule does not
 distinguish between strict and loose equality. Any example below that uses
