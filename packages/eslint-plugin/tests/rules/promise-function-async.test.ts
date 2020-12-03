@@ -191,6 +191,11 @@ const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpressionA = async function (p: Promise<void>) {
+  return p;
+};
+      `,
     },
     {
       code: `
@@ -203,6 +208,11 @@ const nonAsyncPromiseFunctionExpressionB = function () {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpressionB = async function () {
+  return new Promise<void>();
+};
+      `,
     },
     {
       code: `
@@ -215,6 +225,11 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
           messageId,
         },
       ],
+      output: `
+async function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
+  return p;
+}
+      `,
     },
     {
       code: `
@@ -227,6 +242,11 @@ function nonAsyncPromiseFunctionDeclarationB() {
           messageId,
         },
       ],
+      output: `
+async function nonAsyncPromiseFunctionDeclarationB() {
+  return new Promise<void>();
+}
+      `,
     },
     {
       code: `
@@ -237,6 +257,9 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseArrowFunctionA = async (p: Promise<void>) => p;
+      `,
     },
     {
       code: `
@@ -247,6 +270,9 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseArrowFunctionB = async () => new Promise<void>();
+      `,
     },
     {
       code: `
@@ -255,7 +281,7 @@ class Test {
     return p;
   }
 
-  public nonAsyncPromiseMethodB() {
+  public static nonAsyncPromiseMethodB() {
     return new Promise<void>();
   }
 }
@@ -270,6 +296,17 @@ class Test {
           messageId,
         },
       ],
+      output: `
+class Test {
+  public async nonAsyncPromiseMethodA(p: Promise<void>) {
+    return p;
+  }
+
+  public static async nonAsyncPromiseMethodB() {
+    return new Promise<void>();
+  }
+}
+      `,
     },
     {
       code: `
@@ -308,6 +345,23 @@ class Test {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
+  return p;
+};
+
+async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+
+class Test {
+  public async nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
     },
     {
       code: `
@@ -346,6 +400,23 @@ class Test {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
+  return p;
+};
+
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
+
+class Test {
+  public async nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
     },
     {
       code: `
@@ -384,6 +455,23 @@ class Test {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
+  return p;
+};
+
+async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
+
+class Test {
+  public async nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
     },
     {
       code: `
@@ -422,6 +510,23 @@ class Test {
           messageId,
         },
       ],
+      output: `
+const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
+  return p;
+};
+
+async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
+
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
     },
     {
       code: `
@@ -440,6 +545,11 @@ const returnAllowedType = () => new PromiseType();
           messageId,
         },
       ],
+      output: `
+class PromiseType {}
+
+const returnAllowedType = async () => new PromiseType();
+      `,
     },
     {
       code: `
@@ -461,6 +571,14 @@ function foo(): Promise<string> | SPromise<boolean> {
           messageId,
         },
       ],
+      output: `
+interface SPromise<T> extends Promise<T> {}
+async function foo(): Promise<string> | SPromise<boolean> {
+  return Math.random() > 0.5
+    ? Promise.resolve('value')
+    : Promise.resolve(false);
+}
+      `,
     },
   ],
 });

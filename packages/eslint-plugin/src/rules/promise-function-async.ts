@@ -3,6 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import * as ts from 'typescript';
 
 type Options = [
   {
@@ -20,6 +21,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         'Requires any function or method that returns a Promise to be marked async',
@@ -126,9 +128,25 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      if (
+        util.isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        // Report without auto fixer because the return type is unknown
+        return context.report({
+          messageId: 'missingAsync',
+          node,
+        });
+      }
+
       context.report({
         messageId: 'missingAsync',
         node,
+        fix: fixer => {
+          if (node.type === AST_NODE_TYPES.MethodDefinition) {
+            return fixer.insertTextBefore(node.key, 'async ');
+          }
+          return fixer.insertTextBefore(node, 'async ');
+        },
       });
     }
 
