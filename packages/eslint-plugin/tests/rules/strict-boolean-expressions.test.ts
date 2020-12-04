@@ -176,7 +176,7 @@ if (x) {
               output: '        while (false || ("a" !== "")) {}',
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: '        while (false || ("a".length > 0)) {}',
             },
             {
@@ -206,7 +206,7 @@ if (x) {
               output: noFormat`if ((('' !== "") && {}) || (0 && void 0)) { }`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: noFormat`if (((''.length > 0) && {}) || (0 && void 0)) { }`,
             },
             {
@@ -296,7 +296,7 @@ if (x) {
               output: `while ("" !== "") {}`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: `while ("".length > 0) {}`,
             },
             {
@@ -315,7 +315,7 @@ if (x) {
               output: `        for (; "foo" !== "";) {}`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: `        for (; "foo".length > 0;) {}`,
             },
             {
@@ -334,7 +334,7 @@ if (x) {
               output: `        declare const x: string; if (x !== "") {}`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: `        declare const x: string; if (x.length > 0) {}`,
             },
             {
@@ -353,7 +353,7 @@ if (x) {
               output: `        (x: string) => (x === "");`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: `        (x: string) => (x.length === 0);`,
             },
             {
@@ -372,7 +372,7 @@ if (x) {
               output: `        <T extends string>(x: T) => (x !== "") ? 1 : 0;`,
             },
             {
-              messageId: 'conditionFixCompareLength',
+              messageId: 'conditionFixCompareStringLength',
               output: `        <T extends string>(x: T) => (x.length > 0) ? 1 : 0;`,
             },
             {
@@ -566,7 +566,7 @@ if (x) {
           column: 37,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultEmptyString',
               output: 'declare const x: string | null; if (x ?? "") {}',
             },
             {
@@ -585,7 +585,7 @@ if (x) {
           column: 26,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultEmptyString',
               output: '        (x?: string) => !(x ?? "");',
             },
             {
@@ -604,7 +604,7 @@ if (x) {
           column: 56,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultEmptyString',
               output:
                 '        <T extends string | null | undefined>(x: T) => (x ?? "") ? 1 : 0;',
             },
@@ -637,7 +637,7 @@ if (x) {
           column: 37,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultZero',
               output: 'declare const x: number | null; if (x ?? 0) {}',
             },
             {
@@ -656,7 +656,7 @@ if (x) {
           column: 26,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultZero',
               output: '        (x?: number) => !(x ?? 0);',
             },
             {
@@ -675,7 +675,7 @@ if (x) {
           column: 56,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultFalsy',
+              messageId: 'conditionFixDefaultZero',
               output:
                 '        <T extends number | null | undefined>(x: T) => (x ?? 0) ? 1 : 0;',
             },

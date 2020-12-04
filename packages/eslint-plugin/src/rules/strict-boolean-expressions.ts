@@ -32,10 +32,11 @@ export type MessageId =
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject'
   | 'noStrictNullCheck'
-  | 'conditionFixDefaultFalsy'
+  | 'conditionFixDefaultEmptyString'
+  | 'conditionFixDefaultZero'
   | 'conditionFixCompareNullish'
   | 'conditionFixCastBoolean'
-  | 'conditionFixCompareLength'
+  | 'conditionFixCompareStringLength'
   | 'conditionFixCompareEmptyString'
   | 'conditionFixCompareZero'
   | 'conditionFixCompareNaN';
@@ -102,14 +103,19 @@ export default util.createRule<Options, MessageId>({
         'An explicit null check is required.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-      conditionFixDefaultFalsy:
-        'Explicitly treat nullish as falsy value via nullish coalescing',
-      conditionFixCompareNullish: 'Explicitly compare to null or undefined',
-      conditionFixCastBoolean: 'Explicitly cast to boolean',
-      conditionFixCompareLength: "Explicitly compare values's length to zero",
-      conditionFixCompareEmptyString: 'Explicitly compare to empty string',
-      conditionFixCompareZero: 'Explicitly compare to zero',
-      conditionFixCompareNaN: 'Explicitly check NaN',
+
+      conditionFixDefaultEmptyString:
+        'Treat lack of value the same as an empty string',
+      conditionFixDefaultZero: 'Treat lack of value the same as 0',
+      conditionFixCompareNullish:
+        'Change condition to check for null/undefined',
+      conditionFixCastBoolean: 'Explicitly cast value to a boolean',
+      conditionFixCompareStringLength:
+        "Change condition to check string's length",
+      conditionFixCompareEmptyString:
+        'Change condition to check for empty string',
+      conditionFixCompareZero: 'Change condition to check for 0',
+      conditionFixCompareNaN: 'Change condition to check for NaN',
     },
   },
   defaultOptions: [
@@ -332,7 +338,7 @@ export default util.createRule<Options, MessageId>({
                   }),
                 },
                 {
-                  messageId: 'conditionFixCompareLength',
+                  messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
                     node: node.parent!,
                     innerNode: node,
@@ -362,7 +368,7 @@ export default util.createRule<Options, MessageId>({
                   }),
                 },
                 {
-                  messageId: 'conditionFixCompareLength',
+                  messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code}.length > 0`,
@@ -391,7 +397,7 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultFalsy',
+                  messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} ?? ""`,
@@ -421,7 +427,7 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultFalsy',
+                  messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} ?? ""`,
@@ -526,7 +532,7 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultFalsy',
+                  messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} ?? 0`,
@@ -556,7 +562,7 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultFalsy',
+                  messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} ?? 0`,
