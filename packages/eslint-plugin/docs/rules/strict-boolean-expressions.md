@@ -155,6 +155,34 @@ You should be using `strictNullChecks` to ensure complete type-safety in your co
 
 If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
+## Fixes and suggestions
+
+This rule provides following fixes and suggestions for particular types in boolean context:
+
+- `boolean` - Always allowed - no fix needed.
+- `string` - (when `allowString` is `false`) - Provides following suggestions:
+  - Compare to empty string (`str` → `str !== ""`)
+  - Compare length (`str` → `str.length > 0`)
+  - Explicitly cast to boolean (`str` → `Boolean(str)`)
+- `number` - (when `allowNumber` is `false`) - Provides following suggestions:
+  - Compare to zero (`num` → `num !== 0`)
+  - Check NaN (`num` → `!Number.isNaN(num)`)
+  - Explicitly cast to boolean (`num` → `Boolean(num)`)
+- `object | null | undefined` - (when `allowNullableObject` is `false`) - Provides **autofix**:
+  - Compare to null or undefined (`maybeObj` → `maybeObj != null`)
+- `boolean | null | undefined` - Provides **autofix**:
+  - Explicitly treat nullish value the same as false (`maybeBool` → `maybeBool ?? false`)
+- `string | null | undefined` - Provides following suggestions:
+  - Explicitly treat nullish value the same as empty string (`maybeStr` → `maybeStr ?? ""`)
+  - Compare to null or undefined (`maybeStr` → `maybeStr != null`)
+  - Explicitly cast to boolean (`maybeStr` → `Boolean(maybeStr)`)
+- `number | null | undefined` - Provides following suggestions:
+  - Explicitly treat nullish value the same as zero (`maybeNum` → `maybeNum ?? 0`)
+  - Compare to null or undefined (`maybeNum` → `maybeNum != null`)
+  - Explicitly cast to boolean (`maybeNum` → `Boolean(maybeNum)`)
+- `any` and `unknown` - Provides following suggestions:
+  - Explicitly cast to boolean (`value` → `Boolean(value)`)
+
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
