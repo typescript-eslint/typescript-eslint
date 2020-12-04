@@ -248,9 +248,7 @@ export default util.createRule<Options, MessageId>({
             // we are wrapping something else than a simple variable or function call
             // the code we are adding might have stronger precedence than our wrapped node
             // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
-            if (!util.isParenthesized(innerNode, sourceCode)) {
-              code = `(${code})`;
-            }
+            code = `(${code})`;
           }
 
           // do the wrapping
@@ -267,7 +265,9 @@ export default util.createRule<Options, MessageId>({
             // the whole expression's parent is something else than condition of if/for/while
             // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
             // let's wrap the whole expression in parens just in case
-            code = `(${code})`;
+            if (!util.isParenthesized(node, sourceCode)) {
+              code = `(${code})`;
+            }
           }
 
           return fixer.replaceText(node, code);

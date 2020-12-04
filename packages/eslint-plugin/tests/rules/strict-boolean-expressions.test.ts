@@ -142,27 +142,27 @@ if (x) {
         { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: noFormat`
-        if (true && 1) {}
-        while (false || "a") {}
+        if (true && (1 + 1)) {}
+        while (false || "a" + "b") {}
         (x: object) => true || false || x ? true : false;
       `,
       errors: [
         {
           messageId: 'conditionErrorNumber',
           line: 2,
-          column: 13,
+          column: 14,
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: 'if (true && (1 !== 0)) {}',
+              output: 'if (true && ((1 + 1) !== 0)) {}',
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: 'if (true && (!Number.isNaN(1))) {}',
+              output: 'if (true && (!Number.isNaN((1 + 1)))) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'if (true && (Boolean(1))) {}',
+              output: 'if (true && (Boolean((1 + 1)))) {}',
             },
           ],
         },
@@ -173,15 +173,15 @@ if (x) {
           suggestions: [
             {
               messageId: 'conditionFixCompareEmptyString',
-              output: '        while (false || ("a" !== "")) {}',
+              output: '        while (false || (("a" + "b") !== "")) {}',
             },
             {
               messageId: 'conditionFixCompareStringLength',
-              output: '        while (false || ("a".length > 0)) {}',
+              output: '        while (false || (("a" + "b").length > 0)) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        while (false || (Boolean("a"))) {}',
+              output: '        while (false || (Boolean(("a" + "b")))) {}',
             },
           ],
         },
@@ -282,7 +282,7 @@ if (x) {
         while ("") {}
         for (; "foo";) {}
         declare const x: string; if (x) {}
-        (x: string) => !x;
+        (x: string) => (!x);
         <T extends string>(x: T) => x ? 1 : 0;
       `,
       errors: [
@@ -346,7 +346,7 @@ if (x) {
         {
           messageId: 'conditionErrorString',
           line: 5,
-          column: 25,
+          column: 26,
           suggestions: [
             {
               messageId: 'conditionFixCompareEmptyString',
@@ -392,7 +392,7 @@ if (x) {
         for (; 123;) {}
         declare const x: number; if (x) {}
         (x: bigint) => !x;
-        <T extends number>(x: T) => x ? 1 : 0;
+        <T extends number>(x: T) => (x) ? 1 : 0;
       `,
       errors: [
         {
@@ -478,7 +478,7 @@ if (x) {
         {
           messageId: 'conditionErrorNumber',
           line: 6,
-          column: 37,
+          column: 38,
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
