@@ -1,4 +1,5 @@
 import rule from '../../../src/rules/no-unused-vars';
+import { collectUnusedVariables } from '../../../src/util';
 import { noFormat, RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -8,6 +9,12 @@ const ruleTester = new RuleTester({
     ecmaFeatures: {},
   },
   parser: '@typescript-eslint/parser',
+});
+
+// this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
+ruleTester.defineRule('collect-unused-vars', context => {
+  collectUnusedVariables(context);
+  return {};
 });
 
 ruleTester.run('no-unused-vars', rule, {
@@ -960,8 +967,17 @@ interface _Foo {
       // ignored by pattern, even though it's only self-referenced
       options: [{ varsIgnorePattern: '^_' }],
     },
-    // https://github.com/ocavue/typescript-eslint-issue-2831/blob/master/index.ts
-    'export const classes = [class C1 {}, class C2 {}, class C3 {}];',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2844
+    `
+/* eslint collect-unused-vars: "error" */
+declare module 'next-auth' {
+  interface User {
+    id: string;
+    givenName: string;
+    familyName: string;
+  }
+}
+    `,
   ],
 
   invalid: [
