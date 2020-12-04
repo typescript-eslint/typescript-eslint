@@ -238,9 +238,17 @@ export default util.createRule<Options, MessageIds>({
           }
         }
 
-        if (!hasRestSpreadSibling(variable)) {
-          unusedVariablesReturn.push(variable);
+        if (hasRestSpreadSibling(variable)) {
+          continue;
         }
+
+        // in case another rule has run and used the collectUnusedVariables,
+        // we want to ensure our selectors that marked variables as used are respected
+        if (variable.eslintUsed) {
+          continue;
+        }
+
+        unusedVariablesReturn.push(variable);
       }
 
       return unusedVariablesReturn;
