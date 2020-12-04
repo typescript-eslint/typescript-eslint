@@ -1,15 +1,11 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
-import {
-  ReportFixFunction,
-  RuleFix,
-} from '@typescript-eslint/experimental-utils/src/ts-eslint';
-import { isParenthesized } from '../util';
 
 export type Options = [
   {
@@ -231,9 +227,9 @@ export default util.createRule<Options, MessageId>({
        */
       function getWrappingFixer(
         params: WrappingFixerParams,
-      ): ReportFixFunction {
+      ): TSESLint.ReportFixFunction {
         const { node, innerNode = node, wrap } = params;
-        return (fixer): RuleFix => {
+        return (fixer): TSESLint.RuleFix => {
           let code = sourceCode.getText(innerNode);
 
           // check the inner expression's precedence
@@ -246,7 +242,7 @@ export default util.createRule<Options, MessageId>({
             // we are wrapping something else than a simple variable or function call
             // the code we are adding might have stronger precedence than our wrapped node
             // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
-            if (!isParenthesized(innerNode, sourceCode)) {
+            if (!util.isParenthesized(innerNode, sourceCode)) {
               code = `(${code})`;
             }
           }
