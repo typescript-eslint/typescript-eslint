@@ -6,7 +6,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type Prefer = 'type-imports' | 'no-type-imports';
+type Prefer = 'type-imports' | 'no-type-imports' | 'type-imports-mixed';
 
 type Options = [
   {
@@ -67,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           prefer: {
-            enum: ['type-imports', 'no-type-imports'],
+            enum: ['type-imports', 'no-type-imports', 'type-imports-mixed'],
           },
           disallowTypeAnnotations: {
             type: 'boolean',
@@ -94,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
     const sourceImportsMap: { [key: string]: SourceImports } = {};
 
     return {
-      ...(prefer === 'type-imports'
+      ...(prefer !== 'no-type-imports'
         ? {
             // prefer type imports
             ImportDeclaration(node: TSESTree.ImportDeclaration): void {
@@ -157,7 +157,10 @@ export default util.createRule<Options, MessageIds>({
                 }
               }
 
-              if (typeSpecifiers.length) {
+              if (
+                typeSpecifiers.length &&
+                (prefer === 'type-imports' || valueSpecifiers.length === 0)
+              ) {
                 sourceImports.reportValueImports.push({
                   node,
                   typeSpecifiers,

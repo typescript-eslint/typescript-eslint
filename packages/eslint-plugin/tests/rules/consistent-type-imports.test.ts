@@ -109,6 +109,23 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    // type-imports-mixed
+    {
+      code: `
+        import { A, B } from 'foo';
+        const foo: A = B();
+      `,
+      options: [{ prefer: 'type-imports-mixed' }],
+    },
+    {
+      code: `
+        import type A from 'foo';
+        import B from 'foo';
+        let foo: A;
+        let bar = B;
+      `,
+      options: [{ prefer: 'type-imports-mixed' }],
+    },
     // exports
     `
       import Type from 'foo';
@@ -1210,6 +1227,26 @@ const a: Default = '';
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import { A, B } from 'foo';
+let foo: A;
+let bar: B;
+      `,
+      output: `
+import type { A, B } from 'foo';
+let foo: A;
+let bar: B;
+      `,
+      options: [{ prefer: 'type-imports-mixed' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
           line: 2,
           column: 1,
         },
