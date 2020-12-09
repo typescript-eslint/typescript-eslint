@@ -71,11 +71,11 @@ enum MetaSelectors {
   method = 0 |
     Selectors.classMethod |
     Selectors.objectLiteralMethod |
-    Selectors.typeProperty,
+    Selectors.typeMethod,
   property = 0 |
     Selectors.classProperty |
     Selectors.objectLiteralProperty |
-    Selectors.typeMethod,
+    Selectors.typeProperty,
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
