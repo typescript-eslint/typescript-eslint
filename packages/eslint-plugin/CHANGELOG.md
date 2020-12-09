@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [method-signature-style] fix crash with methods without a return type ([#2836](https://github.com/typescript-eslint/typescript-eslint/issues/2836)) ([fed89f2](https://github.com/typescript-eslint/typescript-eslint/commit/fed89f24ebe42a6412f0eb19949d5d4771656189)), closes [#2834](https://github.com/typescript-eslint/typescript-eslint/issues/2834)
+* **eslint-plugin:** [no-unused-vars] false-positive with class expressions ([#2833](https://github.com/typescript-eslint/typescript-eslint/issues/2833)) ([aadb39f](https://github.com/typescript-eslint/typescript-eslint/commit/aadb39f0ff500ee99ea80e9009ab61283ca9c8cd)), closes [#2831](https://github.com/typescript-eslint/typescript-eslint/issues/2831)
+* **eslint-plugin:** [no-unused-vars] fix race condition between naming-convention and no-unused-vars ([#2848](https://github.com/typescript-eslint/typescript-eslint/issues/2848)) ([ccb6b94](https://github.com/typescript-eslint/typescript-eslint/commit/ccb6b9499a4a4077f2e3d81d0844860a25244a0f)), closes [#2844](https://github.com/typescript-eslint/typescript-eslint/issues/2844)
+
+
+
+
+
 # [4.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.2...v4.9.0) (2020-11-30)
 
 
