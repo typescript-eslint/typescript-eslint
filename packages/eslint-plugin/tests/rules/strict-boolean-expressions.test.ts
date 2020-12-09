@@ -1,13 +1,13 @@
 import * as path from 'path';
 import rule, {
-  Options,
   MessageId,
+  Options,
 } from '../../src/rules/strict-boolean-expressions';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,
-  RuleTester,
   noFormat,
+  RuleTester,
 } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
@@ -172,12 +172,12 @@ if (x) {
           column: 25,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: '        while (false || (("a" + "b") !== "")) {}',
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: '        while (false || (("a" + "b").length > 0)) {}',
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '        while (false || (("a" + "b") !== "")) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -202,12 +202,12 @@ if (x) {
           column: 6,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: noFormat`if ((('' !== "") && {}) || (0 && void 0)) { }`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: noFormat`if (((''.length > 0) && {}) || (0 && void 0)) { }`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: noFormat`if ((('' !== "") && {}) || (0 && void 0)) { }`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -292,12 +292,12 @@ if (x) {
           column: 8,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `while ("" !== "") {}`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: `while ("".length > 0) {}`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `while ("" !== "") {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -311,12 +311,12 @@ if (x) {
           column: 16,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        for (; "foo" !== "";) {}`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: `        for (; "foo".length > 0;) {}`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `        for (; "foo" !== "";) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -330,12 +330,12 @@ if (x) {
           column: 38,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        declare const x: string; if (x !== "") {}`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: `        declare const x: string; if (x.length > 0) {}`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `        declare const x: string; if (x !== "") {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -349,12 +349,12 @@ if (x) {
           column: 26,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        (x: string) => (x === "");`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: `        (x: string) => (x.length === 0);`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `        (x: string) => (x === "");`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -368,12 +368,12 @@ if (x) {
           column: 37,
           suggestions: [
             {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        <T extends string>(x: T) => (x !== "") ? 1 : 0;`,
-            },
-            {
               messageId: 'conditionFixCompareStringLength',
               output: `        <T extends string>(x: T) => (x.length > 0) ? 1 : 0;`,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `        <T extends string>(x: T) => (x !== "") ? 1 : 0;`,
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -566,12 +566,12 @@ if (x) {
           column: 37,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: 'declare const x: string | null; if (x ?? "") {}',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output: 'declare const x: string | null; if (x != null) {}',
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: 'declare const x: string | null; if (x ?? "") {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -585,12 +585,12 @@ if (x) {
           column: 26,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: '        (x?: string) => !(x ?? "");',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output: '        (x?: string) => (x == null);',
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: '        (x?: string) => !(x ?? "");',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -604,14 +604,14 @@ if (x) {
           column: 56,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultEmptyString',
-              output:
-                '        <T extends string | null | undefined>(x: T) => (x ?? "") ? 1 : 0;',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output:
                 '        <T extends string | null | undefined>(x: T) => (x != null) ? 1 : 0;',
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output:
+                '        <T extends string | null | undefined>(x: T) => (x ?? "") ? 1 : 0;',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -637,12 +637,12 @@ if (x) {
           column: 37,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultZero',
-              output: 'declare const x: number | null; if (x ?? 0) {}',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output: 'declare const x: number | null; if (x != null) {}',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: 'declare const x: number | null; if (x ?? 0) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -656,12 +656,12 @@ if (x) {
           column: 26,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultZero',
-              output: '        (x?: number) => !(x ?? 0);',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output: '        (x?: number) => (x == null);',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: '        (x?: number) => !(x ?? 0);',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -675,14 +675,14 @@ if (x) {
           column: 56,
           suggestions: [
             {
-              messageId: 'conditionFixDefaultZero',
-              output:
-                '        <T extends number | null | undefined>(x: T) => (x ?? 0) ? 1 : 0;',
-            },
-            {
               messageId: 'conditionFixCompareNullish',
               output:
                 '        <T extends number | null | undefined>(x: T) => (x != null) ? 1 : 0;',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output:
+                '        <T extends number | null | undefined>(x: T) => (x ?? 0) ? 1 : 0;',
             },
             {
               messageId: 'conditionFixCastBoolean',

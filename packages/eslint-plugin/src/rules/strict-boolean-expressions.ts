@@ -1,10 +1,10 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 export type Options = [
@@ -105,8 +105,8 @@ export default util.createRule<Options, MessageId>({
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
       conditionFixDefaultEmptyString:
-        'Treat lack of value the same as an empty string',
-      conditionFixDefaultZero: 'Treat lack of value the same as 0',
+        'Explicitly treat nullish value the same as an empty string',
+      conditionFixDefaultZero: 'Explicitly treat nullish value the same as 0',
       conditionFixCompareNullish:
         'Change condition to check for null/undefined',
       conditionFixCastBoolean: 'Explicitly cast value to a boolean',
@@ -330,19 +330,19 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorString',
               suggest: [
                 {
-                  messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
-                    innerNode: node,
-                    wrap: code => `${code} === ""`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
                     node: node.parent!,
                     innerNode: node,
                     wrap: code => `${code}.length === 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareEmptyString',
+                  fix: getWrappingFixer({
+                    node: node.parent!,
+                    innerNode: node,
+                    wrap: code => `${code} === ""`,
                   }),
                 },
                 {
@@ -361,17 +361,17 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorString',
               suggest: [
                 {
-                  messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
-                    node,
-                    wrap: code => `${code} !== ""`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code}.length > 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareEmptyString',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} !== ""`,
                   }),
                 },
                 {
@@ -397,18 +397,18 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
-                    node,
-                    wrap: code => `${code} ?? ""`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
                     node: node.parent!,
                     innerNode: node,
                     wrap: code => `${code} == null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultEmptyString',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
@@ -427,17 +427,17 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
-                    node,
-                    wrap: code => `${code} ?? ""`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} != null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultEmptyString',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
@@ -532,18 +532,18 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
-                    node,
-                    wrap: code => `${code} ?? 0`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
                     node: node.parent!,
                     innerNode: node,
                     wrap: code => `${code} == null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultZero',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
@@ -562,17 +562,17 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
-                  messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
-                    node,
-                    wrap: code => `${code} ?? 0`,
-                  }),
-                },
-                {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
                     node,
                     wrap: code => `${code} != null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultZero',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {

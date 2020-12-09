@@ -161,27 +161,27 @@ This rule provides following fixes and suggestions for particular types in boole
 
 - `boolean` - Always allowed - no fix needed.
 - `string` - (when `allowString` is `false`) - Provides following suggestions:
-  - Compare to empty string (`str` → `str !== ""`)
-  - Compare length (`str` → `str.length > 0`)
-  - Explicitly cast to boolean (`str` → `Boolean(str)`)
+  - Change condition to check string's length (`str` → `str.length > 0`)
+  - Change condition to check for empty string (`str` → `str !== ""`)
+  - Explicitly cast value to a boolean (`str` → `Boolean(str)`)
 - `number` - (when `allowNumber` is `false`) - Provides following suggestions:
-  - Compare to zero (`num` → `num !== 0`)
-  - Check NaN (`num` → `!Number.isNaN(num)`)
-  - Explicitly cast to boolean (`num` → `Boolean(num)`)
+  - Change condition to check for 0 (`num` → `num !== 0`)
+  - Change condition to check for NaN (`num` → `!Number.isNaN(num)`)
+  - Explicitly cast value to a boolean (`num` → `Boolean(num)`)
 - `object | null | undefined` - (when `allowNullableObject` is `false`) - Provides **autofix**:
-  - Compare to null or undefined (`maybeObj` → `maybeObj != null`)
+  - Change condition to check for null/undefined (`maybeObj` → `maybeObj != null`)
 - `boolean | null | undefined` - Provides **autofix**:
   - Explicitly treat nullish value the same as false (`maybeBool` → `maybeBool ?? false`)
 - `string | null | undefined` - Provides following suggestions:
-  - Explicitly treat nullish value the same as empty string (`maybeStr` → `maybeStr ?? ""`)
-  - Compare to null or undefined (`maybeStr` → `maybeStr != null`)
-  - Explicitly cast to boolean (`maybeStr` → `Boolean(maybeStr)`)
+  - Change condition to check for null/undefined (`maybeStr` → `maybeStr != null`)
+  - Explicitly treat nullish value the same as an empty string (`maybeStr` → `maybeStr ?? ""`)
+  - Explicitly cast value to a boolean (`maybeStr` → `Boolean(maybeStr)`)
 - `number | null | undefined` - Provides following suggestions:
-  - Explicitly treat nullish value the same as zero (`maybeNum` → `maybeNum ?? 0`)
-  - Compare to null or undefined (`maybeNum` → `maybeNum != null`)
-  - Explicitly cast to boolean (`maybeNum` → `Boolean(maybeNum)`)
+  - Change condition to check for null/undefined (`maybeNum` → `maybeNum != null`)
+  - Explicitly treat nullish value the same as 0 (`maybeNum` → `maybeNum ?? 0`)
+  - Explicitly cast value to a boolean (`maybeNum` → `Boolean(maybeNum)`)
 - `any` and `unknown` - Provides following suggestions:
-  - Explicitly cast to boolean (`value` → `Boolean(value)`)
+  - Explicitly cast value to a boolean (`value` → `Boolean(value)`)
 
 ## Related To
 
