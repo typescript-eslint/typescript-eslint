@@ -119,6 +119,11 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      if (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
+        // Abstract method can't be async
+        return;
+      }
+
       if (
         node.parent &&
         (node.parent.type === AST_NODE_TYPES.Property ||

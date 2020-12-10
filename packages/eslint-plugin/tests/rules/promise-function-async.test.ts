@@ -144,6 +144,18 @@ function foo(): Promise<string> | boolean {
 }
       `,
     },
+    {
+      code: `
+abstract class Test {
+  abstract test1(): Promise<number>;
+
+  // abstract method with body is always an error but it still parses into valid AST
+  abstract test2(): Promise<number> {
+    return Promise.resolve(1);
+  }
+}
+      `,
+    },
   ],
   invalid: [
     {
