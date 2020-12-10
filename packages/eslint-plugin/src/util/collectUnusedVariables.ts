@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESLint,
   TSESTree,
+  ASTUtils,
 } from '@typescript-eslint/experimental-utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
@@ -549,7 +550,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
           break;
         }
 
-        if (util.isLoop(currentNode)) {
+        if (ASTUtils.isLoop(currentNode)) {
           return true;
         }
 
