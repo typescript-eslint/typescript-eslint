@@ -152,7 +152,9 @@ export default util.createRule<Options, MessageIds>({
         fix: fixer => {
           if (
             node.parent &&
-            node.parent.type === AST_NODE_TYPES.MethodDefinition
+            (node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+              (node.parent.type === AST_NODE_TYPES.Property &&
+                node.parent.method))
           ) {
             return fixer.insertTextBefore(node.parent.key, 'async ');
           }

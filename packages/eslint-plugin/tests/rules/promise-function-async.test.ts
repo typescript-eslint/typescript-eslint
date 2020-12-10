@@ -1,5 +1,5 @@
 import rule from '../../src/rules/promise-function-async';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const messageId = 'missingAsync';
@@ -284,6 +284,28 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
       ],
       output: `
 const nonAsyncPromiseArrowFunctionB = async () => new Promise<void>();
+      `,
+    },
+    {
+      code: `
+const functions = {
+  nonAsyncPromiseMethod() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId,
+        },
+      ],
+      output: `
+const functions = {
+  async nonAsyncPromiseMethod() {
+    return Promise.resolve(1);
+  },
+};
       `,
     },
     {
