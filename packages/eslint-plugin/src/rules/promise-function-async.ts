@@ -2,8 +2,8 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import * as util from '../util';
 import * as ts from 'typescript';
+import * as util from '../util';
 
 type Options = [
   {
@@ -91,14 +91,13 @@ export default util.createRule<Options, MessageIds>({
     ]);
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function validateNode(
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression
-        | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition,
+        | TSESTree.FunctionExpression,
     ): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const signatures = checker
@@ -116,6 +115,7 @@ export default util.createRule<Options, MessageIds>({
           allAllowedPromiseNames,
         )
       ) {
+        // Return type is not a promise
         return;
       }
 
@@ -125,6 +125,7 @@ export default util.createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
+        // Getters and setters can't be async
         return;
       }
 
@@ -135,15 +136,20 @@ export default util.createRule<Options, MessageIds>({
         return context.report({
           messageId: 'missingAsync',
           node,
+          loc: util.getFunctionHeadLoc(node, sourceCode),
         });
       }
 
       context.report({
         messageId: 'missingAsync',
         node,
+        loc: util.getFunctionHeadLoc(node, sourceCode),
         fix: fixer => {
-          if (node.type === AST_NODE_TYPES.MethodDefinition) {
-            return fixer.insertTextBefore(node.key, 'async ');
+          if (
+            node.parent &&
+            node.parent.type === AST_NODE_TYPES.MethodDefinition
+          ) {
+            return fixer.insertTextBefore(node.parent.key, 'async ');
           }
           return fixer.insertTextBefore(node, 'async ');
         },
@@ -170,13 +176,15 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (
           node.parent &&
-          'kind' in node.parent &&
+          node.parent.type === AST_NODE_TYPES.MethodDefinition &&
           node.parent.kind === 'method'
         ) {
           if (checkMethodDeclarations) {
-            validateNode(node.parent);
+            validateNode(node);
           }
-        } else if (checkFunctionExpressions) {
+          return;
+        }
+        if (checkFunctionExpressions) {
           validateNode(node);
         }
       },
