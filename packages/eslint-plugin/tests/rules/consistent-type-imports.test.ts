@@ -1358,7 +1358,7 @@ const a: Default = '';
         }
       `,
       output: noFormat`
-        import  Foo from 'foo';
+        import Foo from 'foo';
         @deco
         class A {
           constructor(foo: Foo) {}
@@ -1383,7 +1383,7 @@ const a: Default = '';
         }
       `,
       output: noFormat`
-        import  { Foo } from 'foo';
+        import { Foo } from 'foo';
         @deco
         class A {
           constructor(foo: Foo) {}
@@ -1438,7 +1438,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: `
+      output: noFormat`
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1466,7 +1466,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: `
+      output: noFormat`
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1493,7 +1493,7 @@ const a: Default = '';
         }
       `,
       output: noFormat`
-        import  * as Type from 'foo';
+        import * as Type from 'foo';
         @deco
         class A {
           constructor(foo: Type.Foo) {}
