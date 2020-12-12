@@ -3,7 +3,6 @@ import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 export * from './astUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
-export * from './getFunctionHeadLoc';
 export * from './isTypeReadonly';
 export * from './misc';
 export * from './nullThrows';
