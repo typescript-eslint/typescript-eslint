@@ -540,4 +540,103 @@ describe('References:', () => {
       }),
     );
   });
+
+  describe('When emitDecoratorMetadata is true', () => {
+    it('check type referenced by decorator metadata', () => {
+      const { scopeManager } = parseAndAnalyze(
+        `
+        @deco
+        class A {
+          property: Type1;
+          @deco
+          propertyWithDeco: a.Foo;
+
+          set foo(@deco a: SetterType) {}
+
+          constructor(foo: b.Foo) {}
+
+          foo1(@deco a: Type2) {}
+
+          @deco
+          foo2(a: Type3) {}
+
+          @deco
+          foo3(): Type4 {}
+
+          set ['a'](a: Type5) {}
+          set [0](a: Type6) {}
+          @deco
+          get a() {}
+          @deco
+          get [0]() {}
+        }
+
+        const keyName = 'foo';
+        class B {
+          constructor(@deco foo: c.Foo) {}
+
+          set [keyName](a: Type) {}
+          @deco
+          get [keyName]() {}
+        }
+      `,
+        {
+          emitDecoratorMetadata: true,
+        },
+      );
+
+      const classAScope = scopeManager.globalScope!.childScopes[0];
+      const propertyTypeRef = classAScope.references[2];
+      expect(propertyTypeRef.identifier.name).toBe('a');
+      expect(propertyTypeRef.isTypeReference).toBe(true);
+      expect(propertyTypeRef.isValueReference).toBe(true);
+
+      const setterParamTypeRef = classAScope.childScopes[0].references[0];
+      expect(setterParamTypeRef.identifier.name).toBe('SetterType');
+      expect(setterParamTypeRef.isTypeReference).toBe(true);
+      expect(setterParamTypeRef.isValueReference).toBe(false);
+
+      const funcParamTypeRef = classAScope.childScopes[1].references[0];
+      expect(funcParamTypeRef.identifier.name).toBe('b');
+      expect(funcParamTypeRef.isTypeReference).toBe(true);
+      expect(funcParamTypeRef.isValueReference).toBe(true);
+
+      const methodParamTypeRef = classAScope.childScopes[2].references[0];
+      expect(methodParamTypeRef.identifier.name).toBe('Type2');
+      expect(methodParamTypeRef.isTypeReference).toBe(true);
+      expect(methodParamTypeRef.isValueReference).toBe(true);
+
+      const methodParamTypeRef1 = classAScope.childScopes[3].references[0];
+      expect(methodParamTypeRef1.identifier.name).toBe('Type3');
+      expect(methodParamTypeRef1.isTypeReference).toBe(true);
+      expect(methodParamTypeRef1.isValueReference).toBe(true);
+
+      const methodReturnTypeRef = classAScope.childScopes[4].references[0];
+      expect(methodReturnTypeRef.identifier.name).toBe('Type4');
+      expect(methodReturnTypeRef.isTypeReference).toBe(true);
+      expect(methodReturnTypeRef.isValueReference).toBe(true);
+
+      const setterParamTypeRef1 = classAScope.childScopes[5].references[0];
+      expect(setterParamTypeRef1.identifier.name).toBe('Type5');
+      expect(setterParamTypeRef1.isTypeReference).toBe(true);
+      expect(setterParamTypeRef1.isValueReference).toBe(true);
+
+      const setterParamTypeRef2 = classAScope.childScopes[6].references[0];
+      expect(setterParamTypeRef2.identifier.name).toBe('Type6');
+      expect(setterParamTypeRef2.isTypeReference).toBe(true);
+      expect(setterParamTypeRef2.isValueReference).toBe(true);
+
+      const classBScope = scopeManager.globalScope!.childScopes[1];
+
+      const constructorParamTypeRef = classBScope.childScopes[0].references[0];
+      expect(constructorParamTypeRef.identifier.name).toBe('c');
+      expect(constructorParamTypeRef.isTypeReference).toBe(true);
+      expect(constructorParamTypeRef.isValueReference).toBe(true);
+
+      const setterParamTypeRef3 = classBScope.childScopes[1].references[0];
+      expect(setterParamTypeRef3.identifier.name).toBe('Type');
+      expect(setterParamTypeRef3.isTypeReference).toBe(true);
+      expect(setterParamTypeRef3.isValueReference).toBe(false);
+    });
+  });
 });

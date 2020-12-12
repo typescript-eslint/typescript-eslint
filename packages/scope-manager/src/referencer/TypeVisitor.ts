@@ -17,6 +17,15 @@ class TypeVisitor extends Visitor {
     typeReferencer.visit(node);
   }
 
+  static visitAndCheckEmit(
+    referencer: Referencer,
+    node: TSESTree.TSTypeAnnotation,
+    withDecorators?: boolean,
+  ): void {
+    const typeReferencer = new TypeVisitor(referencer);
+    typeReferencer.visitAndCheckDecoratorMetadata(node, withDecorators);
+  }
+
   ///////////////////
   // Visit helpers //
   ///////////////////
@@ -68,6 +77,128 @@ class TypeVisitor extends Visitor {
     }
     // computed members are treated as value references, and TS expects they have a literal type
     this.#referencer.visit(node.key);
+  }
+
+  /**
+   * check type is referenced by decorator metadata
+   */
+  protected visitAndCheckDecoratorMetadata(
+    node: TSESTree.TSTypeAnnotation,
+    withDecorators?: boolean,
+  ): void {
+    // emit decorators metadata only work for TSTypeReference
+    if (
+      node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+      this.#referencer.emitDecoratorMetadata
+    ) {
+      let identifier: TSESTree.Identifier;
+      if (
+        node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
+      ) {
+        let iter = node.typeAnnotation.typeName;
+        while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+          iter = iter.left;
+        }
+        identifier = iter.left;
+      } else {
+        identifier = node.typeAnnotation.typeName;
+      }
+      const scope = this.#referencer.currentScope();
+      /**
+       * class A {
+       *   @meta     // <--- check this
+       *   foo: Type;
+       * }
+       */
+      if (scope.type === ScopeType.class && withDecorators) {
+        return this.#referencer
+          .currentScope()
+          .referenceDualValueType(identifier);
+      }
+
+      const methodNode = this.#referencer.currentMethodNode();
+      // in method
+      if (scope.upper?.type === ScopeType.class && methodNode) {
+        /**
+         * class A {
+         *   @meta     // <--- check this
+         *   foo(a: Type) {}
+         *
+         *   @meta     // <--- check this
+         *   foo(): Type {}
+         * }
+         */
+        if (methodNode.decorators) {
+          return this.#referencer
+            .currentScope()
+            .referenceDualValueType(identifier);
+        }
+
+        /**
+         * class A {
+         *   foo(
+         *     @meta    // <--- check this
+         *     a: Type
+         *   ) {}
+         *
+         *   set foo(
+         *     @meta    // <--- EXCEPT this. TS do nothing for this
+         *     a: Type
+         *   ) {}
+         * }
+         */
+        if (withDecorators && methodNode.kind !== 'set') {
+          return this.#referencer
+            .currentScope()
+            .referenceDualValueType(identifier);
+        }
+
+        if (methodNode.kind === 'set') {
+          const keyName = getLiteralMethodKeyName(methodNode);
+          const classNode = scope.upper.block;
+
+          /**
+           * class A {
+           *   @meta      // <--- check this
+           *   get a() {}
+           *   set ['a'](v: Type) {}
+           * }
+           */
+          if (
+            keyName !== null &&
+            classNode.body.body.find(
+              (node): node is TSESTree.MethodDefinition =>
+                node !== methodNode &&
+                node.type === AST_NODE_TYPES.MethodDefinition &&
+                // Node must both be static or not
+                node.static === methodNode.static &&
+                getLiteralMethodKeyName(node) === keyName,
+            )?.decorators
+          ) {
+            return this.#referencer
+              .currentScope()
+              .referenceDualValueType(identifier);
+          }
+        }
+
+        /**
+         * @meta      // <--- check this
+         * class A {
+         *   constructor(a: Type) {}
+         * }
+         */
+        if (
+          methodNode.kind === 'constructor' &&
+          scope.upper.block.type === AST_NODE_TYPES.ClassDeclaration &&
+          scope.upper.block.decorators
+        ) {
+          return this.#referencer
+            .currentScope()
+            .referenceDualValueType(identifier);
+        }
+      }
+    }
+    this.visit(node);
   }
 
   /////////////////////
@@ -260,6 +391,47 @@ class TypeVisitor extends Visitor {
       this.#referencer.currentScope().referenceValue(expr);
     }
   }
+
+  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
+    // check
+    this.visitChildren(node);
+  }
+}
+
+/**
+ * Only if key is one of [identifier, string, number], ts will combine metadata of accessors .
+ * class A {
+ *   get a() {}
+ *   set ['a'](v: Type) {}
+ *
+ *   get [1]() {}
+ *   set [1](v: Type) {}
+ *
+ *   // Following won't be combined
+ *   get [key]() {}
+ *   set [key](v: Type) {}
+ *
+ *   get [true]() {}
+ *   set [true](v: Type) {}
+ *
+ *   get ['a'+'b']() {}
+ *   set ['a'+'b']() {}
+ * }
+ */
+function getLiteralMethodKeyName(
+  node: TSESTree.MethodDefinition,
+): string | number | null {
+  if (node.computed && node.key.type === AST_NODE_TYPES.Literal) {
+    if (
+      typeof node.key.value === 'string' ||
+      typeof node.key.value === 'number'
+    ) {
+      return node.key.value;
+    }
+  } else if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
+    return node.key.name;
+  }
+  return null;
 }
 
 export { TypeVisitor };

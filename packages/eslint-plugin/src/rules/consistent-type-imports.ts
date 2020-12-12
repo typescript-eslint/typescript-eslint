@@ -42,42 +42,6 @@ function isTypeToken(
   return token.type === AST_TOKEN_TYPES.Identifier && token.value === 'type';
 }
 
-/**
- * Only if key is one of [identifier, string, number], ts will combine metadata of accessors .
- * class A {
- *   get a() {}
- *   set ['a'](v: Type) {}
- *
- *   get [1]() {}
- *   set [1](v: Type) {}
- *
- *   // Following won't be combined
- *   get [key]() {}
- *   set [key](v: Type) {}
- *
- *   get [true]() {}
- *   set [true](v: Type) {}
- *
- *   get ['a'+'b']() {}
- *   set ['a'+'b']() {}
- * }
- */
-function getLiteralMethodKeyName(
-  node: TSESTree.MethodDefinition,
-): string | number | null {
-  if (node.computed && node.key.type === AST_NODE_TYPES.Literal) {
-    if (
-      typeof node.key.value === 'string' ||
-      typeof node.key.value === 'number'
-    ) {
-      return node.key.value;
-    }
-  } else if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
-    return node.key.name;
-  }
-  return null;
-}
-
 type MessageIds =
   | 'typeOverValue'
   | 'someImportsAreOnlyTypes'
@@ -135,9 +99,6 @@ export default util.createRule<Options, MessageIds>({
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
     const sourceCode = context.getSourceCode();
-    const emitDecoratorMetadata = util
-      .getParserServices(context, true)
-      .program.getCompilerOptions().emitDecoratorMetadata;
 
     const sourceImportsMap: { [key: string]: SourceImports } = {};
 
@@ -187,13 +148,20 @@ export default util.createRule<Options, MessageIds>({
                 } else {
                   const onlyHasTypeReferences = variable.references.every(
                     ref => {
-                      if (ref.isValueReference && ref.isTypeReference) {
-                        /**
-                         * keep origin import kind when export
-                         * export { Type }
-                         * export default Type;
-                         */
-                        return node.importKind === 'type';
+                      /**
+                       * keep origin import kind when export
+                       * export { Type }
+                       * export default Type;
+                       */
+                      if (
+                        ref.identifier.parent?.type ===
+                          AST_NODE_TYPES.ExportSpecifier ||
+                        ref.identifier.parent?.type ===
+                          AST_NODE_TYPES.ExportDefaultDeclaration
+                      ) {
+                        if (ref.isValueReference && ref.isTypeReference) {
+                          return node.importKind === 'type';
+                        }
                       }
                       if (ref.isValueReference) {
                         // `type T = typeof foo` will create a value reference because "foo" must be a value type
@@ -210,139 +178,6 @@ export default util.createRule<Options, MessageIds>({
                           parent = parent.parent;
                         }
                         return false;
-                      }
-
-                      // https://github.com/typescript-eslint/typescript-eslint/issues/2559#issuecomment-692882427
-                      if (emitDecoratorMetadata && ref.isTypeReference) {
-                        let parent = ref.identifier.parent;
-                        /**
-                         * import * as foo from 'foo';
-                         * foo.Foo    // <--- check this
-                         */
-                        if (parent?.type === AST_NODE_TYPES.TSQualifiedName) {
-                          parent = parent.parent;
-                        }
-                        if (parent) {
-                          if (
-                            parent.type === AST_NODE_TYPES.TSTypeReference &&
-                            parent.parent?.type ===
-                              AST_NODE_TYPES.TSTypeAnnotation
-                          ) {
-                            const annotationParent = parent.parent.parent;
-
-                            /**
-                             * class A {
-                             *   @meta     // <--- check this
-                             *   foo: Type;
-                             * }
-                             */
-                            if (
-                              annotationParent?.type ===
-                                AST_NODE_TYPES.ClassProperty &&
-                              annotationParent.decorators
-                            ) {
-                              return false;
-                            }
-
-                            let functionNode = annotationParent;
-                            if (
-                              annotationParent?.type ===
-                              AST_NODE_TYPES.Identifier
-                            ) {
-                              /**
-                               * TODO:
-                               *
-                               * I don't think this is valid, but there are no ts errors and no metadata emitted now.
-                               * https://github.com/microsoft/TypeScript/issues/41354
-                               *
-                               * class A {
-                               *   set foo(@meta a: Type) {}
-                               * }
-                               */
-
-                              /**
-                               * class A {
-                               *   foo(
-                               *     @meta    // <--- check this
-                               *     a: Type
-                               *   ) {}
-                               * }
-                               */
-                              if (annotationParent.decorators) {
-                                return false;
-                              }
-
-                              functionNode = annotationParent.parent;
-                            }
-
-                            if (
-                              functionNode?.type ===
-                                AST_NODE_TYPES.FunctionExpression &&
-                              functionNode.parent?.type ===
-                                AST_NODE_TYPES.MethodDefinition
-                            ) {
-                              const methodNode = functionNode.parent;
-                              /**
-                               * class A {
-                               *   @meta    // <--- check this
-                               *   foo(a: Type) {}
-                               *
-                               *   @meta    // <--- and this
-                               *   foo(): Type {}
-                               * }
-                               */
-                              if (methodNode.decorators) {
-                                return false;
-                              }
-
-                              if (methodNode.kind === 'set') {
-                                const keyName = getLiteralMethodKeyName(
-                                  methodNode,
-                                );
-
-                                /**
-                                 * class A {
-                                 *   @meta      // <--- check this
-                                 *   get a() {}
-                                 *   set ['a'](v: Type) {}
-                                 * }
-                                 */
-                                if (
-                                  keyName &&
-                                  methodNode.parent?.type ===
-                                    AST_NODE_TYPES.ClassBody &&
-                                  methodNode.parent.body.find(
-                                    (node): node is TSESTree.MethodDefinition =>
-                                      node.type ===
-                                        AST_NODE_TYPES.MethodDefinition &&
-                                      // Node must both be static or not
-                                      node.static === methodNode.static &&
-                                      getLiteralMethodKeyName(node) === keyName,
-                                  )?.decorators
-                                ) {
-                                  return false;
-                                }
-                              }
-
-                              /**
-                               * @meta      // <--- check this
-                               * class A {
-                               *   constructor(a: Type) {}
-                               * }
-                               */
-                              if (
-                                methodNode.kind === 'constructor' &&
-                                methodNode.parent?.type ===
-                                  AST_NODE_TYPES.ClassBody &&
-                                methodNode.parent.parent?.type ===
-                                  AST_NODE_TYPES.ClassDeclaration &&
-                                methodNode.parent.parent.decorators
-                              ) {
-                                return false;
-                              }
-                            }
-                          }
-                        }
                       }
 
                       return ref.isTypeReference;
