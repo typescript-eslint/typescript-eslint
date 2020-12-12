@@ -39,6 +39,18 @@ type Type = { value: string };
 declare const original: Type | number;
 const cast = original as Type;
     `,
+    `
+type T = string;
+declare const x: T | number;
+
+const y = x as NonNullable<T>;
+    `,
+    `
+type T = string | null;
+declare const x: T | number;
+
+const y = x as NonNullable<T>;
+    `,
   ],
 
   invalid: [
@@ -133,6 +145,48 @@ interface Interface {
 }
 declare const maybe: Interface | undefined;
 const bar = maybe!;
+      `,
+    },
+    {
+      code: `
+type T = string | null;
+declare const x: T;
+
+const y = x as NonNullable<T>;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+type T = string | null;
+declare const x: T;
+
+const y = x!;
+      `,
+    },
+    {
+      code: `
+type T = string | null | undefined;
+declare const x: T;
+
+const y = x as NonNullable<T>;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+type T = string | null | undefined;
+declare const x: T;
+
+const y = x!;
       `,
     },
   ],
