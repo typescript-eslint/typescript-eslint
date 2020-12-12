@@ -19,6 +19,9 @@ Next, create a `.eslintrc.js` config file in the root of your project, and popul
 ```js
 module.exports = {
   root: true,
+  env: {
+    node: true,
+  },
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',
