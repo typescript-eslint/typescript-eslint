@@ -134,6 +134,37 @@ function isInRange(
 }
 
 /**
+ * Decorators are transpiled such that the decorator is placed after the class declaration
+ * So it is considered safe
+ */
+function isClassRefInClassDecorator(
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
+): boolean {
+  if (variable.defs[0].type !== 'ClassName') {
+    return false;
+  }
+
+  if (
+    !variable.defs[0].node.decorators ||
+    variable.defs[0].node.decorators.length === 0
+  ) {
+    return false;
+  }
+
+  for (const deco of variable.defs[0].node.decorators) {
+    if (
+      reference.identifier.range[0] >= deco.range[0] &&
+      reference.identifier.range[1] <= deco.range[1]
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Checks whether or not a given reference is inside of the initializers of a given variable.
  *
  * @returns `true` in the following cases:
@@ -292,6 +323,7 @@ export default util.createRule<Options, MessageIds>({
           (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
             !isInInitializer(variable, reference)) ||
           !isForbidden(variable, reference) ||
+          isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
           return;

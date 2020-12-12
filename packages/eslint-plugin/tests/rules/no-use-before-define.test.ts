@@ -394,6 +394,40 @@ declare global {
   }
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2824
+    `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+    `,
+    {
+      code: `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+      `,
+      options: [
+        {
+          classes: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {

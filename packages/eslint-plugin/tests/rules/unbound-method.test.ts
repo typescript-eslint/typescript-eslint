@@ -25,6 +25,12 @@ class ContainsMethods {
 
 let instance = new ContainsMethods();
 
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  }
+};
+
 ${code}
   `;
 }
@@ -35,7 +41,7 @@ function addContainsMethodsClassInvalid(
     code: addContainsMethodsClass(c),
     errors: [
       {
-        line: 12,
+        line: 18,
         messageId: 'unbound',
       },
     ],
@@ -153,6 +159,8 @@ ruleTester.run('unbound-method', rule, {
       'if (!!instance.unbound) {}',
       'void instance.unbound',
       'delete instance.unbound',
+
+      'const { double } = arith;',
     ].map(addContainsMethodsClass),
     `
 interface RecordA {
@@ -300,15 +308,15 @@ function foo(arg: ContainsMethods | null) {
       `),
       errors: [
         {
-          line: 14,
+          line: 20,
           messageId: 'unbound',
         },
         {
-          line: 15,
+          line: 21,
           messageId: 'unbound',
         },
         {
-          line: 16,
+          line: 22,
           messageId: 'unbound',
         },
       ],

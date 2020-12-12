@@ -1,11 +1,12 @@
 import * as ts from 'typescript';
 
-// Workaround for
-// https://github.com/typescript-eslint/typescript-eslint/issues/2388
-// to support both TypeScript 3.9 & 4:
+// Workaround to support new TS version features for consumers on old TS versions
+// Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
 declare module 'typescript' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface NamedTupleMember extends ts.Node {}
+  export interface TemplateLiteralTypeNode extends ts.Node {}
+  /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 
 export type TSToken = ts.Token<ts.SyntaxKind>;

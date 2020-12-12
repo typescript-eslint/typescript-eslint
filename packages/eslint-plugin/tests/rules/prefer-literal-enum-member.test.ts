@@ -18,6 +18,11 @@ enum ValidString {
 }
     `,
     `
+enum ValidLiteral {
+  A = \`test\`,
+}
+    `,
+    `
 enum ValidNumber {
   A = 42,
 }
@@ -90,7 +95,7 @@ enum InvalidArray {
     {
       code: `
 enum InvalidTemplateLiteral {
-  A = \`a\`,
+  A = \`foo \${0}\`,
 }
       `,
       errors: [

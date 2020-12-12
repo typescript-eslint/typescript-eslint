@@ -450,6 +450,10 @@ export default createRule<Options, MessageId>({
           // Not a callable function
           return;
         }
+        // Predicate is always necessary if it involves `any` or `unknown`
+        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
+          return;
+        }
         if (!returnTypes.some(isPossiblyFalsy)) {
           return context.report({
             node: callback,
