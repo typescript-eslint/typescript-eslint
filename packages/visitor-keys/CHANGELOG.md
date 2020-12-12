@@ -3,6 +3,113 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.2...v4.9.0) (2020-11-30)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+## [4.8.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.1...v4.8.2) (2020-11-23)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+## [4.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.0...v4.8.1) (2020-11-17)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.7.0...v4.8.0) (2020-11-16)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.1...v4.7.0) (2020-11-09)
+
+
+### Features
+
+* support TS4.1 features ([#2748](https://github.com/typescript-eslint/typescript-eslint/issues/2748)) ([2be354b](https://github.com/typescript-eslint/typescript-eslint/commit/2be354bb15f9013a2da1b13a0c0836e9ef057e16)), closes [#2583](https://github.com/typescript-eslint/typescript-eslint/issues/2583)
+
+
+
+
+
+## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.1...v4.5.0) (2020-10-19)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+## [4.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.0...v4.4.1) (2020-10-12)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.3.0...v4.4.0) (2020-10-05)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.2.0...v4.3.0) (2020-09-28)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [4.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.1...v4.2.0) (2020-09-21)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
 ## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
 
 **Note:** Version bump only for package @typescript-eslint/visitor-keys

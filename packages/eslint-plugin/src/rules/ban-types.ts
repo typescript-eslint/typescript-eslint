@@ -28,7 +28,7 @@ function removeSpaces(str: string): string {
   return str.replace(/ /g, '');
 }
 
-function stringifyTypeName(
+function stringifyNode(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): string {
@@ -93,6 +93,7 @@ const defaultTypes: Types = {
       '`{}` actually means "any non-nullish value".',
       '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
+      '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
   },
   object: {
@@ -175,7 +176,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkBannedTypes(
       typeNode: TSESTree.Node,
-      name = stringifyTypeName(typeNode, context.getSourceCode()),
+      name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
       const bannedType = bannedTypes.get(name);
 
@@ -223,8 +224,17 @@ export default util.createRule<Options, MessageIds>({
 
         checkBannedTypes(node);
       },
-      TSTypeReference({ typeName }): void {
-        checkBannedTypes(typeName);
+      TSTupleType(node): void {
+        if (node.elementTypes.length === 0) {
+          checkBannedTypes(node);
+        }
+      },
+      TSTypeReference(node): void {
+        checkBannedTypes(node.typeName);
+
+        if (node.typeParameters) {
+          checkBannedTypes(node);
+        }
       },
     };
   },

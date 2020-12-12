@@ -75,6 +75,18 @@ x['priv_prop'] = 123;
       `,
       options: [{ allowPrivateClassPropertyAccess: true }],
     },
+
+    {
+      code: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+      `,
+      options: [{ allowProtectedClassPropertyAccess: true }],
+    },
   ],
   invalid: [
     {
@@ -254,6 +266,26 @@ x.pub_prop = 123;
       output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'if' } }],
+    },
+    {
+      code: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+      `,
+      options: [{ allowProtectedClassPropertyAccess: false }],
+      output: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x.protected_prop = 123;
+      `,
+      errors: [{ messageId: 'useDot' }],
     },
   ],
 });

@@ -1,5 +1,6 @@
-import rule from '../../src/rules/no-unused-vars';
-import { RuleTester } from '../RuleTester';
+import rule from '../../../src/rules/no-unused-vars';
+import { collectUnusedVariables } from '../../../src/util';
+import { noFormat, RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -8,6 +9,12 @@ const ruleTester = new RuleTester({
     ecmaFeatures: {},
   },
   parser: '@typescript-eslint/parser',
+});
+
+// this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
+ruleTester.defineRule('collect-unused-vars', context => {
+  collectUnusedVariables(context);
+  return {};
 });
 
 ruleTester.run('no-unused-vars', rule, {
@@ -384,6 +391,17 @@ type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
 export const map: { [name in Foo]: Bar } = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+    `,
+    // 4.1 remapped mapped type
+    noFormat`
+type Foo = 'a' | 'b' | 'c';
+type Bar = number;
+
+export const map: { [name in Foo as string]: Bar } = {
   a: 1,
   b: 2,
   c: 3,
@@ -886,6 +904,80 @@ export declare namespace Foo {
   }
 }
     `,
+    {
+      code: `
+declare namespace A {
+  export interface A {}
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare function A(A: string): string;
+      `,
+      filename: 'foo.d.ts',
+    },
+    // 4.1 template literal types
+    noFormat`
+type Color = 'red' | 'blue';
+type Quantity = 'one' | 'two';
+export type SeussFish = \`\${Quantity | Color} fish\`;
+    `,
+    noFormat`
+type VerticalAlignment = "top" | "middle" | "bottom";
+type HorizontalAlignment = "left" | "center" | "right";
+
+export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
+    `,
+    noFormat`
+type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
+export type HELLO = EnthusiasticGreeting<"heLLo">;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2714
+    {
+      code: `
+interface IItem {
+  title: string;
+  url: string;
+  children?: IItem[];
+}
+      `,
+      // unreported because it's in a decl file, even though it's only self-referenced
+      filename: 'foo.d.ts',
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2648
+    {
+      code: `
+namespace _Foo {
+  export const bar = 1;
+  export const baz = Foo.bar;
+}
+      `,
+      // ignored by pattern, even though it's only self-referenced
+      options: [{ varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+interface _Foo {
+  a: string;
+  b: Foo;
+}
+      `,
+      // ignored by pattern, even though it's only self-referenced
+      options: [{ varsIgnorePattern: '^_' }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2844
+    `
+/* eslint collect-unused-vars: "error" */
+declare module 'next-auth' {
+  interface User {
+    id: string;
+    givenName: string;
+    familyName: string;
+  }
+}
+    `,
   ],
 
   invalid: [
@@ -1335,8 +1427,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 2,
-          column: 11,
+          line: 4,
+          column: 15,
         },
       ],
     },
@@ -1367,8 +1459,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 3,
-          column: 13,
+          line: 5,
+          column: 17,
         },
       ],
     },
@@ -1383,7 +1475,7 @@ interface Foo {
       errors: [
         {
           messageId: 'unusedVar',
-          line: 2,
+          line: 4,
           data: {
             varName: 'Foo',
             action: 'defined',
@@ -1529,6 +1621,27 @@ export namespace Foo {
           data: {
             varName: 'x',
             action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: string;
+}
+interface Foo {
+  b: Foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 6,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
             additional: '',
           },
         },

@@ -60,10 +60,6 @@ function ensureAbsolutePath(p: string, extra: Extra): string {
     : path.join(extra.tsconfigRootDir || process.cwd(), p);
 }
 
-function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
-  return getCanonicalFileName(ensureAbsolutePath(tsconfigPath, extra));
-}
-
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
   return path.dirname(p) as CanonicalPath;
 }
@@ -105,5 +101,4 @@ export {
   ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
-  getTsconfigPath,
 };

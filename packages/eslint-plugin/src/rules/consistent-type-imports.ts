@@ -252,15 +252,16 @@ export default util.createRule<Options, MessageIds>({
           ? node.specifiers[0]
           : null;
       const namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null =
-        node.specifiers[0].type === AST_NODE_TYPES.ImportNamespaceSpecifier
-          ? node.specifiers[0]
-          : null;
+        node.specifiers.find(
+          (specifier): specifier is TSESTree.ImportNamespaceSpecifier =>
+            specifier.type === AST_NODE_TYPES.ImportNamespaceSpecifier,
+        ) ?? null;
       const namedSpecifiers: TSESTree.ImportSpecifier[] = node.specifiers.filter(
         (specifier): specifier is TSESTree.ImportSpecifier =>
           specifier.type === AST_NODE_TYPES.ImportSpecifier,
       );
 
-      if (namespaceSpecifier) {
+      if (namespaceSpecifier && !defaultSpecifier) {
         // e.g.
         // import * as types from 'foo'
         yield* fixToTypeImportByInsertType(fixer, node, false);
@@ -268,7 +269,8 @@ export default util.createRule<Options, MessageIds>({
       } else if (defaultSpecifier) {
         if (
           report.typeSpecifiers.includes(defaultSpecifier) &&
-          namedSpecifiers.length === 0
+          namedSpecifiers.length === 0 &&
+          !namespaceSpecifier
         ) {
           // e.g.
           // import Type from 'foo'
@@ -279,7 +281,8 @@ export default util.createRule<Options, MessageIds>({
         if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
-          )
+          ) &&
+          !namespaceSpecifier
         ) {
           // e.g.
           // import {Type1, Type2} from 'foo'
@@ -336,11 +339,40 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
+      const fixesRemoveTypeNamespaceSpecifier: TSESLint.RuleFix[] = [];
+      if (
+        namespaceSpecifier &&
+        report.typeSpecifiers.includes(namespaceSpecifier)
+      ) {
+        // e.g.
+        // import Foo, * as Type from 'foo'
+        // import DefType, * as Type from 'foo'
+        // import DefType, * as Type from 'foo'
+        const commaToken = util.nullThrows(
+          sourceCode.getTokenBefore(namespaceSpecifier, util.isCommaToken),
+          util.NullThrowsReasons.MissingToken(',', node.type),
+        );
+
+        // import Def, * as Ns from 'foo'
+        //           ^^^^^^^^^ remove
+        fixesRemoveTypeNamespaceSpecifier.push(
+          fixer.removeRange([commaToken.range[0], namespaceSpecifier.range[1]]),
+        );
+
+        // import type * as Ns from 'foo'
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ insert
+        yield fixer.insertTextBefore(
+          node,
+          `import type ${sourceCode.getText(
+            namespaceSpecifier,
+          )} from ${sourceCode.getText(node.source)};\n`,
+        );
+      }
       if (
         defaultSpecifier &&
         report.typeSpecifiers.includes(defaultSpecifier)
       ) {
-        if (typeNamedSpecifiers.length === namedSpecifiers.length) {
+        if (report.typeSpecifiers.length === node.specifiers.length) {
           const importToken = util.nullThrows(
             sourceCode.getFirstToken(node, isImportToken),
             util.NullThrowsReasons.MissingToken('import', node.type),
@@ -349,20 +381,36 @@ export default util.createRule<Options, MessageIds>({
           //        ^^^^ insert
           yield fixer.insertTextAfter(importToken, ' type');
         } else {
-          yield fixer.insertTextBefore(
-            node,
-            `import type ${sourceCode.getText(
-              defaultSpecifier,
-            )} from ${sourceCode.getText(node.source)};\n`,
+          const commaToken = util.nullThrows(
+            sourceCode.getTokenAfter(defaultSpecifier, util.isCommaToken),
+            util.NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
           );
           // import Type , {...} from 'foo'
-          //        ^^^^^^ remove
-          yield fixer.remove(defaultSpecifier);
-          yield fixer.remove(sourceCode.getTokenAfter(defaultSpecifier)!);
+          //        ^^^^^ pick
+          const defaultText = sourceCode.text
+            .slice(defaultSpecifier.range[0], commaToken.range[0])
+            .trim();
+          yield fixer.insertTextBefore(
+            node,
+            `import type ${defaultText} from ${sourceCode.getText(
+              node.source,
+            )};\n`,
+          );
+          const afterToken = util.nullThrows(
+            sourceCode.getTokenAfter(commaToken, { includeComments: true }),
+            util.NullThrowsReasons.MissingToken('any token', node.type),
+          );
+          // import Type , {...} from 'foo'
+          //        ^^^^^^^ remove
+          yield fixer.removeRange([
+            defaultSpecifier.range[0],
+            afterToken.range[0],
+          ]);
         }
       }
 
       yield* fixesNamedSpecifiers.removeTypeNamedSpecifiers;
+      yield* fixesRemoveTypeNamespaceSpecifier;
 
       yield* afterFixes;
 
@@ -376,6 +424,12 @@ export default util.createRule<Options, MessageIds>({
         typeNamedSpecifiersText: string;
         removeTypeNamedSpecifiers: TSESLint.RuleFix[];
       } {
+        if (allNamedSpecifiers.length === 0) {
+          return {
+            typeNamedSpecifiersText: '',
+            removeTypeNamedSpecifiers: [],
+          };
+        }
         const typeNamedSpecifiersTexts: string[] = [];
         const removeTypeNamedSpecifiers: TSESLint.RuleFix[] = [];
         if (typeNamedSpecifiers.length === allNamedSpecifiers.length) {
@@ -564,7 +618,11 @@ export default util.createRule<Options, MessageIds>({
         ),
         util.NullThrowsReasons.MissingToken('type', node.type),
       );
-      return fixer.remove(typeToken);
+      const afterToken = util.nullThrows(
+        sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+        util.NullThrowsReasons.MissingToken('any token', node.type),
+      );
+      return fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
     }
   },
 });

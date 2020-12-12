@@ -93,6 +93,37 @@ function isOuterVariable(
 }
 
 /**
+ * Recursively checks whether or not a given reference has a type query declaration among it's parents
+ */
+function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSTypeQuery:
+      return true;
+
+    case AST_NODE_TYPES.TSQualifiedName:
+    case AST_NODE_TYPES.Identifier:
+      if (!node.parent) {
+        return false;
+      }
+      return referenceContainsTypeQuery(node.parent);
+
+    default:
+      // if we find a different node, there's no chance that we're in a TSTypeQuery
+      return false;
+  }
+}
+
+/**
+ * Checks whether or not a given reference is a type reference.
+ */
+function isTypeReference(reference: TSESLint.Scope.Reference): boolean {
+  return (
+    reference.isTypeReference ||
+    referenceContainsTypeQuery(reference.identifier)
+  );
+}
+
+/**
  * Checks whether or not a given location is inside of the range of a given node.
  */
 function isInRange(
@@ -100,6 +131,37 @@ function isInRange(
   location: number,
 ): boolean {
   return !!node && node.range[0] <= location && location <= node.range[1];
+}
+
+/**
+ * Decorators are transpiled such that the decorator is placed after the class declaration
+ * So it is considered safe
+ */
+function isClassRefInClassDecorator(
+  variable: TSESLint.Scope.Variable,
+  reference: TSESLint.Scope.Reference,
+): boolean {
+  if (variable.defs[0].type !== 'ClassName') {
+    return false;
+  }
+
+  if (
+    !variable.defs[0].node.decorators ||
+    variable.defs[0].node.decorators.length === 0
+  ) {
+    return false;
+  }
+
+  for (const deco of variable.defs[0].node.decorators) {
+    if (
+      reference.identifier.range[0] >= deco.range[0] &&
+      reference.identifier.range[1] <= deco.range[1]
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -219,7 +281,7 @@ export default util.createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
-      if (reference.isTypeReference && options.ignoreTypeReferences) {
+      if (options.ignoreTypeReferences && isTypeReference(reference)) {
         return false;
       }
       if (isFunction(variable)) {
@@ -261,6 +323,7 @@ export default util.createRule<Options, MessageIds>({
           (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
             !isInInitializer(variable, reference)) ||
           !isForbidden(variable, reference) ||
+          isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
           return;

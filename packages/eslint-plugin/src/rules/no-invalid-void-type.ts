@@ -5,13 +5,16 @@ import {
 import * as util from '../util';
 
 interface Options {
-  allowInGenericTypeArguments: boolean | string[];
+  allowInGenericTypeArguments?: boolean | string[];
+  allowAsThisParameter?: boolean;
 }
 
 type MessageIds =
   | 'invalidVoidForGeneric'
   | 'invalidVoidNotReturnOrGeneric'
-  | 'invalidVoidNotReturn';
+  | 'invalidVoidNotReturn'
+  | 'invalidVoidNotReturnOrThisParam'
+  | 'invalidVoidNotReturnOrThisParamOrGeneric';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
@@ -29,6 +32,10 @@ export default util.createRule<[Options], MessageIds>({
       invalidVoidNotReturnOrGeneric:
         'void is only valid as a return type or generic type variable',
       invalidVoidNotReturn: 'void is only valid as a return type',
+      invalidVoidNotReturnOrThisParam:
+        'void is only valid as return type or type of `this` parameter',
+      invalidVoidNotReturnOrThisParamOrGeneric:
+        'void is only valid as a return type or generic type variable or the type of a `this` parameter',
     },
     schema: [
       {
@@ -44,13 +51,18 @@ export default util.createRule<[Options], MessageIds>({
               },
             ],
           },
+          allowAsThisParameter: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [{ allowInGenericTypeArguments: true }],
-  create(context, [{ allowInGenericTypeArguments }]) {
+  defaultOptions: [
+    { allowInGenericTypeArguments: true, allowAsThisParameter: false },
+  ],
+  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -110,7 +122,9 @@ export default util.createRule<[Options], MessageIds>({
 
       if (!allowInGenericTypeArguments) {
         context.report({
-          messageId: 'invalidVoidNotReturn',
+          messageId: allowAsThisParameter
+            ? 'invalidVoidNotReturnOrThisParam'
+            : 'invalidVoidNotReturn',
           node,
         });
       }
@@ -159,6 +173,16 @@ export default util.createRule<[Options], MessageIds>({
           return;
         }
 
+        // this parameter is ok to be void.
+        if (
+          allowAsThisParameter &&
+          node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
+          node.parent.parent.type === AST_NODE_TYPES.Identifier &&
+          node.parent.parent.name === 'this'
+        ) {
+          return;
+        }
+
         // default cases
         if (
           validParents.includes(node.parent.type) &&
@@ -168,9 +192,14 @@ export default util.createRule<[Options], MessageIds>({
         }
 
         context.report({
-          messageId: allowInGenericTypeArguments
-            ? 'invalidVoidNotReturnOrGeneric'
-            : 'invalidVoidNotReturn',
+          messageId:
+            allowInGenericTypeArguments && allowAsThisParameter
+              ? 'invalidVoidNotReturnOrThisParamOrGeneric'
+              : allowInGenericTypeArguments
+              ? 'invalidVoidNotReturnOrGeneric'
+              : allowAsThisParameter
+              ? 'invalidVoidNotReturnOrThisParam'
+              : 'invalidVoidNotReturn',
           node,
         });
       },

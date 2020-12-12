@@ -69,6 +69,8 @@ type Options = {
   allowTypedFunctionExpressions?: boolean;
   // if true, functions immediately returning another function expression will not be checked
   allowHigherOrderFunctions?: boolean;
+  // if true, arrow functions immediately returning a `as const` value will not be checked
+  allowDirectConstAssertionInArrowFunctions?: boolean;
   // if true, concise arrow functions that start with the void keyword will not be checked
   allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
 };
@@ -77,7 +79,8 @@ const defaults = {
   allowExpressions: false,
   allowTypedFunctionExpressions: true,
   allowHigherOrderFunctions: true,
-  allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+  allowDirectConstAssertionInArrowFunctions: true,
+  allowConciseArrowFunctionExpressionsStartingWithVoid: false,
 };
 ```
 
@@ -199,6 +202,22 @@ var arrowFn = () => (): void => {};
 function fn() {
   return function (): void {};
 }
+```
+
+### `allowDirectConstAssertionInArrowFunctions`
+
+Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+const func = (value: number) => ({ type: 'X', value } as any);
+const func = (value: number) => ({ type: 'X', value } as Action);
+```
+
+Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+```ts
+const func = (value: number) => ({ foo: 'bar', value } as const);
+const func = () => x as const;
 ```
 
 ### `allowConciseArrowFunctionExpressionsStartingWithVoid`

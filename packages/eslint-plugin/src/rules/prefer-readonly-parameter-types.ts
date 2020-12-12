@@ -7,6 +7,7 @@ import * as util from '../util';
 type Options = [
   {
     checkParameterProperties?: boolean;
+    ignoreInferredTypes?: boolean;
   },
 ];
 type MessageIds = 'shouldBeReadonly';
@@ -30,6 +31,9 @@ export default util.createRule<Options, MessageIds>({
           checkParameterProperties: {
             type: 'boolean',
           },
+          ignoreInferredTypes: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -40,9 +44,11 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       checkParameterProperties: true,
+      ignoreInferredTypes: false,
     },
   ],
-  create(context, [{ checkParameterProperties }]) {
+  create(context, options) {
+    const [{ checkParameterProperties, ignoreInferredTypes }] = options;
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 
@@ -81,6 +87,11 @@ export default util.createRule<Options, MessageIds>({
             param.type === AST_NODE_TYPES.TSParameterProperty
               ? param.parameter
               : param;
+
+          if (ignoreInferredTypes && actualParam.typeAnnotation == null) {
+            continue;
+          }
+
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
           const isReadOnly = util.isTypeReadonly(checker, type);

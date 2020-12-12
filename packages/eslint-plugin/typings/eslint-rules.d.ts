@@ -708,6 +708,7 @@ declare module 'eslint/lib/rules/dot-notation' {
         allowKeywords?: boolean;
         allowPattern?: string;
         allowPrivateClassPropertyAccess?: boolean;
+        allowProtectedClassPropertyAccess?: boolean;
       },
     ],
     {
@@ -728,4 +729,118 @@ declare module 'eslint/lib/rules/no-loss-of-precision' {
     }
   >;
   export = rule;
+}
+
+declare module 'eslint/lib/rules/comma-dangle' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  type StringOptions =
+    | 'always-multiline'
+    | 'always'
+    | 'never'
+    | 'only-multiline';
+  type Selectors =
+    | 'arrays'
+    | 'objects'
+    | 'imports'
+    | 'exports'
+    | 'functions'
+    | 'enums'
+    | 'generics'
+    | 'tuples';
+  type ObjectOptions = Partial<Record<Selectors, StringOptions | 'ignore'>>;
+
+  const rule: TSESLint.RuleModule<
+    'unexpected' | 'missing',
+    [StringOptions | ObjectOptions],
+    {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void;
+      TSTypeParameterDeclaration(
+        node: TSESTree.TSTypeParameterDeclaration,
+      ): void;
+      TSTupleType(node: TSESTree.TSTupleType): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-duplicate-imports' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'import'
+    | 'importAs'
+    | 'export'
+    | 'exportAs'
+    | 'importType'
+    | 'importTypeAs'
+    | 'exportType'
+    | 'exportTypeAs',
+    [
+      {
+        includeExports?: boolean;
+      },
+    ],
+    {
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
+      ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/space-infix-ops' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingSpace',
+    [
+      {
+        int32Hint?: boolean;
+      },
+    ],
+    {
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      AssignmentPattern(node: TSESTree.AssignmentPattern): void;
+      BinaryExpression(node: TSESTree.BinaryExpression): void;
+      LogicalExpression(node: TSESTree.LogicalExpression): void;
+      ConditionalExpression(node: TSESTree.ConditionalExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/prefer-const' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useConst',
+    [
+      {
+        destructuring?: 'any' | 'all';
+        ignoreReadBeforeAssign?: boolean;
+      },
+    ],
+    {
+      'Program:exit'(node: TSESTree.Program): void;
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/utils/ast-utils' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const utils: {
+    getNameLocationInGlobalDirectiveComment(
+      sourceCode: TSESLint.SourceCode,
+      comment: TSESTree.Comment,
+      name: string,
+    ): TSESTree.SourceLocation;
+  };
+
+  export = utils;
 }

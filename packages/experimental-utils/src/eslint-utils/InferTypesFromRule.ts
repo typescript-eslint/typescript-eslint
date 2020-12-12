@@ -1,25 +1,26 @@
-import { RuleModule } from '../ts-eslint';
+import { RuleCreateFunction, RuleModule } from '../ts-eslint';
 
-type InferOptionsTypeFromRuleNever<T> = T extends RuleModule<
-  never,
-  infer TOptions
->
-  ? TOptions
-  : unknown;
 /**
  * Uses type inference to fetch the TOptions type from the given RuleModule
  */
-type InferOptionsTypeFromRule<T> = T extends RuleModule<string, infer TOptions>
+type InferOptionsTypeFromRule<T> = T extends RuleModule<
+  infer _TMessageIds,
+  infer TOptions
+>
   ? TOptions
-  : InferOptionsTypeFromRuleNever<T>;
+  : T extends RuleCreateFunction<infer _TMessageIds, infer TOptions>
+  ? TOptions
+  : unknown;
 
 /**
  * Uses type inference to fetch the TMessageIds type from the given RuleModule
  */
 type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
   infer TMessageIds,
-  unknown[]
+  infer _TOptions
 >
+  ? TMessageIds
+  : T extends RuleCreateFunction<infer TMessageIds, infer _TOptions>
   ? TMessageIds
   : unknown;
 

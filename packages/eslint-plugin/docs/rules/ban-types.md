@@ -28,7 +28,7 @@ type Options = {
 The rule accepts a single object as options, with the following keys:
 
 - `types` - An object whose keys are the types you want to ban, and the values are error messages.
-  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), or the empty object literal (`{}`).
+  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
   - The values can be a string, which is the error message to be reported, `false` to specifically disable this type
     or it can be an object with the following properties:
     - `message: string` - the message to display when the type is matched.
@@ -46,7 +46,7 @@ Example configuration:
     {
       "types": {
         // add a custom message to help explain why not to use it
-        "Foo": "Don't use Far because it is unsafe",
+        "Foo": "Don't use Foo because it is unsafe",
 
         // add a custom message, AND tell the plugin how to fix it
         "String": {
@@ -74,6 +74,7 @@ The default options provide a set of "best practices", intended to provide safet
   - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
 - Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
   - This is a point of confusion for many developers, who think it means "any object type".
+  - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
 - Avoid the `object` type, as it is currently hard to use due to not being able to assert that keys exist.
   - See [microsoft/TypeScript#21732](https://github.com/microsoft/TypeScript/issues/21732).
 

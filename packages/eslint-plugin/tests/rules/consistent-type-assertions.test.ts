@@ -112,6 +112,20 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     },
+    {
+      code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -342,5 +356,24 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
+    {
+      code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'never',
+          line: 1,
+        },
+      ],
+    },
   ],
 });

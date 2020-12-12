@@ -299,6 +299,12 @@ export const dom = {
     isValueVariable: false,
     name: 'CredentialCreationOptions',
   },
+  CredentialPropertiesOutput: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'CredentialPropertiesOutput',
+  },
   CredentialRequestOptions: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1745,12 +1751,6 @@ export const dom = {
     isValueVariable: false,
     name: 'WorkletOptions',
   },
-  txAuthGenericArg: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'txAuthGenericArg',
-  },
   EventListener: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -2369,12 +2369,6 @@ export const dom = {
     isValueVariable: true,
     name: 'ConvolverNode',
   },
-  Coordinates: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Coordinates',
-  },
   CountQueuingStrategy: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -2906,8 +2900,26 @@ export const dom = {
   Geolocation: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'Geolocation',
+  },
+  GeolocationCoordinates: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'GeolocationCoordinates',
+  },
+  GeolocationPosition: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'GeolocationPosition',
+  },
+  GeolocationPositionError: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'GeolocationPositionError',
   },
   GlobalEventHandlersEventMap: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -3472,12 +3484,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'History',
-  },
-  HkdfCtrParams: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'HkdfCtrParams',
   },
   IDBArrayKey: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -4415,18 +4421,6 @@ export const dom = {
     isValueVariable: true,
     name: 'PopStateEvent',
   },
-  Position: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Position',
-  },
-  PositionError: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'PositionError',
-  },
   ProcessingInstruction: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -4724,7 +4718,7 @@ export const dom = {
   ReadableByteStreamController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableByteStreamController',
   },
   ReadableStream: {
@@ -4736,25 +4730,25 @@ export const dom = {
   ReadableStreamBYOBReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamBYOBReader',
   },
   ReadableStreamBYOBRequest: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamBYOBRequest',
   },
   ReadableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamDefaultController',
   },
   ReadableStreamDefaultReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'ReadableStreamDefaultReader',
   },
   ReadableStreamReader: {
@@ -5954,7 +5948,7 @@ export const dom = {
   TransformStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'TransformStreamDefaultController',
   },
   TransitionEvent: {
@@ -6374,13 +6368,13 @@ export const dom = {
   WritableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'WritableStreamDefaultController',
   },
   WritableStreamDefaultWriter: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: false,
+    isValueVariable: true,
     name: 'WritableStreamDefaultWriter',
   },
   XMLDocument: {
@@ -6850,24 +6844,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'COSEAlgorithmIdentifier',
-  },
-  AuthenticatorSelectionList: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AuthenticatorSelectionList',
-  },
-  AAGUID: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AAGUID',
-  },
-  AuthenticationExtensionsSupported: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AuthenticationExtensionsSupported',
   },
   UvmEntry: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7768,6 +7744,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RequestRedirect',
+  },
+  ResidentKeyRequirement: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ResidentKeyRequirement',
   },
   ResizeQuality: {
     eslintImplicitGlobalSetting: 'readonly',

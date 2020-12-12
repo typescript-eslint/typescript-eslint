@@ -219,7 +219,43 @@ type Foo = string | number;
       `,
       options: [{ typedefs: false }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2572
+    {
+      code: `
+interface Bar {
+  type: typeof Foo;
+}
 
+const Foo = 2;
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.FOO;
+}
+
+class Foo {
+  public static readonly FOO = '';
+}
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.Bar.Baz;
+}
+
+const Foo = {
+  Bar: {
+    Baz: 1,
+  },
+};
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/141
     {
       code: `
@@ -347,6 +383,51 @@ const React = require('react');
     `
 type T = (value: unknown) => value is Id;
     `,
+    `
+global.foo = true;
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      foo?: boolean;
+    }
+  }
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2824
+    `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+    `,
+    {
+      code: `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+      `,
+      options: [
+        {
+          classes: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -859,6 +940,65 @@ for (var a of a) {
         {
           messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+
+    // "ignoreTypeReferences" option
+    {
+      code: `
+interface Bar {
+  type: typeof Foo;
+}
+
+const Foo = 2;
+      `,
+      options: [{ ignoreTypeReferences: false }],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.FOO;
+}
+
+class Foo {
+  public static readonly FOO = '';
+}
+      `,
+      options: [{ ignoreTypeReferences: false }],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.Bar.Baz;
+}
+
+const Foo = {
+  Bar: {
+    Baz: 1,
+  },
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
           type: AST_NODE_TYPES.Identifier,
         },
       ],

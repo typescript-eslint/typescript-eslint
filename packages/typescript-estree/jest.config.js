@@ -3,12 +3,12 @@
 module.exports = {
   testEnvironment: 'node',
   transform: {
-    [/^.+\.tsx?$/.source]: 'ts-jest',
+    ['^.+\\.tsx?$']: 'ts-jest',
   },
   testRegex: [
-    /.\/tests\/lib\/.*\.ts$/.source,
-    /.\/tests\/ast-alignment\/spec\.ts$/.source,
-    /.\/tests\/[^\/]+\.test\.ts$/.source,
+    './tests/lib/.*\\.ts$',
+    './tests/ast-alignment/spec\\.ts$',
+    './tests/[^/]+\\.test\\.ts$',
   ],
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],

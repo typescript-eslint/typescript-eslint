@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration literal-type3 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"VerticalAlignment">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "VerticalAlignment",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"VerticalAlignment">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"HorizontalAlignment">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "HorizontalAlignment",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"HorizontalAlignment">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$3,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        FunctionNameDefinition$3 {
+          name: Identifier<"setAlignment">,
+          node: TSDeclareFunction$3,
+        },
+      ],
+      name: "setAlignment",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        ParameterDefinition$4 {
+          name: Identifier<"value">,
+          node: TSDeclareFunction$3,
+        },
+      ],
+      name: "value",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$4,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "VerticalAlignment" => Variable$2,
+        "HorizontalAlignment" => Variable$3,
+        "setAlignment" => Variable$4,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    FunctionScope$2 {
+      block: TSDeclareFunction$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "arguments" => Variable$5,
+        "value" => Variable$6,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$5,
+        Variable$6,
+      ],
+    },
+  ],
+}
+`;

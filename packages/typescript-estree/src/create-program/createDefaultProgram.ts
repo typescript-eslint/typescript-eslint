@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import {
   ASTAndProgram,
-  getTsconfigPath,
+  CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
 } from './shared';
 
@@ -27,7 +27,7 @@ function createDefaultProgram(
     return undefined;
   }
 
-  const tsconfigPath = getTsconfigPath(extra.projects[0], extra);
+  const tsconfigPath: CanonicalPath = extra.projects[0];
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,

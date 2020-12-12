@@ -238,6 +238,33 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       }
       function foo(arg: Readonly<Foo>) {}
     `,
+    `
+      const sym = Symbol('sym');
+
+      interface WithSymbol {
+        [sym]: number;
+      }
+
+      const willNotCrash = (foo: Readonly<WithSymbol>) => {};
+    `,
+    {
+      code: `
+        type Callback<T> = (options: T) => void;
+
+        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+
+        interface CallbackOptions {
+          prop: string;
+        }
+
+        acceptsCallback<CallbackOptions>(options => {});
+      `,
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -640,6 +667,51 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 8,
           column: 22,
           endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        const sym = Symbol('sym');
+
+        interface WithSymbol {
+          [sym]: number;
+        }
+
+        const willNot = (foo: WithSymbol) => {};
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 8,
+          column: 26,
+          endColumn: 41,
+        },
+      ],
+    },
+    {
+      code: `
+        type Callback<T> = (options: T) => void;
+
+        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+
+        interface CallbackOptions {
+          prop: string;
+        }
+
+        acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
+      `,
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 10,
+          column: 43,
+          endColumn: 67,
         },
       ],
     },

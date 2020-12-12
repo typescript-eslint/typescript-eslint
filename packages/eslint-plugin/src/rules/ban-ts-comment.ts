@@ -21,15 +21,15 @@ export default util.createRule<[Options], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Bans `// @ts-<directive>` comments from being used or requires descriptions after directive',
+        'Bans `@ts-<directive>` comments from being used or requires descriptions after directive',
       category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
       tsDirectiveComment:
-        'Do not use "// @ts-{{directive}}" because it alters compilation errors.',
+        'Do not use "@ts-{{directive}}" because it alters compilation errors.',
       tsDirectiveCommentRequiresDescription:
-        'Include a description after the "// @ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
+        'Include a description after the "@ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
     },
     schema: [
       {
@@ -98,7 +98,12 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
-    const tsCommentRegExp = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
+    /*
+      The regex used are taken from the ones used in the official TypeScript repo -
+      https://github.com/microsoft/TypeScript/blob/master/src/compiler/scanner.ts#L281-L289
+    */
+    const commentDirectiveRegExSingleLine = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
+    const commentDirectiveRegExMultiLine = /^\s*(?:\/|\*)*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();
 
     return {
@@ -106,12 +111,12 @@ export default util.createRule<[Options], MessageIds>({
         const comments = sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          if (comment.type !== AST_TOKEN_TYPES.Line) {
-            return;
-          }
+          let regExp = commentDirectiveRegExSingleLine;
 
-          const [, directive, description] =
-            tsCommentRegExp.exec(comment.value) ?? [];
+          if (comment.type !== AST_TOKEN_TYPES.Line) {
+            regExp = commentDirectiveRegExMultiLine;
+          }
+          const [, directive, description] = regExp.exec(comment.value) ?? [];
 
           const fullDirective = `ts-${directive}` as keyof Options;
 

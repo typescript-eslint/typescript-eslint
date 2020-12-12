@@ -125,6 +125,12 @@ export const dom_iterable = {
     isValueVariable: false,
     name: 'Headers',
   },
+  IDBDatabase: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'IDBDatabase',
+  },
   IDBObjectStore: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,

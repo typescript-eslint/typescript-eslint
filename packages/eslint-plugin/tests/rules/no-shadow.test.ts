@@ -11,6 +11,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-shadow TS tests', rule, {
   valid: [
+    // nested conditional types
+    `
+export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
+  ? T[]
+  : Func extends (...args: infer T) => any
+  ? T
+  : never;
+    `,
     `
 function foo() {
   var Object = 0;
@@ -107,6 +115,49 @@ type Fn = (Foo: string) => typeof Foo;
       globals: {
         Foo: 'writable',
       },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2724
+    {
+      code: `
+        declare global {
+          interface ArrayConstructor {}
+        }
+        export {};
+      `,
+      options: [{ builtinGlobals: true }],
+    },
+    `
+      declare global {
+        const a: string;
+
+        namespace Foo {
+          const a: number;
+        }
+      }
+      export {};
+    `,
+    {
+      code: `
+        declare global {
+          type A = 'foo';
+
+          namespace Foo {
+            type A = 'bar';
+          }
+        }
+        export {};
+      `,
+      options: [{ ignoreTypeValueShadow: false }],
+    },
+    {
+      code: `
+        declare global {
+          const foo: string;
+          type Fn = (foo: number) => void;
+        }
+        export {};
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
     },
   ],
   invalid: [

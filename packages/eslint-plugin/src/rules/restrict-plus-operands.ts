@@ -70,6 +70,11 @@ export default util.createRule<Options, MessageIds>({
         return types.every(value => value === types[0]) ? types[0] : 'invalid';
       }
 
+      if (type.isIntersection()) {
+        const types = type.types.map(getBaseTypeOfLiteralType);
+        return types.some(value => value === 'string') ? 'string' : 'invalid';
+      }
+
       const stringType = typeChecker.typeToString(type);
 
       if (

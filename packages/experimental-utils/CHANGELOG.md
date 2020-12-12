@@ -3,6 +3,119 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.2...v4.9.0) (2020-11-30)
+
+
+### Features
+
+* **eslint-plugin:** [no-unused-vars] fork the base rule ([#2768](https://github.com/typescript-eslint/typescript-eslint/issues/2768)) ([a8227a6](https://github.com/typescript-eslint/typescript-eslint/commit/a8227a6185dd24de4bfc7d766931643871155021)), closes [#2782](https://github.com/typescript-eslint/typescript-eslint/issues/2782) [#2714](https://github.com/typescript-eslint/typescript-eslint/issues/2714) [#2648](https://github.com/typescript-eslint/typescript-eslint/issues/2648)
+
+
+
+
+
+## [4.8.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.1...v4.8.2) (2020-11-23)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.0...v4.8.1) (2020-11-17)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.7.0...v4.8.0) (2020-11-16)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.1...v4.7.0) (2020-11-09)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.1...v4.5.0) (2020-10-19)
+
+
+### Features
+
+* **typescript-estree:** add flag EXPERIMENTAL_useSourceOfProjectReferenceRedirect ([#2669](https://github.com/typescript-eslint/typescript-eslint/issues/2669)) ([90a5878](https://github.com/typescript-eslint/typescript-eslint/commit/90a587845088da1b205e4d7d77dbc3f9447b1c5a))
+
+
+
+
+
+## [4.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.0...v4.4.1) (2020-10-12)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.3.0...v4.4.0) (2020-10-05)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.2.0...v4.3.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* **experimental-utils:** treat RuleTester arrays as readonly ([#2601](https://github.com/typescript-eslint/typescript-eslint/issues/2601)) ([8025777](https://github.com/typescript-eslint/typescript-eslint/commit/80257776b78bd2b2b4389d6bd530b009a75fb520))
+
+
+
+
+
+# [4.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.1...v4.2.0) (2020-09-21)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
 ## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
 
 

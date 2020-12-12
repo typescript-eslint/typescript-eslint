@@ -26,6 +26,7 @@ module.exports = {
     ],
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true,
   },
   rules: {
     //
@@ -218,6 +219,15 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/internal/plugin-test-formatting': 'error',
+      },
+    },
+    // files which list all the things
+    {
+      files: ['packages/eslint-plugin/src/rules/index.ts'],
+      rules: {
+        // enforce alphabetical ordering
+        'sort-keys': 'error',
+        'import/order': ['error', { alphabetize: { order: 'asc' } }],
       },
     },
     // tools and tests

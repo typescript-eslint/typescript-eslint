@@ -141,7 +141,15 @@ tester.addFixturePatternConfig('javascript/arrayLiteral');
 
 tester.addFixturePatternConfig('javascript/simple-literals');
 
-tester.addFixturePatternConfig('javascript/directives');
+tester.addFixturePatternConfig('javascript/directives', {
+  ignore: [
+    /**
+     * Babel errors on accessors:
+     * https://github.com/babel/babel/issues/12335
+     */
+    'directive-in-class',
+  ],
+});
 
 tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread');
 
@@ -202,6 +210,13 @@ tester.addFixturePatternConfig('javascript/classes', {
      * TS3.6 made computed constructors parse as actual constructors.
      */
     'class-two-methods-computed-constructor',
+    /**
+     * Babel errors on accessors:
+     * https://github.com/babel/babel/issues/12335
+     */
+    'class-accessor-properties',
+    'class-static-methods-and-accessor-properties',
+    'invalid-class-setter-declaration',
   ],
 });
 
@@ -272,7 +287,15 @@ tester.addFixturePatternConfig('javascript/modules', {
 tester.addFixturePatternConfig('javascript/newTarget');
 
 tester.addFixturePatternConfig('javascript/objectLiteral');
-tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties');
+tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties', {
+  ignore: [
+    /**
+     * Babel errors on accessors:
+     * https://github.com/babel/babel/issues/12335
+     */
+    'computed-getter-and-setter',
+  ],
+});
 
 tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
   ignore: [
@@ -403,6 +426,8 @@ tester.addFixturePatternConfig('typescript/basics', {
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * This is intentional; we don't error on semantic problems for these cases
      */
+    'class-with-constructor-and-type-parameters',
+    'class-with-two-methods-computed-constructor',
     'catch-clause-with-invalid-annotation',
     'export-type-star-from',
     'import-type-error',
@@ -411,6 +436,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * https://github.com/babel/babel/issues/11939
      */
     'catch-clause-with-annotation',
+    /**
+     * Babel errors on accessors:
+     * https://github.com/babel/babel/issues/12335
+     */
+    'object-with-typed-methods',
   ],
   ignoreSourceType: [
     /**
@@ -440,6 +470,16 @@ tester.addFixturePatternConfig('typescript/basics', {
 
 tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Babel errors on accessors:
+     * https://github.com/babel/babel/issues/12335
+     */
+    'accessor-decorator-factory-instance-member',
+    'accessor-decorator-factory-static-member',
+    'accessor-decorator-instance-member',
+    'accessor-decorator-static-member',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
@@ -498,6 +538,19 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
 
 tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * TS Template Literal Types
+     *
+     * Babel uses a representation much further from TS's representation.
+     * They produce TSTypeLiteral -> TemplateLiteral, and then force override the expression parser to parse types
+     * We instead just emit TSTemplateLiteralType.
+     */
+    'template-literal-type-1',
+    'template-literal-type-2',
+    'template-literal-type-3',
+    'template-literal-type-4',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/declare', {

@@ -1,4 +1,4 @@
-# Bans `// @ts-<directive>` comments from being used or requires descriptions after directive (`ban-ts-comment`)
+# Bans `@ts-<directive>` comments from being used or requires descriptions after directive (`ban-ts-comment`)
 
 TypeScript provides several directive comments that can be used to alter how it processes files.
 Using these to suppress TypeScript Compiler Errors reduces the effectiveness of TypeScript overall.
@@ -41,11 +41,17 @@ const defaultOptions: Options = {
 
 A value of `true` for a particular directive means that this rule will report if it finds any usage of said directive.
 
-For example, with the defaults above the following patterns are considered warnings:
+For example, with the defaults above the following patterns are considered warnings for single line or comment block lines:
 
 ```ts
 if (false) {
   // @ts-ignore: Unreachable code error
+  console.log('hello');
+}
+if (false) {
+  /*
+  @ts-ignore: Unreachable code error
+  */
   console.log('hello');
 }
 ```
@@ -63,20 +69,30 @@ if (false) {
 
 A value of `'allow-with-description'` for a particular directive means that this rule will report if it finds a directive that does not have a description following the directive (on the same line).
 
-For example, with `{ 'ts-expect-error': 'allow-with-description' }` the following pattern is considered a warning:
+For example, with `{ 'ts-expect-error': 'allow-with-description' }` the following patterns are considered a warning:
 
 ```ts
 if (false) {
   // @ts-expect-error
   console.log('hello');
 }
+if (false) {
+  /* @ts-expect-error */
+  console.log('hello');
+}
 ```
 
-The following pattern is not a warning:
+The following patterns are not a warning:
 
 ```ts
 if (false) {
   // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+if (false) {
+  /*
+  @ts-expect-error: Unreachable code error
+  */
   console.log('hello');
 }
 ```

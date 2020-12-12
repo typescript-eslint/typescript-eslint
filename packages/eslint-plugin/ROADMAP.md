@@ -96,7 +96,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-unused-variable`]               | 🌓  | [`@typescript-eslint/no-unused-vars`]                                                                     |
 | [`no-use-before-declare`]            | ✅  | [`@typescript-eslint/no-use-before-define`]                                                               |
 | [`no-var-keyword`]                   | 🌟  | [`no-var`][no-var]                                                                                        |
-| [`no-void-expression`]               | 🛑  | N/A (unrelated to the similarly named ESLint rule `no-void`)                                              |
+| [`no-void-expression`]               | ✅  | [`@typescript-eslint/no-confusing-void-expression`]                                                       |
 | [`prefer-conditional-expression`]    | 🛑  | N/A                                                                                                       |
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                                                            |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                                                          |
@@ -650,6 +650,8 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
 [`@typescript-eslint/no-magic-numbers`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-magic-numbers.md
 [`@typescript-eslint/no-unsafe-member-access`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-member-access.md
+[`@typescript-eslint/restrict-template-expressions`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-template-expressions.md
+[`@typescript-eslint/no-confusing-void-expression`]: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-confusing-void-expression.md
 
 <!-- eslint-plugin-import -->
 

@@ -12,7 +12,12 @@ import { createSourceFile } from './create-program/createSourceFile';
 import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { TSESTree } from './ts-estree';
-import { ASTAndProgram, ensureAbsolutePath } from './create-program/shared';
+import {
+  ASTAndProgram,
+  CanonicalPath,
+  ensureAbsolutePath,
+  getCanonicalFileName,
+} from './create-program/shared';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -20,12 +25,12 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.1.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.2.0';
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
  */
-const SUPPORTED_PRERELEASE_RANGES: string[] = [];
+const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.1.1-rc', '4.1.0-beta'];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -93,6 +98,7 @@ function resetExtra(): void {
     debugLevel: new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: false,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
     extraFileExtensions: [],
     filePath: getFileName(),
     jsx: false,
@@ -108,46 +114,53 @@ function resetExtra(): void {
   };
 }
 
+function getTsconfigPath(tsconfigPath: string, extra: Extra): CanonicalPath {
+  return getCanonicalFileName(ensureAbsolutePath(tsconfigPath, extra));
+}
+
 /**
- * Normalizes, sanitizes, resolves and filters the provided
+ * Normalizes, sanitizes, resolves and filters the provided project paths
  */
 function prepareAndTransformProjects(
   projectsInput: string | string[] | undefined,
   ignoreListInput: string[],
-): string[] {
-  let projects: string[] = [];
+): CanonicalPath[] {
+  const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths
   if (typeof projectsInput === 'string') {
-    projects.push(projectsInput);
+    sanitizedProjects.push(projectsInput);
   } else if (Array.isArray(projectsInput)) {
     for (const project of projectsInput) {
       if (typeof project === 'string') {
-        projects.push(project);
+        sanitizedProjects.push(project);
       }
     }
   }
 
-  if (projects.length === 0) {
-    return projects;
+  if (sanitizedProjects.length === 0) {
+    return [];
   }
 
   // Transform glob patterns into paths
-  const globbedProjects = projects.filter(project => isGlob(project));
-  projects = projects
-    .filter(project => !isGlob(project))
-    .concat(
-      globSync([...globbedProjects, ...ignoreListInput], {
-        cwd: extra.tsconfigRootDir,
-      }),
-    );
+  const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
+  const globProjects = sanitizedProjects.filter(project => isGlob(project));
+  const uniqueCanonicalProjectPaths = new Set(
+    nonGlobProjects
+      .concat(
+        globSync([...globProjects, ...ignoreListInput], {
+          cwd: extra.tsconfigRootDir,
+        }),
+      )
+      .map(project => getTsconfigPath(project, extra)),
+  );
 
   log(
     'parserOptions.project (excluding ignored) matched projects: %s',
-    projects,
+    uniqueCanonicalProjectPaths,
   );
 
-  return projects;
+  return Array.from(uniqueCanonicalProjectPaths);
 }
 
 function applyParserOptionsToExtra(options: TSESTreeOptions): void {
@@ -168,7 +181,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     if (
       extra.debugLevel.has('eslint') ||
       // make sure we don't turn off the eslint debug if it was enabled via --debug
-      debug.enabled('eslint:*')
+      debug.enabled('eslint:*,-eslint:code-path')
     ) {
       // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/bin/eslint.js#L25
       namespaces.push('eslint:*,-eslint:code-path');
@@ -251,8 +264,9 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
-  const projectFolderIgnoreList = (options.projectFolderIgnoreList ?? [])
+  const projectFolderIgnoreList = (
+    options.projectFolderIgnoreList ?? ['**/node_modules/**']
+  )
     .reduce<string[]>((acc, folder) => {
       if (typeof folder === 'string') {
         acc.push(folder);
@@ -261,6 +275,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     }, [])
     // prefix with a ! for not match glob
     .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
   extra.projects = prepareAndTransformProjects(
     options.project,
     projectFolderIgnoreList,
@@ -284,6 +299,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.createDefaultProgram =
     typeof options.createDefaultProgram === 'boolean' &&
     options.createDefaultProgram;
+
+  extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
+    typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
+      'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
 }
 
 function warnAboutTSVersion(): void {
@@ -316,11 +335,25 @@ interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
+interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
+  ast: AST<T>;
+  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
+  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
+}
 
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
+  const { ast } = parseWithNodeMapsInternal(code, options, false);
+  return ast;
+}
+
+function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
+  code: string,
+  options: T | undefined,
+  shouldPreserveNodeMaps: boolean,
+): ParseWithNodeMapsResult<T> {
   /**
    * Reset the parse configuration
    */
@@ -362,8 +395,20 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree } = astConverter(ast, extra, false);
-  return estree as AST<T>;
+  const { estree, astMaps } = astConverter(ast, extra, shouldPreserveNodeMaps);
+
+  return {
+    ast: estree as AST<T>,
+    esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+    tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
+  };
+}
+
+function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
+  code: string,
+  options?: T,
+): ParseWithNodeMapsResult<T> {
+  return parseWithNodeMapsInternal(code, options, true);
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
@@ -445,4 +490,11 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-export { AST, parse, parseAndGenerateServices, ParseAndGenerateServicesResult };
+export {
+  AST,
+  parse,
+  parseAndGenerateServices,
+  parseWithNodeMaps,
+  ParseAndGenerateServicesResult,
+  ParseWithNodeMapsResult,
+};

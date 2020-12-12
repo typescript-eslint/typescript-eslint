@@ -1,4 +1,4 @@
-# disallow `this` keywords outside of classes or class-like objects (`no-invalid-this`)
+# Disallow `this` keywords outside of classes or class-like objects (`no-invalid-this`)
 
 ## Rule Details
 
@@ -7,7 +7,7 @@ It adds support for TypeScript's `this` parameters.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-invalid-this": "off",

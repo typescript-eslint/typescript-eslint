@@ -3,6 +3,128 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.2...v4.9.0) (2020-11-30)
+
+
+### Bug Fixes
+
+* **typescript-estree:** add default value for `parserOptions.projectFolderIgnoreList` and deduplicate resolved projects ([#2819](https://github.com/typescript-eslint/typescript-eslint/issues/2819)) ([bf904ec](https://github.com/typescript-eslint/typescript-eslint/commit/bf904ec72db57174fec531f61e9427230662553e)), closes [#2418](https://github.com/typescript-eslint/typescript-eslint/issues/2418) [#2814](https://github.com/typescript-eslint/typescript-eslint/issues/2814)
+
+
+
+
+
+## [4.8.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.1...v4.8.2) (2020-11-23)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix type-only regression for consumers not yet on TS 4.1 ([#2789](https://github.com/typescript-eslint/typescript-eslint/issues/2789)) ([50a46c6](https://github.com/typescript-eslint/typescript-eslint/commit/50a46c60fb81d8434aa4268a13d17d8fcf499e21))
+
+
+
+
+
+## [4.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.8.0...v4.8.1) (2020-11-17)
+
+
+### Bug Fixes
+
+* **typescript-estree:** parseWithNodeMaps returning empty maps ([#2773](https://github.com/typescript-eslint/typescript-eslint/issues/2773)) ([3e4a0ed](https://github.com/typescript-eslint/typescript-eslint/commit/3e4a0ed0d615fd22a2f28c7c8af6179673e195f8))
+
+
+
+
+
+# [4.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.7.0...v4.8.0) (2020-11-16)
+
+
+### Features
+
+* **typescript-estree:** add `parseWithNodeMaps` API ([#2760](https://github.com/typescript-eslint/typescript-eslint/issues/2760)) ([9441d50](https://github.com/typescript-eslint/typescript-eslint/commit/9441d5030211f1c32f5ae8e61d5565cab8bb6823)), closes [#1852](https://github.com/typescript-eslint/typescript-eslint/issues/1852)
+
+
+
+
+
+# [4.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.1...v4.7.0) (2020-11-09)
+
+
+### Features
+
+* support TS4.1 features ([#2748](https://github.com/typescript-eslint/typescript-eslint/issues/2748)) ([2be354b](https://github.com/typescript-eslint/typescript-eslint/commit/2be354bb15f9013a2da1b13a0c0836e9ef057e16)), closes [#2583](https://github.com/typescript-eslint/typescript-eslint/issues/2583)
+
+
+
+
+
+## [4.6.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.6.0...v4.6.1) (2020-11-02)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.5.0...v4.6.0) (2020-10-26)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.1...v4.5.0) (2020-10-19)
+
+
+### Features
+
+* **typescript-estree:** add flag EXPERIMENTAL_useSourceOfProjectReferenceRedirect ([#2669](https://github.com/typescript-eslint/typescript-eslint/issues/2669)) ([90a5878](https://github.com/typescript-eslint/typescript-eslint/commit/90a587845088da1b205e4d7d77dbc3f9447b1c5a))
+
+
+
+
+
+## [4.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.4.0...v4.4.1) (2020-10-12)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.3.0...v4.4.0) (2020-10-05)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.2.0...v4.3.0) (2020-09-28)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [4.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.1...v4.2.0) (2020-09-21)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
 ## [4.1.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.1.0...v4.1.1) (2020-09-14)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

@@ -6,8 +6,9 @@ import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
+import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
-import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
+import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeImports from './consistent-type-imports';
@@ -27,25 +28,27 @@ import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noBaseToString from './no-base-to-string';
+import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
+import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
+import noDuplicateImports from './no-duplicate-imports';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
 import noExplicitAny from './no-explicit-any';
-import noImplicitAnyCatch from './no-implicit-any-catch';
-import noExtraneousClass from './no-extraneous-class';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
 import noExtraSemi from './no-extra-semi';
+import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
-import preferLiteralEnumMember from './prefer-literal-enum-member';
+import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
-import noLossOfPrecision from './no-loss-of-precision';
 import noLoopFunc from './no-loop-func';
+import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
@@ -64,6 +67,7 @@ import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
+import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
@@ -80,6 +84,7 @@ import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
+import preferLiteralEnumMember from './prefer-literal-enum-member';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
@@ -98,6 +103,7 @@ import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
 import spaceBeforeFunctionParen from './space-before-function-paren';
+import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
@@ -115,7 +121,9 @@ export default {
   'ban-types': banTypes,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
+  'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
+  'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-imports': consistentTypeImports,
@@ -125,6 +133,7 @@ export default {
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
   'func-call-spacing': funcCallSpacing,
+  indent: indent,
   'init-declarations': initDeclarations,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
@@ -135,7 +144,9 @@ export default {
   'no-array-constructor': noArrayConstructor,
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
+  'no-confusing-void-expression': noConfusingVoidExpression,
   'no-dupe-class-members': noDupeClassMembers,
+  'no-duplicate-imports': noDuplicateImports,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
@@ -171,13 +182,14 @@ export default {
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
+  'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
-  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-unused-vars': noUnusedVars,
+  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
@@ -191,27 +203,27 @@ export default {
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
-  'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-readonly': preferReadonly,
+  'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
+  quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
+  semi: semi,
   'space-before-function-paren': spaceBeforeFunctionParen,
+  'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
+  typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-  indent: indent,
-  quotes: quotes,
-  semi: semi,
-  typedef: typedef,
 };

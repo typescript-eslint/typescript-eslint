@@ -256,24 +256,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.optional = false;
         }
       },
-      /**
-       * TS 3.7: type assertion function
-       * babel: sets asserts property as true/undefined
-       * ts-estree: sets asserts property as true/false
-       */
-      TSTypePredicate(node) {
-        if (!node.asserts) {
-          node.asserts = false;
-        }
-      },
-      ImportDeclaration(node) {
-        /**
-         * TS 3.8: import type
-         */
-        if (!node.importKind) {
-          node.importKind = 'value';
-        }
-      },
     },
   );
 }

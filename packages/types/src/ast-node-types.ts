@@ -143,6 +143,7 @@ enum AST_NODE_TYPES {
   TSStaticKeyword = 'TSStaticKeyword',
   TSStringKeyword = 'TSStringKeyword',
   TSSymbolKeyword = 'TSSymbolKeyword',
+  TSTemplateLiteralType = 'TSTemplateLiteralType',
   TSThisType = 'TSThisType',
   TSTupleType = 'TSTupleType',
   TSTypeAliasDeclaration = 'TSTypeAliasDeclaration',

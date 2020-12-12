@@ -108,6 +108,7 @@ ruleTester.run('ban-types', rule, {
         },
       ],
     },
+    'let a: [];',
   ],
   invalid: [
     {
@@ -483,6 +484,136 @@ let bar: object = {};
               message: 'Use T instead.',
               fixWith: 'T',
             },
+          },
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar<any>;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Bar<any>',
+            customMessage: " Don't use `any` as a type parameter to `Bar`",
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+      options: [
+        {
+          types: {
+            'Bar<any>': "Don't use `any` as a type parameter to `Bar`",
+          },
+        },
+      ],
+    },
+    {
+      code: noFormat`type Foo = Bar<A,B>;`,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Bar<A,B>',
+            customMessage: " Don't pass `A, B` as parameters to `Bar`",
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+      options: [
+        {
+          types: {
+            'Bar<A, B>': "Don't pass `A, B` as parameters to `Bar`",
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: noFormat`let a:  [ ] ;`,
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 9,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [];',
+      output: 'let a: any[];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': {
+              message: '`[]` does only allow empty arrays.',
+              fixWith: 'any[]',
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: [[]];',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '[]',
+            customMessage: ' `[]` does only allow empty arrays.',
+          },
+          line: 1,
+          column: 9,
+        },
+      ],
+      options: [
+        {
+          types: {
+            '[]': '`[]` does only allow empty arrays.',
           },
         },
       ],
