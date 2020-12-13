@@ -1,18 +1,18 @@
 import {
   AST_NODE_TYPES,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import {
-  RuleContext,
-  SourceCode,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import * as util from '../util';
 
 //------------------------------------------------------------------------------
 // Local Types
 //------------------------------------------------------------------------------
 
-type NodeTest = (node: TSESTree.Node, sourceCode: SourceCode) => boolean;
+type NodeTest = (
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+) => boolean;
 interface NodeTestObject {
   test: NodeTest;
 }
@@ -156,14 +156,14 @@ function isCJSExport(node: TSESTree.Node): boolean {
 /**
  * Checks whether the given node is a block-like statement.
  * This checks the last token of the node is the closing brace of a block.
- * @param {SourceCode} sourceCode The source code to get tokens.
+ * @param {TSESLint.SourceCode} sourceCode The source code to get tokens.
  * @param {TSESTree.Node} node The node to check.
  * @returns {boolean} `true` if the node is a block-like statement.
  * @private
  */
 function isBlockLikeStatement(
   node: TSESTree.Node,
-  sourceCode: SourceCode,
+  sourceCode: TSESLint.SourceCode,
 ): boolean {
   // do-while with a block is a block-like statement.
   if (
@@ -198,10 +198,13 @@ function isBlockLikeStatement(
 /**
  * Check whether the given node is a directive or not.
  * @param {TSESTree.Node} node The node to check.
- * @param {SourceCode} sourceCode The source code object to get tokens.
+ * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
  * @returns {boolean} `true` if the node is a directive.
  */
-function isDirective(node: TSESTree.Node, sourceCode: SourceCode): boolean {
+function isDirective(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
   return (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     (node.parent?.type === AST_NODE_TYPES.Program ||
@@ -216,12 +219,12 @@ function isDirective(node: TSESTree.Node, sourceCode: SourceCode): boolean {
 /**
  * Check whether the given node is a part of directive prologue or not.
  * @param {TSESTree.Node} node The node to check.
- * @param {SourceCode} sourceCode The source code object to get tokens.
+ * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
  * @returns {boolean} `true` if the node is a part of directive prologue.
  */
 function isDirectivePrologue(
   node: TSESTree.Node,
-  sourceCode: SourceCode,
+  sourceCode: TSESLint.SourceCode,
 ): boolean {
   if (
     isDirective(node, sourceCode) &&
@@ -245,10 +248,13 @@ function isDirectivePrologue(
 /**
  * Check whether the given node is an expression
  * @param {TSESTree.Node} node The node to check.
- * @param {SourceCode} sourceCode The source code object to get tokens.
+ * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
  * @returns {boolean} `true` if the node is an expression
  */
-function isExpression(node: TSESTree.Node, sourceCode: SourceCode): boolean {
+function isExpression(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
   return (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     !isDirectivePrologue(node, sourceCode)
@@ -263,14 +269,14 @@ function isExpression(node: TSESTree.Node, sourceCode: SourceCode): boolean {
  *
  *     foo()
  *     ;[1, 2, 3].forEach(bar)
- * @param {SourceCode} sourceCode The source code to get tokens.
+ * @param {TSESLint.SourceCode} sourceCode The source code to get tokens.
  * @param {TSESTree.Node} node The node to get.
  * @returns {Token} The actual last token.
  * @private
  */
 function getActualLastToken(
   node: TSESTree.Node,
-  sourceCode: SourceCode,
+  sourceCode: TSESLint.SourceCode,
 ): TSESTree.Token | null {
   const semiToken = sourceCode.getLastToken(node)!;
   const prevToken = sourceCode.getTokenBefore(semiToken);
@@ -317,7 +323,7 @@ function verifyForAny(): void {
  * This autofix removes blank lines between the given 2 statements.
  * However, if comments exist between 2 blank lines, it does not remove those
  * blank lines automatically.
- * @param {RuleContext} context The rule context to report.
+ * @param {TSESLint.RuleContext} context The rule context to report.
  * @param {TSESTree.Node} _ Unused. The previous node to check.
  * @param {TSESTree.Node} nextNode The next node to check.
  * @param {Array<Token[]>} paddingLines The array of token pairs that blank
@@ -326,7 +332,7 @@ function verifyForAny(): void {
  * @private
  */
 function verifyForNever(
-  context: RuleContext<MessageIds, Options>,
+  context: TSESLint.RuleContext<MessageIds, Options>,
   _: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
@@ -362,7 +368,7 @@ function verifyForNever(
  * This autofix inserts a blank line between the given 2 statements.
  * If the `prevNode` has trailing comments, it inserts a blank line after the
  * trailing comments.
- * @param {RuleContext} context The rule context to report.
+ * @param {TSESLint.RuleContext} context The rule context to report.
  * @param {TSESTree.Node} prevNode The previous node to check.
  * @param {TSESTree.Node} nextNode The next node to check.
  * @param {Array<Token[]>} paddingLines The array of token pairs that blank
@@ -371,7 +377,7 @@ function verifyForNever(
  * @private
  */
 function verifyForAlways(
-  context: RuleContext<MessageIds, Options>,
+  context: TSESLint.RuleContext<MessageIds, Options>,
   prevNode: TSESTree.Node,
   nextNode: TSESTree.Node,
   paddingLines: [TSESTree.Token, TSESTree.Token][],
