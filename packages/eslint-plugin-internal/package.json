@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "4.9.1",
+  "version": "4.10.0",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@types/prettier": "*",
-    "@typescript-eslint/experimental-utils": "4.9.1",
+    "@typescript-eslint/experimental-utils": "4.10.0",
     "prettier": "*"
   }
 }

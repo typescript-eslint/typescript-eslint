@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.1...v4.10.0) (2020-12-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] fix wrong member of `method` and `property` meta selectors ([#2856](https://github.com/typescript-eslint/typescript-eslint/issues/2856)) ([9a6c362](https://github.com/typescript-eslint/typescript-eslint/commit/9a6c3628a2f3a7748b7a4b9b0c55400c8d7dfeae))
+
+
+### Features
+
+* **eslint-plugin:** add rule `non-nullable-type-assertion-style` ([#2624](https://github.com/typescript-eslint/typescript-eslint/issues/2624)) ([7eee44f](https://github.com/typescript-eslint/typescript-eslint/commit/7eee44fff3041a9725d34bf2fcbfc6fd40a60c61))
+
+
+
+
+
 ## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
 
 
