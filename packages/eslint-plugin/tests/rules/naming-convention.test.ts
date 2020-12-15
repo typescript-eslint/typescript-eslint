@@ -1453,6 +1453,31 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const obj = {
+          Foo: 42,
+          Bar() {
+            return 42;
+          },
+        };
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'property',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'method',
+          format: ['PascalCase'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
