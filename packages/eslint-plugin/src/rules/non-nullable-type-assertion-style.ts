@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -69,10 +72,24 @@ export default util.createRule({
       return true;
     };
 
+    const isConstAssertion = (
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+    ): boolean => {
+      return (
+        node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+        node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
+        node.typeAnnotation.typeName.name === 'const'
+      );
+    };
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
       ): void {
+        if (isConstAssertion(node)) {
+          return;
+        }
+
         const originalTypes = getTypesIfNotLoose(node.expression);
         if (!originalTypes) {
           return;
