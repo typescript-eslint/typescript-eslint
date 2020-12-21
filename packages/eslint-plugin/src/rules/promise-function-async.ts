@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Options = [
@@ -20,6 +21,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         'Requires any function or method that returns a Promise to be marked async',
@@ -94,9 +96,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression
-        | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition,
+        | TSESTree.FunctionExpression,
     ): void {
       const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const signatures = checker
@@ -114,6 +114,12 @@ export default util.createRule<Options, MessageIds>({
           allAllowedPromiseNames,
         )
       ) {
+        // Return type is not a promise
+        return;
+      }
+
+      if (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
+        // Abstract method can't be async
         return;
       }
 
@@ -123,12 +129,34 @@ export default util.createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
+        // Getters and setters can't be async
         return;
+      }
+
+      if (
+        util.isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        // Report without auto fixer because the return type is unknown
+        return context.report({
+          messageId: 'missingAsync',
+          node,
+        });
       }
 
       context.report({
         messageId: 'missingAsync',
         node,
+        fix: fixer => {
+          if (
+            node.parent &&
+            (node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+              (node.parent.type === AST_NODE_TYPES.Property &&
+                node.parent.method))
+          ) {
+            return fixer.insertTextBefore(node.parent.key, 'async ');
+          }
+          return fixer.insertTextBefore(node, 'async ');
+        },
       });
     }
 
@@ -152,13 +180,15 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (
           node.parent &&
-          'kind' in node.parent &&
+          node.parent.type === AST_NODE_TYPES.MethodDefinition &&
           node.parent.kind === 'method'
         ) {
           if (checkMethodDeclarations) {
-            validateNode(node.parent);
+            validateNode(node);
           }
-        } else if (checkFunctionExpressions) {
+          return;
+        }
+        if (checkFunctionExpressions) {
           validateNode(node);
         }
       },
