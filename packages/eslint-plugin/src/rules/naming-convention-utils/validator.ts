@@ -53,11 +53,14 @@ function createValidator(
         return -1;
       }
 
+      const aIsMethodOrProperty = isMethodOrPropertySelector(a.selector);
+      const bIsMethodOrProperty = isMethodOrPropertySelector(b.selector);
+
       // for backward compatibility, method and property have higher precedence than other meta selectors
-      if (isMethodOrPropertySelector(a.selector)) {
+      if (aIsMethodOrProperty && !bIsMethodOrProperty) {
         return -1;
       }
-      if (isMethodOrPropertySelector(b.selector)) {
+      if (!aIsMethodOrProperty && bIsMethodOrProperty) {
         return 1;
       }
 
