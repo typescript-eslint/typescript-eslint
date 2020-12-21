@@ -19,16 +19,13 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'object-curly-spacing',
   meta: {
-    type: 'layout',
+    ...baseRule.meta,
     docs: {
       description: 'Enforce consistent spacing inside braces',
       category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
-    messages: baseRule.messages,
-    fixable: baseRule.meta.fixable,
-    schema: baseRule.meta.schema,
   },
   defaultOptions: ['never'],
   create(context) {
