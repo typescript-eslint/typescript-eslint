@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.10.0...v4.11.0) (2020-12-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [non-nullable-type-assertion-style] handle const assertion ([#2881](https://github.com/typescript-eslint/typescript-eslint/issues/2881)) ([53dc34d](https://github.com/typescript-eslint/typescript-eslint/commit/53dc34d3917b90c8ab0324fe8054619ddee98003))
+
+
+### Features
+
+* **eslint-plugin:** [prom-func-async] add automatic fix ([#2845](https://github.com/typescript-eslint/typescript-eslint/issues/2845)) ([717e718](https://github.com/typescript-eslint/typescript-eslint/commit/717e718e91df2165422228c02dfa248cf55f65a1))
+
+
+
+
+
 # [4.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.1...v4.10.0) (2020-12-14)
 
 
