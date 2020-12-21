@@ -26,26 +26,21 @@ export default createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    messages: {
-      requireSpaceBefore: "A space is required before '{{token}}'.",
-      requireSpaceAfter: "A space is required after '{{token}}'.",
-      unexpectedSpaceBefore: "There should be no space before '{{token}}'.",
-      unexpectedSpaceAfter: "There should be no space after '{{token}}'.",
-    },
+    messages: baseRule.messages,
     fixable: baseRule.meta.fixable,
     schema: baseRule.meta.schema,
   },
   defaultOptions: ['never'],
   create(context) {
-    const spaced = context.options[0] === 'always',
-      sourceCode = context.getSourceCode();
+    const spaced = context.options[0] === 'always';
+    const sourceCode = context.getSourceCode();
 
     /**
      * Determines whether an option is set, relative to the spacing option.
      * If spaced is "always", then check whether option is set to false.
      * If spaced is "never", then check whether option is set to true.
-     * @param {Object} option The option to exclude.
-     * @returns {boolean} Whether or not the property is excluded.
+     * @param option The option to exclude.
+     * @returns Whether or not the property is excluded.
      */
     function isOptionSet(
       option: 'arraysInObjects' | 'objectsInObjects',
@@ -259,12 +254,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const first = sourceCode.getFirstToken(node)!,
-          last = getClosingBraceOfObject(node)!,
-          second = sourceCode.getTokenAfter(first, { includeComments: true })!,
-          penultimate = sourceCode.getTokenBefore(last, {
-            includeComments: true,
-          })!;
+        const first = sourceCode.getFirstToken(node)!;
+        const last = getClosingBraceOfObject(node)!;
+        const second = sourceCode.getTokenAfter(first, {
+          includeComments: true,
+        })!;
+        const penultimate = sourceCode.getTokenBefore(last, {
+          includeComments: true,
+        })!;
 
         validateBraceSpacing(node, first, second, penultimate, last);
       },

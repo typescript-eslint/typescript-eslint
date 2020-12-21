@@ -3,7 +3,7 @@
 ## Rule Details
 
 This rule extends the base [`eslint/object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing) rule.
-It supports all options and features of the base rule.
+It adds support for TypeScript's object types.
 
 ## How to use
 
