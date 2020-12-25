@@ -51,6 +51,9 @@ declare const x: T | number;
 
 const y = x as NonNullable<T>;
     `,
+    `
+const foo = [] as const;
+    `,
   ],
 
   invalid: [
