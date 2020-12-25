@@ -255,6 +255,17 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      // children of a namespace that is exported in a definition file is autoExported
+      [ambientDeclarationSelector(
+        'TSModuleDeclaration > TSModuleBlock',
+        false,
+      )](node: DeclarationSelectorNode): void {
+        if (!util.isDefinitionFile(filename)) {
+          return;
+        }
+        markDeclarationChildAsUsed(node);
+      },
+
       // declaration file handling
       [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,

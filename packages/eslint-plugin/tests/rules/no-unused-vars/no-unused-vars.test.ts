@@ -914,6 +914,14 @@ declare namespace A {
     },
     {
       code: `
+export namespace A {
+  type Color = 'red' | 'blue';
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
 declare function A(A: string): string;
       `,
       filename: 'foo.d.ts',
