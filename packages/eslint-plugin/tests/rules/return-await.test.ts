@@ -67,6 +67,18 @@ ruleTester.run('return-await', rule, {
       }
     `,
     {
+      options: ['in-try-catch', { ignoreUnrecognisedTypes: true }],
+      code: `
+        async function test(someValue: any) {
+          try {
+            return await someValue.one();
+          } catch (e) {
+            return await someValue.two();
+          }
+        }
+      `,
+    },
+    {
       options: ['in-try-catch'],
       code: `
         function test() {

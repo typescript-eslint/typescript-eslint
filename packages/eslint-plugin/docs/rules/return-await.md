@@ -20,9 +20,16 @@ It expands upon the base rule to add support for optionally requiring `return aw
 ## Options
 
 ```ts
-type Options = 'in-try-catch' | 'always' | 'never';
+type Modes = 'in-try-catch' | 'always' | 'never';
 
-const defaultOptions: Options = 'in-try-catch';
+type Options = [Modes, { ignoreUnrecognisedTypes: boolean }];
+
+const defaultOptions: Options = [
+  'in-try-catch',
+  {
+    ignoreUnrecognisedTypes: false,
+  },
+];
 ```
 
 ### `in-try-catch`
@@ -204,5 +211,23 @@ async function validNever2() {
 
 async function validNever3() {
   return 'value';
+}
+```
+
+### `ignoreUnrecognisedTypes`
+
+Treat `any` and `unknown` as if they could return a promise, so never raise
+a warning for them.
+
+This function's argument is implicitly `any`, so it's not known if the code
+is right or not. With `ignoreUnrecognisedTypes: true`, no warning will be raised.
+
+By default, this code will raise a warning; you should fix your typing.
+
+```ts
+async function argWithImplicitAny(arg) {
+  try {
+    return await arg.foo();
+  } catch (e) {}
 }
 ```

@@ -16,7 +16,15 @@ type FunctionNode =
   | TSESTree.FunctionExpression
   | TSESTree.ArrowFunctionExpression;
 
-export default util.createRule({
+type Modes = 'in-try-catch' | 'always' | 'never';
+
+type Options = [Modes] | [Modes, { ignoreUnrecognisedTypes: boolean }];
+type MessageIds =
+  | 'nonPromiseAwait'
+  | 'disallowedPromiseAwait'
+  | 'requiredPromiseAwait';
+
+export default util.createRule<Options, MessageIds>({
   name: 'return-await',
   meta: {
     docs: {
@@ -40,11 +48,17 @@ export default util.createRule({
       {
         enum: ['in-try-catch', 'always', 'never'],
       },
+      {
+        type: 'object',
+        properties: {
+          ignoreUnrecognisedTypes: { type: 'boolean' },
+        },
+      },
     ],
   },
-  defaultOptions: ['in-try-catch'],
+  defaultOptions: ['in-try-catch', { ignoreUnrecognisedTypes: false }],
 
-  create(context, [option]) {
+  create(context, [mode, options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
@@ -169,11 +183,14 @@ export default util.createRule({
         return;
       }
 
+      const isUnrecognisedType =
+        util.isTypeAnyType(type) || util.isTypeUnknownType(type);
+      if (isUnrecognisedType && options?.ignoreUnrecognisedTypes) {
+        return;
+      }
+
       if (isAwait && !isThenable) {
-        // any/unknown could be thenable; do not auto-fix
-        const useAutoFix = !(
-          util.isTypeAnyType(type) || util.isTypeUnknownType(type)
-        );
+        const useAutoFix = !isUnrecognisedType;
         const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
           removeAwait(fixer, node);
 
@@ -194,7 +211,7 @@ export default util.createRule({
         return;
       }
 
-      if (option === 'always') {
+      if (mode === 'always') {
         if (!isAwait && isThenable) {
           context.report({
             messageId: 'requiredPromiseAwait',
@@ -206,7 +223,7 @@ export default util.createRule({
         return;
       }
 
-      if (option === 'never') {
+      if (mode === 'never') {
         if (isAwait) {
           context.report({
             messageId: 'disallowedPromiseAwait',
@@ -218,7 +235,7 @@ export default util.createRule({
         return;
       }
 
-      if (option === 'in-try-catch') {
+      if (mode === 'in-try-catch') {
         const isInTryCatch = inTry(expression) || inCatch(expression);
         if (isAwait && !isInTryCatch) {
           context.report({
