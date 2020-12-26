@@ -22,12 +22,19 @@ It expands upon the base rule to add support for optionally requiring `return aw
 ```ts
 type Modes = 'in-try-catch' | 'always' | 'never';
 
-type Options = [Modes, { ignoreUnrecognisedTypes: boolean }];
+type Options = [
+  Modes,
+  {
+    ignoreUnrecognisedTypes: boolean;
+    neverRemove: boolean;
+  },
+];
 
 const defaultOptions: Options = [
   'in-try-catch',
   {
     ignoreUnrecognisedTypes: false,
+    neverRemove: false,
   },
 ];
 ```
@@ -231,3 +238,11 @@ async function argWithImplicitAny(arg) {
   } catch (e) {}
 }
 ```
+
+### `neverRemove`
+
+Do not suggest removing `await`, which could be a breaking change.
+
+This is only useful in conjunction with `in-try-catch` mode, which will
+otherwise try to remove any `await` that is not provably necessary. This
+removal carries some risk.

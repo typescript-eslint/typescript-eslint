@@ -18,7 +18,15 @@ type FunctionNode =
 
 type Modes = 'in-try-catch' | 'always' | 'never';
 
-type Options = [Modes] | [Modes, { ignoreUnrecognisedTypes: boolean }];
+type Options =
+  | [Modes]
+  | [
+      Modes,
+      {
+        ignoreUnrecognisedTypes?: boolean;
+        neverRemove?: boolean;
+      },
+    ];
 type MessageIds =
   | 'nonPromiseAwait'
   | 'disallowedPromiseAwait'
@@ -52,11 +60,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreUnrecognisedTypes: { type: 'boolean' },
+          neverRemove: { type: 'boolean' },
         },
       },
     ],
   },
-  defaultOptions: ['in-try-catch', { ignoreUnrecognisedTypes: false }],
+  defaultOptions: [
+    'in-try-catch',
+    { ignoreUnrecognisedTypes: false, neverRemove: false },
+  ],
 
   create(context, [mode, options]) {
     const parserServices = util.getParserServices(context);
@@ -238,6 +250,9 @@ export default util.createRule<Options, MessageIds>({
       if (mode === 'in-try-catch') {
         const isInTryCatch = inTry(expression) || inCatch(expression);
         if (isAwait && !isInTryCatch) {
+          if (options?.neverRemove) {
+            return;
+          }
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,

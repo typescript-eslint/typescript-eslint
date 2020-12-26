@@ -125,6 +125,14 @@ ruleTester.run('return-await', rule, {
       `,
     },
     {
+      options: ['in-try-catch', { neverRemove: true }],
+      code: `
+        async function test(someValue: any) {
+          return await Promise.resolve(2);
+        }
+      `,
+    },
+    {
       options: ['in-try-catch'],
       code: `
         async function test() {
