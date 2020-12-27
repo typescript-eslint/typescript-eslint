@@ -13,7 +13,11 @@ import {
   UnderscoreOptions,
 } from './enums';
 import { PredefinedFormatToCheckFunction } from './format';
-import { isMetaSelector, selectorTypeToMessageString } from './shared';
+import {
+  isMetaSelector,
+  isMethodOrPropertySelector,
+  selectorTypeToMessageString,
+} from './shared';
 import type { Context, NormalizedSelector } from './types';
 import * as util from '../../util';
 
@@ -47,6 +51,17 @@ function createValidator(
       }
       if (!aIsMeta && bIsMeta) {
         return -1;
+      }
+
+      const aIsMethodOrProperty = isMethodOrPropertySelector(a.selector);
+      const bIsMethodOrProperty = isMethodOrPropertySelector(b.selector);
+
+      // for backward compatibility, method and property have higher precedence than other meta selectors
+      if (aIsMethodOrProperty && !bIsMethodOrProperty) {
+        return -1;
+      }
+      if (!aIsMethodOrProperty && bIsMethodOrProperty) {
+        return 1;
       }
 
       // both aren't meta selectors
