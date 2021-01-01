@@ -408,7 +408,9 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isNoFormatTemplateTag(tag: TSESTree.Expression): boolean {
+    function isNoFormatTemplateTag(
+      tag: TSESTree.LeftHandSideExpression,
+    ): boolean {
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 

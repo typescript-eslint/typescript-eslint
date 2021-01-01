@@ -167,7 +167,7 @@ export default createRule<Options, MessageId>({
       });
     }
 
-    function getNodeType(node: TSESTree.Expression): ts.Type {
+    function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
     }

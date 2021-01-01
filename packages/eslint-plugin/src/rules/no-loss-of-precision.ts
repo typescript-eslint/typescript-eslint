@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
         rules.Literal({
           ...node,
           raw: isSeperatedNumeric(node) ? node.raw.replace(/_/g, '') : node.raw,
-        });
+        } as never);
       },
     };
   },
