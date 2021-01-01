@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/visitor-keys"
+    "directory": "packages/types"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
@@ -31,11 +31,14 @@
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@typescript-eslint/ast-spec": "4.20.0"
   },
   "funding": {
     "type": "opencollective",
