@@ -140,6 +140,7 @@ export = {
     '@typescript-eslint/return-await': 'error',
     semi: 'off',
     '@typescript-eslint/semi': 'error',
+    '@typescript-eslint/sort-type-union-intersection-members': 'error',
     'space-before-function-paren': 'off',
     '@typescript-eslint/space-before-function-paren': 'error',
     'space-infix-ops': 'off',
