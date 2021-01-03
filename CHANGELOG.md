@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.0...v4.11.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] fix precedence of method and property meta selectors ([#2877](https://github.com/typescript-eslint/typescript-eslint/issues/2877)) ([2f10e1a](https://github.com/typescript-eslint/typescript-eslint/commit/2f10e1a5c795cac28a6e0a1a3a0adb5bd6be7f1c))
+
+
+
+
+
+# [4.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.10.0...v4.11.0) (2020-12-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [non-nullable-type-assertion-style] handle const assertion ([#2881](https://github.com/typescript-eslint/typescript-eslint/issues/2881)) ([53dc34d](https://github.com/typescript-eslint/typescript-eslint/commit/53dc34d3917b90c8ab0324fe8054619ddee98003))
+
+
+### Features
+
+* **eslint-plugin:** [prom-func-async] add automatic fix ([#2845](https://github.com/typescript-eslint/typescript-eslint/issues/2845)) ([717e718](https://github.com/typescript-eslint/typescript-eslint/commit/717e718e91df2165422228c02dfa248cf55f65a1))
+
+
+
+
+
+# [4.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.1...v4.10.0) (2020-12-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] fix wrong member of `method` and `property` meta selectors ([#2856](https://github.com/typescript-eslint/typescript-eslint/issues/2856)) ([9a6c362](https://github.com/typescript-eslint/typescript-eslint/commit/9a6c3628a2f3a7748b7a4b9b0c55400c8d7dfeae))
+
+
+### Features
+
+* **eslint-plugin:** add rule `non-nullable-type-assertion-style` ([#2624](https://github.com/typescript-eslint/typescript-eslint/issues/2624)) ([7eee44f](https://github.com/typescript-eslint/typescript-eslint/commit/7eee44fff3041a9725d34bf2fcbfc6fd40a60c61))
+
+
+
+
+
 ## [4.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.9.0...v4.9.1) (2020-12-07)
 
 

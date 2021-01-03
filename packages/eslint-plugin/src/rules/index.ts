@@ -78,6 +78,7 @@ import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
+import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -192,6 +193,7 @@ export default {
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
+  'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
