@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.1...v4.12.0) (2021-01-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [comma-spacing] handle empty type params ([#2915](https://github.com/typescript-eslint/typescript-eslint/issues/2915)) ([4d69fbb](https://github.com/typescript-eslint/typescript-eslint/commit/4d69fbba91ea3161213a0ab093e398fed091168c))
+
+
+### Features
+
+* **eslint-plugin:** add rule `sort-type-union-intersection-members` ([#2913](https://github.com/typescript-eslint/typescript-eslint/issues/2913)) ([9092c04](https://github.com/typescript-eslint/typescript-eslint/commit/9092c0494ebd3486e38852198c1930f1432ef21f))
+
+
+
+
+
 ## [4.11.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.0...v4.11.1) (2020-12-28)
 
 
