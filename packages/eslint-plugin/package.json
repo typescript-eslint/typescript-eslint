@@ -46,6 +46,7 @@
     "@typescript-eslint/scope-manager": "4.12.0",
     "debug": "^4.1.1",
     "functional-red-black-tree": "^1.0.1",
+    "lodash": "^4.17.15",
     "regexpp": "^3.0.0",
     "semver": "^7.3.2",
     "tsutils": "^3.17.1"

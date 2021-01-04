@@ -4,7 +4,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
-import { getNameLocationInGlobalDirectiveComment } from 'eslint/lib/rules/utils/ast-utils';
 import * as util from '../util';
 
 export type MessageIds = 'unusedVar';
@@ -388,7 +387,7 @@ export default util.createRule<Options, MessageIds>({
 
             context.report({
               node: programNode,
-              loc: getNameLocationInGlobalDirectiveComment(
+              loc: util.getNameLocationInGlobalDirectiveComment(
                 sourceCode,
                 directiveComment,
                 unusedVar.name,
