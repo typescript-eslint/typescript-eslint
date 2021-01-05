@@ -73,6 +73,8 @@ type T =
   ${operator} (B & C)
   ${operator} (A | B)
   ${operator} (B | C)
+  ${operator} null
+  ${operator} undefined
     `,
   },
 ];
@@ -185,6 +187,18 @@ const invalid = (
       ],
     },
     {
+      code: `type T = () => undefined ${operator} null;`,
+      output: `type T = () => null ${operator} undefined;`,
+      errors: [
+        {
+          messageId: 'notSorted',
+          data: {
+            type,
+          },
+        },
+      ],
+    },
+    {
       code: noFormat`
 type T =
   ${operator} [1, 2, 4]
@@ -203,12 +217,14 @@ type T =
   ${operator} number[]
   ${operator} B
   ${operator} A
+  ${operator} undefined
+  ${operator} null
   ${operator} string
   ${operator} any;
       `,
       output: noFormat`
 type T =
-  A ${operator} B ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4];
+  A ${operator} B ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4] ${operator} null ${operator} undefined;
       `,
       errors: [
         {

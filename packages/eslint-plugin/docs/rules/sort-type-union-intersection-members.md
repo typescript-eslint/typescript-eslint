@@ -104,6 +104,7 @@ type Options = {
     | 'operator'
     | 'tuple'
     | 'union'
+    | 'nullish'
   )[];
 };
 
@@ -122,6 +123,7 @@ const defaultOptions: Options = {
     'tuple',
     'intersection',
     'union',
+    'nullish',
   ],
 };
 ```
@@ -142,3 +144,4 @@ The ordering of groups is determined by this option.
 - `operator` - Operator types (`keyof A`, `typeof B`, `readonly C[]`)
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
+- `nullish` - `null` and `undefined`

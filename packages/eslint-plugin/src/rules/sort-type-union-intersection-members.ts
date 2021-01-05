@@ -12,6 +12,7 @@ enum Group {
   import = 'import',
   intersection = 'intersection',
   keyword = 'keyword',
+  nullish = 'nullish',
   literal = 'literal',
   named = 'named',
   object = 'object',
@@ -42,16 +43,18 @@ function getGroup(node: TSESTree.TypeNode): Group {
     case AST_NODE_TYPES.TSBigIntKeyword:
     case AST_NODE_TYPES.TSBooleanKeyword:
     case AST_NODE_TYPES.TSNeverKeyword:
-    case AST_NODE_TYPES.TSNullKeyword:
     case AST_NODE_TYPES.TSNumberKeyword:
     case AST_NODE_TYPES.TSObjectKeyword:
     case AST_NODE_TYPES.TSStringKeyword:
     case AST_NODE_TYPES.TSSymbolKeyword:
     case AST_NODE_TYPES.TSThisType:
-    case AST_NODE_TYPES.TSUndefinedKeyword:
     case AST_NODE_TYPES.TSUnknownKeyword:
     case AST_NODE_TYPES.TSVoidKeyword:
       return Group.keyword;
+
+    case AST_NODE_TYPES.TSNullKeyword:
+    case AST_NODE_TYPES.TSUndefinedKeyword:
+      return Group.nullish;
 
     case AST_NODE_TYPES.TSLiteralType:
     case AST_NODE_TYPES.TSTemplateLiteralType:
@@ -150,6 +153,7 @@ export default util.createRule<Options, MessageIds>({
         Group.tuple,
         Group.intersection,
         Group.union,
+        Group.nullish,
       ],
     },
   ],
