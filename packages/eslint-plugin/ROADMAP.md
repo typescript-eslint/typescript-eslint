@@ -101,7 +101,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`prefer-object-spread`]             | 🌟  | [`prefer-object-spread`][prefer-object-spread]                                                            |
 | [`radix`]                            | 🌟  | [`radix`][radix]                                                                                          |
 | [`restrict-plus-operands`]           | ✅  | [`@typescript-eslint/restrict-plus-operands`]                                                             |
-| [`static-this`]                      | 🛑  | N/A                                                                                                       |
+| [`static-this`]                      | 🌟  | [`no-invalid-this`][no-invalid-this]                                                                                                       |
 | [`strict-boolean-expressions`]       | ✅  | [`@typescript-eslint/strict-boolean-expressions`]                                                         |
 | [`strict-string-expressions`]        | ✅  | [`@typescript-eslint/restrict-plus-operands`] & [`@typescript-eslint/restrict-template-expressions`]      |
 | [`strict-type-predicates`]           | 🛑  | N/A                                                                                                       |
@@ -592,6 +592,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-extra-semi]: https://eslint.org/docs/rules/no-extra-semi
 [no-with]: https://eslint.org/docs/rules/no-with
 [no-warning-comments]: https://eslint.org/docs/rules/no-warning-comments
+[no-invalid-this]: https://eslint.org/docs/rules/no-invalid-this
 
 <!-- @typescript-eslint/eslint-plugin -->
 
