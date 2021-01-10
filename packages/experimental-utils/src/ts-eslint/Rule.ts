@@ -246,6 +246,8 @@ type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 
 interface RuleListener {
   [nodeSelector: string]: RuleFunction | undefined;
+  onCodePathStart: (codePath: { id: string }, node: TSESTree.Node) => void;
+  onCodePathEnd: (codePath: { id: string }) => void;
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
