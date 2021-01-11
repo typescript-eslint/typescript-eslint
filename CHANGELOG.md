@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.12.0...v4.13.0) (2021-01-11)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** support eslint@5 ([#2917](https://github.com/typescript-eslint/typescript-eslint/issues/2917)) ([f606846](https://github.com/typescript-eslint/typescript-eslint/commit/f606846af2617a0d8ee3ad5ce7c10864161ebf53))
+
+
+### Features
+
+* **eslint-plugin:** [sort-type-union-intersection-members] add nullish group ([#2919](https://github.com/typescript-eslint/typescript-eslint/issues/2919)) ([5558f41](https://github.com/typescript-eslint/typescript-eslint/commit/5558f410007da58a3f4726bbf9501c924ef166a1))
+
+
+
+
+
 # [4.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.1...v4.12.0) (2021-01-04)
 
 
