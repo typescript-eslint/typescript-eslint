@@ -171,7 +171,8 @@ export default util.createRule({
         let key: string;
         if (receiverProperty.computed === false) {
           key =
-            receiverProperty.key.type === AST_NODE_TYPES.Identifier
+            receiverProperty.key.type === AST_NODE_TYPES.Identifier ||
+            receiverProperty.key.type === AST_NODE_TYPES.PrivateIdentifier
               ? receiverProperty.key.name
               : String(receiverProperty.key.value);
         } else if (receiverProperty.key.type === AST_NODE_TYPES.Literal) {

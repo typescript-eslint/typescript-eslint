@@ -390,6 +390,12 @@ tester.addFixturePatternConfig('typescript/basics', {
      * TODO: report this to babel
      */
     'catch-clause-with-invalid-annotation',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Private elements cannot have an accessibility modifier ('private')
+     * TODO: Add error code from typescript
+     */
+    'class-private-field-modifiers-error',
   ],
   ignoreSourceType: [
     /**

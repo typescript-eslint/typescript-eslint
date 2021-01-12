@@ -204,6 +204,7 @@ export type Node =
   | ObjectPattern
   | Program
   | Property
+  | PrivateIdentifier
   | RestElement
   | ReturnStatement
   | SequenceExpression
@@ -483,6 +484,7 @@ export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
 export type PropertyNameComputed = Expression;
 export type PropertyNameNonComputed =
   | Identifier
+  | PrivateIdentifier
   | StringLiteral
   | NumberLiteral;
 export type Statement =
@@ -654,7 +656,7 @@ interface LiteralBase extends BaseNode {
 /** this should not be directly used - instead use MemberExpressionComputedNameBase or MemberExpressionNonComputedNameBase */
 interface MemberExpressionBase extends BaseNode {
   object: LeftHandSideExpression;
-  property: Expression | Identifier;
+  property: Expression | Identifier | PrivateIdentifier;
   computed: boolean;
   optional: boolean;
 }
@@ -665,7 +667,7 @@ interface MemberExpressionComputedNameBase extends MemberExpressionBase {
 }
 
 interface MemberExpressionNonComputedNameBase extends MemberExpressionBase {
-  property: Identifier;
+  property: Identifier | PrivateIdentifier;
   computed: false;
 }
 
@@ -1172,6 +1174,11 @@ export interface Program extends BaseNode {
   sourceType: 'module' | 'script';
   comments?: Comment[];
   tokens?: Token[];
+}
+
+export interface PrivateIdentifier extends BaseNode {
+  type: AST_NODE_TYPES.PrivateIdentifier;
+  name: string;
 }
 
 export interface PropertyComputedName extends PropertyBase {

@@ -118,6 +118,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ObjectPattern]:
     | ts.ObjectLiteralExpression
     | ts.ObjectBindingPattern;
+  [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.Program]: ts.SourceFile;
   [AST_NODE_TYPES.Property]:
     | ts.PropertyAssignment

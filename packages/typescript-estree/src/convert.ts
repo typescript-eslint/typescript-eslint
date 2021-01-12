@@ -675,6 +675,12 @@ export class Converter {
         });
       }
 
+      case SyntaxKind.PrivateIdentifier:
+        return this.createNode<TSESTree.PrivateIdentifier>(node, {
+          type: AST_NODE_TYPES.PrivateIdentifier,
+          name: node.text.slice(1),
+        });
+
       case SyntaxKind.WithStatement:
         return this.createNode<TSESTree.WithStatement>(node, {
           type: AST_NODE_TYPES.WithStatement,
