@@ -51,9 +51,9 @@
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.10.4",
-    "@babel/parser": "^7.12.7",
-    "@babel/types": "^7.12.6",
+    "@babel/code-frame": "^7.12.11",
+    "@babel/parser": "^7.12.11",
+    "@babel/types": "^7.12.12",
     "@types/babel__code-frame": "^7.0.2",
     "@types/debug": "*",
     "@types/glob": "*",
