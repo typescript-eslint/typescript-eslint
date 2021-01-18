@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-imports';
-import { RuleTester, noFormat } from '../RuleTester';
+import { RuleTester, noFormat, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,6 +8,11 @@ const ruleTester = new RuleTester({
     sourceType: 'module',
   },
 });
+
+const withMetaParserOptions = {
+  tsconfigRootDir: getFixturesRootDir(),
+  project: './tsconfig-withmeta.json',
+};
 
 ruleTester.run('consistent-type-imports', rule, {
   valid: [
@@ -230,6 +235,112 @@ ruleTester.run('consistent-type-imports', rule, {
       const a: typeof Default = Default;
       const b: typeof Rest = Rest;
     `,
+    {
+      code: `
+        import Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo: Foo;
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo(foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo(): Foo {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          foo(@deco foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          set foo(value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          get foo() {}
+
+          set foo(value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          get foo() {}
+
+          set ['foo'](value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type { Foo } from 'foo';
+        const key = 'k';
+        class A {
+          @deco
+          get [key]() {}
+
+          set [key](value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import * as foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: foo.Foo) {}
+        }
+      `,
+      parserOptions: withMetaParserOptions,
+    },
   ],
   invalid: [
     {
@@ -1214,6 +1325,189 @@ const a: Default = '';
           column: 1,
         },
       ],
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: `
+        import type Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import type Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: noFormat`
+        import Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: noFormat`
+        import { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: noFormat`
+        import type { Type } from 'foo';
+        import { Foo, Bar } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+        type T = Bar;
+      `,
+      output: noFormat`
+        import type { Type , Bar } from 'foo';
+        import { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+        type T = Bar;
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          data: { typeImports: '"Bar"' },
+          line: 3,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import { V } from 'foo';
+        import type { Foo, Bar, T } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+          foo(@deco bar: Bar) {}
+        }
+      `,
+      output: noFormat`
+        import { V , Foo, Bar} from 'foo';
+        import type { T } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+          foo(@deco bar: Bar) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'someImportsInDecoMeta',
+          data: { typeImports: '"Foo" and "Bar"' },
+          line: 3,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type { Foo, T } from 'foo';
+        import { V } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: noFormat`
+        import type { T } from 'foo';
+        import { V , Foo} from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type * as Type from 'foo';
+        @deco
+        class A {
+          constructor(foo: Type.Foo) {}
+        }
+      `,
+      output: noFormat`
+        import * as Type from 'foo';
+        @deco
+        class A {
+          constructor(foo: Type.Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Type"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaParserOptions,
     },
   ],
 });

@@ -1,0 +1,289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class emit-metadata nested-class-outer 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"deco">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "deco",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"deco">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"param">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "param",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        ClassNameDefinition$3 {
+          name: Identifier<"T">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        ClassNameDefinition$4 {
+          name: Identifier<"T">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "T",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$7 {
+      defs: Array [
+        ClassNameDefinition$5 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$3,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$8 {
+      defs: Array [
+        ClassNameDefinition$6 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$3,
+        },
+      ],
+      name: "A",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$9 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$10 {
+      defs: Array [
+        ParameterDefinition$7 {
+          name: Identifier<"foo">,
+          node: FunctionExpression$4,
+        },
+      ],
+      name: "foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$11 {
+      defs: Array [
+        ClassNameDefinition$8 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$5,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$12 {
+      defs: Array [
+        ClassNameDefinition$9 {
+          name: Identifier<"B">,
+          node: ClassDeclaration$5,
+        },
+      ],
+      name: "B",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$13 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$14 {
+      defs: Array [
+        ParameterDefinition$10 {
+          name: Identifier<"bar">,
+          node: FunctionExpression$6,
+        },
+      ],
+      name: "bar",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$7,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "deco" => Variable$2,
+        "T" => Variable$5,
+        "A" => Variable$7,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
+        Variable$7,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$1,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$3,
+        "param" => Variable$4,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    ClassScope$3 {
+      block: ClassDeclaration$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "T" => Variable$6,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$6,
+      ],
+    },
+    ClassScope$4 {
+      block: ClassDeclaration$3,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "A" => Variable$8,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$8,
+      ],
+    },
+    FunctionScope$5 {
+      block: FunctionExpression$4,
+      isStrict: true,
+      references: Array [
+        Reference$2,
+      ],
+      set: Map {
+        "arguments" => Variable$9,
+        "foo" => Variable$10,
+        "B" => Variable$11,
+      },
+      type: "function",
+      upper: ClassScope$4,
+      variables: Array [
+        Variable$9,
+        Variable$10,
+        Variable$11,
+      ],
+    },
+    ClassScope$6 {
+      block: ClassDeclaration$5,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "B" => Variable$12,
+      },
+      type: "class",
+      upper: FunctionScope$5,
+      variables: Array [
+        Variable$12,
+      ],
+    },
+    FunctionScope$7 {
+      block: FunctionExpression$6,
+      isStrict: true,
+      references: Array [
+        Reference$3,
+      ],
+      set: Map {
+        "arguments" => Variable$13,
+        "bar" => Variable$14,
+      },
+      type: "function",
+      upper: ClassScope$6,
+      variables: Array [
+        Variable$13,
+        Variable$14,
+      ],
+    },
+  ],
+}
+`;
