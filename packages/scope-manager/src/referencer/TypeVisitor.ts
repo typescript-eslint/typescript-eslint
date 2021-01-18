@@ -260,6 +260,11 @@ class TypeVisitor extends Visitor {
       this.#referencer.currentScope().referenceValue(expr);
     }
   }
+
+  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
+    // check
+    this.visitChildren(node);
+  }
 }
 
 export { TypeVisitor };
