@@ -141,15 +141,7 @@ tester.addFixturePatternConfig('javascript/arrayLiteral');
 
 tester.addFixturePatternConfig('javascript/simple-literals');
 
-tester.addFixturePatternConfig('javascript/directives', {
-  ignore: [
-    /**
-     * Babel errors on accessors:
-     * https://github.com/babel/babel/issues/12335
-     */
-    'directive-in-class',
-  ],
-});
+tester.addFixturePatternConfig('javascript/directives');
 
 tester.addFixturePatternConfig('javascript/experimentalObjectRestSpread');
 
@@ -184,15 +176,7 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-param-no-paren-eval',
   ],
 });
-tester.addFixturePatternConfig('javascript/function', {
-  ignore: [
-    /**
-     * Babel has invalid end range of multiline SequenceExpression
-     * TODO: report it to babel
-     */
-    'return-multiline-sequence',
-  ],
-});
+tester.addFixturePatternConfig('javascript/function');
 
 tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
@@ -203,20 +187,15 @@ tester.addFixturePatternConfig('javascript/callExpression');
 tester.addFixturePatternConfig('javascript/classes', {
   ignore: [
     /**
-     * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * super() is being used outside of constructor.
+     * Other parsers (e.g. espree, acorn) do not error on this.
      */
-    'class-one-method-super', // babel parse errors
+    'class-one-method-super',
     /**
      * TS3.6 made computed constructors parse as actual constructors.
      */
     'class-two-methods-computed-constructor',
-    /**
-     * Babel errors on accessors:
-     * https://github.com/babel/babel/issues/12335
-     */
-    'class-accessor-properties',
-    'class-static-methods-and-accessor-properties',
-    'invalid-class-setter-declaration',
   ],
 });
 
@@ -287,15 +266,7 @@ tester.addFixturePatternConfig('javascript/modules', {
 tester.addFixturePatternConfig('javascript/newTarget');
 
 tester.addFixturePatternConfig('javascript/objectLiteral');
-tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties', {
-  ignore: [
-    /**
-     * Babel errors on accessors:
-     * https://github.com/babel/babel/issues/12335
-     */
-    'computed-getter-and-setter',
-  ],
-});
+tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties');
 
 tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
   ignore: [
@@ -416,13 +387,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'type-guard-in-function',
     'type-guard-in-interface',
     /**
-     * TS 3.7: declare class properties
-     * Babel: declare is not allowed with accessibility modifiers
-     * TODO: report this to babel
-     */
-    'abstract-class-with-declare-properties',
-    'class-with-declare-properties',
-    /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * This is intentional; we don't error on semantic problems for these cases
      */
@@ -431,16 +395,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     'catch-clause-with-invalid-annotation',
     'export-type-star-from',
     'import-type-error',
-    /**
-     * Babel reports incorrect location
-     * https://github.com/babel/babel/issues/11939
-     */
-    'catch-clause-with-annotation',
-    /**
-     * Babel errors on accessors:
-     * https://github.com/babel/babel/issues/12335
-     */
-    'object-with-typed-methods',
   ],
   ignoreSourceType: [
     /**
@@ -470,16 +424,6 @@ tester.addFixturePatternConfig('typescript/basics', {
 
 tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * Babel errors on accessors:
-     * https://github.com/babel/babel/issues/12335
-     */
-    'accessor-decorator-factory-instance-member',
-    'accessor-decorator-factory-static-member',
-    'accessor-decorator-instance-member',
-    'accessor-decorator-static-member',
-  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
@@ -515,20 +459,6 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      */
     'interface-with-optional-index-signature',
     /**
-     * Expected error on empty type arguments and type parameters
-     * TypeScript report diagnostics correctly but babel not
-     * https://github.com/babel/babel/issues/9462
-     */
-    'empty-type-arguments',
-    'empty-type-arguments-in-call-expression',
-    'empty-type-arguments-in-new-expression',
-    'empty-type-parameters',
-    'empty-type-parameters-in-arrow-function',
-    'empty-type-parameters-in-constructor',
-    'empty-type-parameters-in-function-expression',
-    'empty-type-parameters-in-method',
-    'empty-type-parameters-in-method-signature',
-    /**
      * Babel correctly errors on this
      * TODO: enable error code TS1024: 'readonly' modifier can only appear on a property declaration or index signature.
      */
@@ -546,7 +476,6 @@ tester.addFixturePatternConfig('typescript/types', {
      * They produce TSTypeLiteral -> TemplateLiteral, and then force override the expression parser to parse types
      * We instead just emit TSTemplateLiteralType.
      */
-    'template-literal-type-1',
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
