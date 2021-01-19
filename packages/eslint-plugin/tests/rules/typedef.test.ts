@@ -442,6 +442,33 @@ class Foo {
         },
       ],
     },
+    // variable declaration ignore block scoped variables
+    {
+      code: `
+      const foo : () => void = () => {
+        const bar = 2;
+      }
+      `,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreBlockScoped: true,
+        },
+      ],
+    },
+    {
+      code: `
+      const foo : () => void = () => {
+        const bar : number = 2;
+      }
+      `,
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreBlockScoped: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // Array destructuring
@@ -995,6 +1022,37 @@ class Foo {
           memberVariableDeclaration: true,
           variableDeclaration: true,
           variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    // variable declaration ignore block scoped
+    {
+      code: 'const foo = 1;',
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreBlockScoped: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = 1;',
+      errors: [
+        {
+          messageId: 'expectedTypedefNamed',
+          data: { name: 'foo' },
+        },
+      ],
+      options: [
+        {
+          variableDeclaration: true,
+          variableDeclarationIgnoreBlockScoped: false,
         },
       ],
     },

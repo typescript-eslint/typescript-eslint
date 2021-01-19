@@ -13,6 +13,7 @@ const enum OptionKeys {
   PropertyDeclaration = 'propertyDeclaration',
   VariableDeclaration = 'variableDeclaration',
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
+  VariableDeclarationIgnoreBlockScoped = 'variableDeclarationIgnoreBlockScoped',
 }
 
 type Options = { [k in OptionKeys]?: boolean };
@@ -43,6 +44,9 @@ export default util.createRule<[Options], MessageIds>({
           [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
           [OptionKeys.VariableDeclaration]: { type: 'boolean' },
           [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
+          [OptionKeys.VariableDeclarationIgnoreBlockScoped]: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -58,6 +62,7 @@ export default util.createRule<[Options], MessageIds>({
       [OptionKeys.PropertyDeclaration]: false,
       [OptionKeys.VariableDeclaration]: false,
       [OptionKeys.VariableDeclarationIgnoreFunction]: false,
+      [OptionKeys.VariableDeclarationIgnoreBlockScoped]: false,
     },
   ],
   create(context, [options]) {
@@ -139,6 +144,16 @@ export default util.createRule<[Options], MessageIds>({
       );
     }
 
+    function isVariableDeclarationIgnoreBlockScoped(
+      node: TSESTree.Node,
+    ): boolean {
+      return (
+        !!options[OptionKeys.VariableDeclarationIgnoreBlockScoped] &&
+        !!node.parent?.parent &&
+        node.parent.parent.type === AST_NODE_TYPES.BlockStatement
+      );
+    }
+
     return {
       ArrayPattern(node): void {
         if (
@@ -213,7 +228,8 @@ export default util.createRule<[Options], MessageIds>({
             !options[OptionKeys.ArrayDestructuring]) ||
           (node.id.type === AST_NODE_TYPES.ObjectPattern &&
             !options[OptionKeys.ObjectDestructuring]) ||
-          (node.init && isVariableDeclarationIgnoreFunction(node.init))
+          (node.init && isVariableDeclarationIgnoreFunction(node.init)) ||
+          isVariableDeclarationIgnoreBlockScoped(node)
         ) {
           return;
         }
