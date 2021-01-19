@@ -33,6 +33,15 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
+  visit(node: TSESTree.Node | null | undefined): void {
+    // make sure we only handle the nodes we are designed to handle
+    if (node && node.type in this) {
+      super.visit(node);
+    } else {
+      this.#referencer.visit(node);
+    }
+  }
+
   ///////////////////
   // Visit helpers //
   ///////////////////
@@ -46,7 +55,7 @@ class ClassVisitor extends Visitor {
         .defineIdentifier(node.id, new ClassNameDefinition(node.id, node));
     }
 
-    node.decorators?.forEach(d => this.visit(d));
+    node.decorators?.forEach(d => this.#referencer.visit(d));
 
     this.#referencer.scopeManager.nestClassScope(node);
 
@@ -297,6 +306,12 @@ class ClassVisitor extends Visitor {
   /////////////////////
   // Visit selectors //
   /////////////////////
+
+  protected ClassBody(node: TSESTree.ClassBody): void {
+    // this is here on purpose so that this visitor explicitly declares visitors
+    // for all nodes it cares about (see the instance visit method above)
+    this.visitChildren(node);
+  }
 
   protected ClassProperty(node: TSESTree.ClassProperty): void {
     this.visitClassProperty(node);
