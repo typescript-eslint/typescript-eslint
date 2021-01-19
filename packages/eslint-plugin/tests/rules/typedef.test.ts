@@ -1041,20 +1041,5 @@ class Foo {
         },
       ],
     },
-    {
-      code: 'const foo = 1;',
-      errors: [
-        {
-          messageId: 'expectedTypedefNamed',
-          data: { name: 'foo' },
-        },
-      ],
-      options: [
-        {
-          variableDeclaration: true,
-          variableDeclarationIgnoreBlockScoped: false,
-        },
-      ],
-    },
   ],
 });
