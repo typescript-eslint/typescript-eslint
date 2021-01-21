@@ -23,9 +23,11 @@ export default createRule({
     },
     schema: [],
     messages: {
+      addDefaultCase:
+        'Switch expression is not a union type. Expected a default case.',
+      addMissingCases: 'Add branches for missing cases.',
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-      addMissingCases: 'Add branches for missing cases.',
     },
   },
   defaultOptions: [],
@@ -116,54 +118,63 @@ export default createRule({
       const discriminantType = getNodeType(node.discriminant);
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
-      if (discriminantType.isUnion()) {
-        const unionTypes = unionTypeParts(discriminantType);
-        const caseTypes: Set<ts.Type> = new Set();
-        for (const switchCase of node.cases) {
-          if (switchCase.test === null) {
-            // Switch has 'default' branch - do nothing.
-            return;
-          }
-
-          caseTypes.add(getNodeType(switchCase.test));
+      if (!discriminantType.isUnion()) {
+        // Switch has no 'default' branch.
+        if (!node.cases.some(switchCase => switchCase.test === null)) {
+          context.report({
+            node: node.discriminant,
+            messageId: 'addDefaultCase',
+          });
         }
+        return;
+      }
 
-        const missingBranchTypes = unionTypes.filter(
-          unionType => !caseTypes.has(unionType),
-        );
-
-        if (missingBranchTypes.length === 0) {
-          // All cases matched - do nothing.
+      const unionTypes = unionTypeParts(discriminantType);
+      const caseTypes: Set<ts.Type> = new Set();
+      for (const switchCase of node.cases) {
+        if (switchCase.test === null) {
+          // Switch has 'default' branch - do nothing.
           return;
         }
 
-        context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: missingBranchTypes
-              .map(missingType =>
-                isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName}`
-                  : checker.typeToString(missingType),
-              )
-              .join(' | '),
-          },
-          suggest: [
-            {
-              messageId: 'addMissingCases',
-              fix(fixer): TSESLint.RuleFix | null {
-                return fixSwitch(
-                  fixer,
-                  node,
-                  missingBranchTypes,
-                  symbolName?.toString(),
-                );
-              },
-            },
-          ],
-        });
+        caseTypes.add(getNodeType(switchCase.test));
       }
+
+      const missingBranchTypes = unionTypes.filter(
+        unionType => !caseTypes.has(unionType),
+      );
+
+      if (missingBranchTypes.length === 0) {
+        // All cases matched - do nothing.
+        return;
+      }
+
+      context.report({
+        node: node.discriminant,
+        messageId: 'switchIsNotExhaustive',
+        data: {
+          missingBranches: missingBranchTypes
+            .map(missingType =>
+              isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                ? `typeof ${missingType.getSymbol()?.escapedName}`
+                : checker.typeToString(missingType),
+            )
+            .join(' | '),
+        },
+        suggest: [
+          {
+            messageId: 'addMissingCases',
+            fix(fixer): TSESLint.RuleFix | null {
+              return fixSwitch(
+                fixer,
+                node,
+                missingBranchTypes,
+                symbolName?.toString(),
+              );
+            },
+          },
+        ],
+      });
     }
 
     return {

@@ -165,23 +165,7 @@ switch (day) {
   }
 }
     `,
-    // Exhaustiveness check only works for union types...
-    `
-const day = 'Monday' as string;
-let result = 0;
-
-switch (day) {
-  case 'Monday': {
-    result = 1;
-    break;
-  }
-  case 'Tuesday': {
-    result = 2;
-    break;
-  }
-}
-    `,
-    // ... and enums (at least for now).
+    // Exhaustiveness check works for enums.
     `
 enum Enum {
   A,
@@ -194,17 +178,6 @@ function test(value: Enum): number {
       return 1;
     case Enum.B:
       return 2;
-  }
-}
-    `,
-    // Object union types won't work either, unless it's a discriminated union
-    `
-type ObjectUnion = { a: 1 } | { b: 2 };
-
-function test(value: ObjectUnion): number {
-  switch (value.a) {
-    case 1:
-      return 1;
   }
 }
     `,
@@ -598,6 +571,77 @@ function test(arg: Enum): string {
               `.trimRight(),
             },
           ],
+        },
+      ],
+    },
+    {
+      // Requires default case for primitive types.
+      code: `
+const day = 'Monday' as string;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  case 'Tuesday': {
+    result = 2;
+    break;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'addDefaultCase',
+          line: 5,
+          column: 9,
+        },
+      ],
+    },
+    {
+      // Requires default case for unknown types.
+      code: `
+type Day = any;
+const day = 'Monday' as Day;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  case 'Tuesday': {
+    result = 2;
+    break;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'addDefaultCase',
+          line: 6,
+          column: 9,
+        },
+      ],
+    },
+    {
+      // Object union types won't work either, unless it's a discriminated union
+      code: `
+type ObjectUnion = { a: 1 } | { b: 2 };
+
+function test(value: ObjectUnion): number {
+  switch (value.a) {
+    case 1:
+      return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'addDefaultCase',
+          line: 5,
+          column: 11,
         },
       ],
     },

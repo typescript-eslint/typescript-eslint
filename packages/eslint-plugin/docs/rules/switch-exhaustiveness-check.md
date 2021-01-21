@@ -2,6 +2,8 @@
 
 Union type may have a lot of parts. It's easy to forget to consider all cases in switch. This rule reminds which parts are missing. If domain of the problem requires to have only a partial switch, developer may _explicitly_ add a default clause.
 
+If the switch statement's expression is not a union type (e.g. string, number, any, unknown), a default case is required.
+
 Examples of **incorrect** code for this rule:
 
 ```ts
@@ -13,6 +15,20 @@ type Day =
   | 'Friday'
   | 'Saturday'
   | 'Sunday';
+
+const day = 'Monday' as Day;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+}
+```
+
+```ts
+type Day = string;
 
 const day = 'Monday' as Day;
 let result = 0;
