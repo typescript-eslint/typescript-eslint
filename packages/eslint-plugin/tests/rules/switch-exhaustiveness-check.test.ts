@@ -181,6 +181,21 @@ function test(value: Enum): number {
   }
 }
     `,
+    // Non-union types are valid with a default case.
+    `
+const day = 'Monday' as string;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  default: {
+    result = 42;
+  }
+}
+    `,
   ],
   invalid: [
     {
