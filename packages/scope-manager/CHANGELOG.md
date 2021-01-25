@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.14.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.0...v4.14.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* **scope-manager:** fix incorrect handling of class decorators and class method default params ([#2943](https://github.com/typescript-eslint/typescript-eslint/issues/2943)) ([e1eac83](https://github.com/typescript-eslint/typescript-eslint/commit/e1eac8312268d1855a2ed7784b4d190ecb9c9fa4)), closes [#2941](https://github.com/typescript-eslint/typescript-eslint/issues/2941) [#2942](https://github.com/typescript-eslint/typescript-eslint/issues/2942) [#2751](https://github.com/typescript-eslint/typescript-eslint/issues/2751)
+
+
+
+
+
 # [4.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.13.0...v4.14.0) (2021-01-18)
 
 
