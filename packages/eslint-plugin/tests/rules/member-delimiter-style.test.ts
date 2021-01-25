@@ -705,6 +705,35 @@ type Bar = {
         },
       ],
     },
+    `
+type Foo = {a: {
+  b: true;
+}};
+    `,
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+
+};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+        },
+      ],
+    },
 
     {
       code: `
@@ -3362,6 +3391,49 @@ type Foo = {
           messageId: 'expectedSemi',
           line: 1,
           column: 21,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 4,
+          column: 2,
         },
       ],
     },
