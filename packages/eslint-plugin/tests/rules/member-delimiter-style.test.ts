@@ -710,6 +710,13 @@ type Foo = {a: {
   b: true;
 }};
     `,
+    `
+type Foo = {
+  a: {
+    b: true;
+  };
+};
+    `,
     {
       code: `
 type Foo = {a: {
@@ -3410,6 +3417,29 @@ type Foo = {a: {
           messageId: 'unexpectedSemi',
           line: 4,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  }
+};
+      `,
+      output: `
+type Foo = {
+  a: {
+    b: true;
+  };
+};
+      `,
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 5,
+          column: 4,
         },
       ],
     },
