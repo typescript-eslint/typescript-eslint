@@ -36,10 +36,7 @@ export default util.createRule<[], MessageIds>({
           replacement: '?.' | '?.[',
         ): TSESLint.ReportFixFunction {
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            if (_token && !node.optional) {
-              return fixer.replaceText(_token, replacement);
-            }
-            return null;
+            return fixer.replaceText(_token, replacement);
           };
         }
 
