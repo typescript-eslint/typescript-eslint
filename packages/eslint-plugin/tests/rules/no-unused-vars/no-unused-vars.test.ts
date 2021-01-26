@@ -1,6 +1,6 @@
 import rule from '../../../src/rules/no-unused-vars';
 import { collectUnusedVariables } from '../../../src/util';
-import { noFormat, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -10,6 +10,11 @@ const ruleTester = new RuleTester({
   },
   parser: '@typescript-eslint/parser',
 });
+
+const withMetaParserOptions = {
+  tsconfigRootDir: getFixturesRootDir(),
+  project: './tsconfig-withmeta.json',
+};
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
 ruleTester.defineRule('collect-unused-vars', context => {
@@ -978,6 +983,19 @@ declare module 'next-auth' {
   }
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2972
+    {
+      code: `
+import { TestGeneric, Test } from 'fake-module';
+
+declare function deco(..._param: any): any;
+export class TestClass {
+  @deco
+  public test(): TestGeneric<Test> {}
+}
+      `,
+      parserOptions: withMetaParserOptions,
+    },
   ],
 
   invalid: [

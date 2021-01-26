@@ -295,9 +295,14 @@ class ClassVisitor extends Visitor {
       }
 
       if (withDecorators) {
-        return this.#referencer
-          .currentScope()
-          .referenceDualValueType(identifier);
+        this.#referencer.currentScope().referenceDualValueType(identifier);
+
+        if (node.typeAnnotation.typeParameters) {
+          this.visitType(node.typeAnnotation.typeParameters);
+        }
+
+        // everything is handled now
+        return;
       }
     }
     this.visitType(node);
