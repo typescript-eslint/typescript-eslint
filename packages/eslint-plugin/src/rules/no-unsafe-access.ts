@@ -11,8 +11,8 @@ export default util.createRule<[], MessageIds>({
       description:
         'OptionalChain is recommended when accessing non-built-in object members',
       category: 'Stylistic Issues',
-      recommended: 'error',
       suggestion: true,
+      recommended: false,
     },
     messages: {
       noSafeAccess:
@@ -32,12 +32,12 @@ export default util.createRule<[], MessageIds>({
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         const token = sourceCode.getTokenBefore(node.property);
         function convertTokenToOptional(
-          token: TSESTree.Node | TSESTree.Token,
+          _token: TSESTree.Node | TSESTree.Token,
           replacement: '?.' | '?.[',
         ): TSESLint.ReportFixFunction {
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            if (token && !node.optional) {
-              return fixer.replaceText(token, replacement);
+            if (_token && !node.optional) {
+              return fixer.replaceText(_token, replacement);
             }
             return null;
           };

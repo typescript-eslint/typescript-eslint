@@ -24,7 +24,6 @@ export = {
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/no-this-alias': 'error',
-    '@typescript-eslint/no-unsafe-access': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-var-requires': 'error',
