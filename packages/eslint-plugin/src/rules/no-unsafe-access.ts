@@ -16,7 +16,7 @@ export default util.createRule<[], MessageIds>({
     },
     messages: {
       noSafeAccess:
-        'Members are not securely accessible and are recommended OptionalChain',
+        'Member access is not secure, use optional chain substitution',
     },
     schema: [],
     fixable: 'code',
