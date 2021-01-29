@@ -93,9 +93,13 @@ interface TestCaseError<TMessageIds extends string> {
    */
   readonly line?: number;
   /**
+   * Reported message.
+   */
+  readonly message?: string;
+  /**
    * Reported message ID.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId?: TMessageIds;
   /**
    * Reported suggestions.
    */
