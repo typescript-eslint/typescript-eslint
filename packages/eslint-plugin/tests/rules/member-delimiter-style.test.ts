@@ -705,17 +705,22 @@ type Bar = {
         },
       ],
     },
-    `
+    {
+      code: `
 type Foo = {a: {
   b: true;
 }};
-    `,
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
     `
-type Foo = {
-  a: {
-    b: true;
-  };
-};
+type Foo = {a: {
+  b: true;
+};};
     `,
     {
       code: `
@@ -725,7 +730,34 @@ type Foo = {a: {
       `,
       options: [
         {
+          multilineDetection: 'brackets',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  };
+};
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
           singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
         },
       ],
     },
@@ -738,6 +770,7 @@ type Foo = {
       options: [
         {
           singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
         },
       ],
     },
@@ -3412,11 +3445,35 @@ type Foo = {a: {
   b: true;
 }};
       `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
       errors: [
         {
           messageId: 'unexpectedSemi',
           line: 4,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 4,
+          column: 2,
         },
       ],
     },
@@ -3435,6 +3492,11 @@ type Foo = {
   };
 };
       `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
       errors: [
         {
           messageId: 'expectedSemi',
@@ -3457,6 +3519,7 @@ type Foo = {a: {
       options: [
         {
           singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
         },
       ],
       errors: [
