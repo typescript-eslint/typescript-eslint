@@ -341,6 +341,14 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       parserOptions: withMetaParserOptions,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2989
+    `
+import type * as constants from './constants';
+
+export type Y = {
+  [constants.X]: ReadonlyArray<string>;
+};
+    `,
   ],
   invalid: [
     {

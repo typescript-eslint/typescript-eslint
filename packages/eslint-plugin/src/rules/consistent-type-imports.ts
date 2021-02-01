@@ -164,20 +164,49 @@ export default util.createRule<Options, MessageIds>({
                         }
                       }
                       if (ref.isValueReference) {
-                        // `type T = typeof foo` will create a value reference because "foo" must be a value type
-                        // however this value reference is safe to use with type-only imports
-                        let parent = ref.identifier.parent;
+                        let parent: TSESTree.Node | undefined =
+                          ref.identifier.parent;
+                        let child: TSESTree.Node = ref.identifier;
                         while (parent) {
-                          if (parent.type === AST_NODE_TYPES.TSTypeQuery) {
-                            return true;
+                          switch (parent.type) {
+                            // CASE 1:
+                            // `type T = typeof foo` will create a value reference because "foo" must be a value type
+                            // however this value reference is safe to use with type-only imports
+                            case AST_NODE_TYPES.TSTypeQuery:
+                              return true;
+
+                            case AST_NODE_TYPES.TSQualifiedName:
+                              // TSTypeQuery must have a TSESTree.EntityName as its child, so we can filter here and break early
+                              if (parent.left !== child) {
+                                return false;
+                              }
+                              child = parent;
+                              parent = parent.parent;
+                              continue;
+                            // END CASE 1
+
+                            //////////////
+
+                            // CASE 2:
+                            // `type T = { [foo]: string }` will create a value reference because "foo" must be a value type
+                            // however this value reference is safe to use with type-only imports.
+                            // Also this is represented as a non-type AST - hence it uses MemberExpression
+                            case AST_NODE_TYPES.TSPropertySignature:
+                              return parent.key === child;
+
+                            case AST_NODE_TYPES.MemberExpression:
+                              if (parent.object !== child) {
+                                return false;
+                              }
+                              child = parent;
+                              parent = parent.parent;
+                              continue;
+                            // END CASE 2
+
+                            default:
+                              return false;
                           }
-                          // TSTypeQuery must have a TSESTree.EntityName as its child, so we can filter here and break early
-                          if (parent.type !== AST_NODE_TYPES.TSQualifiedName) {
-                            break;
-                          }
-                          parent = parent.parent;
                         }
-                        return false;
                       }
 
                       return ref.isTypeReference;
@@ -229,25 +258,46 @@ export default util.createRule<Options, MessageIds>({
                       ? report.valueSpecifiers
                       : report.typeSpecifiers
                     ).map(specifier => `"${specifier.local.name}"`);
+
+                    const message = ((): {
+                      messageId: MessageIds;
+                      data: Record<string, unknown>;
+                    } => {
+                      if (importNames.length === 1) {
+                        const typeImports = importNames[0];
+                        if (isTypeImport) {
+                          return {
+                            messageId: 'aImportInDecoMeta',
+                            data: { typeImports },
+                          };
+                        } else {
+                          return {
+                            messageId: 'aImportIsOnlyTypes',
+                            data: { typeImports },
+                          };
+                        }
+                      } else {
+                        const typeImports = [
+                          importNames.slice(0, -1).join(', '),
+                          importNames.slice(-1)[0],
+                        ].join(' and ');
+                        if (isTypeImport) {
+                          return {
+                            messageId: 'someImportsInDecoMeta',
+                            data: { typeImports },
+                          };
+                        } else {
+                          return {
+                            messageId: 'someImportsAreOnlyTypes',
+                            data: { typeImports },
+                          };
+                        }
+                      }
+                    })();
+
                     context.report({
                       node: report.node,
-                      messageId:
-                        importNames.length === 1
-                          ? isTypeImport
-                            ? 'aImportInDecoMeta'
-                            : 'aImportIsOnlyTypes'
-                          : isTypeImport
-                          ? 'someImportsInDecoMeta'
-                          : 'someImportsAreOnlyTypes',
-                      data: {
-                        typeImports:
-                          importNames.length === 1
-                            ? importNames[0]
-                            : [
-                                importNames.slice(0, -1).join(', '),
-                                importNames.slice(-1)[0],
-                              ].join(' and '),
-                      },
+                      ...message,
                       *fix(fixer) {
                         if (isTypeImport) {
                           yield* fixToValueImportInDecoMeta(
