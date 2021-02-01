@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.14.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.1...v4.14.2) (2021-02-01)
+
+
+### Bug Fixes
+
+* **scope-manager:** correctly reference generic parameters when decorator metadata is enabled ([#2975](https://github.com/typescript-eslint/typescript-eslint/issues/2975)) ([7695ef3](https://github.com/typescript-eslint/typescript-eslint/commit/7695ef318f1cc8688acaabf4f2730769622f083f)), closes [#2972](https://github.com/typescript-eslint/typescript-eslint/issues/2972)
+
+
+
+
+
 ## [4.14.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.0...v4.14.1) (2021-01-25)
 
 
