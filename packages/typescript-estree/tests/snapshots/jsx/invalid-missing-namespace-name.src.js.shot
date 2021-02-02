@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-missing-namespace-name.src 1`] = `
 Object {
-  "column": 1,
-  "index": 1,
+  "column": 0,
+  "index": 0,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expression expected.",
 }
 `;

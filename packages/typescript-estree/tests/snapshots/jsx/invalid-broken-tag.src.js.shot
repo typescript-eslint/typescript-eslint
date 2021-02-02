@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-broken-tag.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 12,
+  "index": 12,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Unterminated string literal.",
 }
 `;

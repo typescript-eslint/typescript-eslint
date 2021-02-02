@@ -2,8 +2,8 @@
 
 exports[`jsx invalid-matching-placeholder-in-closing-tag.src 1`] = `
 Object {
-  "column": 5,
-  "index": 5,
+  "column": 27,
+  "index": 27,
   "lineNumber": 1,
   "message": "'>' expected.",
 }
