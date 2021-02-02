@@ -242,7 +242,7 @@ export default util.createRule<Options, MessageIds>({
       },
     };
     if (semver.satisfies(TSESLint.ESLint.version, '>=7.19.0')) {
-      overrides.ForInStatement = function (node) {
+      overrides.ForInStatement = function (node): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
           return rules.ForInStatement({
@@ -257,7 +257,7 @@ export default util.createRule<Options, MessageIds>({
 
         return rules.ForInStatement(node);
       };
-      overrides.ForOfStatement = function (node) {
+      overrides.ForOfStatement = function (node): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
           return rules.ForOfStatement({
@@ -275,7 +275,7 @@ export default util.createRule<Options, MessageIds>({
     } else {
       overrides['ForInStatement, ForOfStatement'] = function (
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-      ) {
+      ): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
           return rules['ForInStatement, ForOfStatement']({
