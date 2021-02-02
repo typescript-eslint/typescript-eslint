@@ -1,6 +1,7 @@
 // any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import semver from 'semver';
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -164,36 +165,7 @@ export default util.createRule<Options, MessageIds>({
         return rules.ConditionalExpression(node);
       },
       // DoWhileStatement
-      ForInStatement(node) {
-        if (util.isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          return rules.ForInStatement({
-            ...node,
-            type: AST_NODE_TYPES.ForInStatement,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-        }
-
-        return rules.ForInStatement(node);
-      },
-      ForOfStatement(node) {
-        if (util.isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          return rules.ForOfStatement({
-            ...node,
-            type: AST_NODE_TYPES.ForOfStatement,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-        }
-
-        return rules.ForOfStatement(node);
-      },
+      // ForIn and ForOf are guarded by eslint version
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
         if (node.init && util.isTypeAssertion(node.init)) {
@@ -269,6 +241,56 @@ export default util.createRule<Options, MessageIds>({
         }
       },
     };
+    if (semver.satisfies(TSESLint.ESLint.version, '>=7.19.0')) {
+      overrides.ForInStatement = function (node) {
+        if (util.isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          return rules.ForInStatement({
+            ...node,
+            type: AST_NODE_TYPES.ForInStatement,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+
+        return rules.ForInStatement(node);
+      };
+      overrides.ForOfStatement = function (node) {
+        if (util.isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          return rules.ForOfStatement({
+            ...node,
+            type: AST_NODE_TYPES.ForOfStatement,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+
+        return rules.ForOfStatement(node);
+      };
+    } else {
+      overrides['ForInStatement, ForOfStatement'] = function (
+        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
+      ) {
+        if (util.isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          return rules['ForInStatement, ForOfStatement']({
+            ...node,
+            type: AST_NODE_TYPES.ForOfStatement as any,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+
+        return rules['ForInStatement, ForOfStatement'](node);
+      };
+    }
     return Object.assign({}, rules, overrides);
   },
 });
