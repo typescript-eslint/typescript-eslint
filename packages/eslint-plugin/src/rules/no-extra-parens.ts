@@ -164,14 +164,12 @@ export default util.createRule<Options, MessageIds>({
         return rules.ConditionalExpression(node);
       },
       // DoWhileStatement
-      'ForInStatement, ForOfStatement'(
-        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-      ) {
+      ForInStatement(node) {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
-          return rules['ForInStatement, ForOfStatement']({
+          return rules.ForInStatement({
             ...node,
-            type: AST_NODE_TYPES.ForOfStatement as any,
+            type: AST_NODE_TYPES.ForInStatement,
             right: {
               ...node.right,
               type: AST_NODE_TYPES.SequenceExpression as any,
@@ -179,7 +177,22 @@ export default util.createRule<Options, MessageIds>({
           });
         }
 
-        return rules['ForInStatement, ForOfStatement'](node);
+        return rules.ForInStatement(node);
+      },
+      ForOfStatement(node) {
+        if (util.isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          return rules.ForOfStatement({
+            ...node,
+            type: AST_NODE_TYPES.ForOfStatement,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+
+        return rules.ForOfStatement(node);
       },
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
