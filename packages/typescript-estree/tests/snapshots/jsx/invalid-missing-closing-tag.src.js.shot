@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-missing-closing-tag.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 1,
+  "index": 1,
   "lineNumber": 1,
-  "message": "Expression expected.",
+  "message": "JSX element 'a' has no corresponding closing tag.",
 }
 `;

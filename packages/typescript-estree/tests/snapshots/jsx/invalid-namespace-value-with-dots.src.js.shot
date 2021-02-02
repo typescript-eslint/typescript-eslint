@@ -5,6 +5,6 @@ Object {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;

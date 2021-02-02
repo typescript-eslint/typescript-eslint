@@ -2,9 +2,9 @@
 
 exports[`jsx embedded-tags.src 1`] = `
 Object {
-  "column": 11,
-  "index": 11,
+  "column": 16,
+  "index": 16,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "'{' expected.",
 }
 `;
