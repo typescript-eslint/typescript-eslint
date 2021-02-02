@@ -10,7 +10,7 @@ Before raising a bug, ensure you are using the latest version of our packages. W
 
 Finally, when raising a new issue, please fill out the issue template - **_please don't skip sections_**.
 
-Please provide **_as much information as possible_**. This project is maintained by volunteers, so the more the more information you provide, the less likely we will have to waste everyone's time in asking you for more information.
+Please provide **_as much information as possible_**. This project is maintained by volunteers, so the more information you provide, the less likely we will have to waste everyone's time in asking you for more information.
 
 If you have a particularly complex issue - consider creating a small, self-contained reproduction repo. This will help you in figuring out the exact problem, and will help us in reproducing and diagnosing the bug.
 
