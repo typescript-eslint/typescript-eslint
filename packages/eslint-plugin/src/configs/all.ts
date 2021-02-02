@@ -87,6 +87,7 @@ export = {
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-require-imports': 'error',
+    '@typescript-eslint/no-return-in-void-callback': 'error',
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-this-alias': 'error',

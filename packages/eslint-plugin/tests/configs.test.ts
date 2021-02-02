@@ -27,10 +27,10 @@ function filterRules(values: Record<string, string>): [string, string][] {
   );
 }
 
-function itHasBaseRulesOverriden(
+function itHasBaseRulesOverridden(
   unfilteredConfigRules: Record<string, string>,
 ): void {
-  it('has the base rules overriden by the appropriate extension rules', () => {
+  it('has the base rules overridden by the appropriate extension rules', () => {
     const ruleNames = new Set(Object.keys(unfilteredConfigRules));
     EXTENSION_RULES.forEach(([ruleName, extRuleName]) => {
       if (ruleNames.has(ruleName)) {
@@ -57,7 +57,7 @@ describe('all.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  itHasBaseRulesOverriden(unfilteredConfigRules);
+  itHasBaseRulesOverridden(unfilteredConfigRules);
 });
 
 describe('recommended.json config', () => {
@@ -80,7 +80,7 @@ describe('recommended.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  itHasBaseRulesOverriden(unfilteredConfigRules);
+  itHasBaseRulesOverridden(unfilteredConfigRules);
 });
 
 describe('recommended-requiring-type-checking.json config', () => {
@@ -103,5 +103,5 @@ describe('recommended-requiring-type-checking.json config', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
   });
 
-  itHasBaseRulesOverriden(unfilteredConfigRules);
+  itHasBaseRulesOverridden(unfilteredConfigRules);
 });
