@@ -1,7 +1,6 @@
 // any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import semver from 'semver';
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -241,7 +240,7 @@ export default util.createRule<Options, MessageIds>({
         }
       },
     };
-    if (semver.satisfies(TSESLint.ESLint.version, '>=7.19.0')) {
+    if (rules.ForInStatement && rules.ForOfStatement) {
       overrides.ForInStatement = function (node): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
