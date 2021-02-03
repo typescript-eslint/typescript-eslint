@@ -196,7 +196,7 @@ Object {
                   ],
                   "raw": "'&amp;'",
                   "type": "Literal",
-                  "value": "&",
+                  "value": "&amp;",
                 },
                 "loc": Object {
                   "end": Object {

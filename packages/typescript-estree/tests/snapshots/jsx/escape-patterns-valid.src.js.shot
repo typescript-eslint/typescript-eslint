@@ -26,7 +26,7 @@ Object {
 ",
             "type": "Literal",
             "value": "
-  &nbsp;
+   
 ",
           },
         ],
@@ -182,7 +182,7 @@ Object {
                 ],
                 "raw": "\\"&#123;\\"",
                 "type": "Literal",
-                "value": "&#123;",
+                "value": "{",
               },
             },
           ],

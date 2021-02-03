@@ -14,6 +14,7 @@ import {
   getTextForTokenKind,
   getTSNodeAccessibility,
   hasModifier,
+  isChainExpression,
   isChildUnwrappableOptionalChain,
   isComma,
   isComputedProperty,
@@ -21,14 +22,13 @@ import {
   isOptional,
   TSError,
   unescapeStringLiteralText,
-  isChainExpression,
 } from './node-utils';
 import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
 import {
   AST_NODE_TYPES,
   TSESTree,
-  TSNode,
   TSESTreeToTSNode,
+  TSNode,
 } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -1921,18 +1921,14 @@ export class Converter {
       // Literals
 
       case SyntaxKind.StringLiteral: {
-        const result = this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.Literal>(node, {
           type: AST_NODE_TYPES.Literal,
-          raw: '',
-          value: '',
+          value:
+            parent.kind === SyntaxKind.JsxAttribute
+              ? unescapeStringLiteralText(node.text)
+              : node.text,
+          raw: node.getText(),
         });
-        result.raw = this.ast.text.slice(result.range[0], result.range[1]);
-        if ('name' in parent && parent.name === node) {
-          result.value = node.text;
-        } else {
-          result.value = unescapeStringLiteralText(node.text);
-        }
-        return result;
       }
 
       case SyntaxKind.NumericLiteral: {
@@ -2141,19 +2137,20 @@ export class Converter {
       case SyntaxKind.JsxText: {
         const start = node.getFullStart();
         const end = node.getEnd();
+        const text = this.ast.text.slice(start, end);
 
         if (this.options.useJSXTextNode) {
           return this.createNode<TSESTree.JSXText>(node, {
             type: AST_NODE_TYPES.JSXText,
-            value: this.ast.text.slice(start, end),
-            raw: this.ast.text.slice(start, end),
+            value: unescapeStringLiteralText(text),
+            raw: text,
             range: [start, end],
           });
         } else {
           return this.createNode<TSESTree.Literal>(node, {
             type: AST_NODE_TYPES.Literal,
-            value: this.ast.text.slice(start, end),
-            raw: this.ast.text.slice(start, end),
+            value: unescapeStringLiteralText(text),
+            raw: text,
             range: [start, end],
           });
         }

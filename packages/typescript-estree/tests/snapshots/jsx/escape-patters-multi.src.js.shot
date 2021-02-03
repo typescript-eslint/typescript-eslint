@@ -23,7 +23,7 @@ Object {
             ],
             "raw": "&nbsp; test",
             "type": "Literal",
-            "value": "&nbsp; test",
+            "value": "  test",
           },
         ],
         "closingElement": Object {
@@ -124,7 +124,7 @@ Object {
                 ],
                 "raw": "\\"test=1&amp;bar=1&#123;\\"",
                 "type": "Literal",
-                "value": "test=1&bar=1&#123;",
+                "value": "test=1&bar=1{",
               },
             },
           ],
