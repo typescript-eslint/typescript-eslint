@@ -422,7 +422,7 @@ export function unescapeStringLiteralText(text: string): string {
           ? parseInt(item.slice(2), 16)
           : parseInt(item.slice(1), 10);
       return codePoint > 0x10ffff // RangeError: Invalid code point
-        ? String.fromCharCode(65533)
+        ? entity
         : String.fromCodePoint(codePoint);
     }
     return xhtmlEntities[item] || entity;

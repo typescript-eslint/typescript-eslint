@@ -22,9 +22,7 @@ describe('unescapeStringLiteralText()', () => {
     expect(unescapeStringLiteralText('&uuml;ber')).toEqual('über');
   });
   it('should handle invalid code point modify content', () => {
-    expect(unescapeStringLiteralText('&#2013266066;')).toEqual(
-      String.fromCharCode(65533),
-    );
+    expect(unescapeStringLiteralText('&#2013266066;')).toEqual('&#2013266066;');
   });
   it('should escape correctly', () => {
     expect(unescapeStringLiteralText('&amp=123&lang=en&amp,&amp;')).toEqual(
