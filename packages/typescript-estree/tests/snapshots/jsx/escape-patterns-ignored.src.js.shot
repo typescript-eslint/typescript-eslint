@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx escape-patterns.src 1`] = `
+exports[`jsx escape-patterns-ignored.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9,8 +9,8 @@ Object {
         "closingElement": null,
         "loc": Object {
           "end": Object {
-            "column": 83,
-            "line": 1,
+            "column": 2,
+            "line": 9,
           },
           "start": Object {
             "column": 0,
@@ -22,70 +22,70 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 10,
-                  "line": 1,
+                  "column": 9,
+                  "line": 2,
                 },
                 "start": Object {
-                  "column": 3,
-                  "line": 1,
+                  "column": 2,
+                  "line": 2,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 4,
-                    "line": 1,
+                    "column": 3,
+                    "line": 2,
                   },
                   "start": Object {
-                    "column": 3,
-                    "line": 1,
+                    "column": 2,
+                    "line": 2,
                   },
                 },
                 "name": "b",
                 "range": Array [
-                  3,
-                  4,
+                  5,
+                  6,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                3,
-                10,
+                5,
+                12,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "expression": Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 9,
-                      "line": 1,
+                      "column": 8,
+                      "line": 2,
                     },
                     "start": Object {
-                      "column": 6,
-                      "line": 1,
+                      "column": 5,
+                      "line": 2,
                     },
                   },
                   "range": Array [
-                    6,
-                    9,
+                    8,
+                    11,
                   ],
-                  "raw": "\\" \\"",
+                  "raw": "' '",
                   "type": "Literal",
                   "value": " ",
                 },
                 "loc": Object {
                   "end": Object {
-                    "column": 10,
-                    "line": 1,
+                    "column": 9,
+                    "line": 2,
                   },
                   "start": Object {
-                    "column": 5,
-                    "line": 1,
+                    "column": 4,
+                    "line": 2,
                   },
                 },
                 "range": Array [
-                  5,
-                  10,
+                  7,
+                  12,
                 ],
                 "type": "JSXExpressionContainer",
               },
@@ -93,51 +93,51 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 16,
-                  "line": 1,
+                  "column": 7,
+                  "line": 3,
                 },
                 "start": Object {
-                  "column": 11,
-                  "line": 1,
+                  "column": 2,
+                  "line": 3,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 12,
-                    "line": 1,
+                    "column": 3,
+                    "line": 3,
                   },
                   "start": Object {
-                    "column": 11,
-                    "line": 1,
+                    "column": 2,
+                    "line": 3,
                   },
                 },
                 "name": "c",
                 "range": Array [
-                  11,
-                  12,
+                  15,
+                  16,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                11,
-                16,
+                15,
+                20,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 16,
-                    "line": 1,
+                    "column": 7,
+                    "line": 3,
                   },
                   "start": Object {
-                    "column": 13,
-                    "line": 1,
+                    "column": 4,
+                    "line": 3,
                   },
                 },
                 "range": Array [
-                  13,
-                  16,
+                  17,
+                  20,
                 ],
                 "raw": "\\" \\"",
                 "type": "Literal",
@@ -147,105 +147,122 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 26,
-                  "line": 1,
+                  "column": 13,
+                  "line": 4,
                 },
                 "start": Object {
-                  "column": 17,
-                  "line": 1,
+                  "column": 2,
+                  "line": 4,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 18,
-                    "line": 1,
+                    "column": 3,
+                    "line": 4,
                   },
                   "start": Object {
-                    "column": 17,
-                    "line": 1,
+                    "column": 2,
+                    "line": 4,
                   },
                 },
                 "name": "d",
                 "range": Array [
-                  17,
-                  18,
+                  23,
+                  24,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                17,
-                26,
+                23,
+                34,
               ],
               "type": "JSXAttribute",
               "value": Object {
+                "expression": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 5,
+                      "line": 4,
+                    },
+                  },
+                  "range": Array [
+                    26,
+                    33,
+                  ],
+                  "raw": "'&amp;'",
+                  "type": "Literal",
+                  "value": "&amp;",
+                },
                 "loc": Object {
                   "end": Object {
-                    "column": 26,
-                    "line": 1,
+                    "column": 13,
+                    "line": 4,
                   },
                   "start": Object {
-                    "column": 19,
-                    "line": 1,
+                    "column": 4,
+                    "line": 4,
                   },
                 },
                 "range": Array [
-                  19,
-                  26,
+                  25,
+                  34,
                 ],
-                "raw": "\\"&amp;\\"",
-                "type": "Literal",
-                "value": "&",
+                "type": "JSXExpressionContainer",
               },
             },
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 43,
-                  "line": 1,
+                  "column": 18,
+                  "line": 5,
                 },
                 "start": Object {
-                  "column": 27,
-                  "line": 1,
+                  "column": 2,
+                  "line": 5,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 28,
-                    "line": 1,
+                    "column": 3,
+                    "line": 5,
                   },
                   "start": Object {
-                    "column": 27,
-                    "line": 1,
+                    "column": 2,
+                    "line": 5,
                   },
                 },
                 "name": "e",
                 "range": Array [
-                  27,
-                  28,
+                  37,
+                  38,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                27,
-                43,
+                37,
+                53,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 43,
-                    "line": 1,
+                    "column": 18,
+                    "line": 5,
                   },
                   "start": Object {
-                    "column": 29,
-                    "line": 1,
+                    "column": 4,
+                    "line": 5,
                   },
                 },
                 "range": Array [
-                  29,
-                  43,
+                  39,
+                  53,
                 ],
                 "raw": "\\"id=1&group=2\\"",
                 "type": "Literal",
@@ -255,51 +272,51 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 59,
-                  "line": 1,
+                  "column": 17,
+                  "line": 6,
                 },
                 "start": Object {
-                  "column": 44,
-                  "line": 1,
+                  "column": 2,
+                  "line": 6,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 45,
-                    "line": 1,
+                    "column": 3,
+                    "line": 6,
                   },
                   "start": Object {
-                    "column": 44,
-                    "line": 1,
+                    "column": 2,
+                    "line": 6,
                   },
                 },
                 "name": "f",
                 "range": Array [
-                  44,
-                  45,
+                  56,
+                  57,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                44,
-                59,
+                56,
+                71,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 59,
-                    "line": 1,
+                    "column": 17,
+                    "line": 6,
                   },
                   "start": Object {
-                    "column": 46,
-                    "line": 1,
+                    "column": 4,
+                    "line": 6,
                   },
                 },
                 "range": Array [
-                  46,
-                  59,
+                  58,
+                  71,
                 ],
                 "raw": "\\"&#123456789\\"",
                 "type": "Literal",
@@ -309,51 +326,51 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 71,
-                  "line": 1,
+                  "column": 13,
+                  "line": 7,
                 },
                 "start": Object {
-                  "column": 60,
-                  "line": 1,
+                  "column": 2,
+                  "line": 7,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 61,
-                    "line": 1,
+                    "column": 3,
+                    "line": 7,
                   },
                   "start": Object {
-                    "column": 60,
-                    "line": 1,
+                    "column": 2,
+                    "line": 7,
                   },
                 },
                 "name": "g",
                 "range": Array [
-                  60,
-                  61,
+                  74,
+                  75,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                60,
-                71,
+                74,
+                85,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 71,
-                    "line": 1,
+                    "column": 13,
+                    "line": 7,
                   },
                   "start": Object {
-                    "column": 62,
-                    "line": 1,
+                    "column": 4,
+                    "line": 7,
                   },
                 },
                 "range": Array [
-                  62,
-                  71,
+                  76,
+                  85,
                 ],
                 "raw": "\\"&#123*;\\"",
                 "type": "Literal",
@@ -363,51 +380,51 @@ Object {
             Object {
               "loc": Object {
                 "end": Object {
-                  "column": 80,
-                  "line": 1,
+                  "column": 10,
+                  "line": 8,
                 },
                 "start": Object {
-                  "column": 72,
-                  "line": 1,
+                  "column": 2,
+                  "line": 8,
                 },
               },
               "name": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 73,
-                    "line": 1,
+                    "column": 3,
+                    "line": 8,
                   },
                   "start": Object {
-                    "column": 72,
-                    "line": 1,
+                    "column": 2,
+                    "line": 8,
                   },
                 },
                 "name": "h",
                 "range": Array [
-                  72,
-                  73,
+                  88,
+                  89,
                 ],
                 "type": "JSXIdentifier",
               },
               "range": Array [
-                72,
-                80,
+                88,
+                96,
               ],
               "type": "JSXAttribute",
               "value": Object {
                 "loc": Object {
                   "end": Object {
-                    "column": 80,
-                    "line": 1,
+                    "column": 10,
+                    "line": 8,
                   },
                   "start": Object {
-                    "column": 74,
-                    "line": 1,
+                    "column": 4,
+                    "line": 8,
                   },
                 },
                 "range": Array [
-                  74,
-                  80,
+                  90,
+                  96,
                 ],
                 "raw": "\\"&#x;\\"",
                 "type": "Literal",
@@ -417,8 +434,8 @@ Object {
           ],
           "loc": Object {
             "end": Object {
-              "column": 83,
-              "line": 1,
+              "column": 2,
+              "line": 9,
             },
             "start": Object {
               "column": 0,
@@ -445,7 +462,7 @@ Object {
           },
           "range": Array [
             0,
-            83,
+            99,
           ],
           "selfClosing": true,
           "type": "JSXOpeningElement",
@@ -453,14 +470,14 @@ Object {
         },
         "range": Array [
           0,
-          83,
+          99,
         ],
         "type": "JSXElement",
       },
       "loc": Object {
         "end": Object {
-          "column": 84,
-          "line": 1,
+          "column": 3,
+          "line": 9,
         },
         "start": Object {
           "column": 0,
@@ -469,7 +486,7 @@ Object {
       },
       "range": Array [
         0,
-        84,
+        100,
       ],
       "type": "ExpressionStatement",
     },
@@ -477,8 +494,8 @@ Object {
   "comments": Array [],
   "loc": Object {
     "end": Object {
-      "column": 84,
-      "line": 1,
+      "column": 0,
+      "line": 10,
     },
     "start": Object {
       "column": 0,
@@ -487,7 +504,7 @@ Object {
   },
   "range": Array [
     0,
-    84,
+    101,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -530,17 +547,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 4,
-          "line": 1,
+          "column": 3,
+          "line": 2,
         },
         "start": Object {
-          "column": 3,
-          "line": 1,
+          "column": 2,
+          "line": 2,
         },
       },
       "range": Array [
-        3,
-        4,
+        5,
+        6,
       ],
       "type": "JSXIdentifier",
       "value": "b",
@@ -548,17 +565,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 5,
-          "line": 1,
+          "column": 4,
+          "line": 2,
         },
         "start": Object {
-          "column": 4,
-          "line": 1,
+          "column": 3,
+          "line": 2,
         },
       },
       "range": Array [
-        4,
-        5,
+        6,
+        7,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -566,17 +583,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 6,
-          "line": 1,
+          "column": 5,
+          "line": 2,
         },
         "start": Object {
-          "column": 5,
-          "line": 1,
+          "column": 4,
+          "line": 2,
         },
       },
       "range": Array [
-        5,
-        6,
+        7,
+        8,
       ],
       "type": "Punctuator",
       "value": "{",
@@ -584,35 +601,35 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 9,
-          "line": 1,
+          "column": 8,
+          "line": 2,
         },
         "start": Object {
-          "column": 6,
-          "line": 1,
+          "column": 5,
+          "line": 2,
         },
       },
       "range": Array [
-        6,
-        9,
+        8,
+        11,
       ],
       "type": "String",
-      "value": "\\" \\"",
+      "value": "' '",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 10,
-          "line": 1,
+          "column": 9,
+          "line": 2,
         },
         "start": Object {
-          "column": 9,
-          "line": 1,
+          "column": 8,
+          "line": 2,
         },
       },
       "range": Array [
-        9,
-        10,
+        11,
+        12,
       ],
       "type": "Punctuator",
       "value": "}",
@@ -620,17 +637,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 12,
-          "line": 1,
+          "column": 3,
+          "line": 3,
         },
         "start": Object {
-          "column": 11,
-          "line": 1,
+          "column": 2,
+          "line": 3,
         },
       },
       "range": Array [
-        11,
-        12,
+        15,
+        16,
       ],
       "type": "JSXIdentifier",
       "value": "c",
@@ -638,17 +655,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 13,
-          "line": 1,
+          "column": 4,
+          "line": 3,
         },
         "start": Object {
-          "column": 12,
-          "line": 1,
+          "column": 3,
+          "line": 3,
         },
       },
       "range": Array [
-        12,
-        13,
+        16,
+        17,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -656,17 +673,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 16,
-          "line": 1,
+          "column": 7,
+          "line": 3,
         },
         "start": Object {
-          "column": 13,
-          "line": 1,
+          "column": 4,
+          "line": 3,
         },
       },
       "range": Array [
-        13,
-        16,
+        17,
+        20,
       ],
       "type": "JSXText",
       "value": "\\" \\"",
@@ -674,17 +691,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 18,
-          "line": 1,
+          "column": 3,
+          "line": 4,
         },
         "start": Object {
-          "column": 17,
-          "line": 1,
+          "column": 2,
+          "line": 4,
         },
       },
       "range": Array [
-        17,
-        18,
+        23,
+        24,
       ],
       "type": "JSXIdentifier",
       "value": "d",
@@ -692,17 +709,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 19,
-          "line": 1,
+          "column": 4,
+          "line": 4,
         },
         "start": Object {
-          "column": 18,
-          "line": 1,
+          "column": 3,
+          "line": 4,
         },
       },
       "range": Array [
-        18,
-        19,
+        24,
+        25,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -710,35 +727,71 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 26,
-          "line": 1,
+          "column": 5,
+          "line": 4,
         },
         "start": Object {
-          "column": 19,
-          "line": 1,
+          "column": 4,
+          "line": 4,
         },
       },
       "range": Array [
-        19,
+        25,
         26,
       ],
-      "type": "JSXText",
-      "value": "\\"&amp;\\"",
+      "type": "Punctuator",
+      "value": "{",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 28,
-          "line": 1,
+          "column": 12,
+          "line": 4,
         },
         "start": Object {
-          "column": 27,
-          "line": 1,
+          "column": 5,
+          "line": 4,
         },
       },
       "range": Array [
-        27,
-        28,
+        26,
+        33,
+      ],
+      "type": "String",
+      "value": "'&amp;'",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 13,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        33,
+        34,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 3,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        37,
+        38,
       ],
       "type": "JSXIdentifier",
       "value": "e",
@@ -746,17 +799,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 29,
-          "line": 1,
+          "column": 4,
+          "line": 5,
         },
         "start": Object {
-          "column": 28,
-          "line": 1,
+          "column": 3,
+          "line": 5,
         },
       },
       "range": Array [
-        28,
-        29,
+        38,
+        39,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -764,17 +817,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 43,
-          "line": 1,
+          "column": 18,
+          "line": 5,
         },
         "start": Object {
-          "column": 29,
-          "line": 1,
+          "column": 4,
+          "line": 5,
         },
       },
       "range": Array [
-        29,
-        43,
+        39,
+        53,
       ],
       "type": "JSXText",
       "value": "\\"id=1&group=2\\"",
@@ -782,17 +835,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 45,
-          "line": 1,
+          "column": 3,
+          "line": 6,
         },
         "start": Object {
-          "column": 44,
-          "line": 1,
+          "column": 2,
+          "line": 6,
         },
       },
       "range": Array [
-        44,
-        45,
+        56,
+        57,
       ],
       "type": "JSXIdentifier",
       "value": "f",
@@ -800,17 +853,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 46,
-          "line": 1,
+          "column": 4,
+          "line": 6,
         },
         "start": Object {
-          "column": 45,
-          "line": 1,
+          "column": 3,
+          "line": 6,
         },
       },
       "range": Array [
-        45,
-        46,
+        57,
+        58,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -818,17 +871,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 59,
-          "line": 1,
+          "column": 17,
+          "line": 6,
         },
         "start": Object {
-          "column": 46,
-          "line": 1,
+          "column": 4,
+          "line": 6,
         },
       },
       "range": Array [
-        46,
-        59,
+        58,
+        71,
       ],
       "type": "JSXText",
       "value": "\\"&#123456789\\"",
@@ -836,17 +889,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 61,
-          "line": 1,
+          "column": 3,
+          "line": 7,
         },
         "start": Object {
-          "column": 60,
-          "line": 1,
+          "column": 2,
+          "line": 7,
         },
       },
       "range": Array [
-        60,
-        61,
+        74,
+        75,
       ],
       "type": "JSXIdentifier",
       "value": "g",
@@ -854,17 +907,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 62,
-          "line": 1,
+          "column": 4,
+          "line": 7,
         },
         "start": Object {
-          "column": 61,
-          "line": 1,
+          "column": 3,
+          "line": 7,
         },
       },
       "range": Array [
-        61,
-        62,
+        75,
+        76,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -872,17 +925,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 71,
-          "line": 1,
+          "column": 13,
+          "line": 7,
         },
         "start": Object {
-          "column": 62,
-          "line": 1,
+          "column": 4,
+          "line": 7,
         },
       },
       "range": Array [
-        62,
-        71,
+        76,
+        85,
       ],
       "type": "JSXText",
       "value": "\\"&#123*;\\"",
@@ -890,17 +943,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 73,
-          "line": 1,
+          "column": 3,
+          "line": 8,
         },
         "start": Object {
-          "column": 72,
-          "line": 1,
+          "column": 2,
+          "line": 8,
         },
       },
       "range": Array [
-        72,
-        73,
+        88,
+        89,
       ],
       "type": "JSXIdentifier",
       "value": "h",
@@ -908,17 +961,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 74,
-          "line": 1,
+          "column": 4,
+          "line": 8,
         },
         "start": Object {
-          "column": 73,
-          "line": 1,
+          "column": 3,
+          "line": 8,
         },
       },
       "range": Array [
-        73,
-        74,
+        89,
+        90,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -926,17 +979,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 80,
-          "line": 1,
+          "column": 10,
+          "line": 8,
         },
         "start": Object {
-          "column": 74,
-          "line": 1,
+          "column": 4,
+          "line": 8,
         },
       },
       "range": Array [
-        74,
-        80,
+        90,
+        96,
       ],
       "type": "JSXText",
       "value": "\\"&#x;\\"",
@@ -944,17 +997,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 82,
-          "line": 1,
+          "column": 1,
+          "line": 9,
         },
         "start": Object {
-          "column": 81,
-          "line": 1,
+          "column": 0,
+          "line": 9,
         },
       },
       "range": Array [
-        81,
-        82,
+        97,
+        98,
       ],
       "type": "Punctuator",
       "value": "/",
@@ -962,17 +1015,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 83,
-          "line": 1,
+          "column": 2,
+          "line": 9,
         },
         "start": Object {
-          "column": 82,
-          "line": 1,
+          "column": 1,
+          "line": 9,
         },
       },
       "range": Array [
-        82,
-        83,
+        98,
+        99,
       ],
       "type": "Punctuator",
       "value": ">",
@@ -980,17 +1033,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 84,
-          "line": 1,
+          "column": 3,
+          "line": 9,
         },
         "start": Object {
-          "column": 83,
-          "line": 1,
+          "column": 2,
+          "line": 9,
         },
       },
       "range": Array [
-        83,
-        84,
+        99,
+        100,
       ],
       "type": "Punctuator",
       "value": ";",

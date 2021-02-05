@@ -1,6 +1,6 @@
-import unescape from 'lodash/unescape';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import { xhtmlEntities } from './jsx/xhtml-entities';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -414,7 +414,19 @@ export function hasJSXAncestor(node: ts.Node): boolean {
  * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
-  return unescape(text);
+  return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
+    const item = entity.slice(1, -1);
+    if (item[0] === '#') {
+      const codePoint =
+        item[1] === 'x'
+          ? parseInt(item.slice(2), 16)
+          : parseInt(item.slice(1), 10);
+      return codePoint > 0x10ffff // RangeError: Invalid code point
+        ? entity
+        : String.fromCodePoint(codePoint);
+    }
+    return xhtmlEntities[item] || entity;
+  });
 }
 
 /**
