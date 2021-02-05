@@ -268,5 +268,39 @@ type Foo = () => {
   };
       `,
     },
+    {
+      code: noFormat`
+type X = {} | { (): void; }
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+        },
+      ],
+      output: noFormat`
+type X = {} | (() => void)
+      `,
+    },
+    {
+      code: noFormat`
+type X = {} & { (): void; };
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+        },
+      ],
+      output: noFormat`
+type X = {} & (() => void);
+      `,
+    },
   ],
 });

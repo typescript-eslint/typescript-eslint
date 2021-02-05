@@ -88,6 +88,10 @@ export default util.createRule({
         colonPos + 1,
       )}`;
 
+      const lastChar = suggestion.endsWith(';') ? ';' : '';
+      if (lastChar) {
+        suggestion = suggestion.slice(0, -1);
+      }
       if (shouldWrapSuggestion(parent.parent)) {
         suggestion = `(${suggestion})`;
       }
@@ -98,16 +102,17 @@ export default util.createRule({
             .slice(
               parent.id.range[0],
               parent.typeParameters.range[1],
-            )} = ${suggestion}`;
+            )} = ${suggestion}${lastChar}`;
         }
-        return `type ${parent.id.name} = ${suggestion}`;
+        return `type ${parent.id.name} = ${suggestion}${lastChar}`;
       }
-      return suggestion.endsWith(';') ? suggestion.slice(0, -1) : suggestion;
+      return suggestion;
     }
 
     /**
      * @param member The TypeElement being checked
      * @param node The parent of member being checked
+     * @param tsThisTypes
      */
     function checkMember(
       member: TSESTree.TypeElement,
