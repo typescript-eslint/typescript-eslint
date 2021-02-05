@@ -367,13 +367,13 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * TODO: report this to babel
+     * https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
     /**
      * Babel: TSTypePredicate includes `:` statement in range
      * ts-estree: TSTypePredicate does not include `:` statement in range
-     * TODO: report this to babel
+     * https://github.com/babel/babel/issues/12676
      */
     'type-assertion-in-arrow-function',
     'type-assertion-in-function',
@@ -395,6 +395,11 @@ tester.addFixturePatternConfig('typescript/basics', {
     'catch-clause-with-invalid-annotation',
     'export-type-star-from',
     'import-type-error',
+    /**
+     * babel does not take into account leading character into union and intersection
+     * https://github.com/babel/babel/pull/12758
+     */
+    'union-intersection',
   ],
   ignoreSourceType: [
     /**
