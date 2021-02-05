@@ -45,7 +45,7 @@ By far the most common case will be installing the [`@typescript-eslint/eslint-p
 
 ## Configuration
 
-The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
+The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring/language-options#specifying-parser-options) in your ESLint configuration file.
 
 ```ts
 interface ParserOptions {
