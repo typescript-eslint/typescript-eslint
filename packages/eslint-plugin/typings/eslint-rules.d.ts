@@ -520,9 +520,13 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       ClassExpression(node: TSESTree.ClassExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      // eslint < 7.19.0
       'ForInStatement, ForOfStatement'(
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
+      // eslint >= 7.19.0
+      ForInStatement(node: TSESTree.ForInStatement): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
       ForStatement(node: TSESTree.ForStatement): void;
       'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
