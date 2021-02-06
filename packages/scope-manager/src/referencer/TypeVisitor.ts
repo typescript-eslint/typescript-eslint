@@ -116,6 +116,12 @@ class TypeVisitor extends Visitor {
     this.visitFunctionType(node);
   }
 
+  protected TSImportType(node: TSESTree.TSImportType): void {
+    // the TS parser allows any type to be the parameter, but it's a syntax error - so we can ignore it
+    this.visit(node.typeParameters);
+    // the qualifier is just part of a standard EntityName, so it should not be visited
+  }
+
   protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
     for (const param of node.parameters) {
       if (param.type === AST_NODE_TYPES.Identifier) {

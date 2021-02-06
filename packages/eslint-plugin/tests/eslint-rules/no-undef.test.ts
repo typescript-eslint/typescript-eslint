@@ -235,6 +235,10 @@ declare function deco(...param: any): (...param: any) => any;
 })
 class Foo {}
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3006
+    `
+export type AppState = typeof import('./src/store/reducers').default;
+    `,
   ],
   invalid: [
     {
