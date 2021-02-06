@@ -206,9 +206,7 @@ export default util.createRule<Options, MessageIds>({
           }
         }
       },
-      'TSAsExpression, TSTypeAssertion'(
-        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-      ): void {
+      TSTypeAssertion(node: TSESTree.TSTypeAssertion): void {
         if (
           options.typesToIgnore?.includes(
             sourceCode.getText(node.typeAnnotation),
@@ -239,7 +237,7 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
+              return node.kind === 'angle-bracket'
                 ? fixer.removeRange([
                     node.range[0],
                     node.expression.range[0] - 1,

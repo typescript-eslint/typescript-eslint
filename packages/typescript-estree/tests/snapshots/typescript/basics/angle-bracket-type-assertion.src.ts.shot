@@ -44,6 +44,7 @@ Object {
               "type": "Literal",
               "value": 2,
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 27,

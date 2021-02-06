@@ -59,6 +59,7 @@ Object {
           },
           "type": "BinaryExpression",
         },
+        "kind": "as",
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -73,7 +74,7 @@ Object {
           0,
           16,
         ],
-        "type": "TSAsExpression",
+        "type": "TSTypeAssertion",
         "typeAnnotation": Object {
           "loc": Object {
             "end": Object {

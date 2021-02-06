@@ -91,7 +91,6 @@ enum AST_NODE_TYPES {
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
   TSAnyKeyword = 'TSAnyKeyword',
   TSArrayType = 'TSArrayType',
-  TSAsExpression = 'TSAsExpression',
   TSAsyncKeyword = 'TSAsyncKeyword',
   TSBigIntKeyword = 'TSBigIntKeyword',
   TSBooleanKeyword = 'TSBooleanKeyword',

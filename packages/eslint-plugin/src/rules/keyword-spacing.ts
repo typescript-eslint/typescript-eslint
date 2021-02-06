@@ -31,7 +31,10 @@ export default util.createRule<Options, MessageIds>({
     const baseRules = baseRule.create(context);
     return {
       ...baseRules,
-      TSAsExpression(node): void {
+      TSTypeAssertion(node): void {
+        if (node.kind !== 'as') {
+          return;
+        }
         const asToken = util.nullThrows(
           sourceCode.getTokenAfter(
             node.expression,

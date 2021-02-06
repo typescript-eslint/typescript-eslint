@@ -2619,10 +2619,11 @@ export class Converter {
         });
       }
       case SyntaxKind.AsExpression: {
-        return this.createNode<TSESTree.TSAsExpression>(node, {
-          type: AST_NODE_TYPES.TSAsExpression,
+        return this.createNode<TSESTree.TSTypeAssertion>(node, {
+          type: AST_NODE_TYPES.TSTypeAssertion,
           expression: this.convertChild(node.expression),
           typeAnnotation: this.convertType(node.type),
+          kind: 'as',
         });
       }
       case SyntaxKind.InferType: {
@@ -2656,6 +2657,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSTypeAssertion,
           typeAnnotation: this.convertType(node.type),
           expression: this.convertChild(node.expression),
+          kind: 'angle-bracket',
         });
       }
       case SyntaxKind.ImportEqualsDeclaration: {

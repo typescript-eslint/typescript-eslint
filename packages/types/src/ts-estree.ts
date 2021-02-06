@@ -222,7 +222,6 @@ export type Node =
   | TSAbstractMethodDefinition
   | TSAnyKeyword
   | TSArrayType
-  | TSAsExpression
   | TSAsyncKeyword
   | TSBigIntKeyword
   | TSBooleanKeyword
@@ -373,7 +372,7 @@ export type Expression =
   | RestElement
   | SequenceExpression
   | SpreadElement
-  | TSAsExpression
+  | TSTypeAssertion
   | TSUnaryExpression
   | YieldExpression;
 export type ForInitialiser = Expression | VariableDeclaration;
@@ -409,7 +408,7 @@ export type LeftHandSideExpression =
   | PrimaryExpression
   | TaggedTemplateExpression
   | TSNonNullExpression
-  | TSAsExpression
+  | TSTypeAssertion
   | ArrowFunctionExpression;
 export type Literal =
   | BigIntLiteral
@@ -1261,7 +1260,7 @@ export interface ThisExpression extends BaseNode {
 
 export interface ThrowStatement extends BaseNode {
   type: AST_NODE_TYPES.ThrowStatement;
-  argument: Statement | TSAsExpression | null;
+  argument: Statement | TSTypeAssertion | null;
 }
 
 export interface TryStatement extends BaseNode {
@@ -1302,12 +1301,6 @@ export interface TSAnyKeyword extends BaseNode {
 export interface TSArrayType extends BaseNode {
   type: AST_NODE_TYPES.TSArrayType;
   elementType: TypeNode;
-}
-
-export interface TSAsExpression extends BaseNode {
-  type: AST_NODE_TYPES.TSAsExpression;
-  expression: Expression;
-  typeAnnotation: TypeNode;
 }
 
 export interface TSAsyncKeyword extends BaseNode {
@@ -1647,6 +1640,7 @@ export interface TSTypeAssertion extends BaseNode {
   type: AST_NODE_TYPES.TSTypeAssertion;
   typeAnnotation: TypeNode;
   expression: Expression;
+  kind: 'as' | 'angle-bracket';
 }
 
 export interface TSTypeLiteral extends BaseNode {

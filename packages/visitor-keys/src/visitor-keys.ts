@@ -67,7 +67,6 @@ const additionalKeys: AdditionalKeys = {
   TSAbstractMethodDefinition: ['key', 'value'],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
-  TSAsExpression: ['expression', 'typeAnnotation'],
   TSAsyncKeyword: [],
   TSBigIntKeyword: [],
   TSBooleanKeyword: [],

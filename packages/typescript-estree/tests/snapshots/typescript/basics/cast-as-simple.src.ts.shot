@@ -43,6 +43,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "as",
             "loc": Object {
               "end": Object {
                 "column": 20,
@@ -57,7 +58,7 @@ Object {
               12,
               20,
             ],
-            "type": "TSAsExpression",
+            "type": "TSTypeAssertion",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {

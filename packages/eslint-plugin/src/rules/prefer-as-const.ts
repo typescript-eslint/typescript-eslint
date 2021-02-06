@@ -63,9 +63,6 @@ export default util.createRule({
     }
 
     return {
-      TSAsExpression(node): void {
-        compareTypes(node.expression, node.typeAnnotation, true);
-      },
       TSTypeAssertion(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
       },

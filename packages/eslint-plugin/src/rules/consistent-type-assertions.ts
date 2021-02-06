@@ -86,7 +86,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function reportIncorrectAssertionType(
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      node: TSESTree.TSTypeAssertion,
     ): void {
       // If this node is `as const`, then don't report an error.
       if (isConst(node.typeAnnotation)) {
@@ -123,9 +123,7 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    function checkExpression(
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ): void {
+    function checkExpression(node: TSESTree.TSTypeAssertion): void {
       if (
         options.assertionStyle === 'never' ||
         options.objectLiteralTypeAssertions === 'allow' ||
@@ -159,15 +157,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSTypeAssertion(node): void {
-        if (options.assertionStyle !== 'angle-bracket') {
-          reportIncorrectAssertionType(node);
-          return;
-        }
-
-        checkExpression(node);
-      },
-      TSAsExpression(node): void {
-        if (options.assertionStyle !== 'as') {
+        if (options.assertionStyle !== node.kind) {
           reportIncorrectAssertionType(node);
           return;
         }

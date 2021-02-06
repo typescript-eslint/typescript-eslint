@@ -56,14 +56,11 @@ function isLogicalOrOperator(
  */
 function isTypeAssertion(
   node: TSESTree.Node | undefined | null,
-): node is TSESTree.TSAsExpression | TSESTree.TSTypeAssertion {
+): node is TSESTree.TSTypeAssertion {
   if (!node) {
     return false;
   }
-  return (
-    node.type === AST_NODE_TYPES.TSAsExpression ||
-    node.type === AST_NODE_TYPES.TSTypeAssertion
-  );
+  return node.type === AST_NODE_TYPES.TSTypeAssertion;
 }
 
 function isVariableDeclarator(

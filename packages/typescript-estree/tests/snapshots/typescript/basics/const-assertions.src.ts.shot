@@ -44,6 +44,7 @@ Object {
               "type": "Literal",
               "value": 10,
             },
+            "kind": "as",
             "loc": Object {
               "end": Object {
                 "column": 19,
@@ -58,7 +59,7 @@ Object {
               21,
               32,
             ],
-            "type": "TSAsExpression",
+            "type": "TSTypeAssertion",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -209,6 +210,7 @@ Object {
               ],
               "type": "ArrayExpression",
             },
+            "kind": "as",
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -223,7 +225,7 @@ Object {
               71,
               88,
             ],
-            "type": "TSAsExpression",
+            "type": "TSTypeAssertion",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -394,6 +396,7 @@ Object {
               ],
               "type": "ObjectExpression",
             },
+            "kind": "as",
             "loc": Object {
               "end": Object {
                 "column": 34,
@@ -408,7 +411,7 @@ Object {
               136,
               162,
             ],
-            "type": "TSAsExpression",
+            "type": "TSTypeAssertion",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -521,6 +524,7 @@ Object {
               "type": "Literal",
               "value": 10,
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -686,6 +690,7 @@ Object {
               ],
               "type": "ArrayExpression",
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -871,6 +876,7 @@ Object {
               ],
               "type": "ObjectExpression",
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 32,

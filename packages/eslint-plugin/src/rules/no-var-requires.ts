@@ -36,7 +36,6 @@ export default util.createRule<Options, MessageIds>({
           parent &&
           (parent.type === AST_NODE_TYPES.VariableDeclarator ||
             parent.type === AST_NODE_TYPES.CallExpression ||
-            parent.type === AST_NODE_TYPES.TSAsExpression ||
             parent.type === AST_NODE_TYPES.TSTypeAssertion ||
             parent.type === AST_NODE_TYPES.MemberExpression)
         ) {
