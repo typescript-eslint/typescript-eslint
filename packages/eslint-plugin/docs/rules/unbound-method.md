@@ -68,7 +68,6 @@ const { double } = arith;
 The rule accepts an options object with the following property:
 
 - `ignoreStatic` to not check whether `static` methods are correctly bound
-- `allowSuper` allows `Super` class methods to bound with base class.
 
 ### `ignoreStatic`
 
@@ -94,8 +93,7 @@ log();
   "@typescript-eslint/unbound-method": [
     "error",
     {
-      "ignoreStatic": true,
-      "allowSuper": false
+      "ignoreStatic": true
     }
   ]
 }
