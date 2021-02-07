@@ -87,24 +87,6 @@ const { log } = OtherClass;
 log();
 ```
 
-### `allowSuper`
-
-Examples of **correct** code for this rule with `{ allowSuper: true }`:
-
-```ts
-class SuperClass {
-  method1(){ ... }
-}
-
-class baseClass extend SuperClass {
-  constructor(){
-    super();
-    this.baseVar = super.method1;
-  }
-}
-
-```
-
 ### Example
 
 ```json

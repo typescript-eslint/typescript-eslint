@@ -54,32 +54,6 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
-    {
-      code: `
-class BaseClass {
-  x: number = 42;
-  logThis() {
-    console.log('x is ');
-  }
-}
-
-class OtherClass extends BaseClass {
-  superLogThis: any;
-  constructor() {
-    super();
-    this.superLogThis = super.logThis;
-  }
-}
-
-const oc = new OtherClass();
-oc.superLogThis();
-      `,
-      options: [
-        {
-          allowSuper: true,
-        },
-      ],
-    },
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -290,6 +264,24 @@ class Foo {
   bound = () => 'foo';
 }
 const { bound } = new Foo();
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    `
+class BaseClass {
+  x: number = 42;
+  logThis() {
+    console.log('x is ');
+  }
+}
+class OtherClass extends BaseClass {
+  superLogThis: any;
+  constructor() {
+    super();
+    this.superLogThis = super.logThis;
+  }
+}
+const oc = new OtherClass();
+oc.superLogThis();
     `,
   ],
   invalid: [
@@ -555,6 +547,7 @@ const { log } = console;
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     {
       code: `
 class BaseClass {
@@ -563,27 +556,18 @@ class BaseClass {
     console.log('x is ');
   }
 }
-
 class OtherClass extends BaseClass {
   superLogThis: any;
   constructor() {
     super();
-    this.superLogThis = super.logThis;
+    const x = super.logThis; // ERROR - unbound method
   }
 }
-
-const oc = new OtherClass();
-oc.superLogThis();
       `,
-      options: [
-        {
-          allowSuper: false,
-        },
-      ],
       errors: [
         {
-          line: 13,
-          column: 25,
+          line: 12,
+          column: 15,
           messageId: 'unbound',
         },
       ],

@@ -12,7 +12,6 @@ import * as util from '../util';
 
 interface Config {
   ignoreStatic: boolean;
-  allowSuper?: boolean;
 }
 
 export type Options = [Config];
@@ -143,9 +142,6 @@ export default util.createRule<Options, MessageIds>({
           ignoreStatic: {
             type: 'boolean',
           },
-          allowSuper: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -155,10 +151,9 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreStatic: false,
-      allowSuper: false,
     },
   ],
-  create(context, [{ ignoreStatic, allowSuper }]) {
+  create(context, [{ ignoreStatic }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const currentSourceFile = parserServices.program.getSourceFile(
@@ -279,7 +274,7 @@ function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
   return false;
 }
 
-function isSafeUse(node: TSESTree.Node, allowSuper = false): boolean {
+function isSafeUse(node: TSESTree.Node): boolean {
   const parent = node.parent;
 
   switch (parent?.type) {
@@ -313,8 +308,7 @@ function isSafeUse(node: TSESTree.Node, allowSuper = false): boolean {
       return (
         parent.operator === '=' &&
         (node === parent.left ||
-          (allowSuper &&
-            (node as TSESTree.MemberExpression) &&
+          (node.type === AST_NODE_TYPES.MemberExpression &&
             node.object.type === AST_NODE_TYPES.Super))
       );
 
