@@ -76,7 +76,11 @@ interface Foo {
   [];
 }
     `,
-
+    `
+interface B extends A {
+  [index: number]: unknown;
+}
+    `,
     // 'index-signature'
     // Unhandled type
     {

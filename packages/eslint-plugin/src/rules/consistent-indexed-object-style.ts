@@ -115,6 +115,9 @@ export default createRule<Options, MessageIds>({
       },
 
       TSInterfaceDeclaration(node): void {
+        if (node.extends?.length) {
+          return;
+        }
         let genericTypes = '';
 
         if ((node.typeParameters?.params ?? []).length > 0) {
