@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-shorthand-fragment-no-closing.src 1`] = `[ParseError: JSX fragment has no corresponding closing tag.]`;
+exports[`jsx invalid-shorthand-fragment-no-closing.src 1`] = `[TSError: JSX fragment has no corresponding closing tag.]`;

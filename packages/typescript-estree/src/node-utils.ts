@@ -1,7 +1,6 @@
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 import { xhtmlEntities } from './jsx/xhtml-entities';
-import { ParseError } from './error';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -650,11 +649,22 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   return result;
 }
 
-export interface TSError {
-  index: number;
-  lineNumber: number;
-  column: number;
-  message: string;
+export class TSError extends Error {
+  constructor(
+    message: string,
+    public fileName: string,
+    public index: number,
+    public lineNumber: number,
+    public column: number,
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, TSError.prototype);
+    Object.defineProperty(this, 'name', {
+      value: new.target.name,
+      enumerable: false,
+      configurable: true,
+    });
+  }
 }
 
 /**
@@ -669,13 +679,7 @@ export function createError(
   message: string,
 ): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
-  return new ParseError(
-    message,
-    ast.fileName,
-    start,
-    loc.line + 1,
-    loc.character,
-  );
+  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
 }
 
 /**

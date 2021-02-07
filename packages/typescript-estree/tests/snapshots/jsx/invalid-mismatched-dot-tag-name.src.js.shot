@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-mismatched-dot-tag-name.src 1`] = `[ParseError: Expected corresponding JSX closing tag for 'a.b.c'.]`;
+exports[`jsx invalid-mismatched-dot-tag-name.src 1`] = `[TSError: Expected corresponding JSX closing tag for 'a.b.c'.]`;

@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx member-expression-private.src 1`] = `[ParseError: Identifier expected.]`;
+exports[`jsx member-expression-private.src 1`] = `[TSError: Identifier expected.]`;
