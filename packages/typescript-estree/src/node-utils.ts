@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 import { xhtmlEntities } from './jsx/xhtml-entities';
+import { ParseError } from './error';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -658,7 +659,7 @@ export interface TSError {
 
 /**
  * @param ast     the AST object
- * @param start      the index at which the error starts
+ * @param start   the index at which the error starts
  * @param message the error message
  * @returns converted error object
  */
@@ -668,12 +669,13 @@ export function createError(
   message: string,
 ): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
-  return {
-    index: start,
-    lineNumber: loc.line + 1,
-    column: loc.character,
+  return new ParseError(
     message,
-  };
+    ast.fileName,
+    start,
+    loc.line + 1,
+    loc.character,
+  );
 }
 
 /**

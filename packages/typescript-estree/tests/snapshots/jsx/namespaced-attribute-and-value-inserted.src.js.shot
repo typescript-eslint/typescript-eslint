@@ -1,10 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx namespaced-attribute-and-value-inserted.src 1`] = `
-Object {
-  "column": 4,
-  "index": 4,
-  "lineNumber": 1,
-  "message": "Identifier expected.",
-}
-`;
+exports[`jsx namespaced-attribute-and-value-inserted.src 1`] = `[ParseError: Identifier expected.]`;

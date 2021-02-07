@@ -1,10 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-attribute-missing-equals.src 1`] = `
-Object {
-  "column": 14,
-  "index": 14,
-  "lineNumber": 1,
-  "message": "Identifier expected.",
-}
-`;
+exports[`jsx invalid-attribute-missing-equals.src 1`] = `[ParseError: Identifier expected.]`;
