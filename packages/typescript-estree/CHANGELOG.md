@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.2...v4.15.0) (2021-02-08)
+
+
+### Features
+
+* **typescript-estree:** improve logic used to escape string literals in jsx ([#2995](https://github.com/typescript-eslint/typescript-eslint/issues/2995)) ([3cb3aad](https://github.com/typescript-eslint/typescript-eslint/commit/3cb3aade2864bab15ed1ff8d7cd32766aa57152f))
+
+
+
+
+
 ## [4.14.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.1...v4.14.2) (2021-02-01)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.2...v4.15.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-extra-parens] handle ESLint 7.19.0 ([#2993](https://github.com/typescript-eslint/typescript-eslint/issues/2993)) ([4615048](https://github.com/typescript-eslint/typescript-eslint/commit/4615048d24359e0fc57b90a96acf4d8ded1dc7bf))
+* **eslint-plugin:** [prefer-function-type] correct fixer when signature ends with a semi ([#3002](https://github.com/typescript-eslint/typescript-eslint/issues/3002)) ([898dd39](https://github.com/typescript-eslint/typescript-eslint/commit/898dd3961944a5da3a129e9eba02634286e7aee4))
+* **scope-manager:** fix visiting of TSImportType ([#3008](https://github.com/typescript-eslint/typescript-eslint/issues/3008)) ([ce4fcbf](https://github.com/typescript-eslint/typescript-eslint/commit/ce4fcbf4401098387a2cf19ae8457c89c509239a)), closes [#3006](https://github.com/typescript-eslint/typescript-eslint/issues/3006)
+
+
+
+
+
 ## [4.14.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.1...v4.14.2) (2021-02-01)
 
 
