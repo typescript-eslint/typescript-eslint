@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript spread error-invalid-if.src 1`] = `[TSError: Expression expected. (1:6 | 6)`;
+exports[`javascript spread error-invalid-if.src 1`] = `
+[TSError: Expression expected.
+  "lineNumber": 1,
+  "column": 6,
+  "index": 6,
+]
+`;

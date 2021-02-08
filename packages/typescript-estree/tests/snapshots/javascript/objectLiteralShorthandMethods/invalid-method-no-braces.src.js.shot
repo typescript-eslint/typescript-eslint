@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript objectLiteralShorthandMethods invalid-method-no-braces.src 1`] = `[TSError: '{' expected. (2:13 | 19)`;
+exports[`javascript objectLiteralShorthandMethods invalid-method-no-braces.src 1`] = `
+[TSError: '{' expected.
+  "lineNumber": 2,
+  "column": 13,
+  "index": 19,
+]
+`;

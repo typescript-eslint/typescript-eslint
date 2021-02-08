@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx embedded-tags.src 1`] = `[TSError: '{' expected. (1:16 | 16)`;
+exports[`jsx embedded-tags.src 1`] = `
+[TSError: '{' expected.
+  "lineNumber": 1,
+  "column": 16,
+  "index": 16,
+]
+`;

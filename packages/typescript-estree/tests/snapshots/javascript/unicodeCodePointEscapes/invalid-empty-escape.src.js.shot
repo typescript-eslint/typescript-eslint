@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript unicodeCodePointEscapes invalid-empty-escape.src 1`] = `[TSError: Hexadecimal digit expected. (1:4 | 4)`;
+exports[`javascript unicodeCodePointEscapes invalid-empty-escape.src 1`] = `
+[TSError: Hexadecimal digit expected.
+  "lineNumber": 1,
+  "column": 4,
+  "index": 4,
+]
+`;

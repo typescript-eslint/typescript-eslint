@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-no-common-parent-with-comment.src 1`] = `[TSError: JSX expressions must have one parent element. (1:8 | 8)`;
+exports[`jsx invalid-no-common-parent-with-comment.src 1`] = `
+[TSError: JSX expressions must have one parent element.
+  "lineNumber": 1,
+  "column": 8,
+  "index": 8,
+]
+`;

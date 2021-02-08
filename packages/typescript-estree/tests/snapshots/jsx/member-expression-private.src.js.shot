@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx member-expression-private.src 1`] = `[TSError: Identifier expected. (1:10 | 10)`;
+exports[`jsx member-expression-private.src 1`] = `
+[TSError: Identifier expected.
+  "lineNumber": 1,
+  "column": 10,
+  "index": 10,
+]
+`;

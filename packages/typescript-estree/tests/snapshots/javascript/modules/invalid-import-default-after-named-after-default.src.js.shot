@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules invalid-import-default-after-named-after-default.src 1`] = `[TSError: 'from' expected. (1:17 | 17)`;
+exports[`javascript modules invalid-import-default-after-named-after-default.src 1`] = `
+[TSError: 'from' expected.
+  "lineNumber": 1,
+  "column": 17,
+  "index": 17,
+]
+`;

@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules invalid-import-namespace-missing-as.src 1`] = `[TSError: 'as' expected. (1:9 | 9)`;
+exports[`javascript modules invalid-import-namespace-missing-as.src 1`] = `
+[TSError: 'as' expected.
+  "lineNumber": 1,
+  "column": 9,
+  "index": 9,
+]
+`;

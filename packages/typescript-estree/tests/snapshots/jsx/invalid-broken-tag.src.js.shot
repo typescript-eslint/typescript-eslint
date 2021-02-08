@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-broken-tag.src 1`] = `[TSError: Unterminated string literal. (1:12 | 12)`;
+exports[`jsx invalid-broken-tag.src 1`] = `
+[TSError: Unterminated string literal.
+  "lineNumber": 1,
+  "column": 12,
+  "index": 12,
+]
+`;

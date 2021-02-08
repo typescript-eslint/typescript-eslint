@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript arrowFunctions error-missing-paren.src 1`] = `[TSError: ';' expected. (1:9 | 9)`;
+exports[`javascript arrowFunctions error-missing-paren.src 1`] = `
+[TSError: ';' expected.
+  "lineNumber": 1,
+  "column": 9,
+  "index": 9,
+]
+`;

@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules invalid-import-namespace-after-named.src 1`] = `[TSError: 'from' expected. (1:12 | 12)`;
+exports[`javascript modules invalid-import-namespace-after-named.src 1`] = `
+[TSError: 'from' expected.
+  "lineNumber": 1,
+  "column": 12,
+  "index": 12,
+]
+`;

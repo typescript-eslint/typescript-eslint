@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-matching-placeholder-in-closing-tag.src 1`] = `[TSError: '>' expected. (1:27 | 27)`;
+exports[`jsx invalid-matching-placeholder-in-closing-tag.src 1`] = `
+[TSError: '>' expected.
+  "lineNumber": 1,
+  "column": 27,
+  "index": 27,
+]
+`;

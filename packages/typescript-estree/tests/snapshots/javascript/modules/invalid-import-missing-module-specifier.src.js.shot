@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules invalid-import-missing-module-specifier.src 1`] = `[TSError: 'from' expected. (2:0 | 20)`;
+exports[`javascript modules invalid-import-missing-module-specifier.src 1`] = `
+[TSError: 'from' expected.
+  "lineNumber": 2,
+  "column": 0,
+  "index": 20,
+]
+`;

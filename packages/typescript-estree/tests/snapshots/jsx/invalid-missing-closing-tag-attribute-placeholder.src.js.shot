@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-missing-closing-tag-attribute-placeholder.src 1`] = `[TSError: JSX element 'a' has no corresponding closing tag. (1:1 | 1)`;
+exports[`jsx invalid-missing-closing-tag-attribute-placeholder.src 1`] = `
+[TSError: JSX element 'a' has no corresponding closing tag.
+  "lineNumber": 1,
+  "column": 1,
+  "index": 1,
+]
+`;

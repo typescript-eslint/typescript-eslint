@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-missing-namespace-name.src 1`] = `[TSError: Expression expected. (1:0 | 0)`;
+exports[`jsx invalid-missing-namespace-name.src 1`] = `
+[TSError: Expression expected.
+  "lineNumber": 1,
+  "column": 0,
+  "index": 0,
+]
+`;

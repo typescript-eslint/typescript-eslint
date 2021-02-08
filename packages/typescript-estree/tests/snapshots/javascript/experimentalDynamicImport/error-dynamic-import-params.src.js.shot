@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript experimentalDynamicImport error-dynamic-import-params.src 1`] = `[TSError: Dynamic import must have one specifier as an argument. (1:7 | 7)`;
+exports[`javascript experimentalDynamicImport error-dynamic-import-params.src 1`] = `
+[TSError: Dynamic import must have one specifier as an argument.
+  "lineNumber": 1,
+  "column": 7,
+  "index": 7,
+]
+`;

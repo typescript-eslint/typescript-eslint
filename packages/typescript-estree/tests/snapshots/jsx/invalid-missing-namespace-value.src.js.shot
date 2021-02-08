@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-missing-namespace-value.src 1`] = `[TSError: Identifier expected. (1:2 | 2)`;
+exports[`jsx invalid-missing-namespace-value.src 1`] = `
+[TSError: Identifier expected.
+  "lineNumber": 1,
+  "column": 2,
+  "index": 2,
+]
+`;

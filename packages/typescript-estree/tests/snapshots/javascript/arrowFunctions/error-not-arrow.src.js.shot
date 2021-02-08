@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript arrowFunctions error-not-arrow.src 1`] = `[TSError: Expression expected. (1:26 | 26)`;
+exports[`javascript arrowFunctions error-not-arrow.src 1`] = `
+[TSError: Expression expected.
+  "lineNumber": 1,
+  "column": 26,
+  "index": 26,
+]
+`;

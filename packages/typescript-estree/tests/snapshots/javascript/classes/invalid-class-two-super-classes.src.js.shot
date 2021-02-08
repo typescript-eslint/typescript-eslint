@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript classes invalid-class-two-super-classes.src 1`] = `[TSError: Classes can only extend a single class. (1:18 | 18)`;
+exports[`javascript classes invalid-class-two-super-classes.src 1`] = `
+[TSError: Classes can only extend a single class.
+  "lineNumber": 1,
+  "column": 18,
+  "index": 18,
+]
+`;

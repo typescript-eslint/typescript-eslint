@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules invalid-export-named-extra-comma.src 1`] = `[TSError: Identifier expected. (1:16 | 16)`;
+exports[`javascript modules invalid-export-named-extra-comma.src 1`] = `
+[TSError: Identifier expected.
+  "lineNumber": 1,
+  "column": 16,
+  "index": 16,
+]
+`;

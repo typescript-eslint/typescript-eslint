@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsx invalid-attribute.src 1`] = `[TSError: '{' expected. (1:5 | 5)`;
+exports[`jsx invalid-attribute.src 1`] = `
+[TSError: '{' expected.
+  "lineNumber": 1,
+  "column": 5,
+  "index": 5,
+]
+`;
