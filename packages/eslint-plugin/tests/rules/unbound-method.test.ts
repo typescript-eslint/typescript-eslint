@@ -269,9 +269,7 @@ const { bound } = new Foo();
     `
 class BaseClass {
   x: number = 42;
-  logThis() {
-    console.log('x is ');
-  }
+  logThis() {}
 }
 class OtherClass extends BaseClass {
   superLogThis: any;
@@ -551,23 +549,41 @@ const { log } = console;
     {
       code: `
 class BaseClass {
-  x: number = 42;
-  logThis() {
-    console.log('x is ');
-  }
+  logThis() {}
 }
 class OtherClass extends BaseClass {
-  superLogThis: any;
   constructor() {
     super();
-    const x = super.logThis; // ERROR - unbound method
+    const x = super.logThis;
   }
 }
       `,
       errors: [
         {
-          line: 12,
+          line: 8,
           column: 15,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    {
+      code: `
+class BaseClass {
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  constructor() {
+    super();
+    let x;
+    x = super.logThis;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          column: 9,
           messageId: 'unbound',
         },
       ],

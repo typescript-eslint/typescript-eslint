@@ -309,7 +309,9 @@ function isSafeUse(node: TSESTree.Node): boolean {
         parent.operator === '=' &&
         (node === parent.left ||
           (node.type === AST_NODE_TYPES.MemberExpression &&
-            node.object.type === AST_NODE_TYPES.Super))
+            node.object.type === AST_NODE_TYPES.Super &&
+            parent.left.type === AST_NODE_TYPES.MemberExpression &&
+            parent.left.object.type === AST_NODE_TYPES.ThisExpression))
       );
 
     case AST_NODE_TYPES.ChainExpression:
