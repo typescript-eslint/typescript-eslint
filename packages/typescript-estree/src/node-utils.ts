@@ -652,10 +652,10 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
 export class TSError extends Error {
   constructor(
     message: string,
-    public fileName: string,
-    public index: number,
-    public lineNumber: number,
-    public column: number,
+    public readonly fileName: string,
+    public readonly index: number,
+    public readonly lineNumber: number,
+    public readonly column: number,
   ) {
     super(message);
     Object.setPrototypeOf(this, TSError.prototype);
