@@ -1,10 +1,13 @@
 import fs from 'fs';
 import glob from 'glob';
-import 'jest-specific-snapshot';
+import { addSerializer } from 'jest-specific-snapshot';
 import makeDir from 'make-dir';
 import path from 'path';
 import { parseAndGenerateServices } from '../src/parser';
 import { isJSXFileType } from '../tools/test-utils';
+import { serializer } from '../tools/tserror-serializer';
+
+addSerializer(serializer);
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output

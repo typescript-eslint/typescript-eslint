@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript classes class-with-no-body.src 1`] = `[TSError: '{' expected.]`;
+exports[`javascript classes class-with-no-body.src 1`] = `[TSError: '{' expected. (2:0 | 10)`;
