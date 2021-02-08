@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-mismatched-closing-tag.src 1`] = `
-[TSError: Expected corresponding JSX closing tag for 'a'.
-  "lineNumber": 1,
+TSError {
   "column": 3,
   "index": 3,
-]
+  "lineNumber": 1,
+  "message": "Expected corresponding JSX closing tag for 'a'.",
+}
 `;

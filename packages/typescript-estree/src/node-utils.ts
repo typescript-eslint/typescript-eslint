@@ -658,7 +658,6 @@ export class TSError extends Error {
     public readonly column: number,
   ) {
     super(message);
-    Object.setPrototypeOf(this, TSError.prototype);
     Object.defineProperty(this, 'name', {
       value: new.target.name,
       enumerable: false,

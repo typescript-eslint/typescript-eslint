@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx embedded-tags.src 1`] = `
-[TSError: '{' expected.
-  "lineNumber": 1,
+TSError {
   "column": 16,
   "index": 16,
-]
+  "lineNumber": 1,
+  "message": "'{' expected.",
+}
 `;

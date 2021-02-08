@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx namespaced-attribute-and-value-inserted.src 1`] = `
-[TSError: Identifier expected.
-  "lineNumber": 1,
+TSError {
   "column": 4,
   "index": 4,
-]
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
 `;

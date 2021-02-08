@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx newslines-and-entities.src 1`] = `
-[TSError: Invalid character.
-  "lineNumber": 1,
+TSError {
   "column": 8,
   "index": 8,
-]
+  "lineNumber": 1,
+  "message": "Invalid character.",
+}
 `;

@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-attribute-missing-equals.src 1`] = `
-[TSError: Identifier expected.
-  "lineNumber": 1,
+TSError {
   "column": 14,
   "index": 14,
-]
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
 `;

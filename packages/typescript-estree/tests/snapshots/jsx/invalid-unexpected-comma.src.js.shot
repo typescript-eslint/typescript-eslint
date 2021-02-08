@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-unexpected-comma.src 1`] = `
-[TSError: Identifier expected.
-  "lineNumber": 1,
+TSError {
   "column": 19,
   "index": 19,
-]
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
 `;
