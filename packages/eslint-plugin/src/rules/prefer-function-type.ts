@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
@@ -140,30 +141,33 @@ export default util.createRule({
           });
           return;
         }
+        const comments = sourceCode.getCommentsBefore(member);
         const suggestion = renderSuggestion(member, node);
-        const fixStart =
-          node.type === AST_NODE_TYPES.TSTypeLiteral
-            ? node.range[0]
-            : sourceCode
-                .getTokens(node)
-                .filter(
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Keyword &&
-                    token.value === 'interface',
-                )[0].range[0];
-
         context.report({
           node: member,
           messageId: 'functionTypeOverCallableType',
           data: {
             literalOrInterface: phrases[node.type],
           },
-          fix(fixer) {
-            return fixer.replaceTextRange(
-              [fixStart, node.range[1]],
-              suggestion,
-            );
-          },
+          // Don't fix anything if there's a comment before token
+          fix: comments.length
+            ? null
+            : (fixer): TSESLint.RuleFix => {
+                const fixStart =
+                  node.type === AST_NODE_TYPES.TSTypeLiteral
+                    ? node.range[0]
+                    : sourceCode
+                        .getTokens(node)
+                        .filter(
+                          token =>
+                            token.type === AST_TOKEN_TYPES.Keyword &&
+                            token.value === 'interface',
+                        )[0].range[0];
+                return fixer.replaceTextRange(
+                  [fixStart, node.range[1]],
+                  suggestion,
+                );
+              },
         });
       }
     }
