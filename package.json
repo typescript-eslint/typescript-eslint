@@ -94,7 +94,7 @@
     "eslint-plugin-jest": "^23.20.0",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "jest": "^26.4.2",
     "jest-specific-snapshot": "^4.0.0",
     "lerna": "^3.22.1",
