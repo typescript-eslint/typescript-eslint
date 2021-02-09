@@ -65,6 +65,30 @@ interface Foo {
 type Foo = () => string;
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
+    {
+      code: `
+interface Foo {
+  /** This is a description of the foo function */
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+interface Foo {
+  /** This is a description of the foo function */
+  (): string;
+}
+      `,
+    },
     {
       code: `
 type Foo = {
@@ -234,8 +258,8 @@ interface Foo {
     },
     {
       code: `
+// isn't actually valid ts but want to not give message saying it refers to Foo.
 interface Foo {
-  // isn't actually valid ts but want to not give message saying it refers to Foo.
   (): {
     a: {
       nested: this;
@@ -257,6 +281,7 @@ interface Foo {
         },
       ],
       output: noFormat`
+// isn't actually valid ts but want to not give message saying it refers to Foo.
 type Foo = () => {
     a: {
       nested: this;
