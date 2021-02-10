@@ -308,10 +308,10 @@
   dependencies:
     conventional-changelog-conventionalcommits "^4.3.1"
 
-"@commitlint/config-lerna-scopes@^9.1.2":
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-9.1.2.tgz#ff4d5248692573e6d1c8b8b499f0c660ab987235"
-  integrity sha512-pETpJUoXQZ65uZ9TLz1hOACoicV0dradr5vDgBAoZ48ZkYszQ38jSE4flTQeOFmYCqL91nUxFT0jKpxLMobpEQ==
+"@commitlint/config-lerna-scopes@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-11.0.0.tgz#4152287c5d13ea844160507523b2f98b015adf4a"
+  integrity sha512-/PjLKefMlnG+Sk27MY3MZo+T/9/PrgDcLk1YCSPVHNkXibXiS2Hb5NEMuNHzPxwts4IvJo0WIOb0YOBx5GBsdA==
   dependencies:
     import-from "3.0.0"
     resolve-pkg "2.0.0"
