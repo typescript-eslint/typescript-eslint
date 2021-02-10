@@ -187,7 +187,7 @@ Instead, our tooling exists to **_augment_** TypeScript's built in checks with l
 
 The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
 
-You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring#specifying-environments).
+You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
 
 As of our v4.0.0 release, this also applies to types. If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types. For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
 
