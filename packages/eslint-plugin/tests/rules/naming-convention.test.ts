@@ -18,10 +18,9 @@ const parserOptions = {
   project: './tsconfig.json',
 };
 
-const formatTestNames: Readonly<Record<
-  PredefinedFormatsString,
-  Record<'valid' | 'invalid', string[]>
->> = {
+const formatTestNames: Readonly<
+  Record<PredefinedFormatsString, Record<'valid' | 'invalid', string[]>>
+> = {
   camelCase: {
     valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],
     invalid: ['snake_case', 'UPPER_CASE', 'UPPER', 'StrictPascalCase'],
