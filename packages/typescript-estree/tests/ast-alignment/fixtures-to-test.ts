@@ -342,9 +342,7 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-extends-member-expression',
     /**
-     * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
-     * But not fixed in Babel 7.3
-     * TODO: Investigate differences
+     * https://github.com/typescript-eslint/typescript-eslint/issues/2998
      */
     'type-import-type',
     'type-import-type-with-type-parameters-in-type-reference',
@@ -371,30 +369,24 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'export-named-enum-computed-string',
     /**
-     * Babel: TSTypePredicate includes `:` statement in range
-     * ts-estree: TSTypePredicate does not include `:` statement in range
-     * https://github.com/babel/babel/issues/12676
+     * Babel: TSTypePredicate does not include `asserts` statement in range
+     * ts-estree: TSTypePredicate does include `asserts` statement in range
+     * https://github.com/babel/babel/pull/12763
      */
-    'type-assertion-in-arrow-function',
-    'type-assertion-in-function',
-    'type-assertion-in-interface',
-    'type-assertion-in-method',
-    'type-assertion-with-guard-in-arrow-function',
-    'type-assertion-with-guard-in-function',
-    'type-assertion-with-guard-in-interface',
     'type-assertion-with-guard-in-method',
-    'type-guard-in-arrow-function',
-    'type-guard-in-function',
-    'type-guard-in-interface',
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * This is intentional; we don't error on semantic problems for these cases
      */
     'class-with-constructor-and-type-parameters',
     'class-with-two-methods-computed-constructor',
-    'catch-clause-with-invalid-annotation',
     'export-type-star-from',
     'import-type-error',
+    /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * TODO: report this to babel
+     */
+    'catch-clause-with-invalid-annotation',
     /**
      * babel does not take into account leading character into union and intersection
      * https://github.com/babel/babel/pull/12758

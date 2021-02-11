@@ -151,6 +151,11 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           };
         }
       },
+      TSTypePredicate(node) {
+        if (!node.typeAnnotation) {
+          node.typeAnnotation = null;
+        }
+      },
       MethodDefinition(node) {
         /**
          * Babel: MethodDefinition + abstract: true
