@@ -84,7 +84,7 @@
     "@types/prettier": "^2.1.0",
     "@types/rimraf": "^3.0.0",
     "all-contributors-cli": "^6.17.2",
-    "cspell": "^4.1.0",
+    "cspell": "^5.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "downlevel-dts": "^0.7.0",
     "eslint": "^7.7.0",
