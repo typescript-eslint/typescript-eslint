@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-empty-function';
-import { RuleTester } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -159,7 +159,7 @@ function foo() {}
       ],
     },
     {
-      code: `
+      code: noFormat`
 @decorator()
 function foo() {}
       `,

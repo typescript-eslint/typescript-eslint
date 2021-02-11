@@ -18,10 +18,9 @@ const parserOptions = {
   project: './tsconfig.json',
 };
 
-const formatTestNames: Readonly<Record<
-  PredefinedFormatsString,
-  Record<'valid' | 'invalid', string[]>
->> = {
+const formatTestNames: Readonly<
+  Record<PredefinedFormatsString, Record<'valid' | 'invalid', string[]>>
+> = {
   camelCase: {
     valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],
     invalid: ['snake_case', 'UPPER_CASE', 'UPPER', 'StrictPascalCase'],
@@ -1132,13 +1131,11 @@ ruleTester.run('naming-convention', rule, {
         {
           const camelCaseVar = 1;
           function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction() {
-          };
+          declare function camelCaseDeclaredFunction() {};
         }
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {
-        };
+        declare function PascalCaseDeclaredFunction() {};
       `,
       options: [
         { selector: 'default', format: ['camelCase'] },
@@ -1991,8 +1988,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {
-        };
+        declare function PascalCaseDeclaredFunction() {};
       `,
       options: [
         { selector: 'default', format: ['snake_case'] },
