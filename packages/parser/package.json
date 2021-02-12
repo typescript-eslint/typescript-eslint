@@ -52,7 +52,6 @@
   "devDependencies": {
     "@types/glob": "*",
     "@typescript-eslint/experimental-utils": "4.15.0",
-    "@typescript-eslint/shared-fixtures": "4.15.0",
     "glob": "*",
     "typescript": "*"
   },
