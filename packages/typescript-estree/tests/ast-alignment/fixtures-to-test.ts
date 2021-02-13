@@ -1,4 +1,3 @@
-import jsxKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -109,20 +108,6 @@ class FixturesTester {
  */
 const tester = new FixturesTester();
 
-/**
- * JSX fixtures which have known issues for typescript-estree
- */
-const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => f.replace('jsx/', ''));
-
-/**
- * Current random error difference on jsx/invalid-no-tag-name.src.js
- * ts-estree - SyntaxError
- * Babel - RangeError
- *
- * Reported here: https://github.com/babel/babel/issues/6680
- */
-jsxFilesWithKnownIssues.push('invalid-no-tag-name');
-
 tester.addFixturePatternConfig('javascript/basics');
 
 tester.addFixturePatternConfig('comments');
@@ -166,8 +151,8 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      * TS1100: "Invalid use of '{0}' in strict mode."
      * TODO: do we want TS1100 error code?
      */
-    'error-strict-eval', // babel parse errors
     'error-strict-default-param-eval',
+    'error-strict-eval',
     'error-strict-eval-return',
     'error-strict-param-arguments',
     'error-strict-param-eval',
@@ -308,7 +293,30 @@ tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 /* ================================================== */
 
 tester.addFixturePatternConfig('jsx', {
-  ignore: jsxFilesWithKnownIssues,
+  ignore: [
+    /**
+     * JSX fixtures which have known issues for typescript-estree
+     * https://github.com/Microsoft/TypeScript/issues/7410
+     */
+    'embedded-tags',
+    /**
+     * JSX fixtures which have known issues for typescript-estree
+     * @see https://github.com/Microsoft/TypeScript/issues/7411
+     */
+    'namespaced-attribute-and-value-inserted',
+    /**
+     * JSX fixtures which have known issues for typescript-estree
+     * @see https://github.com/Microsoft/TypeScript/issues/7411
+     */
+    'namespaced-name-and-attribute',
+    /**
+     * Current random error difference on jsx/invalid-no-tag-name.src.js
+     * ts-estree - SyntaxError
+     * Babel - RangeError
+     * @see https://github.com/babel/babel/issues/6680
+     */
+    'invalid-no-tag-name',
+  ],
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
 
@@ -342,13 +350,14 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-extends-member-expression',
     /**
-     * https://github.com/typescript-eslint/typescript-eslint/issues/2998
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/2998
      */
     'type-import-type',
     'type-import-type-with-type-parameters-in-type-reference',
     /**
-     * Not yet supported in Babel https://github.com/babel/babel/issues/9228
+     * Not yet supported in Babel
      * Directive field is not added to module and namespace
+     * @see https://github.com/babel/babel/issues/9228
      */
     'directive-in-module',
     'directive-in-namespace',
@@ -369,12 +378,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'export-named-enum-computed-string',
     /**
-     * Babel: TSTypePredicate does not include `asserts` statement in range
-     * ts-estree: TSTypePredicate does include `asserts` statement in range
-     * https://github.com/babel/babel/pull/12763
-     */
-    'type-assertion-with-guard-in-method',
-    /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * This is intentional; we don't error on semantic problems for these cases
      */
@@ -387,16 +390,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * TODO: report this to babel
      */
     'catch-clause-with-invalid-annotation',
-    /**
-     * babel does not take into account leading character into union and intersection
-     * https://github.com/babel/babel/pull/12758
-     */
-    'union-intersection',
   ],
   ignoreSourceType: [
     /**
      * Babel reports sourceType script
-     * https://github.com/babel/babel/issues/9213
+     * @see https://github.com/babel/babel/issues/9213
      */
     'export-assignment',
     'import-equal-declaration',
@@ -493,6 +491,4 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   ],
 });
 
-const fixturesToTest = tester.getFixtures();
-
-export { fixturesToTest };
+export const fixturesToTest = tester.getFixtures();
