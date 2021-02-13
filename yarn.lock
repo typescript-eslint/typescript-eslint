@@ -1865,9 +1865,9 @@
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
 
 "@types/marked@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-1.1.0.tgz#53509b5f127e0c05c19176fcf1d743a41e00ff19"
-  integrity sha512-j8XXj6/l9kFvCwMyVqozznqpd/nk80krrW+QiIJN60Uu9gX5Pvn4/qPJ2YngQrR3QREPwmrE1f9/EWKVTFzoEw==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-1.2.2.tgz#1f858a0e690247ecf3b2eef576f98f86e8d960d4"
+  integrity sha512-wLfw1hnuuDYrFz97IzJja0pdVsC0oedtS4QsKH1/inyW9qkLQbXgMUqEQT0MVtUBx3twjWeInUfjQbhBVLECXw==
 
 "@types/minimatch@*":
   version "3.0.3"
