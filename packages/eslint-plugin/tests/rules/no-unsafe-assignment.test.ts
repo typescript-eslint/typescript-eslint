@@ -97,6 +97,11 @@ class Foo {
   private a = 1;
 }
     `,
+    `
+class Foo {
+  #a = 1;
+}
+    `,
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
@@ -150,6 +155,7 @@ const x = (1 as any), y = 1;
 function foo(a = (1 as any)) {}
 class Foo { constructor(private a = (1 as any)) {} }
 class Foo { private a = (1 as any) }
+class Foo { #a = (1 as any) }
       `,
       errors: [
         {
@@ -181,6 +187,12 @@ class Foo { private a = (1 as any) }
           line: 6,
           column: 13,
           endColumn: 35,
+        },
+        {
+          messageId: 'anyAssignment',
+          line: 7,
+          column: 13,
+          endColumn: 28,
         },
       ],
     }),
