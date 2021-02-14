@@ -148,11 +148,10 @@ Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionIn
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
-export const foo = () => (
-  {
+export const foo = () =>
+  ({
     bar: true,
-  } as const
-);
+  } as const);
 export const bar = () => 1;
 ```
 
@@ -160,11 +159,10 @@ Examples of **correct** code for this rule with `{ allowDirectConstAssertionInAr
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value } as const);
-export const foo = () => (
-  {
+export const foo = () =>
+  ({
     bar: true,
-  } as const
-);
+  } as const);
 export const bar = () => 1 as const;
 ```
 
