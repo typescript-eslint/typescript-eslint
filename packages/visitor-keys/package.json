@@ -42,7 +42,7 @@
     "eslint-visitor-keys": "^2.0.0"
   },
   "devDependencies": {
-    "@types/eslint-visitor-keys": "^1.0.0"
+    "@types/eslint-visitor-keys": "*"
   },
   "funding": {
     "type": "opencollective",

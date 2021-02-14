@@ -243,15 +243,9 @@ export default util.createRule<Options, MessageIds>({
     if (rules.ForInStatement && rules.ForOfStatement) {
       overrides.ForInStatement = function (node): void {
         if (util.isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          return rules.ForInStatement({
-            ...node,
-            type: AST_NODE_TYPES.ForInStatement,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
+          // as of 7.20.0 there's no way to skip checking the right of the ForIn
+          // so just don't validate it at all
+          return;
         }
 
         return rules.ForInStatement(node);
