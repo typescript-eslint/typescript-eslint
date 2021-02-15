@@ -24,7 +24,7 @@ module.exports = {
       processor: 'markdown/markdown',
     },
     {
-      files: ['**/*.md/*.{js,ts,jsx,tsx}'],
+      files: ['**/*.md/*.{js,ts,jsx,tsx,javascript,node}'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'error',
         'no-console': 'error',
