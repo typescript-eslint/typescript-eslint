@@ -11,7 +11,7 @@ import { serializer } from '../../tools/tserror-serializer';
  */
 const FIXTURES_DIR = path.join(__dirname, '../../../shared-fixtures/fixtures');
 
-const testFiles = glob.sync(`**/*.src.*`, {
+const testFiles = glob.sync('**/*.src.*', {
   cwd: FIXTURES_DIR,
 });
 
