@@ -10,11 +10,13 @@ import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
  */
 const FIXTURES_DIR = path.join(__dirname, '../../../shared-fixtures/fixtures');
 
-const testFiles = glob.sync(`${FIXTURES_DIR}/**/*.src.*`);
+const testFiles = glob.sync(`**/*.src.*`, {
+  cwd: FIXTURES_DIR,
+});
 
 describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {
-    const code = readFileSync(filename, 'utf8');
+    const code = readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const fileExtension = path.extname(filename);
     const config: parser.TSESTreeOptions = {
       loc: true,
