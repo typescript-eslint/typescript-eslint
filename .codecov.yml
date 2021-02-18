@@ -1,3 +1,8 @@
+codecov:
+  require_ci_to_pass: no
+  notify:
+    wait_for_ci: no
+
 coverage:
   status:
     patch:
@@ -7,7 +12,7 @@ coverage:
       default:
         target: auto
         threshold: 2%
+
 comment:
   layout: diff, flags, files
   require_changes: true
-  
