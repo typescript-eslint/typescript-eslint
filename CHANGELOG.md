@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.0...v4.15.1) (2021-02-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] check allowNames on function declarations and property methods ([#3051](https://github.com/typescript-eslint/typescript-eslint/issues/3051)) ([0ade469](https://github.com/typescript-eslint/typescript-eslint/commit/0ade469dc1cf17d79c36a9c985630d60491ed847))
+
+
+
+
+
 # [4.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.2...v4.15.0) (2021-02-08)
 
 
