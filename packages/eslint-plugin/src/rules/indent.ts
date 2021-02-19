@@ -17,7 +17,7 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const KNOWN_NODES = new Set([
   // Class properties aren't yet supported by eslint...
-  AST_NODE_TYPES.ClassProperty,
+  AST_NODE_TYPES.PropertyDefinition,
 
   // ts keywords
   AST_NODE_TYPES.TSAbstractKeyword,
@@ -33,7 +33,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSNullKeyword,
 
   // ts specific nodes we want to support
-  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
   AST_NODE_TYPES.TSAsExpression,
@@ -138,7 +138,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSEnumMember
         | TSESTree.TypeElement,
       type:
-        | AST_NODE_TYPES.ClassProperty
+        | AST_NODE_TYPES.PropertyDefinition
         | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property,
     ): TSESTree.Node | null {
       const base = {
@@ -170,7 +170,7 @@ export default util.createRule<Options, MessageIds>({
           readonly: false,
           declare: false,
           ...base,
-        } as TSESTree.ClassProperty;
+        } as TSESTree.PropertyDefinition;
       }
     }
 
@@ -333,8 +333,8 @@ export default util.createRule<Options, MessageIds>({
             p =>
               TSPropertySignatureToProperty(
                 p,
-                AST_NODE_TYPES.ClassProperty,
-              ) as TSESTree.ClassProperty,
+                AST_NODE_TYPES.PropertyDefinition,
+              ) as TSESTree.PropertyDefinition,
           ),
 
           // location data

@@ -24,7 +24,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      ClassProperty(node): void {
+      PropertyDefinition(node): void {
         rules.MethodDefinition(node as never);
       },
     };

@@ -14,7 +14,6 @@ enum AST_NODE_TYPES {
   ClassBody = 'ClassBody',
   ClassDeclaration = 'ClassDeclaration',
   ClassExpression = 'ClassExpression',
-  ClassProperty = 'ClassProperty',
   ConditionalExpression = 'ConditionalExpression',
   ContinueStatement = 'ContinueStatement',
   DebuggerStatement = 'DebuggerStatement',
@@ -63,6 +62,7 @@ enum AST_NODE_TYPES {
   ObjectPattern = 'ObjectPattern',
   Program = 'Program',
   Property = 'Property',
+  PropertyDefinition = 'PropertyDefinition',
   RestElement = 'RestElement',
   ReturnStatement = 'ReturnStatement',
   SequenceExpression = 'SequenceExpression',
@@ -86,9 +86,9 @@ enum AST_NODE_TYPES {
   /**
    * TS-prefixed nodes
    */
-  TSAbstractClassProperty = 'TSAbstractClassProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
+  TSAbstractPropertyDefinition = 'TSAbstractPropertyDefinition',
   TSAnyKeyword = 'TSAnyKeyword',
   TSArrayType = 'TSArrayType',
   TSAsExpression = 'TSAsExpression',

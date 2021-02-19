@@ -50,10 +50,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      ClassProperty(): void {
+      PropertyDefinition(): void {
         thisIsValidStack.push(true);
       },
-      'ClassProperty:exit'(): void {
+      'PropertyDefinition:exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {

@@ -335,8 +335,8 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.ClassProperty:
-        case AST_NODE_TYPES.TSAbstractClassProperty:
+        case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.TSAbstractPropertyDefinition:
           if (node.accessibility === 'private') {
             return;
           }

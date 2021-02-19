@@ -158,7 +158,7 @@ describe('semanticInfo', () => {
 
     const computedPropertyString = ((parseResult.ast
       .body[1] as TSESTree.ClassDeclaration).body
-      .body[0] as TSESTree.ClassProperty).key;
+      .body[0] as TSESTree.PropertyDefinition).key;
     const tsComputedPropertyString = parseResult.services.esTreeNodeToTSNodeMap.get(
       computedPropertyString,
     );
