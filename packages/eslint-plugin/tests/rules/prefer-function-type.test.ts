@@ -69,7 +69,7 @@ type Foo = () => string;
     {
       code: `
 interface Foo {
-  /** This is a description of the foo function */
+  /** comment */
   (): string;
 }
       `,
@@ -83,9 +83,51 @@ interface Foo {
         },
       ],
       output: `
-interface Foo {
-  /** This is a description of the foo function */
+/** comment */
+type Foo = () => string;
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
+    {
+      code: `
+export interface Foo {
+  /** comment */
   (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+/** comment */
+export type Foo = () => string;
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
+    {
+      code: `
+function foo(bar: { /* comment */ (s: string): number } | undefined): number {
+  return bar('hello');
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+        },
+      ],
+      output: `
+function foo(bar: /* comment */ ((s: string) => number) | undefined): number {
+  return bar('hello');
 }
       `,
     },
