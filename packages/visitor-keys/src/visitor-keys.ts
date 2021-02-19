@@ -62,14 +62,14 @@ const additionalKeys: AdditionalKeys = {
   Decorator: ['expression'],
 
   // TS-prefixed nodes
+  TSAbstractKeyword: [],
+  TSAbstractMethodDefinition: ['key', 'value'],
   TSAbstractPropertyDefinition: [
     'decorators',
     'key',
     'typeAnnotation',
     'value',
   ],
-  TSAbstractKeyword: [],
-  TSAbstractMethodDefinition: ['key', 'value'],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
   TSAsExpression: ['expression', 'typeAnnotation'],
