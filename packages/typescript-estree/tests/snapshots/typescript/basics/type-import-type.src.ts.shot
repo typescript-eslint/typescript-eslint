@@ -38,19 +38,27 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
-        "isTypeOf": true,
-        "loc": Object {
-          "end": Object {
-            "column": 27,
-            "line": 1,
-          },
-          "start": Object {
-            "column": 9,
-            "line": 1,
-          },
-        },
-        "parameter": Object {
-          "literal": Object {
+        "exprName": Object {
+          "argument": Object {
+            "literal": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 26,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                23,
+                26,
+              ],
+              "raw": "'A'",
+              "type": "Literal",
+              "value": "A",
+            },
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -65,33 +73,41 @@ Object {
               23,
               26,
             ],
-            "raw": "'A'",
-            "type": "Literal",
-            "value": "A",
+            "type": "TSLiteralType",
           },
           "loc": Object {
             "end": Object {
-              "column": 26,
+              "column": 27,
               "line": 1,
             },
             "start": Object {
-              "column": 23,
+              "column": 16,
               "line": 1,
             },
           },
+          "qualifier": null,
           "range": Array [
-            23,
-            26,
+            16,
+            27,
           ],
-          "type": "TSLiteralType",
+          "type": "TSImportType",
+          "typeParameters": null,
         },
-        "qualifier": null,
+        "loc": Object {
+          "end": Object {
+            "column": 27,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
         "range": Array [
           9,
           27,
         ],
-        "type": "TSImportType",
-        "typeParameters": null,
+        "type": "TSTypeQuery",
       },
     },
     Object {
@@ -129,18 +145,7 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
-        "isTypeOf": false,
-        "loc": Object {
-          "end": Object {
-            "column": 25,
-            "line": 2,
-          },
-          "start": Object {
-            "column": 9,
-            "line": 2,
-          },
-        },
-        "parameter": Object {
+        "argument": Object {
           "literal": Object {
             "loc": Object {
               "end": Object {
@@ -156,7 +161,7 @@ Object {
               45,
               48,
             ],
-            "raw": "\\"B\\"",
+            "raw": "'B'",
             "type": "Literal",
             "value": "B",
           },
@@ -175,6 +180,16 @@ Object {
             48,
           ],
           "type": "TSLiteralType",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 25,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 2,
+          },
         },
         "qualifier": Object {
           "loc": Object {
@@ -256,12 +271,156 @@ Object {
         },
       },
     },
+    Object {
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 6,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 4,
+          },
+        },
+        "name": "C",
+        "range": Array [
+          80,
+          81,
+        ],
+        "type": "Identifier",
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        75,
+        114,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "exprName": Object {
+          "argument": Object {
+            "literal": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 37,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 34,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                109,
+                112,
+              ],
+              "raw": "'A'",
+              "type": "Literal",
+              "value": "A",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 37,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 34,
+                "line": 4,
+              },
+            },
+            "range": Array [
+              109,
+              112,
+            ],
+            "type": "TSLiteralType",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 38,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 27,
+              "line": 4,
+            },
+          },
+          "qualifier": null,
+          "range": Array [
+            102,
+            113,
+          ],
+          "type": "TSImportType",
+          "typeParameters": null,
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 38,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 4,
+          },
+        },
+        "range": Array [
+          84,
+          113,
+        ],
+        "type": "TSTypeQuery",
+      },
+    },
   ],
-  "comments": Array [],
+  "comments": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        56,
+        74,
+      ],
+      "type": "Line",
+      "value": " prettier-ignore",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        91,
+        101,
+      ],
+      "type": "Block",
+      "value": " test ",
+    },
+  ],
   "loc": Object {
     "end": Object {
       "column": 0,
-      "line": 3,
+      "line": 5,
     },
     "start": Object {
       "column": 0,
@@ -270,7 +429,7 @@ Object {
   },
   "range": Array [
     0,
-    56,
+    115,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -542,7 +701,7 @@ Object {
         48,
       ],
       "type": "String",
-      "value": "\\"B\\"",
+      "value": "'B'",
     },
     Object {
       "loc": Object {
@@ -666,6 +825,168 @@ Object {
       "range": Array [
         54,
         55,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        75,
+        79,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        80,
+        81,
+      ],
+      "type": "Identifier",
+      "value": "C",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        82,
+        83,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        84,
+        90,
+      ],
+      "type": "Keyword",
+      "value": "typeof",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        102,
+        108,
+      ],
+      "type": "Keyword",
+      "value": "import",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 34,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 33,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        108,
+        109,
+      ],
+      "type": "Punctuator",
+      "value": "(",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 34,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        109,
+        112,
+      ],
+      "type": "String",
+      "value": "'A'",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        112,
+        113,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 38,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        113,
+        114,
       ],
       "type": "Punctuator",
       "value": ";",
