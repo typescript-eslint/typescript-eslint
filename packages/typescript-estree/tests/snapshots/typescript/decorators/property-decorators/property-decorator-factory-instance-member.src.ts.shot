@@ -99,7 +99,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": null,
           },
           Object {
@@ -195,7 +195,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "arguments": Array [],
               "callee": Object {
