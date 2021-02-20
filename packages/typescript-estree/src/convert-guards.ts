@@ -203,9 +203,7 @@ export interface BaseGuard {
   [ts.SyntaxKind.OptionalType]: TSESTree.TSOptionalType;
   [ts.SyntaxKind.RestType]: TSESTree.TSRestType;
   [ts.SyntaxKind.TemplateLiteralType]: TSESTree.TSTemplateLiteralType;
-
-  // TODO: just for testing - delete/change me
-  [ts.SyntaxKind.IntrinsicKeyword]: 'IntrinsicKeyword';
+  [ts.SyntaxKind.IntrinsicKeyword]: TSESTree.TSIntrinsicKeyword;
 }
 
 export interface NonPatternGuard extends BaseGuard {

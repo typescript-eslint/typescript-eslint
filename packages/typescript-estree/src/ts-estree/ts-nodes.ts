@@ -220,4 +220,3 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.TemplateLiteralTypeNode;
-

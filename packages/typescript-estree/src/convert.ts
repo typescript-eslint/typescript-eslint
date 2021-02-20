@@ -2127,9 +2127,9 @@ export class Converter {
       }
 
       case SyntaxKind.JsxAttribute: {
-        const attributeName = this.convertChild(
+        const attributeName = (this.convertChild(
           node.name,
-        ) as TSESTree.JSXIdentifier;
+        ) as unknown) as TSESTree.JSXIdentifier;
         attributeName.type = AST_NODE_TYPES.JSXIdentifier;
 
         return this.createNode<TSESTree.JSXAttribute>(node, {
