@@ -428,11 +428,9 @@ export type MethodDefinition =
 export type Modifier =
   | TSAbstractKeyword
   | TSAsyncKeyword
-  | TSDeclareKeyword
-  | TSExportKeyword
-  | TSPublicKeyword
   | TSPrivateKeyword
   | TSProtectedKeyword
+  | TSPublicKeyword
   | TSReadonlyKeyword
   | TSStaticKeyword;
 export type ObjectLiteralElementLike =

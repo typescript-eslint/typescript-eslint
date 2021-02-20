@@ -145,6 +145,7 @@ export interface BaseGuard {
   [ts.SyntaxKind.TypeReference]: TSESTree.TSTypeReference;
   [ts.SyntaxKind.TypeParameter]: TSESTree.TSTypeParameter;
   [ts.SyntaxKind.ThisType]: TSESTree.TSThisType;
+  [ts.SyntaxKind.AbstractKeyword]: TSESTree.TSAbstractKeyword;
   [ts.SyntaxKind.AnyKeyword]: TSESTree.TSAnyKeyword;
   [ts.SyntaxKind.BigIntKeyword]: TSESTree.TSBigIntKeyword;
   [ts.SyntaxKind.BooleanKeyword]: TSESTree.TSBooleanKeyword;
@@ -314,20 +315,22 @@ export type TSESTreeToTSNodeGuard<
   ? TSESTreeToTSNode2<TSNodeLiteralExpression, P>
   : T extends ts.UpdateExpression
   ? TSESTreeToTSNode2<TSNodeUpdateExpression, P>
-  : T extends ts.LeftHandSideExpression
-  ? TSESTreeToTSNode2<TSNodeLeftHandSideExpression, P>
   : T extends ts.TypeNode
   ? TSESTreeToTSNode2<TSNodeTypeNode, P>
   : T extends ts.TypeElement
   ? TSESTreeToTSNode2<TSNodeTypeElement, P>
   : T extends ts.ClassElement
   ? TSESTreeToTSNode2<TSNodeClassElement, P>
+  : // This is extremely slow
+  T extends ts.LeftHandSideExpression
+  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any // TSESTreeToTSNode2<TSNodeLeftHandSideExpression, P>
   : T extends ts.Statement
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ? any // TSESTreeToTSNode2<TSNodeStatement, P>
+  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any // TSESTreeToTSNode2<TSNodeStatement, P>
   : T extends ts.Expression
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ? any // TSESTreeToTSNode2<TSNodeExpression, P>
+  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any // TSESTreeToTSNode2<TSNodeExpression, P>
   : null; // TODO
 
 // export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;

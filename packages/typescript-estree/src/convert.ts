@@ -586,15 +586,14 @@ export class Converter {
     if (!modifiers || !modifiers.length) {
       return;
     }
+    const remainingModifiers: TSESTree.Modifier[] = [];
     /**
      * Some modifiers are explicitly handled by applying them as
      * boolean values on the result node. As well as adding them
      * to the result, we remove them from the array, so that they
      * are not handled twice.
      */
-    const handledModifierIndices: { [key: number]: boolean } = {};
-    for (let i = 0; i < modifiers.length; i++) {
-      const modifier = modifiers[i];
+    for (const modifier of modifiers) {
       switch (modifier.kind) {
         /**
          * Ignore ExportKeyword and DefaultKeyword, they are handled
@@ -602,31 +601,27 @@ export class Converter {
          */
         case SyntaxKind.ExportKeyword:
         case SyntaxKind.DefaultKeyword:
-          handledModifierIndices[i] = true;
           break;
         case SyntaxKind.ConstKeyword:
           (result as any).const = true;
-          handledModifierIndices[i] = true;
           break;
         case SyntaxKind.DeclareKeyword:
           result.declare = true;
-          handledModifierIndices[i] = true;
           break;
         default:
+          remainingModifiers.push(this.convertChild(modifier));
+          break;
       }
     }
+
     /**
      * If there are still valid modifiers available which have
      * not been explicitly handled above, we just convert and
      * add the modifiers array to the result node.
      */
-    const remainingModifiers = modifiers.filter(
-      (_, i) => !handledModifierIndices[i],
-    );
-    if (!remainingModifiers || !remainingModifiers.length) {
-      return;
+    if (remainingModifiers.length) {
+      result.modifiers = remainingModifiers;
     }
-    result.modifiers = remainingModifiers.map(el => this.convertChild(el));
   }
 
   /**
@@ -2212,6 +2207,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSThisType,
         });
 
+      case SyntaxKind.AbstractKeyword:
       case SyntaxKind.AnyKeyword:
       case SyntaxKind.BigIntKeyword:
       case SyntaxKind.BooleanKeyword:
@@ -2692,11 +2688,6 @@ export class Converter {
         return this.createNode<TSESTree.TSNamespaceExportDeclaration>(node, {
           type: AST_NODE_TYPES.TSNamespaceExportDeclaration,
           id: this.convertChild(node.name),
-        });
-      }
-      case SyntaxKind.AbstractKeyword: {
-        return this.createNode<TSESTree.TSAbstractKeyword>(node, {
-          type: AST_NODE_TYPES.TSAbstractKeyword,
         });
       }
 
