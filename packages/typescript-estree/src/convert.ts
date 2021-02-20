@@ -244,11 +244,7 @@ export class Converter {
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(
-        // this is completely valid, but TS hates it
-        node as never,
-        this.ast,
-      );
+      result.range = getRange(node, this.ast);
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -469,7 +465,7 @@ export class Converter {
       throw new Error(`Unknown AST_NODE_TYPE: "${customType}"`);
     }
 
-    const result = this.createNode<any>(node, {
+    const result = this.createNode<any>(node as any, {
       type: customType,
     });
 

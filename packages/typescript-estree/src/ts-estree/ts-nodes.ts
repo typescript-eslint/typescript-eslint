@@ -11,11 +11,67 @@ declare module 'typescript' {
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
+export type TSNodeSkipped =
+  | ts.OmittedExpression
+  | ts.ComputedPropertyName // we are skipping this node
+  | ts.CaseBlock
+  | ts.HeritageClause
+  | ts.NamedImports
+  | ts.NamedExports
+  | ts.TemplateSpan;
+
+export type TSNodeUnsupported =
+  | ts.PartiallyEmittedExpression
+  | ts.SyntheticExpression
+  | ts.ParenthesizedExpression
+  | ts.NotEmittedStatement
+  | ts.CommaListExpression
+  | ts.MissingDeclaration
+  | ts.Bundle
+  | ts.InputFiles
+  | ts.UnparsedNode
+  | ts.UnparsedSource
+  | ts.SemicolonClassElement
+
+  // Modifiers
+  | ts.ConstKeyword
+  | ts.DefaultKeyword
+
+  // JSON: Unsupported
+  | ts.JsonMinusNumericLiteral
+
+  // JSDoc: Unsupported
+  | ts.JSDoc
+  | ts.JSDocTypeExpression
+  | ts.JSDocUnknownTag
+  | ts.JSDocAugmentsTag
+  | ts.JSDocClassTag
+  | ts.JSDocEnumTag
+  | ts.JSDocThisTag
+  | ts.JSDocTemplateTag
+  | ts.JSDocReturnTag
+  | ts.JSDocTypeTag
+  | ts.JSDocTypedefTag
+  | ts.JSDocCallbackTag
+  | ts.JSDocSignature
+  | ts.JSDocPropertyTag
+  | ts.JSDocParameterTag
+  | ts.JSDocTypeLiteral
+  | ts.JSDocFunctionType
+  | ts.JSDocAllType
+  | ts.JSDocUnknownType
+  | ts.JSDocNullableType
+  | ts.JSDocNonNullableType
+  | ts.JSDocOptionalType
+  | ts.JSDocVariadicType
+  | ts.JSDocAuthorTag;
+
 export type TSNode =
+  | TSNodeUnsupported
+  | TSNodeSkipped
   | ts.Modifier
   | ts.Identifier
   | ts.QualifiedName
-  | ts.ComputedPropertyName
   | ts.Decorator
   | ts.TypeParameterDeclaration
   // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
@@ -36,7 +92,6 @@ export type TSNode =
   | ts.MethodSignature
   | ts.MethodDeclaration
   | ts.ConstructorDeclaration
-  | ts.SemicolonClassElement
   | ts.GetAccessorDeclaration
   | ts.SetAccessorDeclaration
   | ts.IndexSignatureDeclaration
@@ -65,8 +120,6 @@ export type TSNode =
   | ts.MappedTypeNode
   | ts.LiteralTypeNode
   | ts.StringLiteral
-  | ts.OmittedExpression
-  | ts.PartiallyEmittedExpression
   | ts.PrefixUnaryExpression
   | ts.PostfixUnaryExpression
   | ts.NullLiteral
@@ -79,7 +132,6 @@ export type TSNode =
   | ts.VoidExpression
   | ts.AwaitExpression
   | ts.YieldExpression
-  | ts.SyntheticExpression
   | ts.BinaryExpression
   | ts.ConditionalExpression
   | ts.FunctionExpression
@@ -92,8 +144,6 @@ export type TSNode =
   | ts.TemplateMiddle
   | ts.TemplateTail
   | ts.TemplateExpression
-  | ts.TemplateSpan
-  | ts.ParenthesizedExpression
   | ts.ArrayLiteralExpression
   | ts.SpreadElement
   | ts.ObjectLiteralExpression
@@ -118,11 +168,8 @@ export type TSNode =
   | ts.JsxClosingElement
   | ts.JsxExpression
   | ts.JsxText
-  | ts.NotEmittedStatement
-  | ts.CommaListExpression
   | ts.EmptyStatement
   | ts.DebuggerStatement
-  | ts.MissingDeclaration
   | ts.Block
   | ts.VariableStatement
   | ts.ExpressionStatement
@@ -137,7 +184,6 @@ export type TSNode =
   | ts.ReturnStatement
   | ts.WithStatement
   | ts.SwitchStatement
-  | ts.CaseBlock
   | ts.CaseClause
   | ts.DefaultClause
   | ts.LabeledStatement
@@ -148,7 +194,6 @@ export type TSNode =
   | ts.ClassDeclaration
   | ts.ClassExpression
   | ts.InterfaceDeclaration
-  | ts.HeritageClause
   | ts.TypeAliasDeclaration
   | ts.EnumMember
   | ts.EnumDeclaration
@@ -161,40 +206,8 @@ export type TSNode =
   | ts.NamespaceImport
   | ts.NamespaceExportDeclaration
   | ts.ExportDeclaration
-  | ts.NamedImports
-  | ts.NamedExports
   | ts.ImportSpecifier
   | ts.ExportSpecifier
   | ts.ExportAssignment
   | ts.SourceFile
-  | ts.Bundle
-  | ts.InputFiles
-  | ts.UnparsedSource
-  | ts.JsonMinusNumericLiteral
-  | ts.TemplateLiteralTypeNode
-
-  // JSDoc: Unsupported
-  | ts.JSDoc
-  | ts.JSDocTypeExpression
-  | ts.JSDocUnknownTag
-  | ts.JSDocAugmentsTag
-  | ts.JSDocClassTag
-  | ts.JSDocEnumTag
-  | ts.JSDocThisTag
-  | ts.JSDocTemplateTag
-  | ts.JSDocReturnTag
-  | ts.JSDocTypeTag
-  | ts.JSDocTypedefTag
-  | ts.JSDocCallbackTag
-  | ts.JSDocSignature
-  | ts.JSDocPropertyTag
-  | ts.JSDocParameterTag
-  | ts.JSDocTypeLiteral
-  | ts.JSDocFunctionType
-  | ts.JSDocAllType
-  | ts.JSDocUnknownType
-  | ts.JSDocNullableType
-  | ts.JSDocNonNullableType
-  | ts.JSDocOptionalType
-  | ts.JSDocVariadicType
-  | ts.JSDocAuthorTag;
+  | ts.TemplateLiteralTypeNode;
