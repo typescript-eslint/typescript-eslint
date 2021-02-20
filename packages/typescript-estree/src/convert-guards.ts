@@ -1,13 +1,6 @@
 import { TSESTree } from '@typescript-eslint/types';
 import * as ts from 'typescript';
-import {
-  TSNodeClassElement,
-  TSNodeExpression,
-  TSNodeSupported,
-  TSNodeStatement,
-  TSNodeTypeElement,
-  TSNodeTypeNode,
-} from './ts-estree/ts-nodes';
+import { TSNode } from './ts-estree/ts-nodes';
 
 /**
  * this is not correct yet, additional refining is required
@@ -212,21 +205,7 @@ export interface BaseGuard {
   [ts.SyntaxKind.TemplateLiteralType]: TSESTree.TSTemplateLiteralType;
 
   // TODO: just for testing - delete/change me
-  [ts.SyntaxKind.ExportKeyword]: 'ExportKeyword';
-  [ts.SyntaxKind.ImportKeyword]: 'ImportKeyword';
-  [ts.SyntaxKind.PrivateKeyword]: 'PrivateKeyword';
-  [ts.SyntaxKind.StaticKeyword]: 'StaticKeyword';
-  [ts.SyntaxKind.ProtectedKeyword]: 'ProtectedKeyword';
-  [ts.SyntaxKind.AsyncKeyword]: 'AsyncKeyword';
-  [ts.SyntaxKind.PublicKeyword]: 'PublicKeyword';
-  [ts.SyntaxKind.DeclareKeyword]: 'DeclareKeyword';
   [ts.SyntaxKind.IntrinsicKeyword]: 'IntrinsicKeyword';
-  [ts.SyntaxKind.ReadonlyKeyword]: 'ReadonlyKeyword';
-  [ts.SyntaxKind.TemplateSpan]: 'TemplateSpan';
-  [ts.SyntaxKind.CaseBlock]: 'CaseBlock';
-  [ts.SyntaxKind.NamedImports]: 'NamedImports';
-  [ts.SyntaxKind.NamedExports]: 'NamedExports';
-  [ts.SyntaxKind.HeritageClause]: 'HeritageClause';
 }
 
 export interface NonPatternGuard extends BaseGuard {
@@ -256,24 +235,50 @@ export interface PatternGuard extends BaseGuard {
   [ts.SyntaxKind.ObjectLiteralExpression]: TSESTree.ObjectPattern;
 }
 
-// export type TypeTest = Exclude<
-//   TSNodeSupported['kind'],
-//   keyof TSESTreeToTSNodeTypes
-// >;
+export type TSNodePattern = TSNode & {
+  kind: keyof PatternGuard | keyof NonPatternGuard;
+};
+export type TSNodeBaseGuard = TSNode & { kind: keyof BaseGuard };
 
-export type TSESTreeToTSNode2<
-  T extends TSNodeSupported | undefined,
-  P extends boolean
-> = T extends Exclude<TSNodeSupported, ts.ParenthesizedExpression>
+export type TSNodeSupported =
+  | TSNodePattern
+  | TSNodeBaseGuard
+  | ts.ParenthesizedExpression;
+
+export type TSNodeExpression = Exclude<
+  Extract<TSNodeSupported, ts.Expression>,
+  // manual fixes
+  | ts.OmittedExpression // there is advanced handling for this node in type guards
+  | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
+>;
+export type TSNodeStatement = Extract<TSNodeSupported, ts.Statement>;
+export type TSNodeTypeNode = Exclude<
+  Extract<TSNodeSupported, ts.TypeNode>,
+  // manual fixes
+  ts.ExpressionWithTypeArguments
+>;
+export type TSNodeTypeElement = Extract<TSNodeSupported, ts.TypeElement>;
+export type TSNodeClassElement = Extract<TSNodeSupported, ts.ClassElement>;
+
+export type TSNodeConvertable =
+  | TSNode
+  | ts.Expression
+  | ts.Statement
+  | ts.TypeNode
+  | ts.TypeElement
+  | ts.ClassElement
+  | undefined;
+
+export type TSESTreeToTSNode2<T, P extends boolean> = T extends TSNodeBaseGuard
+  ? BaseGuard[T['kind']]
+  : T extends TSNodePattern
   ? P extends true
     ? PatternGuard[T['kind']]
     : NonPatternGuard[T['kind']]
-  : T extends ts.ParenthesizedExpression
-  ? TSESTreeToTSNode2<Exclude<TSNodeExpression, ts.ParenthesizedExpression>, P>
-  : null;
+  : TSESTreeToTSNode2<TSNodePattern, P>;
 
 export type TSESTreeToTSNodeGuard<
-  T,
+  T extends TSNodeConvertable,
   P extends boolean
 > = T extends TSNodeSupported
   ? TSESTreeToTSNode2<T, P>
@@ -287,9 +292,7 @@ export type TSESTreeToTSNodeGuard<
   ? TSESTreeToTSNode2<TSNodeTypeElement, P>
   : T extends ts.ClassElement
   ? TSESTreeToTSNode2<TSNodeClassElement, P>
-  : T extends null | undefined
-  ? null
-  : T;
+  : null;
 
 export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;
 

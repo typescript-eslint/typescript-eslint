@@ -29,10 +29,8 @@ import {
   TSESTree,
   TSESTreeToTSNode,
   TSNode,
-  TSNodeConvertable,
-  TSNodeSupported,
 } from './ts-estree';
-import { TSESTreeToTSNode2, TSESTreeToTSNodeGuard } from './convert-guards';
+import { TSESTreeToTSNodeGuard, TSNodeConvertable } from './convert-guards';
 
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -318,7 +316,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): TSESTree.Statement[] {
+  ): TSESTree.ProgramStatement[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
