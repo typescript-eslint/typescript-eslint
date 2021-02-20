@@ -254,6 +254,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSAnyKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSBigIntKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSBooleanKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSIntrinsicKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSNeverKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSNumberKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSObjectKeyword]: ts.KeywordTypeNode;

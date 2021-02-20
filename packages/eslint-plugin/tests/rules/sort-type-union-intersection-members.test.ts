@@ -43,10 +43,13 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
 type T =
   ${operator} A
   ${operator} B
+  ${operator} intrinsic
   ${operator} number[]
   ${operator} string[]
   ${operator} any
   ${operator} string
+  ${operator} symbol
+  ${operator} this
   ${operator} readonly number[]
   ${operator} readonly string[]
   ${operator} 'a'

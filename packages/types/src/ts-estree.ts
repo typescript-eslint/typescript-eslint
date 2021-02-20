@@ -249,6 +249,7 @@ export type Node =
   | TSInterfaceDeclaration
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIntrinsicKeyword
   | TSLiteralType
   | TSMappedType
   | TSMethodSignature
@@ -544,6 +545,7 @@ export type TypeNode =
   | TSInferType
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIntrinsicKeyword
   | TSLiteralType
   | TSMappedType
   | TSNamedTupleMember
@@ -1467,6 +1469,10 @@ export interface TSInterfaceHeritage extends TSHeritageBase {
 export interface TSIntersectionType extends BaseNode {
   type: AST_NODE_TYPES.TSIntersectionType;
   types: TypeNode[];
+}
+
+export interface TSIntrinsicKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSIntrinsicKeyword;
 }
 
 export interface TSLiteralType extends BaseNode {
