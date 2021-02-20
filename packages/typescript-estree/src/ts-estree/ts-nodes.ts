@@ -18,12 +18,12 @@ export type TSNodeSkipped =
   | ts.HeritageClause
   | ts.NamedImports
   | ts.NamedExports
-  | ts.TemplateSpan;
+  | ts.TemplateSpan
+  | ts.ParenthesizedExpression;
 
 export type TSNodeUnsupported =
   | ts.PartiallyEmittedExpression
   | ts.SyntheticExpression
-  | ts.ParenthesizedExpression
   | ts.NotEmittedStatement
   | ts.CommaListExpression
   | ts.MissingDeclaration
@@ -38,7 +38,7 @@ export type TSNodeUnsupported =
   | ts.DefaultKeyword
 
   // JSON: Unsupported
-  | ts.JsonMinusNumericLiteral
+  // | ts.JsonMinusNumericLiteral // same node as PrefixUnaryExpression
 
   // JSDoc: Unsupported
   | ts.JSDoc
@@ -66,6 +66,8 @@ export type TSNodeUnsupported =
   | ts.JSDocVariadicType
   | ts.JSDocAuthorTag;
 
+// TODO: replace with code that retrieves all nodes that have kind
+// export type TSNode2 = Extract<typeof ts[keyof typeof ts], { kind: any }>
 export type TSNode =
   | TSNodeUnsupported
   | TSNodeSkipped
@@ -211,3 +213,27 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.TemplateLiteralTypeNode;
+
+export type TSNodeSupported = Exclude<TSNode, TSNodeUnsupported>;
+export type TSNodeExpression = Exclude<
+  Extract<TSNodeSupported, ts.Expression>,
+  // manual fixes
+  ts.OmittedExpression
+>;
+export type TSNodeStatement = Extract<TSNodeSupported, ts.Statement>;
+export type TSNodeTypeNode = Exclude<
+  Extract<TSNodeSupported, ts.TypeNode>,
+  // manual fixes
+  ts.ExpressionWithTypeArguments
+>;
+export type TSNodeTypeElement = Extract<TSNodeSupported, ts.TypeElement>;
+export type TSNodeClassElement = Extract<TSNodeSupported, ts.ClassElement>;
+
+export type TSNodeConvertable =
+  | TSNode
+  | ts.Expression
+  | ts.Statement
+  | ts.TypeNode
+  | ts.TypeElement
+  | ts.ClassElement
+  | undefined;
