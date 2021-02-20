@@ -11,6 +11,9 @@ declare module 'typescript' {
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
+/**
+ * List of nodes that are skipped
+ */
 export type TSNodeSkipped =
   | ts.OmittedExpression
   | ts.ComputedPropertyName // we are skipping this node
@@ -19,7 +22,8 @@ export type TSNodeSkipped =
   | ts.NamedImports
   | ts.NamedExports
   | ts.TemplateSpan
-  | ts.ParenthesizedExpression;
+  | ts.ParenthesizedExpression
+  | ts.Token<ts.SyntaxKind.ImportKeyword>;
 
 export type TSNodeUnsupported =
   | ts.PartiallyEmittedExpression
@@ -218,7 +222,8 @@ export type TSNodeSupported = Exclude<TSNode, TSNodeUnsupported>;
 export type TSNodeExpression = Exclude<
   Extract<TSNodeSupported, ts.Expression>,
   // manual fixes
-  ts.OmittedExpression
+  | ts.OmittedExpression // there is advanced handling for this node in type guards
+  | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
 >;
 export type TSNodeStatement = Extract<TSNodeSupported, ts.Statement>;
 export type TSNodeTypeNode = Exclude<

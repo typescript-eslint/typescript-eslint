@@ -12,7 +12,7 @@ import {
 /**
  * this is not correct yet, additional refining is required
  */
-export interface TSESTreeToTSNodeTypes {
+export interface BaseGuard {
   [ts.SyntaxKind.SourceFile]: TSESTree.Program;
   [ts.SyntaxKind.Block]: TSESTree.BlockStatement;
   [ts.SyntaxKind.Identifier]: TSESTree.Identifier;
@@ -41,14 +41,6 @@ export interface TSESTreeToTSNodeTypes {
   [ts.SyntaxKind.VariableDeclarationList]: TSESTree.VariableDeclaration;
   [ts.SyntaxKind.ExpressionStatement]: TSESTree.ExpressionStatement;
   [ts.SyntaxKind.ThisKeyword]: TSESTree.ThisExpression;
-  // TODO: conditional
-  [ts.SyntaxKind.ArrayLiteralExpression]:
-    | TSESTree.ArrayPattern
-    | TSESTree.ArrayExpression;
-  // TODO: conditional
-  [ts.SyntaxKind.ObjectLiteralExpression]:
-    | TSESTree.ObjectPattern
-    | TSESTree.ObjectExpression;
   [ts.SyntaxKind.PropertyAssignment]: TSESTree.Property;
   [ts.SyntaxKind.ShorthandPropertyAssignment]: TSESTree.Property;
   // TODO: skipped node
@@ -83,10 +75,6 @@ export interface TSESTreeToTSNodeTypes {
   [ts.SyntaxKind.ArrayBindingPattern]: TSESTree.ArrayPattern;
   [ts.SyntaxKind.OmittedExpression]: null;
   [ts.SyntaxKind.ObjectBindingPattern]: TSESTree.ObjectPattern;
-  [ts.SyntaxKind.BindingElement]:
-    | TSESTree.AssignmentPattern
-    | TSESTree.RestElement
-    | TSESTree.Property;
   [ts.SyntaxKind.ArrowFunction]: TSESTree.ArrowFunctionExpression;
   [ts.SyntaxKind.YieldExpression]: TSESTree.YieldExpression;
   [ts.SyntaxKind.AwaitExpression]: TSESTree.AwaitExpression;
@@ -96,10 +84,6 @@ export interface TSESTreeToTSNodeTypes {
   [ts.SyntaxKind.TemplateHead]: TSESTree.TemplateElement;
   [ts.SyntaxKind.TemplateMiddle]: TSESTree.TemplateElement;
   [ts.SyntaxKind.TemplateTail]: TSESTree.TemplateElement;
-  [ts.SyntaxKind.SpreadAssignment]:
-    | TSESTree.RestElement
-    | TSESTree.SpreadElement;
-  [ts.SyntaxKind.SpreadElement]: TSESTree.RestElement | TSESTree.SpreadElement;
   [ts.SyntaxKind.Parameter]:
     | TSESTree.RestElement
     | TSESTree.AssignmentPattern
@@ -128,12 +112,6 @@ export interface TSESTreeToTSNodeTypes {
   [ts.SyntaxKind.VoidExpression]: TSESTree.UnaryExpression;
   [ts.SyntaxKind.TypeOfExpression]: TSESTree.UnaryExpression;
   [ts.SyntaxKind.TypeOperator]: TSESTree.TSTypeOperator;
-  [ts.SyntaxKind.BinaryExpression]:
-    | TSESTree.SequenceExpression
-    | TSESTree.AssignmentExpression
-    | TSESTree.LogicalExpression
-    | TSESTree.BinaryExpression
-    | TSESTree.AssignmentPattern;
   [ts.SyntaxKind.PropertyAccessExpression]:
     | TSESTree.MemberExpression
     | TSESTree.ChainExpression;
@@ -251,29 +229,64 @@ export interface TSESTreeToTSNodeTypes {
   [ts.SyntaxKind.HeritageClause]: 'HeritageClause';
 }
 
+export interface NonPatternGuard extends BaseGuard {
+  [ts.SyntaxKind.BindingElement]:
+    | TSESTree.AssignmentPattern
+    | TSESTree.RestElement
+    | TSESTree.Property;
+  [ts.SyntaxKind.ArrayLiteralExpression]: TSESTree.ArrayExpression;
+  [ts.SyntaxKind.BinaryExpression]:
+    | TSESTree.SequenceExpression
+    | TSESTree.AssignmentExpression
+    | TSESTree.LogicalExpression
+    | TSESTree.BinaryExpression;
+  [ts.SyntaxKind.SpreadAssignment]: TSESTree.SpreadElement;
+  [ts.SyntaxKind.SpreadElement]: TSESTree.SpreadElement;
+  [ts.SyntaxKind.ObjectLiteralExpression]: TSESTree.ObjectExpression;
+}
+
+export interface PatternGuard extends BaseGuard {
+  [ts.SyntaxKind.BindingElement]: TSESTree.AssignmentPattern;
+  [ts.SyntaxKind.ArrayLiteralExpression]: TSESTree.ArrayPattern;
+  [ts.SyntaxKind.BinaryExpression]:
+    | TSESTree.SequenceExpression
+    | TSESTree.AssignmentPattern;
+  [ts.SyntaxKind.SpreadAssignment]: TSESTree.RestElement;
+  [ts.SyntaxKind.SpreadElement]: TSESTree.RestElement;
+  [ts.SyntaxKind.ObjectLiteralExpression]: TSESTree.ObjectPattern;
+}
+
 // export type TypeTest = Exclude<
 //   TSNodeSupported['kind'],
 //   keyof TSESTreeToTSNodeTypes
 // >;
 
 export type TSESTreeToTSNode2<
-  T extends TSNodeSupported | undefined
+  T extends TSNodeSupported | undefined,
+  P extends boolean
 > = T extends Exclude<TSNodeSupported, ts.ParenthesizedExpression>
-  ? TSESTreeToTSNodeTypes[T['kind']]
+  ? P extends true
+    ? PatternGuard[T['kind']]
+    : NonPatternGuard[T['kind']]
   : T extends ts.ParenthesizedExpression
-  ? TSESTreeToTSNode2<Exclude<TSNodeExpression, ts.ParenthesizedExpression>>
+  ? TSESTreeToTSNode2<Exclude<TSNodeExpression, ts.ParenthesizedExpression>, P>
   : null;
 
-export type TSESTreeToTSNodeGuard<T> = T extends TSNodeSupported
-  ? TSESTreeToTSNode2<T>
+export type TSESTreeToTSNodeGuard<
+  T,
+  P extends boolean
+> = T extends TSNodeSupported
+  ? TSESTreeToTSNode2<T, P>
   : T extends ts.Expression
-  ? TSESTreeToTSNode2<TSNodeExpression>
+  ? TSESTreeToTSNode2<TSNodeExpression, P>
   : T extends ts.Statement
-  ? TSESTreeToTSNode2<TSNodeStatement>
+  ? TSESTreeToTSNode2<TSNodeStatement, P>
   : T extends ts.TypeNode
-  ? TSESTreeToTSNode2<TSNodeTypeNode>
+  ? TSESTreeToTSNode2<TSNodeTypeNode, P>
   : T extends ts.TypeElement
-  ? TSESTreeToTSNode2<TSNodeTypeElement>
+  ? TSESTreeToTSNode2<TSNodeTypeElement, P>
   : T extends ts.ClassElement
-  ? TSESTreeToTSNode2<TSNodeClassElement>
-  : null;
+  ? TSESTreeToTSNode2<TSNodeClassElement, P>
+  : T extends null | undefined
+  ? null
+  : T;
