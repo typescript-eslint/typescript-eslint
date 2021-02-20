@@ -290,3 +290,7 @@ export type TSESTreeToTSNodeGuard<
   : T extends null | undefined
   ? null
   : T;
+
+export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;
+
+export type TypeTest2 = Exclude<TSNodeSupported['kind'], keyof NonPatternGuard>;

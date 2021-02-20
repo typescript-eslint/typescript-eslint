@@ -101,12 +101,12 @@ export class Converter {
    * @param allowPattern flag to determine if patterns are allowed
    * @returns the converted ESTree node
    */
-  private converter<T extends TSNodeConvertable>(
+  private converter<T extends TSNodeConvertable, P extends boolean>(
     node: T,
     parent?: ts.Node,
     inTypeMode?: boolean,
-    allowPattern?: boolean,
-  ): TSESTreeToTSNodeGuard<T> {
+    allowPattern?: P,
+  ): TSESTreeToTSNodeGuard<T, P> {
     /**
      * Exit early for null and undefined
      */
@@ -123,7 +123,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(node, (parent ?? node.parent) as TSNode);
+    const result = this.convertNode<P>(node, (parent ?? node.parent) as TSNode);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -218,8 +218,8 @@ export class Converter {
   private convertPattern<T extends TSNodeConvertable>(
     child: T,
     parent?: ts.Node,
-  ): TSESTreeToTSNodeGuard<T> {
-    return this.converter<T>(child, parent, this.inTypeMode, true);
+  ): TSESTreeToTSNodeGuard<T, true> {
+    return this.converter<T, true>(child, parent, this.inTypeMode, true);
   }
 
   /**
@@ -231,8 +231,8 @@ export class Converter {
   private convertChild<T extends TSNodeConvertable>(
     child: T,
     parent?: ts.Node,
-  ): TSESTreeToTSNodeGuard<T> {
-    return this.converter<T>(child, parent, this.inTypeMode, false);
+  ): TSESTreeToTSNodeGuard<T, false> {
+    return this.converter<T, false>(child, parent, this.inTypeMode, false);
   }
 
   /**
@@ -244,8 +244,8 @@ export class Converter {
   private convertType<T extends TSNodeConvertable>(
     child: T,
     parent?: ts.Node,
-  ): TSESTreeToTSNodeGuard<T> {
-    return this.converter<T>(child, parent, true, false);
+  ): TSESTreeToTSNodeGuard<T, false> {
+    return this.converter<T, false>(child, parent, true, false);
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
@@ -323,7 +323,7 @@ export class Converter {
 
     return (
       nodes
-        .map<TSESTree.Statement | null>(statement => {
+        .map(statement => {
           const child = this.convertChild(statement);
           if (allowDirectives) {
             if (
@@ -658,12 +658,12 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertNode(
-    node: TSNodeSupported,
+  private convertNode<P extends boolean>(
+    node: TSNode,
     parent: TSNode,
-  ): TSESTreeToTSNode2<typeof node> {
+  ): TSESTreeToTSNodeGuard<typeof node, P> {
     switch (node.kind) {
-      case SyntaxKind.SourceFile: {
+      case ts.SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
           type: AST_NODE_TYPES.Program,
           body: this.convertBodyExpressions(node.statements, node),
