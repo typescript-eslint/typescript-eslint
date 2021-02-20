@@ -204,13 +204,13 @@ export interface BaseGuard {
   [ts.SyntaxKind.RestType]: TSESTree.TSRestType;
   [ts.SyntaxKind.TemplateLiteralType]: TSESTree.TSTemplateLiteralType;
   [ts.SyntaxKind.IntrinsicKeyword]: TSESTree.TSIntrinsicKeyword;
+  [ts.SyntaxKind.BindingElement]:
+    | TSESTree.AssignmentPattern // This is possible only when parent is ArrayPattern...
+    | TSESTree.RestElement
+    | TSESTree.Property;
 }
 
 export interface NonPatternGuard extends BaseGuard {
-  [ts.SyntaxKind.BindingElement]:
-    | TSESTree.AssignmentPattern
-    | TSESTree.RestElement
-    | TSESTree.Property;
   [ts.SyntaxKind.ArrayLiteralExpression]: TSESTree.ArrayExpression;
   [ts.SyntaxKind.BinaryExpression]:
     | TSESTree.SequenceExpression
@@ -223,7 +223,6 @@ export interface NonPatternGuard extends BaseGuard {
 }
 
 export interface PatternGuard extends BaseGuard {
-  [ts.SyntaxKind.BindingElement]: TSESTree.AssignmentPattern;
   [ts.SyntaxKind.ArrayLiteralExpression]: TSESTree.ArrayPattern;
   [ts.SyntaxKind.BinaryExpression]:
     | TSESTree.SequenceExpression
@@ -233,23 +232,47 @@ export interface PatternGuard extends BaseGuard {
   [ts.SyntaxKind.ObjectLiteralExpression]: TSESTree.ObjectPattern;
 }
 
+// This is really slow for some reason
 export type TSNodePattern = TSNode & {
   kind: keyof PatternGuard | keyof NonPatternGuard;
 };
+// This is really slow for some reason
 export type TSNodeBaseGuard = TSNode & { kind: keyof BaseGuard };
 
-export type TSNodeSupported =
-  | TSNodePattern
-  | TSNodeBaseGuard
-  | ts.ParenthesizedExpression;
+export type TSNodeSupported = TSNodePattern | TSNodeBaseGuard;
 
+// Expressions - this is needed for optimization
 export type TSNodeExpression = Exclude<
   Extract<TSNodeSupported, ts.Expression>,
   // manual fixes
   | ts.OmittedExpression // there is advanced handling for this node in type guards
   | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
 >;
+export type TSNodeObjectLiteralElementLike = Extract<
+  TSNodeExpression,
+  ts.ObjectLiteralElementLike
+>;
+export type TSNodeLeftHandSideExpression = Extract<
+  TSNodeExpression,
+  ts.LeftHandSideExpression
+>;
+export type TSNodeUnaryExpression = Extract<
+  TSNodeExpression,
+  ts.UnaryExpression
+>;
+export type TSNodeLiteralExpression = Extract<
+  TSNodeExpression,
+  ts.LiteralExpression
+>;
+export type TSNodeUpdateExpression = Extract<
+  TSNodeExpression,
+  ts.UpdateExpression
+>;
+
+// Statements - this is needed for optimization
 export type TSNodeStatement = Extract<TSNodeSupported, ts.Statement>;
+
+// Declarations - this is needed for optimization
 export type TSNodeTypeNode = Exclude<
   Extract<TSNodeSupported, ts.TypeNode>,
   // manual fixes
@@ -257,6 +280,8 @@ export type TSNodeTypeNode = Exclude<
 >;
 export type TSNodeTypeElement = Extract<TSNodeSupported, ts.TypeElement>;
 export type TSNodeClassElement = Extract<TSNodeSupported, ts.ClassElement>;
+
+// ----------------
 
 export type TSNodeConvertable =
   | TSNode
@@ -267,31 +292,46 @@ export type TSNodeConvertable =
   | ts.ClassElement
   | undefined;
 
-export type TSESTreeToTSNode2<T, P extends boolean> = T extends TSNodeBaseGuard
+export type TSESTreeToTSNode2<
+  T extends TSNodePattern,
+  P extends boolean
+> = T extends TSNodeBaseGuard
   ? BaseGuard[T['kind']]
-  : T extends TSNodePattern
-  ? P extends true
-    ? PatternGuard[T['kind']]
-    : NonPatternGuard[T['kind']]
-  : TSESTreeToTSNode2<TSNodePattern, P>;
+  : P extends true
+  ? PatternGuard[T['kind']]
+  : NonPatternGuard[T['kind']];
 
 export type TSESTreeToTSNodeGuard<
   T extends TSNodeConvertable,
   P extends boolean
-> = T extends TSNodeSupported
+> = T extends ts.ParenthesizedExpression
+  ? TSESTreeToTSNode2<TSNodePattern, P>
+  : T extends TSNodeSupported
   ? TSESTreeToTSNode2<T, P>
-  : T extends ts.Expression
-  ? TSESTreeToTSNode2<TSNodeExpression, P>
-  : T extends ts.Statement
-  ? TSESTreeToTSNode2<TSNodeStatement, P>
+  : T extends ts.UnaryExpression
+  ? TSESTreeToTSNode2<TSNodeUnaryExpression, P>
+  : T extends ts.LiteralExpression
+  ? TSESTreeToTSNode2<TSNodeLiteralExpression, P>
+  : T extends ts.UpdateExpression
+  ? TSESTreeToTSNode2<TSNodeUpdateExpression, P>
+  : T extends ts.LeftHandSideExpression
+  ? TSESTreeToTSNode2<TSNodeLeftHandSideExpression, P>
   : T extends ts.TypeNode
   ? TSESTreeToTSNode2<TSNodeTypeNode, P>
   : T extends ts.TypeElement
   ? TSESTreeToTSNode2<TSNodeTypeElement, P>
   : T extends ts.ClassElement
   ? TSESTreeToTSNode2<TSNodeClassElement, P>
-  : null;
+  : T extends ts.Statement
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ? any // TSESTreeToTSNode2<TSNodeStatement, P>
+  : T extends ts.Expression
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ? any // TSESTreeToTSNode2<TSNodeExpression, P>
+  : null; // TODO
 
-export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;
+// export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;
 
-export type TypeTest2 = Exclude<TSNodeSupported['kind'], keyof NonPatternGuard>;
+// export type TypeTest2 = Exclude<TSNodeSupported['kind'], keyof NonPatternGuard>;
+
+// export type TypeTest3 = TSESTreeToTSNode2<TSNodeExpression, true>;

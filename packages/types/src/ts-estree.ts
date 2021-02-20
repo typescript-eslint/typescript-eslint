@@ -465,20 +465,7 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
-export type ProgramStatement =
-  | ClassDeclaration
-  | ExportAllDeclaration
-  | ExportDefaultDeclaration
-  | ExportNamedDeclaration
-  | ImportDeclaration
-  | Statement
-  | TSDeclareFunction
-  | TSEnumDeclaration
-  | TSExportAssignment
-  | TSImportEqualsDeclaration
-  | TSInterfaceDeclaration
-  | TSNamespaceExportDeclaration
-  | TSTypeAliasDeclaration;
+export type ProgramStatement = Statement;
 export type Property = PropertyComputedName | PropertyNonComputedName;
 export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
 export type PropertyNameComputed = Expression;
@@ -504,7 +491,20 @@ export type Statement =
   | ThrowStatement
   | TryStatement
   | VariableDeclaration
-  | WithStatement;
+  | WithStatement
+  // old: ProgramStatement
+  | ClassDeclaration
+  | ExportAllDeclaration
+  | ExportDefaultDeclaration
+  | ExportNamedDeclaration
+  | ImportDeclaration
+  | TSDeclareFunction
+  | TSEnumDeclaration
+  | TSExportAssignment
+  | TSImportEqualsDeclaration
+  | TSInterfaceDeclaration
+  | TSNamespaceExportDeclaration
+  | TSTypeAliasDeclaration;
 export type TSAbstractClassProperty =
   | TSAbstractClassPropertyComputedName
   | TSAbstractClassPropertyNonComputedName;
@@ -1271,7 +1271,7 @@ export interface TryStatement extends BaseNode {
   type: AST_NODE_TYPES.TryStatement;
   block: BlockStatement;
   handler: CatchClause | null;
-  finalizer: BlockStatement;
+  finalizer: BlockStatement | null;
 }
 
 export interface TSAbstractClassPropertyComputedName

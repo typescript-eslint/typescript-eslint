@@ -316,7 +316,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): TSESTree.ProgramStatement[] {
+  ): TSESTree.Statements[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
@@ -661,7 +661,7 @@ export class Converter {
     parent: TSNode,
   ): TSESTreeToTSNodeGuard<typeof node, P> {
     switch (node.kind) {
-      case ts.SyntaxKind.SourceFile: {
+      case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
           type: AST_NODE_TYPES.Program,
           body: this.convertBodyExpressions(node.statements, node),
