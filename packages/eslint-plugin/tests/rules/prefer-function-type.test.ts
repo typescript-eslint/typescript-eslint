@@ -68,7 +68,7 @@ type Foo = () => string;
     // https://github.com/typescript-eslint/typescript-eslint/issues/3004
     {
       code: `
-interface Foo {
+export default interface Foo {
   /** comment */
   (): string;
 }
@@ -83,11 +83,33 @@ interface Foo {
         },
       ],
       output: `
-/** comment */
+export default interface Foo {
+  /** comment */
+  (): string;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  // comment
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+// comment
 type Foo = () => string;
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
     {
       code: `
 export interface Foo {
@@ -109,7 +131,27 @@ export interface Foo {
 export type Foo = () => string;
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
+    {
+      code: `
+export interface Foo {
+  // comment
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+// comment
+export type Foo = () => string;
+      `,
+    },
     {
       code: `
 function foo(bar: { /* comment */ (s: string): number } | undefined): number {
