@@ -1,6 +1,6 @@
 import { TSESTree } from '@typescript-eslint/types';
 import * as ts from 'typescript';
-import { TSNode } from './ts-estree/ts-nodes';
+import { TSNode, TSNodeUnused } from './ts-estree/ts-nodes';
 
 /**
  * this is not correct yet, additional refining is required
@@ -233,54 +233,33 @@ export interface PatternGuard extends BaseGuard {
   [ts.SyntaxKind.ObjectLiteralExpression]: TSESTree.ObjectPattern;
 }
 
-// This is really slow for some reason
-export type TSNodePattern = TSNode & {
-  kind: keyof PatternGuard | keyof NonPatternGuard;
-};
-// This is really slow for some reason
-export type TSNodeBaseGuard = TSNode & { kind: keyof BaseGuard };
-
-export type TSNodeSupported = TSNodePattern | TSNodeBaseGuard;
-
-// Expressions - this is needed for optimization
-export type TSNodeExpression = Exclude<
-  Extract<TSNodeSupported, ts.Expression>,
+// This is really slow - https://github.com/microsoft/TypeScript/pull/42556
+// export type TSNodeBaseGuard = TSNode & { kind: keyof BaseGuard };
+export type TSNodeBaseGuard = Exclude<
+  TSNode,
+  | TSNodeUnused
+  | TSNodePattern
   // manual fixes
+  | ts.ParenthesizedExpression
+  | ts.ComputedPropertyName
   | ts.OmittedExpression // there is advanced handling for this node in type guards
   | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
->;
-export type TSNodeObjectLiteralElementLike = Extract<
-  TSNodeExpression,
-  ts.ObjectLiteralElementLike
->;
-export type TSNodeLeftHandSideExpression = Extract<
-  TSNodeExpression,
-  ts.LeftHandSideExpression
->;
-export type TSNodeUnaryExpression = Extract<
-  TSNodeExpression,
-  ts.UnaryExpression
->;
-export type TSNodeLiteralExpression = Extract<
-  TSNodeExpression,
-  ts.LiteralExpression
->;
-export type TSNodeUpdateExpression = Extract<
-  TSNodeExpression,
-  ts.UpdateExpression
+  | ts.ExpressionWithTypeArguments
+  | ts.Modifier
 >;
 
-// Statements - this is needed for optimization
-export type TSNodeStatement = Extract<TSNodeSupported, ts.Statement>;
+// This is really slow - https://github.com/microsoft/TypeScript/pull/42556
+// export type TSNodePattern = TSNode & {
+//   kind: keyof PatternGuard | keyof NonPatternGuard;
+// };
+export type TSNodePattern =
+  | ts.ArrayLiteralExpression
+  | ts.BinaryExpression
+  | ts.SpreadAssignment
+  | ts.SpreadElement
+  | ts.ObjectLiteralExpression;
 
-// Declarations - this is needed for optimization
-export type TSNodeTypeNode = Exclude<
-  Extract<TSNodeSupported, ts.TypeNode>,
-  // manual fixes
-  ts.ExpressionWithTypeArguments
->;
-export type TSNodeTypeElement = Extract<TSNodeSupported, ts.TypeElement>;
-export type TSNodeClassElement = Extract<TSNodeSupported, ts.ClassElement>;
+export type TSNodeSupported = TSNodePattern | TSNodeBaseGuard;
 
 // ----------------
 
@@ -294,7 +273,7 @@ export type TSNodeConvertable =
   | undefined;
 
 export type TSESTreeToTSNode2<
-  T extends TSNodePattern,
+  T extends TSNodeSupported,
   P extends boolean
 > = T extends TSNodeBaseGuard
   ? BaseGuard[T['kind']]
@@ -309,32 +288,19 @@ export type TSESTreeToTSNodeGuard<
   ? TSESTreeToTSNode2<TSNodePattern, P>
   : T extends TSNodeSupported
   ? TSESTreeToTSNode2<T, P>
-  : T extends ts.UnaryExpression
-  ? TSESTreeToTSNode2<TSNodeUnaryExpression, P>
-  : T extends ts.LiteralExpression
-  ? TSESTreeToTSNode2<TSNodeLiteralExpression, P>
-  : T extends ts.UpdateExpression
-  ? TSESTreeToTSNode2<TSNodeUpdateExpression, P>
-  : T extends ts.TypeNode
-  ? TSESTreeToTSNode2<TSNodeTypeNode, P>
-  : T extends ts.TypeElement
-  ? TSESTreeToTSNode2<TSNodeTypeElement, P>
-  : T extends ts.ClassElement
-  ? TSESTreeToTSNode2<TSNodeClassElement, P>
-  : // This is extremely slow
-  T extends ts.LeftHandSideExpression
-  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any // TSESTreeToTSNode2<TSNodeLeftHandSideExpression, P>
-  : T extends ts.Statement
-  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any // TSESTreeToTSNode2<TSNodeStatement, P>
-  : T extends ts.Expression
-  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any // TSESTreeToTSNode2<TSNodeExpression, P>
-  : null; // TODO
+  : T extends ts.Node
+  ? // This is really slow - https://github.com/microsoft/TypeScript/pull/42556
+    // TSESTreeToTSNode2<Extract<TSNodeSupported, T>, P>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+  : null;
 
 // export type TypeTest = Exclude<TSNodeSupported['kind'], keyof PatternGuard>;
 
 // export type TypeTest2 = Exclude<TSNodeSupported['kind'], keyof NonPatternGuard>;
 
+// Expressions - this is needed for optimization
+// export type TSNodeExpression = Extract<TSNodeList, ts.Expression>;
 // export type TypeTest3 = TSESTreeToTSNode2<TSNodeExpression, true>;
+
+// export type TypeTest4 = Exclude<TSNode, { kind: unknown }>;
