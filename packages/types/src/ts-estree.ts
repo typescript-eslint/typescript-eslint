@@ -1077,7 +1077,7 @@ export interface JSXOpeningElement extends BaseNode {
   typeParameters?: TSTypeParameterInstantiation;
   selfClosing: boolean;
   name: JSXTagNameExpression;
-  attributes: JSXAttribute[];
+  attributes: (JSXAttribute | JSXSpreadAttribute)[];
 }
 
 export interface JSXOpeningFragment extends BaseNode {
@@ -1186,7 +1186,7 @@ export interface PropertyNonComputedName extends PropertyBase {
 
 export interface RegExpLiteral extends LiteralBase {
   type: AST_NODE_TYPES.Literal;
-  value: RegExp;
+  value: RegExp | null;
 }
 
 export interface RestElement extends BaseNode {
