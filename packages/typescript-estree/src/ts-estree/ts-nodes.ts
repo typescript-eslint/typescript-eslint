@@ -31,6 +31,7 @@ export type TSNodeUnused =
   // Type Unions
   // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
   // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
+  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
 
   // JSON: Unsupported
   // | ts.JsonMinusNumericLiteral // same node as PrefixUnaryExpression
@@ -188,7 +189,6 @@ export type TSNodeUsed =
   | ts.ThrowStatement
   | ts.TryStatement
   | ts.CatchClause
-  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
   | ts.ClassDeclaration
   | ts.ClassExpression
   | ts.InterfaceDeclaration

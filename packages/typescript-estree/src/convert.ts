@@ -100,12 +100,12 @@ export class Converter {
    * @param allowPattern flag to determine if patterns are allowed
    * @returns the converted ESTree node
    */
-  private converter<T extends TSNodeConvertable, P extends boolean>(
-    node: T,
+  private converter<P extends boolean>(
+    node: TSNodeConvertable,
     parent?: ts.Node,
     inTypeMode?: boolean,
     allowPattern?: P,
-  ): TSESTreeToTSNodeGuard<T, P> {
+  ): TSESTreeToTSNodeGuard<typeof node, P> {
     /**
      * Exit early for null and undefined
      */
@@ -123,8 +123,8 @@ export class Converter {
     }
 
     const result = this.convertNode<P>(
-      node,
-      (parent ?? node.parent) as TSNodeUsed,
+      node as TSNodeUsed,
+      parent ?? node.parent,
     );
 
     this.registerTSNodeInNodeMap(node, result);
@@ -221,7 +221,7 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, true> {
-    return this.converter<T, true>(child, parent, this.inTypeMode, true);
+    return this.converter<true>(child, parent, this.inTypeMode, true);
   }
 
   /**
@@ -234,7 +234,7 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, false> {
-    return this.converter<T, false>(child, parent, this.inTypeMode, false);
+    return this.converter<false>(child, parent, this.inTypeMode, false);
   }
 
   /**
@@ -247,7 +247,7 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, false> {
-    return this.converter<T, false>(child, parent, true, false);
+    return this.converter<false>(child, parent, true, false);
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
@@ -256,7 +256,7 @@ export class Converter {
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(node, this.ast);
+      result.range = getRange(node as TSNodeUsed, this.ast);
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -320,7 +320,7 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
-  ): TSESTree.Statements[] {
+  ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
     return (
@@ -657,7 +657,7 @@ export class Converter {
    */
   private convertNode<P extends boolean>(
     node: TSNodeUsed,
-    parent: TSNodeUsed,
+    parent: TSNode | ts.Node,
   ): TSESTreeToTSNodeGuard<typeof node, P> {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
@@ -1444,7 +1444,10 @@ export class Converter {
 
       case SyntaxKind.Parameter: {
         let parameter: TSESTree.RestElement | TSESTree.BindingName;
-        let result: TSESTree.RestElement | TSESTree.AssignmentPattern;
+        let result:
+          | TSESTree.RestElement
+          | TSESTree.AssignmentPattern
+          | TSESTree.BindingName;
 
         if (node.dotDotDotToken) {
           parameter = result = this.createNode<TSESTree.RestElement>(node, {

@@ -280,8 +280,7 @@ export interface EstreeToTsNodeTypes {
  * This mapping is based on the internal logic of the parser.
  */
 export type TSESTreeToTSNode<T extends TSESTree.Node = TSESTree.Node> = Extract<
-  | TSNodeUsed
-  | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>,
+  TSNodeUsed | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>,
   // if this errors, it means that one of the AST_NODE_TYPES is not defined in the above interface
   EstreeToTsNodeTypes[T['type']]
 >;

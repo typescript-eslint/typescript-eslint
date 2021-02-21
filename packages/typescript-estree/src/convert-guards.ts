@@ -80,6 +80,7 @@ export interface BaseGuard {
   [ts.SyntaxKind.Parameter]:
     | TSESTree.RestElement
     | TSESTree.AssignmentPattern
+    | TSESTree.BindingName
     | TSESTree.TSParameterProperty;
   [ts.SyntaxKind.ClassDeclaration]: TSESTree.ClassDeclaration;
   [ts.SyntaxKind.ClassExpression]: TSESTree.ClassExpression;
@@ -251,7 +252,6 @@ export type TSNodeBaseGuard = Exclude<
   // manual fixes
   | ts.ParenthesizedExpression
   | ts.ComputedPropertyName
-  | ts.OmittedExpression // there is advanced handling for this node in type guards
   | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
   | ts.ExpressionWithTypeArguments
   | ts.HeritageClause
