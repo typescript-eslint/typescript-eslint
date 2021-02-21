@@ -2206,7 +2206,8 @@ export class Converter {
       case SyntaxKind.SymbolKeyword:
       case SyntaxKind.UnknownKeyword:
       case SyntaxKind.VoidKeyword:
-      case SyntaxKind.UndefinedKeyword: {
+      case SyntaxKind.UndefinedKeyword:
+      case SyntaxKind.IntrinsicKeyword: {
         return this.createNode<any>(node, {
           type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES],
         });
