@@ -285,7 +285,7 @@ export type TSNodeConvertable =
   | ts.ClassElement
   | undefined;
 
-export type TSESTreeToTSNode2<
+export type TSESTreeToTSNodeGuardHelper<
   T extends TSNodeSupported,
   P extends boolean
 > = T extends TSNodeBaseGuard
@@ -298,12 +298,12 @@ export type TSESTreeToTSNodeGuard<
   T extends TSNodeConvertable,
   P extends boolean
 > = T extends ts.ParenthesizedExpression
-  ? TSESTreeToTSNode2<TSNodePattern, P>
+  ? TSESTreeToTSNodeGuardHelper<TSNodePattern, P>
   : T extends TSNodeSupported
-  ? TSESTreeToTSNode2<T, P>
+  ? TSESTreeToTSNodeGuardHelper<T, P>
   : T extends ts.Node
   ? // This is really slow - https://github.com/microsoft/TypeScript/pull/42556
-    // TSESTreeToTSNode2<Extract<TSNodeSupported, T>, P>
+    // TSESTreeToTSNodeGuardHelper<Extract<TSNodeSupported, T>, P>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any
   : null;
@@ -314,6 +314,6 @@ export type TSESTreeToTSNodeGuard<
 
 // Expressions - this is needed for optimization
 // export type TSNodeExpression = Extract<TSNodeList, ts.Expression>;
-// export type TypeTest3 = TSESTreeToTSNode2<TSNodeExpression, true>;
+// export type TypeTest3 = TSESTreeToTSNodeGuardHelper<TSNodeExpression, true>;
 
 // export type TypeTest4 = Exclude<TSNodeUsed, { kind: unknown }>;
