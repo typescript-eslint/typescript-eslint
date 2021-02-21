@@ -462,7 +462,7 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
-/** @deprecated TODO: re-align this with EStree spec in next major release */
+/** TODO: re-align this with EStree spec in next major release */
 export type ProgramStatement = Statement;
 export type Property = PropertyComputedName | PropertyNonComputedName;
 export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
