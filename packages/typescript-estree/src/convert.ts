@@ -1932,7 +1932,7 @@ export class Converter {
       }
 
       case SyntaxKind.NumericLiteral: {
-        return this.createNode<TSESTree.NumericLiteral>(node, {
+        return this.createNode<TSESTree.NumberLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: Number(node.text),
           raw: node.getText(),
