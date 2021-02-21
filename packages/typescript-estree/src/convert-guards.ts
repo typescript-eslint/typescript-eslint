@@ -1,6 +1,6 @@
 import { TSESTree } from '@typescript-eslint/types';
 import * as ts from 'typescript';
-import { TSNode, TSNodeUnused } from './ts-estree/ts-nodes';
+import { TSNodeUsed } from './ts-estree/ts-nodes';
 
 /**
  * this is not correct yet, additional refining is required
@@ -209,6 +209,16 @@ export interface BaseGuard {
     | TSESTree.AssignmentPattern // This is possible only when parent is ArrayPattern...
     | TSESTree.RestElement
     | TSESTree.Property;
+
+  // we should delete those
+  [ts.SyntaxKind.ReadonlyKeyword]: TSESTree.TSReadonlyKeyword;
+  [ts.SyntaxKind.ExportKeyword]: TSESTree.TSExportKeyword;
+  [ts.SyntaxKind.PrivateKeyword]: TSESTree.TSPrivateKeyword;
+  [ts.SyntaxKind.ProtectedKeyword]: TSESTree.TSProtectedKeyword;
+  [ts.SyntaxKind.PublicKeyword]: TSESTree.TSPublicKeyword;
+  [ts.SyntaxKind.StaticKeyword]: TSESTree.TSStaticKeyword;
+  [ts.SyntaxKind.AsyncKeyword]: TSESTree.TSAsyncKeyword;
+  [ts.SyntaxKind.DeclareKeyword]: TSESTree.TSDeclareKeyword;
 }
 
 export interface NonPatternGuard extends BaseGuard {
@@ -234,10 +244,9 @@ export interface PatternGuard extends BaseGuard {
 }
 
 // This is really slow - https://github.com/microsoft/TypeScript/pull/42556
-// export type TSNodeBaseGuard = TSNode & { kind: keyof BaseGuard };
+// export type TSNodeBaseGuard = TSNodeUsed & { kind: keyof BaseGuard };
 export type TSNodeBaseGuard = Exclude<
-  TSNode,
-  | TSNodeUnused
+  TSNodeUsed,
   | TSNodePattern
   // manual fixes
   | ts.ParenthesizedExpression
@@ -245,11 +254,15 @@ export type TSNodeBaseGuard = Exclude<
   | ts.OmittedExpression // there is advanced handling for this node in type guards
   | ts.Token<ts.SyntaxKind.ImportKeyword> // this node can be generated only in call expression
   | ts.ExpressionWithTypeArguments
-  | ts.Modifier
+  | ts.HeritageClause
+  | ts.CaseBlock
+  | ts.NamedImports
+  | ts.TemplateSpan
+  | ts.NamedExports
 >;
 
 // This is really slow - https://github.com/microsoft/TypeScript/pull/42556
-// export type TSNodePattern = TSNode & {
+// export type TSNodePattern = TSNodeUsed & {
 //   kind: keyof PatternGuard | keyof NonPatternGuard;
 // };
 export type TSNodePattern =
@@ -264,7 +277,7 @@ export type TSNodeSupported = TSNodePattern | TSNodeBaseGuard;
 // ----------------
 
 export type TSNodeConvertable =
-  | TSNode
+  | TSNodeUsed
   | ts.Expression
   | ts.Statement
   | ts.TypeNode
@@ -303,4 +316,4 @@ export type TSESTreeToTSNodeGuard<
 // export type TSNodeExpression = Extract<TSNodeList, ts.Expression>;
 // export type TypeTest3 = TSESTreeToTSNode2<TSNodeExpression, true>;
 
-// export type TypeTest4 = Exclude<TSNode, { kind: unknown }>;
+// export type TypeTest4 = Exclude<TSNodeUsed, { kind: unknown }>;

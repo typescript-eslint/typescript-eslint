@@ -29,6 +29,7 @@ import {
   TSESTree,
   TSESTreeToTSNode,
   TSNode,
+  TSNodeUsed,
 } from './ts-estree';
 import { TSESTreeToTSNodeGuard, TSNodeConvertable } from './convert-guards';
 
@@ -121,7 +122,10 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode<P>(node, (parent ?? node.parent) as TSNode);
+    const result = this.convertNode<P>(
+      node,
+      (parent ?? node.parent) as TSNodeUsed,
+    );
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -652,8 +656,8 @@ export class Converter {
    * @returns the converted ESTree node
    */
   private convertNode<P extends boolean>(
-    node: TSNode,
-    parent: TSNode,
+    node: TSNodeUsed,
+    parent: TSNodeUsed,
   ): TSESTreeToTSNodeGuard<typeof node, P> {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
@@ -2600,7 +2604,10 @@ export class Converter {
           id: this.convertChild(node.name),
         });
         if (node.body) {
-          result.body = this.convertChild(node.body);
+          // type is not correct as is include JSDoc
+          result.body = this.convertChild(
+            node.body as Exclude<typeof node.body, ts.JSDocNamespaceBody>,
+          )!;
         }
         // apply modifiers first...
         this.applyModifiersToResult(result, node.modifiers);
