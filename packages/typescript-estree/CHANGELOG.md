@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.1...v4.15.2) (2021-02-22)
+
+
+### Bug Fixes
+
+* **typescript-estree:** correct issues in AST definition ([#3083](https://github.com/typescript-eslint/typescript-eslint/issues/3083)) ([509a117](https://github.com/typescript-eslint/typescript-eslint/commit/509a11749f85400a01e9fecfecd12871ce562d3d))
+* add missing intrinsic keyword node to AST ([#3081](https://github.com/typescript-eslint/typescript-eslint/issues/3081)) ([409bf0b](https://github.com/typescript-eslint/typescript-eslint/commit/409bf0bb3e2ac4d8782408d436ebdefb42dba38b))
+* correct test names on windows for semantic-diagnostics-enabled ([#3060](https://github.com/typescript-eslint/typescript-eslint/issues/3060)) ([885780d](https://github.com/typescript-eslint/typescript-eslint/commit/885780d4a2b07e418256b7323d76b18453c14a50))
+
+
+
+
+
 ## [4.15.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.0...v4.15.1) (2021-02-15)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree
