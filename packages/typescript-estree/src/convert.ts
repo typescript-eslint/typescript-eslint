@@ -100,12 +100,18 @@ export class Converter {
    * @param allowPattern flag to determine if patterns are allowed
    * @returns the converted ESTree node
    */
-  private converter<P extends boolean>(
-    node: TSNodeConvertable,
+  private converter<T extends TSNodeConvertable, P extends boolean>(
+    node: T,
     parent?: ts.Node,
     inTypeMode?: boolean,
     allowPattern?: P,
-  ): TSESTreeToTSNodeGuard<typeof node, P> {
+  ): TSESTreeToTSNodeGuard<T, P>;
+  private converter(
+    node: TSNodeConvertable,
+    parent?: ts.Node,
+    inTypeMode?: boolean,
+    allowPattern?: boolean,
+  ): TSESTree.Node | null {
     /**
      * Exit early for null and undefined
      */
@@ -122,10 +128,7 @@ export class Converter {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode<P>(
-      node as TSNodeUsed,
-      parent ?? node.parent,
-    );
+    const result = this.convertNode(node as TSNodeUsed, parent ?? node.parent);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -221,7 +224,7 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, true> {
-    return this.converter<true>(child, parent, this.inTypeMode, true);
+    return this.converter(child, parent, this.inTypeMode, true) as any;
   }
 
   /**
@@ -234,7 +237,7 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, false> {
-    return this.converter<false>(child, parent, this.inTypeMode, false);
+    return this.converter(child, parent, this.inTypeMode, false) as any;
   }
 
   /**
@@ -247,16 +250,20 @@ export class Converter {
     child: T,
     parent?: ts.Node,
   ): TSESTreeToTSNodeGuard<T, false> {
-    return this.converter<false>(child, parent, true, false);
+    return this.converter(child, parent, true, false) as any;
   }
 
-  private createNode<T extends TSESTree.Node = TSESTree.Node>(
+  private createNode<T extends TSESTree.Node>(
     node: TSESTreeToTSNode<T>,
     data: TSESTree.OptionalRangeAndLoc<T>,
-  ): T {
+  ): T;
+  private createNode(
+    node: TSNodeUsed,
+    data: TSESTree.OptionalRangeAndLoc<TSESTree.Node>,
+  ): TSESTree.Node {
     const result = data;
     if (!result.range) {
-      result.range = getRange(node as TSNodeUsed, this.ast);
+      result.range = getRange(node, this.ast);
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -265,7 +272,7 @@ export class Converter {
     if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
     }
-    return result as T;
+    return result as TSESTree.Node;
   }
 
   private convertBindingNameWithTypeAnnotation(
@@ -400,7 +407,7 @@ export class Converter {
       return [];
     }
     return parameters.map(param => {
-      const convertedParam = this.convertChild(param) as TSESTree.Parameter;
+      const convertedParam = this.convertChild(param);
 
       if (param.decorators?.length) {
         convertedParam.decorators = param.decorators.map(el =>
@@ -533,6 +540,14 @@ export class Converter {
    * @param parent
    * @returns the converted ESTree name object
    */
+  private convertJSXTagName<T extends ts.JsxTagNameExpression>(
+    node: T,
+    parent: ts.Node,
+  ): T extends ts.JsxTagNamePropertyAccess
+    ? TSESTree.JSXMemberExpression
+    : T extends ts.ThisExpression | ts.Identifier
+    ? TSESTree.JSXIdentifier
+    : TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier;
   private convertJSXTagName(
     node: ts.JsxTagNameExpression,
     parent: ts.Node,
@@ -549,10 +564,7 @@ export class Converter {
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
-          property: this.convertJSXTagName(
-            node.name,
-            parent,
-          ) as TSESTree.JSXIdentifier,
+          property: this.convertJSXTagName(node.name, parent),
         });
         break;
 
@@ -656,10 +668,10 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertNode<P extends boolean>(
+  private convertNode(
     node: TSNodeUsed,
     parent: TSNode | ts.Node,
-  ): TSESTreeToTSNodeGuard<typeof node, P> {
+  ): TSESTree.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
