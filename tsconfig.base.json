@@ -15,6 +15,22 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "lib": ["es2017"]
+    "lib": ["es2017"],
+    "types": [
+      "@babel/code-frame",
+      "debug",
+      "eslint-visitor-keys",
+      "glob",
+      "is-glob",
+      "jest",
+      "jest-specific-snapshot",
+      "lodash",
+      "marked",
+      "node",
+      "prettier",
+      "rimraf",
+      "semver",
+      "tmp"
+    ]
   }
 }
