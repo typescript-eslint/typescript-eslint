@@ -463,6 +463,7 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
+/** TODO: re-align this with EStree spec in next major release */
 export type ProgramStatement = Statement;
 export type Property = PropertyComputedName | PropertyNonComputedName;
 export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
@@ -474,35 +475,33 @@ export type PropertyNameNonComputed =
 export type Statement =
   | BlockStatement
   | BreakStatement
+  | ClassDeclaration
   | ContinueStatement
   | DebuggerStatement
   | DeclarationStatement
   | EmptyStatement
+  | ExportAllDeclaration
+  | ExportDefaultDeclaration
+  | ExportNamedDeclaration
   | ExpressionStatement
   | IfStatement
   | IterationStatement
   | ImportDeclaration
   | LabeledStatement
-  | TSModuleBlock
-  | ReturnStatement
-  | SwitchStatement
-  | ThrowStatement
-  | TryStatement
-  | VariableDeclaration
-  | WithStatement
-  // old: ProgramStatement
-  | ClassDeclaration
-  | ExportAllDeclaration
-  | ExportDefaultDeclaration
-  | ExportNamedDeclaration
-  | ImportDeclaration
   | TSDeclareFunction
   | TSEnumDeclaration
   | TSExportAssignment
   | TSImportEqualsDeclaration
   | TSInterfaceDeclaration
+  | TSModuleBlock
   | TSNamespaceExportDeclaration
-  | TSTypeAliasDeclaration;
+  | TSTypeAliasDeclaration
+  | ReturnStatement
+  | SwitchStatement
+  | ThrowStatement
+  | TryStatement
+  | VariableDeclaration
+  | WithStatement;
 export type TSAbstractClassProperty =
   | TSAbstractClassPropertyComputedName
   | TSAbstractClassPropertyNonComputedName;
@@ -1168,7 +1167,7 @@ export interface ObjectPattern extends BaseNode {
 
 export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
-  body: ProgramStatement[];
+  body: Statement[];
   sourceType: 'module' | 'script';
   comments?: Comment[];
   tokens?: Token[];
@@ -1500,7 +1499,7 @@ export interface TSMethodSignatureNonComputedName
 
 export interface TSModuleBlock extends BaseNode {
   type: AST_NODE_TYPES.TSModuleBlock;
-  body: ProgramStatement[];
+  body: Statement[];
 }
 
 export interface TSModuleDeclaration extends BaseNode {

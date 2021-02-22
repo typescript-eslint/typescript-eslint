@@ -597,7 +597,8 @@ export class Converter {
      * to the result, we remove them from the array, so that they
      * are not handled twice.
      */
-    for (const modifier of modifiers) {
+    for (let i = 0; i < modifiers.length; i++) {
+      const modifier = modifiers[i];
       switch (modifier.kind) {
         /**
          * Ignore ExportKeyword and DefaultKeyword, they are handled
@@ -2013,7 +2014,7 @@ export class Converter {
           });
         }
 
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.NullLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: null,
           raw: 'null',
