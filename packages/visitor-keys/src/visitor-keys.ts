@@ -99,6 +99,7 @@ const additionalKeys: AdditionalKeys = {
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
   TSInterfaceHeritage: ['expression', 'typeParameters'],
   TSIntersectionType: ['types'],
+  TSIntrinsicKeyword: [],
   TSLiteralType: ['literal'],
   TSMappedType: ['nameType', 'typeParameter', 'typeAnnotation'],
   TSMethodSignature: ['typeParameters', 'key', 'params', 'returnType'],
