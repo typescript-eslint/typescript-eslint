@@ -249,6 +249,7 @@ export type Node =
   | TSInterfaceDeclaration
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIntrinsicKeyword
   | TSLiteralType
   | TSMappedType
   | TSMethodSignature
@@ -427,11 +428,9 @@ export type MethodDefinition =
 export type Modifier =
   | TSAbstractKeyword
   | TSAsyncKeyword
-  | TSDeclareKeyword
-  | TSExportKeyword
-  | TSPublicKeyword
   | TSPrivateKeyword
   | TSProtectedKeyword
+  | TSPublicKeyword
   | TSReadonlyKeyword
   | TSStaticKeyword;
 export type ObjectLiteralElementLike =
@@ -464,20 +463,8 @@ export type PrimaryExpression =
   | TemplateLiteral
   | ThisExpression
   | TSNullKeyword;
-export type ProgramStatement =
-  | ClassDeclaration
-  | ExportAllDeclaration
-  | ExportDefaultDeclaration
-  | ExportNamedDeclaration
-  | ImportDeclaration
-  | Statement
-  | TSDeclareFunction
-  | TSEnumDeclaration
-  | TSExportAssignment
-  | TSImportEqualsDeclaration
-  | TSInterfaceDeclaration
-  | TSNamespaceExportDeclaration
-  | TSTypeAliasDeclaration;
+/** TODO: re-align this with EStree spec in next major release */
+export type ProgramStatement = Statement;
 export type Property = PropertyComputedName | PropertyNonComputedName;
 export type PropertyName = PropertyNameComputed | PropertyNameNonComputed;
 export type PropertyNameComputed = Expression;
@@ -488,16 +475,27 @@ export type PropertyNameNonComputed =
 export type Statement =
   | BlockStatement
   | BreakStatement
+  | ClassDeclaration
   | ContinueStatement
   | DebuggerStatement
   | DeclarationStatement
   | EmptyStatement
+  | ExportAllDeclaration
+  | ExportDefaultDeclaration
+  | ExportNamedDeclaration
   | ExpressionStatement
   | IfStatement
   | IterationStatement
   | ImportDeclaration
   | LabeledStatement
+  | TSDeclareFunction
+  | TSEnumDeclaration
+  | TSExportAssignment
+  | TSImportEqualsDeclaration
+  | TSInterfaceDeclaration
   | TSModuleBlock
+  | TSNamespaceExportDeclaration
+  | TSTypeAliasDeclaration
   | ReturnStatement
   | SwitchStatement
   | ThrowStatement
@@ -544,6 +542,7 @@ export type TypeNode =
   | TSInferType
   | TSInterfaceHeritage
   | TSIntersectionType
+  | TSIntrinsicKeyword
   | TSLiteralType
   | TSMappedType
   | TSNamedTupleMember
@@ -1077,7 +1076,7 @@ export interface JSXOpeningElement extends BaseNode {
   typeParameters?: TSTypeParameterInstantiation;
   selfClosing: boolean;
   name: JSXTagNameExpression;
-  attributes: JSXAttribute[];
+  attributes: (JSXAttribute | JSXSpreadAttribute)[];
 }
 
 export interface JSXOpeningFragment extends BaseNode {
@@ -1168,7 +1167,7 @@ export interface ObjectPattern extends BaseNode {
 
 export interface Program extends BaseNode {
   type: AST_NODE_TYPES.Program;
-  body: ProgramStatement[];
+  body: Statement[];
   sourceType: 'module' | 'script';
   comments?: Comment[];
   tokens?: Token[];
@@ -1186,7 +1185,7 @@ export interface PropertyNonComputedName extends PropertyBase {
 
 export interface RegExpLiteral extends LiteralBase {
   type: AST_NODE_TYPES.Literal;
-  value: RegExp;
+  value: RegExp | null;
 }
 
 export interface RestElement extends BaseNode {
@@ -1269,7 +1268,7 @@ export interface TryStatement extends BaseNode {
   type: AST_NODE_TYPES.TryStatement;
   block: BlockStatement;
   handler: CatchClause | null;
-  finalizer: BlockStatement;
+  finalizer: BlockStatement | null;
 }
 
 export interface TSAbstractClassPropertyComputedName
@@ -1469,6 +1468,10 @@ export interface TSIntersectionType extends BaseNode {
   types: TypeNode[];
 }
 
+export interface TSIntrinsicKeyword extends BaseNode {
+  type: AST_NODE_TYPES.TSIntrinsicKeyword;
+}
+
 export interface TSLiteralType extends BaseNode {
   type: AST_NODE_TYPES.TSLiteralType;
   literal: LiteralExpression | UnaryExpression | UpdateExpression;
@@ -1496,13 +1499,13 @@ export interface TSMethodSignatureNonComputedName
 
 export interface TSModuleBlock extends BaseNode {
   type: AST_NODE_TYPES.TSModuleBlock;
-  body: ProgramStatement[];
+  body: Statement[];
 }
 
 export interface TSModuleDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
   id: Identifier | Literal;
-  body?: TSModuleBlock;
+  body?: TSModuleBlock | TSModuleDeclaration;
   global?: boolean;
   declare?: boolean;
   modifiers?: Modifier[];

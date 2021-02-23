@@ -408,10 +408,12 @@ export default util.createRule<Options, MessageIds>({
         return cached;
       }
 
-      for (const statement of node.body?.body ?? []) {
-        if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
-          MODULE_DECL_CACHE.set(node, true);
-          return true;
+      if (node.body && node.body.type === AST_NODE_TYPES.TSModuleBlock) {
+        for (const statement of node.body.body) {
+          if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
+            MODULE_DECL_CACHE.set(node, true);
+            return true;
+          }
         }
       }
 

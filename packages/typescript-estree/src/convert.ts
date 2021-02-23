@@ -580,13 +580,13 @@ export class Converter {
     if (!modifiers || !modifiers.length) {
       return;
     }
+    const remainingModifiers: TSESTree.Modifier[] = [];
     /**
      * Some modifiers are explicitly handled by applying them as
      * boolean values on the result node. As well as adding them
      * to the result, we remove them from the array, so that they
      * are not handled twice.
      */
-    const handledModifierIndices: { [key: number]: boolean } = {};
     for (let i = 0; i < modifiers.length; i++) {
       const modifier = modifiers[i];
       switch (modifier.kind) {
@@ -596,17 +596,16 @@ export class Converter {
          */
         case SyntaxKind.ExportKeyword:
         case SyntaxKind.DefaultKeyword:
-          handledModifierIndices[i] = true;
           break;
         case SyntaxKind.ConstKeyword:
           (result as any).const = true;
-          handledModifierIndices[i] = true;
           break;
         case SyntaxKind.DeclareKeyword:
           result.declare = true;
-          handledModifierIndices[i] = true;
           break;
         default:
+          remainingModifiers.push(this.convertChild(modifier));
+          break;
       }
     }
     /**
@@ -614,13 +613,9 @@ export class Converter {
      * not been explicitly handled above, we just convert and
      * add the modifiers array to the result node.
      */
-    const remainingModifiers = modifiers.filter(
-      (_, i) => !handledModifierIndices[i],
-    );
-    if (!remainingModifiers || !remainingModifiers.length) {
-      return;
+    if (remainingModifiers.length) {
+      result.modifiers = remainingModifiers;
     }
-    result.modifiers = remainingModifiers.map(el => this.convertChild(el));
   }
 
   /**
@@ -1921,7 +1916,7 @@ export class Converter {
       // Literals
 
       case SyntaxKind.StringLiteral: {
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.StringLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value:
             parent.kind === SyntaxKind.JsxAttribute
@@ -1932,7 +1927,7 @@ export class Converter {
       }
 
       case SyntaxKind.NumericLiteral: {
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.NumberLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: Number(node.text),
           raw: node.getText(),
@@ -1969,7 +1964,7 @@ export class Converter {
           regex = null;
         }
 
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.RegExpLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: regex,
           raw: node.text,
@@ -1981,14 +1976,14 @@ export class Converter {
       }
 
       case SyntaxKind.TrueKeyword:
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.BooleanLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: true,
           raw: 'true',
         });
 
       case SyntaxKind.FalseKeyword:
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.BooleanLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: false,
           raw: 'false',
@@ -2002,7 +1997,7 @@ export class Converter {
           });
         }
 
-        return this.createNode<TSESTree.Literal>(node, {
+        return this.createNode<TSESTree.NullLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: null,
           raw: 'null',
@@ -2211,7 +2206,8 @@ export class Converter {
       case SyntaxKind.SymbolKeyword:
       case SyntaxKind.UnknownKeyword:
       case SyntaxKind.VoidKeyword:
-      case SyntaxKind.UndefinedKeyword: {
+      case SyntaxKind.UndefinedKeyword:
+      case SyntaxKind.IntrinsicKeyword: {
         return this.createNode<any>(node, {
           type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES],
         });

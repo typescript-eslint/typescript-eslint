@@ -49,6 +49,7 @@ function getGroup(node: TSESTree.TypeNode): Group {
     case AST_NODE_TYPES.TSSymbolKeyword:
     case AST_NODE_TYPES.TSThisType:
     case AST_NODE_TYPES.TSUnknownKeyword:
+    case AST_NODE_TYPES.TSIntrinsicKeyword:
       return Group.keyword;
 
     case AST_NODE_TYPES.TSNullKeyword:
