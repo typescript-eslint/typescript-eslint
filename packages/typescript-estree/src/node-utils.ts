@@ -165,7 +165,9 @@ export function getLastModifier(node: ts.Node): ts.Modifier | null {
  * @param token the TypeScript token
  * @returns is comma
  */
-export function isComma(token: ts.Node): boolean {
+export function isComma(
+  token: ts.Node,
+): token is ts.Token<ts.SyntaxKind.CommaToken> {
   return token.kind === SyntaxKind.CommaToken;
 }
 
@@ -186,7 +188,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  * @returns is JSDoc comment
  */
-export function isJSDocComment(node: ts.Node): boolean {
+export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -285,7 +287,7 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
  * @param node the ts.Node
  * @returns is a token
  */
-export function isToken(node: ts.Node): boolean {
+export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -434,7 +436,9 @@ export function unescapeStringLiteralText(text: string): string {
  * @param node ts.Node to be checked
  * @returns is Computed Property
  */
-export function isComputedProperty(node: ts.Node): boolean {
+export function isComputedProperty(
+  node: ts.Node,
+): node is ts.ComputedPropertyName {
   return node.kind === SyntaxKind.ComputedPropertyName;
 }
 
@@ -471,15 +475,11 @@ export function isChildUnwrappableOptionalChain(
     | ts.NonNullExpression,
   child: TSESTree.Node,
 ): boolean {
-  if (
+  return (
     isChainExpression(child) &&
     // (x?.y).z is semantically different, and as such .z is no longer optional
     node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -586,7 +586,7 @@ export function getTokenType(
  * @returns the converted Token
  */
 export function convertToken(
-  token: ts.Node,
+  token: ts.Token<ts.TokenSyntaxKind>,
   ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =
