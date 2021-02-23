@@ -193,7 +193,7 @@ As of our v4.0.0 release, this also applies to types. If you use global types fr
 
 Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any role) can be turned off for TypeScript files alone by adding an `overrides` section to .eslintrc.json:
 
-```
+```json
     "overrides": [
         {
             "files": ["*.ts"],
