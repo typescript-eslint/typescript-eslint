@@ -187,11 +187,24 @@ Instead, our tooling exists to **_augment_** TypeScript's built in checks with l
 
 The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
 
-You can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
+We strongly recommend that you do not use the `no-undef` lint rule on TypeScript projects. The checks it provides are already provided by TypeScript without the need for configuration - TypeScript just does this significantly better.
 
 As of our v4.0.0 release, this also applies to types. If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types. For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
 
-We strongly recommend that you do not use the `no-undef` lint rule on TypeScript projects. The checks it provides are already provided by TypeScript without the need for configuration - TypeScript just does this significantly better.
+Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any role) can be turned off for TypeScript files alone by adding an `overrides` section to .eslintrc.json:
+
+```json
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ]
+```
+
+If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
 
 <br />
 <br />
