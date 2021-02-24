@@ -346,7 +346,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
-     * TODO: report it to babel
+     * @see https://github.com/babel/babel/issues/12884
      */
     'interface-with-extends-member-expression',
     /**
@@ -387,7 +387,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-error',
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
-     * TODO: report this to babel
+     * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
   ],
