@@ -374,6 +374,7 @@ export type Expression =
   | SequenceExpression
   | SpreadElement
   | TSAsExpression
+  | TSTypeAssertion
   | TSUnaryExpression
   | YieldExpression;
 export type ForInitialiser = Expression | VariableDeclaration;
