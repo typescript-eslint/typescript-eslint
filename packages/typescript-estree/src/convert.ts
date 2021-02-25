@@ -2427,7 +2427,7 @@ export class Converter {
       case SyntaxKind.FunctionType:
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
-        let type =
+        const type =
           node.kind === SyntaxKind.ConstructSignature
             ? AST_NODE_TYPES.TSConstructSignatureDeclaration
             : node.kind === SyntaxKind.CallSignature
