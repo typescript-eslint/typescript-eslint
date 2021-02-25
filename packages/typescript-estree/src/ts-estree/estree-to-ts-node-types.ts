@@ -157,15 +157,11 @@ export interface EstreeToTsNodeTypes {
     | ts.ConstructorDeclaration;
   [AST_NODE_TYPES.TSArrayType]: ts.ArrayTypeNode;
   [AST_NODE_TYPES.TSAsExpression]: ts.AsExpression;
-  [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.PropertySignature;
+  [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.CallSignatureDeclaration;
   [AST_NODE_TYPES.TSClassImplements]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSConditionalType]: ts.ConditionalTypeNode;
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
-  [AST_NODE_TYPES.TSConstructSignatureDeclaration]:
-    | ts.ConstructorTypeNode
-    | ts.FunctionTypeNode
-    | ts.ConstructSignatureDeclaration
-    | ts.CallSignatureDeclaration;
+  [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;

@@ -2407,36 +2407,40 @@ export class Converter {
         }
         return result;
       }
-      case SyntaxKind.ConstructorType:
+      case SyntaxKind.ConstructorType: {
+        const result = this.createNode<TSESTree.TSConstructorType>(node, {
+          type: AST_NODE_TYPES.TSConstructorType,
+          params: this.convertParameters(node.parameters),
+          abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
+        });
+        if (node.type) {
+          result.returnType = this.convertTypeAnnotation(node.type, node);
+        }
+        if (node.typeParameters) {
+          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
+            node.typeParameters,
+          );
+        }
+        return result;
+      }
+
       case SyntaxKind.FunctionType:
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
-        let type: AST_NODE_TYPES;
-        switch (node.kind) {
-          case SyntaxKind.ConstructSignature:
-            type = AST_NODE_TYPES.TSConstructSignatureDeclaration;
-            break;
-          case SyntaxKind.CallSignature:
-            type = AST_NODE_TYPES.TSCallSignatureDeclaration;
-            break;
-          case SyntaxKind.FunctionType:
-            type = AST_NODE_TYPES.TSFunctionType;
-            break;
-          case SyntaxKind.ConstructorType:
-          default:
-            type = AST_NODE_TYPES.TSConstructorType;
-            break;
-        }
+        let type =
+          node.kind === SyntaxKind.ConstructSignature
+            ? AST_NODE_TYPES.TSConstructSignatureDeclaration
+            : node.kind === SyntaxKind.CallSignature
+            ? AST_NODE_TYPES.TSCallSignatureDeclaration
+            : AST_NODE_TYPES.TSFunctionType;
         const result = this.createNode<
-          | TSESTree.TSConstructSignatureDeclaration
-          | TSESTree.TSCallSignatureDeclaration
           | TSESTree.TSFunctionType
-          | TSESTree.TSConstructorType
+          | TSESTree.TSCallSignatureDeclaration
+          | TSESTree.TSConstructSignatureDeclaration
         >(node, {
           type: type,
           params: this.convertParameters(node.parameters),
         });
-
         if (node.type) {
           result.returnType = this.convertTypeAnnotation(node.type, node);
         }
@@ -2446,7 +2450,6 @@ export class Converter {
             node.typeParameters,
           );
         }
-
         return result;
       }
 

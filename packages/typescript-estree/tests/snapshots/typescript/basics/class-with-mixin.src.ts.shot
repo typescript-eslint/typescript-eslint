@@ -655,6 +655,7 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
+        "abstract": false,
         "loc": Object {
           "end": Object {
             "column": 47,

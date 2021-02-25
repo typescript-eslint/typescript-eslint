@@ -1341,6 +1341,7 @@ export interface TSConditionalType extends BaseNode {
 
 export interface TSConstructorType extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructorType;
+  abstract: boolean;
 }
 
 export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {
