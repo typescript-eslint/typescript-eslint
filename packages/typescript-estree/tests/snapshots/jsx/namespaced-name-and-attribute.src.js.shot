@@ -41,12 +41,47 @@ Object {
                     "line": 1,
                   },
                 },
-                "name": "n:v",
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 8,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "name": "v",
+                  "range": Array [
+                    7,
+                    8,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "namespace": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 6,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 5,
+                      "line": 1,
+                    },
+                  },
+                  "name": "n",
+                  "range": Array [
+                    5,
+                    6,
+                  ],
+                  "type": "JSXIdentifier",
+                },
                 "range": Array [
                   5,
                   8,
                 ],
-                "type": "JSXIdentifier",
+                "type": "JSXNamespacedName",
               },
               "range": Array [
                 5,
@@ -77,12 +112,47 @@ Object {
                 "line": 1,
               },
             },
-            "name": "n:a",
+            "name": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+              },
+              "name": "a",
+              "range": Array [
+                3,
+                4,
+              ],
+              "type": "JSXIdentifier",
+            },
+            "namespace": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 2,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 1,
+                },
+              },
+              "name": "n",
+              "range": Array [
+                1,
+                2,
+              ],
+              "type": "JSXIdentifier",
+            },
             "range": Array [
               1,
               4,
             ],
-            "type": "JSXIdentifier",
+            "type": "JSXNamespacedName",
           },
           "range": Array [
             0,

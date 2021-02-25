@@ -298,12 +298,47 @@ Object {
                     "line": 1,
                   },
                 },
-                "name": "n:foo",
+                "name": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 8,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 5,
+                      "line": 1,
+                    },
+                  },
+                  "name": "foo",
+                  "range": Array [
+                    5,
+                    8,
+                  ],
+                  "type": "JSXIdentifier",
+                },
+                "namespace": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 1,
+                    },
+                  },
+                  "name": "n",
+                  "range": Array [
+                    3,
+                    4,
+                  ],
+                  "type": "JSXIdentifier",
+                },
                 "range": Array [
                   3,
                   8,
                 ],
-                "type": "JSXIdentifier",
+                "type": "JSXNamespacedName",
               },
               "range": Array [
                 3,

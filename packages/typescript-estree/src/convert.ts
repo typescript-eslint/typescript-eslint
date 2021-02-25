@@ -517,6 +517,47 @@ export class Converter {
     return result;
   }
 
+  private convertJSXIdentifier(
+    node: ts.Identifier,
+    name?: string,
+    range?: [number, number],
+  ): TSESTree.JSXIdentifier {
+    const result = this.createNode<TSESTree.JSXIdentifier>(node, {
+      type: AST_NODE_TYPES.JSXIdentifier,
+      name: name || node.text,
+      range,
+    });
+    this.registerTSNodeInNodeMap(node, result);
+    return result;
+  }
+
+  private convertJSXNamespaceOrIdentifier(
+    node: ts.Identifier,
+  ): TSESTree.JSXIdentifier | TSESTree.JSXNamespacedName {
+    const colonIndex = node.text.indexOf(':');
+    // this is intentional we can ignore conversion if `:` is in first character
+    if (colonIndex > 0) {
+      const range = getRange(node, this.ast);
+      const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
+        type: AST_NODE_TYPES.JSXNamespacedName,
+        namespace: this.convertJSXIdentifier(
+          node,
+          node.text.slice(0, colonIndex),
+          [range[0], range[0] + colonIndex],
+        ),
+        name: this.convertJSXIdentifier(node, node.text.slice(colonIndex + 1), [
+          range[0] + colonIndex + 1,
+          range[1],
+        ]),
+        range,
+      });
+      this.registerTSNodeInNodeMap(node, result);
+      return result;
+    }
+
+    return this.convertJSXIdentifier(node);
+  }
+
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
@@ -526,8 +567,8 @@ export class Converter {
   private convertJSXTagName(
     node: ts.JsxTagNameExpression,
     parent: ts.Node,
-  ): TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier {
-    let result: TSESTree.JSXMemberExpression | TSESTree.JSXIdentifier;
+  ): TSESTree.JSXTagNameExpression {
+    let result: TSESTree.JSXTagNameExpression;
     switch (node.kind) {
       case SyntaxKind.PropertyAccessExpression:
         if (node.name.kind === SyntaxKind.PrivateIdentifier) {
@@ -539,10 +580,7 @@ export class Converter {
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
-          property: this.convertJSXTagName(
-            node.name,
-            parent,
-          ) as TSESTree.JSXIdentifier,
+          property: this.convertJSXIdentifier(node.name),
         });
         break;
 
@@ -555,11 +593,7 @@ export class Converter {
 
       case SyntaxKind.Identifier:
       default:
-        result = this.createNode<TSESTree.JSXIdentifier>(node, {
-          type: AST_NODE_TYPES.JSXIdentifier,
-          name: node.text,
-        });
-        break;
+        return this.convertJSXNamespaceOrIdentifier(node);
     }
 
     this.registerTSNodeInNodeMap(node, result);
@@ -2113,12 +2147,9 @@ export class Converter {
       }
 
       case SyntaxKind.JsxAttribute: {
-        const attributeName = this.convertChild(node.name);
-        attributeName.type = AST_NODE_TYPES.JSXIdentifier;
-
         return this.createNode<TSESTree.JSXAttribute>(node, {
           type: AST_NODE_TYPES.JSXAttribute,
-          name: attributeName,
+          name: this.convertJSXNamespaceOrIdentifier(node.name),
           value: this.convertChild(node.initializer),
         });
       }

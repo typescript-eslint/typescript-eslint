@@ -93,6 +93,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.JSXSpreadAttribute]: ts.JsxSpreadAttribute;
   [AST_NODE_TYPES.JSXSpreadChild]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXMemberExpression]: ts.PropertyAccessExpression;
+  [AST_NODE_TYPES.JSXNamespacedName]: ts.Identifier;
   [AST_NODE_TYPES.JSXText]: ts.JsxText;
   [AST_NODE_TYPES.LabeledStatement]: ts.LabeledStatement;
   [AST_NODE_TYPES.Literal]:

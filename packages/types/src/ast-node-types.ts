@@ -47,6 +47,7 @@ enum AST_NODE_TYPES {
   JSXFragment = 'JSXFragment',
   JSXIdentifier = 'JSXIdentifier',
   JSXMemberExpression = 'JSXMemberExpression',
+  JSXNamespacedName = 'JSXNamespacedName',
   JSXOpeningElement = 'JSXOpeningElement',
   JSXOpeningFragment = 'JSXOpeningFragment',
   JSXSpreadAttribute = 'JSXSpreadAttribute',
