@@ -524,7 +524,7 @@ export class Converter {
   ): TSESTree.JSXIdentifier {
     const result = this.createNode<TSESTree.JSXIdentifier>(node, {
       type: AST_NODE_TYPES.JSXIdentifier,
-      name: name || node.text,
+      name: name ?? node.text,
       range,
     });
     this.registerTSNodeInNodeMap(node, result);
