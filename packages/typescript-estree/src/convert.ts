@@ -517,19 +517,22 @@ export class Converter {
     return result;
   }
 
-  private convertJSXIdentifier(node: ts.Identifier): TSESTree.JSXIdentifier {
+  private convertJSXIdentifier(
+    node: ts.Identifier | ts.ThisExpression,
+  ): TSESTree.JSXIdentifier {
     const result = this.createNode<TSESTree.JSXIdentifier>(node, {
       type: AST_NODE_TYPES.JSXIdentifier,
-      name: node.text,
+      name: node.getText(),
     });
     this.registerTSNodeInNodeMap(node, result);
     return result;
   }
 
   private convertJSXNamespaceOrIdentifier(
-    node: ts.Identifier,
+    node: ts.Identifier | ts.ThisExpression,
   ): TSESTree.JSXIdentifier | TSESTree.JSXNamespacedName {
-    const colonIndex = node.text.indexOf(':');
+    const text = node.getText();
+    const colonIndex = text.indexOf(':');
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
@@ -537,12 +540,12 @@ export class Converter {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,
-          name: node.text.slice(0, colonIndex),
+          name: text.slice(0, colonIndex),
           range: [range[0], range[0] + colonIndex],
         }),
         name: this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,
-          name: node.text.slice(colonIndex + 1),
+          name: text.slice(colonIndex + 1),
           range: [range[0] + colonIndex + 1, range[1]],
         }),
         range,
@@ -581,12 +584,6 @@ export class Converter {
         break;
 
       case SyntaxKind.ThisKeyword:
-        result = this.createNode<TSESTree.JSXIdentifier>(node, {
-          type: AST_NODE_TYPES.JSXIdentifier,
-          name: 'this',
-        });
-        break;
-
       case SyntaxKind.Identifier:
       default:
         return this.convertJSXNamespaceOrIdentifier(node);

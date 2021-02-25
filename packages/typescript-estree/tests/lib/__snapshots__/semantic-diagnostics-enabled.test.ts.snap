@@ -1580,6 +1580,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/multiple-blank-spaces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespace-this-name.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespaced-attribute-and-value-inserted.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespaced-name-and-attribute.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
