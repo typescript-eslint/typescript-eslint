@@ -517,15 +517,10 @@ export class Converter {
     return result;
   }
 
-  private convertJSXIdentifier(
-    node: ts.Identifier,
-    name?: string,
-    range?: [number, number],
-  ): TSESTree.JSXIdentifier {
+  private convertJSXIdentifier(node: ts.Identifier): TSESTree.JSXIdentifier {
     const result = this.createNode<TSESTree.JSXIdentifier>(node, {
       type: AST_NODE_TYPES.JSXIdentifier,
-      name: name ?? node.text,
-      range,
+      name: node.text,
     });
     this.registerTSNodeInNodeMap(node, result);
     return result;
@@ -540,15 +535,16 @@ export class Converter {
       const range = getRange(node, this.ast);
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
-        namespace: this.convertJSXIdentifier(
-          node,
-          node.text.slice(0, colonIndex),
-          [range[0], range[0] + colonIndex],
-        ),
-        name: this.convertJSXIdentifier(node, node.text.slice(colonIndex + 1), [
-          range[0] + colonIndex + 1,
-          range[1],
-        ]),
+        namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.text.slice(0, colonIndex),
+          range: [range[0], range[0] + colonIndex],
+        }),
+        name: this.createNode<TSESTree.JSXIdentifier>(node, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.text.slice(colonIndex + 1),
+          range: [range[0] + colonIndex + 1, range[1]],
+        }),
         range,
       });
       this.registerTSNodeInNodeMap(node, result);
@@ -2728,7 +2724,7 @@ export class Converter {
             ? (node as any).elementTypes.map((el: ts.Node) =>
                 this.convertType(el),
               )
-            : node.elements.map((el: ts.Node) => this.convertType(el));
+            : node.elements.map(el => this.convertType(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
