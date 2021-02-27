@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: space-infix-ops
+---
+
 # This rule is aimed at ensuring there are spaces around infix operators. (`space-infix-ops`)
 
 This rule extends the base [`eslint/space-infix-ops`](https://eslint.org/docs/rules/space-infix-ops) rule.

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-unused-vars
+---
+
 # Disallow unused variables (`no-unused-vars`)
 
 ## Rule Details

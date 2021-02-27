@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: quotes
+---
+
 # Enforce the consistent use of either backticks, double, or single quotes (`quotes`)
 
 ## Rule Details

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: ban-types
+---
+
 ## DEPRECATED
 
 This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.md) rule.

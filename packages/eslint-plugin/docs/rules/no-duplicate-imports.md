@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-duplicate-imports
+---
+
 # Disallow duplicate imports (`no-duplicate-imports`)
 
 ## Rule Details

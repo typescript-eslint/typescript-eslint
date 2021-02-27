@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: indent
+---
+
 # Enforce consistent indentation (`indent`)
 
 ## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1824](https://github.com/typescript-eslint/typescript-eslint/issues/1824)

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-use-before-define
+---
+
 # Disallow the use of variables before they are defined (`no-use-before-define`)
 
 ## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1856](https://github.com/typescript-eslint/typescript-eslint/issues/1856)

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: dot-notation
+---
+
 # enforce dot notation whenever possible (`dot-notation`)
 
 ## Rule Details

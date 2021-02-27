@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: require-await
+---
+
 # Disallow async functions which have no `await` expression (`require-await`)
 
 ## Rule Details

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: comma-dangle
+---
+
 # Require or disallow trailing comma (`comma-dangle`)
 
 ## Rule Details

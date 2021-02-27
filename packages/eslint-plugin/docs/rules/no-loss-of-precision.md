@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-loss-of-precision
+---
+
 # Disallow literal numbers that lose precision (`no-loss-of-precision`)
 
 ## Rule Details

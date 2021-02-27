@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: comma-spacing
+---
+
 # Enforces consistent spacing before and after commas (`comma-spacing`)
 
 ## Rule Details
@@ -7,7 +12,7 @@ It adds support for trailing comma in a types parameters list.
 
 ## How to use
 
-```jsonc
+```cjson
 {
   // note you must disable the base rule as it can report incorrect errors
   "comma-spacing": "off",

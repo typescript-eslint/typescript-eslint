@@ -1,4 +1,7 @@
-# Getting Started - Monorepo Configuration
+---
+title: Monorepo Configuration
+sidebar_label: Monorepo Configuration
+---
 
 If you're using a monorepo, these docs will help you figure out how to setup typed linting.
 If you don't want to use typed linting, then you can stop here - you don't need to do anything special.

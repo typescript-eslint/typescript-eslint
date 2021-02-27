@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-unused-expressions
+---
+
 # Disallow unused expressions (`no-unused-expressions`)
 
 ## Rule Details

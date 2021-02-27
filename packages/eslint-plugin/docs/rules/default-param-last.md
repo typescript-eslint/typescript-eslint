@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: default-param-last
+---
+
 # Enforce default parameters to be last (`default-param-last`)
 
 ## Rule Details

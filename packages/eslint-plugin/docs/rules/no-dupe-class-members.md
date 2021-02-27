@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-dupe-class-members
+---
+
 # Disallow duplicate class members (`no-dupe-class-members`)
 
 ## Rule Details

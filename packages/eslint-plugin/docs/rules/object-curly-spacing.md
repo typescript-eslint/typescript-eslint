@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: object-curly-spacing
+---
+
 # Enforce consistent spacing inside braces (`object-curly-spacing`)
 
 ## Rule Details
@@ -7,7 +12,7 @@ It adds support for TypeScript's object types.
 
 ## How to use
 
-```cjson
+```json
 {
   // note you must disable the base rule as it can report incorrect errors
   "object-curly-spacing": "off",

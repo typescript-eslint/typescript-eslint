@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-magic-numbers
+---
+
 # Disallow magic numbers (`no-magic-numbers`)
 
 ## Rule Details

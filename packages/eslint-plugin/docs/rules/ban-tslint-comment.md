@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: ban-tslint-comment
+---
+
 # Bans `// tslint:<rule-flag>` comments from being used (`ban-tslint-comment`)
 
 Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).

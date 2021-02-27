@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: func-call-spacing
+---
+
 # Require or disallow spacing between function identifiers and their invocations (`func-call-spacing`)
 
 ## Rule Details

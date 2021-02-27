@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-unsafe-return
+---
+
 # Disallows returning any from a function (`no-unsafe-return`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.

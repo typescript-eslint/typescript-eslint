@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: member-delimiter-style
+---
+
 # Require a specific member delimiter style for interfaces and type literals (`member-delimiter-style`)
 
 Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:

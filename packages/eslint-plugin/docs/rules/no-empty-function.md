@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-empty-function
+---
+
 # Disallow empty functions (`no-empty-function`)
 
 ## Rule Details

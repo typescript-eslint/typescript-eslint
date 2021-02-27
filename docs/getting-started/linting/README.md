@@ -1,4 +1,7 @@
-# Getting Started - Linting your TypeScript Codebase
+---
+title: Linting your TypeScript Codebase
+sidebar_label: Linting your TypeScript Codebase
+---
 
 Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
@@ -6,9 +9,8 @@ Whether you're adding linting to a new TypeScript codebase, adding TypeScript to
 
 First step is to make sure you've got the required packages installed:
 
-```bash
-$ yarn add -D eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
-$ npm i --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```bash npm2yarn
+npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 ## Configuration
@@ -69,14 +71,14 @@ coverage
 
 With that configured, open a terminal to the root of your project, and run the following command
 
-```bash
-$ yarn eslint . --ext .js,.jsx,.ts,.tsx
+```bash npm2yarn
+npm run eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
 or with NPM:
 
 ```bash
-$ npx eslint . --ext .js,.jsx,.ts,.tsx
+npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.

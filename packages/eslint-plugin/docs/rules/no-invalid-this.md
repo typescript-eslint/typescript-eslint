@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-invalid-this
+---
+
 # Disallow `this` keywords outside of classes or class-like objects (`no-invalid-this`)
 
 ## Rule Details

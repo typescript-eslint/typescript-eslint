@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: brace-style
+---
+
 # Enforce consistent brace style for blocks (`brace-style`)
 
 ## Rule Details

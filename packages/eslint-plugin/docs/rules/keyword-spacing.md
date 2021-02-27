@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: keyword-spacing
+---
+
 # Enforce consistent spacing before and after keywords (`keyword-spacing`)
 
 ## Rule Details

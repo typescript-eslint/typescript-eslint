@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: init-declarations
+---
+
 # require or disallow initialization in variable declarations (`init-declarations`)
 
 ## Rule Details

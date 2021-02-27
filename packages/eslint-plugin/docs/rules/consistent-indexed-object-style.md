@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: consistent-indexed-object-style
+---
+
 # Enforce or disallow the use of the record type (`consistent-indexed-object-style`)
 
 TypeScript supports defining object show keys can be flexible using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
@@ -20,9 +25,12 @@ type Foo = Record<string, unknown>;
 
 For example:
 
-```CJSON
+```json
 {
-    "@typescript-eslint/consistent-indexed-object-style": ["error", "index-signature"]
+  "@typescript-eslint/consistent-indexed-object-style": [
+    "error",
+    "index-signature"
+  ]
 }
 ```
 

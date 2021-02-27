@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-shadow
+---
+
 # Disallow variable declarations from shadowing variables declared in the outer scope (`no-shadow`)
 
 ## Rule Details

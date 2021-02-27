@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-array-constructor
+---
+
 # Disallow generic `Array` constructors (`no-array-constructor`)
 
 ## Rule Details

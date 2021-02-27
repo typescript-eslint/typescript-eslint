@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-base-to-string
+---
+
 # Requires that `.toString()` is only called on objects which provide useful information when stringified (`no-base-to-string`)
 
 JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.

@@ -1,4 +1,7 @@
-# Getting Started - Writing an ESLint Plugin in TypeScript
+---
+title: Writing an ESLint Plugin in TypeScript
+sidebar_label: Writing an ESLint Plugin in TypeScript
+---
 
 TODO:
 

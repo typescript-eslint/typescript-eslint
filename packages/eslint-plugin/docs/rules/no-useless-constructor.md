@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-useless-constructor
+---
+
 # Disallow unnecessary constructors (`no-useless-constructor`)
 
 ## Rule Details

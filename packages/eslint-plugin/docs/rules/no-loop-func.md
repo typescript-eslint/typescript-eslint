@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-loop-func
+---
+
 # Disallow function declarations that contain unsafe references inside loop statements (`no-loop-func`)
 
 ## Rule Details

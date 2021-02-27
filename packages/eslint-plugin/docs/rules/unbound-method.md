@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: unbound-method
+---
+
 # Enforces unbound methods are called with their expected scope (`unbound-method`)
 
 Warns when a method is used outside of a method call.

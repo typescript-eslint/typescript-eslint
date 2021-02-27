@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-extra-parens
+---
+
 # Disallow unnecessary parentheses (`no-extra-parens`)
 
 ## Rule Details

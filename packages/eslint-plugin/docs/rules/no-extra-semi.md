@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-extra-semi
+---
+
 # Disallow unnecessary semicolons (`no-extra-semi`)
 
 ## Rule Details

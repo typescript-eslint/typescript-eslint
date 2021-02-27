@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-non-null-assertion
+---
+
 # Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion`)
 
 ## Rule Details

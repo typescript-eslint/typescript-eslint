@@ -1,4 +1,8 @@
-# Getting Started
+---
+title: Getting Started
+sidebar_label: Getting Started
+slug: /
+---
 
 Approaching a monorepo project like this can be pretty daunting and hard to navigate for a new user.
 
@@ -6,6 +10,6 @@ The goal of these docs are to give you a quick overview of the project and all o
 
 The docs are broken down into the following categories:
 
-## [I want to lint my TypeScript codebase.](./linting/README.md)
+- [I want to lint my TypeScript codebase.](./linting/README.md)
 
-## [(TODO) I want to write an ESLint plugin in TypeScript.](./plugin-development/README.md)
+- [(TODO) I want to write an ESLint plugin in TypeScript.](./plugin-development/README.md)

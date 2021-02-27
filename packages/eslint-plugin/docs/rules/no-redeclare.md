@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-redeclare
+---
+
 # Disallow variable redeclaration (`no-redeclare`)
 
 ## Rule Details

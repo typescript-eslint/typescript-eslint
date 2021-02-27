@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: prefer-reduce-type-parameter
+---
+
 # Prefer using type parameter when calling `Array#reduce` instead of casting (`prefer-reduce-type-parameter`)
 
 It's common to call `Array#reduce` with a generic type, such as an array or object, as the initial value.

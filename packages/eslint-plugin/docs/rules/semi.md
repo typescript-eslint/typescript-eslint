@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: semi
+---
+
 # Require or disallow semicolons instead of ASI (`semi`)
 
 This rule enforces consistent use of semicolons after statements.

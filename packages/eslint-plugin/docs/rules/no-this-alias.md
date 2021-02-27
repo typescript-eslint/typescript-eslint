@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-this-alias
+---
+
 # Disallow aliasing `this` (`no-this-alias`)
 
 This rule prohibits assigning variables to `this`.

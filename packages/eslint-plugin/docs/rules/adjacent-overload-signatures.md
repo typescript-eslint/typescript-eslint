@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: adjacent-overload-signatures
+---
+
 # Require that member overloads be consecutive (`adjacent-overload-signatures`)
 
 Grouping overloaded members together can improve readability of the code.
