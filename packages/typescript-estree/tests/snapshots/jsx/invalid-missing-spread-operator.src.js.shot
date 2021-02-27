@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-missing-spread-operator.src 1`] = `
 Object {
-  "column": 5,
-  "index": 5,
+  "column": 6,
+  "index": 6,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "'...' expected.",
 }
 `;

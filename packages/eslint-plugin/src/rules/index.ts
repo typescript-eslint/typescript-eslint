@@ -79,6 +79,7 @@ import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
+import objectCurlySpacing from './object-curly-spacing';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -102,6 +103,7 @@ import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
+import sortTypeUnionIntersectionMembers from './sort-type-union-intersection-members';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -194,6 +196,7 @@ export default {
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
+  'object-curly-spacing': objectCurlySpacing,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
@@ -217,6 +220,7 @@ export default {
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
   semi: semi,
+  'sort-type-union-intersection-members': sortTypeUnionIntersectionMembers,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,

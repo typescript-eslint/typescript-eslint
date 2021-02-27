@@ -520,9 +520,13 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       ClassExpression(node: TSESTree.ClassExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      // eslint < 7.19.0
       'ForInStatement, ForOfStatement'(
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
+      // eslint >= 7.19.0
+      ForInStatement(node: TSESTree.ForInStatement): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
       ForStatement(node: TSESTree.ForStatement): void;
       'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
@@ -831,16 +835,27 @@ declare module 'eslint/lib/rules/prefer-const' {
   export = rule;
 }
 
-declare module 'eslint/lib/rules/utils/ast-utils' {
+declare module 'eslint/lib/rules/object-curly-spacing' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-  const utils: {
-    getNameLocationInGlobalDirectiveComment(
-      sourceCode: TSESLint.SourceCode,
-      comment: TSESTree.Comment,
-      name: string,
-    ): TSESTree.SourceLocation;
-  };
-
-  export = utils;
+  const rule: TSESLint.RuleModule<
+    | 'requireSpaceBefore'
+    | 'requireSpaceAfter'
+    | 'unexpectedSpaceBefore'
+    | 'unexpectedSpaceAfter',
+    [
+      'always' | 'never',
+      {
+        arraysInObjects?: boolean;
+        objectsInObjects?: boolean;
+      }?,
+    ],
+    {
+      ObjectPattern(node: TSESTree.ObjectPattern): void;
+      ObjectExpression(node: TSESTree.ObjectExpression): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+    }
+  >;
+  export = rule;
 }

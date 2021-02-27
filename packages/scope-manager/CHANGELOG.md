@@ -3,6 +3,90 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.1...v4.15.2) (2021-02-22)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.15.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.0...v4.15.1) (2021-02-15)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.2...v4.15.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* **scope-manager:** fix visiting of TSImportType ([#3008](https://github.com/typescript-eslint/typescript-eslint/issues/3008)) ([ce4fcbf](https://github.com/typescript-eslint/typescript-eslint/commit/ce4fcbf4401098387a2cf19ae8457c89c509239a)), closes [#3006](https://github.com/typescript-eslint/typescript-eslint/issues/3006)
+
+
+
+
+
+## [4.14.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.1...v4.14.2) (2021-02-01)
+
+
+### Bug Fixes
+
+* **scope-manager:** correctly reference generic parameters when decorator metadata is enabled ([#2975](https://github.com/typescript-eslint/typescript-eslint/issues/2975)) ([7695ef3](https://github.com/typescript-eslint/typescript-eslint/commit/7695ef318f1cc8688acaabf4f2730769622f083f)), closes [#2972](https://github.com/typescript-eslint/typescript-eslint/issues/2972)
+
+
+
+
+
+## [4.14.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.0...v4.14.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* **scope-manager:** fix incorrect handling of class decorators and class method default params ([#2943](https://github.com/typescript-eslint/typescript-eslint/issues/2943)) ([e1eac83](https://github.com/typescript-eslint/typescript-eslint/commit/e1eac8312268d1855a2ed7784b4d190ecb9c9fa4)), closes [#2941](https://github.com/typescript-eslint/typescript-eslint/issues/2941) [#2942](https://github.com/typescript-eslint/typescript-eslint/issues/2942) [#2751](https://github.com/typescript-eslint/typescript-eslint/issues/2751)
+
+
+
+
+
+# [4.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.13.0...v4.14.0) (2021-01-18)
+
+
+### Features
+
+* add support for decorator metadata in scope analysis and in consistent-type-imports ([#2751](https://github.com/typescript-eslint/typescript-eslint/issues/2751)) ([445e416](https://github.com/typescript-eslint/typescript-eslint/commit/445e416878b27a54bf07c2d3b84dabd7b06e51bc)), closes [#2559](https://github.com/typescript-eslint/typescript-eslint/issues/2559)
+
+
+
+
+
+# [4.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.12.0...v4.13.0) (2021-01-11)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.1...v4.12.0) (2021-01-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.11.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.0...v4.11.1) (2020-12-28)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 # [4.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.10.0...v4.11.0) (2020-12-21)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

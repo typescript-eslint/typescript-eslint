@@ -100,8 +100,10 @@ class Foo {
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
+    'const [x, y] = [1, 2] as number[];',
     'const [x, ...y] = [1, 2, 3, 4, 5];',
     'const [x, ...y] = [1];',
+    'const [{ ...x }] = [{ x: 1 }] as [{ x: any }];',
     'function foo(x = 1) {}',
     'function foo([x] = [1]) {}',
     'function foo([x, ...y] = [1, 2, 3, 4, 5]) {}',
@@ -109,8 +111,11 @@ class Foo {
     // this is not checked, because there's no annotation to compare it with
     'const x = new Set<any>();',
     'const x = { y: 1 };',
+    'const x = { y = 1 };',
+    'const x = { y(); };',
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
+    'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
     {
       code: `
 type Props = { a: string };
@@ -119,15 +124,23 @@ declare function Foo(props: Props): never;
       `,
       filename: 'react.tsx',
     },
-    `
-      const x: unknown = y as any;
-    `,
-    `
-      const x: unknown[] = y as any[];
-    `,
-    `
-      const x: Set<unknown> = y as Set<any>;
-    `,
+    {
+      code: `
+declare function Foo(props: { a: string }): never;
+<Foo a="foo" />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+declare function Foo(props: { a: string }): never;
+<Foo a={} />;
+      `,
+      filename: 'react.tsx',
+    },
+    'const x: unknown = y as any;',
+    'const x: unknown[] = y as any[];',
+    'const x: Set<unknown> = y as Set<any>;',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -238,6 +251,8 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
       ['[[[[x]]]] = [[[[1 as any]]]]', 5, 6],
       ['[[[[x]]]] = [1 as any]', 2, 9, true],
       ['[{x}] = [{x: 1}] as [{x: any}]', 3, 4],
+      ['[{["x"]: x}] = [{["x"]: 1}] as [{["x"]: any}]', 10, 11],
+      ['[{[`x`]: x}] = [{[`x`]: 1}] as [{[`x`]: any}]', 10, 11],
     ]),
     {
       // TS treats the assignment pattern weirdly in this case

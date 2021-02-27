@@ -3,6 +3,122 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.15.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.1...v4.15.2) (2021-02-22)
+
+
+### Bug Fixes
+
+* **typescript-estree:** correct issues in AST definition ([#3083](https://github.com/typescript-eslint/typescript-eslint/issues/3083)) ([509a117](https://github.com/typescript-eslint/typescript-eslint/commit/509a11749f85400a01e9fecfecd12871ce562d3d))
+* add missing intrinsic keyword node to AST ([#3081](https://github.com/typescript-eslint/typescript-eslint/issues/3081)) ([409bf0b](https://github.com/typescript-eslint/typescript-eslint/commit/409bf0bb3e2ac4d8782408d436ebdefb42dba38b))
+* **eslint-plugin:** [no-var-requires] report when used in type assertion ([#3074](https://github.com/typescript-eslint/typescript-eslint/issues/3074)) ([763a252](https://github.com/typescript-eslint/typescript-eslint/commit/763a2520bfea09c3b6252ea36bc3ff10b05eca6c))
+
+
+
+
+
+## [4.15.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.0...v4.15.1) (2021-02-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] check allowNames on function declarations and property methods ([#3051](https://github.com/typescript-eslint/typescript-eslint/issues/3051)) ([0ade469](https://github.com/typescript-eslint/typescript-eslint/commit/0ade469dc1cf17d79c36a9c985630d60491ed847))
+
+
+
+
+
+# [4.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.2...v4.15.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-extra-parens] handle ESLint 7.19.0 ([#2993](https://github.com/typescript-eslint/typescript-eslint/issues/2993)) ([4615048](https://github.com/typescript-eslint/typescript-eslint/commit/4615048d24359e0fc57b90a96acf4d8ded1dc7bf))
+* **eslint-plugin:** [prefer-function-type] correct fixer when signature ends with a semi ([#3002](https://github.com/typescript-eslint/typescript-eslint/issues/3002)) ([898dd39](https://github.com/typescript-eslint/typescript-eslint/commit/898dd3961944a5da3a129e9eba02634286e7aee4))
+* **scope-manager:** fix visiting of TSImportType ([#3008](https://github.com/typescript-eslint/typescript-eslint/issues/3008)) ([ce4fcbf](https://github.com/typescript-eslint/typescript-eslint/commit/ce4fcbf4401098387a2cf19ae8457c89c509239a)), closes [#3006](https://github.com/typescript-eslint/typescript-eslint/issues/3006)
+
+
+
+
+
+## [4.14.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.1...v4.14.2) (2021-02-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-imports] incorrect handling of computed property type signatures ([#2990](https://github.com/typescript-eslint/typescript-eslint/issues/2990)) ([58f2655](https://github.com/typescript-eslint/typescript-eslint/commit/58f26555f62b5f59f13260306638d3148cde6079)), closes [#2989](https://github.com/typescript-eslint/typescript-eslint/issues/2989)
+* **scope-manager:** correctly reference generic parameters when decorator metadata is enabled ([#2975](https://github.com/typescript-eslint/typescript-eslint/issues/2975)) ([7695ef3](https://github.com/typescript-eslint/typescript-eslint/commit/7695ef318f1cc8688acaabf4f2730769622f083f)), closes [#2972](https://github.com/typescript-eslint/typescript-eslint/issues/2972)
+
+
+
+
+
+## [4.14.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.14.0...v4.14.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [sort-type-union-intersection-members] consider `void` as a `nullish` ([#2944](https://github.com/typescript-eslint/typescript-eslint/issues/2944)) ([a241b25](https://github.com/typescript-eslint/typescript-eslint/commit/a241b25863eb063986fab76b511f478bbba91f47)), closes [#2940](https://github.com/typescript-eslint/typescript-eslint/issues/2940)
+* **scope-manager:** fix incorrect handling of class decorators and class method default params ([#2943](https://github.com/typescript-eslint/typescript-eslint/issues/2943)) ([e1eac83](https://github.com/typescript-eslint/typescript-eslint/commit/e1eac8312268d1855a2ed7784b4d190ecb9c9fa4)), closes [#2941](https://github.com/typescript-eslint/typescript-eslint/issues/2941) [#2942](https://github.com/typescript-eslint/typescript-eslint/issues/2942) [#2751](https://github.com/typescript-eslint/typescript-eslint/issues/2751)
+
+
+
+
+
+# [4.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.13.0...v4.14.0) (2021-01-18)
+
+
+### Features
+
+* add support for decorator metadata in scope analysis and in consistent-type-imports ([#2751](https://github.com/typescript-eslint/typescript-eslint/issues/2751)) ([445e416](https://github.com/typescript-eslint/typescript-eslint/commit/445e416878b27a54bf07c2d3b84dabd7b06e51bc)), closes [#2559](https://github.com/typescript-eslint/typescript-eslint/issues/2559)
+* **eslint-plugin:** add `object-curly-spacing` rule ([#2892](https://github.com/typescript-eslint/typescript-eslint/issues/2892)) ([32bd18d](https://github.com/typescript-eslint/typescript-eslint/commit/32bd18de80f4f8388717d0f0c16d493234362aa5))
+
+
+
+
+
+# [4.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.12.0...v4.13.0) (2021-01-11)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** support eslint@5 ([#2917](https://github.com/typescript-eslint/typescript-eslint/issues/2917)) ([f606846](https://github.com/typescript-eslint/typescript-eslint/commit/f606846af2617a0d8ee3ad5ce7c10864161ebf53))
+
+
+### Features
+
+* **eslint-plugin:** [sort-type-union-intersection-members] add nullish group ([#2919](https://github.com/typescript-eslint/typescript-eslint/issues/2919)) ([5558f41](https://github.com/typescript-eslint/typescript-eslint/commit/5558f410007da58a3f4726bbf9501c924ef166a1))
+
+
+
+
+
+# [4.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.1...v4.12.0) (2021-01-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [comma-spacing] handle empty type params ([#2915](https://github.com/typescript-eslint/typescript-eslint/issues/2915)) ([4d69fbb](https://github.com/typescript-eslint/typescript-eslint/commit/4d69fbba91ea3161213a0ab093e398fed091168c))
+
+
+### Features
+
+* **eslint-plugin:** add rule `sort-type-union-intersection-members` ([#2913](https://github.com/typescript-eslint/typescript-eslint/issues/2913)) ([9092c04](https://github.com/typescript-eslint/typescript-eslint/commit/9092c0494ebd3486e38852198c1930f1432ef21f))
+
+
+
+
+
+## [4.11.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.11.0...v4.11.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] fix precedence of method and property meta selectors ([#2877](https://github.com/typescript-eslint/typescript-eslint/issues/2877)) ([2f10e1a](https://github.com/typescript-eslint/typescript-eslint/commit/2f10e1a5c795cac28a6e0a1a3a0adb5bd6be7f1c))
+
+
+
+
+
 # [4.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.10.0...v4.11.0) (2020-12-21)
 
 

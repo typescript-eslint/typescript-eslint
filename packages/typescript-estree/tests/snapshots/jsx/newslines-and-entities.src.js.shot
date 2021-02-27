@@ -2,9 +2,9 @@
 
 exports[`jsx newslines-and-entities.src 1`] = `
 Object {
-  "column": 4,
-  "index": 4,
+  "column": 8,
+  "index": 8,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Invalid character.",
 }
 `;

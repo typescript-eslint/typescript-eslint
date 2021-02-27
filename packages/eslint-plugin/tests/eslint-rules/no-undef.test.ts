@@ -224,6 +224,21 @@ function Foo() {}
     `
 const x = 1 as const;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2942
+    `
+declare function deco(...param: any): (...param: any) => any;
+
+@deco({
+  components: {
+    val: true,
+  },
+})
+class Foo {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3006
+    `
+export type AppState = typeof import('./src/store/reducers').default;
+    `,
   ],
   invalid: [
     {

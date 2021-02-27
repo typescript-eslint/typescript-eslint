@@ -19,9 +19,9 @@ const {
   isObjectNotArray,
   getParserServices,
 } = ESLintUtils;
-type InferMessageIdsTypeFromRule<T> = ESLintUtils.InferMessageIdsTypeFromRule<
+type InferMessageIdsTypeFromRule<
   T
->;
+> = ESLintUtils.InferMessageIdsTypeFromRule<T>;
 type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
 
 export {

@@ -18,8 +18,17 @@ module.exports = {
     // Local version of @typescript-eslint/eslint-plugin
     '@typescript-eslint',
   ],
-  rules: {
-    '@typescript-eslint/no-explicit-any': 'error',
-    'no-console': 'error',
-  },
+  overrides: [
+    {
+      files: ['**/*.md'],
+      processor: 'markdown/markdown',
+    },
+    {
+      files: ['**/*.md/*.{js,ts,jsx,tsx,javascript,node}'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'error',
+        'no-console': 'error',
+      },
+    },
+  ],
 };

@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-mismatched-dot-tag-name.src 1`] = `
 Object {
-  "column": 8,
-  "index": 8,
+  "column": 7,
+  "index": 7,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Expected corresponding JSX closing tag for 'a.b.c'.",
 }
 `;

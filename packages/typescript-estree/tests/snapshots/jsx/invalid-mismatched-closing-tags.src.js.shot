@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-mismatched-closing-tags.src 1`] = `
 Object {
-  "column": 6,
-  "index": 6,
+  "column": 1,
+  "index": 1,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "JSX element 'a' has no corresponding closing tag.",
 }
 `;

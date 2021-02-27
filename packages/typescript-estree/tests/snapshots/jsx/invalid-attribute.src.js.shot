@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-attribute.src 1`] = `
 Object {
-  "column": 3,
-  "index": 3,
+  "column": 5,
+  "index": 5,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "'{' expected.",
 }
 `;

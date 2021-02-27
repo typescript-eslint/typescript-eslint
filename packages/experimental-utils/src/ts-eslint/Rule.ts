@@ -115,9 +115,9 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
-type ReportSuggestionArray<TMessageIds extends string> = ReportDescriptorBase<
-  TMessageIds
->[];
+type ReportSuggestionArray<
+  TMessageIds extends string
+> = ReportDescriptorBase<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -328,29 +328,21 @@ interface RuleListener {
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
   TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
-  TSAbstractMethodDefinition?: RuleFunction<
-    TSESTree.TSAbstractMethodDefinition
-  >;
+  TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
   TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
   TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
   TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
   TSAsyncKeyword?: RuleFunction<TSESTree.TSAsyncKeyword>;
   TSBigIntKeyword?: RuleFunction<TSESTree.TSBigIntKeyword>;
   TSBooleanKeyword?: RuleFunction<TSESTree.TSBooleanKeyword>;
-  TSCallSignatureDeclaration?: RuleFunction<
-    TSESTree.TSCallSignatureDeclaration
-  >;
+  TSCallSignatureDeclaration?: RuleFunction<TSESTree.TSCallSignatureDeclaration>;
   TSClassImplements?: RuleFunction<TSESTree.TSClassImplements>;
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
   TSConstructorType?: RuleFunction<TSESTree.TSConstructorType>;
-  TSConstructSignatureDeclaration?: RuleFunction<
-    TSESTree.TSConstructSignatureDeclaration
-  >;
+  TSConstructSignatureDeclaration?: RuleFunction<TSESTree.TSConstructSignatureDeclaration>;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
-  TSEmptyBodyFunctionExpression?: RuleFunction<
-    TSESTree.TSEmptyBodyFunctionExpression
-  >;
+  TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
@@ -371,9 +363,7 @@ interface RuleListener {
   TSMethodSignature?: RuleFunction<TSESTree.TSMethodSignature>;
   TSModuleBlock?: RuleFunction<TSESTree.TSModuleBlock>;
   TSModuleDeclaration?: RuleFunction<TSESTree.TSModuleDeclaration>;
-  TSNamespaceExportDeclaration?: RuleFunction<
-    TSESTree.TSNamespaceExportDeclaration
-  >;
+  TSNamespaceExportDeclaration?: RuleFunction<TSESTree.TSNamespaceExportDeclaration>;
   TSNeverKeyword?: RuleFunction<TSESTree.TSNeverKeyword>;
   TSNonNullExpression?: RuleFunction<TSESTree.TSNonNullExpression>;
   TSNullKeyword?: RuleFunction<TSESTree.TSNullKeyword>;
@@ -400,12 +390,8 @@ interface RuleListener {
   TSTypeLiteral?: RuleFunction<TSESTree.TSTypeLiteral>;
   TSTypeOperator?: RuleFunction<TSESTree.TSTypeOperator>;
   TSTypeParameter?: RuleFunction<TSESTree.TSTypeParameter>;
-  TSTypeParameterDeclaration?: RuleFunction<
-    TSESTree.TSTypeParameterDeclaration
-  >;
-  TSTypeParameterInstantiation?: RuleFunction<
-    TSESTree.TSTypeParameterInstantiation
-  >;
+  TSTypeParameterDeclaration?: RuleFunction<TSESTree.TSTypeParameterDeclaration>;
+  TSTypeParameterInstantiation?: RuleFunction<TSESTree.TSTypeParameterInstantiation>;
   TSTypePredicate?: RuleFunction<TSESTree.TSTypePredicate>;
   TSTypeQuery?: RuleFunction<TSESTree.TSTypeQuery>;
   TSTypeReference?: RuleFunction<TSESTree.TSTypeReference>;

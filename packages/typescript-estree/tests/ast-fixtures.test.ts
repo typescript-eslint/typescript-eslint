@@ -4,6 +4,7 @@ import 'jest-specific-snapshot';
 import makeDir from 'make-dir';
 import path from 'path';
 import { parseAndGenerateServices } from '../src/parser';
+import { isJSXFileType } from '../tools/test-utils';
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
@@ -23,7 +24,6 @@ const FIXTURES_DIR = path.resolve(
 );
 const SNAPSHOTS_DIR = path.resolve(__dirname, 'snapshots');
 
-const JSX_REGEX = /\.[jt]sx$/;
 const fixtures = glob
   .sync(`${FIXTURES_DIR}/**/*.src.{js,ts,jsx,tsx}`)
   .map(absolute => {
@@ -33,7 +33,7 @@ const fixtures = glob
     const snapshotPath = path.join(SNAPSHOTS_DIR, dir);
     return {
       absolute,
-      isJsx: JSX_REGEX.test(name),
+      isJsx: isJSXFileType(ext),
       name,
       segments,
       snapshotPath,

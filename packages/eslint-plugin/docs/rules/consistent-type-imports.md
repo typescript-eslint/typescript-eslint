@@ -25,7 +25,7 @@ const defaultOptions: Options = {
 
 This option defines the expected import kind for type-only imports. Valid values for `prefer` are:
 
-- `type-imports` will enforce that you always use `import type Foo from '...'`. It is default.
+- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is default.
 - `no-type-imports` will enforce that you always use `import Foo from '...'`.
 
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
