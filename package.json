@@ -27,6 +27,7 @@
     "cz": "git-cz",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
     "generate:contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
+    "generate:sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
     "lerna:init": "lerna bootstrap --ignore-scripts && lerna link --force-local",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "lint:markdown:fix": "yarn lint:markdown --fix",

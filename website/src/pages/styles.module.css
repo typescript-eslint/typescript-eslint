@@ -24,14 +24,45 @@
   justify-content: center;
 }
 
-.features {
+.features, .sponsors {
   display: flex;
   align-items: center;
   padding: 2rem 0;
   width: 100%;
 }
 
+.sponsors {
+  text-align: center;
+}
+
 .featureImage {
   height: 200px;
   width: 200px;
+}
+
+.sponsorsTier {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 10px auto;
+  padding: 0;
+}
+
+.sponsorsTier li {
+  list-style: none;
+  margin: 5px;
+}
+
+.sponsorsTier a,
+.sponsorsTier a:hover {
+  background: none;
+  border: none;
+}
+.tier-sponsor img {
+  width: 90px;
+}
+.tier-supporter img {
+  width: 60px;
 }

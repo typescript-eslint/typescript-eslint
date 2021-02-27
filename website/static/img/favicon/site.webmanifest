@@ -1,6 +1,6 @@
 {
-    "name": "Typescript Eslint",
-    "short_name": "Typescript Eslint",
+    "name": "TypeScript ESLint",
+    "short_name": "TypeScript ESLint",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

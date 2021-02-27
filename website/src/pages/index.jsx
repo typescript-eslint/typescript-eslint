@@ -54,6 +54,33 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
+function Sponsors({ tier }) {
+  const context = useDocusaurusContext();
+  const { siteConfig = {} } = context;
+
+  const tierSponsors = siteConfig.customFields.sponsors.filter(
+    sponsor => sponsor.tier === tier,
+  );
+  return (
+    <div>
+      <ul className={clsx(styles[`tier-${tier}`], styles.sponsorsTier)}>
+        {tierSponsors.map((sponsor, i) => (
+          <li key={i}>
+            <a
+              href={sponsor.website}
+              title={sponsor.name}
+              target="_blank"
+              rel="noopener sponsored"
+            >
+              <img src={sponsor.image} alt={`Sponsored by ${sponsor.name}`} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
@@ -91,6 +118,20 @@ function Home() {
             </div>
           </section>
         )}
+        <section className={styles.sponsors}>
+          <div className="container">
+            <h2>Financial Contributors</h2>
+            <Sponsors title="Sponsors" tier="sponsor" />
+            <Sponsors title="Supporter" tier="supporter" />
+            <Link
+              className="button button--outline button--secondary button--lg"
+              to="https://opencollective.com/typescript-eslint/contribute"
+              target="_blank"
+            >
+              Become a sponsor
+            </Link>
+          </div>
+        </section>
       </main>
     </Layout>
   );

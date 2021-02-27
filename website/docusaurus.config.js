@@ -1,6 +1,8 @@
+const sponsors = require('./data/sponsors.json');
+
 module.exports = {
   title: 'TypeScript ESLint ',
-  tagline: 'The tagline of my site',
+  tagline: 'Tooling which enables ESLint to support TypeScript',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'warn', // TODO: 'throw'
@@ -8,6 +10,9 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
+  customFields: {
+    sponsors,
+  },
   plugins: [
     [
       '@docusaurus/plugin-content-docs',
@@ -52,11 +57,12 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    sidebarCollapsible: false,
     navbar: {
-      title: 'Typescript Eslint',
+      title: 'TypeScript ESLint',
       // hideOnScroll: true,
       logo: {
-        alt: 'Typescript Eslint',
+        alt: 'TypeScript ESLint',
         src: 'img/logo.svg',
       },
       items: [
@@ -72,7 +78,6 @@ module.exports = {
           label: 'Rules',
           position: 'left',
         },
-        // { to: 'blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/typescript-eslint/typescript-eslint',
           label: 'GitHub',
@@ -81,8 +86,13 @@ module.exports = {
       ],
     },
     footer: {
+      logo: {
+        alt: 'Deploys by Netlify',
+        src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
+        href: 'https://www.netlify.com',
+      },
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} Typescript Eslint, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
     },
     prism: {
       theme: require('prism-react-renderer/themes/github'),
