@@ -254,7 +254,7 @@ export default util.createRule<Options, MessageId>({
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          if (isLogicalNegationExpression(node.parent)) {
+          if (isLogicalNegationExpression(node.parent!)) {
             // if (!nullableBoolean)
             context.report({
               node,
@@ -311,7 +311,7 @@ export default util.createRule<Options, MessageId>({
       // string
       if (is('string')) {
         if (!options.allowString) {
-          if (isLogicalNegationExpression(node.parent)) {
+          if (isLogicalNegationExpression(node.parent!)) {
             // if (!string)
             context.report({
               node,
@@ -386,7 +386,7 @@ export default util.createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (isLogicalNegationExpression(node.parent)) {
+          if (isLogicalNegationExpression(node.parent!)) {
             // if (!nullableString)
             context.report({
               node,
@@ -461,7 +461,7 @@ export default util.createRule<Options, MessageId>({
       if (is('number')) {
         if (!options.allowNumber) {
           if (isArrayLengthExpression(node, typeChecker, parserServices)) {
-            if (isLogicalNegationExpression(node.parent)) {
+            if (isLogicalNegationExpression(node.parent!)) {
               // if (!array.length)
               context.report({
                 node,
@@ -485,7 +485,7 @@ export default util.createRule<Options, MessageId>({
                 }),
               });
             }
-          } else if (isLogicalNegationExpression(node.parent)) {
+          } else if (isLogicalNegationExpression(node.parent!)) {
             // if (!number)
             context.report({
               node,
@@ -562,7 +562,7 @@ export default util.createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (isLogicalNegationExpression(node.parent)) {
+          if (isLogicalNegationExpression(node.parent!)) {
             // if (!nullableNumber)
             context.report({
               node,
@@ -643,7 +643,7 @@ export default util.createRule<Options, MessageId>({
       // nullable object
       if (is('nullish', 'object')) {
         if (!options.allowNullableObject) {
-          if (isLogicalNegationExpression(node.parent)) {
+          if (isLogicalNegationExpression(node.parent!)) {
             // if (!nullableObject)
             context.report({
               node,
@@ -787,9 +787,9 @@ export default util.createRule<Options, MessageId>({
 });
 
 function isLogicalNegationExpression(
-  node: TSESTree.Node | undefined,
+  node: TSESTree.Node,
 ): node is TSESTree.UnaryExpression {
-  return node?.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
+  return node.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
 }
 
 function isArrayLengthExpression(

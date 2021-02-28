@@ -393,6 +393,8 @@ if (x) {
         declare const x: number; if (x) {}
         (x: bigint) => !x;
         <T extends number>(x: T) => (x) ? 1 : 0;
+        ![]["length"]; // doesn't count as array.length when computed
+        declare const a: any[] & { notLength: number }; if (a.notLength) {}
       `,
       errors: [
         {
@@ -491,6 +493,44 @@ if (x) {
             {
               messageId: 'conditionFixCastBoolean',
               output: `        <T extends number>(x: T) => (Boolean(x)) ? 1 : 0;`,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 7,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `        ([]["length"] === 0); // doesn't count as array.length when computed`,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `        (Number.isNaN([]["length"])); // doesn't count as array.length when computed`,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `        (!Boolean([]["length"])); // doesn't count as array.length when computed`,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 8,
+          column: 61,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `        declare const a: any[] & { notLength: number }; if (a.notLength !== 0) {}`,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `        declare const a: any[] & { notLength: number }; if (!Number.isNaN(a.notLength)) {}`,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `        declare const a: any[] & { notLength: number }; if (Boolean(a.notLength)) {}`,
             },
           ],
         },
@@ -795,6 +835,8 @@ if (x) {
         },
       ],
     }),
+
+    // noStrictNullCheck
     {
       code: `
 declare const x: string[] | null;
