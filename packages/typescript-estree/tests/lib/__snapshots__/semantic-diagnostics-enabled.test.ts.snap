@@ -81,7 +81,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-dup-params.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-missing-paren.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -90,7 +90,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-not-arrow.src 1`] = `
-Object {
+TSError {
   "column": 26,
   "index": 26,
   "lineNumber": 1,
@@ -99,7 +99,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-numeric-param.src 1`] = `
-Object {
+TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
@@ -108,7 +108,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-numeric-param-multi.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -117,7 +117,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-reverse-arrow.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -134,7 +134,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-eval-return.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-octal.src 1`] = `
-Object {
+TSError {
   "column": 21,
   "index": 21,
   "lineNumber": 1,
@@ -153,7 +153,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-two-lines.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 12,
   "lineNumber": 2,
@@ -162,7 +162,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/arrowFunctions/error-wrapped-param.src 1`] = `
-Object {
+TSError {
   "column": 6,
   "index": 6,
   "lineNumber": 1,
@@ -229,7 +229,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/bigIntLiterals/octal.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/binaryLiterals/invalid.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -302,7 +302,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/class-with-constructor-with-space.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/class-with-no-body.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 10,
   "lineNumber": 2,
@@ -323,7 +323,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/empty-literal-derived-class.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-declaration.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -332,7 +332,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-setter-declaration.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
@@ -341,7 +341,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/classes/invalid-class-two-super-classes.src 1`] = `
-Object {
+TSError {
   "column": 18,
   "index": 18,
   "lineNumber": 1,
@@ -440,7 +440,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/destructured-object-catch.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring/invalid-defaults-object-assign.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -525,7 +525,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/destructuring-param.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -534,7 +534,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `
-Object {
+TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
@@ -545,7 +545,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/multi-destructured.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/destructuring-and-spread/not-final-array.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -588,7 +588,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalDynamicImport/dynamic-import.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -603,7 +603,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest.src 1`] = `
-Object {
+TSError {
   "column": 18,
   "index": 18,
   "lineNumber": 1,
@@ -612,7 +612,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -663,7 +663,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-destruction-object.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forIn/for-in-object.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
@@ -694,7 +694,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-object.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/forOf/for-of-with-function-initializer.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -743,7 +743,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/globalReturn/return-true.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/hexLiterals/invalid.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -864,7 +864,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-class.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-batch-missing-from-clause.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 9,
   "lineNumber": 2,
@@ -873,7 +873,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-batch-token.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -882,7 +882,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-default.src 1`] = `
-Object {
+TSError {
   "column": 20,
   "index": 20,
   "lineNumber": 1,
@@ -891,7 +891,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-default-equal.src 1`] = `
-Object {
+TSError {
   "column": 15,
   "index": 15,
   "lineNumber": 1,
@@ -900,7 +900,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-default-token.src 1`] = `
-Object {
+TSError {
   "column": 17,
   "index": 17,
   "lineNumber": 1,
@@ -911,7 +911,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-named-default.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-named-extra-comma.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -920,7 +920,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-named-middle-comma.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -929,7 +929,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -938,7 +938,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-after-named.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -947,7 +947,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-after-named-after-default.src 1`] = `
-Object {
+TSError {
   "column": 17,
   "index": 17,
   "lineNumber": 1,
@@ -956,7 +956,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-missing-module-specifier.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 11,
   "lineNumber": 2,
@@ -965,7 +965,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-module-specifier.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -974,7 +974,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-missing-module-specifier.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 20,
   "lineNumber": 2,
@@ -983,7 +983,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-module-specifier.src 1`] = `
-Object {
+TSError {
   "column": 18,
   "index": 18,
   "lineNumber": 1,
@@ -992,7 +992,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-after-named.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -1001,7 +1001,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-after-namespace.src 1`] = `
-Object {
+TSError {
   "column": 15,
   "index": 15,
   "lineNumber": 1,
@@ -1010,7 +1010,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-as-missing-from.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 24,
   "lineNumber": 2,
@@ -1019,7 +1019,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-extra-comma.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -1028,7 +1028,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-named-middle-comma.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -1037,7 +1037,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-namespace-after-named.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -1046,7 +1046,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-namespace-missing-as.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -1055,7 +1055,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-new-target.src 1`] = `
-Object {
+TSError {
   "column": 8,
   "index": 8,
   "lineNumber": 1,
@@ -1064,7 +1064,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/newTarget/invalid-unknown-property.src 1`] = `
-Object {
+TSError {
   "column": 25,
   "index": 25,
   "lineNumber": 1,
@@ -1087,7 +1087,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralComputedProperties/computed-variable-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 20,
   "lineNumber": 3,
@@ -1096,7 +1096,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `
-Object {
+TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
@@ -1111,7 +1111,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 62,
   "lineNumber": 7,
@@ -1122,7 +1122,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 39,
   "lineNumber": 5,
@@ -1133,7 +1133,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `
-Object {
+TSError {
   "column": 13,
   "index": 19,
   "lineNumber": 2,
@@ -1158,7 +1158,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/invalid.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -1167,7 +1167,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/octalLiterals/legacy.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -1198,7 +1198,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/class-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-no-default.src 1`] = `
-Object {
+TSError {
   "column": 17,
   "index": 17,
   "lineNumber": 1,
@@ -1207,7 +1207,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/restParams/error-not-last.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
@@ -1240,7 +1240,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/spread/complex-spread.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/spread/error-invalid-if.src 1`] = `
-Object {
+TSError {
   "column": 6,
   "index": 6,
   "lineNumber": 1,
@@ -1249,7 +1249,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/spread/error-invalid-sequence.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -1288,7 +1288,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/unicodeCodePointEscapes/ignored.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -1297,7 +1297,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `
-Object {
+TSError {
   "column": 10,
   "index": 10,
   "lineNumber": 1,
@@ -1316,7 +1316,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-invalid-js-identifier.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-tags.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -1335,7 +1335,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/escape-patters-multi.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-attribute.src 1`] = `
-Object {
+TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
@@ -1344,7 +1344,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-attribute-missing-equals.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
@@ -1353,7 +1353,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-broken-tag.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -1362,7 +1362,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-computed-end-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1371,7 +1371,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-computed-string-end-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1380,7 +1380,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-embedded-expression.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
@@ -1389,7 +1389,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-leading-dot-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -1398,7 +1398,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-matching-placeholder-in-closing-tag.src 1`] = `
-Object {
+TSError {
   "column": 27,
   "index": 27,
   "lineNumber": 1,
@@ -1407,7 +1407,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-closing-tag.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 3,
   "lineNumber": 1,
@@ -1416,7 +1416,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-closing-tags.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -1425,7 +1425,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-dot-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -1434,7 +1434,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-namespace-tag.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1443,7 +1443,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-closing-tag.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -1452,7 +1452,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-closing-tag-attribute-placeholder.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,
@@ -1461,7 +1461,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-namespace-name.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -1470,7 +1470,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-namespace-value.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1479,7 +1479,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-missing-spread-operator.src 1`] = `
-Object {
+TSError {
   "column": 6,
   "index": 6,
   "lineNumber": 1,
@@ -1488,7 +1488,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-namespace-name-with-docts.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -1497,7 +1497,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-namespace-value-with-dots.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1506,7 +1506,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-common-parent.src 1`] = `
-Object {
+TSError {
   "column": 8,
   "index": 8,
   "lineNumber": 1,
@@ -1515,7 +1515,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-common-parent-with-comment.src 1`] = `
-Object {
+TSError {
   "column": 8,
   "index": 8,
   "lineNumber": 1,
@@ -1524,7 +1524,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-no-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -1533,7 +1533,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-placeholder-in-closing-tag.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -1542,7 +1542,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-shorthand-fragment-no-closing.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -1551,7 +1551,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-trailing-dot-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 3,
   "lineNumber": 1,
@@ -1560,7 +1560,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-unexpected-comma.src 1`] = `
-Object {
+TSError {
   "column": 19,
   "index": 19,
   "lineNumber": 1,
@@ -1575,7 +1575,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/member-expression-private.src 1`] = `
-Object {
+TSError {
   "column": 10,
   "index": 10,
   "lineNumber": 1,
@@ -1588,7 +1588,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/multiple-blank-spaces.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespaced-attribute-and-value-inserted.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 4,
   "lineNumber": 1,
@@ -1597,7 +1597,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/namespaced-name-and-attribute.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1606,7 +1606,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/newslines-and-entities.src 1`] = `
-Object {
+TSError {
   "column": 8,
   "index": 8,
   "lineNumber": 1,
@@ -1619,7 +1619,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag-inside-tag.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/self-closing-tag-with-newline.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,
@@ -1654,7 +1654,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-element.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/tsx/generic-jsx-member-expression-private.src 1`] = `
-Object {
+TSError {
   "column": 22,
   "index": 22,
   "lineNumber": 1,
@@ -1671,7 +1671,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/babylon-convergence/type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-constructor.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 43,
   "lineNumber": 2,
@@ -1686,7 +1686,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-readonly-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-abstract-static-constructor.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 41,
   "lineNumber": 2,
@@ -1699,7 +1699,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-class-with-optional-method.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/abstract-interface.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -1720,7 +1720,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/async-function-with-var-declaration.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/await-without-async-function.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 31,
   "lineNumber": 2,
@@ -1745,7 +1745,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/catch-clause-with-annotation.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/catch-clause-with-invalid-annotation.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 19,
   "lineNumber": 3,
@@ -1770,7 +1770,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-definite-assignment.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-export-parameter-properties.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 28,
   "lineNumber": 2,
@@ -1791,7 +1791,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-implements-and-extends.src 1`] = `
-Object {
+TSError {
   "column": 57,
   "index": 57,
   "lineNumber": 1,
@@ -1834,7 +1834,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-readonly-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-static-parameter-properties.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 28,
   "lineNumber": 2,
@@ -1891,7 +1891,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum-computed-number.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 22,
   "lineNumber": 2,
@@ -1902,7 +1902,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum-computed-string.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/export-named-enum-computed-var-ref.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 22,
   "lineNumber": 2,
@@ -1971,7 +1971,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-all-property-types.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src 1`] = `
-Object {
+TSError {
   "column": 9,
   "index": 26,
   "lineNumber": 2,
@@ -2004,7 +2004,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/never-type-param.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/new-target-in-arrow-function-body.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 16,
   "lineNumber": 1,
@@ -2207,7 +2207,7 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/property-decorators/property-decorator-static-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/class-empty-extends.src 1`] = `
-Object {
+TSError {
   "column": 17,
   "index": 17,
   "lineNumber": 1,
@@ -2216,7 +2216,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/class-empty-extends-implements.src 1`] = `
-Object {
+TSError {
   "column": 17,
   "index": 17,
   "lineNumber": 1,
@@ -2225,7 +2225,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/class-extends-empty-implements.src 1`] = `
-Object {
+TSError {
   "column": 32,
   "index": 32,
   "lineNumber": 1,
@@ -2234,7 +2234,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/class-multiple-implements.src 1`] = `
-Object {
+TSError {
   "column": 21,
   "index": 21,
   "lineNumber": 1,
@@ -2243,7 +2243,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-enum-declaration.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -2252,7 +2252,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-function.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -2261,7 +2261,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-interface-declaration.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -2270,7 +2270,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/decorator-on-variable.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 0,
   "lineNumber": 1,
@@ -2279,7 +2279,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
@@ -2288,7 +2288,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-call-expression.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 3,
   "lineNumber": 1,
@@ -2297,7 +2297,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-arguments-in-new-expression.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -2306,7 +2306,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters.src 1`] = `
-Object {
+TSError {
   "column": 11,
   "index": 11,
   "lineNumber": 1,
@@ -2315,7 +2315,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-arrow-function.src 1`] = `
-Object {
+TSError {
   "column": 11,
   "index": 11,
   "lineNumber": 1,
@@ -2324,7 +2324,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-constructor.src 1`] = `
-Object {
+TSError {
   "column": 13,
   "index": 25,
   "lineNumber": 2,
@@ -2333,7 +2333,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-function-expression.src 1`] = `
-Object {
+TSError {
   "column": 20,
   "index": 20,
   "lineNumber": 1,
@@ -2342,7 +2342,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method.src 1`] = `
-Object {
+TSError {
   "column": 6,
   "index": 18,
   "lineNumber": 2,
@@ -2351,7 +2351,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/empty-type-parameters-in-method-signature.src 1`] = `
-Object {
+TSError {
   "column": 6,
   "index": 22,
   "lineNumber": 2,
@@ -2360,7 +2360,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/enum-with-keywords.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
@@ -2369,7 +2369,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/index-signature-parameters.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 16,
   "lineNumber": 2,
@@ -2378,7 +2378,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-empty-extends.src 1`] = `
-Object {
+TSError {
   "column": 21,
   "index": 21,
   "lineNumber": 1,
@@ -2387,7 +2387,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-implements.src 1`] = `
-Object {
+TSError {
   "column": 12,
   "index": 12,
   "lineNumber": 1,
@@ -2396,7 +2396,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-export.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2405,7 +2405,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-private.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2414,7 +2414,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-protected.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2423,7 +2423,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-public.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2432,7 +2432,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-index-signature-static.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2441,7 +2441,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-export.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 20,
   "lineNumber": 2,
@@ -2450,7 +2450,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-private.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 20,
   "lineNumber": 2,
@@ -2459,7 +2459,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-protected.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2468,7 +2468,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-public.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 20,
   "lineNumber": 2,
@@ -2479,7 +2479,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-readonly.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-method-static.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2488,7 +2488,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-multiple-extends.src 1`] = `
-Object {
+TSError {
   "column": 26,
   "index": 26,
   "lineNumber": 1,
@@ -2497,7 +2497,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-export.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2506,7 +2506,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-private.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2515,7 +2515,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-protected.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2524,7 +2524,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-public.src 1`] = `
-Object {
+TSError {
   "column": 4,
   "index": 20,
   "lineNumber": 2,
@@ -2533,7 +2533,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-static.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 18,
   "lineNumber": 2,
@@ -2542,7 +2542,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-property-with-default-value.src 1`] = `
-Object {
+TSError {
   "column": 16,
   "index": 32,
   "lineNumber": 2,
@@ -2551,7 +2551,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-with-no-body.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 14,
   "lineNumber": 2,
@@ -2562,7 +2562,7 @@ Object {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/interface-with-optional-index-signature.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-assertion-not-allowed.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 3,
   "lineNumber": 1,
@@ -2571,7 +2571,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/object-optional-not-allowed.src 1`] = `
-Object {
+TSError {
   "column": 3,
   "index": 3,
   "lineNumber": 1,
@@ -2580,7 +2580,7 @@ Object {
 `;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/errorRecovery/solo-const.src 1`] = `
-Object {
+TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,

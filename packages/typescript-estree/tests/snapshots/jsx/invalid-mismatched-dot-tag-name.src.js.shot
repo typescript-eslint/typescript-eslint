@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-mismatched-dot-tag-name.src 1`] = `
-Object {
+TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,

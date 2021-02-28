@@ -649,16 +649,26 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   return result;
 }
 
-export interface TSError {
-  index: number;
-  lineNumber: number;
-  column: number;
-  message: string;
+export class TSError extends Error {
+  constructor(
+    message: string,
+    public readonly fileName: string,
+    public readonly index: number,
+    public readonly lineNumber: number,
+    public readonly column: number,
+  ) {
+    super(message);
+    Object.defineProperty(this, 'name', {
+      value: new.target.name,
+      enumerable: false,
+      configurable: true,
+    });
+  }
 }
 
 /**
  * @param ast     the AST object
- * @param start      the index at which the error starts
+ * @param start   the index at which the error starts
  * @param message the error message
  * @returns converted error object
  */
@@ -668,12 +678,7 @@ export function createError(
   message: string,
 ): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
-  return {
-    index: start,
-    lineNumber: loc.line + 1,
-    column: loc.character,
-    message,
-  };
+  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
 }
 
 /**
