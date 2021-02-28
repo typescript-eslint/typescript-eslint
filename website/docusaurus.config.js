@@ -4,6 +4,8 @@ const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
 
+const githubUrl = 'https://github.com/armano2/typescript-eslint';
+
 module.exports = {
   title: 'TypeScript ESLint ',
   tagline: 'Tooling which enables ESLint to support TypeScript',
@@ -33,8 +35,7 @@ module.exports = {
         path: '../packages/eslint-plugin/docs/rules',
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
-        editUrl:
-          'https://github.com/typescript-eslint/typescript-eslint/edit/master/docs/',
+        editUrl: `${githubUrl}/edit/master/docs/`,
         remarkPlugins,
       },
     ],
@@ -45,8 +46,7 @@ module.exports = {
         path: '../docs',
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
-        editUrl:
-          'https://github.com/typescript-eslint/typescript-eslint/edit/master/docs/',
+        editUrl: `${githubUrl}/edit/master/docs/`,
         remarkPlugins,
       },
     ],
@@ -75,7 +75,7 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/typescript-eslint/typescript-eslint',
+          href: githubUrl,
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
