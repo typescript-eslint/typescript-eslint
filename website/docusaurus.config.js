@@ -80,8 +80,9 @@ module.exports = {
         },
         {
           href: 'https://github.com/typescript-eslint/typescript-eslint',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },

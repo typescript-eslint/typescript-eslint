@@ -6,10 +6,21 @@
  */
 
 .heroBanner {
+  background-color: #2b3137;
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+}
+
+.heroTitle {
+  color: var(--ifm-color-white);
+  font-size: 3rem;
+}
+
+.heroSubtitle {
+  color: var(--ifm-color-white);
+  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 966px) {
@@ -19,9 +30,20 @@
 }
 
 .buttons {
+  --ifm-button-size-multiplier: 1.6;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  margin-top: 24px;
+}
+
+.buttons a {
+  color: var(--ifm-color-white);
+}
+
+.buttons a:last-of-type {
+  margin: 20px 36px;
 }
 
 .features, .sponsors {
@@ -32,6 +54,7 @@
 }
 
 .sponsors {
+  background-color: var(--ifm-color-emphasis-100);
   text-align: center;
 }
 
