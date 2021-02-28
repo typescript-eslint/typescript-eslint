@@ -164,14 +164,18 @@ This rule provides following fixes and suggestions for particular types in boole
   - Change condition to check string's length (`str` → `str.length > 0`)
   - Change condition to check for empty string (`str` → `str !== ""`)
   - Explicitly cast value to a boolean (`str` → `Boolean(str)`)
-- `number` - (when `allowNumber` is `false`) - Provides following suggestions:
-  - Change condition to check for 0 (`num` → `num !== 0`)
-  - Change condition to check for NaN (`num` → `!Number.isNaN(num)`)
-  - Explicitly cast value to a boolean (`num` → `Boolean(num)`)
+- `number` - (when `allowNumber` is `false`):
+  - For `array.length` - Provides **autofix**:
+    - Change condition to check for 0 (`array.length` → `array.length > 0`)
+  - For other number values - Provides following suggestions:
+    - Change condition to check for 0 (`num` → `num !== 0`)
+    - Change condition to check for NaN (`num` → `!Number.isNaN(num)`)
+    - Explicitly cast value to a boolean (`num` → `Boolean(num)`)
 - `object | null | undefined` - (when `allowNullableObject` is `false`) - Provides **autofix**:
   - Change condition to check for null/undefined (`maybeObj` → `maybeObj != null`)
-- `boolean | null | undefined` - Provides **autofix**:
+- `boolean | null | undefined` - Provides following suggestions:
   - Explicitly treat nullish value the same as false (`maybeBool` → `maybeBool ?? false`)
+  - Change condition to check for true/false (`maybeBool` → `maybeBool === true`)
 - `string | null | undefined` - Provides following suggestions:
   - Change condition to check for null/undefined (`maybeStr` → `maybeStr != null`)
   - Explicitly treat nullish value the same as an empty string (`maybeStr` → `maybeStr ?? ""`)
