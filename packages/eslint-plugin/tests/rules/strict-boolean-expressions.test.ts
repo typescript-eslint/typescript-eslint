@@ -497,6 +497,26 @@ if (x) {
       ],
     }),
 
+    // number (array.length) in boolean context
+    ...batchedSingleLineTests<MessageId, Options>({
+      options: [{ allowNumber: false }],
+      code: noFormat`
+        if (![].length) {}
+        (a: number[]) => a.length && "..."
+        <T extends unknown[]>(...a: T) => a.length || "empty";
+      `,
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 2, column: 6 },
+        { messageId: 'conditionErrorNumber', line: 3, column: 26 },
+        { messageId: 'conditionErrorNumber', line: 4, column: 43 },
+      ],
+      output: noFormat`
+        if ([].length === 0) {}
+        (a: number[]) => (a.length > 0) && "..."
+        <T extends unknown[]>(...a: T) => (a.length > 0) || "empty";
+      `,
+    }),
+
     // mixed `string | number` value in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowString: true, allowNumber: true }],

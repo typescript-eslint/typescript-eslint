@@ -1,6 +1,6 @@
 import {
   AST_NODE_TYPES,
-  TSESLint,
+  ParserServices,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
@@ -144,9 +144,9 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const service = util.getParserServices(context);
-    const checker = service.program.getTypeChecker();
-    const compilerOptions = service.program.getCompilerOptions();
+    const parserServices = util.getParserServices(context);
+    const typeChecker = parserServices.program.getTypeChecker();
+    const compilerOptions = parserServices.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -224,79 +224,8 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
-      interface WrappingFixerParams {
-        /** The node we want to wrap with some code. */
-        node: TSESTree.Node;
-        /**
-         * Descendant of `node` we want to preserve.
-         * Use this to replace some node with another.
-         * By default it's the node we are wrapping (so nothing is removed).
-         */
-        innerNode?: TSESTree.Node;
-        /**
-         * The function which gets the source code of the node and returns more code around it.
-         * E.g. ``code => `${code} != null` ``
-         */
-        wrap: (code: string) => string;
-      }
-
-      /**
-       * Wraps node with some code. Adds parenthesis as necessary.
-       * @returns Fixer which adds the specified code and parens if necessary.
-       */
-      function getWrappingFixer(
-        params: WrappingFixerParams,
-      ): TSESLint.ReportFixFunction {
-        const { node, innerNode = node, wrap } = params;
-        return (fixer): TSESLint.RuleFix => {
-          let code = sourceCode.getText(innerNode);
-
-          // check the inner expression's precedence
-          if (
-            innerNode.type !== AST_NODE_TYPES.Literal &&
-            innerNode.type !== AST_NODE_TYPES.Identifier &&
-            innerNode.type !== AST_NODE_TYPES.MemberExpression &&
-            innerNode.type !== AST_NODE_TYPES.CallExpression
-          ) {
-            // we are wrapping something else than a simple variable or function call
-            // the code we are adding might have stronger precedence than our wrapped node
-            // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
-            code = `(${code})`;
-          }
-
-          // do the wrapping
-          code = wrap(code);
-
-          // check the outer expression's precedence
-          if (
-            node.parent != null &&
-            node.parent.type !== AST_NODE_TYPES.IfStatement &&
-            node.parent.type !== AST_NODE_TYPES.ForStatement &&
-            node.parent.type !== AST_NODE_TYPES.WhileStatement &&
-            node.parent.type !== AST_NODE_TYPES.DoWhileStatement
-          ) {
-            // the whole expression's parent is something else than condition of if/for/while
-            // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
-            // let's wrap the whole expression in parens just in case
-            if (!util.isParenthesized(node, sourceCode)) {
-              code = `(${code})`;
-            }
-          }
-
-          return fixer.replaceText(node, code);
-        };
-      }
-
-      /** @returns `true` when the node is contained within an unary logical negation expression. */
-      function isNegatedNode(node: TSESTree.Node): boolean {
-        return (
-          node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
-          node.parent?.operator === '!'
-        );
-      }
-
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -325,22 +254,25 @@ export default util.createRule<Options, MessageId>({
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          if (isNegatedNode(node)) {
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableBoolean)
             context.report({
               node,
               messageId: 'conditionErrorNullableBoolean',
               suggest: [
                 {
                   messageId: 'conditionFixDefaultFalse',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareFalse',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === false`,
                   }),
@@ -348,20 +280,23 @@ export default util.createRule<Options, MessageId>({
               ],
             });
           } else {
+            // if (nullableBoolean)
             context.report({
               node,
               messageId: 'conditionErrorNullableBoolean',
               suggest: [
                 {
                   messageId: 'conditionFixDefaultFalse',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareTrue',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} === true`,
                   }),
@@ -376,31 +311,35 @@ export default util.createRule<Options, MessageId>({
       // string
       if (is('string')) {
         if (!options.allowString) {
-          if (isNegatedNode(node)) {
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!string)
             context.report({
               node,
               messageId: 'conditionErrorString',
               suggest: [
                 {
                   messageId: 'conditionFixCompareStringLength',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `${code}.length === 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
                   }),
@@ -408,27 +347,31 @@ export default util.createRule<Options, MessageId>({
               ],
             });
           } else {
+            // if (string)
             context.report({
               node,
               messageId: 'conditionErrorString',
               suggest: [
                 {
                   messageId: 'conditionFixCompareStringLength',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code}.length > 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} !== ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -443,30 +386,34 @@ export default util.createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (isNegatedNode(node)) {
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableString)
             context.report({
               node,
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
                   }),
@@ -474,27 +421,31 @@ export default util.createRule<Options, MessageId>({
               ],
             });
           } else {
+            // if (nullableString)
             context.report({
               node,
               messageId: 'conditionErrorNullableString',
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -509,15 +460,42 @@ export default util.createRule<Options, MessageId>({
       // number
       if (is('number')) {
         if (!options.allowNumber) {
-          if (isNegatedNode(node)) {
+          if (isArrayLengthExpression(node, typeChecker, parserServices)) {
+            if (isLogicalNegationExpression(node.parent)) {
+              // if (!array.length)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                fix: util.getWrappingFixer({
+                  sourceCode,
+                  node: node.parent,
+                  innerNode: node,
+                  wrap: code => `${code} === 0`,
+                }),
+              });
+            } else {
+              // if (array.length)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                fix: util.getWrappingFixer({
+                  sourceCode,
+                  node,
+                  wrap: code => `${code} > 0`,
+                }),
+              });
+            }
+          } else if (isLogicalNegationExpression(node.parent)) {
+            // if (!number)
             context.report({
               node,
               messageId: 'conditionErrorNumber',
               suggest: [
                 {
                   messageId: 'conditionFixCompareZero',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     // TODO: we have to compare to 0n if the type is bigint
                     wrap: code => `${code} === 0`,
@@ -526,16 +504,18 @@ export default util.createRule<Options, MessageId>({
                 {
                   // TODO: don't suggest this for bigint because it can't be NaN
                   messageId: 'conditionFixCompareNaN',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `Number.isNaN(${code})`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
                   }),
@@ -543,27 +523,31 @@ export default util.createRule<Options, MessageId>({
               ],
             });
           } else {
+            // if (number)
             context.report({
               node,
               messageId: 'conditionErrorNumber',
               suggest: [
                 {
                   messageId: 'conditionFixCompareZero',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} !== 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareNaN',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `!Number.isNaN(${code})`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -578,30 +562,34 @@ export default util.createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (isNegatedNode(node)) {
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableNumber)
             context.report({
               node,
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    node: node.parent!,
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
                   }),
@@ -609,27 +597,31 @@ export default util.createRule<Options, MessageId>({
               ],
             });
           } else {
+            // if (nullableNumber)
             context.report({
               node,
               messageId: 'conditionErrorNullableNumber',
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
+                  fix: util.getWrappingFixer({
+                    sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -651,21 +643,25 @@ export default util.createRule<Options, MessageId>({
       // nullable object
       if (is('nullish', 'object')) {
         if (!options.allowNullableObject) {
-          if (isNegatedNode(node)) {
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableObject)
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: getWrappingFixer({
-                node: node.parent!,
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node: node.parent,
                 innerNode: node,
                 wrap: code => `${code} == null`,
               }),
             });
           } else {
+            // if (nullableObject)
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: getWrappingFixer({
+              fix: util.getWrappingFixer({
+                sourceCode,
                 node,
                 wrap: code => `${code} != null`,
               }),
@@ -684,7 +680,8 @@ export default util.createRule<Options, MessageId>({
             suggest: [
               {
                 messageId: 'conditionFixCastBoolean',
-                fix: getWrappingFixer({
+                fix: util.getWrappingFixer({
+                  sourceCode,
                   node,
                   wrap: code => `Boolean(${code})`,
                 }),
@@ -788,3 +785,25 @@ export default util.createRule<Options, MessageId>({
     }
   },
 });
+
+function isLogicalNegationExpression(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.UnaryExpression {
+  return node?.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
+}
+
+function isArrayLengthExpression(
+  node: TSESTree.Node,
+  typeChecker: ts.TypeChecker,
+  parserServices: ParserServices,
+): node is TSESTree.MemberExpressionNonComputedName {
+  if (node.type !== AST_NODE_TYPES.MemberExpression) return false;
+  if (node.computed) return false;
+  if (node.property.name !== 'length') return false;
+  const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
+  const objectType = util.getConstrainedTypeAtLocation(
+    typeChecker,
+    objectTsNode,
+  );
+  return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+}
