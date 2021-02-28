@@ -105,17 +105,20 @@ export default util.createRule<Options, MessageId>({
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
       conditionFixDefaultEmptyString:
-        'Explicitly treat nullish value the same as an empty string',
-      conditionFixDefaultZero: 'Explicitly treat nullish value the same as 0',
+        'Explicitly treat nullish value the same as an empty string (`value ?? ''`)',
+      conditionFixDefaultZero:
+        'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
       conditionFixCompareNullish:
-        'Change condition to check for null/undefined',
-      conditionFixCastBoolean: 'Explicitly cast value to a boolean',
+        'Change condition to check for null/undefined (`value != null`)',
+      conditionFixCastBoolean:
+        'Explicitly cast value to a boolean (`Boolean(value)`)',
       conditionFixCompareStringLength:
-        "Change condition to check string's length",
+        "Change condition to check string's length (`value.length !== 0`)",
       conditionFixCompareEmptyString:
-        'Change condition to check for empty string',
-      conditionFixCompareZero: 'Change condition to check for 0',
-      conditionFixCompareNaN: 'Change condition to check for NaN',
+        'Change condition to check for empty string (`value !== ""`)',
+      conditionFixCompareZero:
+        'Change condition to check for 0 (`value !== 0`)',
+      conditionFixCompareNaN: 'Change condition to check for NaN (`!Number.isNaN(value)`)',
     },
   },
   defaultOptions: [
