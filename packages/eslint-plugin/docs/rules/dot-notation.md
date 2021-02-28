@@ -63,4 +63,6 @@ const x = new X();
 x['protected_prop'] = 123;
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)</sup>
+:::note
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)
+:::

@@ -24,4 +24,6 @@ It adds support for TypeScript features, such as types.
 
 See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-vars#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-vars.md)</sup>
+:::note
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-vars.md)
+:::

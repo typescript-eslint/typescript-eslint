@@ -21,4 +21,6 @@ Note that this rule requires ESLint v7.
 }
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loss-of-precision.md)</sup>
+:::note
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loss-of-precision.md)
+:::

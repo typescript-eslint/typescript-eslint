@@ -28,4 +28,6 @@ enum MyEnum {
 
 See [`eslint/space-infix-ops` options](https://eslint.org/docs/rules/space-infix-ops#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-infix-ops.md)</sup>
+:::note
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-infix-ops.md)
+:::

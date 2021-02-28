@@ -24,4 +24,6 @@ It adds support for `enum`, `interface`, `namespace` and `module` declarations.
 
 See [`eslint/brace-style` options](https://eslint.org/docs/rules/brace-style#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/brace-style.md)</sup>
+:::note
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/brace-style.md)
+:::
