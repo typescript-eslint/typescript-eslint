@@ -164,6 +164,10 @@ function parseForESLint(
         );
       }
     }
+    if (compilerOptions.emitDecoratorMetadata === true) {
+      analyzeOptions.emitDecoratorMetadata =
+        compilerOptions.emitDecoratorMetadata;
+    }
   }
 
   const scopeManager = analyze(ast, analyzeOptions);

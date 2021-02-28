@@ -5,6 +5,6 @@ Object {
   "column": 9,
   "index": 9,
   "lineNumber": 1,
-  "message": "':' expected.",
+  "message": "'}' expected.",
 }
 `;

@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-unexpected-comma.src 1`] = `
 Object {
-  "column": 6,
-  "index": 6,
+  "column": 19,
+  "index": 19,
   "lineNumber": 1,
-  "message": "'>' expected.",
+  "message": "Identifier expected.",
 }
 `;

@@ -118,6 +118,7 @@ enum AST_NODE_TYPES {
   TSInterfaceDeclaration = 'TSInterfaceDeclaration',
   TSInterfaceHeritage = 'TSInterfaceHeritage',
   TSIntersectionType = 'TSIntersectionType',
+  TSIntrinsicKeyword = 'TSIntrinsicKeyword',
   TSLiteralType = 'TSLiteralType',
   TSMappedType = 'TSMappedType',
   TSMethodSignature = 'TSMethodSignature',

@@ -17,4 +17,16 @@ function isMetaSelector(
   return selector in MetaSelectors;
 }
 
-export { selectorTypeToMessageString, isMetaSelector };
+function isMethodOrPropertySelector(
+  selector: IndividualAndMetaSelectorsString | Selectors | MetaSelectors,
+): boolean {
+  return (
+    selector === MetaSelectors.method || selector === MetaSelectors.property
+  );
+}
+
+export {
+  selectorTypeToMessageString,
+  isMetaSelector,
+  isMethodOrPropertySelector,
+};

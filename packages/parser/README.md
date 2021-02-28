@@ -45,7 +45,7 @@ By far the most common case will be installing the [`@typescript-eslint/eslint-p
 
 ## Configuration
 
-The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
+The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring/language-options#specifying-parser-options) in your ESLint configuration file.
 
 ```ts
 interface ParserOptions {
@@ -98,6 +98,8 @@ Accepts any valid ECMAScript version number:
 
 - A version: es3, es5, es6, es7, es8, es9, es10, es11, ..., or
 - A year: es2015, es2016, es2017, es2018, es2019, es2020, ...
+
+The value **must** be a number - so do not include the `es` prefix.
 
 Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
 

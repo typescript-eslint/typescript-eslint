@@ -1,6 +1,6 @@
-import unescape from 'lodash/unescape';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import { xhtmlEntities } from './jsx/xhtml-entities';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -165,7 +165,9 @@ export function getLastModifier(node: ts.Node): ts.Modifier | null {
  * @param token the TypeScript token
  * @returns is comma
  */
-export function isComma(token: ts.Node): boolean {
+export function isComma(
+  token: ts.Node,
+): token is ts.Token<ts.SyntaxKind.CommaToken> {
   return token.kind === SyntaxKind.CommaToken;
 }
 
@@ -186,7 +188,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  * @returns is JSDoc comment
  */
-export function isJSDocComment(node: ts.Node): boolean {
+export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -285,7 +287,7 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
  * @param node the ts.Node
  * @returns is a token
  */
-export function isToken(node: ts.Node): boolean {
+export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -414,7 +416,19 @@ export function hasJSXAncestor(node: ts.Node): boolean {
  * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
-  return unescape(text);
+  return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
+    const item = entity.slice(1, -1);
+    if (item[0] === '#') {
+      const codePoint =
+        item[1] === 'x'
+          ? parseInt(item.slice(2), 16)
+          : parseInt(item.slice(1), 10);
+      return codePoint > 0x10ffff // RangeError: Invalid code point
+        ? entity
+        : String.fromCodePoint(codePoint);
+    }
+    return xhtmlEntities[item] || entity;
+  });
 }
 
 /**
@@ -422,7 +436,9 @@ export function unescapeStringLiteralText(text: string): string {
  * @param node ts.Node to be checked
  * @returns is Computed Property
  */
-export function isComputedProperty(node: ts.Node): boolean {
+export function isComputedProperty(
+  node: ts.Node,
+): node is ts.ComputedPropertyName {
   return node.kind === SyntaxKind.ComputedPropertyName;
 }
 
@@ -459,15 +475,11 @@ export function isChildUnwrappableOptionalChain(
     | ts.NonNullExpression,
   child: TSESTree.Node,
 ): boolean {
-  if (
+  return (
     isChainExpression(child) &&
     // (x?.y).z is semantically different, and as such .z is no longer optional
     node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -574,7 +586,7 @@ export function getTokenType(
  * @returns the converted Token
  */
 export function convertToken(
-  token: ts.Node,
+  token: ts.Token<ts.TokenSyntaxKind>,
   ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =

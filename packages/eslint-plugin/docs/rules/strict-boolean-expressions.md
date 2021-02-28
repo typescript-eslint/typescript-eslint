@@ -50,7 +50,7 @@ while (obj) {
 Examples of **correct** code for this rule:
 
 ```tsx
-// Using logical operators for their side effects is allowed
+// Using logical operator short-circuiting is allowed
 const Component = () => {
   const entry = map.get('foo') || {};
   return entry && <p>Name: {entry.name}</p>;

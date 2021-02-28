@@ -44,6 +44,7 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   ['jsxPragma', ['string']],
   ['jsxFragmentName', ['string']],
   ['sourceType', ['string', new Set(['module', 'script'])]],
+  ['emitDecoratorMetadata', ['boolean']],
 ]);
 
 function nestDescribe(

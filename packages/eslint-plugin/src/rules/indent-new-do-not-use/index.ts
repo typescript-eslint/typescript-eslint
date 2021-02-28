@@ -1570,9 +1570,9 @@ export default createRule<Options, MessageIds>({
      * 2. Don't set any offsets against the first token of the node.
      * 3. Call `ignoreNode` on the node sometime after exiting it and before validating offsets.
      */
-    const offsetListeners = Object.keys(baseOffsetListeners).reduce<
-      TSESLint.RuleListener
-    >(
+    const offsetListeners = Object.keys(
+      baseOffsetListeners,
+    ).reduce<TSESLint.RuleListener>(
       /*
        * Offset listener calls are deferred until traversal is finished, and are called as
        * part of the final `Program:exit` listener. This is necessary because a node might
@@ -1590,9 +1590,9 @@ export default createRule<Options, MessageIds>({
        * ignored nodes are known.
        */
       (acc, key) => {
-        const listener = baseOffsetListeners[key] as TSESLint.RuleFunction<
-          TSESTree.Node
-        >;
+        const listener = baseOffsetListeners[
+          key
+        ] as TSESLint.RuleFunction<TSESTree.Node>;
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         acc[key] = node => listenerCallQueue.push({ listener, node });
 

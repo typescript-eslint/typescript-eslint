@@ -320,8 +320,8 @@ To clearly spell it out:
 
 - (3) is tested first because it has `types` and is an individual selector.
 - (2) is tested next because it is an individual selector.
-- (1) is tested next as it is a grouped selector.
-- (4) is tested last as it is the base default selector.
+- (4) is tested next as it is a grouped selector.
+- (1) is tested last as it is the base default selector.
 
 Its worth noting that whilst this order is applied, all selectors may not run on a name.
 This is explained in ["How does the rule evaluate a name's format?"](#how-does-the-rule-evaluate-a-names-format)

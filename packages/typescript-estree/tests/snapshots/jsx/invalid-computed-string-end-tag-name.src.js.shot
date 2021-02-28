@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-computed-string-end-tag-name.src 1`] = `
 Object {
-  "column": 11,
-  "index": 11,
+  "column": 2,
+  "index": 2,
   "lineNumber": 1,
-  "message": "Type expected.",
+  "message": "Identifier expected.",
 }
 `;

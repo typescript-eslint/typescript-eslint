@@ -321,6 +321,23 @@ export const func2 = (value: number) => ({ type: 'X', value });
     },
     {
       code: `
+export function func1() {
+  return 0;
+}
+export const foo = {
+  func2() {
+    return 0;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: ['func1', 'func2'],
+        },
+      ],
+    },
+    {
+      code: `
 export class Test {
   get prop() {
     return 1;
@@ -1795,6 +1812,39 @@ export function foo(...[a]: any): void {}
           data: {
             type: 'Rest',
           },
+        },
+      ],
+    },
+    {
+      code: `
+export function func1() {
+  return 0;
+}
+export const foo = {
+  func2() {
+    return 0;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: [],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 8,
+          endColumn: 24,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 6,
+          endLine: 6,
+          column: 3,
+          endColumn: 10,
         },
       ],
     },

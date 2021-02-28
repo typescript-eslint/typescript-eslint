@@ -2,9 +2,9 @@
 
 exports[`jsx invalid-no-common-parent.src 1`] = `
 Object {
-  "column": 36,
-  "index": 36,
+  "column": 8,
+  "index": 8,
   "lineNumber": 1,
-  "message": "Expression expected.",
+  "message": "JSX expressions must have one parent element.",
 }
 `;

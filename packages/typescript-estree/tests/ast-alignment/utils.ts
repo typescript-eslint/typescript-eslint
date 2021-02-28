@@ -151,6 +151,11 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           };
         }
       },
+      TSTypePredicate(node) {
+        if (!node.typeAnnotation) {
+          node.typeAnnotation = null;
+        }
+      },
       MethodDefinition(node) {
         /**
          * Babel: MethodDefinition + abstract: true
@@ -234,26 +239,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             q.range[1] += 2;
             q.loc.end.column += 2;
           }
-        }
-      },
-      /**
-       * TS 3.7: optional chaining
-       * babel: sets optional property as true/undefined
-       * ts-estree: sets optional property as true/false
-       */
-      MemberExpression(node) {
-        if (!node.optional) {
-          node.optional = false;
-        }
-      },
-      CallExpression(node) {
-        if (!node.optional) {
-          node.optional = false;
-        }
-      },
-      OptionalCallExpression(node) {
-        if (!node.optional) {
-          node.optional = false;
         }
       },
     },

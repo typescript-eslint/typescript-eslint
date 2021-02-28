@@ -280,6 +280,7 @@ ruleTester.run('comma-spacing', rule, {
     'function foo<T,>() {}',
     'class Foo<T, T1> {}',
     'interface Foo<T, T1,>{}',
+    'interface A<> {}',
   ],
 
   invalid: [

@@ -130,33 +130,29 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
-Examples of **incorrect** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: true }`:
+Examples of **incorrect** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
 
 ```ts
-export const func = (value: any): void => ({ type: 'X', value });
-export function foo(value: any): void {}
+export const func = (value: any): number => value + 1;
 ```
 
 Examples of **correct** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: true }`:
 
 ```ts
-export const func = (value: number): void => ({ type: 'X', value });
-export function foo(value: number): void {}
+export const func = (value: number): number => value + 1;
 ```
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: false }`:
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
-export const foo = () => {
-  return {
+export const foo = () =>
+  ({
     bar: true,
-  } as const;
-};
+  } as const);
 export const bar = () => 1;
-export const baz = arg => arg as const;
 ```
 
 Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
@@ -168,7 +164,6 @@ export const foo = () =>
     bar: true,
   } as const);
 export const bar = () => 1 as const;
-export const baz = (arg: string) => arg as const;
 ```
 
 ### `allowedNames`
@@ -188,24 +183,24 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
+Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: false }`:
 
 ```ts
-export var arrowFn = () => () => {};
+export const arrowFn = () => (): void => {};
 
 export function fn() {
-  return function () {};
+  return function (): void {};
 }
 
-export function foo(outer) {
-  return function (inner): void {};
+export function foo(outer: string) {
+  return function (inner: string): void {};
 }
 ```
 
 Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 ```ts
-export var arrowFn = () => (): void => {};
+export const arrowFn = () => (): void => {};
 
 export function fn() {
   return function (): void {};
@@ -218,7 +213,7 @@ export function foo(outer: string) {
 
 ### `allowTypedFunctionExpressions`
 
-Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: false }`:
 
 ```ts
 export let arrowFn = () => 'test';

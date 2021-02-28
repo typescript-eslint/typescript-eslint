@@ -13,43 +13,6 @@ type Options = [
   },
 ];
 
-// https://github.com/lodash/lodash/blob/86a852fe763935bb64c12589df5391fd7d3bb14d/escapeRegExp.js
-const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-const reHasRegExpChar = RegExp(reRegExpChar.source);
-function escapeRegExp(str: string): string {
-  return str && reHasRegExpChar.test(str)
-    ? str.replace(reRegExpChar, '\\$&')
-    : str || '';
-}
-
-function getNameLocationInGlobalDirectiveComment(
-  sourceCode: TSESLint.SourceCode,
-  comment: TSESTree.Comment,
-  name: string,
-): TSESTree.SourceLocation {
-  const namePattern = new RegExp(
-    `[\\s,]${escapeRegExp(name)}(?:$|[\\s,:])`,
-    'gu',
-  );
-
-  // To ignore the first text "global".
-  namePattern.lastIndex = comment.value.indexOf('global') + 6;
-
-  // Search a given variable name.
-  const match = namePattern.exec(comment.value);
-
-  // Convert the index to loc.
-  const start = sourceCode.getLocFromIndex(
-    comment.range[0] + '/*'.length + (match ? match.index + 1 : 0),
-  );
-  const end = {
-    line: start.line,
-    column: start.column + (match ? name.length : 1),
-  };
-
-  return { start, end };
-}
-
 export default util.createRule<Options, MessageIds>({
   name: 'no-redeclare',
   meta: {
@@ -129,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
           yield {
             type: 'comment',
             node: comment,
-            loc: getNameLocationInGlobalDirectiveComment(
+            loc: util.getNameLocationInGlobalDirectiveComment(
               sourceCode,
               comment,
               variable.name,
