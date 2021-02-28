@@ -31,31 +31,36 @@ export function getFunctionHeadLoc(
   node: FunctionNode,
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
-  /**
-   * Returns start column position
-   * @param node
-   */
   function getLocStart(): TSESTree.LineAndColumnData {
-    /* highlight method name */
-    const parent = node.parent;
-    if (
-      parent &&
-      (parent.type === AST_NODE_TYPES.MethodDefinition ||
-        (parent.type === AST_NODE_TYPES.Property && parent.method))
-    ) {
-      return parent.loc.start;
+    if (node.parent && node.parent.type === AST_NODE_TYPES.MethodDefinition) {
+      // return the start location for class method
+
+      if (node.parent.decorators && node.parent.decorators.length > 0) {
+        // exclude decorators
+        return sourceCode.getTokenAfter(
+          node.parent.decorators[node.parent.decorators.length - 1],
+        )!.loc.start;
+      }
+
+      return node.parent.loc.start;
     }
 
+    if (
+      node.parent &&
+      node.parent.type === AST_NODE_TYPES.Property &&
+      node.parent.method
+    ) {
+      // return the start location for object method shorthand
+      return node.parent.loc.start;
+    }
+
+    // return the start location for a regular function
     return node.loc.start;
   }
 
-  /**
-   * Returns end column position
-   * @param node
-   */
   function getLocEnd(): TSESTree.LineAndColumnData {
-    /* highlight `=>` */
     if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+      // find the end location for arrow function expression
       return sourceCode.getTokenBefore(
         node.body,
         token =>
@@ -63,6 +68,7 @@ export function getFunctionHeadLoc(
       )!.loc.end;
     }
 
+    // return the end location for a regular function
     return sourceCode.getTokenBefore(node.body)!.loc.end;
   }
 

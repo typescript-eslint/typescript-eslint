@@ -614,5 +614,24 @@ async function foo(): Promise<string> | SPromise<boolean> {
 }
       `,
     },
+    {
+      code: `
+class Test {
+  @decorator
+  public test() {
+    return Promise.resolve(123);
+  }
+}
+      `,
+      errors: [{ line: 4, column: 3, messageId }],
+      output: `
+class Test {
+  @decorator
+  public async test() {
+    return Promise.resolve(123);
+  }
+}
+      `,
+    },
   ],
 });
