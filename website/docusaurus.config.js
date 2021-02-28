@@ -1,5 +1,9 @@
 const sponsors = require('./data/sponsors.json');
 
+const remarkPlugins = [
+  [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
+];
+
 module.exports = {
   title: 'TypeScript ESLint ',
   tagline: 'Tooling which enables ESLint to support TypeScript',
@@ -14,6 +18,14 @@ module.exports = {
     sponsors,
   },
   plugins: [
+    '@docusaurus/plugin-debug',
+    [
+      '@docusaurus/theme-classic',
+      {
+        customCss: require.resolve('./src/css/custom.css'),
+      },
+    ],
+    ['@docusaurus/plugin-content-pages', { remarkPlugins }],
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -23,36 +35,19 @@ module.exports = {
         routeBasePath: 'rules',
         editUrl:
           'https://github.com/typescript-eslint/typescript-eslint/edit/master/docs/',
-        remarkPlugins: [
-          [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
-        ],
+        remarkPlugins,
       },
     ],
-  ],
-  presets: [
     [
-      '@docusaurus/preset-classic',
+      '@docusaurus/plugin-content-docs',
       {
-        docs: {
-          id: 'getting-started-docs',
-          path: '../docs/getting-started',
-          routeBasePath: 'getting-started',
-          sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
-          editUrl:
-            'https://github.com/typescript-eslint/typescript-eslint/edit/master/docs/',
-          remarkPlugins: [
-            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
-          ],
-        },
-        pages: {
-          include: ['**/*.{js,jsx,ts,tsx,md,mdx}'],
-          remarkPlugins: [
-            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
-          ],
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
+        id: 'base-docs',
+        path: '../docs',
+        routeBasePath: 'docs',
+        sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
+        editUrl:
+          'https://github.com/typescript-eslint/typescript-eslint/edit/master/docs/',
+        remarkPlugins,
       },
     ],
   ],
@@ -68,8 +63,8 @@ module.exports = {
       },
       items: [
         {
-          to: 'getting-started/',
-          activeBasePath: 'getting-started',
+          to: 'docs/',
+          activeBasePath: 'docs',
           label: 'Getting started',
           position: 'left',
         },
