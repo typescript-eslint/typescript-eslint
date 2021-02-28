@@ -95,12 +95,15 @@ function Home() {
           <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className="button button--primary"
+              className={clsx('button button--primary', styles.heroButton)}
               to={useBaseUrl('getting-started/')}
             >
               Get Started
             </Link>
-            <Link className="button button--info" to={useBaseUrl('repl/')}>
+            <Link
+              className={clsx('button button--info', styles.heroButton)}
+              to={useBaseUrl('repl/')}
+            >
               Playground
             </Link>
           </div>

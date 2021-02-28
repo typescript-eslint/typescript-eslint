@@ -38,7 +38,8 @@
   margin-top: 24px;
 }
 
-.buttons a {
+.heroButton,
+.heroButton:hover {
   color: var(--ifm-color-white);
 }
 
@@ -46,7 +47,8 @@
   margin: 20px 36px;
 }
 
-.features, .sponsors {
+.features,
+.sponsors {
   display: flex;
   align-items: center;
   padding: 2rem 0;

@@ -64,6 +64,7 @@ module.exports = {
       logo: {
         alt: 'TypeScript ESLint',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
       },
       items: [
         {
