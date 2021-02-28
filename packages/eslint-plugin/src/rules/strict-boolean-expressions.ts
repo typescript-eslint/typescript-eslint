@@ -105,7 +105,7 @@ export default util.createRule<Options, MessageId>({
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
       conditionFixDefaultEmptyString:
-        'Explicitly treat nullish value the same as an empty string (`value ?? ''`)',
+        'Explicitly treat nullish value the same as an empty string (`value ?? ""`)',
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
       conditionFixCompareNullish:
@@ -118,7 +118,8 @@ export default util.createRule<Options, MessageId>({
         'Change condition to check for empty string (`value !== ""`)',
       conditionFixCompareZero:
         'Change condition to check for 0 (`value !== 0`)',
-      conditionFixCompareNaN: 'Change condition to check for NaN (`!Number.isNaN(value)`)',
+      conditionFixCompareNaN:
+        'Change condition to check for NaN (`!Number.isNaN(value)`)',
     },
   },
   defaultOptions: [
