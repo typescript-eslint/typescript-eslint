@@ -60,7 +60,7 @@ html[data-theme='dark'] .header-github-link:before {
 
 .menu > .menu__list > .menu__list-item > .menu__link {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--ifm-font-weight-bold);
 }
 
 .menu
@@ -69,7 +69,7 @@ html[data-theme='dark'] .header-github-link:before {
   > .menu__list
   > .menu__list-item
   > .menu__link {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .menu
@@ -80,7 +80,7 @@ html[data-theme='dark'] .header-github-link:before {
   > .menu__list
   > .menu__list-item
   .menu__link {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 h1,
@@ -89,8 +89,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: var(--ifm-font-weight-semibold);
 }
 
 html[data-theme='dark'] .alert--secondary {

@@ -148,8 +148,8 @@ Installing our tooling in the root of your project does not mean that only one v
 You can check what versions are installed in your project using the following commands:
 
 ```bash
-$ npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
-$ yarn list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+yarn list @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
 If you see more than one version installed, then you will have to either use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force a single version, or you will have to downgrade your root versions to match the dependency versions.
@@ -178,8 +178,8 @@ This plugin surfaces prettier formatting problems at lint time, helping to ensur
 
 Instead of using this plugin, we recommend using prettier's `--list-different` flag to detect if a file has not been correctly formatted. For example, our CI is setup to run the following command automatically, which blocks diffs that have not been formatted:
 
-```bash
-$ yarn prettier --list-different \"./**/*.{ts,js,json,md}\"
+```bash npm2yarn
+npm run prettier --list-different \"./**/*.{ts,js,json,md}\"
 ```
 
 ### `eslint-plugin-import`

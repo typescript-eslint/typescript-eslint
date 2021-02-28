@@ -18,7 +18,7 @@ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-e
 Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
 
 <!-- prettier-ignore -->
-```js
+```js title=".eslintrc.js"
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -58,13 +58,11 @@ This file will tell ESLint which files and folders it should never lint.
 
 Add the following lines to the file:
 
-```ignore
+```ignore title=".eslintignore"
 # don't ever lint node_modules
 node_modules
 # don't lint build output (make sure it's set to your correct build folder name)
 dist
-# don't lint nyc coverage output
-coverage
 ```
 
 ## Running the lint
@@ -77,7 +75,7 @@ npm run eslint . --ext .js,.jsx,.ts,.tsx
 
 or with NPM:
 
-```bash
+```bash npm2yarn
 npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
 

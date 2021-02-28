@@ -11,6 +11,7 @@ module.exports = {
           'linting/TYPED_LINTING',
           'linting/MONOREPO',
           'linting/FAQ',
+          'linting/ESLINT_PLUGIN_TSLINT',
         ],
       },
       {
@@ -19,6 +20,7 @@ module.exports = {
         collapsed: false,
         items: ['plugin-development/README'],
       },
+      'MIGRATION_TSLINT',
     ],
   },
 };

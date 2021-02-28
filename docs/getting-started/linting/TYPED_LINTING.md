@@ -9,7 +9,7 @@ This provides a lot of additional power, unlocking many possibilities for static
 
 How can we tap into this? There are two small changes you need to make to your config file:
 
-```diff
+```diff title=".eslintrc.js"
  module.exports = {
    root: true,
    parser: '@typescript-eslint/parser',

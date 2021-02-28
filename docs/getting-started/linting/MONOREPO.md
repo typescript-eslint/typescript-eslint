@@ -19,7 +19,7 @@ This setup is pretty easy to configure. Earlier in our docs on [typed linting](.
 
 For example, this is how we specify all of our `tsconfig.json` within this repo.
 
-```diff
+```diff title=".eslintrc.js"
  module.exports = {
    root: true,
    parser: '@typescript-eslint/parser',
@@ -56,21 +56,21 @@ If you've only got one, you should inspect the `include` paths. If it doesn't in
 
 The former doesn't always work for everyone if they've got a complex build, adding more paths (like test paths) to `include` could break the build, so in those cases we suggest creating a new config; called `tsconfig.eslint.json`, that looks something like this:
 
-```jsonc
-{
+```js title=".eslintrc.js"
+module.exports = {
   // extend your base config to share compilerOptions, etc
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
+  extends: './tsconfig.json',
+  compilerOptions: {
     // ensure that nobody can accidentally use this config for a build
-    "noEmit": true
+    noEmit: true,
   },
-  "include": [
+  include: [
     // whatever paths you intend to lint
-    "src",
-    "test",
-    "tools"
-  ]
-}
+    'src',
+    'test',
+    'tools',
+  ],
+};
 ```
 
 Of course, ensure you update your `.eslintrc.js` to point at this new config file.
