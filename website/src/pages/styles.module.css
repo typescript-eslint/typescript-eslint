@@ -5,28 +5,11 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  background-color: #2b3137;
-  padding: 4rem 0;
+.hero {
+  --ifm-hero-background-color: #2b3137;
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
   text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.heroTitle {
-  color: var(--ifm-color-white);
-  font-size: 3rem;
-}
-
-.heroSubtitle {
-  color: var(--ifm-color-white);
-  font-size: 1.5rem;
-}
-
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
-  }
 }
 
 .buttons {
@@ -36,11 +19,6 @@
   align-items: center;
   justify-content: center;
   margin-top: 24px;
-}
-
-.heroButton,
-.heroButton:hover {
-  color: var(--ifm-color-white);
 }
 
 .buttons a:last-of-type {

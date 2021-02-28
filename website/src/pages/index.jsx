@@ -8,32 +8,63 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Easy to Use',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: 'What are ESLint and TypeScript, and how do they compare?',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        <p>
+          <b>ESLint</b> is an awesome linter for JavaScript code.
+        </p>
+        <p>
+          - Behind the scenes, it uses a parser to turn your source code into a
+          data format called an Abstract Syntax Tree (AST). This data format is
+          then used by plugins to create assertions called lint rules around
+          what your code should look or behave like.
+        </p>
+        <p>
+          <b>TypeScript</b> is an awesome static code analyzer for JavaScript
+          code, and some additional syntax that it provides on top of the
+          underlying JavaScript language.
+        </p>
+        <p>
+          - Behind the scenes, it uses a parser to turn your source code into a
+          data format called an Abstract Syntax Tree (AST). This data format is
+          then used by other parts of the TypeScript Compiler to do things like
+          give you feedback on issues, allow you to refactor easily, etc.
+        </p>
+        <p>
+          They sound similar, right? They are! Both projects are ultimately
+          striving to help you write the best JavaScript code you possibly can.
+        </p>
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    title: 'Why does this project exist?',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        <p>
+          As covered by the previous section, both ESLint and TypeScript rely on
+          turning your source code into a data format called an AST in order to
+          do their jobs.
+        </p>
+        <p>
+          However, it turns out that ESLint and TypeScript use different ASTs to
+          each other.
+        </p>
+        <p>
+          The reason for this difference is not so interesting or important and
+          is simply the result of different evolutions, priorities, and
+          timelines of the projects.
+        </p>
+        <p>
+          This project, <code>typescript-eslint</code>, exists primarily because
+          of this major difference between the projects.
+        </p>
+        <p>
+          <code>typescript-eslint</code> exists so that you can use ESLint and
+          TypeScript together, without needing to worry about implementation
+          detail differences wherever possible.
+        </p>
       </>
     ),
   },
@@ -42,13 +73,13 @@ const features = [
 function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--4', styles.feature)}>
+    <div className="col col--12">
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
         </div>
       )}
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       <p>{description}</p>
     </div>
   );
@@ -89,19 +120,19 @@ function Home() {
       title={`${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <header className={styles.heroBanner}>
+      <header className={clsx('hero hero--dark', styles.hero)}>
         <div className="container">
-          <h1 className={styles.heroTitle}>{siteConfig.title}</h1>
-          <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+          <h1 className="hero__title">{siteConfig.title}</h1>
+          <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className={clsx('button button--primary', styles.heroButton)}
+              className="button button--primary"
               to={useBaseUrl('getting-started/')}
             >
               Get Started
             </Link>
             <Link
-              className={clsx('button button--info', styles.heroButton)}
+              className="button button--secondary button--outline"
               to={useBaseUrl('repl/')}
             >
               Playground
