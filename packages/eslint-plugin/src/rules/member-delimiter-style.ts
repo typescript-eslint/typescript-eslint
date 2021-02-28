@@ -21,6 +21,7 @@ type Config = BaseOptions & {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
+  multilineDetection?: 'brackets' | 'last-member';
 };
 type Options = [Config];
 type MessageIds =
@@ -82,6 +83,9 @@ export default util.createRule<Options, MessageIds>({
             },
             additionalProperties: false,
           },
+          multilineDetection: {
+            enum: ['brackets', 'last-member'],
+          },
         }),
         additionalProperties: false,
       },
@@ -97,6 +101,7 @@ export default util.createRule<Options, MessageIds>({
         delimiter: 'semi',
         requireLast: false,
       },
+      multilineDetection: 'brackets',
     },
   ],
   create(context, [options]) {
@@ -215,10 +220,20 @@ export default util.createRule<Options, MessageIds>({
     function checkMemberSeparatorStyle(
       node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral,
     ): void {
-      const isSingleLine = node.loc.start.line === node.loc.end.line;
-
       const members =
         node.type === AST_NODE_TYPES.TSInterfaceBody ? node.body : node.members;
+
+      let isSingleLine = node.loc.start.line === node.loc.end.line;
+      if (
+        options.multilineDetection === 'last-member' &&
+        !isSingleLine &&
+        members.length > 0
+      ) {
+        const lastMember = members[members.length - 1];
+        if (lastMember.loc.end.line === node.loc.end.line) {
+          isSingleLine = true;
+        }
+      }
 
       const typeOpts =
         node.type === AST_NODE_TYPES.TSInterfaceBody
