@@ -265,6 +265,22 @@ class Foo {
 }
 const { bound } = new Foo();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    `
+class BaseClass {
+  x: number = 42;
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  superLogThis: any;
+  constructor() {
+    super();
+    this.superLogThis = super.logThis;
+  }
+}
+const oc = new OtherClass();
+oc.superLogThis();
+    `,
   ],
   invalid: [
     {
@@ -525,6 +541,49 @@ const { log } = console;
       errors: [
         {
           line: 1,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    {
+      code: `
+class BaseClass {
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  constructor() {
+    super();
+    const x = super.logThis;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 8,
+          column: 15,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    {
+      code: `
+class BaseClass {
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  constructor() {
+    super();
+    let x;
+    x = super.logThis;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          column: 9,
           messageId: 'unbound',
         },
       ],

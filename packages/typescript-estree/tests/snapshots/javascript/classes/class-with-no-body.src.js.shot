@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`javascript classes class-with-no-body.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 10,
   "lineNumber": 2,

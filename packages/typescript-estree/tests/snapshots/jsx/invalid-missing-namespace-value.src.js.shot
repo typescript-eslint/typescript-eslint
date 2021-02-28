@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-missing-namespace-value.src 1`] = `
-Object {
+TSError {
   "column": 2,
   "index": 2,
   "lineNumber": 1,

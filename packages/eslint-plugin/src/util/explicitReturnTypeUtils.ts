@@ -2,74 +2,15 @@ import {
   TSESTree,
   AST_NODE_TYPES,
   TSESLint,
-  AST_TOKEN_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
+import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 import { nullThrows, NullThrowsReasons } from './nullThrows';
 
 type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
 type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
-
-/**
- * Creates a report location for the given function.
- * The location only encompasses the "start" of the function, and not the body
- *
- * eg.
- * function foo(args) {}
- * ^^^^^^^^^^^^^^^^^^
- *
- * get y(args) {}
- * ^^^^^^^^^^^
- *
- * const x = (args) => {}
- *           ^^^^^^^^^
- */
-function getReporLoc(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.SourceLocation {
-  /**
-   * Returns start column position
-   * @param node
-   */
-  function getLocStart(): TSESTree.LineAndColumnData {
-    /* highlight method name */
-    const parent = node.parent;
-    if (
-      parent &&
-      (parent.type === AST_NODE_TYPES.MethodDefinition ||
-        (parent.type === AST_NODE_TYPES.Property && parent.method))
-    ) {
-      return parent.loc.start;
-    }
-
-    return node.loc.start;
-  }
-
-  /**
-   * Returns end column position
-   * @param node
-   */
-  function getLocEnd(): TSESTree.LineAndColumnData {
-    /* highlight `=>` */
-    if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-      return sourceCode.getTokenBefore(
-        node.body,
-        token =>
-          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=>',
-      )!.loc.end;
-    }
-
-    return sourceCode.getTokenBefore(node.body)!.loc.end;
-  }
-
-  return {
-    start: getLocStart(),
-    end: getLocEnd(),
-  };
-}
 
 /**
  * Checks if a node is a variable declarator with a type annotation.
@@ -327,7 +268,7 @@ function checkFunctionReturnType(
     return;
   }
 
-  report(getReporLoc(node, sourceCode));
+  report(getFunctionHeadLoc(node, sourceCode));
 }
 
 /**
