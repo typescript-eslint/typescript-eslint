@@ -1,4 +1,5 @@
 ---
+id: linting
 title: Linting your TypeScript Codebase
 sidebar_label: Linting your TypeScript Codebase
 ---

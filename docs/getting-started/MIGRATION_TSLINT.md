@@ -1,4 +1,5 @@
 ---
+id: tslint-migration
 title: Migrating from TSLint to ESLint
 sidebar_label: Migrating from TSLint to ESLint
 hide_title: true

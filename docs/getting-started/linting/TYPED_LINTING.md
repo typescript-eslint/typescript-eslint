@@ -1,4 +1,5 @@
 ---
+id: type-linting
 title: Linting with Type Information
 sidebar_label: Linting with Type Information
 ---
