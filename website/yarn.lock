@@ -6308,6 +6308,18 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+monaco-editor-webpack-plugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-3.0.0.tgz#47a1c16e990d743572f47b0a1abb6de36bbc4afb"
+  integrity sha512-oPuYInTZIT5ctj8gjx7VEzxZFjcIBJXazVOaF6wJ/TPCldF0Lb/58jEeKTERXr4nr1Yobgx2tVfKcfkncAlAHg==
+  dependencies:
+    loader-utils "^2.0.0"
+
+monaco-editor@*:
+  version "0.22.3"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.22.3.tgz#69b42451d3116c6c08d9b8e052007ff891fd85d7"
+  integrity sha512-RM559z2CJbczZ3k2b+ouacMINkAYWwRit4/vs0g2X/lkYefDiu0k2GmgWjAuiIpQi+AqASPOKvXNmYc8KUSvVQ==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -8041,6 +8053,14 @@ react-loadable@^5.5.0:
   integrity sha512-C8Aui0ZpMd4KokxRdVAm2bQtI03k2RMRNzOB+IipV3yxFTSVICv7WoUr5L9ALB5BmKO1iHgZtWM8EvYG83otdg==
   dependencies:
     prop-types "^15.5.0"
+
+react-monaco-editor@^0.42.0:
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.42.0.tgz#f754842a8c1ac5b14360b46fd8e17eff49882fab"
+  integrity sha512-LMgiY6XU1To7tjPoMg497eST/Od01QOaUYr/tUUan4GRVBBVi5v9K7MvxMjg1FhViOgeNyD8XemsBb1cLzMxBA==
+  dependencies:
+    monaco-editor "*"
+    prop-types "^15.7.2"
 
 react-router-config@^5.1.1:
   version "5.1.1"

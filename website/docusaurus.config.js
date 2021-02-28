@@ -20,6 +20,7 @@ module.exports = {
     sponsors,
   },
   plugins: [
+    require.resolve('./plugins/monaco-editor'),
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',
@@ -73,6 +74,12 @@ module.exports = {
           activeBasePath: 'rules',
           label: 'Rules',
           position: 'left',
+        },
+        {
+          to: 'repl',
+          activeBasePath: 'repl',
+          position: 'right',
+          label: 'Playground',
         },
         {
           href: githubUrl,

@@ -19,7 +19,8 @@
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-monaco-editor": "^0.42.0"
   },
   "browserslist": {
     "production": [
@@ -34,6 +35,7 @@
     ]
   },
   "devDependencies": {
-    "globby": "^11.0.2"
+    "globby": "^11.0.2",
+    "monaco-editor-webpack-plugin": "^3.0.0"
   }
 }
