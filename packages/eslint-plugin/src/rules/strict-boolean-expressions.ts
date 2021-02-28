@@ -797,9 +797,15 @@ function isArrayLengthExpression(
   typeChecker: ts.TypeChecker,
   parserServices: ParserServices,
 ): node is TSESTree.MemberExpressionNonComputedName {
-  if (node.type !== AST_NODE_TYPES.MemberExpression) return false;
-  if (node.computed) return false;
-  if (node.property.name !== 'length') return false;
+  if (node.type !== AST_NODE_TYPES.MemberExpression) {
+    return false;
+  }
+  if (node.computed) {
+    return false;
+  }
+  if (node.property.name !== 'length') {
+    return false;
+  }
   const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
   const objectType = util.getConstrainedTypeAtLocation(
     typeChecker,
