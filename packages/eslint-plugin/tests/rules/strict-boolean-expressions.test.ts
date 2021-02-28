@@ -521,15 +521,52 @@ if (x) {
         <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorNullableBoolean', line: 2, column: 38 },
-        { messageId: 'conditionErrorNullableBoolean', line: 3, column: 27 },
-        { messageId: 'conditionErrorNullableBoolean', line: 4, column: 57 },
+        {
+          messageId: 'conditionErrorNullableBoolean',
+          line: 2,
+          column: 38,
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: `declare const x: boolean | null; if (x ?? false) {}`,
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output: `declare const x: boolean | null; if (x === true) {}`,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableBoolean',
+          line: 3,
+          column: 27,
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: `        (x?: boolean) => !(x ?? false);`,
+            },
+            {
+              messageId: 'conditionFixCompareFalse',
+              output: `        (x?: boolean) => (x === false);`,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableBoolean',
+          line: 4,
+          column: 57,
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: `        <T extends boolean | null | undefined>(x: T) => (x ?? false) ? 1 : 0;`,
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output: `        <T extends boolean | null | undefined>(x: T) => (x === true) ? 1 : 0;`,
+            },
+          ],
+        },
       ],
-      output: noFormat`
-        declare const x: boolean | null; if (x ?? false) {}
-        (x?: boolean) => !(x ?? false);
-        <T extends boolean | null | undefined>(x: T) => (x ?? false) ? 1 : 0;
-      `,
     }),
 
     // nullable object in boolean context

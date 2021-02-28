@@ -32,10 +32,13 @@ export type MessageId =
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject'
   | 'noStrictNullCheck'
+  | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultZero'
   | 'conditionFixCompareNullish'
   | 'conditionFixCastBoolean'
+  | 'conditionFixCompareTrue'
+  | 'conditionFixCompareFalse'
   | 'conditionFixCompareStringLength'
   | 'conditionFixCompareEmptyString'
   | 'conditionFixCompareZero'
@@ -104,6 +107,8 @@ export default util.createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
+      conditionFixDefaultFalse:
+        'Explicitly treat nullish value the same as false (`value ?? false`)',
       conditionFixDefaultEmptyString:
         'Explicitly treat nullish value the same as an empty string (`value ?? ""`)',
       conditionFixDefaultZero:
@@ -112,6 +117,10 @@ export default util.createRule<Options, MessageId>({
         'Change condition to check for null/undefined (`value != null`)',
       conditionFixCastBoolean:
         'Explicitly cast value to a boolean (`Boolean(value)`)',
+      conditionFixCompareTrue:
+        'Change condition to check if true (`value === true`)',
+      conditionFixCompareFalse:
+        'Change condition to check if false (`value === false`)',
       conditionFixCompareStringLength:
         "Change condition to check string's length (`value.length !== 0`)",
       conditionFixCompareEmptyString:
@@ -316,11 +325,50 @@ export default util.createRule<Options, MessageId>({
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          context.report({
-            node,
-            messageId: 'conditionErrorNullableBoolean',
-            fix: getWrappingFixer({ node, wrap: code => `${code} ?? false` }),
-          });
+          if (isNegatedNode(node)) {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableBoolean',
+              suggest: [
+                {
+                  messageId: 'conditionFixDefaultFalse',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? false`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareFalse',
+                  fix: getWrappingFixer({
+                    node: node.parent!,
+                    innerNode: node,
+                    wrap: code => `${code} === false`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableBoolean',
+              suggest: [
+                {
+                  messageId: 'conditionFixDefaultFalse',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} ?? false`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareTrue',
+                  fix: getWrappingFixer({
+                    node,
+                    wrap: code => `${code} === true`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
