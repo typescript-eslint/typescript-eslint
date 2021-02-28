@@ -50,13 +50,17 @@ export function getWrappingFixer(
     // do the wrapping
     code = wrap(code);
 
+    let parent = util.nullThrows(
+      node.parent,
+      util.NullThrowsReasons.MissingParent,
+    );
+
     // check the outer expression's precedence
     if (
-      node.parent != null &&
-      node.parent.type !== AST_NODE_TYPES.IfStatement &&
-      node.parent.type !== AST_NODE_TYPES.ForStatement &&
-      node.parent.type !== AST_NODE_TYPES.WhileStatement &&
-      node.parent.type !== AST_NODE_TYPES.DoWhileStatement
+      parent.type !== AST_NODE_TYPES.IfStatement &&
+      parent.type !== AST_NODE_TYPES.ForStatement &&
+      parent.type !== AST_NODE_TYPES.WhileStatement &&
+      parent.type !== AST_NODE_TYPES.DoWhileStatement
     ) {
       // the whole expression's parent is something else than condition of if/for/while
       // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
@@ -64,6 +68,40 @@ export function getWrappingFixer(
       if (!util.isParenthesized(node, sourceCode)) {
         code = `(${code})`;
       }
+    }
+
+    // check if we need to insert semicolon
+    for (;;) {
+      const prevParent = parent;
+      parent = parent.parent!;
+      if (
+        parent.type === AST_NODE_TYPES.LogicalExpression ||
+        parent.type === AST_NODE_TYPES.BinaryExpression
+      ) {
+        if (parent.left === prevParent) {
+          // the next parent is a binary expression and current node is on the left
+          continue;
+        }
+      }
+      if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
+        const block = parent.parent!;
+        if (
+          block.type === AST_NODE_TYPES.Program ||
+          block.type === AST_NODE_TYPES.BlockStatement
+        ) {
+          // the next parent is an expression in a block
+          const statementIndex = block.body.indexOf(parent);
+          const previousStatement = block.body[statementIndex - 1];
+          if (
+            statementIndex > 0 &&
+            sourceCode.getLastToken(previousStatement)!.value !== ';'
+          ) {
+            // the previous statement in a block doesn't end with a semicolon
+            code = `;${code}`;
+          }
+        }
+      }
+      break;
     }
 
     return fixer.replaceText(node, code);

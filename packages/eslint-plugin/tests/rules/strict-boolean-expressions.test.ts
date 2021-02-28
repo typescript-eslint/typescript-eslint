@@ -859,5 +859,27 @@ if (x) {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
     },
+
+    // automatic semicolon insertion test
+    {
+      options: [{ allowNullableObject: false }],
+      code: noFormat`
+        declare const obj: { x: number } | null;
+        !obj
+        obj || 0
+        obj && 1 || 0
+      `,
+      errors: [
+        { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
+        { messageId: 'conditionErrorNullableObject', line: 4, column: 9 },
+        { messageId: 'conditionErrorNullableObject', line: 5, column: 9 },
+      ],
+      output: noFormat`
+        declare const obj: { x: number } | null;
+        (obj == null)
+        ;(obj != null) || 0
+        ;(obj != null) && 1 || 0
+      `,
+    },
   ],
 });
