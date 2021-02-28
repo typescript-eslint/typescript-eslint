@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tsx generic-jsx-member-expression-private.src 1`] = `
-Object {
+TSError {
   "column": 22,
   "index": 22,
   "lineNumber": 1,

@@ -72,6 +72,7 @@ type Config = BaseConfig & {
     interface?: BaseConfig;
     typeLiteral?: BaseConfig;
   };
+  multilineDetection?: 'brackets' | 'last-member';
 };
 ```
 
@@ -86,13 +87,19 @@ Default config:
     "singleline": {
         "delimiter": "semi",
         "requireLast": false
-    }
+    },
+    "multilineDetection": "brackets"
 }
 ```
 
 `multiline` config only applies to multiline `interface`/`type` definitions.
 `singleline` config only applies to single line `interface`/`type` definitions.
 The two configs are entirely separate, and do not effect one another.
+
+`multilineDetection` determines what counts as multiline
+
+- `"brackets"` (default) any newlines in the type or interface make it multiline.
+- `"last-member"` if the last member of the interface is on the same line as the last bracket, it is counted as a single line.
 
 ### `delimiter`
 

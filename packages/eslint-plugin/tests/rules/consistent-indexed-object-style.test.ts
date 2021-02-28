@@ -76,7 +76,6 @@ interface Foo {
   [];
 }
     `,
-
     // 'index-signature'
     // Unhandled type
     {
@@ -166,6 +165,20 @@ type Foo<A> = Record<string, A>;
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
+    // Interface with extends
+    {
+      code: `
+interface B extends A {
+  [index: number]: unknown;
+}
+      `,
+      output: `
+interface B extends A {
+  [index: number]: unknown;
+}
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
     // Readonly interface with generic parameter
     {
       code: `

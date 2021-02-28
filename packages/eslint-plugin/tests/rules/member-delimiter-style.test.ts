@@ -705,6 +705,75 @@ type Bar = {
         },
       ],
     },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
+    `
+type Foo = {a: {
+  b: true;
+};};
+    `,
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
+          multilineDetection: 'brackets',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  };
+};
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+
+};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
+        },
+      ],
+    },
 
     {
       code: `
@@ -3362,6 +3431,102 @@ type Foo = {
           messageId: 'expectedSemi',
           line: 1,
           column: 21,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 4,
+          column: 2,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  }
+};
+      `,
+      output: `
+type Foo = {
+  a: {
+    b: true;
+  };
+};
+      `,
+      options: [
+        {
+          multilineDetection: 'last-member',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 5,
+          column: 4,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {a: {
+  b: true;
+}};
+      `,
+      output: `
+type Foo = {a: {
+  b: true;
+};};
+      `,
+      options: [
+        {
+          singleline: { delimiter: 'semi', requireLast: true },
+          multilineDetection: 'last-member',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'expectedSemi',
+          line: 4,
+          column: 2,
         },
       ],
     },

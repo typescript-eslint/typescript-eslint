@@ -91,6 +91,7 @@ export default util.createRule<Options, MessageIds>({
     ]);
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function validateNode(
       node:
@@ -140,12 +141,14 @@ export default util.createRule<Options, MessageIds>({
         return context.report({
           messageId: 'missingAsync',
           node,
+          loc: util.getFunctionHeadLoc(node, sourceCode),
         });
       }
 
       context.report({
         messageId: 'missingAsync',
         node,
+        loc: util.getFunctionHeadLoc(node, sourceCode),
         fix: fixer => {
           if (
             node.parent &&
