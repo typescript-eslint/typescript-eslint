@@ -1,6 +1,6 @@
 ---
 hide_title: true
-sidebar_label: ban-types
+sidebar_label: camelcase
 ---
 
 ## DEPRECATED

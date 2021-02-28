@@ -7,13 +7,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #443fd4;
-  --ifm-color-primary-dark: #332dca;
-  --ifm-color-primary-darker: #302bbf;
-  --ifm-color-primary-darkest: #27239d;
-  --ifm-color-primary-light: #5a55d9;
-  --ifm-color-primary-lighter: #6561dc;
-  --ifm-color-primary-lightest: #8682e3;
+  --ifm-container-width: 100vw;
 }
 
 .docusaurus-highlight-code-line {
@@ -34,4 +28,9 @@
 
 .menu > .menu__list > .menu__list-item > .menu__list > .menu__list-item > .menu__list > .menu__list-item .menu__link {
   font-size: .9rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
 }

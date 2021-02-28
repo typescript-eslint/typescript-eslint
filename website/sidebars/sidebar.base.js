@@ -7,9 +7,9 @@ module.exports = {
         label: 'Linting',
         collapsed: false,
         items: [
-          'linting/MONOREPO',
           'linting/README',
           'linting/TYPED_LINTING',
+          'linting/MONOREPO',
           'linting/FAQ',
         ],
       },

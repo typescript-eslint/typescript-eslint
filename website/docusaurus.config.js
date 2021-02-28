@@ -57,7 +57,7 @@ module.exports = {
     ],
   ],
   themeConfig: {
-    sidebarCollapsible: false,
+    // sidebarCollapsible: false,
     navbar: {
       title: 'TypeScript ESLint',
       // hideOnScroll: true,
