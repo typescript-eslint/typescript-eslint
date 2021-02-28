@@ -297,13 +297,6 @@ class Referencer extends Visitor {
     TypeVisitor.visit(this, node);
   }
 
-  protected visitTypeAssertion(
-    node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-  ): void {
-    this.visit(node.expression);
-    this.visitType(node.typeAnnotation);
-  }
-
   /////////////////////
   // Visit selectors //
   /////////////////////
@@ -317,7 +310,6 @@ class Referencer extends Visitor {
   protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
     let left = node.left;
     switch (left.type) {
-      case AST_NODE_TYPES.TSAsExpression:
       case AST_NODE_TYPES.TSTypeAssertion:
         // explicitly visit the type annotation
         this.visit(left.typeAnnotation);
@@ -603,10 +595,6 @@ class Referencer extends Visitor {
     this.visitType(node.typeParameters);
   }
 
-  protected TSAsExpression(node: TSESTree.TSAsExpression): void {
-    this.visitTypeAssertion(node);
-  }
-
   protected TSDeclareFunction(node: TSESTree.TSDeclareFunction): void {
     this.visitFunction(node);
   }
@@ -707,7 +695,13 @@ class Referencer extends Visitor {
   }
 
   protected TSTypeAssertion(node: TSESTree.TSTypeAssertion): void {
-    this.visitTypeAssertion(node);
+    if (node.kind === 'as') {
+      this.visit(node.expression);
+      this.visitType(node.typeAnnotation);
+    } else {
+      this.visitType(node.typeAnnotation);
+      this.visit(node.expression);
+    }
   }
 
   protected UpdateExpression(node: TSESTree.UpdateExpression): void {

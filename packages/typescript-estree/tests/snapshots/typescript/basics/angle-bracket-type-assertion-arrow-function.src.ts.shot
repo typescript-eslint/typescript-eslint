@@ -120,6 +120,7 @@ Object {
               ],
               "type": "ArrowFunctionExpression",
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 43,

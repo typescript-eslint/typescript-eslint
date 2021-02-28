@@ -43,6 +43,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "angle-bracket",
             "loc": Object {
               "end": Object {
                 "column": 5,

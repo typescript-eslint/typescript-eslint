@@ -36,7 +36,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSAbstractClassProperty,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
-  AST_NODE_TYPES.TSAsExpression,
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSConditionalType,
   AST_NODE_TYPES.TSConstructorType,
@@ -177,6 +176,12 @@ export default util.createRule<Options, MessageIds>({
     return Object.assign({}, rules, {
       // overwrite the base rule here so we can use our KNOWN_NODES list instead
       '*:exit'(node: TSESTree.Node) {
+        if (
+          node.type === AST_NODE_TYPES.TSTypeAssertion &&
+          node.kind === 'as'
+        ) {
+          return;
+        }
         // For nodes we care about, skip the default handling, because it just marks the node as ignored...
         if (!KNOWN_NODES.has(node.type)) {
           rules['*:exit'](node);
@@ -192,20 +197,22 @@ export default util.createRule<Options, MessageIds>({
         return rules.VariableDeclaration(node);
       },
 
-      TSAsExpression(node: TSESTree.TSAsExpression) {
-        // transform it to a BinaryExpression
-        return rules['BinaryExpression, LogicalExpression']({
-          type: AST_NODE_TYPES.BinaryExpression,
-          operator: 'as',
-          left: node.expression,
-          // the first typeAnnotation includes the as token
-          right: node.typeAnnotation as any,
+      TSTypeAssertion(node: TSESTree.TSTypeAssertion) {
+        if (node.kind === 'as') {
+          // transform it to a BinaryExpression
+          return rules['BinaryExpression, LogicalExpression']({
+            type: AST_NODE_TYPES.BinaryExpression,
+            operator: 'as',
+            left: node.expression,
+            // the first typeAnnotation includes the as token
+            right: node.typeAnnotation as any,
 
-          // location data
-          parent: node.parent,
-          range: node.range,
-          loc: node.loc,
-        });
+            // location data
+            parent: node.parent,
+            range: node.range,
+            loc: node.loc,
+          });
+        }
       },
 
       TSConditionalType(node: TSESTree.TSConditionalType) {

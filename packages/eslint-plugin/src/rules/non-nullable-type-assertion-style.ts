@@ -72,9 +72,7 @@ export default util.createRule({
       return true;
     };
 
-    const isConstAssertion = (
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ): boolean => {
+    const isConstAssertion = (node: TSESTree.TSTypeAssertion): boolean => {
       return (
         node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
         node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
@@ -83,9 +81,7 @@ export default util.createRule({
     };
 
     return {
-      'TSAsExpression, TSTypeAssertion'(
-        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-      ): void {
+      TSTypeAssertion(node: TSESTree.TSTypeAssertion): void {
         if (isConstAssertion(node)) {
           return;
         }

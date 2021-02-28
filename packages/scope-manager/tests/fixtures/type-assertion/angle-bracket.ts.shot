@@ -23,7 +23,7 @@ ScopeManager {
           resolved: Variable$2,
           writeExpr: Literal$2,
         },
-        Reference$2 {
+        Reference$3 {
           identifier: Identifier<"x">,
           isRead: true,
           isTypeReference: false,
@@ -44,7 +44,7 @@ ScopeManager {
       ],
       name: "T",
       references: Array [
-        Reference$3 {
+        Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,

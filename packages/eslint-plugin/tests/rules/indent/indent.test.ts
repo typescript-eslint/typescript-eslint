@@ -75,7 +75,7 @@ type foo = ArrType[];
     ],
   },
   {
-    node: AST_NODE_TYPES.TSAsExpression,
+    node: AST_NODE_TYPES.TSTypeAssertion,
     code: [
       `
 const foo = {} as {

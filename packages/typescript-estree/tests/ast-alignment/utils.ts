@@ -241,6 +241,25 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           }
         }
       },
+      /**
+       * Change in ast structure
+       * https://github.com/typescript-eslint/typescript-eslint/issues/2142
+       */
+      TSAsExpression(node: any) {
+        node.type = AST_NODE_TYPES.TSTypeAssertion;
+        if (!node.kind) {
+          node.kind = 'as';
+        }
+      },
+      /**
+       * Change in ast structure
+       * https://github.com/typescript-eslint/typescript-eslint/issues/2142
+       */
+      TSTypeAssertion(node: any) {
+        if (!node.kind) {
+          node.kind = 'angle-bracket';
+        }
+      },
     },
   );
 }

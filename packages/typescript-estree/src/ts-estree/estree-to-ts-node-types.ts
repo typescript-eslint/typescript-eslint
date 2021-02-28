@@ -156,7 +156,6 @@ export interface EstreeToTsNodeTypes {
     | ts.MethodDeclaration
     | ts.ConstructorDeclaration;
   [AST_NODE_TYPES.TSArrayType]: ts.ArrayTypeNode;
-  [AST_NODE_TYPES.TSAsExpression]: ts.AsExpression;
   [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.PropertySignature;
   [AST_NODE_TYPES.TSClassImplements]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSConditionalType]: ts.ConditionalTypeNode;
@@ -203,7 +202,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSTemplateLiteralType]: ts.TemplateLiteralTypeNode;
   [AST_NODE_TYPES.TSTypeAliasDeclaration]: ts.TypeAliasDeclaration;
   [AST_NODE_TYPES.TSTypeAnnotation]: undefined;
-  [AST_NODE_TYPES.TSTypeAssertion]: ts.TypeAssertion;
+  [AST_NODE_TYPES.TSTypeAssertion]: ts.TypeAssertion | ts.AsExpression;
   [AST_NODE_TYPES.TSTypeLiteral]: ts.TypeLiteralNode;
   [AST_NODE_TYPES.TSTypeOperator]: ts.TypeOperatorNode;
   [AST_NODE_TYPES.TSTypeParameter]: ts.TypeParameterDeclaration;

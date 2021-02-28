@@ -133,7 +133,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSAbstractClassProperty,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
-  AST_NODE_TYPES.TSAsExpression,
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSConditionalType,
   AST_NODE_TYPES.TSConstructorType,

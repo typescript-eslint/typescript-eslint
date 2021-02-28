@@ -58,6 +58,7 @@ Object {
             "type": "Literal",
             "value": 1,
           },
+          "kind": "as",
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -72,7 +73,7 @@ Object {
             6,
             17,
           ],
-          "type": "TSAsExpression",
+          "type": "TSTypeAssertion",
           "typeAnnotation": Object {
             "loc": Object {
               "end": Object {
