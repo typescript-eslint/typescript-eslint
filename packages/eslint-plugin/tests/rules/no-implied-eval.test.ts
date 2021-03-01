@@ -251,6 +251,12 @@ const foo = (callback: Function) => {
   setTimeout(callback, 0);
 };
     `,
+    `
+const foo = () => {};
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+    `,
   ],
 
   invalid: [
@@ -601,6 +607,21 @@ const fn = (foo: string | any) => {
           messageId: 'noImpliedEvalError',
           line: 6,
           column: 14,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = 'foo';
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
         },
       ],
     },
