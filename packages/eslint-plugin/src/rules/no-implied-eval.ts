@@ -108,6 +108,7 @@ export default util.createRule({
 
         case AST_NODE_TYPES.MemberExpression:
         case AST_NODE_TYPES.Identifier:
+        case AST_NODE_TYPES.ConditionalExpression:
           return isFunctionType(node);
 
         case AST_NODE_TYPES.CallExpression:
