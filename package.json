@@ -74,7 +74,7 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^12.0.1",
-    "@commitlint/config-lerna-scopes": "^11.0.0",
+    "@commitlint/config-lerna-scopes": "^12.0.1",
     "@types/babel__code-frame": "^7.0.2",
     "@types/debug": "^4.1.5",
     "@types/eslint-visitor-keys": "^1.0.0",
