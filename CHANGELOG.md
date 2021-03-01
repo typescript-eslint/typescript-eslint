@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.16.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.0...v4.16.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* **typescript-estree:** update TS version range ([#3127](https://github.com/typescript-eslint/typescript-eslint/issues/3127)) ([0473674](https://github.com/typescript-eslint/typescript-eslint/commit/0473674c58df5039a2de3c63ad7494fc6be7487e))
+
+
+
+
+
 # [4.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.2...v4.16.0) (2021-03-01)
 
 
