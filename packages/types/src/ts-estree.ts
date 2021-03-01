@@ -188,6 +188,7 @@ export type Node =
   | JSXFragment
   | JSXIdentifier
   | JSXMemberExpression
+  | JSXNamespacedName
   | JSXOpeningElement
   | JSXOpeningFragment
   | JSXSpreadAttribute
@@ -374,6 +375,7 @@ export type Expression =
   | SequenceExpression
   | SpreadElement
   | TSAsExpression
+  | TSTypeAssertion
   | TSUnaryExpression
   | YieldExpression;
 export type ForInitialiser = Expression | VariableDeclaration;
@@ -398,7 +400,10 @@ export type JSXExpression =
   | JSXEmptyExpression
   | JSXSpreadChild
   | JSXExpressionContainer;
-export type JSXTagNameExpression = JSXIdentifier | JSXMemberExpression;
+export type JSXTagNameExpression =
+  | JSXIdentifier
+  | JSXMemberExpression
+  | JSXNamespacedName;
 export type LeftHandSideExpression =
   | CallExpression
   | ClassExpression
@@ -1024,7 +1029,7 @@ export interface ImportSpecifier extends BaseNode {
 
 export interface JSXAttribute extends BaseNode {
   type: AST_NODE_TYPES.JSXAttribute;
-  name: JSXIdentifier;
+  name: JSXIdentifier | JSXNamespacedName;
   value: Literal | JSXExpression | null;
 }
 
@@ -1069,6 +1074,12 @@ export interface JSXMemberExpression extends BaseNode {
   type: AST_NODE_TYPES.JSXMemberExpression;
   object: JSXTagNameExpression;
   property: JSXIdentifier;
+}
+
+export interface JSXNamespacedName extends BaseNode {
+  type: AST_NODE_TYPES.JSXNamespacedName;
+  namespace: JSXIdentifier;
+  name: JSXIdentifier;
 }
 
 export interface JSXOpeningElement extends BaseNode {
@@ -1340,6 +1351,7 @@ export interface TSConditionalType extends BaseNode {
 
 export interface TSConstructorType extends FunctionSignatureBase {
   type: AST_NODE_TYPES.TSConstructorType;
+  abstract: boolean;
 }
 
 export interface TSConstructSignatureDeclaration extends FunctionSignatureBase {

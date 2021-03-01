@@ -51,8 +51,8 @@
   },
   "devDependencies": {
     "@babel/code-frame": "^7.12.13",
-    "@babel/parser": "^7.12.16",
-    "@babel/types": "^7.12.13",
+    "@babel/parser": "^7.13.4",
+    "@babel/types": "^7.13.0",
     "@types/babel__code-frame": "*",
     "@types/debug": "*",
     "@types/glob": "*",

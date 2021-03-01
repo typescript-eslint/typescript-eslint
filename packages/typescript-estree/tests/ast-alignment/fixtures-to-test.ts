@@ -300,22 +300,18 @@ tester.addFixturePatternConfig('jsx', {
      */
     'embedded-tags',
     /**
-     * JSX fixtures which have known issues for typescript-estree
-     * @see https://github.com/Microsoft/TypeScript/issues/7411
-     */
-    'namespaced-attribute-and-value-inserted',
-    /**
-     * JSX fixtures which have known issues for typescript-estree
-     * @see https://github.com/Microsoft/TypeScript/issues/7411
-     */
-    'namespaced-name-and-attribute',
-    /**
      * Current random error difference on jsx/invalid-no-tag-name.src.js
      * ts-estree - SyntaxError
      * Babel - RangeError
      * @see https://github.com/babel/babel/issues/6680
      */
     'invalid-no-tag-name',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Unexpected token
+     * TODO: investigate if this code is valid as there is no typescript error
+     */
+    'invalid-namespace-value-with-dots',
   ],
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
@@ -346,7 +342,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
-     * TODO: report it to babel
+     * @see https://github.com/babel/babel/issues/12884
      */
     'interface-with-extends-member-expression',
     /**
@@ -387,7 +383,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-error',
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
-     * TODO: report this to babel
+     * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
   ],
