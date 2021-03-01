@@ -263,6 +263,12 @@ export const webworker = {
     isValueVariable: false,
     name: 'ImageEncodeOptions',
   },
+  ImportMeta: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ImportMeta',
+  },
   JsonWebKey: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -335,12 +341,6 @@ export const webworker = {
     isValueVariable: false,
     name: 'PermissionDescriptor',
   },
-  PipeOptions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'PipeOptions',
-  },
   PostMessageOptions: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -395,17 +395,29 @@ export const webworker = {
     isValueVariable: false,
     name: 'QueuingStrategy',
   },
-  ReadableStreamReadDoneResult: {
+  QueuingStrategyInit: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadDoneResult',
+    name: 'QueuingStrategyInit',
   },
-  ReadableStreamReadValueResult: {
+  ReadableStreamDefaultReadDoneResult: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadValueResult',
+    name: 'ReadableStreamDefaultReadDoneResult',
+  },
+  ReadableStreamDefaultReadValueResult: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableStreamDefaultReadValueResult',
+  },
+  ReadableWritablePair: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableWritablePair',
   },
   RegistrationOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -467,6 +479,12 @@ export const webworker = {
     isValueVariable: false,
     name: 'StorageEstimate',
   },
+  StreamPipeOptions: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'StreamPipeOptions',
+  },
   SyncEventInit: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -496,12 +514,6 @@ export const webworker = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Transformer',
-  },
-  UnderlyingByteSource: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'UnderlyingByteSource',
   },
   UnderlyingSink: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1373,29 +1385,11 @@ export const webworker = {
     isValueVariable: true,
     name: 'PushSubscriptionOptions',
   },
-  ReadableByteStreamController: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableByteStreamController',
-  },
   ReadableStream: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: true,
     name: 'ReadableStream',
-  },
-  ReadableStreamBYOBReader: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamBYOBReader',
-  },
-  ReadableStreamBYOBRequest: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamBYOBRequest',
   },
   ReadableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1409,11 +1403,11 @@ export const webworker = {
     isValueVariable: true,
     name: 'ReadableStreamDefaultReader',
   },
-  ReadableStreamReader: {
+  ReadableStreamGenericReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamReader',
+    isValueVariable: false,
+    name: 'ReadableStreamGenericReader',
   },
   Request: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1919,71 +1913,77 @@ export const webworker = {
     isValueVariable: false,
     name: 'PerformanceObserverCallback',
   },
-  QueuingStrategySizeCallback: {
+  QueuingStrategySize: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'QueuingStrategySizeCallback',
+    name: 'QueuingStrategySize',
   },
-  ReadableByteStreamControllerCallback: {
+  TransformerFlushCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableByteStreamControllerCallback',
+    name: 'TransformerFlushCallback',
   },
-  ReadableStreamDefaultControllerCallback: {
+  TransformerStartCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamDefaultControllerCallback',
+    name: 'TransformerStartCallback',
   },
-  ReadableStreamErrorCallback: {
+  TransformerTransformCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamErrorCallback',
+    name: 'TransformerTransformCallback',
   },
-  TransformStreamDefaultControllerCallback: {
+  UnderlyingSinkAbortCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'TransformStreamDefaultControllerCallback',
+    name: 'UnderlyingSinkAbortCallback',
   },
-  TransformStreamDefaultControllerTransformCallback: {
+  UnderlyingSinkCloseCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'TransformStreamDefaultControllerTransformCallback',
+    name: 'UnderlyingSinkCloseCallback',
+  },
+  UnderlyingSinkStartCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSinkStartCallback',
+  },
+  UnderlyingSinkWriteCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSinkWriteCallback',
+  },
+  UnderlyingSourceCancelCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourceCancelCallback',
+  },
+  UnderlyingSourcePullCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourcePullCallback',
+  },
+  UnderlyingSourceStartCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourceStartCallback',
   },
   VoidFunction: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'VoidFunction',
-  },
-  WritableStreamDefaultControllerCloseCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerCloseCallback',
-  },
-  WritableStreamDefaultControllerStartCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerStartCallback',
-  },
-  WritableStreamDefaultControllerWriteCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerWriteCallback',
-  },
-  WritableStreamErrorCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamErrorCallback',
   },
   HeadersInit: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -2063,11 +2063,17 @@ export const webworker = {
     isValueVariable: false,
     name: 'PushMessageDataInit',
   },
-  ReadableStreamReadResult: {
+  ReadableStreamReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadResult',
+    name: 'ReadableStreamReader',
+  },
+  ReadableStreamController: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableStreamController',
   },
   VibratePattern: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -2224,6 +2230,12 @@ export const webworker = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'Transferable',
+  },
+  ReadableStreamDefaultReadResult: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableStreamDefaultReadResult',
   },
   BinaryType: {
     eslintImplicitGlobalSetting: 'readonly',

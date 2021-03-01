@@ -629,6 +629,12 @@ export const dom = {
     isValueVariable: false,
     name: 'ImageEncodeOptions',
   },
+  ImportMeta: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ImportMeta',
+  },
   InputEventInit: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -959,12 +965,6 @@ export const dom = {
     isValueVariable: false,
     name: 'PermissionDescriptor',
   },
-  PipeOptions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'PipeOptions',
-  },
   PointerEventInit: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1072,6 +1072,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'QueuingStrategy',
+  },
+  QueuingStrategyInit: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'QueuingStrategyInit',
   },
   RTCAnswerOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1421,17 +1427,23 @@ export const dom = {
     isValueVariable: false,
     name: 'RTCTransportStats',
   },
-  ReadableStreamReadDoneResult: {
+  ReadableStreamDefaultReadDoneResult: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadDoneResult',
+    name: 'ReadableStreamDefaultReadDoneResult',
   },
-  ReadableStreamReadValueResult: {
+  ReadableStreamDefaultReadValueResult: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadValueResult',
+    name: 'ReadableStreamDefaultReadValueResult',
+  },
+  ReadableWritablePair: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableWritablePair',
   },
   RegistrationOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1444,6 +1456,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RequestInit',
+  },
+  ResizeObserverOptions: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ResizeObserverOptions',
   },
   ResponseInit: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1565,6 +1583,18 @@ export const dom = {
     isValueVariable: false,
     name: 'ShareData',
   },
+  SpeechRecognitionErrorEventInit: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'SpeechRecognitionErrorEventInit',
+  },
+  SpeechRecognitionEventInit: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'SpeechRecognitionEventInit',
+  },
   SpeechSynthesisErrorEventInit: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1612,6 +1642,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'StoreSiteSpecificExceptionsInformation',
+  },
+  StreamPipeOptions: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'StreamPipeOptions',
   },
   TextDecodeOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1672,12 +1708,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ULongRange',
-  },
-  UnderlyingByteSource: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'UnderlyingByteSource',
   },
   UnderlyingSink: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -4715,29 +4745,11 @@ export const dom = {
     isValueVariable: true,
     name: 'Range',
   },
-  ReadableByteStreamController: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableByteStreamController',
-  },
   ReadableStream: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: true,
     name: 'ReadableStream',
-  },
-  ReadableStreamBYOBReader: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamBYOBReader',
-  },
-  ReadableStreamBYOBRequest: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamBYOBRequest',
   },
   ReadableStreamDefaultController: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -4751,17 +4763,35 @@ export const dom = {
     isValueVariable: true,
     name: 'ReadableStreamDefaultReader',
   },
-  ReadableStreamReader: {
+  ReadableStreamGenericReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ReadableStreamReader',
+    isValueVariable: false,
+    name: 'ReadableStreamGenericReader',
   },
   Request: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: true,
     name: 'Request',
+  },
+  ResizeObserver: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'ResizeObserver',
+  },
+  ResizeObserverEntry: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'ResizeObserverEntry',
+  },
+  ResizeObserverSize: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'ResizeObserverSize',
   },
   Response: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -5693,6 +5723,12 @@ export const dom = {
     isValueVariable: true,
     name: 'SpeechRecognitionAlternative',
   },
+  SpeechRecognitionErrorEvent: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'SpeechRecognitionErrorEvent',
+  },
   SpeechRecognitionEvent: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -6593,11 +6629,11 @@ export const dom = {
     isValueVariable: false,
     name: 'PositionErrorCallback',
   },
-  QueuingStrategySizeCallback: {
+  QueuingStrategySize: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'QueuingStrategySizeCallback',
+    name: 'QueuingStrategySize',
   },
   RTCPeerConnectionErrorCallback: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -6617,65 +6653,77 @@ export const dom = {
     isValueVariable: false,
     name: 'RTCStatsCallback',
   },
-  ReadableByteStreamControllerCallback: {
+  ResizeObserverCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableByteStreamControllerCallback',
+    name: 'ResizeObserverCallback',
   },
-  ReadableStreamDefaultControllerCallback: {
+  TransformerFlushCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamDefaultControllerCallback',
+    name: 'TransformerFlushCallback',
   },
-  ReadableStreamErrorCallback: {
+  TransformerStartCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamErrorCallback',
+    name: 'TransformerStartCallback',
   },
-  TransformStreamDefaultControllerCallback: {
+  TransformerTransformCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'TransformStreamDefaultControllerCallback',
+    name: 'TransformerTransformCallback',
   },
-  TransformStreamDefaultControllerTransformCallback: {
+  UnderlyingSinkAbortCallback: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'TransformStreamDefaultControllerTransformCallback',
+    name: 'UnderlyingSinkAbortCallback',
+  },
+  UnderlyingSinkCloseCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSinkCloseCallback',
+  },
+  UnderlyingSinkStartCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSinkStartCallback',
+  },
+  UnderlyingSinkWriteCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSinkWriteCallback',
+  },
+  UnderlyingSourceCancelCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourceCancelCallback',
+  },
+  UnderlyingSourcePullCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourcePullCallback',
+  },
+  UnderlyingSourceStartCallback: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'UnderlyingSourceStartCallback',
   },
   VoidFunction: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'VoidFunction',
-  },
-  WritableStreamDefaultControllerCloseCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerCloseCallback',
-  },
-  WritableStreamDefaultControllerStartCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerStartCallback',
-  },
-  WritableStreamDefaultControllerWriteCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamDefaultControllerWriteCallback',
-  },
-  WritableStreamErrorCallback: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WritableStreamErrorCallback',
   },
   HTMLElementTagNameMap: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -6827,11 +6875,17 @@ export const dom = {
     isValueVariable: false,
     name: 'PerformanceEntryList',
   },
-  ReadableStreamReadResult: {
+  ReadableStreamReader: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
-    name: 'ReadableStreamReadResult',
+    name: 'ReadableStreamReader',
+  },
+  ReadableStreamController: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableStreamController',
   },
   VibratePattern: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7054,6 +7108,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'WindowProxy',
+  },
+  ReadableStreamDefaultReadResult: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ReadableStreamDefaultReadResult',
   },
   AlignSetting: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7751,6 +7811,12 @@ export const dom = {
     isValueVariable: false,
     name: 'ResidentKeyRequirement',
   },
+  ResizeObserverBoxOptions: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'ResizeObserverBoxOptions',
+  },
   ResizeQuality: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -7816,6 +7882,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ShadowRootMode',
+  },
+  SpeechRecognitionErrorCode: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'SpeechRecognitionErrorCode',
   },
   SpeechSynthesisErrorCode: {
     eslintImplicitGlobalSetting: 'readonly',
