@@ -284,6 +284,7 @@ describe('convert', () => {
         'const x = (2) /* test */;',
         'const x = (2)/* test */;',
         'const x = /** @type string */(2)/** @type string */;',
+        'const x = /* test */ ( /* test */ ( /* test */ a ))',
       ];
       for (const code of jsDocCode) {
         it(code, () => {
@@ -294,6 +295,7 @@ describe('convert', () => {
             shouldPreserveNodeMaps: false,
             shouldCreateParenthesizedNodes: true,
           }).convertProgram();
+          expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           expect(instance.body[0].declarations[0].init.type).toEqual(
@@ -320,6 +322,7 @@ describe('convert', () => {
             shouldPreserveNodeMaps: false,
             shouldCreateParenthesizedNodes: true,
           }).convertProgram();
+          expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           expect(instance.body[0].declarations[0].init.type).not.toEqual(

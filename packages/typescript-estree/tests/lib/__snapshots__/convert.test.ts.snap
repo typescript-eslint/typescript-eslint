@@ -553,23 +553,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                42,
+                43,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 11,
-                "line": 3,
+                "column": 9,
+                "line": 4,
               },
               "start": Object {
                 "column": 10,
-                "line": 3,
+                "line": 1,
               },
             },
             "range": Array [
-              42,
-              43,
+              10,
+              53,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -653,23 +670,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 11,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 10,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                40,
+                41,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 11,
-                "line": 3,
+                "column": 9,
+                "line": 4,
               },
               "start": Object {
                 "column": 10,
-                "line": 3,
+                "line": 1,
               },
             },
             "range": Array [
-              40,
-              41,
+              10,
+              51,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -750,23 +784,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 23,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                22,
+                23,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 23,
+                "column": 24,
                 "line": 1,
               },
               "start": Object {
-                "column": 22,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              22,
-              23,
+              10,
+              24,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -847,23 +898,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                21,
+                22,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 22,
+                "column": 24,
                 "line": 1,
               },
               "start": Object {
-                "column": 21,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              21,
-              22,
+              10,
+              24,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -944,23 +1012,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 13,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                12,
+                13,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 13,
+                "column": 24,
                 "line": 1,
               },
               "start": Object {
-                "column": 12,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              12,
-              13,
+              10,
+              24,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1041,23 +1126,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                21,
+                22,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 22,
+                "column": 23,
                 "line": 1,
               },
               "start": Object {
-                "column": 21,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              21,
-              22,
+              10,
+              23,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1138,22 +1240,39 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 32,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 31,
+                  "line": 1,
+                },
+              },
+              "name": "x",
+              "range": Array [
+                31,
+                32,
+              ],
+              "type": "Identifier",
+            },
             "loc": Object {
               "end": Object {
-                "column": 32,
+                "column": 43,
                 "line": 1,
               },
               "start": Object {
-                "column": 31,
+                "column": 10,
                 "line": 1,
               },
             },
-            "name": "x",
             "range": Array [
-              31,
-              32,
+              10,
+              43,
             ],
-            "type": "Identifier",
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1234,23 +1353,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                11,
+                12,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 12,
+                "column": 24,
                 "line": 1,
               },
               "start": Object {
-                "column": 11,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              11,
-              12,
+              10,
+              24,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1331,23 +1467,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                11,
+                12,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 12,
+                "column": 23,
                 "line": 1,
               },
               "start": Object {
-                "column": 11,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              11,
-              12,
+              10,
+              23,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1428,23 +1581,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                11,
+                12,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 12,
+                "column": 13,
                 "line": 1,
               },
               "start": Object {
-                "column": 11,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              11,
-              12,
+              10,
+              13,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1525,23 +1695,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                11,
+                12,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 12,
+                "column": 13,
                 "line": 1,
               },
               "start": Object {
-                "column": 11,
+                "column": 10,
                 "line": 1,
               },
             },
             "range": Array [
-              11,
-              12,
+              10,
+              13,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1622,22 +1809,56 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "expression": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 48,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 47,
+                    "line": 1,
+                  },
+                },
+                "name": "a",
+                "range": Array [
+                  47,
+                  48,
+                ],
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 50,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 34,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                34,
+                50,
+              ],
+              "type": "ParenthesizedExpression",
+            },
             "loc": Object {
               "end": Object {
-                "column": 48,
+                "column": 51,
                 "line": 1,
               },
               "start": Object {
-                "column": 47,
+                "column": 21,
                 "line": 1,
               },
             },
-            "name": "a",
             "range": Array [
-              47,
-              48,
+              21,
+              51,
             ],
-            "type": "Identifier",
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1718,23 +1939,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 23,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                22,
+                23,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 23,
+                "column": 24,
                 "line": 1,
               },
               "start": Object {
-                "column": 22,
+                "column": 21,
                 "line": 1,
               },
             },
             "range": Array [
-              22,
-              23,
+              21,
+              24,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1815,23 +2053,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                21,
+                22,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 22,
+                "column": 23,
                 "line": 1,
               },
               "start": Object {
-                "column": 21,
+                "column": 20,
                 "line": 1,
               },
             },
             "range": Array [
-              21,
-              22,
+              20,
+              23,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
@@ -1912,23 +2167,40 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
+            "expression": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 31,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                30,
+                31,
+              ],
+              "raw": "2",
+              "type": "Literal",
+              "value": 2,
+            },
             "loc": Object {
               "end": Object {
-                "column": 31,
+                "column": 32,
                 "line": 1,
               },
               "start": Object {
-                "column": 30,
+                "column": 29,
                 "line": 1,
               },
             },
             "range": Array [
-              30,
-              31,
+              29,
+              32,
             ],
-            "raw": "2",
-            "type": "Literal",
-            "value": 2,
+            "type": "ParenthesizedExpression",
           },
           "loc": Object {
             "end": Object {
