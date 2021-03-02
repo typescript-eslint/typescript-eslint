@@ -372,6 +372,7 @@ export type Expression =
   | JSXSpreadChild
   | LogicalExpression
   | NewExpression
+  | ParenthesizedExpression
   | RestElement
   | SequenceExpression
   | SpreadElement
