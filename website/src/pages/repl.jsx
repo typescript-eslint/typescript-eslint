@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import Layout from '@theme/Layout';
-import Editor from '@site/src/components/editor';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import styles from './styles.module.css';
+
+const Editor = lazy(() => import('@site/src/components/editor'));
 
 const value = `/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
 
@@ -21,7 +23,9 @@ function Repl() {
     <Layout title="Playground" description="Playground" noFooter={true}>
       <div className={styles.codeContainer}>
         <div className={styles.sourceCode}>
-          <Editor value={value} language="javascript" />
+          <BrowserOnly>
+            <Editor value={value} language="javascript" />
+          </BrowserOnly>
         </div>
       </div>
     </Layout>

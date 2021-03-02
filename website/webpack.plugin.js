@@ -32,6 +32,9 @@ module.exports = function (context, options) {
   return {
     name: 'monaco-editor',
     configureWebpack(config, isServer) {
+      if (isServer) {
+        return {};
+      }
       return {
         module: {
           rules: [

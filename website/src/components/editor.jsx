@@ -1,8 +1,8 @@
 import React, { Suspense, lazy, useRef, useEffect, useCallback } from 'react';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import useThemeContext from '@theme/hooks/useThemeContext';
-import styles from './styles.module.css';
 import { loadLinter } from './lib/linter';
+import styles from './styles.module.css';
 
 const MonacoEditor = lazy(() => import('react-monaco-editor'));
 
@@ -16,7 +16,6 @@ const defaultOptions = {
 };
 
 const Placeholder = () => <div className={styles.placeholder} />;
-const SsrSuspense = process.browser ? Suspense : props => props.children;
 
 const ensurePositiveInt = (value, defaultValue) => {
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
@@ -76,7 +75,7 @@ function Editor(props) {
   }, []);
 
   return (
-    <SsrSuspense fallback={<Placeholder />}>
+    <Suspense fallback={<Placeholder />}>
       <MonacoEditor
         {...props}
         options={{ ...defaultOptions, ...props.options }}
@@ -85,7 +84,7 @@ function Editor(props) {
         language="typescript"
         theme={isDarkTheme ? 'vs-dark' : 'vs-light'}
       />
-    </SsrSuspense>
+    </Suspense>
   );
 }
 
