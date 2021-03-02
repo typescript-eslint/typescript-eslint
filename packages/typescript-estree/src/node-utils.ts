@@ -718,19 +718,25 @@ export function firstDefined<T, U>(
   return undefined;
 }
 
+export function hasLeadingOrTrailingComment(
+  ast: ts.SourceFile,
+  node?: ts.Node,
+): boolean {
+  return !!(
+    node &&
+    (ts.getLeadingCommentRanges(ast.text, node.getEnd()) ||
+      ts.getLeadingCommentRanges(ast.text, node.getFullStart()) ||
+      ts.getTrailingCommentRanges(ast.text, node.getEnd()) ||
+      ts.getTrailingCommentRanges(ast.text, node.getFullStart()))
+  );
+}
+
 export function hasComments(
   ast: ts.SourceFile,
   node: ts.ParenthesizedExpression,
 ): boolean {
-  const firstToken = node.getFirstToken();
-  const lastToken = node.getLastToken();
-  return !!(
-    (firstToken &&
-      (ts.getLeadingCommentRanges(ast.text, firstToken.getEnd()) ||
-        ts.getLeadingCommentRanges(ast.text, firstToken.getStart()) ||
-        ts.getTrailingCommentRanges(ast.text, firstToken.getEnd()))) ||
-    (lastToken &&
-      (ts.getLeadingCommentRanges(ast.text, lastToken.getEnd()) ||
-        ts.getTrailingCommentRanges(ast.text, lastToken.getFullStart())))
+  return (
+    hasLeadingOrTrailingComment(ast, node.getFirstToken()) ||
+    hasLeadingOrTrailingComment(ast, node.getLastToken())
   );
 }

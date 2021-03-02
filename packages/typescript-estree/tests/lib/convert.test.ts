@@ -279,6 +279,11 @@ describe('convert', () => {
           /* abc */
           2
         );`,
+        'const x = /* test */ (2);',
+        'const x = /* test */(2);',
+        'const x = (2) /* test */;',
+        'const x = (2)/* test */;',
+        'const x = /** @type string */(2)/** @type string */;',
       ];
       for (const code of jsDocCode) {
         it(code, () => {
@@ -305,11 +310,6 @@ describe('convert', () => {
         `const x = (
           2
         );`,
-        'const x = /* test */ (2);',
-        'const x = /* test */(2);',
-        'const x = (2) /* test */;',
-        'const x = (2)/* test */;',
-        'const x = /** @type string */(2)/** @type string */;',
       ];
       for (const code of jsDocCode) {
         it(code, () => {

@@ -48,6 +48,7 @@ const additionalKeys: AdditionalKeys = {
   MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  ParenthesizedExpression: ['expression'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
 
