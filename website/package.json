@@ -20,6 +20,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
     "clsx": "^1.1.1",
+    "eslint": "^7.21.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-monaco-editor": "^0.42.0"
