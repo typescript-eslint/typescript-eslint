@@ -1,8 +1,17 @@
-import React, { Suspense, lazy, useRef, useEffect, useCallback } from 'react';
+import React, {
+  Suspense,
+  lazy,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import useThemeContext from '@theme/hooks/useThemeContext';
-import { loadLinter } from './lib/linter';
+// @ts-ignore
 import styles from './styles.module.css';
+import { createURI, registerCodeActionProvider } from './lib/action';
+import { loadLinter, WebLinter } from './lib/linter';
 
 const MonacoEditor = lazy(() => import('react-monaco-editor'));
 
@@ -17,7 +26,7 @@ const defaultOptions = {
 
 const Placeholder = () => <div className={styles.placeholder} />;
 
-const ensurePositiveInt = (value, defaultValue) => {
+const ensurePositiveInt = (value: number | undefined, defaultValue: number) => {
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
 };
 
@@ -39,10 +48,28 @@ const messageToMarker = message => {
   };
 };
 
+function updateMarkers(
+  value: string,
+  linter: WebLinter,
+  editor: monaco.editor.IStandaloneCodeEditor,
+  fixes: Map<string, any>,
+) {
+  const messages = linter.lint(value, {}, {});
+  const markers = [];
+  fixes.clear();
+  for (const message of messages) {
+    const marker = messageToMarker(message);
+    markers.push(marker);
+    fixes.set(createURI(marker), message);
+  }
+  monaco.editor.setModelMarkers(editor.getModel(), editor.getId(), markers);
+}
+
 function Editor(props) {
   const { isDarkTheme } = useThemeContext();
-  const editorRef = useRef(null);
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const linterRef = useRef(null);
+  const [fixes] = useState(() => new Map());
 
   useEffect(() => {
     const handler = () => {
@@ -52,25 +79,24 @@ function Editor(props) {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const onEditorDidMount = useCallback(async editor => {
-    editorRef.current = editor;
-    linterRef.current = await loadLinter();
-    if (props.editorDidMount) props.editorDidMount();
+  const onEditorDidMount = useCallback(
+    async (editor: monaco.editor.IStandaloneCodeEditor) => {
+      editorRef.current = editor;
+      linterRef.current = await loadLinter();
+      if (props.editorDidMount) props.editorDidMount();
 
-    if (props.value) {
-      const messages = linterRef.current.lint(props.value, {}, {});
-      const editor = editorRef.current;
-      const markers = messages.map(message => messageToMarker(message));
-      monaco.editor.setModelMarkers(editor.getModel(), editor.getId(), markers);
-    }
-  }, []);
+      registerCodeActionProvider('typescript', fixes);
 
-  const onEditorChange = useCallback(text => {
+      if (props.value) {
+        updateMarkers(props.value, linterRef.current, editorRef.current, fixes);
+      }
+    },
+    [],
+  );
+
+  const onEditorChange = useCallback(value => {
     if (linterRef.current) {
-      const messages = linterRef.current.lint(text, {}, {});
-      const editor = editorRef.current;
-      const markers = messages.map(message => messageToMarker(message));
-      monaco.editor.setModelMarkers(editor.getModel(), editor.getId(), markers);
+      updateMarkers(value, linterRef.current, editorRef.current, fixes);
     }
   }, []);
 

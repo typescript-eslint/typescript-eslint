@@ -6,6 +6,7 @@ const Editor = lazy(() => import('@site/src/components/editor'));
 
 const value = `/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
 /* eslint @typescript-eslint/adjacent-overload-signatures: ["error"] */
+/* eslint @typescript-eslint/array-type: ["error", { default: "generic" }] */
 
 class Mx {
   public static get myField1() {
@@ -16,6 +17,9 @@ class Mx {
     return 'hello world';
   }
 }
+
+const x: string[] = ['a', 'b'];
+const y: readonly string[] = ['a', 'b'];
 `;
 
 function Repl() {
