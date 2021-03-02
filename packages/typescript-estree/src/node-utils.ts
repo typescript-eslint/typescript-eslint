@@ -717,26 +717,3 @@ export function firstDefined<T, U>(
   }
   return undefined;
 }
-
-export function hasLeadingOrTrailingComment(
-  ast: ts.SourceFile,
-  node?: ts.Node,
-): boolean {
-  return !!(
-    node &&
-    (ts.getLeadingCommentRanges(ast.text, node.getEnd()) ||
-      ts.getLeadingCommentRanges(ast.text, node.getFullStart()) ||
-      ts.getTrailingCommentRanges(ast.text, node.getEnd()) ||
-      ts.getTrailingCommentRanges(ast.text, node.getFullStart()))
-  );
-}
-
-export function hasComments(
-  ast: ts.SourceFile,
-  node: ts.ParenthesizedExpression,
-): boolean {
-  return (
-    hasLeadingOrTrailingComment(ast, node.getFirstToken()) ||
-    hasLeadingOrTrailingComment(ast, node.getLastToken())
-  );
-}

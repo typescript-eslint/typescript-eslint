@@ -84,9 +84,6 @@ enum AST_NODE_TYPES {
   WhileStatement = 'WhileStatement',
   WithStatement = 'WithStatement',
   YieldExpression = 'YieldExpression',
-  /**
-   * Behind flag preserveParens
-   */
   ParenthesizedExpression = 'ParenthesizedExpression',
   /**
    * TS-prefixed nodes

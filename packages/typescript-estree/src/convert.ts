@@ -13,7 +13,6 @@ import {
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
-  hasComments,
   hasModifier,
   isChainExpression,
   isChildUnwrappableOptionalChain,
@@ -39,7 +38,6 @@ interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
-  preserveParens?: boolean;
 }
 
 /**
@@ -2317,7 +2315,7 @@ export class Converter {
       }
 
       case SyntaxKind.ParenthesizedExpression: {
-        if (this.options.preserveParens && hasComments(this.ast, node)) {
+        if (ts.getJSDocTags(node).length > 0) {
           return this.createNode<TSESTree.ParenthesizedExpression>(node, {
             type: AST_NODE_TYPES.ParenthesizedExpression,
             expression: this.convertChild(node.expression, parent),

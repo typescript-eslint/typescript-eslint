@@ -109,11 +109,6 @@ interface ParseOptions {
    * When value is `false`, these nodes will be parsed as type `Literal`.
    */
   useJSXTextNode?: boolean;
-
-  /**
-   * Create additional ParenthesizedExpression nodes when they are needed
-   */
-  preserveParens?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {

@@ -264,27 +264,9 @@ describe('convert', () => {
   describe('preserveParens', () => {
     describe('should generate ParenthesizedExpression', () => {
       const jsDocCode = [
-        'const x = (/* abc */ 2);',
-        'const x = ( /* abc */ 2);',
-        'const x = (2 /* abc */);',
-        'const x = (2 /* abc */ );',
-        'const x = ( /* abc */2 );',
-        'const x = ( 2/* abc */ );',
-        'const x = (/** @type string */ x /* abc */);',
-        `const x = (
-          // test
-          2
-        );`,
-        `const x = (
-          /* abc */
-          2
-        );`,
-        'const x = /* test */ (2);',
-        'const x = /* test */(2);',
-        'const x = (2) /* test */;',
-        'const x = (2)/* test */;',
-        'const x = /** @type string */(2)/** @type string */;',
-        'const x = /* test */ ( /* test */ ( /* test */ a ))',
+        'const x = /** @type string */ (x);',
+        'const x = /** @type string */(2);',
+        'const x = /* test */ ( /** @type string */ ( a ))',
       ];
       for (const code of jsDocCode) {
         it(code, () => {
@@ -293,7 +275,6 @@ describe('convert', () => {
             errorOnUnknownASTType: false,
             useJSXTextNode: false,
             shouldPreserveNodeMaps: false,
-            preserveParens: true,
           }).convertProgram();
           expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -306,6 +287,25 @@ describe('convert', () => {
     });
     describe('should not generate ParenthesizedExpression', () => {
       const jsDocCode = [
+        'const x = (/* abc */ 2);',
+        'const x = ( /* abc */ 2);',
+        'const x = (2 /* abc */);',
+        'const x = (2 /* abc */ );',
+        'const x = ( /* abc */2 );',
+        'const x = ( 2/* abc */ );',
+        `const x = (
+          // test
+          2
+        );`,
+        `const x = (
+          /* abc */
+          2
+        );`,
+        'const x = /* test */ (2);',
+        'const x = /* test */(2);',
+        'const x = (2) /* test */;',
+        'const x = (2)/* test */;',
+        'const x = /* test */ ( /* test */ ( /* test */ a ))',
         'const x = (2);',
         'const x = ( 2 );',
         'const x = (x);',
@@ -320,7 +320,6 @@ describe('convert', () => {
             errorOnUnknownASTType: false,
             useJSXTextNode: false,
             shouldPreserveNodeMaps: false,
-            preserveParens: true,
           }).convertProgram();
           expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
