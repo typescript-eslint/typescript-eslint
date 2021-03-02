@@ -81,7 +81,7 @@ function Editor(props) {
         options={{ ...defaultOptions, ...props.options }}
         editorDidMount={onEditorDidMount}
         onChange={onEditorChange}
-        language="typescript"
+        language={props.language}
         theme={isDarkTheme ? 'vs-dark' : 'vs-light'}
       />
     </Suspense>

@@ -23,7 +23,7 @@ export interface WebLinter {
 }
 
 export async function loadLinter(): Promise<WebLinter> {
-  const plugins: ESLintPlugin = await import(
+  const plugin: ESLintPlugin = await import(
     // @ts-ignore
     '@typescript-eslint/eslint-plugin'
   );
@@ -33,13 +33,10 @@ export async function loadLinter(): Promise<WebLinter> {
 
   const linter = new ESLinter.Linter();
 
-  const rules = Object.entries(plugins.rules).reduce((rules, [name, rule]) => ({
-    ...rules,
-    [`@typescript-eslint/${name}`]: rule,
-  }));
-
   linter.defineParser(PARSER_NAME, parser);
-  linter.defineRules(rules);
+  for (const name of Object.keys(plugin.rules)) {
+    linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
+  }
 
   return {
     fix(
