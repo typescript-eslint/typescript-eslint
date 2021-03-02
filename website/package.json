@@ -23,7 +23,8 @@
     "eslint": "^7.21.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-monaco-editor": "^0.42.0"
+    "react-monaco-editor": "^0.42.0",
+    "typescript": "^4.2.2"
   },
   "browserslist": {
     "production": [
