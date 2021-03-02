@@ -690,6 +690,13 @@ export namespace Foo {
   export const item: Foo = 1;
 }
     `,
+    `
+export namespace foo.bar {
+  export interface User {
+    name: string;
+  }
+}
+    `,
     // exported self-referencing types
     `
 export interface Foo {

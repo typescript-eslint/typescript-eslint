@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.16.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.0...v4.16.1) (2021-03-01)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+# [4.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.2...v4.16.0) (2021-03-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-indexed-object-style] do not autofix if interface has extends ([#3009](https://github.com/typescript-eslint/typescript-eslint/issues/3009)) ([b0475af](https://github.com/typescript-eslint/typescript-eslint/commit/b0475aff3920d748fa74b5a6d8a7ad5dd731aec4))
+* **eslint-plugin:** [no-implied-eval] handle conditional expression ([#3125](https://github.com/typescript-eslint/typescript-eslint/issues/3125)) ([8c65d30](https://github.com/typescript-eslint/typescript-eslint/commit/8c65d30a225a3b99e80326961d0cb0c8189b039c))
+* **eslint-plugin:** [no-unused-vars] don't report nested module declaration ([#3119](https://github.com/typescript-eslint/typescript-eslint/issues/3119)) ([4ca5888](https://github.com/typescript-eslint/typescript-eslint/commit/4ca58886adf3fc0fe31c263559990c8a534205f9))
+* **eslint-plugin:** [prefer-function-type] apply existing comments to the fixed code ([#3094](https://github.com/typescript-eslint/typescript-eslint/issues/3094)) ([c32f803](https://github.com/typescript-eslint/typescript-eslint/commit/c32f803d4480acf5ffc88e308b4243e5185c4f48))
+* **eslint-plugin:** [unbound-method] allow `super` expressions in `this` assignments ([#3010](https://github.com/typescript-eslint/typescript-eslint/issues/3010)) ([c65a139](https://github.com/typescript-eslint/typescript-eslint/commit/c65a1391be15bbcf3ae293b1c53686703883d546))
+
+
+### Features
+
+* **eslint-plugin:** [member-delimiter-style] Add an option 'multilineDetection' to treat types and interfaces as single line if the last member ends on the same line as the closing bracket ([#2970](https://github.com/typescript-eslint/typescript-eslint/issues/2970)) ([cf86f42](https://github.com/typescript-eslint/typescript-eslint/commit/cf86f427186d58b0fce4bb3ff9571c4301babeb3))
+* **eslint-plugin:** [prom-func-async] report only function head ([#2872](https://github.com/typescript-eslint/typescript-eslint/issues/2872)) ([25f459c](https://github.com/typescript-eslint/typescript-eslint/commit/25f459cdc4f38d44b48554e04cfa1676538ccdfb))
+
+
+
+
+
 ## [4.15.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.1...v4.15.2) (2021-02-22)
 
 
