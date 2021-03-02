@@ -48,27 +48,10 @@ const messageToMarker = message => {
   };
 };
 
-function updateMarkers(
-  value: string,
-  linter: WebLinter,
-  editor: monaco.editor.IStandaloneCodeEditor,
-  fixes: Map<string, any>,
-) {
-  const messages = linter.lint(value, {}, {});
-  const markers = [];
-  fixes.clear();
-  for (const message of messages) {
-    const marker = messageToMarker(message);
-    markers.push(marker);
-    fixes.set(createURI(marker), message);
-  }
-  monaco.editor.setModelMarkers(editor.getModel(), editor.getId(), markers);
-}
-
 function Editor(props) {
   const { isDarkTheme } = useThemeContext();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const linterRef = useRef(null);
+  const [linter] = useState(() => loadLinter());
   const [fixes] = useState(() => new Map());
 
   useEffect(() => {
@@ -79,24 +62,40 @@ function Editor(props) {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
+  const updateMarkers = async (value: string) => {
+    const messages = (await linter).lint(value, {}, {});
+    const markers = [];
+    fixes.clear();
+    for (const message of messages) {
+      const marker = messageToMarker(message);
+      markers.push(marker);
+      fixes.set(createURI(marker), message);
+    }
+    monaco.editor.setModelMarkers(
+      editorRef.current.getModel(),
+      editorRef.current.getId(),
+      markers,
+    );
+  };
+
   const onEditorDidMount = useCallback(
     async (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
-      linterRef.current = await loadLinter();
       if (props.editorDidMount) props.editorDidMount();
 
       registerCodeActionProvider('typescript', fixes);
 
       if (props.value) {
-        updateMarkers(props.value, linterRef.current, editorRef.current, fixes);
+        await updateMarkers(props.value);
       }
     },
     [],
   );
 
-  const onEditorChange = useCallback(value => {
-    if (linterRef.current) {
-      updateMarkers(value, linterRef.current, editorRef.current, fixes);
+  const onEditorChange = useCallback(async value => {
+    const linterRef = await linter;
+    if (linterRef) {
+      await updateMarkers(value);
     }
   }, []);
 

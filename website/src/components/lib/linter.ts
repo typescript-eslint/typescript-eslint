@@ -23,12 +23,8 @@ export interface WebLinter {
 }
 
 export async function loadLinter(): Promise<WebLinter> {
-  const plugin: ESLintPlugin = await import(
-    // @ts-ignore
-    '@typescript-eslint/eslint-plugin'
-  );
+  const plugin: ESLintPlugin = await import('@typescript-eslint/eslint-plugin');
   const parser = await import(`./parser`);
-  // @ts-ignore
   const ESLinter = await import('eslint/lib/linter/linter');
 
   const linter = new ESLinter.Linter();
