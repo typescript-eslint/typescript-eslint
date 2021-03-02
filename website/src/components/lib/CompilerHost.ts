@@ -1,4 +1,4 @@
-import {
+import type {
   CompilerHost as ICompilerHost,
   CompilerOptions,
   SourceFile,

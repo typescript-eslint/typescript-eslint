@@ -4,11 +4,6 @@ import type { ParserOptions } from '@typescript-eslint/types';
 
 const PARSER_NAME = '@typescript-eslint/parser';
 
-interface ESLintPlugin {
-  rules: Linter.RulesRecord;
-  config: Linter.Config;
-}
-
 export interface WebLinter {
   fix(
     code: string,
@@ -23,15 +18,17 @@ export interface WebLinter {
 }
 
 export async function loadLinter(): Promise<WebLinter> {
-  const plugin: ESLintPlugin = await import('@typescript-eslint/eslint-plugin');
+  const rules: Linter.RulesRecord = await import(
+    '@typescript-eslint/eslint-plugin/dist/rules'
+  );
   const parser = await import(`./parser`);
-  const ESLinter = await import('eslint/lib/linter/linter');
+  const { Linter } = await import('eslint/lib/linter/linter');
 
-  const linter = new ESLinter.Linter();
+  const linter = new Linter();
 
   linter.defineParser(PARSER_NAME, parser);
-  for (const name of Object.keys(plugin.rules)) {
-    linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
+  for (const name of Object.keys(rules.default)) {
+    linter.defineRule(`@typescript-eslint/${name}`, rules.default[name]);
   }
 
   return {

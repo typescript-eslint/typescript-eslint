@@ -11,7 +11,7 @@ import useThemeContext from '@theme/hooks/useThemeContext';
 // @ts-ignore
 import styles from './styles.module.css';
 import { createURI, registerCodeActionProvider } from './lib/action';
-import { loadLinter, WebLinter } from './lib/linter';
+import { loadLinter } from './lib/linter';
 
 const MonacoEditor = lazy(() => import('react-monaco-editor'));
 
@@ -51,7 +51,7 @@ const messageToMarker = (message): monaco.editor.IMarkerData => {
 function Editor(props) {
   const { isDarkTheme } = useThemeContext();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const linterRef = useRef<WebLinter | null>(null);
+  const [linter] = useState(() => loadLinter());
   const [fixes] = useState(() => new Map());
 
   useEffect(() => {
@@ -63,8 +63,8 @@ function Editor(props) {
   }, []);
 
   const updateMarkers = async (value: string) => {
-    if (linterRef.current && editorRef.current) {
-      const messages = linterRef.current.lint(value, {}, {});
+    if (editorRef.current) {
+      const messages = (await linter).lint(value, {}, {});
       const markers: monaco.editor.IMarkerData[] = [];
       fixes.clear();
       for (const message of messages) {
@@ -83,10 +83,9 @@ function Editor(props) {
   const onEditorDidMount = useCallback(
     async (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
-      linterRef.current = await loadLinter();
       if (props.editorDidMount) props.editorDidMount();
 
-      registerCodeActionProvider('typescript', fixes);
+      registerCodeActionProvider(props.language, fixes);
 
       if (props.value) {
         await updateMarkers(props.value);
@@ -96,9 +95,7 @@ function Editor(props) {
   );
 
   const onEditorChange = useCallback(async value => {
-    if (linterRef.current) {
-      await updateMarkers(value);
-    }
+    await updateMarkers(value);
   }, []);
 
   return (
