@@ -27,13 +27,13 @@ const MonacoEditor = lazy(() => import('react-monaco-editor'));
 const Placeholder = () => <div className={styles.placeholder} />;
 
 function Editor(props) {
-  const paramsState = getQueryParams();
-  const [code, setCode] = useState<string>(paramsState?.code || defaultCode);
+  const params = getQueryParams();
+  const [code, setCode] = useState<string>(params.code || defaultCode);
   const [rules, setRules] = useState<Linter.RulesRecord>(
-    paramsState?.rules || defaultRules,
+    params.rules || defaultRules,
   );
   const [parserOptions, setParserOptions] = useState<ParserOptions>(
-    paramsState?.parserOptions || defaultParserOptions,
+    params.parserOptions || defaultParserOptions,
   );
 
   const { isDarkTheme } = useThemeContext();
@@ -45,8 +45,24 @@ function Editor(props) {
     const handler = () => {
       if (editorRef.current) editorRef.current.layout();
     };
+    const handleHashChange = () => {
+      const params = getQueryParams();
+      if (
+        params.code !== code ||
+        params.rules !== rules ||
+        params.parserOptions !== parserOptions
+      ) {
+        setCode(params.code || '');
+        setRules(params.rules || '');
+        setParserOptions(params.parserOptions || '');
+      }
+    };
     window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
+    window.addEventListener('hashchange', handleHashChange, false);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange, false);
+      window.removeEventListener('resize', handler);
+    };
   }, []);
 
   useEffect(() => {
@@ -72,7 +88,14 @@ function Editor(props) {
   }, [rules, code, linter, parserOptions]);
 
   useEffect(() => {
-    setQueryParams({ code, rules, parserOptions });
+    const params = getQueryParams();
+    if (
+      params.code !== code ||
+      params.rules !== rules ||
+      params.parserOptions !== parserOptions
+    ) {
+      setQueryParams({ code, rules, parserOptions });
+    }
   }, [code, rules, parserOptions]);
 
   const onEditorDidMount = useCallback(
