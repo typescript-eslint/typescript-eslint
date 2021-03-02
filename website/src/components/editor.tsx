@@ -30,7 +30,7 @@ const ensurePositiveInt = (value: number | undefined, defaultValue: number) => {
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
 };
 
-const messageToMarker = message => {
+const messageToMarker = (message): monaco.editor.IMarkerData => {
   const startLineNumber = ensurePositiveInt(message.line, 1);
   const startColumn = ensurePositiveInt(message.column, 1);
   const endLineNumber = ensurePositiveInt(message.endLine, startLineNumber);
@@ -51,7 +51,7 @@ const messageToMarker = message => {
 function Editor(props) {
   const { isDarkTheme } = useThemeContext();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [linter] = useState(() => loadLinter());
+  const linterRef = useRef<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
 
   useEffect(() => {
@@ -63,24 +63,27 @@ function Editor(props) {
   }, []);
 
   const updateMarkers = async (value: string) => {
-    const messages = (await linter).lint(value, {}, {});
-    const markers = [];
-    fixes.clear();
-    for (const message of messages) {
-      const marker = messageToMarker(message);
-      markers.push(marker);
-      fixes.set(createURI(marker), message);
+    if (linterRef.current && editorRef.current) {
+      const messages = linterRef.current.lint(value, {}, {});
+      const markers: monaco.editor.IMarkerData[] = [];
+      fixes.clear();
+      for (const message of messages) {
+        const marker = messageToMarker(message);
+        markers.push(marker);
+        fixes.set(createURI(marker), message);
+      }
+      monaco.editor.setModelMarkers(
+        editorRef.current.getModel()!,
+        editorRef.current.getId(),
+        markers,
+      );
     }
-    monaco.editor.setModelMarkers(
-      editorRef.current.getModel(),
-      editorRef.current.getId(),
-      markers,
-    );
   };
 
   const onEditorDidMount = useCallback(
     async (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
+      linterRef.current = await loadLinter();
       if (props.editorDidMount) props.editorDidMount();
 
       registerCodeActionProvider('typescript', fixes);
@@ -93,8 +96,7 @@ function Editor(props) {
   );
 
   const onEditorChange = useCallback(async value => {
-    const linterRef = await linter;
-    if (linterRef) {
+    if (linterRef.current) {
       await updateMarkers(value);
     }
   }, []);
