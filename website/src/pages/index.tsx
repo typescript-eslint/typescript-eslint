@@ -6,7 +6,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
-const features = [
+interface FeatureItem {
+  title: string;
+  description: any;
+  imageUrl?: string;
+}
+
+const features: FeatureItem[] = [
   {
     title: 'What are ESLint and TypeScript, and how do they compare?',
     description: (
@@ -70,7 +76,7 @@ const features = [
   },
 ];
 
-function Feature({ imageUrl, title, description }) {
+function Feature({ imageUrl, title, description }: FeatureItem) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className="col col--12">
@@ -85,7 +91,7 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
-function Sponsors({ tier }) {
+function Sponsors({ tier }: { tier: string; title: string }) {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
 

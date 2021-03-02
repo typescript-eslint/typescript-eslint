@@ -1,12 +1,12 @@
 {
-  "name": "my-website",
+  "name": "website",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start:website": "docusaurus start",
+    "build:website": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "serve": "docusaurus serve",
+    "serve:website": "docusaurus serve",
     "clear": "docusaurus clear"
   },
   "dependencies": {
@@ -20,12 +20,12 @@
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
     "clsx": "^1.1.1",
-    "eslint": "^7.21.0",
+    "eslint": "^7.20.0",
     "monaco-editor": "^0.22.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-monaco-editor": "^0.42.0",
-    "typescript": "^4.2.2"
+    "typescript": "*"
   },
   "browserslist": {
     "production": [
@@ -47,6 +47,7 @@
     "@types/react-router-dom": "^5.1.7",
     "globby": "^11.0.2",
     "monaco-editor-webpack-plugin": "^3.0.0",
-    "null-loader": "^4.0.1"
+    "null-loader": "^3.0.0",
+    "webpack": "^4.46.0"
   }
 }

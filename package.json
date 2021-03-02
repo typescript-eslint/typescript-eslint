@@ -1,9 +1,15 @@
 {
   "name": "@typescript-eslint/typescript-eslint",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "website"
+    ],
+    "nohoist": [
+      "**/html-minifier-terser"
+    ]
+  },
   "contributors": [
     "James Henry <typescript-eslint@jameshenry.blog>",
     "Nicholas C. Zakas",
@@ -18,6 +24,8 @@
   },
   "scripts": {
     "build": "lerna run build",
+    "build:website": "lerna run build & yarn build:website-only",
+    "build:website-only": "lerna run build:website",
     "check:clean-workspace-after-install": "git diff --quiet --exit-code",
     "check:configs": "lerna run check:configs",
     "check:docs": "lerna run check:docs",
