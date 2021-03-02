@@ -26,6 +26,7 @@ export interface Extra {
   tokens: null | TSESTree.Token[];
   tsconfigRootDir: string;
   useJSXTextNode: boolean;
+  shouldCreateParenthesizedNodes: boolean;
 }
 
 ////////////////////////////////////////////////////
@@ -98,13 +99,18 @@ interface ParseOptions {
    */
   tokens?: boolean;
 
-  /*
+  /**
    * The JSX AST changed the node type for string literals
    * inside a JSX Element from `Literal` to `JSXText`.
    * When value is `true`, these nodes will be parsed as type `JSXText`.
    * When value is `false`, these nodes will be parsed as type `Literal`.
    */
   useJSXTextNode?: boolean;
+
+  /**
+   * Create additional ParenthesizedExpression nodes when they are needed
+   */
+  shouldCreateParenthesizedNodes?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {

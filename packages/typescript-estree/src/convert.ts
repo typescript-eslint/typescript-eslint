@@ -13,6 +13,7 @@ import {
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
+  hasComments,
   hasModifier,
   isChainExpression,
   isChildUnwrappableOptionalChain,
@@ -38,6 +39,7 @@ interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
+  shouldCreateParenthesizedNodes?: boolean;
 }
 
 /**
@@ -2314,8 +2316,18 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.ParenthesizedExpression:
+      case SyntaxKind.ParenthesizedExpression: {
+        if (
+          this.options.shouldCreateParenthesizedNodes &&
+          hasComments(this.ast, node)
+        ) {
+          return this.createNode<TSESTree.ParenthesizedExpression>(node, {
+            type: AST_NODE_TYPES.ParenthesizedExpression,
+            expression: this.convertChild(node.expression, parent),
+          });
+        }
         return this.convertChild(node.expression, parent);
+      }
 
       case SyntaxKind.TypeAliasDeclaration: {
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {

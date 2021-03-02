@@ -111,6 +111,7 @@ function resetExtra(): void {
     tokens: null,
     tsconfigRootDir: process.cwd(),
     useJSXTextNode: false,
+    shouldCreateParenthesizedNodes: false,
   };
 }
 

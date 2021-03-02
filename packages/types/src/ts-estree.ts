@@ -203,6 +203,7 @@ export type Node =
   | NewExpression
   | ObjectExpression
   | ObjectPattern
+  | ParenthesizedExpression
   | Program
   | Property
   | RestElement
@@ -1174,6 +1175,11 @@ export interface ObjectPattern extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   optional?: boolean;
   decorators?: Decorator[];
+}
+
+export interface ParenthesizedExpression extends BaseNode {
+  type: AST_NODE_TYPES.ParenthesizedExpression;
+  expression: Expression;
 }
 
 export interface Program extends BaseNode {

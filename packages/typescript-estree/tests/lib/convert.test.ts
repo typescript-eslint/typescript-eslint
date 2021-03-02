@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Converter } from '../../src/convert';
 import * as ts from 'typescript';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 describe('convert', () => {
   function convertCode(code: string): ts.SourceFile {
@@ -258,5 +259,74 @@ describe('convert', () => {
         'JSDoc types can only be used inside documentation comments.',
       );
     }
+  });
+
+  describe('shouldCreateParenthesizedNodes', () => {
+    describe('should generate ParenthesizedExpression', () => {
+      const jsDocCode = [
+        'const x = (/* abc */ 2);',
+        'const x = ( /* abc */ 2);',
+        'const x = (2 /* abc */);',
+        'const x = (2 /* abc */ );',
+        'const x = ( /* abc */2 );',
+        'const x = ( 2/* abc */ );',
+        'const x = (/** @type string */ x /* abc */);',
+        `const x = (
+          // test
+          2
+        );`,
+        `const x = (
+          /* abc */
+          2
+        );`,
+      ];
+      for (const code of jsDocCode) {
+        it(code, () => {
+          const ast = convertCode(code);
+          const instance = new Converter(ast, {
+            errorOnUnknownASTType: false,
+            useJSXTextNode: false,
+            shouldPreserveNodeMaps: false,
+            shouldCreateParenthesizedNodes: true,
+          }).convertProgram();
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          expect(instance.body[0].declarations[0].init.type).toEqual(
+            AST_NODE_TYPES.ParenthesizedExpression,
+          );
+        });
+      }
+    });
+    describe('should not generate ParenthesizedExpression', () => {
+      const jsDocCode = [
+        'const x = (2);',
+        'const x = ( 2 );',
+        'const x = (x);',
+        `const x = (
+          2
+        );`,
+        'const x = /* test */ (2);',
+        'const x = /* test */(2);',
+        'const x = (2) /* test */;',
+        'const x = (2)/* test */;',
+        'const x = /** @type string */(2)/** @type string */;',
+      ];
+      for (const code of jsDocCode) {
+        it(code, () => {
+          const ast = convertCode(code);
+          const instance = new Converter(ast, {
+            errorOnUnknownASTType: false,
+            useJSXTextNode: false,
+            shouldPreserveNodeMaps: false,
+            shouldCreateParenthesizedNodes: true,
+          }).convertProgram();
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          expect(instance.body[0].declarations[0].init.type).not.toEqual(
+            AST_NODE_TYPES.ParenthesizedExpression,
+          );
+        });
+      }
+    });
   });
 });

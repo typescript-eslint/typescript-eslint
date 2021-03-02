@@ -102,13 +102,18 @@ interface ParseOptions {
    */
   tokens?: boolean;
 
-  /*
+  /**
    * The JSX AST changed the node type for string literals
    * inside a JSX Element from `Literal` to `JSXText`.
    * When value is `true`, these nodes will be parsed as type `JSXText`.
    * When value is `false`, these nodes will be parsed as type `Literal`.
    */
   useJSXTextNode?: boolean;
+
+  /**
+   * Create additional ParenthesizedExpression nodes when they are needed
+   */
+  shouldCreateParenthesizedNodes?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {

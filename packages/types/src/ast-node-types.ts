@@ -85,6 +85,10 @@ enum AST_NODE_TYPES {
   WithStatement = 'WithStatement',
   YieldExpression = 'YieldExpression',
   /**
+   * Behind flag shouldCreateParenthesizedNodes
+   */
+  ParenthesizedExpression = 'ParenthesizedExpression',
+  /**
    * TS-prefixed nodes
    */
   TSAbstractClassProperty = 'TSAbstractClassProperty',
