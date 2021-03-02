@@ -11,47 +11,34 @@ import useThemeContext from '@theme/hooks/useThemeContext';
 // @ts-ignore
 import styles from './styles.module.css';
 import { createURI, registerCodeActionProvider } from './lib/action';
-import { loadLinter } from './lib/linter';
+import { loadLinter, WebLinter } from './lib/linter';
+import type { Linter } from 'eslint';
+import type { ParserOptions } from '@typescript-eslint/parser';
+import {
+  defaultParserOptions,
+  defaultRules,
+  defaultCode,
+  defaultOptions,
+} from './lib/config';
+import { getQueryParams, setQueryParams, messageToMarker } from './lib/utils';
 
 const MonacoEditor = lazy(() => import('react-monaco-editor'));
 
-const defaultOptions = {
-  minimap: { enabled: false },
-  fontSize: '13px',
-  wordWrap: 'off',
-  scrollBeyondLastLine: false,
-  smoothScrolling: true,
-  fontFamily: "Menlo, Monaco, Consolas, 'Courier New', monospace",
-};
-
 const Placeholder = () => <div className={styles.placeholder} />;
 
-const ensurePositiveInt = (value: number | undefined, defaultValue: number) => {
-  return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
-};
-
-const messageToMarker = (message): monaco.editor.IMarkerData => {
-  const startLineNumber = ensurePositiveInt(message.line, 1);
-  const startColumn = ensurePositiveInt(message.column, 1);
-  const endLineNumber = ensurePositiveInt(message.endLine, startLineNumber);
-  const endColumn = ensurePositiveInt(message.endColumn, startColumn + 1);
-  const code = message.ruleId || 'FATAL';
-  return {
-    code,
-    severity: monaco.MarkerSeverity.Error,
-    source: 'ESLint',
-    message: message.message,
-    startLineNumber,
-    startColumn,
-    endLineNumber,
-    endColumn,
-  };
-};
-
 function Editor(props) {
+  const paramsState = getQueryParams();
+  const [code, setCode] = useState<string>(paramsState?.code || defaultCode);
+  const [rules, setRules] = useState<Linter.RulesRecord>(
+    paramsState?.rules || defaultRules,
+  );
+  const [parserOptions, setParserOptions] = useState<ParserOptions>(
+    paramsState?.parserOptions || defaultParserOptions,
+  );
+
   const { isDarkTheme } = useThemeContext();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [linter] = useState(() => loadLinter());
+  const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
 
   useEffect(() => {
@@ -62,9 +49,13 @@ function Editor(props) {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const updateMarkers = async (value: string) => {
-    if (editorRef.current) {
-      const messages = (await linter).lint(value, {}, {});
+  useEffect(() => {
+    (async () => setLinter(await loadLinter()))();
+  }, []);
+
+  useEffect(() => {
+    if (linter && editorRef.current) {
+      const messages = linter.lint(code, parserOptions, rules);
       const markers: monaco.editor.IMarkerData[] = [];
       fixes.clear();
       for (const message of messages) {
@@ -78,33 +69,30 @@ function Editor(props) {
         markers,
       );
     }
-  };
+  }, [rules, code, linter, parserOptions]);
+
+  useEffect(() => {
+    setQueryParams({ code, rules, parserOptions });
+  }, [code, rules, parserOptions]);
 
   const onEditorDidMount = useCallback(
-    async (editor: monaco.editor.IStandaloneCodeEditor) => {
+    (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
       if (props.editorDidMount) props.editorDidMount();
 
       registerCodeActionProvider(props.language, fixes);
-
-      if (props.value) {
-        await updateMarkers(props.value);
-      }
     },
     [],
   );
-
-  const onEditorChange = useCallback(async value => {
-    await updateMarkers(value);
-  }, []);
 
   return (
     <Suspense fallback={<Placeholder />}>
       <MonacoEditor
         {...props}
+        value={code}
         options={{ ...defaultOptions, ...props.options }}
         editorDidMount={onEditorDidMount}
-        onChange={onEditorChange}
+        onChange={setCode}
         language={props.language}
         theme={isDarkTheme ? 'vs-dark' : 'vs-light'}
       />
