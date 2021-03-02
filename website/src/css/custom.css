@@ -93,8 +93,8 @@ h6 {
 }
 
 html[data-theme='dark'] .alert--secondary {
-  --ra-admonition-icon-color: var(--ifm-color-emphasis-900);
+  --ra-admonition-icon-color: var(--ifm-color-emphasis-800);
+  --ifm-alert-color: var(--ifm-color-emphasis-800);
   --ifm-alert-background-color: var(--ifm-color-emphasis-100);
-  --ifm-alert-border-color: var(--ifm-color-emphasis-200);
-  --ifm-alert-color: var(--ifm-color-emphasis-900);
+  --ifm-alert-border-color: var(--ifm-color-emphasis-100);
 }

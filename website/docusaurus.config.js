@@ -20,7 +20,7 @@ module.exports = {
     sponsors,
   },
   plugins: [
-    require.resolve('./plugins/monaco-editor'),
+    require.resolve('./webpack.plugin'),
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',

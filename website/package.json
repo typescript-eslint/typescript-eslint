@@ -17,6 +17,8 @@
     "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-alpha.70",
     "@docusaurus/theme-classic": "^2.0.0-alpha.70",
     "@mdx-js/react": "^1.6.22",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
     "clsx": "^1.1.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "globby": "^11.0.2",
-    "monaco-editor-webpack-plugin": "^3.0.0"
+    "monaco-editor-webpack-plugin": "^3.0.0",
+    "null-loader": "^4.0.1"
   }
 }
