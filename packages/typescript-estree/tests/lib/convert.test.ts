@@ -261,7 +261,7 @@ describe('convert', () => {
     }
   });
 
-  describe('shouldCreateParenthesizedNodes', () => {
+  describe('preserveParens', () => {
     describe('should generate ParenthesizedExpression', () => {
       const jsDocCode = [
         'const x = (/* abc */ 2);',
@@ -293,7 +293,7 @@ describe('convert', () => {
             errorOnUnknownASTType: false,
             useJSXTextNode: false,
             shouldPreserveNodeMaps: false,
-            shouldCreateParenthesizedNodes: true,
+            preserveParens: true,
           }).convertProgram();
           expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -320,7 +320,7 @@ describe('convert', () => {
             errorOnUnknownASTType: false,
             useJSXTextNode: false,
             shouldPreserveNodeMaps: false,
-            shouldCreateParenthesizedNodes: true,
+            preserveParens: true,
           }).convertProgram();
           expect(instance).toMatchSnapshot();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

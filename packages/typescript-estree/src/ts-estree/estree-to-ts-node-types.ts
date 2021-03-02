@@ -235,7 +235,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.WithStatement]: ts.WithStatement;
   [AST_NODE_TYPES.YieldExpression]: ts.YieldExpression;
 
-  // behind flag shouldCreateParenthesizedNodes
+  // behind flag preserveParens
   [AST_NODE_TYPES.ParenthesizedExpression]: ts.ParenthesizedExpression;
 
   // Added by parser

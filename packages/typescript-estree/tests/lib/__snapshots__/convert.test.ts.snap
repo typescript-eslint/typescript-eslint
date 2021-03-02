@@ -525,7 +525,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (
           /* abc */
           2
         ); 1`] = `
@@ -642,7 +642,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (
           // test
           2
         ); 1`] = `
@@ -759,7 +759,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = ( /* abc */ 2); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = ( /* abc */ 2); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -873,7 +873,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = ( /* abc */2 ); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = ( /* abc */2 ); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -987,7 +987,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = ( 2/* abc */ ); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = ( 2/* abc */ ); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1101,7 +1101,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (/* abc */ 2); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (/* abc */ 2); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1215,7 +1215,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (/** @type string */ x /* abc */); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (/** @type string */ x /* abc */); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1328,7 +1328,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (2 /* abc */ ); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (2 /* abc */ ); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1442,7 +1442,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (2 /* abc */); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (2 /* abc */); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1556,7 +1556,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (2) /* test */; 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (2) /* test */; 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1670,7 +1670,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = (2)/* test */; 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = (2)/* test */; 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1784,7 +1784,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = /* test */ ( /* test */ ( /* test */ a )) 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = /* test */ ( /* test */ ( /* test */ a )) 1`] = `
 Object {
   "body": Array [
     Object {
@@ -1914,7 +1914,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = /* test */ (2); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = /* test */ (2); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2028,7 +2028,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = /* test */(2); 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = /* test */(2); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2142,7 +2142,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should generate ParenthesizedExpression const x = /** @type string */(2)/** @type string */; 1`] = `
+exports[`convert preserveParens should generate ParenthesizedExpression const x = /** @type string */(2)/** @type string */; 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2256,7 +2256,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should not generate ParenthesizedExpression const x = (
+exports[`convert preserveParens should not generate ParenthesizedExpression const x = (
           2
         ); 1`] = `
 Object {
@@ -2355,7 +2355,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should not generate ParenthesizedExpression const x = ( 2 ); 1`] = `
+exports[`convert preserveParens should not generate ParenthesizedExpression const x = ( 2 ); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2452,7 +2452,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should not generate ParenthesizedExpression const x = (2); 1`] = `
+exports[`convert preserveParens should not generate ParenthesizedExpression const x = (2); 1`] = `
 Object {
   "body": Array [
     Object {
@@ -2549,7 +2549,7 @@ Object {
 }
 `;
 
-exports[`convert shouldCreateParenthesizedNodes should not generate ParenthesizedExpression const x = (x); 1`] = `
+exports[`convert preserveParens should not generate ParenthesizedExpression const x = (x); 1`] = `
 Object {
   "body": Array [
     Object {

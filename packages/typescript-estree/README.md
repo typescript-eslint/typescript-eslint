@@ -113,7 +113,7 @@ interface ParseOptions {
   /**
    * Create additional ParenthesizedExpression nodes when they are needed
    */
-  shouldCreateParenthesizedNodes?: boolean;
+  preserveParens?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {

@@ -28,8 +28,7 @@ export function astConverter(
   const instance = new Converter(ast, {
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
     useJSXTextNode: extra.useJSXTextNode || false,
-    shouldCreateParenthesizedNodes:
-      extra.shouldCreateParenthesizedNodes || false,
+    preserveParens: extra.preserveParens || false,
     shouldPreserveNodeMaps,
   });
 

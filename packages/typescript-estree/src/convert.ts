@@ -39,7 +39,7 @@ interface ConverterOptions {
   errorOnUnknownASTType: boolean;
   useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
-  shouldCreateParenthesizedNodes?: boolean;
+  preserveParens?: boolean;
 }
 
 /**
@@ -2317,10 +2317,7 @@ export class Converter {
       }
 
       case SyntaxKind.ParenthesizedExpression: {
-        if (
-          this.options.shouldCreateParenthesizedNodes &&
-          hasComments(this.ast, node)
-        ) {
+        if (this.options.preserveParens && hasComments(this.ast, node)) {
           return this.createNode<TSESTree.ParenthesizedExpression>(node, {
             type: AST_NODE_TYPES.ParenthesizedExpression,
             expression: this.convertChild(node.expression, parent),

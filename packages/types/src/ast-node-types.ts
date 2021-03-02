@@ -85,7 +85,7 @@ enum AST_NODE_TYPES {
   WithStatement = 'WithStatement',
   YieldExpression = 'YieldExpression',
   /**
-   * Behind flag shouldCreateParenthesizedNodes
+   * Behind flag preserveParens
    */
   ParenthesizedExpression = 'ParenthesizedExpression',
   /**

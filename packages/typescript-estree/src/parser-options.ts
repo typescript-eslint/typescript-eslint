@@ -26,7 +26,7 @@ export interface Extra {
   tokens: null | TSESTree.Token[];
   tsconfigRootDir: string;
   useJSXTextNode: boolean;
-  shouldCreateParenthesizedNodes: boolean;
+  preserveParens: boolean;
 }
 
 ////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ interface ParseOptions {
   /**
    * Create additional ParenthesizedExpression nodes when they are needed
    */
-  shouldCreateParenthesizedNodes?: boolean;
+  preserveParens?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
