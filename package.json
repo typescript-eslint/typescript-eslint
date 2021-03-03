@@ -24,8 +24,7 @@
   },
   "scripts": {
     "build": "lerna run build",
-    "build:website": "lerna run build & yarn build:website-only",
-    "build:website-only": "lerna run build:website",
+    "build:website": "lerna run build:website",
     "check:clean-workspace-after-install": "git diff --quiet --exit-code",
     "check:configs": "lerna run check:configs",
     "check:docs": "lerna run check:docs",
