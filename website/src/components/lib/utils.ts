@@ -17,7 +17,7 @@ function readQueryParam(value?: any) {
   return JSON.parse(decodeURIComponent(atob(value)));
 }
 
-export function setQueryParams(state?: Options): void {
+export function setQueryParams(state: Options): void {
   const params: string[] = Object.entries(state)
     .filter(item => item[1])
     .map(item => `${encodeURIComponent(item[0])}=${writeQueryParam(item[1])}`);

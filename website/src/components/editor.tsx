@@ -53,8 +53,8 @@ function Editor(props) {
         params.parserOptions !== parserOptions
       ) {
         setCode(params.code || '');
-        setRules(params.rules || '');
-        setParserOptions(params.parserOptions || '');
+        setRules(params.rules || {});
+        setParserOptions(params.parserOptions || {});
       }
     };
     window.addEventListener('resize', handler);

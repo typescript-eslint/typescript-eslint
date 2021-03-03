@@ -31,27 +31,35 @@ const filesToSkip = [
 module.exports = function (context, options) {
   return {
     name: 'monaco-editor',
-    configureWebpack(config, isServer) {
-      if (isServer) {
-        return {};
-      }
-      return {
+    configureWebpack(cfg, isServer) {
+      const config = {
         module: {
-          rules: [
-            {
-              test: /\.ttf$/,
-              use: ['file-loader'],
-            },
-            {
-              test: filesToSkip.map(file => require.resolve(file)),
-              use: 'null-loader',
-            },
-          ],
+          rules: [],
         },
         plugins: [
+          new webpack.DefinePlugin({
+            'process.env': {
+              IS_SERVER: JSON.stringify(isServer),
+            },
+          }),
+        ],
+      };
+      config.module.rules.push({
+        test: filesToSkip.map(file => require.resolve(file)),
+        use: 'null-loader',
+      });
+      // console.log('isServer', isServer, '\n\n\n\n\n\n');
+      if (!isServer) {
+        config.module.rules.push({
+          test: /\.ttf$/,
+          use: ['file-loader'],
+        });
+        config.plugins.push(
           new MonacoWebpackPlugin({
             languages: ['typescript'],
           }),
+        );
+        config.plugins.push(
           new webpack.NormalModuleReplacementPlugin(
             /globby/,
             path.resolve(__dirname, 'src/modules/globby.js'),
@@ -72,8 +80,14 @@ module.exports = function (context, options) {
             /is-glob/,
             path.resolve(__dirname, 'src/modules/is-glob.js'),
           ),
-        ],
-      };
+        );
+      } else {
+        config.module.rules.push({
+          test: /monaco-editor/,
+          use: 'null-loader',
+        });
+      }
+      return config;
     },
   };
 };
