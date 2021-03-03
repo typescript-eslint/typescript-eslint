@@ -177,10 +177,7 @@ export default util.createRule<Options, MessageIds>({
       const { before, after } = getRules(ruleSet, typeAnnotation);
 
       if (type === ':' && previousToken.value === '?') {
-        if (
-          !before &&
-          sourceCode.isSpaceBetween!(previousToken, punctuatorTokenStart)
-        ) {
+        if (sourceCode.isSpaceBetween!(previousToken, punctuatorTokenStart)) {
           context.report({
             node: punctuatorTokenStart,
             messageId: 'unexpectedSpaceBefore',

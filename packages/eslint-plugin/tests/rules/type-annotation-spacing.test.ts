@@ -315,10 +315,6 @@ type Foo = {
       options: [{ after: true, before: true }],
     },
     {
-      code: 'function foo(a ? : string) {}',
-      options: [{ after: true, before: true }],
-    },
-    {
       code: `
 class Foo {
     name : string;
@@ -4754,6 +4750,32 @@ interface Foo {
           data: { type: '?:' },
           line: 3,
           column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+    name ? : string;
+}
+      `,
+      output: `
+interface Foo {
+    name?: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 3,
+          column: 10,
+        },
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 12,
         },
       ],
     },
