@@ -9,7 +9,7 @@ import React, {
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import useThemeContext from '@theme/hooks/useThemeContext';
 // @ts-ignore
-import styles from './styles.module.css';
+import styles from './editor.module.css';
 import { createURI, registerCodeActionProvider } from './lib/action';
 import { loadLinter, WebLinter } from './lib/linter';
 import type { Linter } from 'eslint';
