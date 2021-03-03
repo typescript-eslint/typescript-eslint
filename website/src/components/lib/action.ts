@@ -1,4 +1,3 @@
-import type { languages } from 'monaco-editor';
 import * as monaco from 'monaco-editor';
 
 export function createURI(marker) {
@@ -19,7 +18,7 @@ export function createQuickfixCodeAction(
   marker,
   model,
   fix,
-): languages.CodeAction {
+): monaco.languages.CodeAction {
   const start = model.getPositionAt(fix.range[0]);
   const end = model.getPositionAt(fix.range[1]);
   return {
@@ -49,7 +48,7 @@ export function registerCodeActionProvider(
   language: string,
   fixes: Map<string, any>,
 ) {
-  monaco.languages.registerCodeActionProvider(language, {
+  return monaco.languages.registerCodeActionProvider(language, {
     provideCodeActions(model, _range, context, _token) {
       if (context.only !== 'quickfix') {
         return {
@@ -59,7 +58,7 @@ export function registerCodeActionProvider(
           },
         };
       }
-      const actions: languages.CodeAction[] = [];
+      const actions: monaco.languages.CodeAction[] = [];
       for (const marker of context.markers) {
         const message = fixes.get(createURI(marker));
         if (!message) {

@@ -1,6 +1,7 @@
 // import { Extra } from '@typescript-eslint/typescript-estree/dist/src/parser-options';
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { Linter } from 'eslint';
+import type { editor as editorApi } from 'monaco-editor/esm/vs/editor/editor.api';
 
 // TODO: Extra type is not exported
 export const extra: any = {
@@ -25,9 +26,9 @@ export const extra: any = {
   useJSXTextNode: true,
 };
 
-export const defaultOptions = {
+export const defaultOptions: editorApi.IStandaloneEditorConstructionOptions = {
   minimap: { enabled: false },
-  fontSize: '13px',
+  fontSize: 13,
   wordWrap: 'off',
   scrollBeyondLastLine: false,
   smoothScrolling: true,

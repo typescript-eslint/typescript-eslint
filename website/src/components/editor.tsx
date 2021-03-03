@@ -1,12 +1,8 @@
-import React, {
-  Suspense,
-  lazy,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import {
+  editor as editorApi,
+  IDisposable,
+} from 'monaco-editor/esm/vs/editor/editor.api';
 import useThemeContext from '@theme/hooks/useThemeContext';
 // @ts-ignore
 import styles from './editor.module.css';
@@ -21,12 +17,15 @@ import {
   defaultOptions,
 } from './lib/config';
 import { getQueryParams, setQueryParams, messageToMarker } from './lib/utils';
+import MonacoEditor from 'react-monaco-editor';
 
-const MonacoEditor = lazy(() => import('react-monaco-editor'));
+interface EditorProps {
+  language: string;
+  editorDidMount?(): void;
+  options?: editorApi.IStandaloneEditorConstructionOptions;
+}
 
-const Placeholder = () => <div className={styles.placeholder} />;
-
-function Editor(props) {
+function Editor(props: EditorProps) {
   const params = getQueryParams();
   const [code, setCode] = useState<string>(params.code || defaultCode);
   const [rules, setRules] = useState<Linter.RulesRecord>(
@@ -37,7 +36,8 @@ function Editor(props) {
   );
 
   const { isDarkTheme } = useThemeContext();
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<editorApi.IStandaloneCodeEditor | null>(null);
+  const disposableRef = useRef<IDisposable | null>(null);
   const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
 
@@ -60,6 +60,7 @@ function Editor(props) {
     window.addEventListener('resize', handler);
     window.addEventListener('hashchange', handleHashChange, false);
     return () => {
+      disposableRef.current?.dispose();
       window.removeEventListener('hashchange', handleHashChange, false);
       window.removeEventListener('resize', handler);
     };
@@ -72,14 +73,14 @@ function Editor(props) {
   useEffect(() => {
     if (linter && editorRef.current) {
       const messages = linter.lint(code, parserOptions, rules);
-      const markers: monaco.editor.IMarkerData[] = [];
+      const markers: editorApi.IMarkerData[] = [];
       fixes.clear();
       for (const message of messages) {
         const marker = messageToMarker(message);
         markers.push(marker);
         fixes.set(createURI(marker), message);
       }
-      monaco.editor.setModelMarkers(
+      editorApi.setModelMarkers(
         editorRef.current.getModel()!,
         editorRef.current.getId(),
         markers,
@@ -99,27 +100,25 @@ function Editor(props) {
   }, [code, rules, parserOptions]);
 
   const onEditorDidMount = useCallback(
-    (editor: monaco.editor.IStandaloneCodeEditor) => {
+    (editor: editorApi.IStandaloneCodeEditor) => {
       editorRef.current = editor;
       if (props.editorDidMount) props.editorDidMount();
 
-      registerCodeActionProvider(props.language, fixes);
+      disposableRef.current = registerCodeActionProvider(props.language, fixes);
     },
     [],
   );
 
   return (
-    <Suspense fallback={<Placeholder />}>
-      <MonacoEditor
-        {...props}
-        value={code}
-        options={{ ...defaultOptions, ...props.options }}
-        editorDidMount={onEditorDidMount}
-        onChange={setCode}
-        language={props.language}
-        theme={isDarkTheme ? 'vs-dark' : 'vs-light'}
-      />
-    </Suspense>
+    <MonacoEditor
+      {...props}
+      value={code}
+      options={{ ...defaultOptions, ...props.options }}
+      editorDidMount={onEditorDidMount}
+      onChange={setCode}
+      language={props.language}
+      theme={isDarkTheme ? 'vs-dark' : 'vs-light'}
+    />
   );
 }
 
