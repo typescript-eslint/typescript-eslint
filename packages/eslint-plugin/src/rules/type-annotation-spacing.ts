@@ -177,6 +177,25 @@ export default util.createRule<Options, MessageIds>({
       const { before, after } = getRules(ruleSet, typeAnnotation);
 
       if (type === ':' && previousToken.value === '?') {
+        if (
+          !before &&
+          sourceCode.isSpaceBetween!(previousToken, punctuatorTokenStart)
+        ) {
+          context.report({
+            node: punctuatorTokenStart,
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type,
+            },
+            fix(fixer) {
+              return fixer.removeRange([
+                previousToken.range[1],
+                punctuatorTokenStart.range[0],
+              ]);
+            },
+          });
+        }
+
         // shift the start to the ?
         type = '?:';
         punctuatorTokenStart = previousToken;

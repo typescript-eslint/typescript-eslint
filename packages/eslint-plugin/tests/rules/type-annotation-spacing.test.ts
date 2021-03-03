@@ -315,6 +315,10 @@ type Foo = {
       options: [{ after: true, before: true }],
     },
     {
+      code: 'function foo(a ? : string) {}',
+      options: [{ after: true, before: true }],
+    },
+    {
       code: `
 class Foo {
     name : string;
@@ -4594,6 +4598,54 @@ type Bar = Record<keyof Foo, string>
       ],
     },
     {
+      code: 'function foo(a? : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
+          line: 1,
+          column: 17,
+        },
+      ],
+    },
+    {
+      code: 'function foo(a ? : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'function foo(a ?  : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
+          line: 1,
+          column: 19,
+        },
+      ],
+    },
+    {
       code: `
 class Foo {
     name ?: string;
@@ -4630,6 +4682,32 @@ class Foo {
           data: { type: '?:' },
           line: 3,
           column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    constructor(message ? : string);
+}
+      `,
+      output: `
+class Foo {
+    constructor(message?: string);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 3,
+          column: 25,
+        },
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 27,
         },
       ],
     },
