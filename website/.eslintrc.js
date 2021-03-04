@@ -5,6 +5,7 @@ module.exports = {
     node: true,
   },
   parserOptions: {
+    ecmaVersion: 12,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,

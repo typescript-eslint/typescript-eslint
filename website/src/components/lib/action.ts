@@ -1,24 +1,12 @@
-import * as monaco from 'monaco-editor';
-
-export function createURI(marker) {
-  return `[${[
-    marker.startLineNumber,
-    marker.startColumn,
-    marker.startColumn,
-    marker.endLineNumber,
-    marker.endColumn,
-    (typeof marker.code === 'string'
-      ? marker.code
-      : marker.code && marker.code.value) || '',
-  ].join('|')}]`;
-}
+import type { languages } from 'monaco-editor';
+import { createURI } from './utils';
 
 export function createQuickfixCodeAction(
   title: string,
   marker,
   model,
   fix,
-): monaco.languages.CodeAction {
+): languages.CodeAction {
   const start = model.getPositionAt(fix.range[0]);
   const end = model.getPositionAt(fix.range[1]);
   return {
@@ -44,11 +32,10 @@ export function createQuickfixCodeAction(
   };
 }
 
-export function registerCodeActionProvider(
-  language: string,
+export function createProvideCodeActions(
   fixes: Map<string, any>,
-) {
-  return monaco.languages.registerCodeActionProvider(language, {
+): languages.CodeActionProvider {
+  return {
     provideCodeActions(model, _range, context, _token) {
       if (context.only !== 'quickfix') {
         return {
@@ -58,7 +45,7 @@ export function registerCodeActionProvider(
           },
         };
       }
-      const actions: monaco.languages.CodeAction[] = [];
+      const actions: languages.CodeAction[] = [];
       for (const marker of context.markers) {
         const message = fixes.get(createURI(marker));
         if (!message) {
@@ -94,5 +81,5 @@ export function registerCodeActionProvider(
         },
       };
     },
-  });
+  };
 }

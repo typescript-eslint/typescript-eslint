@@ -8,7 +8,7 @@ import type {
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree/dist/parser-options';
-import { extra } from './config';
+import { extra } from '../lib/config';
 
 // TODO: this is not exported
 interface ParseForESLintResult {

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:website": "docusaurus start",
+    "build:plugin": "rollup -c rollup.config.js",
     "build:website": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "serve:website": "docusaurus serve",
@@ -21,10 +22,8 @@
     "@typescript-eslint/parser": "^4.16.1",
     "clsx": "^1.1.1",
     "eslint": "^7.20.0",
-    "monaco-editor": "^0.22.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-monaco-editor": "^0.42.0",
     "typescript": "*"
   },
   "browserslist": {
@@ -45,8 +44,9 @@
     "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.7",
     "globby": "^11.0.2",
-    "monaco-editor-webpack-plugin": "^3.0.0",
+    "monaco-editor": "^0.22.3",
     "null-loader": "^4.0.1",
+    "string-replace-loader": "^3.0.1",
     "webpack": "^4.46.0"
   }
 }

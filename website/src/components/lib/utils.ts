@@ -1,7 +1,7 @@
 import type { Linter } from 'eslint';
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { editor } from 'monaco-editor';
-import { MarkerSeverity } from 'monaco-editor';
+// import { MarkerSeverity } from 'monaco-editor';
 
 interface Options {
   rules?: Linter.RulesRecord;
@@ -53,7 +53,7 @@ export function messageToMarker(message): editor.IMarkerData {
   const startColumn = ensurePositiveInt(message.column, 1);
   return {
     code: message.ruleId || 'FATAL',
-    severity: MarkerSeverity.Error,
+    severity: 8, // MarkerSeverity.Error,
     source: 'ESLint',
     message: message.message,
     startLineNumber,
@@ -61,4 +61,17 @@ export function messageToMarker(message): editor.IMarkerData {
     endLineNumber: ensurePositiveInt(message.endLine, startLineNumber),
     endColumn: ensurePositiveInt(message.endColumn, startColumn + 1),
   };
+}
+
+export function createURI(marker) {
+  return `[${[
+    marker.startLineNumber,
+    marker.startColumn,
+    marker.startColumn,
+    marker.endLineNumber,
+    marker.endColumn,
+    (typeof marker.code === 'string'
+      ? marker.code
+      : marker.code && marker.code.value) || '',
+  ].join('|')}]`;
 }

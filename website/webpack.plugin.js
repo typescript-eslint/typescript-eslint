@@ -1,4 +1,4 @@
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -32,9 +32,32 @@ module.exports = function (context, options) {
   return {
     name: 'monaco-editor',
     configureWebpack(cfg, isServer) {
-      const config = {
+      return {
         module: {
-          rules: [],
+          rules: [
+            {
+              test: filesToSkip.map(file => require.resolve(file)),
+              use: 'null-loader',
+            },
+            {
+              test: /\.js$/,
+              loader: 'string-replace-loader',
+              options: {
+                multiple: [
+                  {
+                    search: '__importStar(require("typescript"))',
+                    replace: 'window.ts',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        externals: {
+          // fs: 'window.fs',
+          // os: 'window.os',
+          // tty: 'window.tty',
+          typescript: 'window.ts',
         },
         plugins: [
           new webpack.DefinePlugin({
@@ -42,24 +65,6 @@ module.exports = function (context, options) {
               IS_SERVER: JSON.stringify(isServer),
             },
           }),
-        ],
-      };
-      config.module.rules.push({
-        test: filesToSkip.map(file => require.resolve(file)),
-        use: 'null-loader',
-      });
-      // console.log('isServer', isServer, '\n\n\n\n\n\n');
-      if (!isServer) {
-        config.module.rules.push({
-          test: /\.ttf$/,
-          use: ['file-loader'],
-        });
-        config.plugins.push(
-          new MonacoWebpackPlugin({
-            languages: ['typescript'],
-          }),
-        );
-        config.plugins.push(
           new webpack.NormalModuleReplacementPlugin(
             /globby/,
             path.resolve(__dirname, 'src/modules/globby.js'),
@@ -80,14 +85,8 @@ module.exports = function (context, options) {
             /is-glob/,
             path.resolve(__dirname, 'src/modules/is-glob.js'),
           ),
-        );
-      } else {
-        config.module.rules.push({
-          test: /monaco-editor/,
-          use: 'null-loader',
-        });
-      }
-      return config;
+        ],
+      };
     },
   };
 };
