@@ -61,7 +61,6 @@ export default function Playground() {
       const linterInstance = await loadLinter();
       sandboxRef.current = instance;
       setLinter(linterInstance);
-      console.log('register');
       disposableRef.current = instance.monaco.languages.registerCodeActionProvider(
         'typescript',
         createProvideCodeActions(fixes),
@@ -73,11 +72,15 @@ export default function Playground() {
 
     return () => {
       fixes.clear();
-      console.log('dispose', disposableRef.current, changeRef.current);
       disposableRef.current?.dispose();
       changeRef.current?.dispose();
 
       if (sandboxRef.current) {
+        sandboxRef.current.monaco.editor.setModelMarkers(
+          sandboxRef.current.editor.getModel()!,
+          sandboxRef.current.editor.getId(),
+          [],
+        );
         sandboxRef.current.editor.dispose();
         const model = sandboxRef.current.editor.getModel();
         if (model) {
