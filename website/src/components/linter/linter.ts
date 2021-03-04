@@ -4,6 +4,7 @@ import type { Linter } from 'eslint/lib/linter/linter';
 const PARSER_NAME = '@typescript-eslint/parser';
 
 export interface WebLinter {
+  ruleNames: string[];
   lint(
     code: string,
     parserOptions: ParserOptions,
@@ -24,7 +25,12 @@ export async function loadLinter(): Promise<WebLinter> {
     linter.defineRule(`@typescript-eslint/${name}`, rules.default[name]);
   }
 
+  const ruleNames = Object.keys(rules.default).map(
+    name => `@typescript-eslint/${name}`,
+  );
+
   return {
+    ruleNames,
     lint(
       code: string,
       parserOptions: ParserOptions,

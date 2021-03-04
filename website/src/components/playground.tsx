@@ -64,13 +64,13 @@ export default function Playground() {
         main,
         ts,
       );
-      instance.monaco.editor.setTheme(isDarkTheme ? 'sandbox-dark' : 'sandbox');
+      main.editor.setTheme(isDarkTheme ? 'sandbox-dark' : 'sandbox');
       instance.setText(code);
       instance.editor.focus();
       const linterInstance = await loadLinter();
       sandboxRef.current = instance;
       setLinter(linterInstance);
-      disposableRef.current = instance.monaco.languages.registerCodeActionProvider(
+      disposableRef.current = main.languages.registerCodeActionProvider(
         'typescript',
         createProvideCodeActions(fixes),
       );
@@ -190,6 +190,7 @@ export default function Playground() {
     <div className={styles.codeContainer}>
       <div className={styles.options}>
         <OptionsSelector
+          ruleOptions={linter?.ruleNames || []}
           rules={rules}
           jsx={params.jsx}
           sourceType={params.sourceType}

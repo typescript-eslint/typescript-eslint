@@ -5,7 +5,13 @@ import { DeleteIcon, AddIcon } from './icons';
 import { QueryParamOptions } from './lib/utils';
 
 interface OptionSelectorParams extends QueryParamOptions {
+  ruleOptions: string[];
   onUpdate(value: Partial<QueryParamOptions>): void;
+}
+
+function computeRuleOptions(rules: Record<string, any>, ruleNames: string[]) {
+  const keys = Object.keys(rules);
+  return ruleNames.filter(name => !keys.includes(name));
 }
 
 function OptionsSelector(params: OptionSelectorParams) {
@@ -27,11 +33,18 @@ function OptionsSelector(params: OptionSelectorParams) {
     [rules],
   );
 
+  const computedRules = computeRuleOptions(rules, params.ruleOptions);
+
   const addRule = useCallback(() => {
-    const newRules = { ...rules, [ruleName]: ['error'] };
-    setRules(newRules);
-    setRuleName('');
-    params.onUpdate({ rules: newRules });
+    if (computedRules.length) {
+      const newRules = {
+        ...rules,
+        [ruleName || computedRules[0]]: ['error'],
+      };
+      setRules(newRules);
+      setRuleName('');
+      params.onUpdate({ rules: newRules });
+    }
   }, [rules, ruleName]);
 
   return (
@@ -79,18 +92,29 @@ function OptionsSelector(params: OptionSelectorParams) {
         ))}
         <div>
           <label className={styles.optionItem}>Add rule</label>
-          <div className={styles.optionItem}>
-            <input
-              value={ruleName}
-              className={styles.optionInput}
-              onChange={e => {
-                setRuleName(e.target.value);
-              }}
-              style={{ width: '90%' }}
-              type="text"
-            />
-            <AddIcon className={styles.clickableIcon} onClick={addRule} />
-          </div>
+          {computedRules.length ? (
+            <div className={styles.optionItem}>
+              <select
+                value={ruleName}
+                name="ruleName2"
+                onChange={e => {
+                  setRuleName(e.target.value);
+                }}
+                className={styles.optionInput}
+              >
+                {computedRules.map(item => {
+                  return (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </select>
+              <AddIcon className={styles.clickableIcon} onClick={addRule} />
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
       </Expander>
     </>
