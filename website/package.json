@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start:website": "docusaurus start",
-    "build:plugin": "rollup -c rollup.config.js",
     "build:website": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "serve:website": "docusaurus serve",
@@ -46,7 +45,7 @@
     "globby": "^11.0.2",
     "monaco-editor": "^0.22.3",
     "null-loader": "^4.0.1",
-    "string-replace-loader": "^3.0.1",
+    "string-replace-loader": "^2.3.0",
     "webpack": "^4.46.0"
   }
 }
