@@ -22,7 +22,7 @@
   color: var(--ifm-color-emphasis-800);
 }
 
-.label {
+.headerLabel {
   flex: 1;
   font-size: 0.75rem;
   font-weight: 700;

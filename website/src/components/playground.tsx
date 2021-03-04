@@ -1,20 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useThemeContext from '@theme/hooks/useThemeContext';
 import styles from './playground.module.css';
-import Expander from './expander';
 import Loader from './loader';
 
-import {
-  defaultCode,
-  defaultParserOptions,
-  defaultRules,
-  monacoSettings,
-} from './lib/config';
 import {
   getQueryParams,
   messageToMarker,
   createURI,
-  setQueryParams,
+  QueryParamOptions,
+  updateQueryParams,
 } from './lib/utils';
 import { sandboxSingleton } from './lib/load-sandbox';
 import { loadLinter, WebLinter } from './linter/linter';
@@ -24,28 +18,43 @@ import type { Linter } from 'eslint';
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { editor as editorApi, IDisposable } from 'monaco-editor';
 import { createProvideCodeActions } from './lib/action';
+import OptionsSelector from './options-selector';
 
 export default function Playground() {
   const params = getQueryParams();
   const { isDarkTheme } = useThemeContext();
   const sandboxRef = useRef<Sandbox | null>(null);
-  const [code, setCode] = useState<string>(params.code || defaultCode);
+  const [code, setCode] = useState<string>(params.code || '');
   const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
   const disposableRef = useRef<IDisposable | null>(null);
   const changeRef = useRef<IDisposable | null>(null);
   const [rules, setRules] = useState<Linter.RulesRecord>(
-    params.rules || defaultRules,
+    () => params.rules || {},
   );
-  const [parserOptions, setParserOptions] = useState<ParserOptions>(
-    params.parserOptions || defaultParserOptions,
-  );
+  const [parserOptions, setParserOptions] = useState<ParserOptions>(() => {
+    return {
+      ecmaFeatures: {
+        jsx: params.jsx || false,
+        globalReturn: false,
+      },
+      ecmaVersion: 2020,
+      project: ['./tsconfig.json'],
+      sourceType: params.sourceType || 'module',
+    };
+  });
 
   useEffect(() => {
     (async () => {
       const sandboxConfig: Partial<PlaygroundConfig> = {
         text: code,
-        monacoSettings: monacoSettings,
+        monacoSettings: {
+          minimap: { enabled: false },
+          fontSize: 13,
+          wordWrap: 'off',
+          scrollBeyondLastLine: false,
+          smoothScrolling: true,
+        },
         compilerOptions: {},
         domID: 'monaco-editor-embed',
       };
@@ -66,7 +75,9 @@ export default function Playground() {
         createProvideCodeActions(fixes),
       );
       changeRef.current = instance.editor.onDidChangeModelContent(_event => {
-        setCode(instance.editor.getValue());
+        const code = instance.editor.getValue();
+        updateQueryParams({ code });
+        setCode(code);
       });
     })();
 
@@ -94,6 +105,26 @@ export default function Playground() {
     };
   }, []);
 
+  const onOptionsUpdate = useCallback(
+    (data: Partial<QueryParamOptions>) => {
+      updateQueryParams(data);
+      if (data.sourceType) {
+        setParserOptions({ ...parserOptions, sourceType: data.sourceType });
+      } else if (data.jsx) {
+        setParserOptions({
+          ...parserOptions,
+          ecmaFeatures: {
+            ...(parserOptions.ecmaFeatures || {}),
+            jsx: data.jsx,
+          },
+        });
+      } else if (data.rules) {
+        setRules(data.rules);
+      }
+    },
+    [parserOptions],
+  );
+
   useEffect(() => {
     if (linter && sandboxRef.current) {
       const messages = linter.lint(code, parserOptions, rules);
@@ -114,14 +145,13 @@ export default function Playground() {
 
   useEffect(() => {
     const params = getQueryParams();
-    if (
-      params.code !== code ||
-      params.rules !== rules ||
-      params.parserOptions !== parserOptions
-    ) {
-      setQueryParams({ code, rules, parserOptions });
+    if (params.code !== code) {
+      updateQueryParams({ code });
+      if (sandboxRef.current) {
+        sandboxRef.current.setText(code);
+      }
     }
-  }, [code, rules, parserOptions]);
+  }, [code]);
 
   useEffect(() => {
     if (sandboxRef.current)
@@ -136,22 +166,22 @@ export default function Playground() {
         sandboxRef.current.editor.layout();
       }
     };
-    const handleHashChange = () => {
-      const params = getQueryParams();
-      if (
-        params.code !== code ||
-        params.rules !== rules ||
-        params.parserOptions !== parserOptions
-      ) {
-        setCode(params.code || '');
-        setRules(params.rules || {});
-        setParserOptions(params.parserOptions || {});
-      }
-    };
+    // const handleHashChange = () => {
+    //   const params = getQueryParams();
+    //   if (
+    //     params.code !== code ||
+    //     params.rules !== rules ||
+    //     params.parserOptions !== parserOptions
+    //   ) {
+    //     setCode(params.code || '');
+    //     setRules(params.rules || {});
+    //     setParserOptions(params.parserOptions || {});
+    //   }
+    // };
     window.addEventListener('resize', handler);
-    window.addEventListener('hashchange', handleHashChange, false);
+    // window.addEventListener('hashchange', handleHashChange, false);
     return () => {
-      window.removeEventListener('hashchange', handleHashChange, false);
+      // window.removeEventListener('hashchange', handleHashChange, false);
       window.removeEventListener('resize', handler);
     };
   }, []);
@@ -159,8 +189,12 @@ export default function Playground() {
   return (
     <div className={styles.codeContainer}>
       <div className={styles.options}>
-        <Expander label="Parser Options" />
-        <Expander label="ESLint Options" />
+        <OptionsSelector
+          rules={rules}
+          jsx={params.jsx}
+          sourceType={params.sourceType}
+          onUpdate={onOptionsUpdate}
+        />
       </div>
       <div className={styles.sourceCode}>
         {!sandboxRef.current && <Loader />}

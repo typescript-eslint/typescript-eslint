@@ -1,6 +1,7 @@
 .options {
   width: 20rem;
   background: var(--ifm-background-surface-color);
+  overflow: auto;
 }
 
 .sourceCode {

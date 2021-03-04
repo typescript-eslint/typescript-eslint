@@ -1,11 +1,10 @@
-import type { Linter } from 'eslint';
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { editor } from 'monaco-editor';
-// import { MarkerSeverity } from 'monaco-editor';
 
-interface Options {
-  rules?: Linter.RulesRecord;
-  parserOptions?: ParserOptions;
+export interface QueryParamOptions {
+  jsx?: boolean;
+  sourceType?: ParserOptions['sourceType'];
+  rules?: Record<string, any>;
   code?: string;
 }
 
@@ -17,27 +16,40 @@ function readQueryParam(value?: any) {
   return JSON.parse(decodeURIComponent(atob(value)));
 }
 
-export function setQueryParams(state: Options): void {
-  const params: string[] = Object.entries(state)
+export function updateQueryParams(state: Partial<QueryParamOptions>): void {
+  const params = getQueryParams();
+  setQueryParams({ ...params, ...state });
+}
+
+export function setQueryParams(state: QueryParamOptions): void {
+  const params: string[] = Object.entries({
+    jsx: state.jsx,
+    sourceType: state.sourceType,
+    rules: state.rules ? writeQueryParam(state.rules) : undefined,
+    code: state.code ? writeQueryParam(state.code) : undefined,
+  })
     .filter(item => item[1])
-    .map(item => `${encodeURIComponent(item[0])}=${writeQueryParam(item[1])}`);
+    .map(item => `${encodeURIComponent(item[0])}=${item[1]}`);
   if (location.hash !== '#' + params.join('&')) {
     location.hash = '#' + params.join('&');
   }
 }
 
-export function getQueryParams(): Options {
+export function getQueryParams(): QueryParamOptions {
   try {
     const searchParams = new URLSearchParams(location.hash.replace('#', ''));
     return {
-      rules: searchParams.has('rules')
-        ? readQueryParam(searchParams.get('rules'))
-        : undefined,
-      parserOptions: searchParams.has('parserOptions')
-        ? readQueryParam(searchParams.get('parserOptions'))
-        : undefined,
+      jsx: searchParams.has('jsx'),
+      sourceType:
+        searchParams.has('sourceType') &&
+        searchParams.get('sourceType') === 'script'
+          ? 'script'
+          : 'module',
       code: searchParams.has('code')
         ? readQueryParam(searchParams.get('code'))
+        : undefined,
+      rules: searchParams.has('rules')
+        ? readQueryParam(searchParams.get('rules'))
         : undefined,
     };
   } catch {}
