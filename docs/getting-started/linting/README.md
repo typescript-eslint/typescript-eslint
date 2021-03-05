@@ -74,12 +74,6 @@ With that configured, open a terminal to the root of your project, and run the f
 npm run eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
-or with NPM:
-
-```bash npm2yarn
-npx eslint . --ext .js,.jsx,.ts,.tsx
-```
-
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
 
 You can also get results in realtime inside most IDEs via a plugin - just search your IDE's extension store.
