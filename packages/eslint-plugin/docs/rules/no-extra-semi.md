@@ -25,5 +25,7 @@ It adds support for class properties.
 See [`eslint/no-extra-semi` options](https://eslint.org/docs/rules/no-extra-semi#options).
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-extra-semi.md)
+
 :::

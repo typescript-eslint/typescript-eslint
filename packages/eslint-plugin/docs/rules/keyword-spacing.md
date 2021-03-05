@@ -25,5 +25,7 @@ This version adds support for generic type parameters on function calls.
 See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spacing#options).
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/keyword-spacing.md)
+
 :::

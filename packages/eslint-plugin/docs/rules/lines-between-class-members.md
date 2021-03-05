@@ -76,5 +76,7 @@ class foo {
 ```
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/lines-between-class-members.md)
+
 :::

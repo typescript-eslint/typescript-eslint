@@ -90,5 +90,7 @@ type Func = (test: string) => typeof test;
 ```
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)
+
 :::

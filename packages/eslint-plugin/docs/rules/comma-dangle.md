@@ -37,5 +37,7 @@ This rule has a string option and an object option.
 - [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md#options)
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md)
+
 :::

@@ -82,5 +82,7 @@ const something = 2;
 ```
 
 :::note
+
 Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)
+
 :::
