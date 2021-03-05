@@ -13,7 +13,7 @@ module.exports = {
           'getting-started/linting/troubleshooting',
         ],
       },
-      'getting-started/TSLint',
+      'getting-started/tslint',
       {
         type: 'category',
         label: 'Plugins',

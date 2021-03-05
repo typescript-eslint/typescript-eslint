@@ -1,5 +1,5 @@
 ---
-id: TSLint
+id: tslint
 title: Migrating from TSLint to ESLint
 sidebar_label: Migrating from TSLint to ESLint
 ---
@@ -19,7 +19,7 @@ and they have been big supporters of this project. More details at https://githu
 
 ## Migrating from TSLint to ESLint
 
-If you are looking for help in migrating from TSLint to ESLint, you can check out this project: [tslint-to-eslint-config]
+If you are looking for help in migrating from TSLint to ESLint, you can check out this project: [`tslint-to-eslint-config`]
 
 You can look at [`the plugin ROADMAP.md`] for an up to date overview of how TSLint rules compare to the ones in this package.
 
@@ -88,4 +88,4 @@ That just about covers the parsing piece! But what about the rules? This is wher
 [estree]: https://github.com/estree/estree
 [prettier]: https://prettier.io
 [`espree`]: https://github.com/eslint/espree
-[tslint-to-eslint-config]: https://github.com/typescript-eslint/tslint-to-eslint-config
+[`tslint-to-eslint-config`]: https://github.com/typescript-eslint/tslint-to-eslint-config
