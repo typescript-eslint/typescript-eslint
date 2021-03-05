@@ -19,7 +19,7 @@ interface ParseForESLintResult {
   };
   services: ParserServices;
   visitorKeys: typeof visitorKeys;
-  scopeManager: any;
+  scopeManager: ReturnType<typeof analyze>;
 }
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
@@ -37,7 +37,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     {
       ...extra,
       code,
-      jsx: options.jsx,
+      jsx: options.jsx ?? false,
     },
     true,
   );

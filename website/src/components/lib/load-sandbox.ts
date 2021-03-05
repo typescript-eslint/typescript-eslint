@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
 
@@ -12,11 +13,11 @@ export interface SandboxModel {
 }
 
 function loadSandbox(): Promise<SandboxModel> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject): void => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js';
     getLoaderScript.async = true;
-    getLoaderScript.onload = () => {
+    getLoaderScript.onload = (): void => {
       // For the monaco version you can use unpkg or the TypeScript web infra CDN
       // You can see the available releases for TypeScript here:
       // https://typescript.azureedge.net/indexes/releases.json

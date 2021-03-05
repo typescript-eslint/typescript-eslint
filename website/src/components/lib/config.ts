@@ -1,5 +1,6 @@
-// TODO: Extra type is not exported
-export const extra: any = {
+import type { Extra } from '@typescript-eslint/typescript-estree/dist/parser-options';
+
+export const extra: Extra = {
   code: '',
   comment: true,
   comments: [],
@@ -19,4 +20,5 @@ export const extra: any = {
   tokens: [],
   tsconfigRootDir: '/',
   useJSXTextNode: true,
+  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
 };

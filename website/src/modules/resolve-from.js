@@ -1,5 +1,5 @@
 'use strict';
-const resolveFrom = (fromDir, moduleId, silent) => {
+const resolveFrom = (/*fromDir, moduleId, silent*/) => {
   return {
     id: 'id',
     filename: 'filename',

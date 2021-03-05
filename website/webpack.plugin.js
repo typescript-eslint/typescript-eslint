@@ -28,7 +28,7 @@ const filesToSkip = [
   '@eslint/eslintrc',
 ];
 
-module.exports = function (context, options) {
+module.exports = function (/*context, options*/) {
   return {
     name: 'monaco-editor',
     configureWebpack(cfg, isServer) {

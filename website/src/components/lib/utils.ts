@@ -4,15 +4,15 @@ import type { editor } from 'monaco-editor';
 export interface QueryParamOptions {
   jsx?: boolean;
   sourceType?: ParserOptions['sourceType'];
-  rules?: Record<string, any>;
+  rules?: Record<string, unknown>;
   code?: string;
 }
 
-function writeQueryParam(value?: any) {
+function writeQueryParam(value?: unknown): string {
   return btoa(encodeURIComponent(JSON.stringify(value)));
 }
 
-function readQueryParam(value?: any) {
+function readQueryParam(value: string): unknown {
   return JSON.parse(decodeURIComponent(atob(value)));
 }
 
@@ -46,17 +46,25 @@ export function getQueryParams(): QueryParamOptions {
           ? 'script'
           : 'module',
       code: searchParams.has('code')
-        ? readQueryParam(searchParams.get('code'))
+        ? (readQueryParam(searchParams.get('code')!) as string)
         : undefined,
       rules: searchParams.has('rules')
-        ? readQueryParam(searchParams.get('rules'))
+        ? (readQueryParam(
+            searchParams.get('rules')!,
+          ) as QueryParamOptions['rules'])
         : undefined,
     };
-  } catch {}
+  } catch {
+    // eslint-disable-next-line no-console
+    console.warn('Error while loading query params');
+  }
   return {};
 }
 
-const ensurePositiveInt = (value: number | undefined, defaultValue: number) => {
+const ensurePositiveInt = (
+  value: number | undefined,
+  defaultValue: number,
+): number => {
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
 };
 
@@ -75,15 +83,13 @@ export function messageToMarker(message): editor.IMarkerData {
   };
 }
 
-export function createURI(marker) {
+export function createURI(marker): string {
   return `[${[
     marker.startLineNumber,
     marker.startColumn,
     marker.startColumn,
     marker.endLineNumber,
     marker.endColumn,
-    (typeof marker.code === 'string'
-      ? marker.code
-      : marker.code && marker.code.value) || '',
+    (typeof marker.code === 'string' ? marker.code : marker.code?.value) || '',
   ].join('|')}]`;
 }

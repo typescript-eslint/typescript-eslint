@@ -23,6 +23,7 @@ module.exports = {
       './tsconfig.eslint.json',
       './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
+      './website/tsconfig.json',
     ],
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
@@ -253,6 +254,12 @@ module.exports = {
         '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
         '@typescript-eslint/internal/no-typescript-default-import': 'off',
         '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+      },
+    },
+    {
+      files: ['website/src/**/*.ts', 'website/src/**/*.tsx'],
+      rules: {
+        'import/no-default-export': 'off',
       },
     },
   ],

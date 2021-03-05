@@ -1,4 +1,5 @@
 import type { languages } from 'monaco-editor';
+import type { Linter } from 'eslint/lib/linter/linter';
 import { createURI } from './utils';
 
 export function createQuickfixCodeAction(
@@ -33,14 +34,19 @@ export function createQuickfixCodeAction(
 }
 
 export function createProvideCodeActions(
-  fixes: Map<string, any>,
+  fixes: Map<string, Linter.LintMessage[]>,
 ): languages.CodeActionProvider {
   return {
-    provideCodeActions(model, _range, context, _token) {
+    provideCodeActions(
+      model,
+      _range,
+      context,
+      _token,
+    ): languages.ProviderResult<languages.CodeActionList> {
       if (context.only !== 'quickfix') {
         return {
           actions: [],
-          dispose() {
+          dispose(): void {
             /* nop */
           },
         };
@@ -76,7 +82,7 @@ export function createProvideCodeActions(
       }
       return {
         actions,
-        dispose() {
+        dispose(): void {
           /* nop */
         },
       };

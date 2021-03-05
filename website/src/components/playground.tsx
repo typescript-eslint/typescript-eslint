@@ -20,32 +20,32 @@ import type { editor as editorApi, IDisposable } from 'monaco-editor';
 import { createProvideCodeActions } from './lib/action';
 import OptionsSelector from './options-selector';
 
-export default function Playground() {
+function Playground(): JSX.Element {
   const params = getQueryParams();
   const { isDarkTheme } = useThemeContext();
   const sandboxRef = useRef<Sandbox | null>(null);
-  const [code, setCode] = useState<string>(params.code || '');
+  const [code, setCode] = useState<string>(params.code ?? '');
   const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
   const disposableRef = useRef<IDisposable | null>(null);
   const changeRef = useRef<IDisposable | null>(null);
   const [rules, setRules] = useState<Linter.RulesRecord>(
-    () => params.rules || {},
+    () => params.rules ?? {},
   );
   const [parserOptions, setParserOptions] = useState<ParserOptions>(() => {
     return {
       ecmaFeatures: {
-        jsx: params.jsx || false,
+        jsx: params.jsx ?? false,
         globalReturn: false,
       },
       ecmaVersion: 2020,
       project: ['./tsconfig.json'],
-      sourceType: params.sourceType || 'module',
+      sourceType: params.sourceType ?? 'module',
     };
   });
 
   useEffect(() => {
-    (async () => {
+    (async (): Promise<void> => {
       const sandboxConfig: Partial<PlaygroundConfig> = {
         text: code,
         monacoSettings: {
@@ -81,7 +81,7 @@ export default function Playground() {
       });
     })();
 
-    return () => {
+    return (): void => {
       fixes.clear();
       disposableRef.current?.dispose();
       changeRef.current?.dispose();
@@ -114,7 +114,7 @@ export default function Playground() {
         setParserOptions({
           ...parserOptions,
           ecmaFeatures: {
-            ...(parserOptions.ecmaFeatures || {}),
+            ...(parserOptions.ecmaFeatures ?? {}),
             jsx: data.jsx,
           },
         });
@@ -154,14 +154,15 @@ export default function Playground() {
   }, [code]);
 
   useEffect(() => {
-    if (sandboxRef.current)
+    if (sandboxRef.current) {
       sandboxRef.current.monaco.editor.setTheme(
         isDarkTheme ? 'vs-dark' : 'vs-light',
       );
+    }
   }, [isDarkTheme]);
 
   useEffect(() => {
-    const handler = () => {
+    const handler = (): void => {
       if (sandboxRef.current) {
         sandboxRef.current.editor.layout();
       }
@@ -180,7 +181,7 @@ export default function Playground() {
     // };
     window.addEventListener('resize', handler);
     // window.addEventListener('hashchange', handleHashChange, false);
-    return () => {
+    return (): void => {
       // window.removeEventListener('hashchange', handleHashChange, false);
       window.removeEventListener('resize', handler);
     };
@@ -190,7 +191,7 @@ export default function Playground() {
     <div className={styles.codeContainer}>
       <div className={styles.options}>
         <OptionsSelector
-          ruleOptions={linter?.ruleNames || []}
+          ruleOptions={linter?.ruleNames ?? []}
           rules={rules}
           jsx={params.jsx}
           sourceType={params.sourceType}
@@ -204,3 +205,5 @@ export default function Playground() {
     </div>
   );
 }
+
+export default Playground;

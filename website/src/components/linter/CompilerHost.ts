@@ -11,34 +11,34 @@ export class CompilerHost implements ICompilerHost {
     private sourceFiles: Record<string, SourceFile>,
   ) {}
 
-  fileExists(name: string) {
+  fileExists(name: string): boolean {
     return !!this.files[name];
   }
-  getCanonicalFileName(name: string) {
+  getCanonicalFileName(name: string): string {
     return name;
   }
-  getCurrentDirectory() {
+  getCurrentDirectory(): string {
     return '/';
   }
-  getDirectories() {
+  getDirectories(): string[] {
     return [];
   }
-  getDefaultLibFileName(options: CompilerOptions) {
+  getDefaultLibFileName(options: CompilerOptions): string {
     return '/' + getDefaultLibFileName(options);
   }
-  getNewLine() {
+  getNewLine(): string {
     return '\n';
   }
-  useCaseSensitiveFileNames() {
+  useCaseSensitiveFileNames(): boolean {
     return true;
   }
-  writeFile() {
+  writeFile(): null {
     return null;
   }
-  readFile(name: string) {
+  readFile(name: string): string | undefined {
     return this.files[name];
   }
-  getSourceFile(name: string) {
+  getSourceFile(name: string): SourceFile | undefined {
     return this.sourceFiles[name];
   }
 }
