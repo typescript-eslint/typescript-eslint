@@ -13,7 +13,10 @@
     ".cspell.json",
     "yarn.lock",
     ".github/workflows/**",
-    ".vscode/*.json"
+    ".vscode/*.json",
+    "website/src/vendor/**",
+    "website/build/**",
+    "website/.docusaurus/**"
   ],
   "dictionaries": [
     "typescript",
@@ -47,6 +50,7 @@
     "bigint",
     "bivariant",
     "blockless",
+    "camelcase",
     "codebases",
     "Codecov",
     "contravariant",
@@ -65,6 +69,7 @@
     "IIFE",
     "IIFEs",
     "linebreaks",
+    "lzstring",
     "necroing",
     "nocheck",
     "nullish",
@@ -93,6 +98,7 @@
     "transpiled",
     "transpiles",
     "transpiling",
+    "tsvfs",
     "tsconfigs",
     "tsutils",
     "typedef",
