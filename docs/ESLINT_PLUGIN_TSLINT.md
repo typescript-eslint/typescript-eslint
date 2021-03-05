@@ -2,10 +2,7 @@
 id: eslint-plugin-tslint
 title: ESLint plugin TSLint
 sidebar_label: ESLint plugin TSLint
-hide_title: true
 ---
-
-# ESLint plugin TSLint
 
 ## Installation
 

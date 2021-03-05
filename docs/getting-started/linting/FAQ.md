@@ -2,10 +2,7 @@
 id: troubleshooting
 title: Troubleshooting
 sidebar_label: Troubleshooting
-hide_title: true
 ---
-
-# Troubleshooting
 
 ## I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code
 

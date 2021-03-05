@@ -2,10 +2,7 @@
 id: tslint-migration
 title: Migrating from TSLint to ESLint
 sidebar_label: Migrating from TSLint to ESLint
-hide_title: true
 ---
-
-# Migrating from TSLint to ESLint
 
 If you are looking for help in migrating from TSLint to ESLint, you can check out this project: https://github.com/typescript-eslint/tslint-to-eslint-config
 
