@@ -44,36 +44,12 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional",
-      "@commitlint/config-lerna-scopes"
-    ],
-    "rules": {
-      "body-max-length": [
-        0
-      ],
-      "body-max-line-length": [
-        0
-      ],
-      "footer-max-length": [
-        0
-      ],
-      "footer-max-line-length": [
-        0
-      ],
-      "header-max-length": [
-        0
-      ]
-    }
-  },
   "engines": {
     "node": "^10.12.0 || >=12.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
-    "@commitlint/config-lerna-scopes": "^12.0.1",
     "@types/babel__code-frame": "^7.0.2",
     "@types/debug": "^4.1.5",
     "@types/eslint-visitor-keys": "^1.0.0",
@@ -102,7 +78,7 @@
     "isomorphic-fetch": "^3.0.0",
     "jest": "^26.6.3",
     "jest-specific-snapshot": "^4.0.0",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^10.2.13",
     "make-dir": "^3.1.0",
     "markdownlint-cli": "^0.26.0",
