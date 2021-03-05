@@ -1,5 +1,5 @@
 ---
-id: tslint
+id: TSLint
 title: Migrating from TSLint to ESLint
 sidebar_label: Migrating from TSLint to ESLint
 ---
