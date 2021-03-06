@@ -43,7 +43,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
@@ -86,7 +85,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
@@ -173,7 +171,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
@@ -217,7 +214,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
@@ -257,7 +253,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
@@ -340,7 +335,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn lerna:init
           yarn check:clean-workspace-after-install
 
       - name: Build
