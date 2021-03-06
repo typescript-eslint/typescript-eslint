@@ -2315,7 +2315,7 @@ export class Converter {
       }
 
       case SyntaxKind.ParenthesizedExpression: {
-        if (ts.getJSDocTags(node).length > 0) {
+        if (ts.getJSDocTypeTag(node)) {
           return this.createNode<TSESTree.ParenthesizedExpression>(node, {
             type: AST_NODE_TYPES.ParenthesizedExpression,
             expression: this.convertChild(node.expression, parent),
