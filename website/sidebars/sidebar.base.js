@@ -11,9 +11,9 @@ module.exports = {
           'getting-started/linting/type-linting',
           'getting-started/linting/monorepo',
           'getting-started/linting/troubleshooting',
+          'getting-started/linting/tslint',
         ],
       },
-      'getting-started/tslint',
       {
         type: 'category',
         label: 'Plugins',

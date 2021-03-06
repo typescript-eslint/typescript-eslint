@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 
 interface FeatureItem {
   title: string;
-  description: any;
+  description: JSX.Element;
   imageUrl?: string;
 }
 
@@ -76,7 +76,7 @@ const features: FeatureItem[] = [
   },
 ];
 
-function Feature({ imageUrl, title, description }: FeatureItem) {
+function Feature({ imageUrl, title, description }: FeatureItem): JSX.Element {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className="col col--12">
@@ -91,7 +91,7 @@ function Feature({ imageUrl, title, description }: FeatureItem) {
   );
 }
 
-function Sponsors({ tier }: { tier: string; title: string }) {
+function Sponsors({ tier }: { tier: string; title: string }): JSX.Element {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
 
@@ -118,7 +118,7 @@ function Sponsors({ tier }: { tier: string; title: string }) {
   );
 }
 
-function Home() {
+function Home(): JSX.Element {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
   return (

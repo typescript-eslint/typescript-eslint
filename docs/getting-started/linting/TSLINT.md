@@ -1,7 +1,7 @@
 ---
 id: tslint
-title: Migrating from TSLint to ESLint
-sidebar_label: Migrating from TSLint to ESLint
+title: What about TSLint?
+sidebar_label: What about TSLint?
 ---
 
 TSLint is a fantastic tool. It is a linter that was written specifically to work based on the TypeScript AST format
