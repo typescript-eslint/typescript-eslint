@@ -53,8 +53,8 @@ Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
 ```ts
 /*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": false }]*/
 
-enum foo = {
-    SECOND = 1000,
+enum foo {
+  SECOND = 1000,
 }
 ```
 
@@ -63,8 +63,8 @@ Examples of **correct** code for the `{ "ignoreEnums": true }` option:
 ```ts
 /*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreEnums": true }]*/
 
-enum foo = {
-    SECOND = 1000,
+enum foo {
+  SECOND = 1000,
 }
 ```
 
