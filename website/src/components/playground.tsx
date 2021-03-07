@@ -17,14 +17,19 @@ import type { PlaygroundConfig, Sandbox } from '../vendor/sandbox';
 import type { Linter } from 'eslint';
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { editor as editorApi, IDisposable } from 'monaco-editor';
+import type { ParseForESLintResult } from './linter/parser';
 import { createProvideCodeActions } from './lib/action';
 import OptionsSelector from './options-selector';
+import ASTViewer from './ast-viewer';
+import clsx from 'clsx';
 
 function Playground(): JSX.Element {
   const params = getQueryParams();
   const { isDarkTheme } = useThemeContext();
   const sandboxRef = useRef<Sandbox | null>(null);
   const [code, setCode] = useState<string>(params.code ?? '');
+  const [showAST, setShowAST] = useState<boolean>(params.showAST ?? false);
+  const [ast, setAST] = useState<ParseForESLintResult['ast'] | null>();
   const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
   const disposableRef = useRef<IDisposable | null>(null);
@@ -108,9 +113,9 @@ function Playground(): JSX.Element {
   const onOptionsUpdate = useCallback(
     (data: Partial<QueryParamOptions>) => {
       updateQueryParams(data);
-      if (data.sourceType) {
+      if ('sourceType' in data) {
         setParserOptions({ ...parserOptions, sourceType: data.sourceType });
-      } else if (data.jsx) {
+      } else if ('jsx' in data) {
         setParserOptions({
           ...parserOptions,
           ecmaFeatures: {
@@ -118,7 +123,9 @@ function Playground(): JSX.Element {
             jsx: data.jsx,
           },
         });
-      } else if (data.rules) {
+      } else if ('showAST' in data) {
+        setShowAST(data.showAST ?? false);
+      } else if ('rules' in data) {
         setRules(data.rules);
       }
     },
@@ -140,6 +147,7 @@ function Playground(): JSX.Element {
         sandboxRef.current.editor.getId(),
         markers,
       );
+      setAST(linter.getAst());
     }
   }, [linter, rules, code, parserOptions]);
 
@@ -187,6 +195,14 @@ function Playground(): JSX.Element {
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (sandboxRef.current) {
+        sandboxRef.current.editor.layout();
+      }
+    }, 100);
+  }, [showAST]);
+
   return (
     <div className={styles.codeContainer}>
       <div className={styles.options}>
@@ -194,13 +210,26 @@ function Playground(): JSX.Element {
           ruleOptions={linter?.ruleNames ?? []}
           rules={rules}
           jsx={params.jsx}
+          showAST={params.showAST}
           sourceType={params.sourceType}
           onUpdate={onOptionsUpdate}
         />
       </div>
-      <div className={styles.sourceCode}>
-        {!sandboxRef.current && <Loader />}
-        <div id="monaco-editor-embed" style={{ height: '100%' }} />
+      <div className={styles.codeBlocks}>
+        <div
+          className={clsx(
+            styles.sourceCode,
+            showAST ? '' : styles.sourceCodeStandalone,
+          )}
+        >
+          {!sandboxRef.current && <Loader />}
+          <div id="monaco-editor-embed" style={{ height: '100%' }} />
+        </div>
+        {showAST && (
+          <div className={styles.astViewer}>
+            {ast && <ASTViewer ast={ast} />}
+          </div>
+        )}
       </div>
     </div>
   );

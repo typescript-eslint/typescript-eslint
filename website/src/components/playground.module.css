@@ -5,10 +5,30 @@
 }
 
 .sourceCode {
-  min-width: 33.3%;
   height: 100%;
-  flex: 1;
+  width: 50%;
   border: 1px solid var(--ifm-color-emphasis-100);
+}
+
+.sourceCodeStandalone {
+  width: 100%;
+}
+
+.codeBlocks {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: calc(100vw - 20rem);
+}
+
+.astViewer {
+  height: 100%;
+  width: 50%;
+  border: 1px solid var(--ifm-color-emphasis-100);
+  flex-direction: column;
+  overflow: auto;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem;
 }
 
 .codeContainer {

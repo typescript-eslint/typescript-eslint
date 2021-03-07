@@ -11,7 +11,7 @@ import type {
 import { extra } from '../lib/config';
 
 // TODO: this is not exported
-interface ParseForESLintResult {
+export interface ParseForESLintResult {
   ast: TSESTree.Program & {
     range?: [number, number];
     tokens?: TSESTree.Token[];
@@ -68,11 +68,4 @@ export function parseForESLint(
     sourceType: parserOptions.sourceType ?? 'script',
   });
   return { ast, services, scopeManager, visitorKeys };
-}
-
-export function parse(
-  code: string,
-  options: ParserOptions,
-): ParseForESLintResult['ast'] {
-  return parseForESLint(code, options).ast;
 }

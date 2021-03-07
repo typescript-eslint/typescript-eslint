@@ -6,6 +6,7 @@ export interface QueryParamOptions {
   sourceType?: ParserOptions['sourceType'];
   rules?: Record<string, unknown>;
   code?: string;
+  showAST?: boolean;
 }
 
 function writeQueryParam(value?: unknown): string {
@@ -25,6 +26,7 @@ export function setQueryParams(state: QueryParamOptions): void {
   const params: string[] = Object.entries({
     jsx: state.jsx,
     sourceType: state.sourceType,
+    'show-ast': state.showAST,
     rules: state.rules ? writeQueryParam(state.rules) : undefined,
     code: state.code ? writeQueryParam(state.code) : undefined,
   })
@@ -40,6 +42,7 @@ export function getQueryParams(): QueryParamOptions {
     const searchParams = new URLSearchParams(location.hash.replace('#', ''));
     return {
       jsx: searchParams.has('jsx'),
+      showAST: searchParams.has('show-ast'),
       sourceType:
         searchParams.has('sourceType') &&
         searchParams.get('sourceType') === 'script'

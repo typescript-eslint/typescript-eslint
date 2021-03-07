@@ -9,18 +9,24 @@ interface OptionSelectorParams extends QueryParamOptions {
   onUpdate(value: Partial<QueryParamOptions>): void;
 }
 
-function computeRuleOptions(rules: Record<string, any>, ruleNames: string[]) {
+function computeRuleOptions(
+  rules: Record<string, unknown>,
+  ruleNames: string[],
+): string[] {
   const keys = Object.keys(rules);
   return ruleNames.filter(name => !keys.includes(name));
 }
 
-function OptionsSelector(params: OptionSelectorParams) {
-  const [jsx, setJsx] = useState<boolean>(() => params.jsx || false);
-  const [sourceType, setSourceType] = useState<string>(
-    () => params.sourceType || 'module',
+function OptionsSelector(params: OptionSelectorParams): JSX.Element {
+  const [jsx, setJsx] = useState<boolean>(() => params.jsx ?? false);
+  const [showAST, setShowAST] = useState<boolean>(
+    () => params.showAST ?? false,
   );
-  const [rules, setRules] = useState<Record<string, any>>(
-    () => params.rules || {},
+  const [sourceType, setSourceType] = useState<'script' | 'module'>(
+    () => params.sourceType ?? 'module',
+  );
+  const [rules, setRules] = useState<Record<string, unknown>>(
+    () => params.rules ?? {},
   );
   const [ruleName, setRuleName] = useState<string>('');
 
@@ -54,11 +60,24 @@ function OptionsSelector(params: OptionSelectorParams) {
           Enable jsx
           <input
             checked={jsx}
-            onChange={e => {
+            onChange={(e): void => {
               setJsx(e.target.checked);
-              params.onUpdate({ jsx: e.target.checked });
+              params.onUpdate({ jsx: e.target.checked ?? false });
             }}
             name="jsx"
+            className={styles.optionCheckbox}
+            type="checkbox"
+          />
+        </label>
+        <label className={styles.optionLabel}>
+          Show AST
+          <input
+            checked={showAST}
+            onChange={(e): void => {
+              setShowAST(e.target.checked);
+              params.onUpdate({ showAST: e.target.checked ?? false });
+            }}
+            name="ast"
             className={styles.optionCheckbox}
             type="checkbox"
           />
@@ -69,10 +88,11 @@ function OptionsSelector(params: OptionSelectorParams) {
             name="sourceType"
             value={sourceType}
             className={styles.optionSelect}
-            onChange={e => {
-              setSourceType(e.target.value);
-              // @ts-ignore
-              params.onUpdate({ sourceType: e.target.value });
+            onChange={(e): void => {
+              setSourceType(e.target.value as 'script' | 'module');
+              params.onUpdate({
+                sourceType: e.target.value as 'script' | 'module',
+              });
             }}
           >
             <option value="script">script</option>
@@ -86,7 +106,7 @@ function OptionsSelector(params: OptionSelectorParams) {
             {rule}
             <DeleteIcon
               className={styles.clickableIcon}
-              onClick={() => removeRule(rule)}
+              onClick={(): void => removeRule(rule)}
             />
           </label>
         ))}
@@ -97,7 +117,7 @@ function OptionsSelector(params: OptionSelectorParams) {
               <select
                 value={ruleName}
                 name="ruleName2"
-                onChange={e => {
+                onChange={(e): void => {
                   setRuleName(e.target.value);
                 }}
                 className={styles.optionInput}

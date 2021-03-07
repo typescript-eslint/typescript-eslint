@@ -1,0 +1,46 @@
+.list, .subList {
+  cursor: default;
+  box-sizing: border-box;
+  font-family: monospace;
+  flex: 1;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.subList {
+  padding-left: 0.5rem;
+}
+
+.nonToggle, .toggle {
+  border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
+  padding-left: 0.9rem;
+}
+
+.toggle::before {
+  content: '-';
+  margin-left: -1rem;
+  width: 1rem;
+  display: inline-block;
+}
+
+.valueBody {
+  min-width: 300px;
+  width: fit-content;
+}
+
+.tokenName {
+  color: #2AA198;
+}
+
+.propName {
+  color: #B58900;
+}
+
+.propNumber {
+  color: #268BD2;
+}
+
+.propString {
+  color: green;
+}
