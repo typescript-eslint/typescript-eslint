@@ -84,6 +84,7 @@ function Playground(): JSX.Element {
         updateQueryParams({ code });
         setCode(code);
       });
+      instance.editor.layout();
     })();
 
     return (): void => {
