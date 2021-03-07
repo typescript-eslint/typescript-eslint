@@ -24,6 +24,11 @@ export async function loadLinter(): Promise<WebLinter> {
   let storedAST: ParseForESLintResult['ast'];
 
   linter.defineParser(PARSER_NAME, {
+    parseForESLint(code: string, options: ParserOptions): ParseForESLintResult {
+      const toParse = parseForESLint(code, options);
+      storedAST = toParse.ast;
+      return toParse;
+    },
     parse(code: string, options: ParserOptions): ParseForESLintResult['ast'] {
       const toParse = parseForESLint(code, options);
       storedAST = toParse.ast;
