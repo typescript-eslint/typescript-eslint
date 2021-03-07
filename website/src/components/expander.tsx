@@ -8,7 +8,7 @@ interface MyProps {
   label: string;
 }
 
-export default function Expander(props: MyProps) {
+export default function Expander(props: MyProps): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
   const handleToggle = () => {

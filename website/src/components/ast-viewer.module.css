@@ -12,12 +12,16 @@
   padding-left: 0.5rem;
 }
 
-.nonToggle, .toggle {
+.nonExpand, .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
   padding-left: 0.9rem;
 }
 
-.toggle::before {
+.expand.open::before {
+  content: '+';
+}
+
+.expand::before {
   content: '-';
   margin-left: -1rem;
   width: 1rem;
@@ -39,8 +43,22 @@
 
 .propNumber {
   color: #268BD2;
+  font-weight: bold;
+}
+
+.propBoolean {
+  color: #B58900;
+  font-weight: bold;
 }
 
 .propString {
   color: green;
+  font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  text-decoration: underline;
 }
