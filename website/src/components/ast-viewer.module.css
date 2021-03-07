@@ -53,6 +53,10 @@
   color: #15aa15;
 }
 
+.hidden {
+  color: var(--ifm-color-emphasis-400);
+}
+
 .clickable {
   cursor: pointer;
 }

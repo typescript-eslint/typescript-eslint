@@ -5,6 +5,14 @@ import clsx from 'clsx';
 
 const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
 
+function filterRecord(
+  values: TSESTree.Node | Record<string, unknown>,
+): [string, unknown][] {
+  return Object.entries(values).filter(
+    item => !propsToFilter.includes(item[0]),
+  );
+}
+
 const PropertyName = React.memo(function PropertyName(props: {
   name?: string;
   propName?: string;
@@ -78,7 +86,7 @@ function ElementArray(props: {
           })}
         </ul>
       ) : !isComplex ? (
-        <span>
+        <span className={styles.hidden}>
           {props.value.map((item, index) => (
             <>
               {index > 0 && ', '}
@@ -90,7 +98,7 @@ function ElementArray(props: {
           ))}
         </span>
       ) : (
-        <span>
+        <span className={styles.hidden}>
           {props.value.length} {props.value.length > 1 ? 'elements' : 'element'}
         </span>
       )}
@@ -115,19 +123,21 @@ function ElementObject(props: {
       <span> {'{'}</span>
       {isExpanded ? (
         <ul className={styles.subList}>
-          {Object.entries(props.value)
-            .filter(item => !propsToFilter.includes(item[0]))
-            .map((item, index) => (
-              <ElementItem
-                level={`${props.level}_${item[0]}[${index}]`}
-                key={`${props.level}_${item[0]}[${index}]`}
-                name={item[0]}
-                value={item[1]}
-              />
-            ))}
+          {filterRecord(props.value).map((item, index) => (
+            <ElementItem
+              level={`${props.level}_${item[0]}[${index}]`}
+              key={`${props.level}_${item[0]}[${index}]`}
+              name={item[0]}
+              value={item[1]}
+            />
+          ))}
         </ul>
       ) : (
-        <span>{Object.keys(props.value).join(', ')}</span>
+        <span className={styles.hidden}>
+          {filterRecord(props.value)
+            .map(item => item[0])
+            .join(', ')}
+        </span>
       )}
       <span>{'}'}</span>
     </li>
