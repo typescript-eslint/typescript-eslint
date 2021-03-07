@@ -43,17 +43,14 @@
 
 .propNumber {
   color: #268BD2;
-  font-weight: bold;
 }
 
 .propBoolean {
   color: #B58900;
-  font-weight: bold;
 }
 
 .propString {
-  color: green;
-  font-weight: bold;
+  color: #15aa15;
 }
 
 .clickable {

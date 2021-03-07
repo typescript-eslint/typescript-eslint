@@ -3,7 +3,7 @@ import styles from './ast-viewer.module.css';
 import type { TSESTree } from '@typescript-eslint/types';
 import clsx from 'clsx';
 
-const propsToFilter = ['type', 'parent', 'comments', 'tokens', 'loc'];
+const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
 
 const PropertyName = React.memo(function PropertyName(props: {
   name?: string;
@@ -78,9 +78,21 @@ function ElementArray(props: {
           })}
         </ul>
       ) : !isComplex ? (
-        <span>{Object.values(props.value).join(', ')}</span>
+        <span>
+          {props.value.map((item, index) => (
+            <>
+              {index > 0 && ', '}
+              <PropertyValue
+                key={`${props.level}_${props.name}|[${index}]`}
+                value={item}
+              />
+            </>
+          ))}
+        </span>
       ) : (
-        <span>{props.value.length} items</span>
+        <span>
+          {props.value.length} {props.value.length > 1 ? 'elements' : 'element'}
+        </span>
       )}
       <span>]</span>
     </li>
