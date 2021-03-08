@@ -1,16 +1,23 @@
-import React, { SyntheticEvent, useCallback, useState } from 'react';
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from './ast-viewer.module.css';
 import type { TSESTree } from '@typescript-eslint/types';
 import clsx from 'clsx';
+import { scrollIntoViewIfNeeded } from './lib/scroll-into';
+import { filterRecord } from './lib/selection';
 
-const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
-
-function filterRecord(
-  values: TSESTree.Node | Record<string, unknown>,
-): [string, unknown][] {
-  return Object.entries(values).filter(
-    item => !propsToFilter.includes(item[0]),
-  );
+interface GenericParams<V> {
+  propName?: string;
+  name?: string;
+  value: V;
+  level: string;
+  selection?: TSESTree.Node | null;
+  onSelectNode: (node: TSESTree.Node | null) => void;
 }
 
 const PropertyName = React.memo(function PropertyName(props: {
@@ -57,12 +64,7 @@ const PropertyValue = React.memo(function PropertyValue(props: {
   return <span>{String(props.value)}</span>;
 });
 
-function ElementArray(props: {
-  name?: string;
-  value: unknown[];
-  level: string;
-  onSelectNode: (node: TSESTree.Node | null) => void;
-}): JSX.Element {
+function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
   const isComplex = props.value.some(
     item => typeof item === 'object' && item !== null,
   );
@@ -83,6 +85,7 @@ function ElementArray(props: {
                 level={`${props.level}_${props.name}[${index}]`}
                 key={`${props.level}_${props.name}[${index}]`}
                 value={item}
+                selection={props.selection}
                 onSelectNode={props.onSelectNode}
               />
             );
@@ -107,13 +110,13 @@ function ElementArray(props: {
   );
 }
 
-function ElementObject(props: {
-  propName?: string;
-  value: TSESTree.Node | Record<string, unknown>;
-  onSelectNode: (node: TSESTree.Node | null) => void;
-  level: string;
-}): JSX.Element {
+function ElementObject(
+  props: GenericParams<TSESTree.Node | Record<string, unknown>>,
+): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const listItem = useRef<HTMLLIElement | null>(null);
+
+  const isSelected = props.selection === props.value;
 
   const onMouseEnter = useCallback((e: SyntheticEvent) => {
     if ('type' in props.value && 'loc' in props.value) {
@@ -131,14 +134,25 @@ function ElementObject(props: {
     }
   }, []);
 
+  useEffect(() => {
+    if (listItem.current && isSelected) {
+      scrollIntoViewIfNeeded(listItem.current);
+      setIsExpanded(true);
+    }
+  }, [props.selection, props.value, listItem]);
+
   return (
     <li
-      className={clsx(styles.expand, isExpanded ? '' : styles.open)}
+      ref={listItem}
+      className={clsx(
+        styles.expand,
+        isExpanded ? '' : styles.open,
+        isSelected ? styles.selected : '',
+      )}
       onMouseMove={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <PropertyName
-        onMouseEnter={onMouseEnter}
         propName={props.propName}
         name={props.value.type as string | undefined}
         onClick={(): void => setIsExpanded(!isExpanded)}
@@ -150,6 +164,7 @@ function ElementObject(props: {
             <ElementItem
               level={`${props.level}_${item[0]}[${index}]`}
               key={`${props.level}_${item[0]}[${index}]`}
+              selection={props.selection}
               name={item[0]}
               value={item[1]}
               onSelectNode={props.onSelectNode}
@@ -168,18 +183,14 @@ function ElementObject(props: {
   );
 }
 
-function ElementItem(props: {
-  name?: string;
-  value: unknown;
-  level: string;
-  onSelectNode: (node: TSESTree.Node | null) => void;
-}): JSX.Element {
+function ElementItem(props: GenericParams<unknown>): JSX.Element {
   if (Array.isArray(props.value)) {
     return (
       <ElementArray
         name={props.name}
         value={props.value}
         level={props.level}
+        selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
     );
@@ -193,6 +204,7 @@ function ElementItem(props: {
         level={`${props.level}_${props.name}`}
         propName={props.name}
         value={props.value as Record<string, unknown>}
+        selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
     );
@@ -208,6 +220,7 @@ function ElementItem(props: {
 
 function ASTViewer(props: {
   ast: TSESTree.Node | string;
+  selection?: TSESTree.Node | null;
   onSelectNode: (node: TSESTree.Node | null) => void;
 }): JSX.Element {
   return typeof props.ast === 'string' ? (
@@ -217,6 +230,7 @@ function ASTViewer(props: {
       <ElementObject
         value={props.ast}
         level="ast"
+        selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
     </ul>

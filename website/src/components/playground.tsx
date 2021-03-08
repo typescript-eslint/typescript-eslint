@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import useThemeContext from '@theme/hooks/useThemeContext';
 import styles from './playground.module.css';
 import Loader from './loader';
@@ -7,10 +7,12 @@ import useHashState from './lib/use-hash-state';
 
 import type { ParseForESLintResult } from './linter/parser';
 import type { TSESTree } from '@typescript-eslint/types';
+import type Monaco from 'monaco-editor';
 import OptionsSelector from './options-selector';
 import ASTViewer from './ast-viewer';
 import clsx from 'clsx';
 import Editor from './editor';
+import { findNode } from './lib/selection';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
@@ -25,6 +27,46 @@ function Playground(): JSX.Element {
   const [ruleNames, setRuleNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);
+  const [highlightedNode, setHighlightedNode] = useState<TSESTree.Node | null>(
+    null,
+  );
+
+  const updatePosition = useCallback(
+    (position: Monaco.Position | null) => {
+      if (typeof ast === 'object' && ast && position) {
+        setHighlightedNode(
+          findNode(
+            {
+              line: position.lineNumber,
+              column: position.column - 1,
+            },
+            ast,
+          ),
+        );
+      }
+    },
+    [ast],
+  );
+
+  const updateAST = useCallback(
+    (value: string | TSESTree.Program, position: Monaco.Position | null) => {
+      if (typeof value === 'object' && value) {
+        setAST(value);
+        if (position) {
+          setHighlightedNode(
+            findNode(
+              {
+                line: position.lineNumber,
+                column: position.column - 1,
+              },
+              value,
+            ),
+          );
+        }
+      }
+    },
+    [],
+  );
 
   return (
     <div className={styles.codeContainer}>
@@ -51,10 +93,11 @@ function Playground(): JSX.Element {
             rules={state.rules}
             showAST={state.showAST}
             onLoadRule={setRuleNames}
-            onASTChange={setAST}
+            onASTChange={updateAST}
             decoration={selectedNode}
             onChange={(code): void => setState('code', code)}
             onLoaded={(): void => setIsLoading(true)}
+            onSelect={updatePosition}
           />
         </div>
         {state.showAST && (
@@ -62,6 +105,7 @@ function Playground(): JSX.Element {
             {ast && (
               <ASTViewer
                 ast={ast}
+                selection={highlightedNode}
                 onSelectNode={(node): void => setSelectedNode(node)}
               />
             )}

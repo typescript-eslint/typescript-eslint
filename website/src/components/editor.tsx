@@ -20,8 +20,12 @@ interface EditorProps extends HashStateOptions {
     value: string,
     event: Monaco.editor.IModelContentChangedEvent,
   ) => void;
-  onASTChange?: (value: string | TSESTree.Program) => void;
+  onASTChange?: (
+    value: string | TSESTree.Program,
+    position: Monaco.Position | null,
+  ) => void;
   onLoadRule?: (value: string[]) => void;
+  onSelect?: (position: Monaco.Position) => void;
   onLoaded?: () => void;
 }
 
@@ -29,9 +33,9 @@ class Editor extends React.Component<EditorProps> {
   private sandboxInstance?: ReturnType<typeof createTypeScriptSandbox>;
   private linter?: WebLinter;
 
-  private _actionProvider?: Monaco.IDisposable;
-  private _subscription?: Monaco.IDisposable;
+  private _subscriptions: Monaco.IDisposable[];
   private _resize?: () => void;
+  private readonly _lint: () => void;
   private _codeIsUpdating: boolean;
   private _decorations: string[];
 
@@ -42,6 +46,8 @@ class Editor extends React.Component<EditorProps> {
     this.fixes = new Map();
     this._codeIsUpdating = false;
     this._decorations = [];
+    this._subscriptions = [];
+    this._lint = debounce((): void => this.lintCode(), 100);
   }
 
   async componentDidMount(): Promise<void> {
@@ -55,8 +61,10 @@ class Editor extends React.Component<EditorProps> {
       window.removeEventListener('resize', this._resize);
     }
     this.fixes.clear();
-    this._actionProvider?.dispose();
-    this._subscription?.dispose();
+    for (const subscription of this._subscriptions) {
+      subscription.dispose();
+    }
+    this._subscriptions = [];
 
     if (this.sandboxInstance) {
       this.sandboxInstance.monaco.editor.setModelMarkers(
@@ -91,16 +99,15 @@ class Editor extends React.Component<EditorProps> {
         shouldLint = true;
       }
       if (this.props.showAST !== prevProps.showAST) {
+        this.updateDecorations();
         this.updateLayout();
       }
       if (
         this.props.code !== editor.getValue() &&
         prevProps.code !== this.props.code
       ) {
-        this._codeIsUpdating = true;
-        // this.updateCode(); // TODO: find a better way
+        this.updateCode();
         shouldLint = true;
-        this._codeIsUpdating = false;
       }
       if (this.props.decoration !== prevProps.decoration) {
         this.updateDecorations();
@@ -109,7 +116,7 @@ class Editor extends React.Component<EditorProps> {
         this.updateTheme();
       }
       if (shouldLint) {
-        this.lintCode();
+        this._lint();
       }
     }
   }
@@ -129,7 +136,11 @@ class Editor extends React.Component<EditorProps> {
         smoothScrolling: true,
       },
       compilerOptions: {
-        jsx: this.props.jsx ? 2 : 0,
+        noResolve: true,
+        strict: true,
+        target: 99,
+        jsx: this.props.jsx ? 2 : undefined,
+        module: 99,
       },
       domID: 'monaco-editor-embed',
     };
@@ -146,22 +157,37 @@ class Editor extends React.Component<EditorProps> {
       this.props.onLoadRule(this.linter.ruleNames);
     }
 
-    this._actionProvider = main.languages.registerCodeActionProvider(
-      'typescript',
-      createProvideCodeActions(this.fixes),
+    this._subscriptions.push(
+      main.languages.registerCodeActionProvider(
+        'typescript',
+        createProvideCodeActions(this.fixes),
+      ),
     );
-    this._subscription = this.sandboxInstance.editor.onDidChangeModelContent(
-      event => {
+    this._subscriptions.push(
+      this.sandboxInstance.editor.onMouseDown(() => {
+        this.updateCursor();
+      }),
+    );
+    this._subscriptions.push(
+      this.sandboxInstance.editor.onKeyUp(e => {
+        // console.log(e.keyCode);
+        if (e.keyCode >= 15 && e.keyCode <= 18) {
+          this.updateCursor();
+        }
+      }),
+    );
+    this._subscriptions.push(
+      this.sandboxInstance.editor.onDidChangeModelContent(event => {
         if (this.sandboxInstance && this.props.onChange) {
+          this._lint();
           if (!this._codeIsUpdating) {
             const model = this.sandboxInstance.getModel().getValue();
             this.props.onChange(model, event);
           }
-          this.lintCode();
         }
-      },
+      }),
     );
-    this.lintCode();
+    this._lint();
     this.updateLayout();
     if (this.props.onLoaded) {
       this.props.onLoaded();
@@ -208,7 +234,22 @@ class Editor extends React.Component<EditorProps> {
           [],
         );
       }
-      this.props.onASTChange(fatalMessage ?? this.linter.getAst());
+
+      this.props.onASTChange(
+        fatalMessage ?? this.linter.getAst(),
+        this.sandboxInstance.editor.getPosition(),
+      );
+      this.updateCursor();
+    }
+  }
+
+  private updateCursor(): void {
+    // console.log('updateCursor');
+    if (this.props.onSelect && this.sandboxInstance) {
+      const position = this.sandboxInstance.editor.getPosition();
+      if (position) {
+        this.props.onSelect(position);
+      }
     }
   }
 
@@ -228,10 +269,17 @@ class Editor extends React.Component<EditorProps> {
 
   private updateCode(): void {
     if (this.sandboxInstance) {
+      this._codeIsUpdating = true;
       const model = this.sandboxInstance.editor.getModel()!;
       if (model.getValue() !== this.props.code) {
-        this.sandboxInstance.setText(this.props.code);
+        this.sandboxInstance.editor.executeEdits(model.getValue(), [
+          {
+            range: model.getFullModelRange(),
+            text: this.props.code,
+          },
+        ]);
       }
+      this._codeIsUpdating = false;
     }
   }
 
@@ -246,7 +294,7 @@ class Editor extends React.Component<EditorProps> {
 
   private updateDecorations(): void {
     if (this.sandboxInstance) {
-      if (this.props.decoration) {
+      if (this.props.decoration && this.props.showAST) {
         const loc = this.props.decoration.loc;
         this._decorations = this.sandboxInstance.editor.deltaDecorations(
           this._decorations,

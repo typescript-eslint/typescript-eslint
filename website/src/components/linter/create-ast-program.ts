@@ -37,7 +37,7 @@ export function createASTProgram(
     noResolve: true,
     strict: true,
     target: ScriptTarget.Latest,
-    jsx: isJsx ? JsxEmit.Preserve : undefined,
+    jsx: isJsx ? JsxEmit.React : undefined,
     module: ModuleKind.ES2015,
   };
   const program = createProgram(

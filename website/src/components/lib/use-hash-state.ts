@@ -68,12 +68,11 @@ const writeStateToUrl = debounce((newState: HashStateOptions): void => {
     .filter(item => item[1])
     .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
     .join('&');
-  window.location.hash = `#${json}`;
-  // window.history.pushState(
-  //   undefined,
-  //   document.title,
-  //   `${window.location.pathname}#${json}`,
-  // );
+  window.history.pushState(
+    undefined,
+    document.title,
+    `${window.location.pathname}#${json}`,
+  );
 }, 100);
 
 function useHashState(

@@ -21,6 +21,10 @@
   content: '+';
 }
 
+.selected {
+  background-color: var(--code-line-decoration);
+}
+
 .expand::before {
   content: '-';
   margin-left: -1rem;

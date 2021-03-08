@@ -15,6 +15,8 @@
   --ifm-color-primary-lighter: #5a91ea;
   --ifm-color-primary-lightest: #80aaef;
   --ifm-code-font-size: 95%;
+
+  --code-line-decoration: var(--ifm-color-emphasis-800);
 }
 
 html[data-theme='dark'] {
@@ -29,6 +31,8 @@ html[data-theme='dark'] {
 
   --ifm-code-background: rgb(40, 42, 54);
   --ifm-code-color: rgb(248, 248, 242);
+
+  --code-line-decoration: rgba(255, 255, 255, 0.1);
 }
 
 .docusaurus-highlight-code-line {
@@ -100,10 +104,5 @@ html[data-theme='dark'] .alert--secondary {
 }
 
 .myLineDecoration {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-
-html[data-theme='dark'] .myLineDecoration {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--code-line-decoration);
 }
