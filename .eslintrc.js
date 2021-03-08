@@ -260,6 +260,7 @@ module.exports = {
       files: ['website/src/**/*.ts', 'website/src/**/*.tsx'],
       rules: {
         'import/no-default-export': 'off',
+        'no-console': 'off',
       },
     },
   ],

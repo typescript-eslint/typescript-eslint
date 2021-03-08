@@ -88,13 +88,10 @@ function ElementArray(props: {
       ) : !isComplex ? (
         <span className={styles.hidden}>
           {props.value.map((item, index) => (
-            <>
+            <span key={`${props.level}_${props.name}|[${index}]`}>
               {index > 0 && ', '}
-              <PropertyValue
-                key={`${props.level}_${props.name}|[${index}]`}
-                value={item}
-              />
-            </>
+              <PropertyValue value={item} />
+            </span>
           ))}
         </span>
       ) : (
@@ -175,8 +172,10 @@ function ElementItem(props: {
   );
 }
 
-function ASTViewer(props: { ast: TSESTree.Node }): JSX.Element {
-  return (
+function ASTViewer(props: { ast: TSESTree.Node | string }): JSX.Element {
+  return typeof props.ast === 'string' ? (
+    <div>{props.ast}</div>
+  ) : (
     <ul className={styles.list}>
       <ElementObject value={props.ast} level="ast" />
     </ul>

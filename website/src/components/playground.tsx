@@ -1,21 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useThemeContext from '@theme/hooks/useThemeContext';
 import styles from './playground.module.css';
 import Loader from './loader';
 
-import {
-  getQueryParams,
-  messageToMarker,
-  createURI,
-  QueryParamOptions,
-  updateQueryParams,
-} from './lib/utils';
+import { messageToMarker, createURI } from './lib/utils';
 import { sandboxSingleton } from './lib/load-sandbox';
 import { loadLinter, WebLinter } from './linter/linter';
+import useHashState from './lib/use-hash-state';
 
 import type { PlaygroundConfig, Sandbox } from '../vendor/sandbox';
-import type { Linter } from 'eslint';
-import type { ParserOptions } from '@typescript-eslint/parser';
 import type { editor as editorApi, IDisposable } from 'monaco-editor';
 import type { ParseForESLintResult } from './linter/parser';
 import { createProvideCodeActions } from './lib/action';
@@ -23,36 +16,27 @@ import OptionsSelector from './options-selector';
 import ASTViewer from './ast-viewer';
 import clsx from 'clsx';
 
+// TODO: split editor to separate component
 function Playground(): JSX.Element {
-  const params = getQueryParams();
+  const [state, setState] = useHashState({
+    jsx: false,
+    showAST: false,
+    sourceType: 'module' as 'script' | 'module',
+    code: '',
+    rules: {} as Record<string, unknown>,
+  });
   const { isDarkTheme } = useThemeContext();
   const sandboxRef = useRef<Sandbox | null>(null);
-  const [code, setCode] = useState<string>(params.code ?? '');
-  const [showAST, setShowAST] = useState<boolean>(params.showAST ?? false);
-  const [ast, setAST] = useState<ParseForESLintResult['ast'] | null>();
+  const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
   const [linter, setLinter] = useState<WebLinter | null>(null);
   const [fixes] = useState(() => new Map());
   const disposableRef = useRef<IDisposable | null>(null);
   const changeRef = useRef<IDisposable | null>(null);
-  const [rules, setRules] = useState<Linter.RulesRecord>(
-    () => params.rules ?? {},
-  );
-  const [parserOptions, setParserOptions] = useState<ParserOptions>(() => {
-    return {
-      ecmaFeatures: {
-        jsx: params.jsx ?? false,
-        globalReturn: false,
-      },
-      ecmaVersion: 2020,
-      project: ['./tsconfig.json'],
-      sourceType: params.sourceType ?? 'module',
-    };
-  });
 
   useEffect(() => {
     (async (): Promise<void> => {
       const sandboxConfig: Partial<PlaygroundConfig> = {
-        text: code,
+        text: state.code,
         monacoSettings: {
           minimap: { enabled: false },
           fontSize: 13,
@@ -70,7 +54,7 @@ function Playground(): JSX.Element {
         ts,
       );
       main.editor.setTheme(isDarkTheme ? 'sandbox-dark' : 'sandbox');
-      instance.setText(code);
+      instance.setText(state.code);
       instance.editor.focus();
       const linterInstance = await loadLinter();
       sandboxRef.current = instance;
@@ -81,8 +65,7 @@ function Playground(): JSX.Element {
       );
       changeRef.current = instance.editor.onDidChangeModelContent(_event => {
         const code = instance.editor.getValue();
-        updateQueryParams({ code });
-        setCode(code);
+        setState('code', code);
       });
       instance.editor.layout();
     })();
@@ -111,34 +94,28 @@ function Playground(): JSX.Element {
     };
   }, []);
 
-  const onOptionsUpdate = useCallback(
-    (data: Partial<QueryParamOptions>) => {
-      updateQueryParams(data);
-      if ('sourceType' in data) {
-        setParserOptions({ ...parserOptions, sourceType: data.sourceType });
-      } else if ('jsx' in data) {
-        setParserOptions({
-          ...parserOptions,
-          ecmaFeatures: {
-            ...(parserOptions.ecmaFeatures ?? {}),
-            jsx: data.jsx,
-          },
-        });
-      } else if ('showAST' in data) {
-        setShowAST(data.showAST ?? false);
-      } else if ('rules' in data) {
-        setRules(data.rules);
-      }
-    },
-    [parserOptions],
-  );
-
   useEffect(() => {
     if (linter && sandboxRef.current) {
-      const messages = linter.lint(code, parserOptions, rules);
+      const messages = linter.lint(
+        state.code,
+        {
+          ecmaFeatures: {
+            jsx: state.jsx ?? false,
+            globalReturn: false,
+          },
+          ecmaVersion: 2020,
+          project: ['./tsconfig.json'],
+          sourceType: state.sourceType ?? 'module',
+        },
+        state.rules,
+      );
       const markers: editorApi.IMarkerData[] = [];
       fixes.clear();
+      let fatalMessage: string | undefined = undefined;
       for (const message of messages) {
+        if (!message.ruleId) {
+          fatalMessage = message.message;
+        }
         const marker = messageToMarker(message);
         markers.push(marker);
         fixes.set(createURI(marker), message);
@@ -148,19 +125,9 @@ function Playground(): JSX.Element {
         sandboxRef.current.editor.getId(),
         markers,
       );
-      setAST(linter.getAst());
+      setAST(fatalMessage ?? linter.getAst());
     }
-  }, [linter, rules, code, parserOptions]);
-
-  useEffect(() => {
-    const params = getQueryParams();
-    if (params.code !== code) {
-      updateQueryParams({ code });
-      if (sandboxRef.current) {
-        sandboxRef.current.setText(code);
-      }
-    }
-  }, [code]);
+  }, [linter, state]);
 
   useEffect(() => {
     if (sandboxRef.current) {
@@ -176,22 +143,8 @@ function Playground(): JSX.Element {
         sandboxRef.current.editor.layout();
       }
     };
-    // const handleHashChange = () => {
-    //   const params = getQueryParams();
-    //   if (
-    //     params.code !== code ||
-    //     params.rules !== rules ||
-    //     params.parserOptions !== parserOptions
-    //   ) {
-    //     setCode(params.code || '');
-    //     setRules(params.rules || {});
-    //     setParserOptions(params.parserOptions || {});
-    //   }
-    // };
     window.addEventListener('resize', handler);
-    // window.addEventListener('hashchange', handleHashChange, false);
     return (): void => {
-      // window.removeEventListener('hashchange', handleHashChange, false);
       window.removeEventListener('resize', handler);
     };
   }, []);
@@ -202,31 +155,28 @@ function Playground(): JSX.Element {
         sandboxRef.current.editor.layout();
       }
     }, 100);
-  }, [showAST]);
+  }, [state]);
 
   return (
     <div className={styles.codeContainer}>
       <div className={styles.options}>
         <OptionsSelector
+          state={state}
+          setState={setState}
           ruleOptions={linter?.ruleNames ?? []}
-          rules={rules}
-          jsx={params.jsx}
-          showAST={params.showAST}
-          sourceType={params.sourceType}
-          onUpdate={onOptionsUpdate}
         />
       </div>
       <div className={styles.codeBlocks}>
         <div
           className={clsx(
             styles.sourceCode,
-            showAST ? '' : styles.sourceCodeStandalone,
+            state.showAST ? '' : styles.sourceCodeStandalone,
           )}
         >
           {!sandboxRef.current && <Loader />}
           <div id="monaco-editor-embed" style={{ height: '100%' }} />
         </div>
-        {showAST && (
+        {state.showAST && (
           <div className={styles.astViewer}>
             {ast && <ASTViewer ast={ast} />}
           </div>

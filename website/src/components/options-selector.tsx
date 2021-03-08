@@ -2,12 +2,7 @@ import Expander from './expander';
 import React, { useCallback, useState } from 'react';
 import styles from './options-selector.module.css';
 import { DeleteIcon, AddIcon } from './icons';
-import { QueryParamOptions } from './lib/utils';
-
-interface OptionSelectorParams extends QueryParamOptions {
-  ruleOptions: string[];
-  onUpdate(value: Partial<QueryParamOptions>): void;
-}
+import { HashStateOptions } from './lib/use-hash-state';
 
 function computeRuleOptions(
   rules: Record<string, unknown>,
@@ -17,41 +12,39 @@ function computeRuleOptions(
   return ruleNames.filter(name => !keys.includes(name));
 }
 
-function OptionsSelector(params: OptionSelectorParams): JSX.Element {
-  const [jsx, setJsx] = useState<boolean>(() => params.jsx ?? false);
-  const [showAST, setShowAST] = useState<boolean>(
-    () => params.showAST ?? false,
-  );
-  const [sourceType, setSourceType] = useState<'script' | 'module'>(
-    () => params.sourceType ?? 'module',
-  );
-  const [rules, setRules] = useState<Record<string, unknown>>(
-    () => params.rules ?? {},
-  );
+interface OptionsSelectorParams<T = HashStateOptions> {
+  ruleOptions: string[];
+  state: T;
+  setState: (key: keyof T, value: unknown) => void;
+}
+
+function OptionsSelector({
+  ruleOptions,
+  state,
+  setState,
+}: OptionsSelectorParams): JSX.Element {
   const [ruleName, setRuleName] = useState<string>('');
 
   const removeRule = useCallback(
     (item: string) => {
-      const { [item]: _, ...newRules } = rules;
-      setRules(newRules);
-      params.onUpdate({ rules: newRules });
+      const { [item]: _, ...newRules } = state.rules ?? {};
+      setState('rules', newRules);
     },
-    [rules],
+    [state],
   );
 
-  const computedRules = computeRuleOptions(rules, params.ruleOptions);
+  const computedRules = computeRuleOptions(state.rules ?? {}, ruleOptions);
 
   const addRule = useCallback(() => {
     if (computedRules.length) {
       const newRules = {
-        ...rules,
+        ...state.rules,
         [ruleName || computedRules[0]]: ['error'],
       };
-      setRules(newRules);
+      setState('rules', newRules);
       setRuleName('');
-      params.onUpdate({ rules: newRules });
     }
-  }, [rules, ruleName]);
+  }, [state, ruleName]);
 
   return (
     <>
@@ -59,10 +52,9 @@ function OptionsSelector(params: OptionSelectorParams): JSX.Element {
         <label className={styles.optionLabel}>
           Enable jsx
           <input
-            checked={jsx}
+            checked={state.jsx}
             onChange={(e): void => {
-              setJsx(e.target.checked);
-              params.onUpdate({ jsx: e.target.checked ?? false });
+              setState('jsx', e.target.checked ?? false);
             }}
             name="jsx"
             className={styles.optionCheckbox}
@@ -72,10 +64,9 @@ function OptionsSelector(params: OptionSelectorParams): JSX.Element {
         <label className={styles.optionLabel}>
           Show AST
           <input
-            checked={showAST}
+            checked={state.showAST}
             onChange={(e): void => {
-              setShowAST(e.target.checked);
-              params.onUpdate({ showAST: e.target.checked ?? false });
+              setState('showAST', e.target.checked ?? false);
             }}
             name="ast"
             className={styles.optionCheckbox}
@@ -86,13 +77,10 @@ function OptionsSelector(params: OptionSelectorParams): JSX.Element {
           Source type
           <select
             name="sourceType"
-            value={sourceType}
+            value={state.sourceType}
             className={styles.optionSelect}
             onChange={(e): void => {
-              setSourceType(e.target.value as 'script' | 'module');
-              params.onUpdate({
-                sourceType: e.target.value as 'script' | 'module',
-              });
+              setState('sourceType', e.target.value as 'script' | 'module');
             }}
           >
             <option value="script">script</option>
@@ -101,7 +89,7 @@ function OptionsSelector(params: OptionSelectorParams): JSX.Element {
         </label>
       </Expander>
       <Expander label="Rules">
-        {Object.entries(rules).map(([rule]) => (
+        {Object.entries(state.rules ?? {}).map(([rule]) => (
           <label className={styles.optionItem} key={'rules' + rule}>
             {rule}
             <DeleteIcon
@@ -116,7 +104,7 @@ function OptionsSelector(params: OptionSelectorParams): JSX.Element {
             <div className={styles.optionItem}>
               <select
                 value={ruleName}
-                name="ruleName2"
+                name="ruleName"
                 onChange={(e): void => {
                   setRuleName(e.target.value);
                 }}
