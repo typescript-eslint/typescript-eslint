@@ -202,6 +202,12 @@ class Editor extends React.Component<EditorProps> {
       markers,
     );
     if (this.props.onASTChange) {
+      if (fatalMessage) {
+        this._decorations = this.sandboxInstance.editor.deltaDecorations(
+          this._decorations,
+          [],
+        );
+      }
       this.props.onASTChange(fatalMessage ?? this.linter.getAst());
     }
   }
@@ -254,6 +260,7 @@ class Editor extends React.Component<EditorProps> {
               ),
               options: {
                 inlineClassName: 'myLineDecoration',
+                stickiness: 1,
               },
             },
           ],
