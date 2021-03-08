@@ -16,7 +16,7 @@
   --ifm-color-primary-lightest: #80aaef;
   --ifm-code-font-size: 95%;
 
-  --code-line-decoration: var(--ifm-color-emphasis-800);
+  --code-line-decoration: rgba(0, 0, 0, 0.1);
 }
 
 html[data-theme='dark'] {
