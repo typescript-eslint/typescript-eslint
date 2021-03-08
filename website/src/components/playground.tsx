@@ -44,7 +44,9 @@ function Playground(): JSX.Element {
           scrollBeyondLastLine: false,
           smoothScrolling: true,
         },
-        compilerOptions: {},
+        compilerOptions: {
+          jsx: state.jsx ? 2 : 0,
+        },
         domID: 'monaco-editor-embed',
       };
       const { main, sandboxFactory, ts } = await sandboxSingleton;
@@ -96,6 +98,12 @@ function Playground(): JSX.Element {
 
   useEffect(() => {
     if (linter && sandboxRef.current) {
+      const compilerOptions = sandboxRef.current.getCompilerOptions();
+      if (compilerOptions.jsx != state.jsx ? 2 : 0) {
+        sandboxRef.current.setCompilerSettings({
+          jsx: state.jsx ? 2 : 0,
+        });
+      }
       const messages = linter.lint(
         state.code,
         {
