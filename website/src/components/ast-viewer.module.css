@@ -14,7 +14,7 @@
 
 .nonExpand, .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
-  padding-left: 0.9rem;
+  padding-left: 0.4rem;
 }
 
 .expand.open::before {
@@ -23,7 +23,7 @@
 
 .expand::before {
   content: '-';
-  margin-left: -1rem;
+  margin-left: -0.5rem;
   width: 1rem;
   display: inline-block;
 }

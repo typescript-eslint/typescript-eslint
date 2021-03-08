@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { ParserOptions } from '@typescript-eslint/parser';
+import { debounce } from './debounce';
 
 export interface HashStateOptions {
   jsx?: boolean;
@@ -7,20 +8,6 @@ export interface HashStateOptions {
   rules?: Record<string, unknown>;
   code: string;
   showAST?: boolean;
-}
-
-function debounce<X extends unknown[]>(
-  func: (...args: X) => void,
-  wait,
-): (...args: X) => void {
-  let timeout;
-  return function (...args: X): void {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      timeout = null;
-      func.call(null, ...args);
-    }, wait);
-  };
 }
 
 function writeQueryParam(value?: unknown): string {
@@ -81,11 +68,12 @@ const writeStateToUrl = debounce((newState: HashStateOptions): void => {
     .filter(item => item[1])
     .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
     .join('&');
-  window.history.pushState(
-    undefined,
-    document.title,
-    `${window.location.pathname}#${json}`,
-  );
+  window.location.hash = `#${json}`;
+  // window.history.pushState(
+  //   undefined,
+  //   document.title,
+  //   `${window.location.pathname}#${json}`,
+  // );
 }, 100);
 
 function useHashState(
