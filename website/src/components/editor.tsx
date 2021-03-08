@@ -15,6 +15,7 @@ import { HashStateOptions } from './lib/use-hash-state';
 
 interface EditorProps extends HashStateOptions {
   darkTheme: boolean;
+  decoration?: TSESTree.Node | null;
   onChange?: (
     value: string,
     event: Monaco.editor.IModelContentChangedEvent,
@@ -32,6 +33,7 @@ class Editor extends React.Component<EditorProps> {
   private _subscription?: Monaco.IDisposable;
   private _resize?: () => void;
   private _codeIsUpdating: boolean;
+  private _decorations: string[];
 
   private readonly fixes: Map<string, unknown[]>;
 
@@ -39,6 +41,7 @@ class Editor extends React.Component<EditorProps> {
     super(props);
     this.fixes = new Map();
     this._codeIsUpdating = false;
+    this._decorations = [];
   }
 
   async componentDidMount(): Promise<void> {
@@ -95,9 +98,12 @@ class Editor extends React.Component<EditorProps> {
         prevProps.code !== this.props.code
       ) {
         this._codeIsUpdating = true;
-        this.updateCode();
+        // this.updateCode(); // TODO: find a better way
         shouldLint = true;
         this._codeIsUpdating = false;
+      }
+      if (this.props.decoration !== prevProps.decoration) {
+        this.updateDecorations();
       }
       if (prevProps.darkTheme !== this.props.darkTheme) {
         this.updateTheme();
@@ -148,7 +154,8 @@ class Editor extends React.Component<EditorProps> {
       event => {
         if (this.sandboxInstance && this.props.onChange) {
           if (!this._codeIsUpdating) {
-            this.props.onChange(this.sandboxInstance.editor.getValue(), event);
+            const model = this.sandboxInstance.getModel().getValue();
+            this.props.onChange(model, event);
           }
           this.lintCode();
         }
@@ -215,7 +222,10 @@ class Editor extends React.Component<EditorProps> {
 
   private updateCode(): void {
     if (this.sandboxInstance) {
-      this.sandboxInstance.setText(this.props.code);
+      const model = this.sandboxInstance.editor.getModel()!;
+      if (model.getValue() !== this.props.code) {
+        this.sandboxInstance.setText(this.props.code);
+      }
     }
   }
 
@@ -225,6 +235,35 @@ class Editor extends React.Component<EditorProps> {
       this.sandboxInstance.setCompilerSettings({
         jsx: this.props.jsx ? 2 : 0,
       });
+    }
+  }
+
+  private updateDecorations(): void {
+    if (this.sandboxInstance) {
+      if (this.props.decoration) {
+        const loc = this.props.decoration.loc;
+        this._decorations = this.sandboxInstance.editor.deltaDecorations(
+          this._decorations,
+          [
+            {
+              range: new this.sandboxInstance.monaco.Range(
+                loc.start.line,
+                loc.start.column + 1,
+                loc.end.line,
+                loc.end.column + 1,
+              ),
+              options: {
+                inlineClassName: 'myLineDecoration',
+              },
+            },
+          ],
+        );
+      } else {
+        this._decorations = this.sandboxInstance.editor.deltaDecorations(
+          this._decorations,
+          [],
+        );
+      }
     }
   }
 }

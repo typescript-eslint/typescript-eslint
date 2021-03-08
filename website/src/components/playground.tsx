@@ -6,6 +6,7 @@ import Loader from './loader';
 import useHashState from './lib/use-hash-state';
 
 import type { ParseForESLintResult } from './linter/parser';
+import type { TSESTree } from '@typescript-eslint/types';
 import OptionsSelector from './options-selector';
 import ASTViewer from './ast-viewer';
 import clsx from 'clsx';
@@ -23,6 +24,7 @@ function Playground(): JSX.Element {
   const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
   const [ruleNames, setRuleNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);
 
   return (
     <div className={styles.codeContainer}>
@@ -50,13 +52,19 @@ function Playground(): JSX.Element {
             showAST={state.showAST}
             onLoadRule={setRuleNames}
             onASTChange={setAST}
+            decoration={selectedNode}
             onChange={(code): void => setState('code', code)}
             onLoaded={(): void => setIsLoading(true)}
           />
         </div>
         {state.showAST && (
           <div className={styles.astViewer}>
-            {ast && <ASTViewer ast={ast} />}
+            {ast && (
+              <ASTViewer
+                ast={ast}
+                onSelectNode={(node): void => setSelectedNode(node)}
+              />
+            )}
           </div>
         )}
       </div>

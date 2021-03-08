@@ -9,12 +9,12 @@
 }
 
 .subList {
-  padding-left: 0.5rem;
+  padding-left: 1rem;
 }
 
 .nonExpand, .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
-  padding-left: 0.4rem;
+  padding-left: 0.9rem;
 }
 
 .expand.open::before {
@@ -23,7 +23,7 @@
 
 .expand::before {
   content: '-';
-  margin-left: -0.5rem;
+  margin-left: -1rem;
   width: 1rem;
   display: inline-block;
 }
