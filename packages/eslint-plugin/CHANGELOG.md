@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.1...v4.17.0) (2021-03-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-type-assertion] handle assignment ([#3133](https://github.com/typescript-eslint/typescript-eslint/issues/3133)) ([cb22561](https://github.com/typescript-eslint/typescript-eslint/commit/cb2256168c67e0383083673a5afe77076de49da5))
+
+
+### Features
+
+* **eslint-plugin:** [strict-bool-expr] add fixes and suggestions ([#2847](https://github.com/typescript-eslint/typescript-eslint/issues/2847)) ([3f9e9a1](https://github.com/typescript-eslint/typescript-eslint/commit/3f9e9a1e9fc3e507bd01d1913ef642cd129de402))
+
+
+
+
+
 ## [4.16.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.0...v4.16.1) (2021-03-01)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

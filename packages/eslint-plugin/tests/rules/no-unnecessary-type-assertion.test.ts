@@ -186,6 +186,22 @@ const c = <const>[...a, ...b];
     {
       code: "const a = <const>{ foo: 'foo' };",
     },
+    {
+      code: `
+let a: number | undefined;
+let b: number | undefined;
+let c: number;
+a = b;
+c = b!;
+a! -= 1;
+      `,
+    },
+    {
+      code: `
+let a: { b?: string } | undefined;
+a!.b = '';
+      `,
+    },
   ],
 
   invalid: [
@@ -450,6 +466,30 @@ function Test(props: { id?: string | number }) {
         },
       ],
       filename: 'react.tsx',
+    },
+    {
+      code: `
+let x: number | undefined;
+let y: number | undefined;
+y = x!;
+y! = 0;
+      `,
+      output: `
+let x: number | undefined;
+let y: number | undefined;
+y = x;
+y = 0;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 4,
+        },
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 5,
+        },
+      ],
     },
   ],
 });
