@@ -71,14 +71,14 @@ function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(isComplex);
 
   return (
-    <li className={clsx(styles.expand, isExpanded ? '' : styles.open)}>
+    <div className={clsx(styles.expand, isExpanded ? '' : styles.open)}>
       <PropertyName
         propName={props.name}
         onClick={(): void => setIsExpanded(!isExpanded)}
       />
       <span>[</span>
       {isExpanded ? (
-        <ul className={styles.subList}>
+        <div className={styles.subList}>
           {props.value.map((item, index) => {
             return (
               <ElementItem
@@ -90,7 +90,7 @@ function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
               />
             );
           })}
-        </ul>
+        </div>
       ) : !isComplex ? (
         <span className={styles.hidden}>
           {props.value.map((item, index) => (
@@ -106,7 +106,7 @@ function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
         </span>
       )}
       <span>]</span>
-    </li>
+    </div>
   );
 }
 
@@ -114,7 +114,7 @@ function ElementObject(
   props: GenericParams<TSESTree.Node | Record<string, unknown>>,
 ): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
-  const listItem = useRef<HTMLLIElement | null>(null);
+  const listItem = useRef<HTMLDivElement | null>(null);
 
   const isSelected = props.selection === props.value;
 
@@ -142,7 +142,7 @@ function ElementObject(
   }, [props.selection, props.value, listItem]);
 
   return (
-    <li
+    <div
       ref={listItem}
       className={clsx(
         styles.expand,
@@ -159,7 +159,7 @@ function ElementObject(
       />
       <span> {'{'}</span>
       {isExpanded ? (
-        <ul className={styles.subList}>
+        <div className={styles.subList}>
           {filterRecord(props.value).map((item, index) => (
             <ElementItem
               level={`${props.level}_${item[0]}[${index}]`}
@@ -170,7 +170,7 @@ function ElementObject(
               onSelectNode={props.onSelectNode}
             />
           ))}
-        </ul>
+        </div>
       ) : (
         <span className={styles.hidden}>
           {filterRecord(props.value)
@@ -179,7 +179,7 @@ function ElementObject(
         </span>
       )}
       <span>{'}'}</span>
-    </li>
+    </div>
   );
 }
 
@@ -210,11 +210,11 @@ function ElementItem(props: GenericParams<unknown>): JSX.Element {
     );
   }
   return (
-    <li className={styles.nonExpand}>
+    <div className={styles.nonExpand}>
       {props.name && <span className={styles.propName}>{props.name}</span>}
       {props.name && <span>: </span>}
       <PropertyValue value={props.value} />
-    </li>
+    </div>
   );
 }
 
@@ -226,14 +226,14 @@ function ASTViewer(props: {
   return typeof props.ast === 'string' ? (
     <div>{props.ast}</div>
   ) : (
-    <ul className={styles.list}>
+    <div className={styles.list}>
       <ElementObject
         value={props.ast}
         level="ast"
         selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
-    </ul>
+    </div>
   );
 }
 

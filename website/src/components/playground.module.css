@@ -25,10 +25,10 @@
   height: 100%;
   width: 50%;
   border: 1px solid var(--ifm-color-emphasis-100);
-  flex-direction: column;
   overflow: auto;
   background: var(--ifm-background-surface-color);
-  padding: 1rem;
+  word-wrap: initial;
+  white-space: nowrap;
 }
 
 .codeContainer {

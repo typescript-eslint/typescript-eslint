@@ -48,6 +48,21 @@ function Playground(): JSX.Element {
     [ast],
   );
 
+  const updateSelectedNode = useCallback(
+    (node: TSESTree.Node | null) => {
+      if (
+        selectedNode !== node &&
+        (!node ||
+          !selectedNode ||
+          selectedNode.range[0] !== node.range[0] ||
+          selectedNode.range[1] !== node.range[1])
+      ) {
+        setSelectedNode(node);
+      }
+    },
+    [selectedNode],
+  );
+
   const updateAST = useCallback(
     (value: string | TSESTree.Program, position: Monaco.Position | null) => {
       if (typeof value === 'object' && value) {
@@ -106,7 +121,7 @@ function Playground(): JSX.Element {
               <ASTViewer
                 ast={ast}
                 selection={highlightedNode}
-                onSelectNode={(node): void => setSelectedNode(node)}
+                onSelectNode={updateSelectedNode}
               />
             )}
           </div>
