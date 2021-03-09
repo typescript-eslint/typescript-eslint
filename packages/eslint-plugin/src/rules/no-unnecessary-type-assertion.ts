@@ -135,7 +135,26 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSNonNullExpression(node): void {
+        if (
+          node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+          node.parent?.operator === '=' &&
+          node.parent.left === node
+        ) {
+          context.report({
+            node,
+            messageId: 'contextuallyUnnecessary',
+            fix(fixer) {
+              return fixer.removeRange([
+                node.expression.range[1],
+                node.range[1],
+              ]);
+            },
+          });
+          return;
+        }
+
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
         const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
