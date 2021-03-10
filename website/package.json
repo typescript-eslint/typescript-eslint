@@ -10,12 +10,12 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/plugin-content-docs": "^2.0.0-alpha.70",
-    "@docusaurus/plugin-content-pages": "^2.0.0-alpha.70",
-    "@docusaurus/plugin-debug": "^2.0.0-alpha.70",
-    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-alpha.70",
-    "@docusaurus/theme-classic": "^2.0.0-alpha.70",
+    "@docusaurus/core": "2.0.0-alpha.71",
+    "@docusaurus/plugin-content-docs": "^2.0.0-alpha.71",
+    "@docusaurus/plugin-content-pages": "^2.0.0-alpha.71",
+    "@docusaurus/plugin-debug": "^2.0.0-alpha.71",
+    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-alpha.71",
+    "@docusaurus/theme-classic": "^2.0.0-alpha.71",
     "@mdx-js/react": "^1.6.22",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/types": "^4.17.0",
@@ -25,8 +25,8 @@
     "@typescript-eslint/typescript-estree": "^4.17.0",
     "clsx": "^1.1.1",
     "eslint": "^7.20.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "typescript": "*"
   },
   "browserslist": {
@@ -42,7 +42,7 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-alpha.70",
+    "@docusaurus/module-type-aliases": "^2.0.0-alpha.71",
     "@types/react": "^17.0.2",
     "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.7",
