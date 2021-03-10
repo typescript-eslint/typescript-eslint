@@ -169,28 +169,20 @@ export default util.createRule<Options, MessageIds>({
               method.type === AST_NODE_TYPES.MethodDefinition &&
               method.decorators
             ) {
-              const lastDecorator = last(method.decorators);
-              if (lastDecorator) {
-                keyToken = sourceCode.getTokenAfter(lastDecorator)!;
-              }
+              const lastDecorator = last(method.decorators)!;
+              keyToken = sourceCode.getTokenAfter(lastDecorator)!;
             }
 
             // if current token is a keyword like `static` or `public` then skip it
-            while (keyToken?.type === AST_TOKEN_TYPES.Keyword) {
+            while (keyToken.type === AST_TOKEN_TYPES.Keyword) {
               keyToken = sourceCode.getTokenAfter(keyToken)!;
             }
 
             // check if there is a space between key and previous token
-            let insertSpace = false;
-            if (keyToken) {
-              const beforeKeyToken = sourceCode.getTokenBefore(keyToken);
-              if (beforeKeyToken) {
-                insertSpace = !sourceCode.isSpaceBetween!(
-                  beforeKeyToken,
-                  keyToken,
-                );
-              }
-            }
+            const insertSpace = !sourceCode.isSpaceBetween!(
+              sourceCode.getTokenBefore(keyToken)!,
+              keyToken,
+            );
 
             let code = 'async ';
             if (insertSpace) {
