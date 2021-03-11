@@ -105,7 +105,7 @@
     "lerna": "^3.22.1",
     "lint-staged": "^10.2.13",
     "make-dir": "^3.1.0",
-    "markdownlint-cli": "^0.26.0",
+    "markdownlint-cli": "^0.27.1",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.1",
