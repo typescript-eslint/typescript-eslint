@@ -63,7 +63,7 @@ export default createRule<Options, MessageIds>({
      * @param token The token to use for the report.
      */
     function reportNoBeginningSpace(
-      node: TSESTree.TSTypeLiteral,
+      node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
       const nextToken = context
@@ -89,7 +89,7 @@ export default createRule<Options, MessageIds>({
      * @param token The token to use for the report.
      */
     function reportNoEndingSpace(
-      node: TSESTree.TSTypeLiteral,
+      node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
       const previousToken = context
@@ -115,7 +115,7 @@ export default createRule<Options, MessageIds>({
      * @param token The token to use for the report.
      */
     function reportRequiredBeginningSpace(
-      node: TSESTree.TSTypeLiteral,
+      node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
       context.report({
@@ -137,7 +137,7 @@ export default createRule<Options, MessageIds>({
      * @param token The token to use for the report.
      */
     function reportRequiredEndingSpace(
-      node: TSESTree.TSTypeLiteral,
+      node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
       context.report({
@@ -162,7 +162,7 @@ export default createRule<Options, MessageIds>({
      * @param last The last token to check (should be closing brace)
      */
     function validateBraceSpacing(
-      node: TSESTree.TSTypeLiteral,
+      node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       first: TSESTree.Token,
       second: TSESTree.Token | TSESTree.Comment,
       penultimate: TSESTree.Token | TSESTree.Comment,
@@ -175,7 +175,10 @@ export default createRule<Options, MessageIds>({
 
         const openingCurlyBraceMustBeSpaced =
           options.arraysInObjectsException &&
-          secondType === AST_NODE_TYPES.TSIndexSignature
+          [
+            AST_NODE_TYPES.TSMappedType,
+            AST_NODE_TYPES.TSIndexSignature,
+          ].includes(secondType)
             ? !options.spaced
             : options.spaced;
 
@@ -197,15 +200,19 @@ export default createRule<Options, MessageIds>({
             isClosingBracketToken(penultimate)) ||
           (options.objectsInObjectsException &&
             isClosingBraceToken(penultimate));
-        const penultimateType =
-          shouldCheckPenultimate &&
-          sourceCode.getNodeByRangeIndex(penultimate.range[0])!.type;
+        const penultimateType = shouldCheckPenultimate
+          ? sourceCode.getNodeByRangeIndex(penultimate.range[0])!.type
+          : undefined;
 
         const closingCurlyBraceMustBeSpaced =
           (options.arraysInObjectsException &&
             penultimateType === AST_NODE_TYPES.TSTupleType) ||
           (options.objectsInObjectsException &&
-            penultimateType === AST_NODE_TYPES.TSTypeLiteral)
+            penultimateType !== undefined &&
+            [
+              AST_NODE_TYPES.TSMappedType,
+              AST_NODE_TYPES.TSTypeLiteral,
+            ].includes(penultimateType))
             ? !options.spaced
             : options.spaced;
 
@@ -246,6 +253,18 @@ export default createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     return {
       ...rules,
+      TSMappedType(node: TSESTree.TSMappedType): void {
+        const first = sourceCode.getFirstToken(node)!;
+        const last = sourceCode.getLastToken(node)!;
+        const second = sourceCode.getTokenAfter(first, {
+          includeComments: true,
+        })!;
+        const penultimate = sourceCode.getTokenBefore(last, {
+          includeComments: true,
+        })!;
+
+        validateBraceSpacing(node, first, second, penultimate, last);
+      },
       TSTypeLiteral(node: TSESTree.TSTypeLiteral): void {
         if (node.members.length === 0) {
           return;
