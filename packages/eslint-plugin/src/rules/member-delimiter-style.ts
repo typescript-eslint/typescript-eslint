@@ -28,7 +28,7 @@ type Config = BaseOptions & {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
-  multilineDetection?: string;
+  multilineDetection?: 'last-member';
 };
 type Options = [Config];
 type MessageIds =
