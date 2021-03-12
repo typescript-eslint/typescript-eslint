@@ -14,6 +14,7 @@
   "files": [
     "dist",
     "docs",
+    "index.d.ts",
     "package.json",
     "README.md",
     "LICENSE"
@@ -28,6 +29,7 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "check:docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
