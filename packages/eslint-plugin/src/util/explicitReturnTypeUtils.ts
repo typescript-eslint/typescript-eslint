@@ -52,11 +52,12 @@ function isConstructorArgument(
 }
 
 /**
- * Checks if a node belongs to:
+ * Checks if a node is a property or a nested property of a typed object:
  * ```
  * const x: Foo = { prop: () => {} }
  * const x = { prop: () => {} } as Foo
  * const x = <Foo>{ prop: () => {} }
+ * const x: Foo = { bar: { prop: () => {} } }
  * ```
  */
 function isPropertyOfObjectWithType(
@@ -82,7 +83,8 @@ function isPropertyOfObjectWithType(
     isTypeAssertion(parent) ||
     isClassPropertyWithTypeAnnotation(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isFunctionArgument(parent)
+    isFunctionArgument(parent) ||
+    isPropertyOfObjectWithType(parent)
   );
 }
 
