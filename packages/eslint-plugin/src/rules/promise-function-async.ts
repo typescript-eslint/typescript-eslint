@@ -3,7 +3,6 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { last } from 'lodash';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -161,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
             // this function is a class method or object function property shorthand
             const method = node.parent;
 
-            /** the token to put `async` before */
+            // the token to put `async` before
             let keyToken = sourceCode.getFirstToken(method)!;
 
             // if there are decorators then skip past them
@@ -169,7 +168,8 @@ export default util.createRule<Options, MessageIds>({
               method.type === AST_NODE_TYPES.MethodDefinition &&
               method.decorators
             ) {
-              const lastDecorator = last(method.decorators)!;
+              const lastDecorator =
+                method.decorators[method.decorators.length - 1];
               keyToken = sourceCode.getTokenAfter(lastDecorator)!;
             }
 
