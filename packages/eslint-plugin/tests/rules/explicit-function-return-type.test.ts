@@ -160,6 +160,34 @@ const x: Foo = {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2864
+    {
+      filename: 'test.ts',
+      code: `
+const x = {
+  foo: { bar: () => {} },
+} as Foo;
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = <Foo>{
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x: Foo = {
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/484
     {
       filename: 'test.ts',

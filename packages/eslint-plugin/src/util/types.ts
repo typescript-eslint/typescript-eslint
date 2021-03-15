@@ -11,6 +11,7 @@ import {
   isVariableDeclaration,
   unionTypeParts,
   isPropertyAssignment,
+  isBinaryExpression,
 } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -498,6 +499,13 @@ export function getContextualType(
     return checker.getContextualType(parent);
   } else if (isPropertyAssignment(parent) && isIdentifier(node)) {
     return checker.getContextualType(node);
+  } else if (
+    isBinaryExpression(parent) &&
+    parent.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+    parent.right === node
+  ) {
+    // is RHS of assignment
+    return checker.getTypeAtLocation(parent.left);
   } else if (
     ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
       parent.kind,

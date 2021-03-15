@@ -155,6 +155,38 @@ You should be using `strictNullChecks` to ensure complete type-safety in your co
 
 If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
+## Fixes and suggestions
+
+This rule provides following fixes and suggestions for particular types in boolean context:
+
+- `boolean` - Always allowed - no fix needed.
+- `string` - (when `allowString` is `false`) - Provides following suggestions:
+  - Change condition to check string's length (`str` → `str.length > 0`)
+  - Change condition to check for empty string (`str` → `str !== ""`)
+  - Explicitly cast value to a boolean (`str` → `Boolean(str)`)
+- `number` - (when `allowNumber` is `false`):
+  - For `array.length` - Provides **autofix**:
+    - Change condition to check for 0 (`array.length` → `array.length > 0`)
+  - For other number values - Provides following suggestions:
+    - Change condition to check for 0 (`num` → `num !== 0`)
+    - Change condition to check for NaN (`num` → `!Number.isNaN(num)`)
+    - Explicitly cast value to a boolean (`num` → `Boolean(num)`)
+- `object | null | undefined` - (when `allowNullableObject` is `false`) - Provides **autofix**:
+  - Change condition to check for null/undefined (`maybeObj` → `maybeObj != null`)
+- `boolean | null | undefined` - Provides following suggestions:
+  - Explicitly treat nullish value the same as false (`maybeBool` → `maybeBool ?? false`)
+  - Change condition to check for true/false (`maybeBool` → `maybeBool === true`)
+- `string | null | undefined` - Provides following suggestions:
+  - Change condition to check for null/undefined (`maybeStr` → `maybeStr != null`)
+  - Explicitly treat nullish value the same as an empty string (`maybeStr` → `maybeStr ?? ""`)
+  - Explicitly cast value to a boolean (`maybeStr` → `Boolean(maybeStr)`)
+- `number | null | undefined` - Provides following suggestions:
+  - Change condition to check for null/undefined (`maybeNum` → `maybeNum != null`)
+  - Explicitly treat nullish value the same as 0 (`maybeNum` → `maybeNum ?? 0`)
+  - Explicitly cast value to a boolean (`maybeNum` → `Boolean(maybeNum)`)
+- `any` and `unknown` - Provides following suggestions:
+  - Explicitly cast value to a boolean (`value` → `Boolean(value)`)
+
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
