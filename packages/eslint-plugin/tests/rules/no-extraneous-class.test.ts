@@ -76,6 +76,19 @@ class Foo {}
       `,
       options: [{ allowWithDecorator: true }],
     },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
   ],
 
   invalid: [
@@ -147,6 +160,24 @@ class Foo {}
       errors: [
         {
           messageId: 'empty',
+        },
+      ],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      options: [{ allowWithDecorator: false }],
+      errors: [
+        {
+          messageId: 'onlyConstructor',
         },
       ],
     },
