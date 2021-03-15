@@ -20,7 +20,7 @@
 - [How does `typescript-eslint` work and why do you have multiple packages?](#how-does-typescript-eslint-work-and-why-do-you-have-multiple-packages)
 - [Can I use all of the existing ESLint plugins and rules without any changes?](#can-i-use-all-of-the-existing-eslint-plugins-and-rules-without-any-changes)
 - [Can we write rules which leverage type information?](#can-we-write-rules-which-leverage-type-information)
-- [What about Babel and `babel-eslint`?](#what-about-babel-and-babel-eslint)
+- [What about Babel and `@babel/eslint-parser`?](#what-about-babel-and-babeleslint-parser)
 - [How can I help?](#how-can-i-help)
 - [Packages included in this project?](#packages-included-in-this-project)
 - [Package Versions](#package-versions)
@@ -161,15 +161,15 @@ We already do this in numerous rules within [`@typescript-eslint/eslint-plugin`]
 
 <br>
 
-## What about Babel and `babel-eslint`?
+## What about Babel and `@babel/eslint-parser`?
 
 Babel does now support parsing (but not type-checking) TypeScript source code. This is as an alternative to using the TypeScript Compiler. It also supports many other syntaxes, via plugins, which are not supported by the TypeScript Compiler. As mentioned above, `typescript-eslint` is powered by the TypeScript Compiler, so we support whatever it does.
 
-The key trade-off can be summarized as `babel-eslint` supports additional syntax which TypeScript itself does not, but `typescript-eslint` supports creating rules based on type information, which is not available to babel because there is no type-checker.
+The key trade-off can be summarized as `@babel/eslint-parser` supports additional syntax which TypeScript itself does not, but `typescript-eslint` supports creating rules based on type information, which is not available to babel because there is no type-checker.
 
 Because they are separate projects powered by different underlying tooling, they are currently not intended to be used together.
 
-Some of the people involved in `typescript-eslint` are also involved in Babel and `babel-eslint`, and in this project, we are working hard to align on the AST format for non-standard JavaScript syntax. This is an ongoing effort.
+Some of the people involved in `typescript-eslint` are also involved in Babel and `@babel/eslint-parser`, and in this project, we are working hard to align on the AST format for non-standard JavaScript syntax. This is an ongoing effort.
 
 <br>
 
