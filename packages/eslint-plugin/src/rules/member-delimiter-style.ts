@@ -1,11 +1,8 @@
 import {
+  TSESLint,
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import {
-  RuleFix,
-  RuleFixer,
-} from '@typescript-eslint/experimental-utils/src/ts-eslint';
 import * as util from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
@@ -47,7 +44,9 @@ interface MakeFixFunctionParams {
   isSingleLine: boolean;
 }
 
-type MakeFixFunctionReturnType = ((fixer: RuleFixer) => RuleFix) | null;
+type MakeFixFunctionReturnType =
+  | ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix)
+  | null;
 
 const definition = {
   type: 'object',
@@ -96,7 +95,7 @@ const makeFixFunction = ({
     return null;
   }
 
-  return (fixer: RuleFixer): RuleFix => {
+  return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
     if (optsNone) {
       // remove the unneeded token
       return fixer.remove(lastToken);
