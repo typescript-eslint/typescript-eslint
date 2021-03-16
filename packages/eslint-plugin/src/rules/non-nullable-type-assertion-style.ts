@@ -28,7 +28,7 @@ export default util.createRule({
   },
   defaultOptions: [],
 
-  create(context) {
+  create: context => {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
@@ -53,8 +53,7 @@ export default util.createRule({
     ): boolean => {
       const nonNullishOriginalTypes = originalTypes.filter(
         type =>
-          type.flags !== ts.TypeFlags.Null &&
-          type.flags !== ts.TypeFlags.Undefined,
+          ![ts.TypeFlags.Null, ts.TypeFlags.Undefined].includes(type.flags),
       );
 
       for (const assertedType of assertedTypes) {
@@ -74,13 +73,10 @@ export default util.createRule({
 
     const isConstAssertion = (
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
-    ): boolean => {
-      return (
-        node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-        node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
-        node.typeAnnotation.typeName.name === 'const'
-      );
-    };
+    ): boolean =>
+      node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+      node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
+      node.typeAnnotation.typeName.name === 'const';
 
     return {
       'TSAsExpression, TSTypeAssertion'(
@@ -102,12 +98,11 @@ export default util.createRule({
 
         if (sameTypeWithoutNullish(assertedTypes, originalTypes)) {
           context.report({
-            fix(fixer) {
-              return fixer.replaceText(
+            fix: fixer =>
+              fixer.replaceText(
                 node,
                 `${sourceCode.getText(node.expression)}!`,
-              );
-            },
+              ),
             messageId: 'preferNonNullAssertion',
             node,
           });
