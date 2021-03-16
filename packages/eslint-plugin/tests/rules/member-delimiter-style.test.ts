@@ -851,6 +851,24 @@ interface Foo {
     },
     {
       code: `
+type Test = {
+  a: {
+      one: 1
+  }; b: 2
+};
+      `,
+      output: null,
+      options: [{ multiline: { delimiter: 'none' } }],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
     name: string
     age: number
