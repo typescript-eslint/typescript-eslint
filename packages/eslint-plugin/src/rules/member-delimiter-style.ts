@@ -142,6 +142,9 @@ export default util.createRule<Options, MessageIds>({
             },
             additionalProperties: false,
           },
+          multilineDetection: {
+            enum: ['brackets', 'last-member'],
+          },
         }),
         additionalProperties: false,
       },
@@ -157,6 +160,7 @@ export default util.createRule<Options, MessageIds>({
         delimiter: 'semi',
         requireLast: false,
       },
+      multilineDetection: 'brackets',
     },
   ],
   create(context, [options]) {
