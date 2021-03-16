@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-module-boundary-types] fixes [#2864](https://github.com/typescript-eslint/typescript-eslint/issues/2864) related to functions in nested object properties ([#3178](https://github.com/typescript-eslint/typescript-eslint/issues/3178)) ([55e1fba](https://github.com/typescript-eslint/typescript-eslint/commit/55e1fbaca985b500cad1cc9ec25717b18cf5a17b))
+* **eslint-plugin:** [no-extran-class] allowWithDecorator should ignore other errors ([#3160](https://github.com/typescript-eslint/typescript-eslint/issues/3160)) ([a148673](https://github.com/typescript-eslint/typescript-eslint/commit/a1486736d8ef3555832ddfb27fd0980368b363f5))
+
+
+### Features
+
+* **eslint-plugin:** add package type declaration ([#3164](https://github.com/typescript-eslint/typescript-eslint/issues/3164)) ([08b058a](https://github.com/typescript-eslint/typescript-eslint/commit/08b058a7a6db3b59c28753bb322717e1fee44d1f))
+
+
+
+
+
 # [4.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.1...v4.17.0) (2021-03-08)
 
 
