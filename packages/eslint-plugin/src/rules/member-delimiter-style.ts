@@ -25,7 +25,7 @@ type Config = BaseOptions & {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
-  multilineDetection?: 'last-member';
+  multilineDetection?: 'brackets' | 'last-member';
 };
 type Options = [Config];
 type MessageIds =
