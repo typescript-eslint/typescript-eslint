@@ -227,7 +227,7 @@ function isFunctionParam(
 
 function isPromiseCatchCallWithHandler(expression: ts.CallExpression): boolean {
   return (
-    tsutils.isPropertyAccessExpression(expression.expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'catch' &&
     expression.arguments.length >= 1
   );
@@ -237,7 +237,7 @@ function isPromiseThenCallWithRejectionHandler(
   expression: ts.CallExpression,
 ): boolean {
   return (
-    tsutils.isPropertyAccessExpression(expression.expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'then' &&
     expression.arguments.length >= 2
   );
@@ -247,7 +247,7 @@ function isPromiseFinallyCallWithHandler(
   expression: ts.CallExpression,
 ): boolean {
   return (
-    tsutils.isPropertyAccessExpression(expression.expression) &&
+    ts.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'finally' &&
     expression.arguments.length >= 1
   );
