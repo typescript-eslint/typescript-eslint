@@ -60,10 +60,15 @@ const features: FeatureItem[] = [
             </p>
           </div>
         </div>
-        <p className="text--center">
-          They sound similar, right? They are! Both projects are ultimately
-          striving to help you write the best JavaScript code you possibly can.
-        </p>
+        <div className="row padding-vert--sm">
+          <div className="col col--offset-2 col--8">
+            <p className="text--center">
+              They sound similar, right? They are! Both projects are ultimately
+              striving to help you write the best JavaScript code you possibly
+              can.
+            </p>
+          </div>
+        </div>
       </>
     ),
   },
@@ -124,15 +129,19 @@ function Feature({ imageUrl, title, description }: FeatureItem): JSX.Element {
   );
 }
 
-function Sponsors({ tier }: { tier: string; title: string }): JSX.Element {
+function Sponsors(props: {
+  tier: string;
+  title: string;
+  className?: string;
+}): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
   const tierSponsors = siteConfig.customFields.sponsors.filter(
-    sponsor => sponsor.tier === tier,
+    sponsor => sponsor.tier === props.tier,
   );
   return (
-    <div>
-      <ul className={clsx(styles[`tier-${tier}`], styles.sponsorsTier)}>
+    <div className={props.className}>
+      <ul className={clsx(styles[`tier-${props.tier}`], styles.sponsorsTier)}>
         {tierSponsors.map((sponsor, i) => (
           <li key={i}>
             <a
@@ -179,7 +188,7 @@ function Home(): JSX.Element {
               key={idx}
               className={clsx(
                 styles.features,
-                idx % 2 == 0 ? styles.lightBackground : '',
+                idx % 2 == 1 ? styles.lightBackground : '',
               )}
             >
               <div className="container">
@@ -189,7 +198,7 @@ function Home(): JSX.Element {
               </div>
             </section>
           ))}
-        <section className={clsx(styles.sponsors, styles.lightBackground)}>
+        <section className={styles.sponsors}>
           <div className="container text--center padding-vert--lg">
             <h2>Financial Contributors</h2>
             <Sponsors title="Sponsors" tier="sponsor" />

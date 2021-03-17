@@ -62,6 +62,7 @@ module.exports = {
         src: 'img/logo.svg',
         // srcDark: 'img/logo-dark.svg',
       },
+      // style: 'primary',
       items: [
         {
           to: 'docs/',
@@ -95,7 +96,7 @@ module.exports = {
         src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
         href: 'https://www.netlify.com',
       },
-      style: 'dark',
+      // style: 'primary',
       copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
     },
     prism: {
