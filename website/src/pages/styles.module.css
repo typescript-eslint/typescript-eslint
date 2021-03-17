@@ -6,7 +6,7 @@
  */
 
 .hero {
-  --ifm-hero-background-color: #2b3137;
+  background: linear-gradient(90deg, rgba(43,43,110,1) 0%, rgba(25,25,63,1) 100%);
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);
   text-align: center;
@@ -21,15 +21,18 @@
   margin-top: 24px;
 }
 
-.buttons a:last-of-type {
-  margin: 20px 36px;
+.buttons a {
+  margin: 1rem 1rem;
+}
+
+.lightBackground {
+  background: var(--ifm-color-emphasis-100);
 }
 
 .features,
 .sponsors {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
   width: 100%;
 }
 
@@ -39,8 +42,8 @@
 }
 
 .featureImage {
-  height: 200px;
-  width: 200px;
+  height: 7rem;
+  width: 7rem;
 }
 
 .sponsorsTier {
