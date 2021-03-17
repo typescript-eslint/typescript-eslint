@@ -61,7 +61,7 @@ export default util.createRule({
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isTryStatement(ancestor)) {
+        if (ts.isTryStatement(ancestor)) {
           return true;
         }
 
@@ -75,7 +75,7 @@ export default util.createRule({
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isCatchClause(ancestor)) {
+        if (ts.isCatchClause(ancestor)) {
           return true;
         }
 
@@ -90,8 +90,8 @@ export default util.createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
-          tsutils.isTryStatement(ancestor.parent) &&
-          tsutils.isBlock(ancestor) &&
+          ts.isTryStatement(ancestor.parent) &&
+          ts.isBlock(ancestor) &&
           ancestor.parent.end === ancestor.end
         ) {
           return true;
@@ -106,7 +106,7 @@ export default util.createRule({
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isTryStatement(ancestor)) {
+        if (ts.isTryStatement(ancestor)) {
           return !!ancestor.finallyBlock;
         }
         ancestor = ancestor.parent;
@@ -154,7 +154,7 @@ export default util.createRule({
     function test(node: TSESTree.Expression, expression: ts.Node): void {
       let child: ts.Node;
 
-      const isAwait = tsutils.isAwaitExpression(expression);
+      const isAwait = ts.isAwaitExpression(expression);
 
       if (isAwait) {
         child = expression.getChildAt(1);
