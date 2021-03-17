@@ -60,13 +60,11 @@ export default util.createRule<Options, MessageId>({
 
     return {
       ExpressionStatement(node): void {
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
-
         if (options.ignoreIIFE && isAsyncIife(node)) {
           return;
         }
 
-        if (isUnhandledPromise(checker, expression)) {
+        if (isUnhandledPromise(checker, node.expression)) {
           if (options.ignoreVoid) {
             context.report({
               node,
@@ -107,34 +105,34 @@ export default util.createRule<Options, MessageId>({
 
     function isUnhandledPromise(
       checker: ts.TypeChecker,
-      node: ts.Node,
+      node: TSESTree.Node,
     ): boolean {
       // First, check expressions whose resulting types may not be promise-like
-      if (
-        ts.isBinaryExpression(node) &&
-        node.operatorToken.kind === ts.SyntaxKind.CommaToken
-      ) {
+      if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Any child in a comma expression could return a potentially unhandled
         // promise, so we check them all regardless of whether the final returned
         // value is promise-like.
-        return (
-          isUnhandledPromise(checker, node.left) ||
-          isUnhandledPromise(checker, node.right)
-        );
+        return node.expressions.some(item => isUnhandledPromise(checker, item));
       }
 
-      if (ts.isVoidExpression(node) && !options.ignoreVoid) {
+      if (
+        !options.ignoreVoid &&
+        node.type === AST_NODE_TYPES.UnaryExpression &&
+        node.operator === 'void'
+      ) {
         // Similarly, a `void` expression always returns undefined, so we need to
         // see what's inside it without checking the type of the overall expression.
-        return isUnhandledPromise(checker, node.expression);
+        return isUnhandledPromise(checker, node.argument);
       }
 
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (!isPromiseLike(checker, node)) {
+      if (
+        !isPromiseLike(checker, parserServices.esTreeNodeToTSNodeMap.get(node))
+      ) {
         return false;
       }
 
-      if (ts.isCallExpression(node)) {
+      if (node.type === AST_NODE_TYPES.CallExpression) {
         // If the outer expression is a call, it must be either a `.then()` or
         // `.catch()` that handles the promise.
         return (
@@ -142,17 +140,17 @@ export default util.createRule<Options, MessageId>({
           !isPromiseThenCallWithRejectionHandler(node) &&
           !isPromiseFinallyCallWithHandler(node)
         );
-      } else if (ts.isConditionalExpression(node)) {
+      } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
         return (
-          isUnhandledPromise(checker, node.whenFalse) ||
-          isUnhandledPromise(checker, node.whenTrue)
+          isUnhandledPromise(checker, node.alternate) ||
+          isUnhandledPromise(checker, node.consequent)
         );
       } else if (
-        ts.isPropertyAccessExpression(node) ||
-        ts.isIdentifier(node) ||
-        ts.isNewExpression(node)
+        node.type === AST_NODE_TYPES.MemberExpression ||
+        node.type === AST_NODE_TYPES.Identifier ||
+        node.type === AST_NODE_TYPES.NewExpression
       ) {
         // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
         // `new Promise()`), the promise is not handled because it doesn't have the
@@ -225,30 +223,35 @@ function isFunctionParam(
   return false;
 }
 
-function isPromiseCatchCallWithHandler(expression: ts.CallExpression): boolean {
+function isPromiseCatchCallWithHandler(
+  expression: TSESTree.CallExpression,
+): boolean {
   return (
-    ts.isPropertyAccessExpression(expression.expression) &&
-    expression.expression.name.text === 'catch' &&
+    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
+    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
+    expression.callee.property.name === 'catch' &&
     expression.arguments.length >= 1
   );
 }
 
 function isPromiseThenCallWithRejectionHandler(
-  expression: ts.CallExpression,
+  expression: TSESTree.CallExpression,
 ): boolean {
   return (
-    ts.isPropertyAccessExpression(expression.expression) &&
-    expression.expression.name.text === 'then' &&
+    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
+    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
+    expression.callee.property.name === 'then' &&
     expression.arguments.length >= 2
   );
 }
 
 function isPromiseFinallyCallWithHandler(
-  expression: ts.CallExpression,
+  expression: TSESTree.CallExpression,
 ): boolean {
   return (
-    ts.isPropertyAccessExpression(expression.expression) &&
-    expression.expression.name.text === 'finally' &&
+    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
+    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
+    expression.callee.property.name === 'finally' &&
     expression.arguments.length >= 1
   );
 }
