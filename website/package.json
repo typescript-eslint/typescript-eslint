@@ -10,12 +10,12 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.71",
-    "@docusaurus/plugin-content-docs": "^2.0.0-alpha.71",
-    "@docusaurus/plugin-content-pages": "^2.0.0-alpha.71",
-    "@docusaurus/plugin-debug": "^2.0.0-alpha.71",
-    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-alpha.71",
-    "@docusaurus/theme-classic": "^2.0.0-alpha.71",
+    "@docusaurus/core": "2.0.0-alpha.72",
+    "@docusaurus/plugin-content-docs": "^2.0.0-alpha.72",
+    "@docusaurus/plugin-content-pages": "^2.0.0-alpha.72",
+    "@docusaurus/plugin-debug": "^2.0.0-alpha.72",
+    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-alpha.72",
+    "@docusaurus/theme-classic": "^2.0.0-alpha.72",
     "@mdx-js/react": "^1.6.22",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/types": "^4.18.0",
@@ -42,12 +42,12 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-alpha.71",
-    "@types/react": "^17.0.2",
+    "@docusaurus/module-type-aliases": "^2.0.0-alpha.72",
+    "@types/react": "^17.0.3",
     "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.7",
     "globby": "^11.0.2",
-    "monaco-editor": "^0.22.3",
+    "monaco-editor": "^0.23.0",
     "null-loader": "^4.0.1",
     "string-replace-loader": "^2.3.0",
     "webpack": "^4.46.0"
