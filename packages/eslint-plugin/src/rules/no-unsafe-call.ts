@@ -1,7 +1,14 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-type MessageIds = 'unsafeCall' | 'unsafeNew' | 'unsafeTemplateTag';
+type MessageIds =
+  | 'unsafeCall'
+  | 'unsafeCallThis'
+  | 'unsafeNew'
+  | 'unsafeTemplateTag';
 
 export default util.createRule<[], MessageIds>({
   name: 'no-unsafe-call',
@@ -15,6 +22,8 @@ export default util.createRule<[], MessageIds>({
     },
     messages: {
       unsafeCall: 'Unsafe call of an any typed value.',
+      unsafeCallThis:
+        'Unsafe call of `this`, you can try to enable the `noImplicitThis` option.',
       unsafeNew: 'Unsafe construction of an any type value.',
       unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
@@ -34,6 +43,12 @@ export default util.createRule<[], MessageIds>({
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
 
       if (util.isTypeAnyType(type)) {
+        if (
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          node.object.type === AST_NODE_TYPES.ThisExpression
+        ) {
+          messageId = 'unsafeCallThis';
+        }
         context.report({
           node: reportingNode,
           messageId: messageId,

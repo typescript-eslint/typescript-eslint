@@ -22,6 +22,8 @@ export default util.createRule({
     messages: {
       unsafeMemberExpression:
         'Unsafe member access {{property}} on an any value.',
+      unsafeThisMemberExpression:
+        'Unsafe member access {{property}} on `this`, you can try to enable the `noImplicitThis` option.',
       unsafeComputedMemberAccess:
         'Computed name {{property}} resolves to an any value.',
     },
@@ -60,7 +62,10 @@ export default util.createRule({
         const propertyName = sourceCode.getText(node.property);
         context.report({
           node,
-          messageId: 'unsafeMemberExpression',
+          messageId:
+            node.object.type === AST_NODE_TYPES.ThisExpression
+              ? 'unsafeThisMemberExpression'
+              : 'unsafeMemberExpression',
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },

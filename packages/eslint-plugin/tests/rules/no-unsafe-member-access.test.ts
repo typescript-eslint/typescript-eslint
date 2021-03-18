@@ -9,7 +9,7 @@ import {
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -202,5 +202,35 @@ function foo(x: string[], y: any) { x[y] }
         },
       ],
     }),
+    {
+      code: noFormat`
+const methods = {
+  methodA() {
+    return this.methodB()
+  },
+  methodB() {
+    const getProperty = () => Math.random() > 0.5 ? 'methodB' : 'methodC'
+    return this[getProperty()]()
+  },
+  methodC() {
+    return true
+  },
+};
+      `,
+      errors: [
+        {
+          messageId: 'unsafeThisMemberExpression',
+          line: 4,
+          column: 12,
+          endColumn: 24,
+        },
+        {
+          messageId: 'unsafeThisMemberExpression',
+          line: 8,
+          column: 12,
+          endColumn: 31,
+        },
+      ],
+    },
   ],
 });
