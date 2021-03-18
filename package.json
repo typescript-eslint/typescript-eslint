@@ -32,7 +32,7 @@
     "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "generate:contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
     "generate:sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
     "generate:website-dts": "yarn ts-node --transpile-only ./tools/generate-website-dts.ts",

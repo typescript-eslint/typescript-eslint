@@ -1,4 +1,5 @@
-.list, .subList {
+.list,
+.subList {
   cursor: default;
   box-sizing: border-box;
   font-family: monospace;
@@ -11,7 +12,8 @@
   padding-left: 1rem;
 }
 
-.nonExpand, .expand {
+.nonExpand,
+.expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
   padding-left: 0.9rem;
 }
@@ -37,19 +39,19 @@
 }
 
 .tokenName {
-  color: #2AA198;
+  color: #2aa198;
 }
 
 .propName {
-  color: #B58900;
+  color: #b58900;
 }
 
 .propNumber {
-  color: #268BD2;
+  color: #268bd2;
 }
 
 .propBoolean {
-  color: #B58900;
+  color: #b58900;
 }
 
 .propString {

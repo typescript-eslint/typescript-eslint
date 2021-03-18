@@ -6,7 +6,11 @@
  */
 
 .hero {
-  background: linear-gradient(90deg, rgba(43,43,110,1) 0%, rgba(25,25,63,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(43, 43, 110, 1) 0%,
+    rgba(25, 25, 63, 1) 100%
+  );
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);
   text-align: center;

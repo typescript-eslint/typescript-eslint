@@ -5,6 +5,7 @@ interface IconBaseProps {
   pathClass?: string;
   width?: number;
   height?: number;
+  size?: number;
   fill?: string;
   onClick?(e: MouseEvent<SVGSVGElement>): void;
 }
@@ -18,12 +19,12 @@ export function SVGIcon(props: IconSVGProps): JSX.Element {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      width={props.width || 18}
-      height={props.height || 18}
-      fill={props.fill || 'currentColor'}
+      width={props.size ?? props.width ?? 18}
+      height={props.size ?? props.height ?? 18}
+      fill={props.fill ?? 'currentColor'}
       className={props.className}
-      onClick={e => {
-        props.onClick && props.onClick(e);
+      onClick={(e): void => {
+        props.onClick?.(e);
       }}
     >
       <path d="M0 0h24v24H0z" fill="none" />
@@ -61,6 +62,15 @@ export function AddIcon(props: IconBaseProps): JSX.Element {
     <SVGIcon
       {...props}
       path="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+    />
+  );
+}
+
+export function CloseIcon(props: IconBaseProps): JSX.Element {
+  return (
+    <SVGIcon
+      {...props}
+      path="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
     />
   );
 }

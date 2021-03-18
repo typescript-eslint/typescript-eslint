@@ -2,7 +2,8 @@
   cursor: pointer;
 }
 
-.optionItem, .optionLabel {
+.optionItem,
+.optionLabel {
   align-items: center;
   display: flex;
   flex: 0 0 1.5rem;
@@ -10,8 +11,8 @@
   font-size: 0.75rem;
   margin: 0 0;
   padding: 0.4rem 0.8rem;
-  transition:
-    background-color var(--ifm-transition-fast) var(--ifm-transition-timing-default),
+  transition: background-color var(--ifm-transition-fast)
+      var(--ifm-transition-timing-default),
     color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
   color: var(--ifm-font-color-secondary);
   justify-content: space-between;
@@ -27,7 +28,7 @@
 }
 
 .clickableIcon:hover {
-  color: var(--ifm-color-emphasis-700);
+  color: var(--ifm-color-primary);
 }
 
 .optionInput {

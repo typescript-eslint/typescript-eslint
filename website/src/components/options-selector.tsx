@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import styles from './options-selector.module.css';
 import { DeleteIcon, AddIcon } from './icons';
 import { HashStateOptions } from './lib/use-hash-state';
+import Modal from './modal';
 
 function computeRuleOptions(
   rules: Record<string, unknown>,
@@ -24,6 +25,7 @@ function OptionsSelector({
   setState,
 }: OptionsSelectorParams): JSX.Element {
   const [ruleName, setRuleName] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const removeRule = useCallback(
     (item: string) => {
@@ -48,6 +50,13 @@ function OptionsSelector({
 
   return (
     <>
+      <Modal
+        header="Config"
+        isOpen={isOpen}
+        onClose={(): void => setIsOpen(false)}
+      >
+        <div>Test</div>
+      </Modal>
       <Expander label="Options">
         <label className={styles.optionLabel}>
           Enable jsx
