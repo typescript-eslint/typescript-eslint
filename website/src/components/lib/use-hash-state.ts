@@ -33,7 +33,7 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
   try {
     const searchParams = new URLSearchParams(hash);
     return {
-      ts: searchParams.get('ts') ?? '',
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
       jsx: searchParams.has('jsx'),
       showAST: searchParams.has('showAST'),
       sourceType:

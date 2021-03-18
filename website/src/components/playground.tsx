@@ -20,7 +20,7 @@ function Playground(): JSX.Element {
     showAST: false,
     sourceType: 'module' as 'script' | 'module',
     code: '',
-    ts: '4.2.3',
+    ts: process.env.TS_VERSION,
     rules: {},
   });
   const { isDarkTheme } = useThemeContext();
