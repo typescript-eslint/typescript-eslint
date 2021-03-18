@@ -395,6 +395,8 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration',
+    'import-equal-type-declaration',
+    'import-export-equal-type-declaration',
     // babel treats declare and types as not a module
     'export-declare-const-named-enum',
     'export-declare-named-enum',

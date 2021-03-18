@@ -1423,6 +1423,7 @@ export interface TSImportEqualsDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSImportEqualsDeclaration;
   id: Identifier;
   moduleReference: EntityName | TSExternalModuleReference;
+  importKind: 'type' | 'value';
   isExport: boolean;
 }
 

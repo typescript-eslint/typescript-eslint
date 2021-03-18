@@ -2690,6 +2690,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSImportEqualsDeclaration,
           id: this.convertChild(node.name),
           moduleReference: this.convertChild(node.moduleReference),
+          importKind: node.isTypeOnly ? 'type' : 'value',
           isExport: hasModifier(SyntaxKind.ExportKeyword, node),
         });
       }
