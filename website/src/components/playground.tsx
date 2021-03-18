@@ -20,12 +20,14 @@ function Playground(): JSX.Element {
     showAST: false,
     sourceType: 'module' as 'script' | 'module',
     code: '',
-    rules: {} as Record<string, unknown>,
+    ts: '4.2.3',
+    rules: {},
   });
   const { isDarkTheme } = useThemeContext();
   const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
   const [ruleNames, setRuleNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);
   const [highlightedNode, setHighlightedNode] = useState<TSESTree.Node | null>(
     null,
@@ -88,6 +90,7 @@ function Playground(): JSX.Element {
       <div className={styles.options}>
         <OptionsSelector
           state={state}
+          tsVersions={tsVersions}
           setState={setState}
           ruleOptions={ruleNames}
         />
@@ -101,6 +104,7 @@ function Playground(): JSX.Element {
         >
           {isLoading && <Loader />}
           <Editor
+            ts={state.ts}
             jsx={state.jsx}
             code={state.code}
             darkTheme={isDarkTheme}
@@ -111,7 +115,10 @@ function Playground(): JSX.Element {
             onASTChange={updateAST}
             decoration={selectedNode}
             onChange={(code): void => setState('code', code)}
-            onLoaded={(): void => setIsLoading(true)}
+            onLoaded={(tsVersions): void => {
+              setTSVersion(tsVersions);
+              setIsLoading(true);
+            }}
             onSelect={updatePosition}
           />
         </div>

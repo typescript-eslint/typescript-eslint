@@ -1,5 +1,5 @@
 import type { languages } from 'monaco-editor';
-import type { Linter } from 'eslint/lib/linter/linter';
+import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
 import { createURI } from './utils';
 
 export function createQuickfixCodeAction(
@@ -34,7 +34,7 @@ export function createQuickfixCodeAction(
 }
 
 export function createProvideCodeActions(
-  fixes: Map<string, Linter.LintMessage[]>,
+  fixes: Map<string, Linter.LintMessage>,
 ): languages.CodeActionProvider {
   return {
     provideCodeActions(
@@ -60,7 +60,7 @@ export function createProvideCodeActions(
         if (message.fix) {
           actions.push(
             createQuickfixCodeAction(
-              `Fix this ${message.ruleId} problem`,
+              `Fix this ${message.ruleId ?? 'unknown'} problem`,
               marker,
               model,
               message.fix,
@@ -71,7 +71,7 @@ export function createProvideCodeActions(
           for (const suggestion of message.suggestions) {
             actions.push(
               createQuickfixCodeAction(
-                `${suggestion.desc} (${message.ruleId})`,
+                `${suggestion.desc} (${message.ruleId ?? 'unknown'})`,
                 marker,
                 model,
                 suggestion.fix,

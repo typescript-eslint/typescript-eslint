@@ -30,7 +30,7 @@ const filesToSkip = [
 
 module.exports = function (/*context, options*/) {
   return {
-    name: 'monaco-editor',
+    name: 'webpack-custom-plugin',
     configureWebpack(cfg, isServer) {
       return {
         module: {
@@ -63,6 +63,16 @@ module.exports = function (/*context, options*/) {
           new webpack.DefinePlugin({
             'process.env': {
               IS_SERVER: JSON.stringify(isServer),
+              TS_VERSION: JSON.stringify(
+                require('typescript/package.json').version,
+              ),
+              ESLINT_VERSION: JSON.stringify(
+                require('eslint/package.json').version,
+              ),
+              TS_ESLINT_VERSION: JSON.stringify(
+                require('@typescript-eslint/eslint-plugin/package.json')
+                  .version,
+              ),
             },
           }),
           new webpack.NormalModuleReplacementPlugin(

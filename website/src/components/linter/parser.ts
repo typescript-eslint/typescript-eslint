@@ -3,24 +3,15 @@ import { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
 import { visitorKeys } from '@typescript-eslint/visitor-keys/dist/visitor-keys';
 import { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
 import { createASTProgram } from './create-ast-program';
-import type { ParserOptions, TSESTree } from '@typescript-eslint/types';
+import type { ParserOptions } from '@typescript-eslint/types';
+import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
 import type {
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree/dist/parser-options';
 import { extra } from '../lib/config';
 
-// TODO: this is not exported
-export interface ParseForESLintResult {
-  ast: TSESTree.Program & {
-    range?: [number, number];
-    tokens?: TSESTree.Token[];
-    comments?: TSESTree.Comment[];
-  };
-  services: ParserServices;
-  visitorKeys: typeof visitorKeys;
-  scopeManager: ReturnType<typeof analyze>;
-}
+export type ParseForESLintResult = Linter.ESLintParseResult;
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;

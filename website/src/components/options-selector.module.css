@@ -60,8 +60,11 @@
   font-weight: 500;
   border-radius: 6px;
   font-family: inherit;
+  width: 50%;
+  box-shadow: none;
+  background-image: none;
   padding: 0.4rem 0.6rem;
-  -webkit-appearance: none;
+  appearance: none;
   color: var(--ifm-font-color-secondary);
   border: 1px solid var(--ifm-color-emphasis-100);
   background: var(--ifm-color-emphasis-200);

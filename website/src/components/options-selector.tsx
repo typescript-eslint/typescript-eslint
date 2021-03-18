@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import styles from './options-selector.module.css';
 import { DeleteIcon, AddIcon } from './icons';
 import { HashStateOptions } from './lib/use-hash-state';
-import Modal from './modal';
+import clsx from 'clsx';
 
 function computeRuleOptions(
   rules: Record<string, unknown>,
@@ -17,15 +17,16 @@ interface OptionsSelectorParams<T = HashStateOptions> {
   ruleOptions: string[];
   state: T;
   setState: (key: keyof T, value: unknown) => void;
+  tsVersions: readonly string[];
 }
 
 function OptionsSelector({
   ruleOptions,
   state,
   setState,
+  tsVersions,
 }: OptionsSelectorParams): JSX.Element {
   const [ruleName, setRuleName] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const removeRule = useCallback(
     (item: string) => {
@@ -48,15 +49,46 @@ function OptionsSelector({
     }
   }, [state, ruleName]);
 
+  const updateTS = useCallback((version: string) => {
+    setState('ts', version);
+    setTimeout(() => {
+      document.location.reload();
+    }, 100);
+  }, []);
+
   return (
     <>
-      <Modal
-        header="Config"
-        isOpen={isOpen}
-        onClose={(): void => setIsOpen(false)}
-      >
-        <div>Test</div>
-      </Modal>
+      <Expander label="Info">
+        <label className={styles.optionLabel}>
+          TypeScript
+          <select
+            name="ts"
+            value={state.ts}
+            className={clsx(styles.optionSelect, 'text--right')}
+            onChange={(e): void => {
+              updateTS(e.target.value);
+            }}
+          >
+            {((tsVersions.length && tsVersions) || [state.ts])
+              .filter(item => parseFloat(item) >= 3.3)
+              .map(item => {
+                return (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                );
+              })}
+          </select>
+        </label>
+        <label className={styles.optionLabel}>
+          Eslint
+          <span>{process.env.ESLINT_VERSION}</span>
+        </label>
+        <label className={styles.optionLabel}>
+          TSEslint
+          <span>{process.env.TS_ESLINT_VERSION}</span>
+        </label>
+      </Expander>
       <Expander label="Options">
         <label className={styles.optionLabel}>
           Enable jsx

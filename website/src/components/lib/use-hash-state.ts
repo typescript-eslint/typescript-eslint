@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { ParserOptions } from '@typescript-eslint/parser';
 import { debounce } from './debounce';
+import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
 
 export interface HashStateOptions {
   jsx?: boolean;
   sourceType?: ParserOptions['sourceType'];
-  rules?: Record<string, unknown>;
+  rules?: Linter.RulesRecord;
   code: string;
+  ts: string;
   showAST?: boolean;
 }
 
@@ -31,6 +33,7 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
   try {
     const searchParams = new URLSearchParams(hash);
     return {
+      ts: searchParams.get('ts') ?? '',
       jsx: searchParams.has('jsx'),
       showAST: searchParams.has('showAST'),
       sourceType:
@@ -44,7 +47,7 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
       rules: searchParams.has('rules')
         ? (readQueryParam(searchParams.get('rules')!) as Record<
             string,
-            unknown
+            Linter.RuleEntry
           >)
         : undefined,
     };
@@ -59,6 +62,7 @@ const writeStateToUrl = debounce((newState: HashStateOptions): void => {
     return;
   }
   const json: string = Object.entries({
+    ts: newState.ts,
     jsx: newState.jsx,
     sourceType: newState.sourceType,
     showAST: newState.showAST,

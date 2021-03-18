@@ -12,7 +12,7 @@ export interface SandboxModel {
   ts: TS;
 }
 
-function loadSandbox(): Promise<SandboxModel> {
+function loadSandbox(tsVersion: string): Promise<SandboxModel> {
   return new Promise((resolve, reject): void => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js';
@@ -24,7 +24,7 @@ function loadSandbox(): Promise<SandboxModel> {
       // @ts-ignore
       window.require.config({
         paths: {
-          vs: 'https://typescript.azureedge.net/cdn/4.2.2/monaco/min/vs',
+          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
           // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@4.2.2/min/vs',
           sandbox: 'https://www.typescriptlang.org/js/sandbox',
         },
@@ -68,4 +68,11 @@ function loadSandbox(): Promise<SandboxModel> {
   });
 }
 
-export const sandboxSingleton = loadSandbox();
+let instance;
+
+export const sandboxSingleton = (version: string): Promise<SandboxModel> => {
+  if (instance) {
+    return instance;
+  }
+  return (instance = loadSandbox(version));
+};

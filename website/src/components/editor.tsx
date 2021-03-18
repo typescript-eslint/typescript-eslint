@@ -12,6 +12,7 @@ import { createProvideCodeActions } from './lib/action';
 import { createURI, messageToMarker } from './lib/utils';
 import { debounce } from './lib/debounce';
 import { HashStateOptions } from './lib/use-hash-state';
+import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
 
 interface EditorProps extends HashStateOptions {
   darkTheme: boolean;
@@ -26,7 +27,7 @@ interface EditorProps extends HashStateOptions {
   ) => void;
   onLoadRule?: (value: string[]) => void;
   onSelect?: (position: Monaco.Position) => void;
-  onLoaded?: () => void;
+  onLoaded?: (tsVersions: readonly string[]) => void;
 }
 
 class Editor extends React.Component<EditorProps> {
@@ -39,7 +40,7 @@ class Editor extends React.Component<EditorProps> {
   private _codeIsUpdating: boolean;
   private _decorations: string[];
 
-  private readonly fixes: Map<string, unknown[]>;
+  private readonly fixes: Map<string, Linter.LintMessage>;
 
   constructor(props: EditorProps) {
     super(props);
@@ -144,7 +145,7 @@ class Editor extends React.Component<EditorProps> {
       },
       domID: 'monaco-editor-embed',
     };
-    const { main, sandboxFactory, ts } = await sandboxSingleton;
+    const { main, sandboxFactory, ts } = await sandboxSingleton(this.props.ts);
     this.sandboxInstance = sandboxFactory.createTypeScriptSandbox(
       sandboxConfig,
       main,
@@ -190,7 +191,7 @@ class Editor extends React.Component<EditorProps> {
     this._lint();
     this.updateLayout();
     if (this.props.onLoaded) {
-      this.props.onLoaded();
+      this.props.onLoaded(this.sandboxInstance.supportedVersions);
     }
   }
 
