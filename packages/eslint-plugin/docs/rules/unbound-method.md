@@ -4,6 +4,8 @@ Warns when a method is used outside of a method call.
 
 Class functions don't preserve the class scope when passed as standalone variables.
 
+If you think it is intended, you can try to add `this: void` as the first function parameter or use arrow function instead.
+
 ## Rule Details
 
 Examples of **incorrect** code for this rule

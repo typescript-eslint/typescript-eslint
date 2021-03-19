@@ -132,8 +132,8 @@ export default util.createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unbound:
-        'Avoid referencing unbound methods which may cause unintentional scoping of `this`.',
+      unbound: `Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.
+If you think it is intended, you can try to add \`this: void\` as the first function parameter or use arrow function instead.`,
     },
     schema: [
       {
