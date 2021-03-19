@@ -51,9 +51,6 @@ function OptionsSelector({
 
   const updateTS = useCallback((version: string) => {
     setState('ts', version);
-    setTimeout(() => {
-      document.location.reload();
-    }, 100);
   }, []);
 
   return (

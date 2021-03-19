@@ -57,27 +57,36 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
   return undefined;
 };
 
-const writeStateToUrl = debounce((newState: HashStateOptions): void => {
-  if (typeof window === 'undefined') {
-    return;
-  }
-  const json: string = Object.entries({
-    ts: newState.ts,
-    jsx: newState.jsx,
-    sourceType: newState.sourceType,
-    showAST: newState.showAST,
-    rules: newState.rules ? writeQueryParam(newState.rules) : undefined,
-    code: newState.code ? writeQueryParam(newState.code) : undefined,
-  })
-    .filter(item => item[1])
-    .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
-    .join('&');
-  window.history.pushState(
-    undefined,
-    document.title,
-    `${window.location.pathname}#${json}`,
-  );
-}, 100);
+const writeStateToUrl = debounce(
+  (newState: HashStateOptions, refresh = false): void => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const json: string = Object.entries({
+      ts: newState.ts,
+      jsx: newState.jsx,
+      sourceType: newState.sourceType,
+      showAST: newState.showAST,
+      rules: newState.rules ? writeQueryParam(newState.rules) : undefined,
+      code: newState.code ? writeQueryParam(newState.code) : undefined,
+    })
+      .filter(item => item[1])
+      .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
+      .join('&');
+
+    if (refresh) {
+      window.location.replace(`${window.location.pathname}#${json}`);
+      window.location.reload();
+    } else {
+      window.history.pushState(
+        undefined,
+        document.title,
+        `${window.location.pathname}#${json}`,
+      );
+    }
+  },
+  100,
+);
 
 function useHashState(
   initialState: HashStateOptions,
@@ -114,7 +123,7 @@ function useHashState(
     (key: keyof HashStateOptions, value: unknown): void => {
       setState(prevState => {
         const newState = { ...prevState, [key]: value };
-        writeStateToUrl(newState);
+        writeStateToUrl(newState, key === 'ts');
         return newState;
       });
     },
