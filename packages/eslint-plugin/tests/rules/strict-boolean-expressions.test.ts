@@ -464,16 +464,16 @@ if (x) {
             {
               messageId: 'conditionFixCompareZero',
               // TODO: fix compare zero suggestion for bigint
-              output: `        (x: bigint) => (x === 0);`,
+              output: `        (x: bigint) => x === 0;`,
             },
             {
               // TODO: remove check NaN suggestion for bigint
               messageId: 'conditionFixCompareNaN',
-              output: `        (x: bigint) => (Number.isNaN(x));`,
+              output: `        (x: bigint) => Number.isNaN(x);`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: `        (x: bigint) => (!Boolean(x));`,
+              output: `        (x: bigint) => !Boolean(x);`,
             },
           ],
         },
@@ -503,15 +503,15 @@ if (x) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: `        ([]["length"] === 0); // doesn't count as array.length when computed`,
+              output: `        []["length"] === 0; // doesn't count as array.length when computed`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: `        (Number.isNaN([]["length"])); // doesn't count as array.length when computed`,
+              output: `        Number.isNaN([]["length"]); // doesn't count as array.length when computed`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: `        (!Boolean([]["length"])); // doesn't count as array.length when computed`,
+              output: `        !Boolean([]["length"]); // doesn't count as array.length when computed`,
             },
           ],
         },
@@ -607,7 +607,7 @@ if (x) {
             },
             {
               messageId: 'conditionFixCompareFalse',
-              output: `        (x?: boolean) => (x === false);`,
+              output: `        (x?: boolean) => x === false;`,
             },
           ],
         },
@@ -644,7 +644,7 @@ if (x) {
       ],
       output: noFormat`
         declare const x: object | null; if (x != null) {}
-        (x?: { a: number }) => (x == null);
+        (x?: { a: number }) => x == null;
         <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;
       `,
     }),
@@ -683,7 +683,7 @@ if (x) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: string) => (x == null);',
+              output: '        (x?: string) => x == null;',
             },
             {
               messageId: 'conditionFixDefaultEmptyString',
@@ -691,7 +691,7 @@ if (x) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: string) => (!Boolean(x));',
+              output: '        (x?: string) => !Boolean(x);',
             },
           ],
         },
@@ -754,7 +754,7 @@ if (x) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: number) => (x == null);',
+              output: '        (x?: number) => x == null;',
             },
             {
               messageId: 'conditionFixDefaultZero',
@@ -762,7 +762,7 @@ if (x) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: number) => (!Boolean(x));',
+              output: '        (x?: number) => !Boolean(x);',
             },
           ],
         },
@@ -865,18 +865,21 @@ if (x) {
       options: [{ allowNullableObject: false }],
       code: noFormat`
         declare const obj: { x: number } | null;
+        !obj ? 1 : 0
         !obj
         obj || 0
         obj && 1 || 0
       `,
       errors: [
         { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
-        { messageId: 'conditionErrorNullableObject', line: 4, column: 9 },
+        { messageId: 'conditionErrorNullableObject', line: 4, column: 10 },
         { messageId: 'conditionErrorNullableObject', line: 5, column: 9 },
+        { messageId: 'conditionErrorNullableObject', line: 6, column: 9 },
       ],
       output: noFormat`
         declare const obj: { x: number } | null;
-        (obj == null)
+        (obj == null) ? 1 : 0
+        obj == null
         ;(obj != null) || 0
         ;(obj != null) && 1 || 0
       `,
