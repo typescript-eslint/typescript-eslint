@@ -4,7 +4,7 @@ Warns when a method is used outside of a method call.
 
 Class functions don't preserve the class scope when passed as standalone variables.
 
-If you think it is intended, you can try to add `this: void` as the first function parameter or use arrow function instead.
+If your function does not access `this`, [you can annotate it with `this: void`](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function), or consider using an arrow function instead.
 
 ## Rule Details
 
