@@ -2,6 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 const enum State {
@@ -33,6 +34,11 @@ export default util.createRule({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+    const compilerOptions = program.getCompilerOptions();
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'noImplicitThis',
+    );
     const sourceCode = context.getSourceCode();
 
     const stateCache = new Map<TSESTree.Node, State>();
@@ -63,6 +69,7 @@ export default util.createRule({
         context.report({
           node,
           messageId:
+            !isNoImplicitThis &&
             node.object.type === AST_NODE_TYPES.ThisExpression
               ? 'unsafeThisMemberExpression'
               : 'unsafeMemberExpression',

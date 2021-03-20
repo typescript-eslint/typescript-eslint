@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 type MessageIds =
@@ -33,6 +34,11 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+    const compilerOptions = program.getCompilerOptions();
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'noImplicitThis',
+    );
 
     function checkCall(
       node: TSESTree.Node,
@@ -44,6 +50,7 @@ export default util.createRule<[], MessageIds>({
 
       if (util.isTypeAnyType(type)) {
         if (
+          !isNoImplicitThis &&
           node.type === AST_NODE_TYPES.MemberExpression &&
           node.object.type === AST_NODE_TYPES.ThisExpression
         ) {
