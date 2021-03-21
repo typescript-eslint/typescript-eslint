@@ -42,7 +42,7 @@ function addContainsMethodsClassInvalid(
     errors: [
       {
         line: 18,
-        messageId: 'unbound',
+        messageId: 'unboundWithoutThisAnnotation',
       },
     ],
   }));
@@ -298,7 +298,7 @@ Promise.resolve().then(console.log);
       errors: [
         {
           line: 10,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -310,7 +310,7 @@ const x = console.log;
       errors: [
         {
           line: 3,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -325,15 +325,15 @@ function foo(arg: ContainsMethods | null) {
       errors: [
         {
           line: 20,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
         {
           line: 21,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
         {
           line: 22,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -375,7 +375,7 @@ ContainsMethods.unboundStatic;
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -390,7 +390,7 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -400,7 +400,7 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 1,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -419,7 +419,7 @@ instance.unbound = x; // THIS SHOULD NOT
       errors: [
         {
           line: 9,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -447,7 +447,7 @@ const { unbound } = new Foo();
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -476,7 +476,7 @@ let unbound;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -505,7 +505,7 @@ const { foo } = CommunicationError.prototype;
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -520,7 +520,7 @@ let foo;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -532,7 +532,7 @@ const { log } = console;
       errors: [
         {
           line: 3,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -541,7 +541,7 @@ const { log } = console;
       errors: [
         {
           line: 1,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -562,7 +562,7 @@ class OtherClass extends BaseClass {
         {
           line: 8,
           column: 15,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -584,7 +584,7 @@ class OtherClass extends BaseClass {
         {
           line: 9,
           column: 9,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
