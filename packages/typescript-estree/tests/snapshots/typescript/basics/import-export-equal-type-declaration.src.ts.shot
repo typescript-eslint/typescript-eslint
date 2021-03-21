@@ -1,32 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typescript basics import-equal-declaration.src 1`] = `
+exports[`typescript basics import-export-equal-type-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
       "id": Object {
         "loc": Object {
           "end": Object {
-            "column": 10,
+            "column": 22,
             "line": 1,
           },
           "start": Object {
-            "column": 7,
+            "column": 19,
             "line": 1,
           },
         },
         "name": "foo",
         "range": Array [
-          7,
-          10,
+          19,
+          22,
         ],
         "type": "Identifier",
       },
-      "importKind": "value",
-      "isExport": false,
+      "importKind": "type",
+      "isExport": true,
       "loc": Object {
         "end": Object {
-          "column": 28,
+          "column": 40,
           "line": 1,
         },
         "start": Object {
@@ -38,17 +38,17 @@ Object {
         "expression": Object {
           "loc": Object {
             "end": Object {
-              "column": 26,
+              "column": 38,
               "line": 1,
             },
             "start": Object {
-              "column": 21,
+              "column": 33,
               "line": 1,
             },
           },
           "range": Array [
-            21,
-            26,
+            33,
+            38,
           ],
           "raw": "'bar'",
           "type": "Literal",
@@ -56,23 +56,23 @@ Object {
         },
         "loc": Object {
           "end": Object {
-            "column": 27,
+            "column": 39,
             "line": 1,
           },
           "start": Object {
-            "column": 13,
+            "column": 25,
             "line": 1,
           },
         },
         "range": Array [
-          13,
-          27,
+          25,
+          39,
         ],
         "type": "TSExternalModuleReference",
       },
       "range": Array [
         0,
-        28,
+        40,
       ],
       "type": "TSImportEqualsDeclaration",
     },
@@ -90,7 +90,7 @@ Object {
   },
   "range": Array [
     0,
-    29,
+    41,
   ],
   "sourceType": "module",
   "tokens": Array [
@@ -110,12 +110,12 @@ Object {
         6,
       ],
       "type": "Keyword",
-      "value": "import",
+      "value": "export",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 10,
+          "column": 13,
           "line": 1,
         },
         "start": Object {
@@ -125,7 +125,43 @@ Object {
       },
       "range": Array [
         7,
-        10,
+        13,
+      ],
+      "type": "Keyword",
+      "value": "import",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 14,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        14,
+        18,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 19,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        19,
+        22,
       ],
       "type": "Identifier",
       "value": "foo",
@@ -133,17 +169,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 12,
+          "column": 24,
           "line": 1,
         },
         "start": Object {
-          "column": 11,
+          "column": 23,
           "line": 1,
         },
       },
       "range": Array [
-        11,
-        12,
+        23,
+        24,
       ],
       "type": "Punctuator",
       "value": "=",
@@ -151,17 +187,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 20,
+          "column": 32,
           "line": 1,
         },
         "start": Object {
-          "column": 13,
+          "column": 25,
           "line": 1,
         },
       },
       "range": Array [
-        13,
-        20,
+        25,
+        32,
       ],
       "type": "Identifier",
       "value": "require",
@@ -169,17 +205,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 21,
+          "column": 33,
           "line": 1,
         },
         "start": Object {
-          "column": 20,
+          "column": 32,
           "line": 1,
         },
       },
       "range": Array [
-        20,
-        21,
+        32,
+        33,
       ],
       "type": "Punctuator",
       "value": "(",
@@ -187,17 +223,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 26,
+          "column": 38,
           "line": 1,
         },
         "start": Object {
-          "column": 21,
+          "column": 33,
           "line": 1,
         },
       },
       "range": Array [
-        21,
-        26,
+        33,
+        38,
       ],
       "type": "String",
       "value": "'bar'",
@@ -205,17 +241,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 27,
+          "column": 39,
           "line": 1,
         },
         "start": Object {
-          "column": 26,
+          "column": 38,
           "line": 1,
         },
       },
       "range": Array [
-        26,
-        27,
+        38,
+        39,
       ],
       "type": "Punctuator",
       "value": ")",
@@ -223,17 +259,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 28,
+          "column": 40,
           "line": 1,
         },
         "start": Object {
-          "column": 27,
+          "column": 39,
           "line": 1,
         },
       },
       "range": Array [
-        27,
-        28,
+        39,
+        40,
       ],
       "type": "Punctuator",
       "value": ";",

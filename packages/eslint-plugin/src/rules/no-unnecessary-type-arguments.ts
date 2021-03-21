@@ -118,7 +118,7 @@ function getTypeParametersFromType(
   }
 
   return findFirstResult(declarations, decl =>
-    tsutils.isClassLikeDeclaration(decl) ||
+    ts.isClassLike(decl) ||
     ts.isTypeAliasDeclaration(decl) ||
     ts.isInterfaceDeclaration(decl)
       ? decl.typeParameters

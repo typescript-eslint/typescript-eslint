@@ -110,7 +110,7 @@ This can be useful if you want to enforce no particular format for a specific se
 The `custom` option defines a custom regex that the identifier must (or must not) match. This option allows you to have a bit more finer-grained control over identifiers, letting you ban (or force) certain patterns and substrings.
 Accepts an object with the following properties:
 
-- `regex` - accepts a regular expression (anything accepted into `new RegExp(regex)`).
+- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
 
 ### `filter`
@@ -121,7 +121,7 @@ You can use this to include or exclude specific identifiers from specific config
 
 Accepts an object with the following properties:
 
-- `regex` - accepts a regular expression (anything accepted into `new RegExp(regex)`).
+- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
 
 Alternatively, `filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). In this case, it's treated as if you had passed an object with the regex and `match: true`.
