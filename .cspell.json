@@ -109,7 +109,7 @@
   ],
   "overrides": [
     {
-      "filename": "**/*.{ts,js}",
+      "filename": "**/*.{ts,js,tsx,jsx}",
       "ignoreRegExpList": ["/@[a-z]+/", "/#(end)?region/"],
       "includeRegExpList": [
         "/\\/\\*[\\s\\S]*?\\*\\/|([^\\\\:]|^)\\/\\/.*$/",

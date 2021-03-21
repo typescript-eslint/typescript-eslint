@@ -29,7 +29,7 @@
     "check:configs": "lerna run check:configs",
     "check:docs": "lerna run check:docs",
     "check:format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
-    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
+    "check:spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,js,tsx,jsx}\"",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
