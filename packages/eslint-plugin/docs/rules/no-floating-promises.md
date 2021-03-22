@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-floating-promises
+---
+
 # Requires Promise-like values to be handled appropriately (`no-floating-promises`)
 
 This rule forbids usage of Promise-like values in statements without handling

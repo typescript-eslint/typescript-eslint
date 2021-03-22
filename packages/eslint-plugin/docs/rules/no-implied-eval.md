@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-implied-eval
+---
+
 # Disallow the use of `eval()`-like methods (`no-implied-eval`)
 
 It's considered a good practice to avoid using `eval()`. There are security and performance implications involved with doing so, which is why many linters recommend disallowing `eval()`. However, there are some other ways to pass a string and have it interpreted as JavaScript code that have similar concerns.
@@ -102,4 +107,8 @@ setTimeout(Foo.fn, 100);
 
 If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)
+
+:::

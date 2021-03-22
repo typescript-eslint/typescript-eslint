@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-loop-func
+---
+
 # Disallow function declarations that contain unsafe references inside loop statements (`no-loop-func`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for TypeScript types.
 
 See [`eslint/no-loop-func` options](https://eslint.org/docs/rules/no-loop-func#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loop-func.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loop-func.md)
+
+:::

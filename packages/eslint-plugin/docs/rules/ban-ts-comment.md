@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: ban-ts-comment
+---
+
 # Bans `@ts-<directive>` comments from being used or requires descriptions after directive (`ban-ts-comment`)
 
 TypeScript provides several directive comments that can be used to alter how it processes files.

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: sort-type-union-intersection-members
+---
+
 # Enforces that members of a type union/intersection are sorted alphabetically (`sort-type-union-intersection-members`)
 
 Sorting union (`|`) and intersection (`&`) types can help:

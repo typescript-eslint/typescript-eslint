@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-shadow
+---
+
 # Disallow variable declarations from shadowing variables declared in the outer scope (`no-shadow`)
 
 ## Rule Details
@@ -84,4 +89,8 @@ const test = 1;
 type Func = (test: string) => typeof test;
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)
+
+:::

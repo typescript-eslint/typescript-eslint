@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: func-call-spacing
+---
+
 # Require or disallow spacing between function identifiers and their invocations (`func-call-spacing`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for generic type parameters on function calls.
 
 See [`eslint/func-call-spacing` options](https://eslint.org/docs/rules/func-call-spacing#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/func-call-spacing.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/func-call-spacing.md)
+
+:::

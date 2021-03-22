@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-confusing-void-expression
+---
+
 # Requires expressions of type void to appear in statement position (`no-confusing-void-expression`)
 
 Returning the results of an expression whose type is void can be misleading.

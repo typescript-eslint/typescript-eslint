@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: strict-boolean-expressions
+---
+
 # Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
 
 Forbids usage of non-boolean types in expressions where a boolean is expected.

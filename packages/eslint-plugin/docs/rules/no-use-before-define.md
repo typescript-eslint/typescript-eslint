@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-use-before-define
+---
+
 # Disallow the use of variables before they are defined (`no-use-before-define`)
 
 ## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1856](https://github.com/typescript-eslint/typescript-eslint/issues/1856)
@@ -103,4 +108,8 @@ enum Enum {}
 
 See [`eslint/no-use-before-define` options](https://eslint.org/docs/rules/no-use-before-define#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-use-before-define.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-use-before-define.md)
+
+:::

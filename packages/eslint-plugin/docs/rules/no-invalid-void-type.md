@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-invalid-void-type
+---
+
 # Disallows usage of `void` type outside of generic or return types (`no-invalid-void-type`)
 
 Disallows usage of `void` type outside of return types or generic type arguments.

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: class-literal-property-style
+---
+
 # Ensures that literals on classes are exposed in a consistent style (`class-literal-property-style`)
 
 When writing TypeScript applications, it's typically safe to store literal values on classes using fields with the `readonly` modifier to prevent them from being reassigned.

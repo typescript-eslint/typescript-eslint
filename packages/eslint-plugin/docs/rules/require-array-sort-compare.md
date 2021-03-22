@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: require-array-sort-compare
+---
+
 # Requires `Array#sort` calls to always provide a `compareFunction` (`require-array-sort-compare`)
 
 This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
@@ -13,7 +18,7 @@ When sorting numbers, this results in the classic "10 before 2" order:
 
 This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the noted in the language specification thusly:
 
-> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
+> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br/> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 
 ## Rule Details
 

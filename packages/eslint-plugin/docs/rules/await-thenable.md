@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: await-thenable
+---
+
 # Disallows awaiting a value that is not a Thenable (`await-thenable`)
 
 This rule disallows awaiting a value that is not a "Thenable" (an object which has `then` method, such as a Promise).

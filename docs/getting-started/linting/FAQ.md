@@ -1,23 +1,8 @@
-# Troubleshooting / FAQ
-
-## Table of Contents
-
-- [I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code](#i-am-using-a-rule-from-eslint-core-and-it-doesnt-work-correctly-with-typescript-code)
-- [I get errors telling me "The file must be included in at least one of the projects provided"](#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided)
-- [I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"](#i-use-a-framework-like-vue-that-requires-custom-file-extensions-and-i-get-errors-like-you-should-add-parseroptionsextrafileextensions-to-your-config)
-- [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)
-- [TypeScript should be installed locally](#typescript-should-be-installed-locally)
-- [How can I ban `<specific language feature>`?](#how-can-i-ban-specific-language-feature)
-- [Why don't I see TypeScript errors in my ESLint output?](#why-dont-i-see-typescript-errors-in-my-eslint-output)
-- [I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors](#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors)
-- [How do I check to see what versions are installed?](#how-do-i-check-to-see-what-versions-are-installed)
-- [My linting feels really slow](#my-linting-feels-really-slow)
-
 ---
-
-<br />
-<br />
-<br />
+id: troubleshooting
+title: Troubleshooting
+sidebar_label: Troubleshooting
+---
 
 ## I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code
 
@@ -38,15 +23,7 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 We release a new version our tooling every week. **_Please_** ensure that you [check our the latest list of "extension" rules](../../../packages/eslint-plugin/README.md#extension-rules) **_before_** filing an issue.
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -56,15 +33,7 @@ There are a couple of solutions to this, depending on what you want to achieve.
 
 See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
@@ -78,15 +47,7 @@ You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeS
  },
 ```
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
@@ -94,30 +55,14 @@ This is to be expected - ESLint rules do not check file extensions on purpose, a
 
 If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to turn off certain rules, or even change the parser based on glob patterns.
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## TypeScript should be installed locally
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`. See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## How can I ban `<specific language feature>`?
 
@@ -154,15 +99,7 @@ For example, you can ban enums (or some variation of) using one of the following
 }
 ```
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## Why don't I see TypeScript errors in my ESLint output?
 
@@ -173,15 +110,7 @@ Instead, our tooling exists to **_augment_** TypeScript's built in checks with l
 
 [1] - TypeScript computes type information lazily, so us asking for the errors it would produce from the compiler would take an _additional_ ~100ms per file. This doesn't sound like a lot, but depending on the size of your codebase, it can easily add up to between several seconds to several minutes to a lint run.
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors
 
@@ -206,15 +135,7 @@ Note, that for a mixed project including JavaScript and TypeScript, the `no-unde
 
 If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## How do I check to see what versions are installed?
 
@@ -225,23 +146,15 @@ Installing our tooling in the root of your project does not mean that only one v
 You can check what versions are installed in your project using the following commands:
 
 ```bash
-$ npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
-$ yarn list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
+yarn list @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
 If you see more than one version installed, then you will have to either use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force a single version, or you will have to downgrade your root versions to match the dependency versions.
 
 **The best course of action in this case is to wait until your dependency releases a new version with support for our latest versions.**
 
-<br />
-<br />
-<br />
-
 ---
-
-<br />
-<br />
-<br />
 
 ## My linting feels really slow
 
@@ -263,8 +176,8 @@ This plugin surfaces prettier formatting problems at lint time, helping to ensur
 
 Instead of using this plugin, we recommend using prettier's `--list-different` flag to detect if a file has not been correctly formatted. For example, our CI is setup to run the following command automatically, which blocks diffs that have not been formatted:
 
-```bash
-$ yarn prettier --list-different \"./**/*.{ts,js,json,md}\"
+```bash npm2yarn
+npm run prettier --list-different \"./**/*.{ts,js,json,md}\"
 ```
 
 ### `eslint-plugin-import`
@@ -292,7 +205,3 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 This rule helps ensure your codebase follows a consistent indentation pattern. However this involves a _lot_ of computations across every single token in a file. Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
-
-<br />
-<br />
-<br />

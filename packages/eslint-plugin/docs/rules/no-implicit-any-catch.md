@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-implicit-any-catch
+---
+
 # Disallow usage of the implicit `any` type in catch clauses (`no-implicit-any-catch`)
 
 TypeScript 4.0 added support for adding an explicit `any` or `unknown` type annotation on a catch clause variable.

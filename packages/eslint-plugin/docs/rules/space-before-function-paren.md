@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: space-before-function-paren
+---
+
 # Enforces consistent spacing before function parenthesis (`space-before-function-paren`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for generic type parameters on function calls.
 
 See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules/space-before-function-paren#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)
+
+:::

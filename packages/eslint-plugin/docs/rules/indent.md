@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: indent
+---
+
 # Enforce consistent indentation (`indent`)
 
 ## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1824](https://github.com/typescript-eslint/typescript-eslint/issues/1824)
@@ -21,4 +26,8 @@ It adds support for TypeScript nodes.
 
 See [`eslint/indent` options](https://eslint.org/docs/rules/indent#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/indent.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/indent.md)
+
+:::

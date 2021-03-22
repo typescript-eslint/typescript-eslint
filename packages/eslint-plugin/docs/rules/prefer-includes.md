@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: prefer-includes
+---
+
 # Enforce `includes` method over `indexOf` method (`prefer-includes`)
 
 Until ES5, we were using `String#indexOf` method to check whether a string contains an arbitrary substring or not.

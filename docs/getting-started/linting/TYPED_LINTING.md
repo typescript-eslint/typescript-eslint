@@ -1,4 +1,8 @@
-# Getting Started - Linting with Type Information
+---
+id: type-linting
+title: Linting with Type Information
+sidebar_label: Linting with Type Information
+---
 
 The parser you configured earlier has a little secret. Under the hood, it actually just uses TypeScript's compiler APIs to parse the files. This means that we can provide lint rules with access to all of the type information that TypeScript knows about your codebase.
 
@@ -6,7 +10,7 @@ This provides a lot of additional power, unlocking many possibilities for static
 
 How can we tap into this? There are two small changes you need to make to your config file:
 
-```diff
+```diff title=".eslintrc.js"
  module.exports = {
    root: true,
    parser: '@typescript-eslint/parser',
@@ -57,8 +61,8 @@ There are a couple of solutions to this, depending on what you want to achieve.
   - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
     - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](../../../tsconfig.eslint.json)
-      - [`.eslintrc.js`](../../../.eslintrc.js)
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/.eslintrc.js)
 
 ## FAQ
 

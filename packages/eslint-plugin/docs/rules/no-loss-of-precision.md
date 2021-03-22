@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-loss-of-precision
+---
+
 # Disallow literal numbers that lose precision (`no-loss-of-precision`)
 
 ## Rule Details
@@ -16,4 +21,8 @@ Note that this rule requires ESLint v7.
 }
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loss-of-precision.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loss-of-precision.md)
+
+:::

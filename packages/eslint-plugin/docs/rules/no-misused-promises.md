@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-misused-promises
+---
+
 # Avoid using promises in places not designed to handle them (`no-misused-promises`)
 
 This rule forbids using promises in places where the TypeScript compiler

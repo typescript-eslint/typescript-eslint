@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-extra-semi
+---
+
 # Disallow unnecessary semicolons (`no-extra-semi`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for class properties.
 
 See [`eslint/no-extra-semi` options](https://eslint.org/docs/rules/no-extra-semi#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-extra-semi.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-extra-semi.md)
+
+:::

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: no-non-null-asserted-optional-chain
+---
+
 # Disallows using a non-null assertion after an optional chain expression (`no-non-null-asserted-optional-chain`)
 
 ## Rule Details

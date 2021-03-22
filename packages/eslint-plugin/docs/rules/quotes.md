@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: quotes
+---
+
 # Enforce the consistent use of either backticks, double, or single quotes (`quotes`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for TypeScript features which allow quoted names, but not backti
 
 See [`eslint/quotes` options](https://eslint.org/docs/rules/quotes#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/quotes.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/quotes.md)
+
+:::

@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: prefer-enum-initializers
+---
+
 # Prefer initializing each enums member value (`prefer-enum-initializers`)
 
 This rule recommends having each `enum`s member value explicitly initialized.

@@ -1,0 +1,77 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.hero {
+  background: linear-gradient(
+    90deg,
+    rgba(43, 43, 110, 1) 0%,
+    rgba(25, 25, 63, 1) 100%
+  );
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
+  text-align: center;
+}
+
+.buttons {
+  --ifm-button-size-multiplier: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.buttons a {
+  margin: 1rem 1rem;
+}
+
+.lightBackground {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.features,
+.sponsors {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sponsors {
+  text-align: center;
+}
+
+.featureImage {
+  height: 7rem;
+  width: 7rem;
+}
+
+.sponsorsTier {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 10px auto;
+  padding: 0;
+}
+
+.sponsorsTier li {
+  list-style: none;
+  margin: 5px;
+}
+
+.sponsorsTier a,
+.sponsorsTier a:hover {
+  background: none;
+  border: none;
+}
+.tier-sponsor img {
+  width: 90px;
+}
+.tier-supporter img {
+  width: 60px;
+}

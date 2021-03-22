@@ -1,3 +1,8 @@
+---
+hide_title: true
+sidebar_label: brace-style
+---
+
 # Enforce consistent brace style for blocks (`brace-style`)
 
 ## Rule Details
@@ -19,4 +24,8 @@ It adds support for `enum`, `interface`, `namespace` and `module` declarations.
 
 See [`eslint/brace-style` options](https://eslint.org/docs/rules/brace-style#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/brace-style.md)</sup>
+:::note
+
+Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/brace-style.md)
+
+:::
