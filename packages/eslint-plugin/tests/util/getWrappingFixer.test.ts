@@ -179,9 +179,9 @@ ruleTester.run('getWrappingFixer', rule, {
       output: 'function fn() { return void wrapMe }',
     },
     {
-      code: 'function fn() { yield wrapMe }',
+      code: 'function* fn() { yield wrapMe }',
       errors: [{ messageId: 'addVoid' }],
-      output: 'function fn() { yield void wrapMe }',
+      output: 'function* fn() { yield void wrapMe }',
     },
     {
       code: '() => wrapMe',
