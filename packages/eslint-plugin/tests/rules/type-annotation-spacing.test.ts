@@ -4598,8 +4598,8 @@ type Bar = Record<keyof Foo, string>
       output: 'function foo(a?: string) {}',
       errors: [
         {
-          messageId: 'unexpectedSpaceBefore',
-          data: { type: ':' },
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
           line: 1,
           column: 17,
         },
@@ -4616,8 +4616,8 @@ type Bar = Record<keyof Foo, string>
           column: 16,
         },
         {
-          messageId: 'unexpectedSpaceBefore',
-          data: { type: ':' },
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
           line: 1,
           column: 18,
         },
@@ -4634,8 +4634,8 @@ type Bar = Record<keyof Foo, string>
           column: 16,
         },
         {
-          messageId: 'unexpectedSpaceBefore',
-          data: { type: ':' },
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
           line: 1,
           column: 19,
         },
@@ -4700,8 +4700,8 @@ class Foo {
           column: 25,
         },
         {
-          messageId: 'unexpectedSpaceBefore',
-          data: { type: ':' },
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
           line: 3,
           column: 27,
         },
@@ -4772,8 +4772,8 @@ interface Foo {
           column: 10,
         },
         {
-          messageId: 'unexpectedSpaceBefore',
-          data: { type: ':' },
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
           line: 3,
           column: 12,
         },

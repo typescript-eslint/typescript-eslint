@@ -35,7 +35,8 @@ type MessageIds =
   | 'expectedSpaceAfter'
   | 'expectedSpaceBefore'
   | 'unexpectedSpaceAfter'
-  | 'unexpectedSpaceBefore';
+  | 'unexpectedSpaceBefore'
+  | 'unexpectedSpaceBetween';
 
 const definition = {
   type: 'object',
@@ -122,6 +123,8 @@ export default util.createRule<Options, MessageIds>({
       expectedSpaceBefore: "Expected a space before the '{{type}}'.",
       unexpectedSpaceAfter: "Unexpected space after the '{{type}}'.",
       unexpectedSpaceBefore: "Unexpected space before the '{{type}}'.",
+      unexpectedSpaceBetween:
+        "Unexpected space between the '{{previousToken}}' and the '{{type}}'.",
     },
     schema: [
       {
@@ -180,9 +183,10 @@ export default util.createRule<Options, MessageIds>({
         if (sourceCode.isSpaceBetween!(previousToken, punctuatorTokenStart)) {
           context.report({
             node: punctuatorTokenStart,
-            messageId: 'unexpectedSpaceBefore',
+            messageId: 'unexpectedSpaceBetween',
             data: {
               type,
+              previousToken: previousToken.value,
             },
             fix(fixer) {
               return fixer.removeRange([
