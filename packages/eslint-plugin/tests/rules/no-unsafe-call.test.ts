@@ -157,6 +157,9 @@ const methods = {
   methodB() {
     return true
   },
+  methodC() {
+    return this()
+  }
 };
       `,
       errors: [
@@ -165,6 +168,12 @@ const methods = {
           line: 4,
           column: 12,
           endColumn: 24,
+        },
+        {
+          messageId: 'unsafeCallThis',
+          line: 10,
+          column: 12,
+          endColumn: 16,
         },
       ],
     },

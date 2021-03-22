@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
+import { getThisExpression } from '../util';
 
 type MessageIds =
   | 'unsafeCall'
@@ -22,9 +20,11 @@ export default util.createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an any typed value.',
-      unsafeCallThis:
-        'Unsafe call of `this`, you can try to enable the `noImplicitThis` option.',
+      unsafeCall: 'Unsafe call of an `any` typed value.',
+      unsafeCallThis: [
+        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
       unsafeNew: 'Unsafe construction of an any type value.',
       unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
@@ -49,12 +49,20 @@ export default util.createRule<[], MessageIds>({
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
 
       if (util.isTypeAnyType(type)) {
-        if (
-          !isNoImplicitThis &&
-          node.type === AST_NODE_TYPES.MemberExpression &&
-          node.object.type === AST_NODE_TYPES.ThisExpression
-        ) {
-          messageId = 'unsafeCallThis';
+        if (!isNoImplicitThis) {
+          // `this()` or `this.foo()` or `this.foo[bar]()`
+          const thisExpression = getThisExpression(node);
+          if (
+            thisExpression &&
+            util.isTypeAnyType(
+              util.getConstrainedTypeAtLocation(
+                checker,
+                esTreeNodeToTSNodeMap.get(thisExpression),
+              ),
+            )
+          ) {
+            messageId = 'unsafeCallThis';
+          }
         }
         context.report({
           node: reportingNode,
