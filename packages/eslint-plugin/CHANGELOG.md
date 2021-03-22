@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.18.0...v4.19.0) (2021-03-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [member-delimiter-style] correct invalid fix for multiline with params on the same line ([#3177](https://github.com/typescript-eslint/typescript-eslint/issues/3177)) ([7ad343b](https://github.com/typescript-eslint/typescript-eslint/commit/7ad343b067040f6ea816b129323d110d4bc2e830))
+* **eslint-plugin:** [promise-function-async] bad fixer with computed and literal methods ([#3163](https://github.com/typescript-eslint/typescript-eslint/issues/3163)) ([e3a3ea0](https://github.com/typescript-eslint/typescript-eslint/commit/e3a3ea04757464aa2dded1ef46af8ad4e05246f2))
+
+
+### Features
+
+* **eslint-plugin:** [object-curly-spacing] support MappedType ([#3176](https://github.com/typescript-eslint/typescript-eslint/issues/3176)) ([0557a43](https://github.com/typescript-eslint/typescript-eslint/commit/0557a439327557f4c0369ae2dddc8282ba45bfe6))
+* **eslint-plugin:** [unbound-method] improve error message ([#3203](https://github.com/typescript-eslint/typescript-eslint/issues/3203)) ([5cc5d2e](https://github.com/typescript-eslint/typescript-eslint/commit/5cc5d2ef6d924d301e87f7bcf599352310e74b2c)), closes [#3201](https://github.com/typescript-eslint/typescript-eslint/issues/3201)
+
+
+
+
+
 # [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
 
 

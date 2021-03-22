@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.18.0...v4.19.0) (2021-03-22)
+
+
+### Bug Fixes
+
+* **typescript-estree:** [ts 4.2] add support for import type equal declaration ([#3189](https://github.com/typescript-eslint/typescript-eslint/issues/3189)) ([6a25faf](https://github.com/typescript-eslint/typescript-eslint/commit/6a25faf5cfa4d21a7546d9866819f4e017308fb2))
+
+
+
+
+
 # [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree
