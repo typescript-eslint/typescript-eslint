@@ -94,12 +94,19 @@ function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
   const parent = node.parent!;
 
   if (
+    parent.type === AST_NODE_TYPES.UpdateExpression ||
     parent.type === AST_NODE_TYPES.UnaryExpression ||
     parent.type === AST_NODE_TYPES.BinaryExpression ||
     parent.type === AST_NODE_TYPES.LogicalExpression ||
     parent.type === AST_NODE_TYPES.ConditionalExpression ||
-    parent.type === AST_NODE_TYPES.AwaitExpression ||
-    parent.type === AST_NODE_TYPES.MemberExpression
+    parent.type === AST_NODE_TYPES.AwaitExpression
+  ) {
+    return true;
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.MemberExpression &&
+    parent.object === node
   ) {
     return true;
   }
@@ -160,11 +167,17 @@ function isMissingSemicolonBefore(
 }
 
 /**
- * Checks if a node is LHS of a binary/ternary expression.
+ * Checks if a node is LHS of an operator.
  */
 function isLeftHandSide(node: TSESTree.Node): boolean {
   const parent = node.parent!;
 
+  // a++
+  if (parent.type === AST_NODE_TYPES.UpdateExpression) {
+    return true;
+  }
+
+  // a + b
   if (
     (parent.type === AST_NODE_TYPES.BinaryExpression ||
       parent.type === AST_NODE_TYPES.LogicalExpression ||
@@ -174,9 +187,23 @@ function isLeftHandSide(node: TSESTree.Node): boolean {
     return true;
   }
 
+  // a ? b : c
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
     node === parent.test
+  ) {
+    return true;
+  }
+
+  // a(b)
+  if (parent.type === AST_NODE_TYPES.CallExpression && node === parent.callee) {
+    return true;
+  }
+
+  // a`b`
+  if (
+    parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+    node === parent.tag
   ) {
     return true;
   }
