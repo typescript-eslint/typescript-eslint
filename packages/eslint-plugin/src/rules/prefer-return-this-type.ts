@@ -41,14 +41,18 @@ export default createRule({
         }
 
         const method = parserServices.esTreeNodeToTSNodeMap.get(node);
-        // TODO: should be checked too.
         if (method.flags & ts.NodeFlags.HasImplicitReturn) {
           return;
         }
 
         const returnType = checker.getTypeAtLocation(method.type!);
-        // if `any` or `unknown` is used explicitly, do not bother
-        if (returnType.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+        // if complex type is used explicitly, do not bother
+        if (
+          returnType.flags &
+          (ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.UnionOrIntersection)
+        ) {
           return;
         }
 
@@ -65,7 +69,6 @@ export default createRule({
         forEachReturnStatement(method.body, stmt => {
           const expr = stmt.expression;
           if (!expr) {
-            // TODO: should be treated as `undefined` and go on.
             alwaysReturnsThis = false;
             return true;
           }
@@ -80,6 +83,8 @@ export default createRule({
             alwaysReturnsThis = false;
             return true;
           }
+
+          return undefined;
         });
 
         if (alwaysReturnsThis) {
@@ -129,5 +134,7 @@ export function forEachReturnStatement<T>(
       case ts.SyntaxKind.CatchClause:
         return ts.forEachChild(node, traverse);
     }
+
+    return undefined;
   }
 }

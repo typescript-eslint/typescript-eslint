@@ -31,6 +31,20 @@ class Foo {
   f6(): unknown {
     return this;
   }
+  f7(): Foo | undefined {
+    return this;
+  }
+  f8(): this | undefined {
+    return this;
+  }
+  f9(foo: Foo): Foo {
+    return Math.random() > 0.5 ? foo : this;
+  }
+  f10(): Foo | undefined {
+    if (Math.random() > 0.5) {
+      return this;
+    }
+  }
 }
     `,
   ],
