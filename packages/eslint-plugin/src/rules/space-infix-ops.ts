@@ -119,10 +119,26 @@ export default util.createRule<Options, MessageIds>({
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
 
+    /**
+     * Check if it has an assignment char and report if it's faulty
+     * @param node The node to report
+     */
+    function checkForTypeAliasAssignmentSpace(
+      node: TSESTree.TSTypeAliasDeclaration,
+    ): void {
+      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
+      const rightNode = sourceCode.getTokenByRangeStart(
+        node.typeAnnotation.range[0],
+      );
+
+      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+    }
+
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
       ClassProperty: checkForClassPropertyAssignmentSpace,
+      TSTypeAliasDeclaration: checkForTypeAliasAssignmentSpace,
     };
   },
 });

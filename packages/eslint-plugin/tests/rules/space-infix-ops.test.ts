@@ -54,6 +54,11 @@ ruleTester.run('space-infix-ops', rule, {
         }
       `,
     },
+    {
+      code: `
+        type Test = string | boolean;
+      `,
+    },
   ],
   invalid: [
     {
@@ -154,6 +159,36 @@ ruleTester.run('space-infix-ops', rule, {
           messageId: 'missingSpace',
           column: 33,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test= string | number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test =string | number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 19,
+          line: 2,
         },
       ],
     },
