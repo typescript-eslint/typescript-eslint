@@ -66,6 +66,8 @@ class Foo {
   f4 = (): this => {
     return this;
   };
+  f5 = (): Foo => new Foo();
+  f6 = '';
 }
     `,
   ],
