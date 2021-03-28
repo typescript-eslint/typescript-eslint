@@ -60,7 +60,14 @@ export default createRule({
     ): boolean {
       const func = parserServices.esTreeNodeToTSNodeMap.get(originalFunc);
 
-      if (func.flags & ts.NodeFlags.HasImplicitReturn || !func.body) {
+      // arrow function without brackets is flagged as HasImplicitReturn by ts
+      const mayReturnUndefined =
+        func.flags & ts.NodeFlags.HasImplicitReturn &&
+        !(
+          func.kind === ts.SyntaxKind.ArrowFunction &&
+          func.body?.kind !== ts.SyntaxKind.Block
+        );
+      if (mayReturnUndefined || !func.body) {
         return false;
       }
 

@@ -166,5 +166,24 @@ class Foo {
 }
       `,
     },
+    {
+      code: `
+class Foo {
+  f = (): Foo => this;
+}
+      `,
+      errors: [
+        {
+          messageId: 'UseThisType',
+          line: 3,
+          column: 9,
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => this;
+}
+      `,
+    },
   ],
 });
