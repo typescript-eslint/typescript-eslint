@@ -45,6 +45,27 @@ class Foo {
       return this;
     }
   }
+  f11(): Foo {
+    if (Math.random() > 0.5) {
+      return this;
+    }
+  }
+  f12(this: Foo, that: Foo): Foo;
+  f13(): Foo {
+    return;
+  }
+}
+    `,
+    `
+class Foo {
+  f1 = () => {};
+  f2 = (): Foo => {
+    return new Foo();
+  };
+  f3 = () => this;
+  f4 = (): this => {
+    return this;
+  };
 }
     `,
   ],
@@ -94,6 +115,54 @@ class Foo {
     const self = this;
     return self;
   }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo => {
+    return this;
+  };
+}
+      `,
+      errors: [
+        {
+          messageId: 'UseThisType',
+          line: 3,
+          column: 9,
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => {
+    return this;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo => {
+    const self = this;
+    return self;
+  };
+}
+      `,
+      errors: [
+        {
+          messageId: 'UseThisType',
+          line: 3,
+          column: 9,
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => {
+    const self = this;
+    return self;
+  };
 }
       `,
     },

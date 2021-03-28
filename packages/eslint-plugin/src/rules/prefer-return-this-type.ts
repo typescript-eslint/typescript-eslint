@@ -5,6 +5,19 @@ import {
 import { createRule, getParserServices } from '../util';
 import * as ts from 'typescript';
 
+const IgnoreTypes = new Set<TSESTree.TypeNode['type']>([
+  AST_NODE_TYPES.TSThisType,
+  AST_NODE_TYPES.TSAnyKeyword,
+  AST_NODE_TYPES.TSUnknownKeyword,
+  AST_NODE_TYPES.TSNeverKeyword,
+  AST_NODE_TYPES.TSUnionType,
+  AST_NODE_TYPES.TSIntersectionType,
+]);
+
+type ClassLikeDeclaration =
+  | TSESTree.ClassDeclaration
+  | TSESTree.ClassExpression;
+
 export default createRule({
   name: 'prefer-return-this-type',
   defaultOptions: [],
@@ -29,71 +42,114 @@ export default createRule({
     const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
+    // If returnType is absent or complex, do not bother
+    function isReturnTypePossiblyUnconcise(
+      func: TSESTree.FunctionLike,
+    ): boolean {
+      return (
+        !!func.returnType &&
+        !IgnoreTypes.has(func.returnType.typeAnnotation.type)
+      );
+    }
+
+    function isFunctionAlwaysReturningThis(
+      originalFunc:
+        | TSESTree.MethodDefinition['value']
+        | TSESTree.ArrowFunctionExpression,
+      originalClass: ClassLikeDeclaration,
+    ): boolean {
+      const func = parserServices.esTreeNodeToTSNodeMap.get(originalFunc);
+
+      if (func.flags & ts.NodeFlags.HasImplicitReturn || !func.body) {
+        return false;
+      }
+
+      const classType = checker.getTypeAtLocation(
+        parserServices.esTreeNodeToTSNodeMap.get(originalClass),
+      ) as ts.InterfaceType;
+
+      if (func.body.kind !== ts.SyntaxKind.Block) {
+        const type = checker.getTypeAtLocation(func.body);
+        return classType.thisType === type;
+      }
+
+      let alwaysReturnsThis = true;
+
+      forEachReturnStatement(func.body as ts.Block, stmt => {
+        const expr = stmt.expression;
+        if (!expr) {
+          alwaysReturnsThis = false;
+          return true;
+        }
+
+        // fast check
+        if (expr.kind === ts.SyntaxKind.ThisKeyword) {
+          return;
+        }
+
+        const type = checker.getTypeAtLocation(expr);
+        if (classType.thisType !== type) {
+          alwaysReturnsThis = false;
+          return true;
+        }
+
+        return undefined;
+      });
+
+      return alwaysReturnsThis;
+    }
+
     return {
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        // nothing to do here
+        if (!isReturnTypePossiblyUnconcise(node.value)) {
+          return;
+        }
+
         if (
-          !node.value.returnType ||
-          node.value.returnType.typeAnnotation.type ===
-            AST_NODE_TYPES.TSThisType
+          isFunctionAlwaysReturningThis(
+            node.value,
+            node.parent!.parent as ClassLikeDeclaration,
+          )
         ) {
-          return;
-        }
-
-        const method = parserServices.esTreeNodeToTSNodeMap.get(node);
-        if (method.flags & ts.NodeFlags.HasImplicitReturn) {
-          return;
-        }
-
-        const returnType = checker.getTypeAtLocation(method.type!);
-        // if complex type is used explicitly, do not bother
-        if (
-          returnType.flags &
-          (ts.TypeFlags.Any |
-            ts.TypeFlags.Unknown |
-            ts.TypeFlags.UnionOrIntersection)
-        ) {
-          return;
-        }
-
-        if (!method.body) {
-          return;
-        }
-
-        let alwaysReturnsThis = true;
-
-        const classLikeDec = checker.getTypeAtLocation(
-          method.parent,
-        ) as ts.InterfaceType;
-
-        forEachReturnStatement(method.body, stmt => {
-          const expr = stmt.expression;
-          if (!expr) {
-            alwaysReturnsThis = false;
-            return true;
-          }
-
-          // fast check
-          if (expr.kind === ts.SyntaxKind.ThisKeyword) {
-            return;
-          }
-
-          const type = checker.getTypeAtLocation(expr);
-          if (classLikeDec.thisType !== type) {
-            alwaysReturnsThis = false;
-            return true;
-          }
-
-          return undefined;
-        });
-
-        if (alwaysReturnsThis) {
           context.report({
-            node: node.value.returnType,
+            node: node.value.returnType!,
             messageId: 'UseThisType',
             fix(fixer) {
               return fixer.replaceText(
                 node.value.returnType!.typeAnnotation,
+                'this',
+              );
+            },
+          });
+        }
+      },
+      'ClassBody > ClassProperty'(node: TSESTree.ClassProperty): void {
+        if (
+          !(
+            node.value?.type === AST_NODE_TYPES.FunctionExpression ||
+            node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
+          )
+        ) {
+          return;
+        }
+
+        if (!isReturnTypePossiblyUnconcise(node.value)) {
+          return;
+        }
+
+        if (
+          isFunctionAlwaysReturningThis(
+            node.value,
+            node.parent!.parent as ClassLikeDeclaration,
+          )
+        ) {
+          context.report({
+            node: node.value.returnType!,
+            messageId: 'UseThisType',
+            fix(fixer) {
+              return fixer.replaceText(
+                (node.value as TSESTree.FunctionLike).returnType!
+                  .typeAnnotation,
                 'this',
               );
             },
