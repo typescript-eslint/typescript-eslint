@@ -114,7 +114,7 @@ const mapper = {
 Examples of **correct** code with `{ "arrowParameter": true }`:
 
 ```ts
-const logsSize = (size: number) => console.log(text);
+const logsSize = (size: number) => console.log(size);
 
 ['hello', 'world'].map((text: string) => text.length);
 
