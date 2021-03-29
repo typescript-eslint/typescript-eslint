@@ -215,6 +215,9 @@ const methods = {
   methodC() {
     return true
   },
+  methodD() {
+    return (this?.methodA)?.()
+  }
 };
       `,
       errors: [
@@ -229,6 +232,12 @@ const methods = {
           line: 8,
           column: 12,
           endColumn: 31,
+        },
+        {
+          messageId: 'unsafeThisMemberExpression',
+          line: 14,
+          column: 13,
+          endColumn: 26,
         },
       ],
     },
