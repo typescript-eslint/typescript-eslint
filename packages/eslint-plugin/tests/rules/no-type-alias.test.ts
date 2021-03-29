@@ -395,6 +395,13 @@ export type ClassValue =
       options: [{ allowAliases: 'always' }],
     },
     {
+      code: `
+const WithAKey = { AKey: true };
+type KeyNames = keyof typeof SCALARS;
+      `,
+      options: [{ allowAliases: 'always' }],
+    },
+    {
       code: 'type Foo = typeof bar | typeof baz;',
       options: [{ allowAliases: 'in-unions' }],
     },
