@@ -133,6 +133,27 @@ if (x) {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
     },
+
+    `
+function f(arg: 'a' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 'a' | 'b' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 1 | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 1 | 2 | null) {
+  if (arg) console.log(arg);
+}
+    `,
   ],
 
   invalid: [
