@@ -57,7 +57,10 @@ export default util.createRule<Options, MessageIds>({
       if (type.isNumberLiteral()) {
         return 'number';
       }
-      if (type.isStringLiteral()) {
+      if (
+        type.isStringLiteral() ||
+        util.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
+      ) {
         return 'string';
       }
       // is BigIntLiteral
