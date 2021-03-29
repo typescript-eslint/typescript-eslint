@@ -137,19 +137,20 @@ export default util.createRule<Options, MessageIds>({
       TSNonNullExpression(node): void {
         if (
           node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
-          node.parent?.operator === '=' &&
-          node.parent.left === node
+          node.parent.operator === '='
         ) {
-          context.report({
-            node,
-            messageId: 'contextuallyUnnecessary',
-            fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
-            },
-          });
+          if (node.parent.left === node) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix(fixer) {
+                return fixer.removeRange([
+                  node.expression.range[1],
+                  node.range[1],
+                ]);
+              },
+            });
+          }
           return;
         }
 
