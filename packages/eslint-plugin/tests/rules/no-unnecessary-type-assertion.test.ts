@@ -358,6 +358,22 @@ function foo<T extends string>(bar: T) {
     },
     {
       code: `
+declare const foo: Foo;
+const bar = <Foo>foo;
+      `,
+      output: `
+declare const foo: Foo;
+const bar = foo;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
 declare function nonNull(s: string | null);
 let s: string | null = null;
 nonNull(s!);

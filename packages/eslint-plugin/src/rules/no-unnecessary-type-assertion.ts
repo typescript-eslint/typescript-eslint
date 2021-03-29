@@ -258,15 +258,21 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
-                ? fixer.removeRange([
-                    node.range[0],
-                    node.expression.range[0] - 1,
-                  ])
-                : fixer.removeRange([
-                    node.expression.range[1] + 1,
-                    node.range[1],
-                  ]);
+              if (originalNode.kind === ts.SyntaxKind.TypeAssertionExpression) {
+                const closingAngleBracket = sourceCode.getTokenAfter(
+                  node.typeAnnotation,
+                );
+                return closingAngleBracket?.value === '>'
+                  ? fixer.removeRange([
+                      node.range[0],
+                      closingAngleBracket.range[1],
+                    ])
+                  : null;
+              }
+              return fixer.removeRange([
+                node.expression.range[1] + 1,
+                node.range[1],
+              ]);
             },
           });
         }
