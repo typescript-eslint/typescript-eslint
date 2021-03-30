@@ -36,6 +36,11 @@
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "devDependencies": {
+    "@typescript-eslint/typescript-estree": "4.20.0",
+    "globby": "*",
+    "typescript": "*"
+  },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
