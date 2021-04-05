@@ -11,9 +11,19 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unsafe-argument', rule, {
   valid: [
+    // unknown function should be ignored
+    `
+doesNotExist(1 as any);
+    `,
+    // non-function call should be ignored
+    `
+const foo = 1;
+foo(1 as any);
+    `,
+    // too many arguments should be ignored as this is a TS error
     `
 declare function foo(arg: number): void;
-foo(1);
+foo(1, 1 as any, 2 as any);
     `,
     `
 declare function foo(arg: number, arg2: string): void;
@@ -59,6 +69,21 @@ foo(new Set<string>(), ...x);
     `
 declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
+    `,
+    `
+declare function foo(...params: [number, string, any]): void;
+foo(1, 'a', 1 as any);
+    `,
+    // Unfortunately - we cannot handle this case because TS infers `params` to be a tuple type
+    // that tuple type is the same as the type of
+    `
+declare function foo<E extends string[]>(...params: E): void;
+
+foo('a', 'b', 1 as any);
+    `,
+    `
+declare function toHaveBeenCalledWith<E extends any[]>(...params: E): void;
+toHaveBeenCalledWith(1 as any);
     `,
   ],
   invalid: [
@@ -260,6 +285,62 @@ foo(new Set<any>(), ...x);
           data: {
             sender: 'Map<any, string>',
             receiver: 'Map<string, string>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(...params: [number, string, any]): void;
+foo(1 as any, 'a' as any, 1 as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 3,
+          column: 5,
+          endColumn: 13,
+          data: {
+            sender: 'any',
+            receiver: 'number',
+          },
+        },
+        {
+          messageId: 'unsafeArgument',
+          line: 3,
+          column: 15,
+          endColumn: 25,
+          data: {
+            sender: 'any',
+            receiver: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(param1: string, ...params: [number, string, any]): void;
+foo('a', 1 as any, 'a' as any, 1 as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 3,
+          column: 10,
+          endColumn: 18,
+          data: {
+            sender: 'any',
+            receiver: 'number',
+          },
+        },
+        {
+          messageId: 'unsafeArgument',
+          line: 3,
+          column: 20,
+          endColumn: 30,
+          data: {
+            sender: 'any',
+            receiver: 'string',
           },
         },
       ],

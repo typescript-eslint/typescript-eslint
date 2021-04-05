@@ -11,7 +11,31 @@ type MessageIds =
   | 'unsafeArraySpread'
   | 'unsafeSpread';
 
+const enum RestTypeKind {
+  Array,
+  Tuple,
+  Other,
+}
+type RestType =
+  | {
+      type: ts.Type;
+      kind: RestTypeKind.Array;
+      index: number;
+    }
+  | {
+      typeArguments: readonly ts.Type[];
+      kind: RestTypeKind.Tuple;
+      index: number;
+    }
+  | {
+      type: ts.Type;
+      kind: RestTypeKind.Other;
+      index: number;
+    };
+
 class FunctionSignature {
+  private parameterTypeIndex = 0;
+
   public static create(
     checker: ts.TypeChecker,
     tsNode: ts.CallLikeExpression,
@@ -22,18 +46,34 @@ class FunctionSignature {
     }
 
     const paramTypes: ts.Type[] = [];
-    let restType: ts.Type | null = null;
+    let restType: RestType | null = null;
 
-    for (const param of signature.getParameters()) {
+    const parameters = signature.getParameters();
+    for (let i = 0; i < parameters.length; i += 1) {
+      const param = parameters[i];
       const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
 
       const decl = param.getDeclarations()?.[0];
       if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
         // is a rest param
         if (checker.isArrayType(type)) {
-          restType = checker.getTypeArguments(type)[0];
+          restType = {
+            type: checker.getTypeArguments(type)[0],
+            kind: RestTypeKind.Array,
+            index: i,
+          };
+        } else if (checker.isTupleType(type)) {
+          restType = {
+            typeArguments: checker.getTypeArguments(type),
+            kind: RestTypeKind.Tuple,
+            index: i,
+          };
         } else {
-          restType = type;
+          restType = {
+            type,
+            kind: RestTypeKind.Other,
+            index: i,
+          };
         }
         break;
       }
@@ -48,12 +88,41 @@ class FunctionSignature {
 
   private constructor(
     private paramTypes: ts.Type[],
-    private restType: ts.Type | null,
+    private restType: RestType | null,
   ) {}
 
-  public getParameterType(index: number): ts.Type | null {
+  public getNextParameterType(): ts.Type | null {
+    const index = this.parameterTypeIndex;
+    this.parameterTypeIndex += 1;
+
     if (index >= this.paramTypes.length || this.hasConsumedArguments) {
-      return this.restType;
+      if (this.restType == null) {
+        return null;
+      }
+
+      switch (this.restType.kind) {
+        case RestTypeKind.Tuple: {
+          const typeArguments = this.restType.typeArguments;
+          if (this.hasConsumedArguments) {
+            // all types consumed by a rest - just assume it's the last type
+            // there is one edge case where this is wrong, but we ignore it because
+            // it's rare and really complicated to handle
+            // eg: function foo(...a: [number, ...string[], number])
+            return typeArguments[typeArguments.length - 1];
+          }
+
+          const typeIndex = index - this.restType.index;
+          if (typeIndex >= typeArguments.length) {
+            return typeArguments[typeArguments.length - 1];
+          }
+
+          return typeArguments[typeIndex];
+        }
+
+        case RestTypeKind.Array:
+        case RestTypeKind.Other:
+          return this.restType.type;
+      }
     }
     return this.paramTypes[index];
   }
@@ -112,12 +181,7 @@ export default util.createRule<[], MessageIds>({
           return;
         }
 
-        let parameterTypeIndex = 0;
-        for (
-          let i = 0;
-          i < node.arguments.length;
-          i += 1, parameterTypeIndex += 1
-        ) {
+        for (let i = 0; i < node.arguments.length; i += 1) {
           const argument = node.arguments[i];
 
           switch (argument.type) {
@@ -146,15 +210,9 @@ export default util.createRule<[], MessageIds>({
                 const spreadTypeArguments = checker.getTypeArguments(
                   spreadArgType,
                 );
-                for (
-                  let j = 0;
-                  j < spreadTypeArguments.length;
-                  j += 1, parameterTypeIndex += 1
-                ) {
+                for (let j = 0; j < spreadTypeArguments.length; j += 1) {
                   const tupleType = spreadTypeArguments[j];
-                  const parameterType = signature.getParameterType(
-                    parameterTypeIndex,
-                  );
+                  const parameterType = signature.getNextParameterType();
                   if (parameterType == null) {
                     continue;
                   }
@@ -188,7 +246,7 @@ export default util.createRule<[], MessageIds>({
             }
 
             default: {
-              const parameterType = signature.getParameterType(i);
+              const parameterType = signature.getNextParameterType();
               if (parameterType == null) {
                 continue;
               }
