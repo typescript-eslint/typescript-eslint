@@ -202,6 +202,12 @@ let a: { b?: string } | undefined;
 a!.b = '';
       `,
     },
+    `
+let value: number | undefined;
+let values: number[] = [];
+
+value = values.pop()!;
+    `,
   ],
 
   invalid: [
@@ -493,14 +499,10 @@ y! = 0;
       output: `
 let x: number | undefined;
 let y: number | undefined;
-y = x;
+y = x!;
 y = 0;
       `,
       errors: [
-        {
-          messageId: 'contextuallyUnnecessary',
-          line: 4,
-        },
         {
           messageId: 'contextuallyUnnecessary',
           line: 5,

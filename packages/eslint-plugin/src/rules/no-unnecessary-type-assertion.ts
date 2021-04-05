@@ -137,19 +137,24 @@ export default util.createRule<Options, MessageIds>({
       TSNonNullExpression(node): void {
         if (
           node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
-          node.parent?.operator === '=' &&
-          node.parent.left === node
+          node.parent.operator === '='
         ) {
-          context.report({
-            node,
-            messageId: 'contextuallyUnnecessary',
-            fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
-            },
-          });
+          if (node.parent.left === node) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix(fixer) {
+                return fixer.removeRange([
+                  node.expression.range[1],
+                  node.range[1],
+                ]);
+              },
+            });
+          }
+          // for all other = assignments we ignore non-null checks
+          // this is because non-null assertions can change the type-flow of the code
+          // so whilst they might be unnecessary for the assignment - they are necessary
+          // for following code
           return;
         }
 
