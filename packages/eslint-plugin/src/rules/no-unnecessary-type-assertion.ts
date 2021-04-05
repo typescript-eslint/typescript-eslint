@@ -151,6 +151,10 @@ export default util.createRule<Options, MessageIds>({
               },
             });
           }
+          // for all other = assignments we ignore non-null checks
+          // this is because non-null assertions can change the type-flow of the code
+          // so whilst they might be unnecessary for the assignment - they are necessary
+          // for following code
           return;
         }
 
