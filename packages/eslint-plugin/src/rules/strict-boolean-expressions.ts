@@ -309,7 +309,10 @@ export default util.createRule<Options, MessageId>({
       }
 
       // Known edge case: truthy primitives and nullish values are always valid boolean expressions
-      if (is('nullish', 'truthy string') || is('nullish', 'truthy number')) {
+      if (
+        (options.allowNumber && is('nullish', 'truthy number')) ||
+        (options.allowString && is('nullish', 'truthy string'))
+      ) {
         return;
       }
 
