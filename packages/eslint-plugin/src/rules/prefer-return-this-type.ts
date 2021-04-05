@@ -2,21 +2,22 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getParserServices } from '../util';
+import { createRule, forEachReturnStatement, getParserServices } from '../util';
 import * as ts from 'typescript';
 
 const IgnoreTypes = new Set<TSESTree.TypeNode['type']>([
   AST_NODE_TYPES.TSThisType,
   AST_NODE_TYPES.TSAnyKeyword,
   AST_NODE_TYPES.TSUnknownKeyword,
-  AST_NODE_TYPES.TSNeverKeyword,
-  AST_NODE_TYPES.TSUnionType,
-  AST_NODE_TYPES.TSIntersectionType,
 ]);
 
 type ClassLikeDeclaration =
   | TSESTree.ClassDeclaration
   | TSESTree.ClassExpression;
+
+type FunctionLike =
+  | TSESTree.MethodDefinition['value']
+  | TSESTree.ArrowFunctionExpression;
 
 export default createRule({
   name: 'prefer-return-this-type',
@@ -42,32 +43,37 @@ export default createRule({
     const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    // If returnType is absent or complex, do not bother
-    function isReturnTypePossiblyUnconcise(
-      func: TSESTree.FunctionLike,
-    ): boolean {
+    function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
+      const firstArg = originalFunc.params[0];
       return (
-        !!func.returnType &&
-        !IgnoreTypes.has(func.returnType.typeAnnotation.type)
+        firstArg &&
+        firstArg.type === AST_NODE_TYPES.Identifier &&
+        firstArg.name === 'this'
       );
     }
 
     function isFunctionAlwaysReturningThis(
-      originalFunc:
-        | TSESTree.MethodDefinition['value']
-        | TSESTree.ArrowFunctionExpression,
+      originalFunc: FunctionLike,
       originalClass: ClassLikeDeclaration,
     ): boolean {
+      if (isThisSpecifiedInParameters(originalFunc)) {
+        return false;
+      }
+
       const func = parserServices.esTreeNodeToTSNodeMap.get(originalFunc);
 
-      // arrow function without brackets is flagged as HasImplicitReturn by ts
-      const mayReturnUndefined =
+      // two things to note here:
+      // 1. arrow function without brackets is flagged as HasImplicitReturn by ts.
+      // 2. ts.NodeFlags.HasImplicitReturn is not accurate. TypeScript compiler uses control flow
+      //    analysis to determine if a function has implicit return.
+      const hasImplicitReturn =
         func.flags & ts.NodeFlags.HasImplicitReturn &&
         !(
           func.kind === ts.SyntaxKind.ArrowFunction &&
           func.body?.kind !== ts.SyntaxKind.Block
         );
-      if (mayReturnUndefined || !func.body) {
+
+      if (hasImplicitReturn || !func.body) {
         return false;
       }
 
@@ -81,8 +87,11 @@ export default createRule({
       }
 
       let alwaysReturnsThis = true;
+      let hasReturnStatements = false;
 
       forEachReturnStatement(func.body as ts.Block, stmt => {
+        hasReturnStatements = true;
+
         const expr = stmt.expression;
         if (!expr) {
           alwaysReturnsThis = false;
@@ -103,32 +112,37 @@ export default createRule({
         return undefined;
       });
 
-      return alwaysReturnsThis;
+      return hasReturnStatements && alwaysReturnsThis;
+    }
+
+    function checkFunction(
+      originalFunc: FunctionLike,
+      originalClass: ClassLikeDeclaration,
+    ): void {
+      if (
+        !originalFunc.returnType ||
+        IgnoreTypes.has(originalFunc.returnType.typeAnnotation.type)
+      ) {
+        return;
+      }
+
+      if (isFunctionAlwaysReturningThis(originalFunc, originalClass)) {
+        context.report({
+          node: originalFunc.returnType,
+          messageId: 'UseThisType',
+          fix(fixer) {
+            return fixer.replaceText(
+              originalFunc.returnType!.typeAnnotation,
+              'this',
+            );
+          },
+        });
+      }
     }
 
     return {
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        if (!isReturnTypePossiblyUnconcise(node.value)) {
-          return;
-        }
-
-        if (
-          isFunctionAlwaysReturningThis(
-            node.value,
-            node.parent!.parent as ClassLikeDeclaration,
-          )
-        ) {
-          context.report({
-            node: node.value.returnType!,
-            messageId: 'UseThisType',
-            fix(fixer) {
-              return fixer.replaceText(
-                node.value.returnType!.typeAnnotation,
-                'this',
-              );
-            },
-          });
-        }
+        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
       },
       'ClassBody > ClassProperty'(node: TSESTree.ClassProperty): void {
         if (
@@ -140,64 +154,8 @@ export default createRule({
           return;
         }
 
-        if (!isReturnTypePossiblyUnconcise(node.value)) {
-          return;
-        }
-
-        if (
-          isFunctionAlwaysReturningThis(
-            node.value,
-            node.parent!.parent as ClassLikeDeclaration,
-          )
-        ) {
-          context.report({
-            node: node.value.returnType!,
-            messageId: 'UseThisType',
-            fix(fixer) {
-              return fixer.replaceText(
-                (node.value as TSESTree.FunctionLike).returnType!
-                  .typeAnnotation,
-                'this',
-              );
-            },
-          });
-        }
+        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
       },
     };
   },
 });
-
-// Copied from typescript https://github.com/microsoft/TypeScript/blob/42b0e3c4630c129ca39ce0df9fff5f0d1b4dd348/src/compiler/utilities.ts#L1335
-// Warning: This has the same semantics as the forEach family of functions,
-//          in that traversal terminates in the event that 'visitor' supplies a truthy value.
-export function forEachReturnStatement<T>(
-  body: ts.Block,
-  visitor: (stmt: ts.ReturnStatement) => T,
-): T | undefined {
-  return traverse(body);
-
-  function traverse(node: ts.Node): T | undefined {
-    switch (node.kind) {
-      case ts.SyntaxKind.ReturnStatement:
-        return visitor(<ts.ReturnStatement>node);
-      case ts.SyntaxKind.CaseBlock:
-      case ts.SyntaxKind.Block:
-      case ts.SyntaxKind.IfStatement:
-      case ts.SyntaxKind.DoStatement:
-      case ts.SyntaxKind.WhileStatement:
-      case ts.SyntaxKind.ForStatement:
-      case ts.SyntaxKind.ForInStatement:
-      case ts.SyntaxKind.ForOfStatement:
-      case ts.SyntaxKind.WithStatement:
-      case ts.SyntaxKind.SwitchStatement:
-      case ts.SyntaxKind.CaseClause:
-      case ts.SyntaxKind.DefaultClause:
-      case ts.SyntaxKind.LabeledStatement:
-      case ts.SyntaxKind.TryStatement:
-      case ts.SyntaxKind.CatchClause:
-        return ts.forEachChild(node, traverse);
-    }
-
-    return undefined;
-  }
-}

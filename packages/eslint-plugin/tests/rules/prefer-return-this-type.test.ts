@@ -31,28 +31,35 @@ class Foo {
   f6(): unknown {
     return this;
   }
-  f7(): Foo | undefined {
-    return this;
-  }
-  f8(): this | undefined {
-    return this;
-  }
-  f9(foo: Foo): Foo {
+  f7(foo: Foo): Foo {
     return Math.random() > 0.5 ? foo : this;
   }
-  f10(): Foo | undefined {
+  f8(): Foo | undefined {
     if (Math.random() > 0.5) {
       return this;
     }
   }
+  f9(): Foo {
+    if (Math.random() > 0.5) {
+      return this;
+    }
+  }
+  f10(this: Foo, that: Foo): Foo;
   f11(): Foo {
-    if (Math.random() > 0.5) {
-      return this;
+    return;
+  }
+  f12(num: 1 | 2): Foo {
+    // TODO: should error here.
+    // Wait until control flow analysis is public.
+    switch (num) {
+      case 1:
+        return this;
+      case 2:
+        return this;
     }
   }
-  f12(this: Foo, that: Foo): Foo;
-  f13(): Foo {
-    return;
+  f13(this: Foo): Foo {
+    return this;
   }
 }
     `,
@@ -69,6 +76,13 @@ class Foo {
   f5 = (): Foo => new Foo();
   f6 = '';
 }
+    `,
+    `
+const Foo = class {
+  bar() {
+    return this;
+  }
+};
     `,
   ],
   invalid: [
@@ -185,6 +199,63 @@ class Foo {
 class Foo {
   f = (): this => this;
 }
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f1(): Foo | undefined {
+    return this;
+  }
+  f2(): this | undefined {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'UseThisType',
+          line: 3,
+          column: 7,
+        },
+        {
+          messageId: 'UseThisType',
+          line: 6,
+          column: 7,
+        },
+      ],
+      output: `
+class Foo {
+  f1(): this {
+    return this;
+  }
+  f2(): this {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+const Foo = class {
+  bar(): {} {
+    return this;
+  }
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 8,
+          messageId: 'UseThisType',
+        },
+      ],
+      output: `
+const Foo = class {
+  bar(): this {
+    return this;
+  }
+};
       `,
     },
   ],
