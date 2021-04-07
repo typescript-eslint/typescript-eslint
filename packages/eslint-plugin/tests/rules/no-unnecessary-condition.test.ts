@@ -1488,6 +1488,17 @@ if (!speech) {
     },
     {
       code: `
+function compareNever(x: never) {
+  if (x === 'a') {
+  }
+  if ('a' === x) {
+  }
+}
+      `,
+      errors: [ruleError(3, 7, 'never'), ruleError(5, 7, 'never')],
+    },
+    {
+      code: `
 declare const x: string[] | null;
 if (x) {
 }

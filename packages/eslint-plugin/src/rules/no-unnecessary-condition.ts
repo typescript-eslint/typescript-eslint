@@ -319,6 +319,13 @@ export default createRule<Options, MessageId>({
         context.report({ node, messageId: 'literalBooleanExpression' });
         return;
       }
+      if (
+        isTypeFlagSet(leftType, ts.TypeFlags.Never) ||
+        isTypeFlagSet(rightType, ts.TypeFlags.Never)
+      ) {
+        context.report({ node, messageId: 'never' });
+        return;
+      }
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
