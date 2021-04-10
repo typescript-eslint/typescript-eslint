@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.20.0...v4.21.0) (2021-04-05)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-type-alias] consider `keyof` as an alias ([#3242](https://github.com/typescript-eslint/typescript-eslint/issues/3242)) ([329ef02](https://github.com/typescript-eslint/typescript-eslint/commit/329ef023090c004694b5996ddb04fdde5b05ebb0))
+* **eslint-plugin:** [no-unnecessary-type-assertion] correct bad fix for angle bracket assertion ([#3244](https://github.com/typescript-eslint/typescript-eslint/issues/3244)) ([265a039](https://github.com/typescript-eslint/typescript-eslint/commit/265a039c7e728b719143e09ee61066039d721f62))
+* **eslint-plugin:** [restrict-plus-operands] consider template literal types as strings ([#3234](https://github.com/typescript-eslint/typescript-eslint/issues/3234)) ([ccfd68e](https://github.com/typescript-eslint/typescript-eslint/commit/ccfd68e365391b3f117df96792355f9c3655288c))
+* **eslint-plugin:** [strict-boolean-expressions] account for truthy literals ([#3236](https://github.com/typescript-eslint/typescript-eslint/issues/3236)) ([0913f40](https://github.com/typescript-eslint/typescript-eslint/commit/0913f40c87762de198b05a5473b4fb79aeb46967))
+* **eslint-plugin:** always ignore assignments in no-unnecessary-type-assertion ([#3235](https://github.com/typescript-eslint/typescript-eslint/issues/3235)) ([0221476](https://github.com/typescript-eslint/typescript-eslint/commit/02214768a3721d8514c70e00546e861da6581e4d))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-argument] add rule ([#3256](https://github.com/typescript-eslint/typescript-eslint/issues/3256)) ([b1aa7dc](https://github.com/typescript-eslint/typescript-eslint/commit/b1aa7dc6971ee8409b729dffb8b69478455734ed)), closes [#791](https://github.com/typescript-eslint/typescript-eslint/issues/791)
+* **eslint-plugin:** [no-unsafe-call][no-unsafe-member-access] improve report messages for `this` for `noImplicitThis` ([#3199](https://github.com/typescript-eslint/typescript-eslint/issues/3199)) ([b1b26c4](https://github.com/typescript-eslint/typescript-eslint/commit/b1b26c4843a4cfa209a0c9c3d8bea1de37333b48))
+
+
+
+
+
+# [4.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.19.0...v4.20.0) (2021-03-29)
+
+
+### Features
+
+* **eslint-plugin:** [space-infix-ops] support for class properties and type aliases ([#3231](https://github.com/typescript-eslint/typescript-eslint/issues/3231)) ([5414bf2](https://github.com/typescript-eslint/typescript-eslint/commit/5414bf27a81311099d001808475d9cf832ce3bfe))
+* **eslint-plugin:** [type-annotation-spacing] handle space between ? and : ([#3138](https://github.com/typescript-eslint/typescript-eslint/issues/3138)) ([40bdb0b](https://github.com/typescript-eslint/typescript-eslint/commit/40bdb0b27b21de511f0ecd151cb8282a625ca6e1))
+
+
+
+
+
+# [4.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.18.0...v4.19.0) (2021-03-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [member-delimiter-style] correct invalid fix for multiline with params on the same line ([#3177](https://github.com/typescript-eslint/typescript-eslint/issues/3177)) ([7ad343b](https://github.com/typescript-eslint/typescript-eslint/commit/7ad343b067040f6ea816b129323d110d4bc2e830))
+* **eslint-plugin:** [promise-function-async] bad fixer with computed and literal methods ([#3163](https://github.com/typescript-eslint/typescript-eslint/issues/3163)) ([e3a3ea0](https://github.com/typescript-eslint/typescript-eslint/commit/e3a3ea04757464aa2dded1ef46af8ad4e05246f2))
+
+
+### Features
+
+* **eslint-plugin:** [object-curly-spacing] support MappedType ([#3176](https://github.com/typescript-eslint/typescript-eslint/issues/3176)) ([0557a43](https://github.com/typescript-eslint/typescript-eslint/commit/0557a439327557f4c0369ae2dddc8282ba45bfe6))
+* **eslint-plugin:** [unbound-method] improve error message ([#3203](https://github.com/typescript-eslint/typescript-eslint/issues/3203)) ([5cc5d2e](https://github.com/typescript-eslint/typescript-eslint/commit/5cc5d2ef6d924d301e87f7bcf599352310e74b2c)), closes [#3201](https://github.com/typescript-eslint/typescript-eslint/issues/3201)
+
+
+
+
+
 # [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
 
 

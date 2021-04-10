@@ -34,20 +34,11 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const sourceCode = context.getSourceCode();
 
-    /**
-     * Check if it has an assignment char and report if it's faulty
-     * @param node The node to report
-     */
-    function checkForAssignmentSpace(node: TSESTree.TSEnumMember): void {
-      if (!node.initializer) {
-        return;
-      }
-
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.initializer.range[0],
-      )!;
-
+    function checkAndReportAssignmentSpace(
+      node: TSESTree.Node,
+      leftNode: TSESTree.Token,
+      rightNode?: TSESTree.Token | null,
+    ): void {
       if (!rightNode) {
         return;
       }
@@ -94,9 +85,60 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    /**
+     * Check if it has an assignment char and report if it's faulty
+     * @param node The node to report
+     */
+    function checkForEnumAssignmentSpace(node: TSESTree.TSEnumMember): void {
+      if (!node.initializer) {
+        return;
+      }
+
+      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
+      const rightNode = sourceCode.getTokenByRangeStart(
+        node.initializer.range[0],
+      )!;
+
+      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+    }
+
+    /**
+     * Check if it has an assignment char and report if it's faulty
+     * @param node The node to report
+     */
+    function checkForClassPropertyAssignmentSpace(
+      node: TSESTree.ClassProperty,
+    ): void {
+      const leftNode = sourceCode.getTokenByRangeStart(
+        node.typeAnnotation?.range[0] ?? node.range[0],
+      )!;
+      const rightNode = node.value
+        ? sourceCode.getTokenByRangeStart(node.value.range[0])
+        : undefined;
+
+      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+    }
+
+    /**
+     * Check if it has an assignment char and report if it's faulty
+     * @param node The node to report
+     */
+    function checkForTypeAliasAssignmentSpace(
+      node: TSESTree.TSTypeAliasDeclaration,
+    ): void {
+      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
+      const rightNode = sourceCode.getTokenByRangeStart(
+        node.typeAnnotation.range[0],
+      );
+
+      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+    }
+
     return {
       ...rules,
-      TSEnumMember: checkForAssignmentSpace,
+      TSEnumMember: checkForEnumAssignmentSpace,
+      ClassProperty: checkForClassPropertyAssignmentSpace,
+      TSTypeAliasDeclaration: checkForTypeAliasAssignmentSpace,
     };
   },
 });

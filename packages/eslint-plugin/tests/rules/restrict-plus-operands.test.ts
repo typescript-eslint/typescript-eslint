@@ -111,6 +111,12 @@ declare const a: 'string literal' & string;
 declare const b: string;
 const x = a + b;
     `,
+    `
+function A(s: string) {
+  return \`a\${s}b\` as const;
+}
+const b = A('') + '!';
+    `,
     {
       code: `
 let foo: number = 0;

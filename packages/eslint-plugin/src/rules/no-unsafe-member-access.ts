@@ -2,7 +2,9 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+import * as tsutils from 'tsutils';
 import * as util from '../util';
+import { getThisExpression } from '../util';
 
 const enum State {
   Unsafe = 1,
@@ -21,7 +23,11 @@ export default util.createRule({
     },
     messages: {
       unsafeMemberExpression:
-        'Unsafe member access {{property}} on an any value.',
+        'Unsafe member access {{property}} on an `any` value.',
+      unsafeThisMemberExpression: [
+        'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
       unsafeComputedMemberAccess:
         'Computed name {{property}} resolves to an any value.',
     },
@@ -31,6 +37,11 @@ export default util.createRule({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+    const compilerOptions = program.getCompilerOptions();
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'noImplicitThis',
+    );
     const sourceCode = context.getSourceCode();
 
     const stateCache = new Map<TSESTree.Node, State>();
@@ -58,9 +69,30 @@ export default util.createRule({
 
       if (state === State.Unsafe) {
         const propertyName = sourceCode.getText(node.property);
+
+        let messageId: 'unsafeMemberExpression' | 'unsafeThisMemberExpression' =
+          'unsafeMemberExpression';
+
+        if (!isNoImplicitThis) {
+          // `this.foo` or `this.foo[bar]`
+          const thisExpression = getThisExpression(node);
+
+          if (
+            thisExpression &&
+            util.isTypeAnyType(
+              util.getConstrainedTypeAtLocation(
+                checker,
+                esTreeNodeToTSNodeMap.get(thisExpression),
+              ),
+            )
+          ) {
+            messageId = 'unsafeThisMemberExpression';
+          }
+        }
+
         context.report({
           node,
-          messageId: 'unsafeMemberExpression',
+          messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },

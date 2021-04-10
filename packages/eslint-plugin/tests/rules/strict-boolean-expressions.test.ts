@@ -133,6 +133,57 @@ if (x) {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
     },
+
+    `
+function f(arg: 'a' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 'a' | 'b' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    {
+      code: `
+declare const x: 1 | null;
+declare const y: 1;
+if (x) {
+}
+if (y) {
+}
+      `,
+      options: [
+        {
+          allowNumber: true,
+        },
+      ],
+    },
+    `
+function f(arg: 1 | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 1 | 2 | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    {
+      code: `
+declare const x: 'a' | null;
+declare const y: 'a';
+if (x) {
+}
+if (y) {
+}
+      `,
+      options: [
+        {
+          allowString: true,
+        },
+      ],
+    },
   ],
 
   invalid: [

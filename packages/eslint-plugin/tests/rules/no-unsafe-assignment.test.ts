@@ -68,7 +68,7 @@ function assignmentTest(
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -344,6 +344,21 @@ declare function Foo(props: Props): never;
           line: 4,
           column: 9,
           endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  const bar = this;
+}
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignmentThis',
+          line: 3,
+          column: 9,
+          endColumn: 19,
         },
       ],
     },
