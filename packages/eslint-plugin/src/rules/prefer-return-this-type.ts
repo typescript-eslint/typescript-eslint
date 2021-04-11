@@ -29,11 +29,11 @@ export default createRule({
       description:
         'Enforce that `this` is used when only `this` type is returned',
       category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
-      UseThisType: 'use `this` type instead.',
+      useThisType: 'use `this` type instead.',
     },
     schema: [],
     fixable: 'code',
