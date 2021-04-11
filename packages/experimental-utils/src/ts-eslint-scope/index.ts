@@ -9,4 +9,5 @@ export * from './Referencer';
 export * from './Scope';
 export * from './ScopeManager';
 export * from './Variable';
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const version: string = ESLintVersion;

@@ -1,5 +1,5 @@
 // any is required to work around manipulating the AST in weird ways
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
 import {
   AST_NODE_TYPES,

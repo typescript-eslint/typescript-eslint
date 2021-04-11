@@ -64,7 +64,6 @@ module.exports = {
 
     // TODO - enable these new recommended rules
     '@typescript-eslint/no-floating-promises': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
@@ -187,6 +186,7 @@ module.exports = {
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
         'jest/no-deprecated-functions': 'error',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
       },
     },
     // plugin source files

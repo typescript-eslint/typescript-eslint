@@ -34,7 +34,7 @@ class GlobalScope extends ScopeBase<
   constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {
     super(scopeManager, ScopeType.global, null, block, false);
     this.implicit = {
-      set: new Map(),
+      set: new Map<string, Variable>(),
       variables: [],
       leftToBeResolved: [],
     };

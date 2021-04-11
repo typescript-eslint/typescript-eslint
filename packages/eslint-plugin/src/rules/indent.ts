@@ -3,7 +3,7 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
 
 import {
   TSESTree,
@@ -396,7 +396,7 @@ export default util.createRule<Options, MessageIds>({
               computed: false,
               method: false,
               shorthand: false,
-            } as any,
+            },
           ],
 
           // location data

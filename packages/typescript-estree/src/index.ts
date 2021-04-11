@@ -8,4 +8,5 @@ export { clearCaches } from './create-program/createWatchProgram';
 export { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const version: string = require('../package.json').version;

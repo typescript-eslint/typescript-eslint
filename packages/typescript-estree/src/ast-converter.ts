@@ -16,7 +16,7 @@ export function astConverter(
    * source.
    */
   // internal typescript api...
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
   const parseDiagnostics = (ast as any).parseDiagnostics;
   if (parseDiagnostics.length) {
     throw convertError(parseDiagnostics[0]);
