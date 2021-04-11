@@ -506,7 +506,7 @@ describe('parseAndGenerateServices', () => {
         /**
          * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
          */
-        error.message = error.message.replace(/\\(?!["])/gm, '/');
+        error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
         throw error;
       }
     };
