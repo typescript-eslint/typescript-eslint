@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.21.0...v4.22.0) (2021-04-12)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unsafe-argument] handle tuple types on rest arguments ([#3269](https://github.com/typescript-eslint/typescript-eslint/issues/3269)) ([6f8cfe6](https://github.com/typescript-eslint/typescript-eslint/commit/6f8cfe6f83ee26b66b2146cc17b1205100a54a9c))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-regexp-exec] add autofix ([#3207](https://github.com/typescript-eslint/typescript-eslint/issues/3207)) ([e2cbeef](https://github.com/typescript-eslint/typescript-eslint/commit/e2cbeefb3d9a7cce257b5675f7f19f1b159a9d26))
+
+
+
+
+
 # [4.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.20.0...v4.21.0) (2021-04-05)
 
 
