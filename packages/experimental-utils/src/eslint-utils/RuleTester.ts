@@ -32,7 +32,8 @@ class RuleTester extends TSESLint.RuleTester {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
-        (require(parser) as typeof import('@typescript-eslint/typescript-estree')).clearCaches();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        require(parser).clearCaches();
       } catch {
         // ignored
       }
