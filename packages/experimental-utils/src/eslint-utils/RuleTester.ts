@@ -32,7 +32,7 @@ class RuleTester extends TSESLint.RuleTester {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
-        (require(parser) as typeof import('@typescript-eslint/parser')).clearCaches();
+        (require(parser) as typeof import('@typescript-eslint/typescript-estree')).clearCaches();
       } catch {
         // ignored
       }
