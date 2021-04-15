@@ -114,4 +114,7 @@ async function main(): Promise<void> {
   fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));
 }
 
-main();
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
