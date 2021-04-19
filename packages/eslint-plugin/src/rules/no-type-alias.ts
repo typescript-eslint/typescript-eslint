@@ -264,9 +264,10 @@ export default util.createRule<Options, MessageIds>({
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type) ||
         (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
-          type.node.operator === 'readonly' &&
-          type.node.typeAnnotation &&
-          aliasTypes.has(type.node.typeAnnotation.type))
+          (type.node.operator === 'keyof' ||
+            (type.node.operator === 'readonly' &&
+              type.node.typeAnnotation &&
+              aliasTypes.has(type.node.typeAnnotation.type))))
       ) {
         // alias / keyword
         checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');

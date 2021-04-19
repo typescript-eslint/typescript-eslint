@@ -33,6 +33,32 @@ ruleTester.run('space-infix-ops', rule, {
         }
       `,
     },
+    {
+      code: `
+        class Test {
+          public readonly value?: number;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          public readonly value = 1;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private value:number = 1;
+        }
+      `,
+    },
+    {
+      code: `
+        type Test = string | boolean;
+      `,
+    },
   ],
   invalid: [
     {
@@ -95,6 +121,74 @@ ruleTester.run('space-infix-ops', rule, {
           messageId: 'missingSpace',
           column: 13,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          public readonly value= 2;
+        }
+      `,
+      output: `
+        class Test {
+          public readonly value = 2;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 32,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          public readonly value =2;
+        }
+      `,
+      output: `
+        class Test {
+          public readonly value = 2;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 33,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test= string | number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test =string | number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 19,
+          line: 2,
         },
       ],
     },

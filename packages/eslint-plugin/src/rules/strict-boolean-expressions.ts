@@ -308,8 +308,16 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
+      // Known edge case: truthy primitives and nullish values are always valid boolean expressions
+      if (
+        (options.allowNumber && is('nullish', 'truthy number')) ||
+        (options.allowString && is('nullish', 'truthy string'))
+      ) {
+        return;
+      }
+
       // string
-      if (is('string')) {
+      if (is('string') || is('truthy string')) {
         if (!options.allowString) {
           if (isLogicalNegationExpression(node.parent!)) {
             // if (!string)
@@ -458,7 +466,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // number
-      if (is('number')) {
+      if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
           if (isArrayLengthExpression(node, typeChecker, parserServices)) {
             if (isLogicalNegationExpression(node.parent!)) {
@@ -701,7 +709,9 @@ export default util.createRule<Options, MessageId>({
       | 'nullish'
       | 'boolean'
       | 'string'
+      | 'truthy string'
       | 'number'
+      | 'truthy number'
       | 'object'
       | 'any'
       | 'never';
@@ -731,21 +741,30 @@ export default util.createRule<Options, MessageId>({
         variantTypes.add('boolean');
       }
 
-      if (
-        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike))
-      ) {
-        variantTypes.add('string');
+      const strings = types.filter(type =>
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike),
+      );
+
+      if (strings.length) {
+        if (strings.some(type => type.isStringLiteral() && type.value !== '')) {
+          variantTypes.add('truthy string');
+        } else {
+          variantTypes.add('string');
+        }
       }
 
-      if (
-        types.some(type =>
-          tsutils.isTypeFlagSet(
-            type,
-            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
-          ),
-        )
-      ) {
-        variantTypes.add('number');
+      const numbers = types.filter(type =>
+        tsutils.isTypeFlagSet(
+          type,
+          ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+        ),
+      );
+      if (numbers.length) {
+        if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
+          variantTypes.add('truthy number');
+        } else {
+          variantTypes.add('number');
+        }
       }
 
       if (

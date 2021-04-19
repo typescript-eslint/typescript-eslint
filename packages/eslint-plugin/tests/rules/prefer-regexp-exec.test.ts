@@ -41,9 +41,21 @@ function f(s: string | string[]) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 13,
         },
       ],
+      output: "/thing/.exec('something');",
+    },
+    {
+      code: "'something'.match('^[a-z]+thing/?$');",
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 13,
+        },
+      ],
+      output: "/^[a-z]+thing\\/?$/.exec('something');",
     },
     {
       code: `
@@ -55,9 +67,33 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 4,
-          column: 1,
+          column: 6,
         },
       ],
+      output: `
+const text = 'something';
+const search = /thing/;
+search.exec(text);
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+const search = 'thing';
+text.match(search);
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 6,
+        },
+      ],
+      output: `
+const text = 'something';
+const search = 'thing';
+RegExp(search).exec(text);
+      `,
     },
     {
       code: "'212'.match(2);",
@@ -65,7 +101,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 7,
         },
       ],
     },
@@ -75,7 +111,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 7,
         },
       ],
     },
@@ -85,7 +121,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 9,
         },
       ],
     },
@@ -96,7 +132,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 60,
         },
       ],
     },
@@ -107,7 +143,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 60,
         },
       ],
     },
@@ -118,7 +154,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 60,
         },
       ],
     },
@@ -128,7 +164,7 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 17,
         },
       ],
     },
@@ -142,9 +178,14 @@ function f(s: 'a' | 'b') {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 3,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+function f(s: 'a' | 'b') {
+  /a/.exec(s);
+}
+      `,
     },
     {
       code: `
@@ -157,9 +198,15 @@ function f(s: SafeString) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 4,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+type SafeString = string & { __HTML_ESCAPED__: void };
+function f(s: SafeString) {
+  /thing/.exec(s);
+}
+      `,
     },
     {
       code: `
@@ -171,9 +218,14 @@ function f<T extends 'a' | 'b'>(s: T) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 3,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+function f<T extends 'a' | 'b'>(s: T) {
+  /thing/.exec(s);
+}
+      `,
     },
   ],
 });
