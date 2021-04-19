@@ -53,6 +53,9 @@ class Foo {
   f2 = (): Foo => {
     return this;
   };
+  f3(): Foo | undefined {
+    return Math.random() > 0.5 ? this : undefined;
+  }
 }
 ```
 
@@ -66,15 +69,19 @@ class Foo {
   f2() {
     return this;
   }
-  f3(): Foo | undefined {
-    return Math.random() > 0.5 ? this : undefined;
+  f3 = (): this => {
+    return this;
+  };
+  f4 = () => {
+    return this;
+  };
+}
+
+class Base {}
+class Derived extends Base {
+  f(): Base {
+    return this;
   }
-  f4 = (): this => {
-    return this;
-  };
-  f5 = () => {
-    return this;
-  };
 }
 ```
 

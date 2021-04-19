@@ -34,32 +34,18 @@ class Foo {
   f7(foo: Foo): Foo {
     return Math.random() > 0.5 ? foo : this;
   }
-  f8(): Foo | undefined {
-    if (Math.random() > 0.5) {
-      return this;
-    }
-  }
-  f9(): Foo {
-    if (Math.random() > 0.5) {
-      return this;
-    }
-  }
   f10(this: Foo, that: Foo): Foo;
   f11(): Foo {
     return;
   }
-  f12(num: 1 | 2): Foo {
-    // TODO: should error here.
-    // Wait until control flow analysis is public.
-    switch (num) {
-      case 1:
-        return this;
-      case 2:
-        return this;
-    }
-  }
   f13(this: Foo): Foo {
     return this;
+  }
+  f14(): { f14: Function } {
+    return this;
+  }
+  f15(): Foo | this {
+    return Math.random() > 0.5 ? new Foo() : this;
   }
 }
     `,
@@ -84,6 +70,14 @@ const Foo = class {
   }
 };
     `,
+    `
+class Base {}
+class Derived extends Base {
+  f(): Base {
+    return this;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -96,9 +90,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 6,
+          column: 8,
         },
       ],
       output: `
@@ -120,9 +114,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 6,
+          column: 8,
         },
       ],
       output: `
@@ -144,9 +138,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 9,
+          column: 11,
         },
       ],
       output: `
@@ -168,9 +162,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 9,
+          column: 11,
         },
       ],
       output: `
@@ -190,9 +184,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 9,
+          column: 11,
         },
       ],
       output: `
@@ -214,22 +208,17 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'UseThisType',
+          messageId: 'useThisType',
           line: 3,
-          column: 7,
-        },
-        {
-          messageId: 'UseThisType',
-          line: 6,
-          column: 7,
+          column: 9,
         },
       ],
       output: `
 class Foo {
-  f1(): this {
+  f1(): this | undefined {
     return this;
   }
-  f2(): this {
+  f2(): this | undefined {
     return this;
   }
 }
@@ -237,25 +226,62 @@ class Foo {
     },
     {
       code: `
-const Foo = class {
-  bar(): {} {
-    return this;
+class Foo {
+  bar(): Foo | undefined {
+    if (Math.random() > 0.5) {
+      return this;
+    }
   }
-};
+}
       `,
       errors: [
         {
+          messageId: 'useThisType',
           line: 3,
-          column: 8,
-          messageId: 'UseThisType',
+          column: 10,
         },
       ],
       output: `
-const Foo = class {
-  bar(): this {
-    return this;
+class Foo {
+  bar(): this | undefined {
+    if (Math.random() > 0.5) {
+      return this;
+    }
   }
-};
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  bar(num: 1 | 2): Foo {
+    switch (num) {
+      case 1:
+        return this;
+      case 2:
+        return this;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'useThisType',
+          line: 3,
+          column: 20,
+        },
+      ],
+      output: `
+class Foo {
+  bar(num: 1 | 2): this {
+    switch (num) {
+      case 1:
+        return this;
+      case 2:
+        return this;
+    }
+  }
+}
       `,
     },
   ],

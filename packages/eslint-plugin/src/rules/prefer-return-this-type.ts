@@ -5,12 +5,6 @@ import {
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
 import * as ts from 'typescript';
 
-const IgnoreTypes = new Set<TSESTree.TypeNode['type']>([
-  AST_NODE_TYPES.TSThisType,
-  AST_NODE_TYPES.TSAnyKeyword,
-  AST_NODE_TYPES.TSUnknownKeyword,
-]);
-
 type ClassLikeDeclaration =
   | TSESTree.ClassDeclaration
   | TSESTree.ClassExpression;
@@ -43,6 +37,30 @@ export default createRule({
     const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
+    function tryGetNameInType(
+      name: string,
+      typeNode: TSESTree.TypeNode,
+    ): TSESTree.Identifier | undefined {
+      if (
+        typeNode.type === AST_NODE_TYPES.TSTypeReference &&
+        typeNode.typeName.type === AST_NODE_TYPES.Identifier &&
+        typeNode.typeName.name === name
+      ) {
+        return typeNode.typeName;
+      }
+
+      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+        for (const type of typeNode.types) {
+          const found = tryGetNameInType(name, type);
+          if (found) {
+            return found;
+          }
+        }
+      }
+
+      return undefined;
+    }
+
     function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
       const firstArg = originalFunc.params[0];
       return (
@@ -52,7 +70,7 @@ export default createRule({
       );
     }
 
-    function isFunctionAlwaysReturningThis(
+    function isFunctionReturningThis(
       originalFunc: FunctionLike,
       originalClass: ClassLikeDeclaration,
     ): boolean {
@@ -62,18 +80,7 @@ export default createRule({
 
       const func = parserServices.esTreeNodeToTSNodeMap.get(originalFunc);
 
-      // two things to note here:
-      // 1. arrow function without brackets is flagged as HasImplicitReturn by ts.
-      // 2. ts.NodeFlags.HasImplicitReturn is not accurate. TypeScript compiler uses control flow
-      //    analysis to determine if a function has implicit return.
-      const hasImplicitReturn =
-        func.flags & ts.NodeFlags.HasImplicitReturn &&
-        !(
-          func.kind === ts.SyntaxKind.ArrowFunction &&
-          func.body?.kind !== ts.SyntaxKind.Block
-        );
-
-      if (hasImplicitReturn || !func.body) {
+      if (!func.body) {
         return false;
       }
 
@@ -86,55 +93,65 @@ export default createRule({
         return classType.thisType === type;
       }
 
-      let alwaysReturnsThis = true;
-      let hasReturnStatements = false;
+      let hasReturnThis = false;
+      let hasReturnClassType = false;
 
       forEachReturnStatement(func.body as ts.Block, stmt => {
-        hasReturnStatements = true;
-
         const expr = stmt.expression;
         if (!expr) {
-          alwaysReturnsThis = false;
-          return true;
+          return;
         }
 
         // fast check
         if (expr.kind === ts.SyntaxKind.ThisKeyword) {
+          hasReturnThis = true;
           return;
         }
 
         const type = checker.getTypeAtLocation(expr);
-        if (classType.thisType !== type) {
-          alwaysReturnsThis = false;
+        if (classType === type) {
+          hasReturnClassType = true;
           return true;
         }
 
-        return undefined;
+        if (classType.thisType === type) {
+          hasReturnThis = true;
+          return;
+        }
+
+        return;
       });
 
-      return hasReturnStatements && alwaysReturnsThis;
+      return !hasReturnClassType && hasReturnThis;
     }
 
     function checkFunction(
       originalFunc: FunctionLike,
       originalClass: ClassLikeDeclaration,
     ): void {
-      if (
-        !originalFunc.returnType ||
-        IgnoreTypes.has(originalFunc.returnType.typeAnnotation.type)
-      ) {
+      const className = originalClass.id?.name;
+      if (!className) {
         return;
       }
 
-      if (isFunctionAlwaysReturningThis(originalFunc, originalClass)) {
+      if (!originalFunc.returnType) {
+        return;
+      }
+
+      const classNameRef = tryGetNameInType(
+        className,
+        originalFunc.returnType.typeAnnotation,
+      );
+      if (!classNameRef) {
+        return;
+      }
+
+      if (isFunctionReturningThis(originalFunc, originalClass)) {
         context.report({
-          node: originalFunc.returnType,
-          messageId: 'UseThisType',
+          node: classNameRef,
+          messageId: 'useThisType',
           fix(fixer) {
-            return fixer.replaceText(
-              originalFunc.returnType!.typeAnnotation,
-              'this',
-            );
+            return fixer.replaceText(classNameRef, 'this');
           },
         });
       }
