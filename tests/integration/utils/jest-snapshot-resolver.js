@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /**
  * Use a jest snapshotResolver to map the test snapshot output back to the
  * linked volume. This means that even though we are running our tests inside

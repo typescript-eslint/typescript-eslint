@@ -35,13 +35,13 @@ export function createSnapshotTestBlock(
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
-    } catch (e) {
+    } catch (error) {
       /**
        * If we are deliberately throwing because of encountering an unknown
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
-      if (e.message.match('Unknown AST_NODE_TYPE')) {
-        throw new Error(e);
+      if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
+        throw new Error(error);
       }
       expect(parse).toThrowErrorMatchingSnapshot();
     }
