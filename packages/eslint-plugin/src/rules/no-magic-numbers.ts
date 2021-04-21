@@ -216,7 +216,7 @@ function isTSNumericLiteralType(node: TSESTree.Node): boolean {
 function isParentTSReadonlyClassProperty(node: TSESTree.Literal): boolean {
   const parent = getLiteralParent(node);
 
-  if (parent?.type === AST_NODE_TYPES.ClassProperty && parent.readonly) {
+  if (parent?.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly) {
     return true;
   }
 

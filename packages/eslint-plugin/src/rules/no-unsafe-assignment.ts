@@ -332,7 +332,9 @@ export default util.createRule({
           checkObjectDestructureHelper(node.id, init);
         }
       },
-      'ClassProperty[value != null]'(node: TSESTree.ClassProperty): void {
+      'PropertyDefinition[value != null]'(
+        node: TSESTree.PropertyDefinition,
+      ): void {
         checkAssignment(
           node.key,
           node.value!,

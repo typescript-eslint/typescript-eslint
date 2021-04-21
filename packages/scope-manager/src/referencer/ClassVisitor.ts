@@ -81,7 +81,7 @@ class ClassVisitor extends Visitor {
   }
 
   protected visitClassProperty(
-    node: TSESTree.TSAbstractClassProperty | TSESTree.ClassProperty,
+    node: TSESTree.TSAbstractPropertyDefinition | TSESTree.PropertyDefinition,
   ): void {
     this.visitProperty(node);
     /**
@@ -229,8 +229,8 @@ class ClassVisitor extends Visitor {
 
   protected visitProperty(
     node:
-      | TSESTree.ClassProperty
-      | TSESTree.TSAbstractClassProperty
+      | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractPropertyDefinition
       | TSESTree.TSAbstractMethodDefinition,
   ): void {
     if (node.computed) {
@@ -318,7 +318,7 @@ class ClassVisitor extends Visitor {
     this.visitChildren(node);
   }
 
-  protected ClassProperty(node: TSESTree.ClassProperty): void {
+  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
     this.visitClassProperty(node);
   }
 
@@ -326,8 +326,8 @@ class ClassVisitor extends Visitor {
     this.visitMethod(node);
   }
 
-  protected TSAbstractClassProperty(
-    node: TSESTree.TSAbstractClassProperty,
+  protected TSAbstractPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition,
   ): void {
     this.visitClassProperty(node);
   }

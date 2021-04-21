@@ -58,13 +58,18 @@ const additionalKeys: AdditionalKeys = {
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
+  PropertyDefinition: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
 
   // TS-prefixed nodes
-  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
+  TSAbstractPropertyDefinition: [
+    'decorators',
+    'key',
+    'typeAnnotation',
+    'value',
+  ],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
   TSAsExpression: ['expression', 'typeAnnotation'],

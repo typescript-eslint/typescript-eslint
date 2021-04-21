@@ -155,7 +155,7 @@ export type Node =
   | ClassBody
   | ClassDeclaration
   | ClassExpression
-  | ClassProperty
+  | PropertyDefinition
   | ConditionalExpression
   | ContinueStatement
   | DebuggerStatement
@@ -218,7 +218,7 @@ export type Node =
   | ThisExpression
   | ThrowStatement
   | TryStatement
-  | TSAbstractClassProperty
+  | TSAbstractPropertyDefinition
   | TSAbstractKeyword
   | TSAbstractMethodDefinition
   | TSAnyKeyword
@@ -316,14 +316,14 @@ export type ChainElement =
   | MemberExpression
   | TSNonNullExpression;
 export type ClassElement =
-  | ClassProperty
+  | PropertyDefinition
   | MethodDefinition
-  | TSAbstractClassProperty
+  | TSAbstractPropertyDefinition
   | TSAbstractMethodDefinition
   | TSIndexSignature;
-export type ClassProperty =
-  | ClassPropertyComputedName
-  | ClassPropertyNonComputedName;
+export type PropertyDefinition =
+  | PropertyDefinitionComputedName
+  | PropertyDefinitionNonComputedName;
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression
@@ -507,9 +507,9 @@ export type Statement =
   | TryStatement
   | VariableDeclaration
   | WithStatement;
-export type TSAbstractClassProperty =
-  | TSAbstractClassPropertyComputedName
-  | TSAbstractClassPropertyNonComputedName;
+export type TSAbstractPropertyDefinition =
+  | TSAbstractPropertyDefinitionComputedName
+  | TSAbstractPropertyDefinitionNonComputedName;
 export type TSAbstractMethodDefinition =
   | TSAbstractMethodDefinitionComputedName
   | TSAbstractMethodDefinitionNonComputedName;
@@ -603,8 +603,8 @@ interface ClassDeclarationBase extends BaseNode {
   decorators?: Decorator[];
 }
 
-/** this should not be directly used - instead use ClassPropertyComputedNameBase or ClassPropertyNonComputedNameBase */
-interface ClassPropertyBase extends BaseNode {
+/** this should not be directly used - instead use PropertyDefinitionComputedNameBase or PropertyDefinitionNonComputedNameBase */
+interface PropertyDefinitionBase extends BaseNode {
   key: PropertyName;
   value: Expression | null;
   computed: boolean;
@@ -618,12 +618,12 @@ interface ClassPropertyBase extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
 }
 
-interface ClassPropertyComputedNameBase extends ClassPropertyBase {
+interface PropertyDefinitionComputedNameBase extends PropertyDefinitionBase {
   key: PropertyNameComputed;
   computed: true;
 }
 
-interface ClassPropertyNonComputedNameBase extends ClassPropertyBase {
+interface PropertyDefinitionNonComputedNameBase extends PropertyDefinitionBase {
   key: PropertyNameNonComputed;
   computed: false;
 }
@@ -877,14 +877,14 @@ export interface ClassExpression extends ClassDeclarationBase {
   type: AST_NODE_TYPES.ClassExpression;
 }
 
-export interface ClassPropertyComputedName
-  extends ClassPropertyComputedNameBase {
-  type: AST_NODE_TYPES.ClassProperty;
+export interface PropertyDefinitionComputedName
+  extends PropertyDefinitionComputedNameBase {
+  type: AST_NODE_TYPES.PropertyDefinition;
 }
 
-export interface ClassPropertyNonComputedName
-  extends ClassPropertyNonComputedNameBase {
-  type: AST_NODE_TYPES.ClassProperty;
+export interface PropertyDefinitionNonComputedName
+  extends PropertyDefinitionNonComputedNameBase {
+  type: AST_NODE_TYPES.PropertyDefinition;
 }
 
 export interface ConditionalExpression extends BaseNode {
@@ -1282,14 +1282,14 @@ export interface TryStatement extends BaseNode {
   finalizer: BlockStatement | null;
 }
 
-export interface TSAbstractClassPropertyComputedName
-  extends ClassPropertyComputedNameBase {
-  type: AST_NODE_TYPES.TSAbstractClassProperty;
+export interface TSAbstractPropertyDefinitionComputedName
+  extends PropertyDefinitionComputedNameBase {
+  type: AST_NODE_TYPES.TSAbstractPropertyDefinition;
 }
 
-export interface TSAbstractClassPropertyNonComputedName
-  extends ClassPropertyNonComputedNameBase {
-  type: AST_NODE_TYPES.TSAbstractClassProperty;
+export interface TSAbstractPropertyDefinitionNonComputedName
+  extends PropertyDefinitionNonComputedNameBase {
+  type: AST_NODE_TYPES.TSAbstractPropertyDefinition;
 }
 
 export interface TSAbstractKeyword extends BaseNode {

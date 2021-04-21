@@ -159,7 +159,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       MethodDefinition(node) {
         /**
          * Babel: MethodDefinition + abstract: true
-         * ts-estree: TSAbstractClassProperty
+         * ts-estree: TSAbstractMethodDefinition
          */
         if (node.abstract) {
           node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
@@ -168,12 +168,17 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       },
       ClassProperty(node) {
         /**
-         * Babel: ClassProperty + abstract: true
-         * ts-estree: TSAbstractClassProperty
+         * Babel: PropertyDefinition + abstract: true
+         * ts-estree: TSAbstractPropertyDefinition
          */
         if (node.abstract) {
-          node.type = AST_NODE_TYPES.TSAbstractClassProperty;
+          node.type = AST_NODE_TYPES.TSAbstractPropertyDefinition;
           delete node.abstract;
+        } else {
+          /**
+           * @see https://github.com/babel/babel/pull/12370
+           */
+          node.type = AST_NODE_TYPES.PropertyDefinition;
         }
         /**
          * TS 3.7: declare class properties

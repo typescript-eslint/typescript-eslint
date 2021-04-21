@@ -39,7 +39,7 @@ abstract class Foo {
     ],
   },
   {
-    node: AST_NODE_TYPES.TSAbstractClassProperty,
+    node: AST_NODE_TYPES.TSAbstractPropertyDefinition,
     code: [
       `
 class Foo {
