@@ -43,7 +43,7 @@ export default util.createRule({
     }
 
     function isMatchingIdentifier(
-      node: TSESTree.Expression,
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
       name: string,
     ): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;

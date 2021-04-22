@@ -241,6 +241,24 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           }
         }
       },
+      /**
+       * TS 3.8 private properties
+       * https://github.com/estree/estree/blob/master/experimental/class-features.md
+       */
+      ClassPrivateProperty(node) {
+        node.type = AST_NODE_TYPES.ClassProperty;
+        node.computed = false;
+        node.declare = false;
+      },
+      ClassPrivateMethod(node) {
+        node.type = AST_NODE_TYPES.MethodDefinition;
+        node.computed = false;
+      },
+      PrivateName(node) {
+        node.type = AST_NODE_TYPES.PrivateIdentifier;
+        node.name = (node.id as any).name;
+        delete node.id;
+      },
     },
   );
 }
