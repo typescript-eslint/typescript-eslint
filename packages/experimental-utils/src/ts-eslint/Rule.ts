@@ -212,6 +212,12 @@ interface RuleContext<
   getDeclaredVariables(node: TSESTree.Node): Scope.Variable[];
 
   /**
+   * returns the cwd passed to Linter.
+   * It is a path to a directory that should be considered as the current working directory.
+   */
+  getCwd(): string;
+
+  /**
    * Returns the filename associated with the source.
    */
   getFilename(): string;
