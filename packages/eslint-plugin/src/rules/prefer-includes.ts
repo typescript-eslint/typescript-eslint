@@ -2,15 +2,11 @@ import {
   AST_NODE_TYPES,
   TSESLint,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
-import {
-  createRule,
-  getParserServices,
-  getStaticValue,
-  getConstrainedTypeAtLocation,
-} from '../util';
+import { createRule, getParserServices, getStaticValue } from '../util';
 
 export default createRule({
   name: 'prefer-includes',
@@ -217,7 +213,7 @@ export default createRule({
         //check the argument type of test methods
         const argument = callNode.arguments[0];
         const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
-        const type = getConstrainedTypeAtLocation(types, tsNode);
+        const type = ESLintUtils.getConstrainedTypeAtLocation(types, tsNode);
 
         const includesMethodDecl = type
           .getProperty('includes')

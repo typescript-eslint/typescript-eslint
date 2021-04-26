@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -46,16 +46,16 @@ export default util.createRule<[], MessageIds>({
       messageId: MessageIds,
     ): void {
       const tsNode = esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      const type = ESLintUtils.getConstrainedTypeAtLocation(checker, tsNode);
 
-      if (util.isTypeAnyType(type)) {
+      if (ESLintUtils.isTypeAnyType(type)) {
         if (!isNoImplicitThis) {
           // `this()` or `this.foo()` or `this.foo[bar]()`
           const thisExpression = getThisExpression(node);
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
+            ESLintUtils.isTypeAnyType(
+              ESLintUtils.getConstrainedTypeAtLocation(
                 checker,
                 esTreeNodeToTSNodeMap.get(thisExpression),
               ),

@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   ParserServices,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -225,7 +226,10 @@ export default util.createRule<Options, MessageId>({
       }
 
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
+      const type = ESLintUtils.getConstrainedTypeAtLocation(
+        typeChecker,
+        tsNode,
+      );
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -790,7 +794,9 @@ export default util.createRule<Options, MessageId>({
 
       if (
         types.some(
-          type => util.isTypeAnyType(type) || util.isTypeUnknownType(type),
+          type =>
+            ESLintUtils.isTypeAnyType(type) ||
+            ESLintUtils.isTypeUnknownType(type),
         )
       ) {
         variantTypes.add('any');
@@ -826,9 +832,12 @@ function isArrayLengthExpression(
     return false;
   }
   const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
-  const objectType = util.getConstrainedTypeAtLocation(
+  const objectType = ESLintUtils.getConstrainedTypeAtLocation(
     typeChecker,
     objectTsNode,
   );
-  return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+  return ESLintUtils.isTypeArrayTypeOrUnionOfArrayTypes(
+    objectType,
+    typeChecker,
+  );
 }

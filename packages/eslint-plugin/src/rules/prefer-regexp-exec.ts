@@ -1,12 +1,12 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getParserServices,
   getStaticValue,
-  getTypeName,
   getWrappingFixer,
 } from '../util';
 
@@ -44,7 +44,7 @@ export default createRule({
       const objectType = typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
-      return getTypeName(typeChecker, objectType) === 'string';
+      return ESLintUtils.getTypeName(typeChecker, objectType) === 'string';
     }
 
     /**
@@ -55,7 +55,7 @@ export default createRule({
       const objectType = typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
-      return getTypeName(typeChecker, objectType) === 'RegExp';
+      return ESLintUtils.getTypeName(typeChecker, objectType) === 'RegExp';
     }
 
     return {

@@ -3,6 +3,7 @@ import * as util from '../util';
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 
 export default util.createRule({
@@ -79,8 +80,8 @@ export default util.createRule({
       }
 
       if (
-        util.isTypeAnyType(type) ||
-        util.isTypeUnknownType(type) ||
+        ESLintUtils.isTypeAnyType(type) ||
+        ESLintUtils.isTypeUnknownType(type) ||
         isErrorLike(type)
       ) {
         return;

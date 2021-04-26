@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -168,7 +169,7 @@ export default util.createRule<[], MessageIds>({
 
         // ignore any-typed calls as these are caught by no-unsafe-call
         if (
-          util.isTypeAnyType(
+          ESLintUtils.isTypeAnyType(
             checker.getTypeAtLocation(esTreeNodeToTSNodeMap.get(node.callee)),
           )
         ) {
@@ -191,13 +192,15 @@ export default util.createRule<[], MessageIds>({
                 esTreeNodeToTSNodeMap.get(argument.argument),
               );
 
-              if (util.isTypeAnyType(spreadArgType)) {
+              if (ESLintUtils.isTypeAnyType(spreadArgType)) {
                 // foo(...any)
                 context.report({
                   node: argument,
                   messageId: 'unsafeSpread',
                 });
-              } else if (util.isTypeAnyArrayType(spreadArgType, checker)) {
+              } else if (
+                ESLintUtils.isTypeAnyArrayType(spreadArgType, checker)
+              ) {
                 // foo(...any[])
 
                 // TODO - we could break down the spread and compare the array type against each argument
@@ -215,7 +218,7 @@ export default util.createRule<[], MessageIds>({
                   if (parameterType == null) {
                     continue;
                   }
-                  const result = util.isUnsafeAssignment(
+                  const result = ESLintUtils.isUnsafeAssignment(
                     tupleType,
                     parameterType,
                     checker,
@@ -256,7 +259,7 @@ export default util.createRule<[], MessageIds>({
               const argumentType = checker.getTypeAtLocation(
                 esTreeNodeToTSNodeMap.get(argument),
               );
-              const result = util.isUnsafeAssignment(
+              const result = ESLintUtils.isUnsafeAssignment(
                 argumentType,
                 parameterType,
                 checker,

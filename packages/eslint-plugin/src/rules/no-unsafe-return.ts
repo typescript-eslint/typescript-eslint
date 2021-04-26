@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
@@ -67,14 +68,17 @@ export default util.createRule({
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = esTreeNodeToTSNodeMap.get(returnNode);
-      const anyType = util.isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
+      const anyType = ESLintUtils.isAnyOrAnyArrayTypeDiscriminated(
+        tsNode,
+        checker,
+      );
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
       }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = util.getConstrainedTypeAtLocation(
+      const returnNodeType = ESLintUtils.getConstrainedTypeAtLocation(
         checker,
         esTreeNodeToTSNodeMap.get(returnNode),
       );
@@ -85,7 +89,7 @@ export default util.createRule({
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
       let functionType = tsutils.isExpression(functionTSNode)
-        ? util.getContextualType(checker, functionTSNode)
+        ? ESLintUtils.getContextualType(checker, functionTSNode)
         : checker.getTypeAtLocation(functionTSNode);
       if (!functionType) {
         functionType = checker.getTypeAtLocation(functionTSNode);
@@ -107,14 +111,14 @@ export default util.createRule({
         for (const signature of functionType.getCallSignatures()) {
           const functionReturnType = signature.getReturnType();
           if (
-            anyType === util.AnyType.Any &&
-            util.isTypeUnknownType(functionReturnType)
+            anyType === ESLintUtils.AnyType.Any &&
+            ESLintUtils.isTypeUnknownType(functionReturnType)
           ) {
             return;
           }
           if (
-            anyType === util.AnyType.AnyArray &&
-            util.isTypeUnknownArrayType(functionReturnType, checker)
+            anyType === ESLintUtils.AnyType.AnyArray &&
+            ESLintUtils.isTypeUnknownArrayType(functionReturnType, checker)
           ) {
             return;
           }
@@ -127,8 +131,8 @@ export default util.createRule({
           const thisExpression = getThisExpression(returnNode);
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
+            ESLintUtils.isTypeAnyType(
+              ESLintUtils.getConstrainedTypeAtLocation(
                 checker,
                 esTreeNodeToTSNodeMap.get(thisExpression),
               ),
@@ -143,7 +147,7 @@ export default util.createRule({
           node: reportingNode,
           messageId,
           data: {
-            type: anyType === util.AnyType.Any ? 'any' : 'any[]',
+            type: anyType === ESLintUtils.AnyType.Any ? 'any' : 'any[]',
           },
         });
       }

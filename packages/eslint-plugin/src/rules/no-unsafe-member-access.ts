@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
@@ -64,7 +65,7 @@ export default util.createRule({
 
       const tsNode = esTreeNodeToTSNodeMap.get(node.object);
       const type = checker.getTypeAtLocation(tsNode);
-      const state = util.isTypeAnyType(type) ? State.Unsafe : State.Safe;
+      const state = ESLintUtils.isTypeAnyType(type) ? State.Unsafe : State.Safe;
       stateCache.set(node, state);
 
       if (state === State.Unsafe) {
@@ -79,8 +80,8 @@ export default util.createRule({
 
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
+            ESLintUtils.isTypeAnyType(
+              ESLintUtils.getConstrainedTypeAtLocation(
                 checker,
                 esTreeNodeToTSNodeMap.get(thisExpression),
               ),
@@ -124,7 +125,7 @@ export default util.createRule({
         const tsNode = esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode);
 
-        if (util.isTypeAnyType(type)) {
+        if (ESLintUtils.isTypeAnyType(type)) {
           const propertyName = sourceCode.getText(node);
           context.report({
             node,

@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESLint,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import { AST as RegExpAST, RegExpParser } from 'regexpp';
 import {
@@ -9,7 +10,6 @@ import {
   getParserServices,
   getPropertyName,
   getStaticValue,
-  getTypeName,
   isNotClosingParenToken,
   nullThrows,
   NullThrowsReasons,
@@ -53,7 +53,7 @@ export default createRule({
       const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
-      return getTypeName(typeChecker, objectType) === 'string';
+      return ESLintUtils.getTypeName(typeChecker, objectType) === 'string';
     }
 
     /**
