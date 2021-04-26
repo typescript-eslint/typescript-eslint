@@ -15,7 +15,7 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 
-const log = debug('typescript-eslint:eslint-plugin:utils:types');
+const log = debug('typescript-eslint:experimental-utils:eslint-utils:types');
 
 /**
  * Checks if the given type is either an array type,

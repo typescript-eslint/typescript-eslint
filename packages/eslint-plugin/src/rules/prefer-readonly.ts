@@ -1,10 +1,10 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
-import { typeIsOrHasBaseType } from '../util';
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
@@ -322,7 +322,7 @@ class ClassScope {
     const modifierType = this.checker.getTypeAtLocation(node.expression);
     if (
       !modifierType.getSymbol() ||
-      !typeIsOrHasBaseType(modifierType, this.classType)
+      !ESLintUtils.typeIsOrHasBaseType(modifierType, this.classType)
     ) {
       return;
     }

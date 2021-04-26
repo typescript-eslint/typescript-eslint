@@ -3,6 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -66,7 +67,9 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = util.isNullableType(type, { allowUndefined: true });
+        const isNullish = ESLintUtils.isNullableType(type, {
+          allowUndefined: true,
+        });
         if (!isNullish) {
           return;
         }

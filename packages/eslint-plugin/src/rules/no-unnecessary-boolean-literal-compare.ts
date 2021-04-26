@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -159,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
     function deconstructComparison(
       node: TSESTree.BinaryExpression,
     ): BooleanComparison | undefined {
-      const comparisonType = util.getEqualsKind(node.operator);
+      const comparisonType = ESLintUtils.getEqualsKind(node.operator);
       if (!comparisonType) {
         return undefined;
       }

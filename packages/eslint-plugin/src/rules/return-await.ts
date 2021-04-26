@@ -2,6 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESLint,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -172,7 +173,7 @@ export default util.createRule({
       if (isAwait && !isThenable) {
         // any/unknown could be thenable; do not auto-fix
         const useAutoFix = !(
-          util.isTypeAnyType(type) || util.isTypeUnknownType(type)
+          ESLintUtils.isTypeAnyType(type) || ESLintUtils.isTypeUnknownType(type)
         );
         const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
           removeAwait(fixer, node);

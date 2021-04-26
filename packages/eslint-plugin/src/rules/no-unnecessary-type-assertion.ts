@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import {
   isObjectType,
@@ -93,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
      */
     function isPossiblyUsedBeforeAssigned(node: ts.Expression): boolean {
-      const declaration = util.getDeclaration(checker, node);
+      const declaration = ESLintUtils.getDeclaration(checker, node);
       if (!declaration) {
         // don't know what the declaration is for some reason, so just assume the worst
         return true;
@@ -112,7 +113,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         // check if the defined variable type has changed since assignment
         const declarationType = checker.getTypeFromTypeNode(declaration.type);
-        const type = util.getConstrainedTypeAtLocation(checker, node);
+        const type = ESLintUtils.getConstrainedTypeAtLocation(checker, node);
         if (declarationType === type) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
@@ -160,12 +161,12 @@ export default util.createRule<Options, MessageIds>({
 
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-        const type = util.getConstrainedTypeAtLocation(
+        const type = ESLintUtils.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
         );
 
-        if (!util.isNullableType(type)) {
+        if (!ESLintUtils.isNullableType(type)) {
           if (isPossiblyUsedBeforeAssigned(originalNode.expression)) {
             return;
           }
@@ -184,24 +185,27 @@ export default util.createRule<Options, MessageIds>({
           // we know it's a nullable type
           // so figure out if the variable is used in a place that accepts nullable types
 
-          const contextualType = util.getContextualType(checker, originalNode);
+          const contextualType = ESLintUtils.getContextualType(
+            checker,
+            originalNode,
+          );
           if (contextualType) {
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
-            const typeIncludesUndefined = util.isTypeFlagSet(
+            const typeIncludesUndefined = ESLintUtils.isTypeFlagSet(
               type,
               ts.TypeFlags.Undefined,
             );
-            const typeIncludesNull = util.isTypeFlagSet(
+            const typeIncludesNull = ESLintUtils.isTypeFlagSet(
               type,
               ts.TypeFlags.Null,
             );
 
-            const contextualTypeIncludesUndefined = util.isTypeFlagSet(
+            const contextualTypeIncludesUndefined = ESLintUtils.isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Undefined,
             );
-            const contextualTypeIncludesNull = util.isTypeFlagSet(
+            const contextualTypeIncludesNull = ESLintUtils.isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
             );

@@ -1,6 +1,7 @@
 import {
   AST_NODE_TYPES,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -67,7 +68,7 @@ export default util.createRule({
 
         // Get the symbol of the `reduce` method.
         const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
-        const calleeObjType = util.getConstrainedTypeAtLocation(
+        const calleeObjType = ESLintUtils.getConstrainedTypeAtLocation(
           checker,
           tsNode,
         );

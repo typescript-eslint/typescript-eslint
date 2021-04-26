@@ -1,6 +1,7 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -51,13 +52,13 @@ export default util.createRule<Options, MessageId>({
     const typeChecker = service.program.getTypeChecker();
 
     function isUnderlyingTypePrimitive(type: ts.Type): boolean {
-      if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
+      if (ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
         return true;
       }
 
       if (
         options.allowNumber &&
-        util.isTypeFlagSet(
+        ESLintUtils.isTypeFlagSet(
           type,
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
         )
@@ -67,18 +68,21 @@ export default util.createRule<Options, MessageId>({
 
       if (
         options.allowBoolean &&
-        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
+        ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
       ) {
         return true;
       }
 
-      if (options.allowAny && util.isTypeAnyType(type)) {
+      if (options.allowAny && ESLintUtils.isTypeAnyType(type)) {
         return true;
       }
 
       if (
         options.allowNullish &&
-        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
+        ESLintUtils.isTypeFlagSet(
+          type,
+          ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+        )
       ) {
         return true;
       }
@@ -94,7 +98,7 @@ export default util.createRule<Options, MessageId>({
         }
 
         for (const expression of node.expressions) {
-          const expressionType = util.getConstrainedTypeAtLocation(
+          const expressionType = ESLintUtils.getConstrainedTypeAtLocation(
             typeChecker,
             service.esTreeNodeToTSNodeMap.get(expression),
           );
