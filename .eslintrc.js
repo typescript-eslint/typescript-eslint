@@ -63,11 +63,8 @@ module.exports = {
     ],
 
     // TODO - enable these new recommended rules
-    '@typescript-eslint/no-floating-promises': 'off',
-    '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/restrict-plus-operands': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
@@ -186,7 +183,15 @@ module.exports = {
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
         'jest/no-deprecated-functions': 'error',
-        '@typescript-eslint/no-unsafe-assignment': 'off',
+      },
+    },
+    // test utility scripts
+    {
+      files: ['tests/**/*.js'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/restrict-plus-operands': 'off',
       },
     },
     // plugin source files
