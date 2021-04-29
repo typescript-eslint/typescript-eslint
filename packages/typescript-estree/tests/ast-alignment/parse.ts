@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type babelParser from '@babel/parser';
 import { ParserPlugin } from '@babel/parser';
