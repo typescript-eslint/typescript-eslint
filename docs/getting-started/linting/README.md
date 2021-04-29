@@ -25,7 +25,7 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
   ],
 };
 ```
@@ -41,7 +41,7 @@ Explaining the important bits:
   - This allows you to use the rules within your codebase.
 - `extends: [ ... ]` tells ESLint that your config extends the given configurations.
   - `eslint:recommended` is ESLint's inbuilt "recommended" config - it turns on a small, sensible set of rules which lint for well-known best-practices.
-  - `plugin:@typescript-eslint/recommended` is our "recommended" config - it's just like `eslint:recommended`, except it only turns on rules from our TypeScript-specific plugin.
+  - `plugin:@typescript-eslint/eslint-recommended` is our "recommended" config - it's just like `eslint:recommended`, except it only turns on rules from our TypeScript-specific plugin.
 
 Further reading:
 
@@ -109,7 +109,7 @@ To use one of these complete config packages, you would replace the `extends` wi
     ],
     extends: [
 -     'eslint:recommended',
--     'plugin:@typescript-eslint/recommended',
+-     'plugin:@typescript-eslint/eslint-recommended',
 +     'airbnb-typescript',
     ],
   };
@@ -132,7 +132,7 @@ Using this config is as simple as adding it to the end of your `extends`:
     ],
     extends: [
       'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
 +     'prettier',
     ],
   };
@@ -160,7 +160,7 @@ Every plugin that is out there includes documentation on the various rules they 
     ],
     extends: [
       'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
 +     'plugin:jest/recommended',
     ],
   };
