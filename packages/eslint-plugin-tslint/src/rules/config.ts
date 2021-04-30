@@ -64,7 +64,8 @@ export default createRule<Options, MessageIds>({
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
       // one off special category for this plugin
-      category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      // @ts-expect-error
+      category: 'TSLint',
       recommended: false,
     },
     fixable: 'code',
