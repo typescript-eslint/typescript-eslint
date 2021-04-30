@@ -63,8 +63,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
-      // one off special category for this plugin
-      // @ts-expect-error
+      // @ts-expect-error - We know this is a one off special category for this plugin
       category: 'TSLint',
       recommended: false,
     },

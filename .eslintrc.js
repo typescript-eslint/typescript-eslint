@@ -166,6 +166,7 @@ module.exports = {
         'jest/globals': true,
       },
       rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'error',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',

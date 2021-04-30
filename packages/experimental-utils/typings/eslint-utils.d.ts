@@ -32,9 +32,9 @@ declare module 'eslint-utils' {
   export const isSemicolonToken: unknown;
   export const PatternMatcher: unknown;
   export const ReferenceTracker: {
-    READ: never;
-    CALL: never;
-    CONSTRUCT: never;
+    readonly READ: unique symbol;
+    readonly CALL: unique symbol;
+    readonly CONSTRUCT: unique symbol;
     new (): never;
   };
 }
