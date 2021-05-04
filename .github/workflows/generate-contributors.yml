@@ -1,7 +1,8 @@
 name: "Generate contributors"
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: "0 0 1 * *"
 
 env:
   PRIMARY_NODE_VERSION: 12
