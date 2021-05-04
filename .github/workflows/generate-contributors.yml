@@ -47,4 +47,4 @@ jobs:
           commit-message: "chore: update contributors"
           title: "chore: update contributors"
           body: ""
-          branch: auto-update-contributors
+          branch: auto-updates-contributors
