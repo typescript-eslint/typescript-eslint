@@ -157,7 +157,7 @@ Object {
                         61,
                       ],
                       "raw": "//",
-                      "type": "Literal",
+                      "type": "JSXText",
                       "value": "//",
                     },
                   ],

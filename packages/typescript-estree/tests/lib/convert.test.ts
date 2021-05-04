@@ -28,7 +28,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     });
     expect(instance.convertProgram()).toMatchSnapshot();
@@ -39,7 +38,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     }) as any;
 
@@ -51,7 +49,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     }) as any;
 
@@ -63,7 +60,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     }) as any;
 
@@ -77,7 +73,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     }) as any;
     expect(instance.deeplyCopy(ast)).toMatchSnapshot();
@@ -88,7 +83,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: true,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     }) as any;
 
@@ -107,7 +101,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -141,7 +134,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -174,7 +166,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     const program = instance.convertProgram();
@@ -206,7 +197,6 @@ describe('convert', () => {
     const ast = convertCode('');
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
 
@@ -251,7 +241,6 @@ describe('convert', () => {
 
       const instance = new Converter(ast, {
         errorOnUnknownASTType: false,
-        useJSXTextNode: false,
         shouldPreserveNodeMaps: false,
       });
       expect(() => instance.convertProgram()).toThrow(

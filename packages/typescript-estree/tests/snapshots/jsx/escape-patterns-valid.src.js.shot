@@ -24,7 +24,7 @@ Object {
             "raw": "
   &nbsp;
 ",
-            "type": "Literal",
+            "type": "JSXText",
             "value": "
    
 ",

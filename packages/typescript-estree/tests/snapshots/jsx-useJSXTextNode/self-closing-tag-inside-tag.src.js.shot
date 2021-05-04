@@ -23,7 +23,7 @@ Object {
             ],
             "raw": "
     ",
-            "type": "Literal",
+            "type": "JSXText",
             "value": "
     ",
           },
@@ -101,7 +101,7 @@ Object {
             ],
             "raw": "
 ",
-            "type": "Literal",
+            "type": "JSXText",
             "value": "
 ",
           },

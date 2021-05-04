@@ -51,7 +51,7 @@ Object {
        * test
        */
     ",
-                        "type": "Literal",
+                        "type": "JSXText",
                         "value": "
       /**
        * test

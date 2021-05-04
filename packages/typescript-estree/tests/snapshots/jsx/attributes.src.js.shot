@@ -22,7 +22,7 @@ Object {
               39,
             ],
             "raw": "test",
-            "type": "Literal",
+            "type": "JSXText",
             "value": "test",
           },
         ],

@@ -110,7 +110,6 @@ function resetExtra(): void {
     strict: false,
     tokens: null,
     tsconfigRootDir: process.cwd(),
-    useJSXTextNode: false,
   };
 }
 
@@ -224,17 +223,6 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     extra.filePath = options.filePath;
   } else {
     extra.filePath = getFileName(extra);
-  }
-
-  /**
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   *
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  if (typeof options.useJSXTextNode === 'boolean' && options.useJSXTextNode) {
-    extra.useJSXTextNode = true;
   }
 
   /**
