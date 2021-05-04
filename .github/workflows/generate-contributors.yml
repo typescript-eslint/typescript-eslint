@@ -1,8 +1,7 @@
 name: "Generate contributors"
 
 on:
-  schedule:
-    - cron: "0 0 1 * *"
+  workflow_dispatch:
 
 env:
   PRIMARY_NODE_VERSION: 12
@@ -37,13 +36,10 @@ jobs:
       - name: Generate contributors
         run: yarn generate:contributors
 
-      - name: Commit files
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "Github Actions"
-          git commit -am "chore: update contributors [bot]"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update contributors"
+          title: "chore: update contributors"
+          branch: auto-update-contributors
