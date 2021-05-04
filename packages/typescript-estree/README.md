@@ -102,7 +102,7 @@ interface ParseOptions {
    */
   tokens?: boolean;
 
-  /*
+  /**
    * The JSX AST changed the node type for string literals
    * inside a JSX Element from `Literal` to `JSXText`.
    * When value is `true`, these nodes will be parsed as type `JSXText`.

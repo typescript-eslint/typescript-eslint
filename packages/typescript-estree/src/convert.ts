@@ -2314,8 +2314,15 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.ParenthesizedExpression:
+      case SyntaxKind.ParenthesizedExpression: {
+        if (ts.getJSDocTypeTag(node)) {
+          return this.createNode<TSESTree.ParenthesizedExpression>(node, {
+            type: AST_NODE_TYPES.ParenthesizedExpression,
+            expression: this.convertChild(node.expression, parent),
+          });
+        }
         return this.convertChild(node.expression, parent);
+      }
 
       case SyntaxKind.TypeAliasDeclaration: {
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {
