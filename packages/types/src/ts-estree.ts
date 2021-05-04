@@ -1429,8 +1429,7 @@ export interface TSImportEqualsDeclaration extends BaseNode {
 
 export interface TSImportType extends BaseNode {
   type: AST_NODE_TYPES.TSImportType;
-  isTypeOf: boolean;
-  parameter: TypeNode;
+  argument: TypeNode;
   qualifier: EntityName | null;
   typeParameters: TSTypeParameterInstantiation | null;
 }
@@ -1699,7 +1698,7 @@ export interface TSTypePredicate extends BaseNode {
 
 export interface TSTypeQuery extends BaseNode {
   type: AST_NODE_TYPES.TSTypeQuery;
-  exprName: EntityName;
+  exprName: EntityName | TSImportType;
 }
 
 export interface TSTypeReference extends BaseNode {

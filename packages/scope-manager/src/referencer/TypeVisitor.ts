@@ -258,6 +258,8 @@ class TypeVisitor extends Visitor {
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     if (node.exprName.type === AST_NODE_TYPES.Identifier) {
       this.#referencer.currentScope().referenceValue(node.exprName);
+    } else if (node.exprName.type === AST_NODE_TYPES.TSImportType) {
+      this.visit(node.exprName);
     } else {
       let expr = node.exprName.left;
       while (expr.type !== AST_NODE_TYPES.Identifier) {
