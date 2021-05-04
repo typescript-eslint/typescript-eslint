@@ -1,4 +1,4 @@
-enum AST_TOKEN_TYPES {
+export enum AST_TOKEN_TYPES {
   Boolean = 'Boolean',
   Identifier = 'Identifier',
   JSXIdentifier = 'JSXIdentifier',
@@ -15,5 +15,3 @@ enum AST_TOKEN_TYPES {
   Block = 'Block',
   Line = 'Line',
 }
-
-export { AST_TOKEN_TYPES };

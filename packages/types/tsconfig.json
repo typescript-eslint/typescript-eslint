@@ -4,5 +4,6 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "typings", "tests", "tools"]
+  "include": ["src", "typings", "tests", "tools"],
+  "references": []
 }

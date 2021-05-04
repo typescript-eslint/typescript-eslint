@@ -7,6 +7,7 @@ module.exports = {
     'import',
     'eslint-comments',
     '@typescript-eslint/internal',
+    'simple-import-sort',
   ],
   env: {
     es6: true,
@@ -259,6 +260,28 @@ module.exports = {
         '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
         '@typescript-eslint/internal/no-typescript-default-import': 'off',
         '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+      },
+    },
+    // ast spec specific standardization
+    {
+      files: ['packages/ast-spec/src/**/*.ts'],
+      rules: {
+        '@typescript-eslint/consistent-type-imports': [
+          'error',
+          { prefer: 'type-imports', disallowTypeAnnotations: true },
+        ],
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/sort-type-union-intersection-members': 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        'simple-import-sort/imports': 'error',
+      },
+    },
+    {
+      files: ['rollup.config.ts'],
+      rules: {
+        'import/no-default-export': 'off',
       },
     },
   ],
