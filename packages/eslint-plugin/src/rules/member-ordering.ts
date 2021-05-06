@@ -56,6 +56,9 @@ export const defaultOrder = [
   // Index signature
   'signature',
 
+  // Callbacks
+  'callback',
+
   // Fields
   'public-static-field',
   'protected-static-field',
@@ -122,9 +125,13 @@ export const defaultOrder = [
   'method',
 ];
 
-const allMemberTypes = ['signature', 'field', 'method', 'constructor'].reduce<
-  string[]
->((all, type) => {
+const allMemberTypes = [
+  'signature',
+  'field',
+  'method',
+  'callback',
+  'constructor',
+].reduce<string[]>((all, type) => {
   all.push(type);
 
   ['public', 'protected', 'private'].forEach(accessibility => {
@@ -170,13 +177,14 @@ const functionExpressions = [
  * @param node the node to be evaluated.
  */
 function getNodeType(node: Member): string | null {
-  // TODO: add missing TSCallSignatureDeclaration
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind;
     case AST_NODE_TYPES.TSMethodSignature:
       return 'method';
+    case AST_NODE_TYPES.TSCallSignatureDeclaration:
+      return 'callback';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractClassProperty:
@@ -216,6 +224,8 @@ function getMemberName(
         : util.getNameFromMember(node, sourceCode);
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'new';
+    case AST_NODE_TYPES.TSCallSignatureDeclaration:
+      return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
       return util.getNameFromIndexSignature(node);
     default:
