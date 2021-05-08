@@ -1,11 +1,12 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
+import * as tsutils from 'tsutils';
 import baseRule from 'eslint/lib/rules/dot-notation';
 import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule,
   createRule,
   getParserServices,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
@@ -42,6 +43,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             default: false,
           },
+          allowIndexSignaturePropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
@@ -53,32 +58,41 @@ export default createRule<Options, MessageIds>({
     {
       allowPrivateClassPropertyAccess: false,
       allowProtectedClassPropertyAccess: false,
+      allowIndexSignaturePropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
     },
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
+
+    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const typeChecker = program.getTypeChecker();
+
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
     const allowProtectedClassPropertyAccess =
       options.allowProtectedClassPropertyAccess;
-
-    const parserServices = getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
+    const allowIndexSignaturePropertyAccess =
+      (options.allowIndexSignaturePropertyAccess ?? false) ||
+      tsutils.isCompilerOptionEnabled(
+        program.getCompilerOptions(),
+        'noPropertyAccessFromIndexSignature',
+      );
 
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
         if (
           (allowPrivateClassPropertyAccess ||
-            allowProtectedClassPropertyAccess) &&
+            allowProtectedClassPropertyAccess ||
+            allowIndexSignaturePropertyAccess) &&
           node.computed
         ) {
-          // for perf reasons - only fetch the symbol if we have to
-          const objectSymbol = typeChecker.getSymbolAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(node.property),
+          // for perf reasons - only fetch symbols if we have to
+          const propertySymbol = typeChecker.getSymbolAtLocation(
+            esTreeNodeToTSNodeMap.get(node.property),
           );
-          const modifierKind = objectSymbol?.getDeclarations()?.[0]
+          const modifierKind = propertySymbol?.getDeclarations()?.[0]
             ?.modifiers?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
@@ -87,6 +101,21 @@ export default createRule<Options, MessageIds>({
               modifierKind == ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
+          }
+          if (
+            propertySymbol === undefined &&
+            allowIndexSignaturePropertyAccess
+          ) {
+            const objectType = typeChecker.getTypeAtLocation(
+              esTreeNodeToTSNodeMap.get(node.object),
+            );
+            const indexType = typeChecker.getIndexTypeOfType(
+              objectType,
+              ts.IndexKind.String,
+            );
+            if (indexType != undefined) {
+              return;
+            }
           }
         }
         rules.MemberExpression(node);
