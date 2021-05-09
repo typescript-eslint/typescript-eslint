@@ -44,7 +44,13 @@ async function invalidInTryCatch1() {
   } catch (e) {}
 }
 
-async function invalidInTryCatch2() {
+function invalidInTryCatch2() {
+  try {
+    return Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function invalidInTryCatch3() {
   try {
     throw new Error('error');
   } catch (e) {
@@ -52,7 +58,7 @@ async function invalidInTryCatch2() {
   }
 }
 
-async function invalidInTryCatch3() {
+async function invalidInTryCatch4() {
   try {
     throw new Error('error');
   } catch (e) {
@@ -62,7 +68,7 @@ async function invalidInTryCatch3() {
   }
 }
 
-async function invalidInTryCatch4() {
+async function invalidInTryCatch5() {
   try {
     throw new Error('error');
   } catch (e) {
@@ -72,11 +78,11 @@ async function invalidInTryCatch4() {
   }
 }
 
-async function invalidInTryCatch5() {
+async function invalidInTryCatch6() {
   return await Promise.resolve('try');
 }
 
-async function invalidInTryCatch6() {
+async function invalidInTryCatch7() {
   return await 'value';
 }
 ```

@@ -207,20 +207,6 @@ ruleTester.run('return-await', rule, {
       `,
     },
     {
-      options: ['always'],
-      code: `
-        declare function foo(): Promise<boolean>;
-
-        function bar(baz: boolean): Promise<boolean> | boolean {
-          if (baz) {
-            return true;
-          } else {
-            return foo();
-          }
-        }
-      `,
-    },
-    {
       code: `
         async function test(): Promise<string> {
           const res = await Promise.resolve('{}');
@@ -823,6 +809,127 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
         },
         {
           line: 4,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+        function test() {
+          return Promise.resolve(1);
+        }
+      `,
+      output: `
+        async function test() {
+          return await Promise.resolve(1);
+        }
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+        const test = () => {
+          return Promise.resolve(1);
+        };
+      `,
+      output: `
+        const test = async () => {
+          return await Promise.resolve(1);
+        };
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+        class Test {
+          private x() {
+            return Promise.resolve(1);
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private async x() {
+            return await Promise.resolve(1);
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+        async function f(n: number) {
+          return n + 1;
+        }
+
+        async function g() {
+          const l = [1, 2, 3];
+          return await Promise.all(l.map(n => f(n)));
+        }
+      `,
+      output: `
+        async function f(n: number) {
+          return n + 1;
+        }
+
+        async function g() {
+          const l = [1, 2, 3];
+          return await Promise.all(l.map(async n => await f(n)));
+        }
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      options: ['always'],
+      code: `
+        declare function foo(): Promise<boolean>;
+
+        function bar(baz: boolean): Promise<boolean> | boolean {
+          if (baz) {
+            return true;
+          } else {
+            return foo();
+          }
+        }
+      `,
+      output: `
+        declare function foo(): Promise<boolean>;
+
+        async function bar(baz: boolean): Promise<boolean> | boolean {
+          if (baz) {
+            return true;
+          } else {
+            return await foo();
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 8,
           messageId: 'requiredPromiseAwait',
         },
       ],

@@ -7,15 +7,6 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
-interface ScopeInfo {
-  hasAsync: boolean;
-}
-
-type FunctionNode =
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
-
 export default util.createRule({
   name: 'return-await',
   meta: {
@@ -48,14 +39,6 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
-
-    let scopeInfo: ScopeInfo | null = null;
-
-    function enterFunction(node: FunctionNode): void {
-      scopeInfo = {
-        hasAsync: node.async,
-      };
-    }
 
     function inTry(node: ts.Node): boolean {
       let ancestor = node.parent;
@@ -144,11 +127,51 @@ export default util.createRule({
       return fixer.removeRange([startAt, endAt]);
     }
 
-    function insertAwait(
+    function insertAsyncIfNeeded(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
     ): TSESLint.RuleFix | null {
-      return fixer.insertTextBefore(node, 'await ');
+      let currNode: TSESTree.Node | undefined = node;
+      while (
+        currNode &&
+        ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
+          AST_NODE_TYPES.FunctionDeclaration,
+          AST_NODE_TYPES.MethodDefinition,
+        ].includes(currNode.type)
+      ) {
+        currNode = currNode.parent;
+      }
+
+      if (!currNode) {
+        return null;
+      }
+
+      if (
+        (currNode.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          currNode.type === AST_NODE_TYPES.FunctionDeclaration) &&
+        !currNode.async
+      ) {
+        return fixer.insertTextBefore(currNode, 'async ');
+      }
+
+      if (
+        currNode.type === AST_NODE_TYPES.MethodDefinition &&
+        !currNode.value.async
+      ) {
+        return fixer.insertTextBeforeRange(currNode.key.range, 'async ');
+      }
+
+      return null;
+    }
+
+    function insertAwait(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.Expression,
+    ): TSESLint.RuleFix[] | null {
+      const awaitFix = fixer.insertTextBefore(node, 'await ');
+      const asyncFix = insertAsyncIfNeeded(fixer, node);
+      return asyncFix ? [asyncFix, awaitFix] : [awaitFix];
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
@@ -259,11 +282,7 @@ export default util.createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
-      ArrowFunctionExpression: enterFunction,
-
-      'ArrowFunctionExpression[async = true]:exit'(
+      'ArrowFunctionExpression:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
@@ -274,7 +293,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
+        if (!node.argument) {
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
