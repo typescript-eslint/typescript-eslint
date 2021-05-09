@@ -320,7 +320,7 @@ class Referencer extends Visitor {
       case AST_NODE_TYPES.TSAsExpression:
       case AST_NODE_TYPES.TSTypeAssertion:
         // explicitly visit the type annotation
-        this.visit(left.typeAnnotation);
+        this.visitType(left.typeAnnotation);
       // intentional fallthrough
       case AST_NODE_TYPES.TSNonNullExpression:
         // unwrap the expression
