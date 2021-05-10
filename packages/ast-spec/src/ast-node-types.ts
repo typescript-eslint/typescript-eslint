@@ -134,7 +134,6 @@ export enum AST_NODE_TYPES {
   TSObjectKeyword = 'TSObjectKeyword',
   TSOptionalType = 'TSOptionalType',
   TSParameterProperty = 'TSParameterProperty',
-  TSParenthesizedType = 'TSParenthesizedType',
   TSPrivateKeyword = 'TSPrivateKeyword',
   TSPropertySignature = 'TSPropertySignature',
   TSProtectedKeyword = 'TSProtectedKeyword',
