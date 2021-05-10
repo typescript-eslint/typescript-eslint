@@ -32,7 +32,7 @@
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",

@@ -13,8 +13,8 @@
 
   // typescript auto-format settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "javascript.preferences.importModuleSpecifier": "auto",
-  "typescript.preferences.importModuleSpecifier": "auto",
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.preferences.importModuleSpecifier": "project-relative",
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",

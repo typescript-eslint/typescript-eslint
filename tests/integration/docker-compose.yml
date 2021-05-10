@@ -22,9 +22,11 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/typescript-and-tslint-plugins-together:/usr/linked
 
@@ -47,9 +49,11 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/vue-sfc:/usr/linked
 
@@ -72,9 +76,11 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/vue-jsx:/usr/linked
 
@@ -97,9 +103,11 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/recommended-does-not-require-program:/usr/linked
 
@@ -122,9 +130,11 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/markdown:/usr/linked
 
@@ -147,8 +157,10 @@ services:
       - ../../packages/types/:/usr/types
       - /usr/types/tests
       - ../../packages/visitor-keys/:/usr/visitor-keys
-      - /usr/types/visitor-keys
+      - /usr/visitor-keys/tests
       - ../../packages/scope-manager/:/usr/scope-manager
-      - /usr/types/scope-manager
+      - /usr/scope-manager/tests
+      - ../../packages/ast-spec/:/usr/ast-spec
+      - /usr/ast-spec/tests
       # Runtime link to all the specific integration test files, so that most updates don't require a rebuild.
       - ./fixtures/eslint-v6:/usr/linked
