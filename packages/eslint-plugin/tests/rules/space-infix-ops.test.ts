@@ -56,7 +56,84 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        type Test = string;
+      `,
+    },
+    {
+      code: `
         type Test = string | boolean;
+      `,
+    },
+    {
+      code: `
+        type Test = string & boolean;
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private value:number | string = 1;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private value:number & string = 1;
+        }
+      `,
+    },
+    {
+      code: `
+        type Test =
+        | string
+        | boolean;
+      `,
+    },
+    {
+      code: `
+        type Test =
+        & string
+        & boolean;
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          prop:
+            & string
+            & boolean;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          prop:
+            | string
+            | boolean;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          props: string;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          props: string | boolean;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          props: string & boolean;
+        }
       `,
     },
   ],
@@ -189,6 +266,226 @@ ruleTester.run('space-infix-ops', rule, {
           messageId: 'missingSpace',
           column: 19,
           line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test = string| number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 27,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test = string |number;
+      `,
+      output: `
+        type Test = string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 28,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test = string &number;
+      `,
+      output: `
+        type Test = string & number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 28,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test = string& number;
+      `,
+      output: `
+        type Test = string & number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 27,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test =
+        |string
+        | number;
+      `,
+      output: `
+        type Test =
+        | string
+        | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 9,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test =
+        &string
+        & number;
+      `,
+      output: `
+        type Test =
+        & string
+        & number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 9,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop: string| number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop: string | number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 23,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop: string |number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop: string | number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop: string &number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop: string & number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop: string& number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop: string & number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 23,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop:
+            |string
+            | number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop:
+            | string
+            | number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 13,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Test {
+          prop:
+            &string
+            & number;
+        }
+      `,
+      output: `
+        interface Test {
+          prop:
+            & string
+            & number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 13,
+          line: 4,
         },
       ],
     },

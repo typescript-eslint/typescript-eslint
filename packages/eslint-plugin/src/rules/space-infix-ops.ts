@@ -1,4 +1,5 @@
 import {
+  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -34,6 +35,37 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const sourceCode = context.getSourceCode();
 
+    const report = (
+      node: TSESTree.Node | TSESTree.Token,
+      operator: TSESTree.Token,
+    ): void => {
+      context.report({
+        node: node,
+        loc: operator.loc,
+        messageId: 'missingSpace',
+        data: {
+          operator: operator.value,
+        },
+        fix(fixer) {
+          const previousToken = sourceCode.getTokenBefore(operator);
+          const afterToken = sourceCode.getTokenAfter(operator);
+          let fixString = '';
+
+          if (operator.range[0] - previousToken!.range[1] === 0) {
+            fixString = ' ';
+          }
+
+          fixString += operator.value;
+
+          if (afterToken!.range[0] - operator.range[1] === 0) {
+            fixString += ' ';
+          }
+
+          return fixer.replaceText(operator, fixString);
+        },
+      });
+    };
+
     function checkAndReportAssignmentSpace(
       node: TSESTree.Node,
       leftNode: TSESTree.Token,
@@ -49,6 +81,7 @@ export default util.createRule<Options, MessageIds>({
         token =>
           token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=',
       );
+
       const prev = sourceCode.getTokenBefore(operator!);
       const next = sourceCode.getTokenAfter(operator!);
 
@@ -57,31 +90,7 @@ export default util.createRule<Options, MessageIds>({
         (!sourceCode.isSpaceBetweenTokens(prev!, operator) ||
           !sourceCode.isSpaceBetweenTokens(operator, next!))
       ) {
-        context.report({
-          node: node,
-          loc: operator.loc,
-          messageId: 'missingSpace',
-          data: {
-            operator: operator.value,
-          },
-          fix(fixer) {
-            const previousToken = sourceCode.getTokenBefore(operator);
-            const afterToken = sourceCode.getTokenAfter(operator);
-            let fixString = '';
-
-            if (operator.range[0] - previousToken!.range[1] === 0) {
-              fixString = ' ';
-            }
-
-            fixString += operator.value;
-
-            if (afterToken!.range[0] - operator.range[1] === 0) {
-              fixString += ' ';
-            }
-
-            return fixer.replaceText(operator, fixString);
-          },
-        });
+        report(node, operator);
       }
     }
 
@@ -120,10 +129,37 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Check if it is missing spaces between type annotations chaining
+     * @param typeAnnotation TypeAnnotations list
+     */
+    function checkForTypeAnnotationSpace(
+      typeAnnotation: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+    ): void {
+      const UNIONS = ['|', '&'];
+      const types = typeAnnotation.types;
+
+      types.forEach(type => {
+        const operator = sourceCode.getTokenBefore(type);
+
+        if (!!operator && UNIONS.includes(operator.value)) {
+          const prev = sourceCode.getTokenBefore(operator);
+          const next = sourceCode.getTokenAfter(operator);
+
+          if (
+            !sourceCode.isSpaceBetweenTokens(prev!, operator) ||
+            !sourceCode.isSpaceBetweenTokens(operator, next!)
+          ) {
+            report(operator, operator);
+          }
+        }
+      });
+    }
+
+    /**
      * Check if it has an assignment char and report if it's faulty
      * @param node The node to report
      */
-    function checkForTypeAliasAssignmentSpace(
+    function checkForTypeAliasAssignmentAndTypeAnnotationSpace(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
       const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
@@ -132,13 +168,44 @@ export default util.createRule<Options, MessageIds>({
       );
 
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      if (
+        node.typeAnnotation.type === AST_NODE_TYPES.TSUnionType ||
+        node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType
+      ) {
+        checkForTypeAnnotationSpace(node.typeAnnotation);
+      }
+    }
+
+    /**
+     * Check if it has an assignment char and report if it's faulty
+     * @param node The node to report
+     */
+    function checkForIntercaceDeclarationSpace(
+      node: TSESTree.TSInterfaceDeclaration,
+    ): void {
+      const properties = node.body.body;
+
+      properties.forEach((prop: TSESTree.TypeElement) => {
+        if (prop.type === AST_NODE_TYPES.TSPropertySignature) {
+          const propTypeAnnotation = prop.typeAnnotation!;
+
+          const typeAnnotation = propTypeAnnotation.typeAnnotation;
+          if (
+            typeAnnotation.type === AST_NODE_TYPES.TSUnionType ||
+            typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType
+          ) {
+            checkForTypeAnnotationSpace(typeAnnotation);
+          }
+        }
+      });
     }
 
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
       ClassProperty: checkForClassPropertyAssignmentSpace,
-      TSTypeAliasDeclaration: checkForTypeAliasAssignmentSpace,
+      TSTypeAliasDeclaration: checkForTypeAliasAssignmentAndTypeAnnotationSpace,
+      TSInterfaceDeclaration: checkForIntercaceDeclarationSpace,
     };
   },
 });
