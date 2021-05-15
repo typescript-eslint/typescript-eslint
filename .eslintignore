@@ -7,3 +7,6 @@ coverage
 __snapshots__
 
 packages/eslint-plugin-tslint/tests
+
+# Files copied as part of the build
+packages/types/src/ast-spec.ts

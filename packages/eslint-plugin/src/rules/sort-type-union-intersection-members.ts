@@ -82,7 +82,6 @@ function getGroup(node: TSESTree.TypeNode): Group {
       return Group.union;
 
     // These types should never occur as part of a union/intersection
-    case AST_NODE_TYPES.TSInterfaceHeritage:
     case AST_NODE_TYPES.TSNamedTupleMember:
     case AST_NODE_TYPES.TSOptionalType:
     case AST_NODE_TYPES.TSRestType:

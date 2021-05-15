@@ -6,5 +6,6 @@
     "rootDir": "./src",
     "resolveJsonModule": true
   },
-  "include": ["src", "typings"]
+  "include": ["src", "typings"],
+  "references": []
 }
