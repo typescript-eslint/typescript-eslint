@@ -283,7 +283,12 @@ export default util.createRule({
         return false;
       }
 
-      const result = util.isUnsafeAssignment(senderType, receiverType, checker);
+      const result = util.isUnsafeAssignment(
+        senderType,
+        receiverType,
+        checker,
+        senderNode,
+      );
       if (!result) {
         return false;
       }
