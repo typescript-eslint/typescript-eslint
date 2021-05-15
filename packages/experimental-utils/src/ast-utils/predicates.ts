@@ -1,24 +1,20 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
 function isOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '?.' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
 }
-function isNotOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+function isNotOptionalChainPunctuator(token: TSESTree.Token): boolean {
   return !isOptionalChainPunctuator(token);
 }
 
 function isNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '!' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
 }
-function isNotNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+function isNotNonNullAssertionPunctuator(token: TSESTree.Token): boolean {
   return !isNonNullAssertionPunctuator(token);
 }
 
@@ -209,7 +205,7 @@ function isAwaitExpression(
  * Checks if a possible token is the `await` keyword.
  */
 function isAwaitKeyword(
-  node: TSESTree.Token | TSESTree.Comment | undefined | null,
+  node: TSESTree.Token | undefined | null,
 ): node is TSESTree.KeywordToken & { value: 'await' } {
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
