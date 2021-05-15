@@ -151,6 +151,7 @@ export default util.createRule({
           returnNodeType,
           functionReturnType,
           checker,
+          returnNode,
         );
         if (!result) {
           return;
