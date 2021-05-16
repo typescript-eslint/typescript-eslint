@@ -4,7 +4,6 @@ import * as eslintUtils from 'eslint-utils';
 import { TSESTree } from '../../ts-estree';
 import * as TSESLint from '../../ts-eslint';
 
-// TODO: FILE ISSUE(S) SOMEWHERE
 const ReferenceTrackerREAD: typeof eslintUtils.ReferenceTracker.READ =
   eslintUtils.ReferenceTracker.READ;
 const ReferenceTrackerCALL: typeof eslintUtils.ReferenceTracker.CALL =
