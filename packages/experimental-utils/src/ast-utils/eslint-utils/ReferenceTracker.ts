@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
 import * as eslintUtils from 'eslint-utils';
 import { TSESTree } from '../../ts-estree';
 import * as TSESLint from '../../ts-eslint';
 
-const ReferenceTrackerREAD: typeof eslintUtils.ReferenceTracker.READ =
-  eslintUtils.ReferenceTracker.READ;
-const ReferenceTrackerCALL: typeof eslintUtils.ReferenceTracker.CALL =
-  eslintUtils.ReferenceTracker.CALL;
-const ReferenceTrackerCONSTRUCT: typeof eslintUtils.ReferenceTracker.CONSTRUCT =
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+const ReferenceTrackerREAD: unique symbol = eslintUtils.ReferenceTracker.READ;
+const ReferenceTrackerCALL: unique symbol = eslintUtils.ReferenceTracker.CALL;
+const ReferenceTrackerCONSTRUCT: unique symbol =
   eslintUtils.ReferenceTracker.CONSTRUCT;
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
 interface ReferenceTracker {
   /**

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import debug from 'debug';
 import { join, resolve } from 'path';
 import * as parser from '../../src';
