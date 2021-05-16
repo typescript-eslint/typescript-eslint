@@ -1,5 +1,34 @@
 import { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import {
+  Definition,
+  DefinitionType,
+  Variable,
+} from '@typescript-eslint/scope-manager';
 import * as util from '../util';
+
+function hasAssignmentBeforeNode(
+  variable: Variable,
+  node: TSESTree.Node,
+): boolean {
+  return (
+    variable.references.some(
+      ref => ref.isWrite() && ref.identifier.range[1] < node.range[1],
+    ) ||
+    variable.defs.some(
+      def =>
+        isDefinitionWithAssignment(def) && def.node.range[1] < node.range[1],
+    )
+  );
+}
+
+function isDefinitionWithAssignment(definition: Definition): boolean {
+  if (definition.type !== DefinitionType.Variable) {
+    return false;
+  }
+
+  const variableDeclarator = definition.node;
+  return variableDeclarator.definite ?? variableDeclarator.init !== null;
+}
 
 export default util.createRule({
   name: 'no-non-null-asserted-nullish-coalescing',
@@ -25,10 +54,31 @@ export default util.createRule({
       'LogicalExpression[operator = "??"] > TSNonNullExpression.left'(
         node: TSESTree.TSNonNullExpression,
       ): void {
+        if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
+          const scope = context.getScope();
+          const identifier = node.expression;
+          const variable = scope.set.get(identifier.name);
+          if (variable && !hasAssignmentBeforeNode(variable, node)) {
+            return;
+          }
+        }
+
         context.report({
           node,
           messageId: 'noNonNullAssertedNullishCoalescing',
-          // use a suggestion instead of a fixer, because this can obviously break type checks
+          /*
+          Use a suggestion instead of a fixer, because this can break type checks.
+          The resulting type of the nullish coalesce is only influenced by the right operand if the left operand can be `null` or `undefined`.
+          After removing the non-null assertion the type of the left operand might contain `null` or `undefined` and then the type of the right operand
+          might change the resulting type of the nullish coalesce.
+          See the following example:
+
+          function test(x?: string): string {
+            const bar = x! ?? false; // type analysis reports `bar` has type `string`
+            //          x  ?? false; // type analysis reports `bar` has type `string | false`
+            return bar;
+          }
+          */
           suggest: [
             {
               messageId: 'suggestRemovingNonNull',

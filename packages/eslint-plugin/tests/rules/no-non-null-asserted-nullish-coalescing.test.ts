@@ -16,6 +16,38 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
     'foo() ?? bar;',
     'foo() ?? bar!;',
     '(foo ?? bar)!;',
+    `
+      let x: string;
+      x! ?? '';
+    `,
+    `
+      let x: string;
+      x ?? '';
+    `,
+    `
+      let x!: string;
+      x ?? '';
+    `,
+    `
+      let x: string;
+      foo(x);
+      x! ?? '';
+    `,
+    `
+      let x: string;
+      x! ?? '';
+      x = foo();
+    `,
+    `
+      let x: string;
+      foo(x);
+      x! ?? '';
+      x = foo();
+    `,
+    `
+      let x = foo();
+      x ?? '';
+    `,
   ],
   invalid: [
     {
@@ -125,6 +157,92 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
             {
               messageId: 'suggestRemovingNonNull',
               output: 'foo() ?? bar!;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let x!: string;
+x! ?? '';
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+let x!: string;
+x ?? '';
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let x: string;
+x = foo();
+x! ?? '';
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+let x: string;
+x = foo();
+x ?? '';
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let x: string;
+x = foo();
+x! ?? '';
+x = foo();
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+let x: string;
+x = foo();
+x ?? '';
+x = foo();
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let x = foo();
+x! ?? '';
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+let x = foo();
+x ?? '';
+              `.trimRight(),
             },
           ],
         },
