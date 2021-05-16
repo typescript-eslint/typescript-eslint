@@ -40,7 +40,7 @@ export default createRule({
      * Check if a given node is a string.
      * @param node The node to check.
      */
-    function isStringType(node: TSESTree.Expression): boolean {
+    function isStringType(node: TSESTree.Node): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
@@ -51,7 +51,7 @@ export default createRule({
      * Check if a given node is a RegExp.
      * @param node The node to check.
      */
-    function isRegExpType(node: TSESTree.Expression): boolean {
+    function isRegExpType(node: TSESTree.Node): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );

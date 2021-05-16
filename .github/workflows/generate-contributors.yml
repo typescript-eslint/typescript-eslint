@@ -37,13 +37,14 @@ jobs:
       - name: Generate contributors
         run: yarn generate:contributors
 
-      - name: Commit files
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "Github Actions"
-          git commit -am "chore: update contributors [bot]"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # The standard GITHUB_TOKEN cannot be used as it will not trigger status checks on
+          # the PR that gets created (this behavior is not specific to this action).
+          # https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
+          token: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
+          commit-message: "chore: update contributors"
+          title: "chore: update contributors"
+          body: ""
+          branch: auto-update-contributors
