@@ -5,7 +5,7 @@ import { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
 import type { File } from '@babel/types';
 import * as parser from '../../src/parser';
-import { LineAndColumnData } from '@typescript-eslint/types/src/ts-estree';
+import { TSESTree } from '@typescript-eslint/types';
 
 function createError(
   message: string,
@@ -98,7 +98,7 @@ export function parse(
         );
     }
   } catch (error) {
-    const loc = error.loc as LineAndColumnData | undefined;
+    const loc = error.loc as TSESTree.LineAndColumnData | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
         text,
