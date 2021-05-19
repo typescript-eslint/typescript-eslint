@@ -299,7 +299,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-jquery-raw-elements`            | 🛑  | N/A                                                |
-| `no-unsupported-browser-code`       | 🔌  | [`eslint-plugin-compat`][plugin:compat]            |
+| `no-unsupported-browser-code`       | 🛑  | N/A                                                |
 | `react-this-binding-issue`          | 🛑  | N/A                                                |
 | `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
 | `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
