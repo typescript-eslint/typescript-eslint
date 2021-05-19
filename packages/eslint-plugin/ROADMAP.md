@@ -240,7 +240,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-banned-terms`                     | 🌟  | [`no-caller`][no-caller] & [`no-eval`][no-eval]                        |
 | `no-constant-condition`               | 🌟  | [`no-constant-condition`][no-constant-condition]                       |
 | `no-control-regex`                    | 🌟  | [`no-control-regex`][no-control-regex]                                 |
-| `no-delete-expression`                | 🌓  | [`no-delete-var`][no-delete-var]                                       |
+| `no-delete-expression`                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                               |
 | `no-empty-line-after-opening-brace`   | 🌟  | [`padded-blocks`][padded-blocks] <sup>[1]</sup> or [Prettier]          |
 | `no-for-in`                           | 🌟  | [`no-restricted-syntax`][no-restricted-syntax] <sup>[2]</sup>          |
 | `no-function-expression`              | 🌟  | [`func-style`][func-style] <sup>[3]</sup>                              |
@@ -583,7 +583,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-invalid-regexp]: https://eslint.org/docs/rules/no-invalid-regexp
 [no-regex-spaces]: https://eslint.org/docs/rules/no-regex-spaces
 [no-new-func]: https://eslint.org/docs/rules/no-new-func
-[no-delete-var]: https://eslint.org/docs/rules/no-delete-var
 [padded-blocks]: https://eslint.org/docs/rules/padded-blocks
 [func-style]: https://eslint.org/docs/rules/func-style
 [no-multi-str]: https://eslint.org/docs/rules/no-multi-str
