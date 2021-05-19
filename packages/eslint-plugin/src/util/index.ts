@@ -12,6 +12,7 @@ export * from './nullThrows';
 export * from './objectIterators';
 export * from './propertyTypes';
 export * from './requiresQuoting';
+export * from '@typescript-eslint/experimental-utils/dist/eslint-utils/types';
 
 // this is done for convenience - saves migrating all of the old rules
 const { applyDefault, deepMerge, isObjectNotArray, getParserServices } =
