@@ -680,6 +680,73 @@ declare module 'eslint/lib/rules/init-declarations' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/padding-line-between-statements' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  type paddingType = 'any' | 'never' | 'always';
+  type statementType =
+    | '*'
+    | 'block-like'
+    | 'cjs-export'
+    | 'cjs-import'
+    | 'directive'
+    | 'expression'
+    | 'iife'
+    | 'multiline-block-like'
+    | 'multiline-expression'
+    | 'multiline-const'
+    | 'multiline-let'
+    | 'multiline-var'
+    | 'singleline-const'
+    | 'singleline-let'
+    | 'singleline-var'
+    | 'block'
+    | 'empty'
+    | 'function'
+    | 'break'
+    | 'case'
+    | 'class'
+    | 'const'
+    | 'continue'
+    | 'debugger'
+    | 'default'
+    | 'do'
+    | 'export'
+    | 'for'
+    | 'if'
+    | 'import'
+    | 'let'
+    | 'return'
+    | 'switch'
+    | 'throw'
+    | 'try'
+    | 'var'
+    | 'while'
+    | 'with';
+
+  interface optionType {
+    blankLine: paddingType;
+    prev: statementType;
+    next: statementType;
+  }
+
+  const rule: TSESLint.RuleModule<
+    'unexpectedBlankLine' | 'expectedBlankLine',
+    optionType[],
+    {
+      Program(node: TSESTree.Program): void;
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+      'BlockStatement:exit'(node: TSESTree.Node): void;
+      'SwitchStatement:exit'(node: TSESTree.FunctionDeclaration): void;
+      ':statement'(node: TSESTree.Statement): void;
+      SwitchCase(node: TSESTree.SwitchCase): void;
+      'SwitchCase:exit'(node: TSESTree.SwitchCase): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-invalid-this' {
   import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
