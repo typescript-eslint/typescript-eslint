@@ -31,13 +31,13 @@ interface ReportValueImport {
 }
 
 function isImportToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.KeywordToken & { value: 'import' } {
   return token.type === AST_TOKEN_TYPES.Keyword && token.value === 'import';
 }
 
 function isTypeToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.IdentifierToken & { value: 'type' } {
   return token.type === AST_TOKEN_TYPES.Identifier && token.value === 'type';
 }
