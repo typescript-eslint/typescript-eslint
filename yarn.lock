@@ -6363,9 +6363,9 @@ markdownlint@~0.23.1:
     markdown-it "12.0.4"
 
 marked@^2.0.0:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.3.tgz#3551c4958c4da36897bda2a16812ef1399c8d6b0"
-  integrity sha512-5otztIIcJfPc2qGTN8cVtOJEjNJZ0jwa46INMagrYfk0EvqtRuEHLsEe0LrFS0/q+ZRKT0+kXK7P2T1AN5lWRA==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.4.tgz#71d54d41f27d91ac2ed308f73c301fe9f0657a94"
+  integrity sha512-MIL0xKRDQM3DE7dJr/wa6JV0EmK9yZ3cwuTc2bu66FNm/tmEMm9cJCgJZpt9R+K1T+pB2iBNV55wvnwSd345zg==
 
 mdurl@^1.0.1:
   version "1.0.1"
