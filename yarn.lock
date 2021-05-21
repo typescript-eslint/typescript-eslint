@@ -336,9 +336,9 @@
     conventional-changelog-conventionalcommits "^4.3.1"
 
 "@commitlint/config-lerna-scopes@^12.0.1":
-  version "12.1.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-12.1.1.tgz#d7ebb34c083b181620d2ac97d8de566c37199e87"
-  integrity sha512-j5u3UHbd4nccBTz0DVraO5cJDVdMgEh7sfuW9BH9SPxlI2F0LmLUIssrUuyCNL1bk+VIH2pdAWonlIlAAfJ4Nw==
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-12.1.4.tgz#af6786d2a479eb4c90838782368bb3958547327a"
+  integrity sha512-D/VqvATs8fYi2CFpFdjLYeOHGm/KkxUSehGqwIPJfYXHHua19V5UqmUOeXTNAJaD+bTpiHvoBTK75NcmWpBQSg==
   dependencies:
     globby "^11.0.1"
     import-from "3.0.0"
