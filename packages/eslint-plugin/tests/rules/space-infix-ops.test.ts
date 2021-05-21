@@ -136,6 +136,28 @@ ruleTester.run('space-infix-ops', rule, {
         }
       `,
     },
+    {
+      code: `
+        const x: string & number;
+      `,
+    },
+    {
+      code: `
+        class Test {
+           value: string & number;
+        }
+      `,
+    },
+    {
+      code: `
+        function foo<T extends string & number>() {}
+      `,
+    },
+    {
+      code: `
+        function bar(): string & number {}
+      `,
+    },
   ],
   invalid: [
     {
@@ -486,6 +508,228 @@ ruleTester.run('space-infix-ops', rule, {
           messageId: 'missingSpace',
           column: 13,
           line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+        const x: string &number;
+      `,
+      output: `
+        const x: string & number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 25,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        const x: string& number;
+      `,
+      output: `
+        const x: string & number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        const x: string| number;
+      `,
+      output: `
+        const x: string | number;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: string |number;
+        }
+      `,
+      output: `
+        class Test {
+          value: string | number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 25,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: string& number;
+        }
+      `,
+      output: `
+        class Test {
+          value: string & number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: string| number;
+        }
+      `,
+      output: `
+        class Test {
+          value: string | number;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T extends string &number>() {}
+      `,
+      output: `
+        function foo<T extends string & number>() {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 39,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T extends string& number>() {}
+      `,
+      output: `
+        function foo<T extends string & number>() {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 38,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T extends string |number>() {}
+      `,
+      output: `
+        function foo<T extends string | number>() {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 39,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T extends string| number>() {}
+      `,
+      output: `
+        function foo<T extends string | number>() {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 38,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function bar(): string &number {}
+      `,
+      output: `
+        function bar(): string & number {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 32,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function bar(): string& number {}
+      `,
+      output: `
+        function bar(): string & number {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 31,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function bar(): string |number {}
+      `,
+      output: `
+        function bar(): string | number {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 32,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        function bar(): string| number {}
+      `,
+      output: `
+        function bar(): string | number {}
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 31,
+          line: 2,
         },
       ],
     },

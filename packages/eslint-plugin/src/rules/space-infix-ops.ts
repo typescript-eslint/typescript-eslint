@@ -1,5 +1,4 @@
 import {
-  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -8,6 +7,8 @@ import * as util from '../util';
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+
+const UNIONS = ['|', '&'];
 
 export default util.createRule<Options, MessageIds>({
   name: 'space-infix-ops',
@@ -66,6 +67,10 @@ export default util.createRule<Options, MessageIds>({
       });
     };
 
+    function isSpaceChar(token: TSESTree.Token): boolean {
+      return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=';
+    }
+
     function checkAndReportAssignmentSpace(
       node: TSESTree.Node,
       leftNode: TSESTree.Token,
@@ -78,19 +83,17 @@ export default util.createRule<Options, MessageIds>({
       const operator = sourceCode.getFirstTokenBetween(
         leftNode,
         rightNode,
-        token =>
-          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=',
+        isSpaceChar,
       );
 
       const prev = sourceCode.getTokenBefore(operator!);
       const next = sourceCode.getTokenAfter(operator!);
 
       if (
-        operator &&
-        (!sourceCode.isSpaceBetweenTokens(prev!, operator) ||
-          !sourceCode.isSpaceBetweenTokens(operator, next!))
+        !sourceCode.isSpaceBetween!(prev!, operator!) ||
+        !sourceCode.isSpaceBetween!(operator!, next!)
       ) {
-        report(node, operator);
+        report(node, operator!);
       }
     }
 
@@ -135,21 +138,20 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAnnotationSpace(
       typeAnnotation: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const UNIONS = ['|', '&'];
       const types = typeAnnotation.types;
 
       types.forEach(type => {
         const operator = sourceCode.getTokenBefore(type);
 
-        if (!!operator && UNIONS.includes(operator.value)) {
+        if (operator != null && UNIONS.includes(operator.value)) {
           const prev = sourceCode.getTokenBefore(operator);
           const next = sourceCode.getTokenAfter(operator);
 
           if (
-            !sourceCode.isSpaceBetweenTokens(prev!, operator) ||
-            !sourceCode.isSpaceBetweenTokens(operator, next!)
+            !sourceCode.isSpaceBetween!(prev!, operator) ||
+            !sourceCode.isSpaceBetween!(operator, next!)
           ) {
-            report(operator, operator);
+            report(typeAnnotation, operator);
           }
         }
       });
@@ -159,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
      * Check if it has an assignment char and report if it's faulty
      * @param node The node to report
      */
-    function checkForTypeAliasAssignmentAndTypeAnnotationSpace(
+    function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
       const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
@@ -168,44 +170,15 @@ export default util.createRule<Options, MessageIds>({
       );
 
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
-      if (
-        node.typeAnnotation.type === AST_NODE_TYPES.TSUnionType ||
-        node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType
-      ) {
-        checkForTypeAnnotationSpace(node.typeAnnotation);
-      }
-    }
-
-    /**
-     * Check if it has an assignment char and report if it's faulty
-     * @param node The node to report
-     */
-    function checkForIntercaceDeclarationSpace(
-      node: TSESTree.TSInterfaceDeclaration,
-    ): void {
-      const properties = node.body.body;
-
-      properties.forEach((prop: TSESTree.TypeElement) => {
-        if (prop.type === AST_NODE_TYPES.TSPropertySignature) {
-          const propTypeAnnotation = prop.typeAnnotation!;
-
-          const typeAnnotation = propTypeAnnotation.typeAnnotation;
-          if (
-            typeAnnotation.type === AST_NODE_TYPES.TSUnionType ||
-            typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType
-          ) {
-            checkForTypeAnnotationSpace(typeAnnotation);
-          }
-        }
-      });
     }
 
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
       ClassProperty: checkForClassPropertyAssignmentSpace,
-      TSTypeAliasDeclaration: checkForTypeAliasAssignmentAndTypeAnnotationSpace,
-      TSInterfaceDeclaration: checkForIntercaceDeclarationSpace,
+      TSTypeAliasDeclaration: checkForTypeAliasAssignment,
+      TSUnionType: checkForTypeAnnotationSpace,
+      TSIntersectionType: checkForTypeAnnotationSpace,
     };
   },
 });
