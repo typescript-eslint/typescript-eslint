@@ -206,7 +206,7 @@ function isAwaitExpression(
  */
 function isAwaitKeyword(
   node: TSESTree.Token | undefined | null,
-): node is TSESTree.KeywordToken & { value: 'await' } {
+): node is TSESTree.IdentifierToken & { value: 'await' } {
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
