@@ -126,6 +126,10 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.params = node.parameters;
           delete node.parameters;
         }
+        if (node.kind) {
+          // TODO - remove this once we support accessor signatures
+          delete node.kind;
+        }
       },
       /**
        * We want this node to be different
