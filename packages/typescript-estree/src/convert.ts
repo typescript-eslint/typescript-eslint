@@ -1094,6 +1094,7 @@ export class Converter {
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+          override: hasModifier(SyntaxKind.OverrideKeyword, node),
         });
 
         if (node.type) {
@@ -1209,6 +1210,7 @@ export class Converter {
             computed: isComputedProperty(node.name),
             static: hasModifier(SyntaxKind.StaticKeyword, node),
             kind: 'method',
+            override: hasModifier(SyntaxKind.OverrideKeyword, node),
           });
 
           if (node.decorators) {
@@ -1295,6 +1297,7 @@ export class Converter {
           computed: false,
           static: isStatic,
           kind: isStatic ? 'method' : 'constructor',
+          override: false,
         });
 
         const accessibility = getTSNodeAccessibility(node);

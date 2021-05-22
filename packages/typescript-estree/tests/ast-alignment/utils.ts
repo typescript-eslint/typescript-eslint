@@ -126,10 +126,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.params = node.parameters;
           delete node.parameters;
         }
-        if (node.kind) {
-          // TODO - remove this once we support accessor signatures
-          delete node.kind;
-        }
       },
       /**
        * We want this node to be different
@@ -169,6 +165,13 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
           delete node.abstract;
         }
+        /**
+         * TS 4.3: overrides on class members
+         * Babel doesn't ever emit a false override flag
+         */
+        if (node.override == null) {
+          node.override = false;
+        }
       },
       ClassProperty(node) {
         /**
@@ -186,6 +189,13 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
          */
         if (!node.declare) {
           node.declare = false;
+        }
+        /**
+         * TS 4.3: overrides on class members
+         * Babel doesn't ever emit a false override flag
+         */
+        if (node.override == null) {
+          node.override = false;
         }
       },
       TSExpressionWithTypeArguments(node, parent: any) {

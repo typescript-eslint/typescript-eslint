@@ -21,6 +21,7 @@ interface ClassPropertyBase extends BaseNode {
   optional?: boolean;
   definite?: boolean;
   typeAnnotation?: TSTypeAnnotation;
+  override?: boolean;
 }
 
 export interface ClassPropertyComputedNameBase extends ClassPropertyBase {
