@@ -500,7 +500,7 @@ export class Converter {
     Object.entries<any>(node)
       .filter(
         ([key]) =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators)$/.test(
+          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators|transformFlags)$/.test(
             key,
           ),
       )
