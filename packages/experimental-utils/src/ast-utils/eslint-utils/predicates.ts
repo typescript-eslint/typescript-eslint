@@ -5,59 +5,42 @@ type IsPunctuatorTokenWithValueFunction<Value extends string> = (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: Value };
 
-const isArrowToken =
-  eslintUtils.isArrowToken as IsPunctuatorTokenWithValueFunction<'=>'>;
-const isNotArrowToken = eslintUtils.isNotArrowToken as (
+type IsNotPunctuatorTokenWithValueFunction<Value extends string> = (
   token: TSESTree.Token,
 ) => token is Exclude<
   TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '=>' }
+  TSESTree.PunctuatorToken & { value: Value }
 >;
+
+const isArrowToken =
+  eslintUtils.isArrowToken as IsPunctuatorTokenWithValueFunction<'=>'>;
+const isNotArrowToken =
+  eslintUtils.isNotArrowToken as IsNotPunctuatorTokenWithValueFunction<'=>'>;
 
 const isClosingBraceToken =
   eslintUtils.isClosingBraceToken as IsPunctuatorTokenWithValueFunction<'}'>;
-const isNotClosingBraceToken = eslintUtils.isNotClosingBraceToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '}' }
->;
+const isNotClosingBraceToken =
+  eslintUtils.isNotClosingBraceToken as IsNotPunctuatorTokenWithValueFunction<'}'>;
 
 const isClosingBracketToken =
   eslintUtils.isClosingBracketToken as IsPunctuatorTokenWithValueFunction<']'>;
-const isNotClosingBracketToken = eslintUtils.isNotClosingBracketToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: ']' }
->;
+const isNotClosingBracketToken =
+  eslintUtils.isNotClosingBracketToken as IsNotPunctuatorTokenWithValueFunction<']'>;
 
 const isClosingParenToken =
   eslintUtils.isClosingParenToken as IsPunctuatorTokenWithValueFunction<')'>;
-const isNotClosingParenToken = eslintUtils.isNotClosingParenToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: ')' }
->;
+const isNotClosingParenToken =
+  eslintUtils.isNotClosingParenToken as IsNotPunctuatorTokenWithValueFunction<')'>;
 
 const isColonToken =
   eslintUtils.isColonToken as IsPunctuatorTokenWithValueFunction<':'>;
-const isNotColonToken = eslintUtils.isNotColonToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: ':' }
->;
+const isNotColonToken =
+  eslintUtils.isNotColonToken as IsNotPunctuatorTokenWithValueFunction<':'>;
 
 const isCommaToken =
   eslintUtils.isCommaToken as IsPunctuatorTokenWithValueFunction<','>;
-const isNotCommaToken = eslintUtils.isNotCommaToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: ',' }
->;
+const isNotCommaToken =
+  eslintUtils.isNotCommaToken as IsNotPunctuatorTokenWithValueFunction<','>;
 
 const isCommentToken = eslintUtils.isCommentToken as (
   token: TSESTree.Token,
@@ -68,39 +51,23 @@ const isNotCommentToken = eslintUtils.isNotCommentToken as (
 
 const isOpeningBraceToken =
   eslintUtils.isOpeningBraceToken as IsPunctuatorTokenWithValueFunction<'{'>;
-const isNotOpeningBraceToken = eslintUtils.isNotOpeningBraceToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '{' }
->;
+const isNotOpeningBraceToken =
+  eslintUtils.isNotOpeningBraceToken as IsNotPunctuatorTokenWithValueFunction<'{'>;
 
 const isOpeningBracketToken =
   eslintUtils.isOpeningBracketToken as IsPunctuatorTokenWithValueFunction<'['>;
-const isNotOpeningBracketToken = eslintUtils.isNotOpeningBracketToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '[' }
->;
+const isNotOpeningBracketToken =
+  eslintUtils.isNotOpeningBracketToken as IsNotPunctuatorTokenWithValueFunction<'['>;
 
 const isOpeningParenToken =
   eslintUtils.isOpeningParenToken as IsPunctuatorTokenWithValueFunction<'('>;
-const isNotOpeningParenToken = eslintUtils.isNotOpeningParenToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '(' }
->;
+const isNotOpeningParenToken =
+  eslintUtils.isNotOpeningParenToken as IsNotPunctuatorTokenWithValueFunction<'('>;
 
 const isSemicolonToken =
   eslintUtils.isSemicolonToken as IsPunctuatorTokenWithValueFunction<';'>;
-const isNotSemicolonToken = eslintUtils.isNotSemicolonToken as (
-  token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: ';' }
->;
+const isNotSemicolonToken =
+  eslintUtils.isNotSemicolonToken as IsNotPunctuatorTokenWithValueFunction<';'>;
 
 export {
   isArrowToken,
