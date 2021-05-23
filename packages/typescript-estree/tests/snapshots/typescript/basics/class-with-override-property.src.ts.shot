@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typescript basics class-with-definite-assignment.src 1`] = `
+exports[`typescript basics class-with-override-property.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9,28 +9,27 @@ Object {
           Object {
             "computed": false,
             "declare": false,
-            "definite": true,
             "key": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 3,
+                  "column": 14,
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 2,
+                  "column": 11,
                   "line": 2,
                 },
               },
-              "name": "a",
+              "name": "foo",
               "range": Array [
-                12,
-                13,
+                62,
+                65,
               ],
               "type": "Identifier",
             },
             "loc": Object {
               "end": Object {
-                "column": 13,
+                "column": 19,
                 "line": 2,
               },
               "start": Object {
@@ -38,49 +37,33 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
+            "override": true,
             "range": Array [
-              12,
-              23,
+              53,
+              70,
             ],
             "readonly": undefined,
             "static": false,
             "type": "ClassProperty",
-            "typeAnnotation": Object {
+            "value": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 12,
+                  "column": 18,
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 4,
+                  "column": 17,
                   "line": 2,
                 },
               },
               "range": Array [
-                14,
-                22,
+                68,
+                69,
               ],
-              "type": "TSTypeAnnotation",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 12,
-                    "line": 2,
-                  },
-                  "start": Object {
-                    "column": 6,
-                    "line": 2,
-                  },
-                },
-                "range": Array [
-                  16,
-                  22,
-                ],
-                "type": "TSStringKeyword",
-              },
+              "raw": "1",
+              "type": "Literal",
+              "value": 1,
             },
-            "value": null,
           },
         ],
         "loc": Object {
@@ -89,20 +72,20 @@ Object {
             "line": 3,
           },
           "start": Object {
-            "column": 8,
+            "column": 49,
             "line": 1,
           },
         },
         "range": Array [
-          8,
-          25,
+          49,
+          72,
         ],
         "type": "ClassBody",
       },
       "id": Object {
         "loc": Object {
           "end": Object {
-            "column": 7,
+            "column": 26,
             "line": 1,
           },
           "start": Object {
@@ -110,10 +93,10 @@ Object {
             "line": 1,
           },
         },
-        "name": "X",
+        "name": "SpecializedComponent",
         "range": Array [
           6,
-          7,
+          26,
         ],
         "type": "Identifier",
       },
@@ -129,9 +112,26 @@ Object {
       },
       "range": Array [
         0,
-        25,
+        72,
       ],
-      "superClass": null,
+      "superClass": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 48,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 35,
+            "line": 1,
+          },
+        },
+        "name": "SomeComponent",
+        "range": Array [
+          35,
+          48,
+        ],
+        "type": "Identifier",
+      },
       "type": "ClassDeclaration",
     },
   ],
@@ -148,7 +148,7 @@ Object {
   },
   "range": Array [
     0,
-    26,
+    73,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -173,7 +173,7 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 7,
+          "column": 26,
           "line": 1,
         },
         "start": Object {
@@ -183,25 +183,61 @@ Object {
       },
       "range": Array [
         6,
-        7,
+        26,
       ],
       "type": "Identifier",
-      "value": "X",
+      "value": "SpecializedComponent",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 9,
+          "column": 34,
           "line": 1,
         },
         "start": Object {
-          "column": 8,
+          "column": 27,
           "line": 1,
         },
       },
       "range": Array [
-        8,
-        9,
+        27,
+        34,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 48,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 35,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        35,
+        48,
+      ],
+      "type": "Identifier",
+      "value": "SomeComponent",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 50,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 49,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        49,
+        50,
       ],
       "type": "Punctuator",
       "value": "{",
@@ -209,7 +245,7 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 3,
+          "column": 10,
           "line": 2,
         },
         "start": Object {
@@ -218,80 +254,80 @@ Object {
         },
       },
       "range": Array [
-        12,
-        13,
+        53,
+        61,
       ],
       "type": "Identifier",
-      "value": "a",
+      "value": "override",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 4,
+          "column": 14,
           "line": 2,
         },
         "start": Object {
-          "column": 3,
+          "column": 11,
           "line": 2,
         },
       },
       "range": Array [
-        13,
-        14,
-      ],
-      "type": "Punctuator",
-      "value": "!",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 5,
-          "line": 2,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 2,
-        },
-      },
-      "range": Array [
-        14,
-        15,
-      ],
-      "type": "Punctuator",
-      "value": ":",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 12,
-          "line": 2,
-        },
-        "start": Object {
-          "column": 6,
-          "line": 2,
-        },
-      },
-      "range": Array [
-        16,
-        22,
+        62,
+        65,
       ],
       "type": "Identifier",
-      "value": "string",
+      "value": "foo",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 13,
+          "column": 16,
           "line": 2,
         },
         "start": Object {
-          "column": 12,
+          "column": 15,
           "line": 2,
         },
       },
       "range": Array [
-        22,
-        23,
+        66,
+        67,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        68,
+        69,
+      ],
+      "type": "Numeric",
+      "value": "1",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        69,
+        70,
       ],
       "type": "Punctuator",
       "value": ";",
@@ -308,8 +344,8 @@ Object {
         },
       },
       "range": Array [
-        24,
-        25,
+        71,
+        72,
       ],
       "type": "Punctuator",
       "value": "}",
