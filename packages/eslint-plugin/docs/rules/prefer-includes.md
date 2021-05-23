@@ -60,6 +60,10 @@ userDefined.includes(value);
 
 // the two methods have different parameters.
 mismatchExample.indexOf(value) >= 0;
+
+// ?. optional chaining changes the logic flow
+let maybe: string;
+maybe?.indexOf('');
 ```
 
 ## Options

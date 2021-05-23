@@ -126,18 +126,13 @@ export default createRule({
     }
 
     return {
-      [[
-        // a.indexOf(b) !== 1
-        "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]",
-        // a?.indexOf(b) !== 1
-        "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]",
-      ].join(', ')](node: TSESTree.MemberExpression): void {
+      // a.indexOf(b) !== 1
+      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+        node: TSESTree.MemberExpression,
+      ): void {
         // Check if the comparison is equivalent to `includes()`.
         const callNode = node.parent as TSESTree.CallExpression;
-        const compareNode = (callNode.parent?.type ===
-        AST_NODE_TYPES.ChainExpression
-          ? callNode.parent.parent
-          : callNode.parent) as TSESTree.BinaryExpression;
+        const compareNode = callNode.parent as TSESTree.BinaryExpression;
         const negative = isNegativeCheck(compareNode);
         if (!negative && !isPositiveCheck(compareNode)) {
           return;
@@ -229,7 +224,7 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `${node.optional ? '?.' : '.'}includes(${JSON.stringify(text)}`,
+              `${node.optional ? '?.' : '.'}includes('${text}'`,
             );
           },
         });
