@@ -227,5 +227,47 @@ function f<T extends 'a' | 'b'>(s: T) {
 }
       `,
     },
+    {
+      code: `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 33,
+        },
+      ],
+    },
+    {
+      code: `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 33,
+        },
+      ],
+    },
+    {
+      code: `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 33,
+        },
+      ],
+    },
   ],
 });
