@@ -87,6 +87,10 @@ module.exports = {
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
+    'no-fallthrough': [
+      'warn',
+      { commentPattern: '.*intentional fallthrough.*' },
+    ],
 
     //
     // eslint-plugin-eslint-comment

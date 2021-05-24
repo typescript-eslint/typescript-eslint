@@ -21,6 +21,7 @@ interface MethodDefinitionBase extends BaseNode {
   decorators?: Decorator[];
   accessibility?: Accessibility;
   typeParameters?: TSTypeParameterDeclaration;
+  override?: boolean;
 }
 
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {

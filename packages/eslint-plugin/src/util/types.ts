@@ -1,3 +1,7 @@
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import debug from 'debug';
 import {
   isCallExpression,
@@ -419,6 +423,7 @@ export function isUnsafeAssignment(
   type: ts.Type,
   receiver: ts.Type,
   checker: ts.TypeChecker,
+  senderNode: TSESTree.Node | null,
 ): false | { sender: ts.Type; receiver: ts.Type } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
@@ -451,6 +456,19 @@ export function isUnsafeAssignment(
       return false;
     }
 
+    if (
+      senderNode?.type === AST_NODE_TYPES.NewExpression &&
+      senderNode.callee.type === AST_NODE_TYPES.Identifier &&
+      senderNode.callee.name === 'Map' &&
+      senderNode.arguments.length === 0 &&
+      senderNode.typeParameters == null
+    ) {
+      // special case to handle `new Map()`
+      // unfortunately Map's default empty constructor is typed to return `Map<any, any>` :(
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2109#issuecomment-634144396
+      return false;
+    }
+
     const typeArguments = type.typeArguments ?? [];
     const receiverTypeArguments = receiver.typeArguments ?? [];
 
@@ -458,7 +476,7 @@ export function isUnsafeAssignment(
       const arg = typeArguments[i];
       const receiverArg = receiverTypeArguments[i];
 
-      const unsafe = isUnsafeAssignment(arg, receiverArg, checker);
+      const unsafe = isUnsafeAssignment(arg, receiverArg, checker, senderNode);
       if (unsafe) {
         return { sender: type, receiver };
       }
