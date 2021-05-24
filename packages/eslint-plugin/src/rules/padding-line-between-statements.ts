@@ -20,7 +20,7 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
+    messages: {
       unexpectedBlankLine: 'Unexpected blank line before this statement.',
       expectedBlankLine: 'Expected blank line before this statement',
     },
