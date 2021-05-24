@@ -92,6 +92,12 @@ function foo(): Set<number> {
         return x as Set<any>;
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    `
+      function test(): Map<string, string> {
+        return new Map();
+      }
+    `,
   ],
   invalid: [
     ...batchedSingleLineTests({
