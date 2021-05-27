@@ -55,9 +55,7 @@ const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
 export const defaultOrder = [
   // Index signature
   'signature',
-
-  // Callbacks
-  'callback',
+  'call-signature',
 
   // Fields
   'public-static-field',
@@ -129,7 +127,7 @@ const allMemberTypes = [
   'signature',
   'field',
   'method',
-  'callback',
+  'call-signature',
   'constructor',
 ].reduce<string[]>((all, type) => {
   all.push(type);
@@ -184,7 +182,7 @@ function getNodeType(node: Member): string | null {
     case AST_NODE_TYPES.TSMethodSignature:
       return 'method';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
-      return 'callback';
+      return 'call-signature';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractClassProperty:

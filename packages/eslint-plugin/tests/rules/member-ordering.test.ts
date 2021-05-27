@@ -83,7 +83,7 @@ interface X {
   b(): void;
 }
             `,
-      options: [{ default: ['callback', 'field', 'method'] }],
+      options: [{ default: ['call-signature', 'field', 'method'] }],
     },
     {
       code: `
@@ -1463,7 +1463,7 @@ interface X {
   b(): void;
 }
             `,
-      options: [{ default: ['callback', 'field', 'method'] }],
+      options: [{ default: ['call-signature', 'field', 'method'] }],
       errors: [
         {
           messageId: 'incorrectGroupOrder',
