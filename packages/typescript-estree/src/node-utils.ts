@@ -558,7 +558,7 @@ export function getTokenType(
     case SyntaxKind.GetKeyword:
     case SyntaxKind.SetKeyword:
 
-    // falls through
+    // intentional fallthrough
     default:
   }
 

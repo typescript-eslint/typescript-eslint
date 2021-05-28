@@ -5,17 +5,17 @@
 import { ImplicitLibVariableOptions } from '../variable';
 
 export const dom = {
-  Account: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Account',
-  },
   AddEventListenerOptions: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AddEventListenerOptions',
+  },
+  AddressErrors: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'AddressErrors',
   },
   AesCbcParams: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -76,12 +76,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'AnimationPlaybackEventInit',
-  },
-  AssertionOptions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AssertionOptions',
   },
   AssignedNodesOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -202,12 +196,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'ChannelSplitterOptions',
-  },
-  ClientData: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ClientData',
   },
   ClientQueryOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -352,12 +340,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'DelayOptions',
-  },
-  DeviceLightEventInit: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'DeviceLightEventInit',
   },
   DeviceMotionEventAccelerationInit: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -875,6 +857,12 @@ export const dom = {
     isValueVariable: false,
     name: 'PannerOptions',
   },
+  PayerErrors: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'PayerErrors',
+  },
   PaymentCurrencyAmount: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -911,6 +899,12 @@ export const dom = {
     isValueVariable: false,
     name: 'PaymentItem',
   },
+  PaymentMethodChangeEventInit: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'PaymentMethodChangeEventInit',
+  },
   PaymentMethodData: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -934,6 +928,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'PaymentShippingOption',
+  },
+  PaymentValidationErrors: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'PaymentValidationErrors',
   },
   Pbkdf2Params: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1205,17 +1205,17 @@ export const dom = {
     isValueVariable: false,
     name: 'RTCInboundRTPStreamStats',
   },
+  RTCLocalSessionDescriptionInit: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'RTCLocalSessionDescriptionInit',
+  },
   RTCMediaStreamTrackStats: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RTCMediaStreamTrackStats',
-  },
-  RTCOAuthCredential: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCOAuthCredential',
   },
   RTCOfferAnswerOptions: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1294,12 +1294,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RTCRtpContributingSource',
-  },
-  RTCRtpDecodingParameters: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCRtpDecodingParameters',
   },
   RTCRtpEncodingParameters: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1402,12 +1396,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RTCStats',
-  },
-  RTCStatsEventInit: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCStatsEventInit',
   },
   RTCStatsReport: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1523,24 +1511,6 @@ export const dom = {
     isValueVariable: false,
     name: 'SVGBoundingBoxOptions',
   },
-  ScopedCredentialDescriptor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ScopedCredentialDescriptor',
-  },
-  ScopedCredentialOptions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ScopedCredentialOptions',
-  },
-  ScopedCredentialParameters: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ScopedCredentialParameters',
-  },
   ScrollIntoViewOptions: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1564,12 +1534,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'SecurityPolicyViolationEventInit',
-  },
-  ServiceWorkerMessageEventInit: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ServiceWorkerMessageEventInit',
   },
   ShadowRootInit: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -1744,12 +1708,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'WaveShaperOptions',
-  },
-  WebAuthnExtensions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebAuthnExtensions',
   },
   WebGLContextAttributes: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -2465,12 +2423,6 @@ export const dom = {
     isValueVariable: true,
     name: 'DOMImplementation',
   },
-  DOML2DeprecatedColorProperty: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'DOML2DeprecatedColorProperty',
-  },
   DOMMatrix: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -2614,12 +2566,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'DeviceAcceleration',
-  },
-  DeviceLightEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'DeviceLightEvent',
   },
   DeviceMotionEvent: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -3004,12 +2950,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'HTMLBaseElement',
-  },
-  HTMLBaseFontElement: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'HTMLBaseFontElement',
   },
   HTMLBodyElementEventMap: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -3737,12 +3677,6 @@ export const dom = {
     isValueVariable: true,
     name: 'MSGesture',
   },
-  MSGestureEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'MSGestureEvent',
-  },
   MSGraphicsTrust: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -3767,18 +3701,6 @@ export const dom = {
     isValueVariable: true,
     name: 'MSMediaKeyError',
   },
-  MSMediaKeyMessageEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'MSMediaKeyMessageEvent',
-  },
-  MSMediaKeyNeededEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'MSMediaKeyNeededEvent',
-  },
   MSMediaKeySession: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -3796,12 +3718,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'MSNavigatorDoNotTrack',
-  },
-  MSPointerEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'MSPointerEvent',
   },
   MSStream: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -4295,6 +4211,12 @@ export const dom = {
     isValueVariable: true,
     name: 'PaymentAddress',
   },
+  PaymentMethodChangeEvent: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: true,
+    name: 'PaymentMethodChangeEvent',
+  },
   PaymentRequestEventMap: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -4312,6 +4234,12 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'PaymentRequestUpdateEvent',
+  },
+  PaymentResponseEventMap: {
+    eslintImplicitGlobalSetting: 'readonly',
+    isTypeVariable: true,
+    isValueVariable: false,
+    name: 'PaymentResponseEventMap',
   },
   PaymentResponse: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -4708,12 +4636,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'RTCSsrcConflictEvent',
-  },
-  RTCStatsEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'RTCStatsEvent',
   },
   RTCStatsProvider: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -5540,7 +5462,7 @@ export const dom = {
   SVGZoomAndPan: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
-    isValueVariable: true,
+    isValueVariable: false,
     name: 'SVGZoomAndPan',
   },
   SVGZoomEvent: {
@@ -5548,18 +5470,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'SVGZoomEvent',
-  },
-  ScopedCredential: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ScopedCredential',
-  },
-  ScopedCredentialInfo: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ScopedCredentialInfo',
   },
   Screen: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -5632,12 +5542,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'ServiceWorkerContainer',
-  },
-  ServiceWorkerMessageEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'ServiceWorkerMessageEvent',
   },
   ServiceWorkerRegistrationEventMap: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -6161,18 +6065,6 @@ export const dom = {
     isValueVariable: true,
     name: 'WaveShaperNode',
   },
-  WebAuthentication: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WebAuthentication',
-  },
-  WebAuthnAssertion: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WebAuthnAssertion',
-  },
   WebGL2RenderingContext: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -6214,12 +6106,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'WebGLFramebuffer',
-  },
-  WebGLObject: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WebGLObject',
   },
   WebGLProgram: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7601,12 +7487,6 @@ export const dom = {
     isValueVariable: false,
     name: 'RTCDataChannelState',
   },
-  RTCDegradationPreference: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCDegradationPreference',
-  },
   RTCDtlsRole: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -7618,12 +7498,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RTCDtlsTransportState',
-  },
-  RTCDtxStatus: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCDtxStatus',
   },
   RTCErrorDetailType: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7708,12 +7582,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'RTCPeerConnectionState',
-  },
-  RTCPriorityType: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'RTCPriorityType',
   },
   RTCRtcpMuxPolicy: {
     eslintImplicitGlobalSetting: 'readonly',
@@ -7829,12 +7697,6 @@ export const dom = {
     isValueVariable: false,
     name: 'ResponseType',
   },
-  ScopedCredentialType: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ScopedCredentialType',
-  },
   ScrollBehavior: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -7912,12 +7774,6 @@ export const dom = {
     isTypeVariable: true,
     isValueVariable: false,
     name: 'TouchType',
-  },
-  Transport: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Transport',
   },
   UserVerificationRequirement: {
     eslintImplicitGlobalSetting: 'readonly',
