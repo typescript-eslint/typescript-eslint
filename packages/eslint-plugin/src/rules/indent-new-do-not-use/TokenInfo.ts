@@ -9,7 +9,7 @@ import { TokenOrComment } from './BinarySearchTree';
  */
 export class TokenInfo {
   private readonly sourceCode: TSESLint.SourceCode;
-  public firstTokensByLineNumber: Map<number, TSESTree.Token>;
+  public readonly firstTokensByLineNumber: Map<number, TSESTree.Token>;
 
   constructor(sourceCode: TSESLint.SourceCode) {
     this.sourceCode = sourceCode;
@@ -28,7 +28,7 @@ export class TokenInfo {
         }
         return map;
       },
-      new Map(),
+      new Map<number, TSESTree.Token>(),
     );
   }
 

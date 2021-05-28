@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type babelParser from '@babel/parser';
 import { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
+import type { File } from '@babel/types';
 import * as parser from '../../src/parser';
+import { TSESTree } from '@typescript-eslint/types';
 
 function createError(
   message: string,
@@ -19,8 +21,8 @@ function createError(
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx = true): any {
-  const babel: typeof babelParser = require('@babel/parser');
+function parseWithBabelParser(text: string, jsx = true): File {
+  const babel = require('@babel/parser') as typeof babelParser;
   const plugins: ParserPlugin[] = [
     'classProperties',
     'decorators-legacy',
@@ -96,7 +98,7 @@ export function parse(
         );
     }
   } catch (error) {
-    const loc = error.loc;
+    const loc = error.loc as TSESTree.LineAndColumnData | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
         text,
@@ -112,6 +114,7 @@ export function parse(
       );
       error.message += `\n${error.codeFrame}`;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result.parseError = error;
   }
 

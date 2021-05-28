@@ -1664,12 +1664,10 @@ export default createRule<Options, MessageIds>({
 
             return commentMap.set(
               comment,
-              commentMap.has(tokenOrCommentBefore)
-                ? commentMap.get(tokenOrCommentBefore)
-                : tokenOrCommentBefore,
+              commentMap.get(tokenOrCommentBefore) ?? tokenOrCommentBefore,
             );
           },
-          new WeakMap(),
+          new WeakMap<TokenOrComment, TSESTree.Token>(),
         );
 
         sourceCode.lines.forEach((_, lineIndex) => {
@@ -1700,7 +1698,7 @@ export default createRule<Options, MessageIds>({
           }
 
           if (isCommentToken(firstTokenOfLine)) {
-            const tokenBefore = precedingTokens.get(firstTokenOfLine);
+            const tokenBefore = precedingTokens.get(firstTokenOfLine)!;
             const tokenAfter = tokenBefore
               ? sourceCode.getTokenAfter(tokenBefore)!
               : sourceCode.ast.tokens[0];
