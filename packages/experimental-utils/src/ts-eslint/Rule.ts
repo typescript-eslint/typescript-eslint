@@ -148,7 +148,7 @@ interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
    */
-  readonly node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
+  readonly node: TSESTree.Node | TSESTree.Token;
   /**
    * An override of the location of the report
    */
