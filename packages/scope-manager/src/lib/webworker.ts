@@ -371,12 +371,6 @@ export const webworker = {
     isValueVariable: false,
     name: 'PushPermissionDescriptor',
   },
-  PushSubscriptionChangeEventInit: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'PushSubscriptionChangeEventInit',
-  },
   PushSubscriptionJSON: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1373,12 +1367,6 @@ export const webworker = {
     isValueVariable: true,
     name: 'PushSubscription',
   },
-  PushSubscriptionChangeEvent: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'PushSubscriptionChangeEvent',
-  },
   PushSubscriptionOptions: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
@@ -1672,12 +1660,6 @@ export const webworker = {
     isTypeVariable: true,
     isValueVariable: true,
     name: 'WebGLFramebuffer',
-  },
-  WebGLObject: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WebGLObject',
   },
   WebGLProgram: {
     eslintImplicitGlobalSetting: 'readonly',

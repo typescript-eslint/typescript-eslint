@@ -293,12 +293,6 @@ export const dom_iterable = {
     isValueVariable: false,
     name: 'WEBGL_draw_buffers',
   },
-  WebAuthentication: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebAuthentication',
-  },
   WebGL2RenderingContextBase: {
     eslintImplicitGlobalSetting: 'readonly',
     isTypeVariable: true,
