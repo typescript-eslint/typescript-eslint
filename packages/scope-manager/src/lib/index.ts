@@ -11,6 +11,7 @@ import { es2017 } from './es2017';
 import { es2018 } from './es2018';
 import { es2019 } from './es2019';
 import { es2020 } from './es2020';
+import { es2021 } from './es2021';
 import { esnext } from './esnext';
 import { dom } from './dom';
 import { dom_iterable } from './dom.iterable';
@@ -48,6 +49,9 @@ import { es2020_sharedmemory } from './es2020.sharedmemory';
 import { es2020_string } from './es2020.string';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
 import { es2020_intl } from './es2020.intl';
+import { es2021_promise } from './es2021.promise';
+import { es2021_string } from './es2021.string';
+import { es2021_weakref } from './es2021.weakref';
 import { esnext_array } from './esnext.array';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -61,6 +65,7 @@ import { es2017_full } from './es2017.full';
 import { es2018_full } from './es2018.full';
 import { es2019_full } from './es2019.full';
 import { es2020_full } from './es2020.full';
+import { es2021_full } from './es2021.full';
 import { esnext_full } from './esnext.full';
 import { lib as libBase } from './lib';
 
@@ -74,6 +79,7 @@ const lib = {
   es2018,
   es2019,
   es2020,
+  es2021,
   esnext,
   dom,
   'dom.iterable': dom_iterable,
@@ -111,6 +117,9 @@ const lib = {
   'es2020.string': es2020_string,
   'es2020.symbol.wellknown': es2020_symbol_wellknown,
   'es2020.intl': es2020_intl,
+  'es2021.promise': es2021_promise,
+  'es2021.string': es2021_string,
+  'es2021.weakref': es2021_weakref,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,
@@ -124,6 +133,7 @@ const lib = {
   'es2018.full': es2018_full,
   'es2019.full': es2019_full,
   'es2020.full': es2020_full,
+  'es2021.full': es2021_full,
   'esnext.full': esnext_full,
   lib: libBase,
 } as const;
