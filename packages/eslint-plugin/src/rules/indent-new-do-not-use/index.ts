@@ -1666,7 +1666,7 @@ export default createRule<Options, MessageIds>({
               commentMap.get(tokenBefore) ?? tokenBefore,
             );
           },
-          new WeakMap<TokenOrComment, TSESTree.Token>(),
+          new WeakMap<TSESTree.Token, TSESTree.Token>(),
         );
 
         sourceCode.lines.forEach((_, lineIndex) => {
