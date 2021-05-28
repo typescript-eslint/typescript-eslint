@@ -9,7 +9,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
-import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
 import {
@@ -474,7 +473,7 @@ export default createRule<Options, MessageIds>({
      * @param token Token violating the indent rule
      * @param neededIndent Expected indentation string
      */
-    function report(token: TokenOrComment, neededIndent: string): void {
+    function report(token: TSESTree.Token, neededIndent: string): void {
       const actualIndent = Array.from(tokenInfo.getTokenIndent(token));
       const numSpaces = actualIndent.filter(char => char === ' ').length;
       const numTabs = actualIndent.filter(char => char === '\t').length;
@@ -503,7 +502,7 @@ export default createRule<Options, MessageIds>({
      * @returns `true` if the token's indentation is correct
      */
     function validateTokenIndent(
-      token: TokenOrComment,
+      token: TSESTree.Token,
       desiredIndent: string,
     ): boolean {
       const indentation = tokenInfo.getTokenIndent(token);
@@ -1653,21 +1652,21 @@ export default createRule<Options, MessageIds>({
         addParensIndent(sourceCode.ast.tokens);
 
         /*
-         * Create a Map from (tokenOrComment) => (precedingToken).
+         * Create a Map from (token) => (precedingToken).
          * This is necessary because sourceCode.getTokenBefore does not handle a comment as an argument correctly.
          */
         const precedingTokens = sourceCode.ast.comments.reduce(
           (commentMap, comment) => {
-            const tokenOrCommentBefore = sourceCode.getTokenBefore(comment, {
+            const tokenBefore = sourceCode.getTokenBefore(comment, {
               includeComments: true,
             })!;
 
             return commentMap.set(
               comment,
-              commentMap.get(tokenOrCommentBefore) ?? tokenOrCommentBefore,
+              commentMap.get(tokenBefore) ?? tokenBefore,
             );
           },
-          new WeakMap<TokenOrComment, TSESTree.Token>(),
+          new WeakMap<TSESTree.Token, TSESTree.Token>(),
         );
 
         sourceCode.lines.forEach((_, lineIndex) => {
