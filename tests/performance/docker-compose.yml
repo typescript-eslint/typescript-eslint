@@ -3,7 +3,7 @@ version: '3'
 services:
   lint-real-repo:
     build: ./fixtures/lint-real-repo
-    container_name: "lint-real-repo"
+    container_name: 'lint-real-repo'
     volumes:
       # Runtime link to the relevant built @typescript-eslint packages and test utils,
       # but apply an empty volume for the package tests, we don't need those.
