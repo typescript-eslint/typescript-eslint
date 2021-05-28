@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.24.0...v4.25.0) (2021-05-24)
+
+
+### Bug Fixes
+
+* corrected no-unsupported-browser-code in roadmap as unimplemented ([#3407](https://github.com/typescript-eslint/typescript-eslint/issues/3407)) ([2319b0e](https://github.com/typescript-eslint/typescript-eslint/commit/2319b0e1847991b8b8902ff4a3b779f1a27c7a45))
+
+
+
+
+
 # [4.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.23.0...v4.24.0) (2021-05-17)
 
 

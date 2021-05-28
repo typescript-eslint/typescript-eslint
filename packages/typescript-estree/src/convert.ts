@@ -1,5 +1,5 @@
 // There's lots of funny stuff due to the typing of ts.Node
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 import * as ts from 'typescript';
 import {
   canContainDirective,
@@ -500,7 +500,7 @@ export class Converter {
     Object.entries<any>(node)
       .filter(
         ([key]) =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators)$/.test(
+          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators|transformFlags)$/.test(
             key,
           ),
       )
@@ -590,6 +590,65 @@ export class Converter {
     }
 
     this.registerTSNodeInNodeMap(node, result);
+    return result;
+  }
+
+  private convertMethodSignature(
+    node:
+      | ts.MethodSignature
+      | ts.GetAccessorDeclaration
+      | ts.SetAccessorDeclaration,
+  ): TSESTree.TSMethodSignature {
+    const result = this.createNode<TSESTree.TSMethodSignature>(node, {
+      type: AST_NODE_TYPES.TSMethodSignature,
+      computed: isComputedProperty(node.name),
+      key: this.convertChild(node.name),
+      params: this.convertParameters(node.parameters),
+      kind: ((): 'get' | 'set' | 'method' => {
+        switch (node.kind) {
+          case SyntaxKind.GetAccessor:
+            return 'get';
+
+          case SyntaxKind.SetAccessor:
+            return 'set';
+
+          case SyntaxKind.MethodSignature:
+            return 'method';
+        }
+      })(),
+    });
+
+    if (isOptional(node)) {
+      result.optional = true;
+    }
+
+    if (node.type) {
+      result.returnType = this.convertTypeAnnotation(node.type, node);
+    }
+
+    if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
+      result.readonly = true;
+    }
+
+    if (node.typeParameters) {
+      result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
+        node.typeParameters,
+      );
+    }
+
+    const accessibility = getTSNodeAccessibility(node);
+    if (accessibility) {
+      result.accessibility = accessibility;
+    }
+
+    if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+      result.export = true;
+    }
+
+    if (hasModifier(SyntaxKind.StaticKeyword, node)) {
+      result.static = true;
+    }
+
     return result;
   }
 
@@ -1035,6 +1094,7 @@ export class Converter {
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+          override: hasModifier(SyntaxKind.OverrideKeyword, node),
         });
 
         if (node.type) {
@@ -1069,7 +1129,15 @@ export class Converter {
       }
 
       case SyntaxKind.GetAccessor:
-      case SyntaxKind.SetAccessor:
+      case SyntaxKind.SetAccessor: {
+        if (
+          node.parent.kind === SyntaxKind.InterfaceDeclaration ||
+          node.parent.kind === SyntaxKind.TypeLiteral
+        ) {
+          return this.convertMethodSignature(node);
+        }
+      }
+      // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
         const method = this.createNode<
           TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
@@ -1142,6 +1210,7 @@ export class Converter {
             computed: isComputedProperty(node.name),
             static: hasModifier(SyntaxKind.StaticKeyword, node),
             kind: 'method',
+            override: hasModifier(SyntaxKind.OverrideKeyword, node),
           });
 
           if (node.decorators) {
@@ -1228,6 +1297,7 @@ export class Converter {
           computed: false,
           static: isStatic,
           kind: isStatic ? 'method' : 'constructor',
+          override: false,
         });
 
         const accessibility = getTSNodeAccessibility(node);
@@ -2340,44 +2410,7 @@ export class Converter {
       }
 
       case SyntaxKind.MethodSignature: {
-        const result = this.createNode<TSESTree.TSMethodSignature>(node, {
-          type: AST_NODE_TYPES.TSMethodSignature,
-          computed: isComputedProperty(node.name),
-          key: this.convertChild(node.name),
-          params: this.convertParameters(node.parameters),
-        });
-
-        if (isOptional(node)) {
-          result.optional = true;
-        }
-
-        if (node.type) {
-          result.returnType = this.convertTypeAnnotation(node.type, node);
-        }
-
-        if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
-          result.readonly = true;
-        }
-
-        if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
-        }
-
-        const accessibility = getTSNodeAccessibility(node);
-        if (accessibility) {
-          result.accessibility = accessibility;
-        }
-
-        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          result.export = true;
-        }
-
-        if (hasModifier(SyntaxKind.StaticKeyword, node)) {
-          result.static = true;
-        }
-        return result;
+        return this.convertMethodSignature(node);
       }
 
       case SyntaxKind.PropertySignature: {

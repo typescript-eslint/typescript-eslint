@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.24.0...v4.25.0) (2021-05-24)
+
+
+### Bug Fixes
+
+* corrected no-unsupported-browser-code in roadmap as unimplemented ([#3407](https://github.com/typescript-eslint/typescript-eslint/issues/3407)) ([2319b0e](https://github.com/typescript-eslint/typescript-eslint/commit/2319b0e1847991b8b8902ff4a3b779f1a27c7a45))
+* **experimental-utils:** fix `isAwaitKeyword` predicate in ast-utils ([#3290](https://github.com/typescript-eslint/typescript-eslint/issues/3290)) ([c15da67](https://github.com/typescript-eslint/typescript-eslint/commit/c15da67b939b615ed063291cde12c55c0d6d236e))
+
+
+### Features
+
+* **typescript-estree:** [TS4.3] support overrides on class members ([#3429](https://github.com/typescript-eslint/typescript-eslint/issues/3429)) ([21d1b62](https://github.com/typescript-eslint/typescript-eslint/commit/21d1b62a0b84b502d2cf12674b3d141994a3ffd4))
+* **typescript-estree:** add support for getter/setter signatures on types ([#3427](https://github.com/typescript-eslint/typescript-eslint/issues/3427)) ([b830b7f](https://github.com/typescript-eslint/typescript-eslint/commit/b830b7f4e8a99affc8af8b53cb83371ef81d7032)), closes [#3272](https://github.com/typescript-eslint/typescript-eslint/issues/3272) [#3272](https://github.com/typescript-eslint/typescript-eslint/issues/3272)
+
+
+
+
+
 # [4.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.23.0...v4.24.0) (2021-05-17)
 
 

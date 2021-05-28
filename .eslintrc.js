@@ -64,7 +64,6 @@ module.exports = {
     ],
 
     // TODO - enable these new recommended rules
-    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
@@ -87,6 +86,10 @@ module.exports = {
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
+    'no-fallthrough': [
+      'warn',
+      { commentPattern: '.*intentional fallthrough.*' },
+    ],
 
     //
     // eslint-plugin-eslint-comment
@@ -168,6 +171,7 @@ module.exports = {
         'jest/globals': true,
       },
       rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',

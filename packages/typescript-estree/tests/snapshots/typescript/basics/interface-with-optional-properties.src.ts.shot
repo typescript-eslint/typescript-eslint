@@ -143,6 +143,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 34,
