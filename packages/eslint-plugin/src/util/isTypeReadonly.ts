@@ -21,6 +21,7 @@ function isTypeReadonlyArrayOrTuple(
   checker: ts.TypeChecker,
   type: ts.Type,
   seenTypes: Set<ts.Type>,
+  checkArguments = true,
 ): Readonlyness {
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
     const typeArguments = checker.getTypeArguments(arrayType);
@@ -54,7 +55,7 @@ function isTypeReadonlyArrayOrTuple(
       return Readonlyness.Mutable;
     }
 
-    return checkTypeArguments(type);
+    return checkArguments ? checkTypeArguments(type) : Readonlyness.Readonly;
   }
 
   if (checker.isTupleType(type)) {
@@ -62,7 +63,7 @@ function isTypeReadonlyArrayOrTuple(
       return Readonlyness.Mutable;
     }
 
-    return checkTypeArguments(type);
+    return checkArguments ? checkTypeArguments(type) : Readonlyness.Readonly;
   }
 
   return Readonlyness.UnknownType;
@@ -177,6 +178,30 @@ function isTypeReadonlyRecurser(
   }
 
   throw new Error('Unhandled type');
+}
+
+export function isTypeReadonlyArrayOrTupleFlat(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  seenTypes: Set<ts.Type> = new Set(),
+): boolean {
+  if (isUnionType(type)) {
+    // all types in the union must be readonly
+    const result = unionTypeParts(type).every(t =>
+      isTypeReadonlyArrayOrTupleFlat(checker, t, seenTypes),
+    );
+    return result;
+  }
+  const isReadonlyArray = isTypeReadonlyArrayOrTuple(
+    checker,
+    type,
+    seenTypes,
+    false,
+  );
+  if (isReadonlyArray !== Readonlyness.UnknownType) {
+    return isReadonlyArray === Readonlyness.Readonly;
+  }
+  return true;
 }
 
 /**

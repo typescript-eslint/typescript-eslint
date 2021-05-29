@@ -3,11 +3,13 @@ import {
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
+import { isTypeReadonlyArrayOrTupleFlat } from '../util';
 
 type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
+    arraysAndTuplesOnly?: boolean;
   },
 ];
 type MessageIds = 'shouldBeReadonly';
@@ -34,6 +36,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
+          arraysAndTuplesOnly: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -45,10 +50,13 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
+      arraysAndTuplesOnly: false,
     },
   ],
   create(context, options) {
-    const [{ checkParameterProperties, ignoreInferredTypes }] = options;
+    const [
+      { checkParameterProperties, ignoreInferredTypes, arraysAndTuplesOnly },
+    ] = options;
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 
@@ -94,6 +102,33 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
+
+          if (arraysAndTuplesOnly) {
+            let toCheck =
+              actualParam.type === AST_NODE_TYPES.RestElement &&
+              (checker.isArrayType(type) || checker.isTupleType(type))
+                ? // if this is a REST parameter, check all elements
+                  // for a REST parameter, we don't care about the parameter itself though
+                  checker.getTypeArguments(type)
+                : // otherwise check just the parameter
+                  [type];
+
+            for (const checkType of toCheck) {
+              if (
+                (checker.isArrayType(checkType) ||
+                  checker.isTupleType(checkType)) &&
+                !isTypeReadonlyArrayOrTupleFlat(checker, checkType)
+              ) {
+                context.report({
+                  node: actualParam,
+                  messageId: 'shouldBeReadonly',
+                });
+              }
+            }
+
+            continue;
+          }
+
           const isReadOnly = util.isTypeReadonly(checker, type);
 
           if (!isReadOnly) {
