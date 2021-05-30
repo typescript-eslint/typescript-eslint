@@ -388,9 +388,8 @@ function createWatchProgram(
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
   const stat = fs.statSync(tsconfigPath);
   const lastModifiedAt = stat.mtimeMs;
-  const cachedLastModifiedAt = tsconfigLastModifiedTimestampCache.get(
-    tsconfigPath,
-  );
+  const cachedLastModifiedAt =
+    tsconfigLastModifiedTimestampCache.get(tsconfigPath);
 
   tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 

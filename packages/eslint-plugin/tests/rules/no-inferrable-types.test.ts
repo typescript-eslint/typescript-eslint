@@ -72,27 +72,25 @@ const testCases = [
 const validTestCases = flatten(
   testCases.map(c => c.code.map(code => `const a = ${code}`)),
 );
-const invalidTestCases: TSESLint.InvalidTestCase<
-  MessageIds,
-  Options
->[] = flatten(
-  testCases.map(cas =>
-    cas.code.map(code => ({
-      code: `const a: ${cas.type} = ${code}`,
-      output: `const a = ${code}`,
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: cas.type,
+const invalidTestCases: TSESLint.InvalidTestCase<MessageIds, Options>[] =
+  flatten(
+    testCases.map(cas =>
+      cas.code.map(code => ({
+        code: `const a: ${cas.type} = ${code}`,
+        output: `const a = ${code}`,
+        errors: [
+          {
+            messageId: 'noInferrableType',
+            data: {
+              type: cas.type,
+            },
+            line: 1,
+            column: 7,
           },
-          line: 1,
-          column: 7,
-        },
-      ],
-    })),
-  ),
-);
+        ],
+      })),
+    ),
+  );
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -124,18 +122,15 @@ class Foo {
     "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
 
     {
-      code:
-        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
+      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       options: [{ ignoreParameters: true }],
     },
     {
-      code:
-        "function fn(a: number = 5, b: boolean = true, c: string = 'foo') {}",
+      code: "function fn(a: number = 5, b: boolean = true, c: string = 'foo') {}",
       options: [{ ignoreParameters: true }],
     },
     {
-      code:
-        "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
+      code: "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
       options: [{ ignoreParameters: true }],
     },
     {
@@ -163,8 +158,7 @@ class Foo {
     ...invalidTestCases,
 
     {
-      code:
-        "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
+      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       output: "const fn = (a = 5, b = true, c = 'foo') => {};",
       options: [
         {

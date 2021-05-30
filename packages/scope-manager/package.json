@@ -49,7 +49,7 @@
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "*",
-    "pretty-format": "^26.4.2",
+    "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"
   },

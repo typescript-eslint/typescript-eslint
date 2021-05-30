@@ -200,9 +200,8 @@ export default util.createRule<Options, MessageIds>({
         const sourceCode = context.getSourceCode();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
-          const { esNode, nameNode } = getEsNodesFromViolatingNode(
-            violatingNode,
-          );
+          const { esNode, nameNode } =
+            getEsNodesFromViolatingNode(violatingNode);
           context.report({
             data: {
               name: sourceCode.getText(nameNode),

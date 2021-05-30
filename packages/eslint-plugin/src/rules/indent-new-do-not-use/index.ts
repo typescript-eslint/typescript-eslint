@@ -1015,9 +1015,8 @@ export default createRule<Options, MessageIds>({
               token.type === AST_TOKEN_TYPES.Punctuator && token.value === ':',
           )!;
 
-          const firstConsequentToken = sourceCode.getTokenAfter(
-            questionMarkToken,
-          )!;
+          const firstConsequentToken =
+            sourceCode.getTokenAfter(questionMarkToken)!;
           const lastConsequentToken = sourceCode.getTokenBefore(colonToken)!;
           const firstAlternateToken = sourceCode.getTokenAfter(colonToken)!;
 
@@ -1207,9 +1206,8 @@ export default createRule<Options, MessageIds>({
           node.property,
           isNotClosingParenToken,
         )!;
-        const secondNonObjectToken = sourceCode.getTokenAfter(
-          firstNonObjectToken,
-        )!;
+        const secondNonObjectToken =
+          sourceCode.getTokenAfter(firstNonObjectToken)!;
 
         const objectParenCount = sourceCode.getTokensBetween(
           object,
@@ -1677,9 +1675,8 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const firstTokenOfLine = tokenInfo.firstTokensByLineNumber.get(
-            lineNumber,
-          )!;
+          const firstTokenOfLine =
+            tokenInfo.firstTokensByLineNumber.get(lineNumber)!;
 
           if (firstTokenOfLine.loc.start.line !== lineNumber) {
             // Don't check the indentation of multi-line tokens (e.g. template literals or block comments) twice.

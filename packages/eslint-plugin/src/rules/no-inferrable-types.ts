@@ -242,12 +242,14 @@ export default util.createRule<Options, MessageIds>({
       if (ignoreParameters || !node.params) {
         return;
       }
-      (node.params.filter(
-        param =>
-          param.type === AST_NODE_TYPES.AssignmentPattern &&
-          param.left &&
-          param.right,
-      ) as TSESTree.AssignmentPattern[]).forEach(param => {
+      (
+        node.params.filter(
+          param =>
+            param.type === AST_NODE_TYPES.AssignmentPattern &&
+            param.left &&
+            param.right,
+        ) as TSESTree.AssignmentPattern[]
+      ).forEach(param => {
         reportInferrableType(param, param.left.typeAnnotation, param.right);
       });
     }

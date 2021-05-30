@@ -631,9 +631,10 @@ export class Converter {
     }
 
     if (node.typeParameters) {
-      result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-        node.typeParameters,
-      );
+      result.typeParameters =
+        this.convertTSTypeParametersToTypeParametersDeclaration(
+          node.typeParameters,
+        );
     }
 
     const accessibility = getTSNodeAccessibility(node);
@@ -927,9 +928,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
 
         // check for exports
@@ -1160,9 +1162,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          method.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          method.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
           this.fixParentLocation(method, method.typeParameters.range);
         }
 
@@ -1268,9 +1271,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          constructor.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          constructor.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
           this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
@@ -1326,9 +1330,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
         return result;
       }
@@ -1424,9 +1429,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
         return result;
       }
@@ -1628,17 +1634,19 @@ export class Converter {
           }
 
           if (superClass.types[0]?.typeArguments) {
-            result.superTypeParameters = this.convertTypeArgumentsToTypeParameters(
-              superClass.types[0].typeArguments,
-              superClass.types[0],
-            );
+            result.superTypeParameters =
+              this.convertTypeArgumentsToTypeParameters(
+                superClass.types[0].typeArguments,
+                superClass.types[0],
+              );
           }
         }
 
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
 
         if (implementsClause) {
@@ -2400,9 +2408,10 @@ export class Converter {
 
         // Process typeParameters
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
 
         // check for exports
@@ -2474,9 +2483,10 @@ export class Converter {
           result.returnType = this.convertTypeAnnotation(node.type, node);
         }
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
         return result;
       }
@@ -2503,9 +2513,10 @@ export class Converter {
         }
 
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
         return result;
       }
@@ -2543,9 +2554,10 @@ export class Converter {
         });
 
         if (node.typeParameters) {
-          result.typeParameters = this.convertTSTypeParametersToTypeParametersDeclaration(
-            node.typeParameters,
-          );
+          result.typeParameters =
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            );
         }
 
         if (interfaceHeritageClauses.length > 0) {

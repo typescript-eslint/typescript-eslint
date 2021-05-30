@@ -581,8 +581,7 @@ ruleTester.run('object-curly-spacing', rule, {
       code: "const x:{// line-comment\n[k in 'union']: number\n}",
     },
     {
-      code:
-        "const x:{/* inline-comment */[k in 'union']: number/* inline-comment */}",
+      code: "const x:{/* inline-comment */[k in 'union']: number/* inline-comment */}",
     },
     {
       code: "const x:{\n[k in 'union']: number\n}",
@@ -687,8 +686,7 @@ ruleTester.run('object-curly-spacing', rule, {
       options: ['always'],
     },
     {
-      code:
-        "const x:{ /* inline-comment */ [k in 'union']: number /* inline-comment */ }",
+      code: "const x:{ /* inline-comment */ [k in 'union']: number /* inline-comment */ }",
       options: ['always'],
     },
     {

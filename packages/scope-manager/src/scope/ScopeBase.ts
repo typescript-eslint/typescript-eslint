@@ -135,7 +135,7 @@ type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
 abstract class ScopeBase<
   TType extends ScopeType,
   TBlock extends TSESTree.Node,
-  TUpper extends Scope | null
+  TUpper extends Scope | null,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
@@ -387,7 +387,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = (this.upper as Scope) as AnyScope;
+    const upper = this.upper as Scope as AnyScope;
     if (upper?.leftToResolve) {
       upper.leftToResolve.push(ref);
     }
