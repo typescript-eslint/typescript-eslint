@@ -3,30 +3,11 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { TYPE_VALUE, TYPE } from './base-config';
 
 export const esnext_weakref = {
-  WeakRef: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WeakRef',
-  },
-  WeakRefConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WeakRefConstructor',
-  },
-  FinalizationRegistry: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'FinalizationRegistry',
-  },
-  FinalizationRegistryConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'FinalizationRegistryConstructor',
-  },
+  WeakRef: TYPE_VALUE,
+  WeakRefConstructor: TYPE,
+  FinalizationRegistry: TYPE_VALUE,
+  FinalizationRegistryConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

@@ -4,13 +4,9 @@
 
 import { ImplicitLibVariableOptions } from '../variable';
 import { es2015_iterable } from './es2015.iterable';
+import { TYPE } from './base-config';
 
 export const es2020_string = {
   ...es2015_iterable,
-  String: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'String',
-  },
+  String: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
