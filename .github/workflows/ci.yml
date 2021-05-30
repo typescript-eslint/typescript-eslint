@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-      # TODO - delete this before merging v4 into master
-      - v4
   pull_request:
     branches:
       - '**'
@@ -43,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
@@ -85,57 +83,49 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: yarn test
-        working-directory: packages/typescript-estree
+        run: npx nx test typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: yarn test
-        working-directory: packages/visitor-keys
+        run: npx nx test visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: yarn test
-        working-directory: packages/scope-manager
+        run: npx nx test scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: yarn test
-        working-directory: packages/experimental-utils
+        run: npx nx test experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: yarn test
-        working-directory: packages/parser
+        run: npx nx test parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: yarn test
-        working-directory: packages/eslint-plugin
+        run: npx nx test eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: yarn test
-        working-directory: packages/eslint-plugin-tslint
+        run: npx nx test eslint-plugin-tslint
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-internal
-        run: yarn test
-        working-directory: packages/eslint-plugin-internal
+        run: npx nx test eslint-plugin-internal
         env:
           CI: true
 
@@ -171,23 +161,23 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Check code formatting
-        run: yarn check:format
+        run: yarn check-format
 
       - name: Lint code
         run: yarn lint
 
       - name: Lint markdown
-        run: yarn lint:markdown
+        run: yarn lint-markdown
 
       - name: Check spelling
-        run: yarn check:spelling
+        run: yarn check-spelling
 
   integration_tests:
     name: Run integration tests on primary Node.js version
@@ -214,14 +204,14 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run integrations tests
-        run: yarn test:integration
+        run: yarn test-integration
         env:
           CI: true
 
@@ -253,51 +243,44 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: yarn test
-        working-directory: packages/typescript-estree
+        run: npx nx test typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: yarn test
-        working-directory: packages/visitor-keys
+        run: npx nx test visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: yarn test
-        working-directory: packages/scope-manager
+        run: npx nx test scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: yarn test
-        working-directory: packages/experimental-utils
+        run: npx nx test experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: yarn test
-        working-directory: packages/parser
+        run: npx nx test parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: yarn test
-        working-directory: packages/eslint-plugin
+        run: npx nx test eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: yarn test
-        working-directory: packages/eslint-plugin-tslint
+        run: npx nx test eslint-plugin-tslint
         env:
           CI: true
 
@@ -335,7 +318,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |

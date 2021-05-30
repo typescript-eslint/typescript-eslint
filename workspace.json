@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "projects": {
+    "ast-spec": {
+      "root": "packages/ast-spec",
+      "type": "library"
+    },
+    "eslint-plugin": {
+      "root": "packages/eslint-plugin",
+      "type": "library"
+    },
+    "eslint-plugin-internal": {
+      "root": "packages/eslint-plugin-internal",
+      "type": "library"
+    },
+    "eslint-plugin-tslint": {
+      "root": "packages/eslint-plugin-tslint",
+      "type": "library"
+    },
+    "experimental-utils": {
+      "root": "packages/experimental-utils",
+      "type": "library"
+    },
+    "parser": {
+      "root": "packages/parser",
+      "type": "library"
+    },
+    "scope-manager": {
+      "root": "packages/scope-manager",
+      "type": "library"
+    },
+    "shared-fixtures": {
+      "root": "packages/shared-fixtures",
+      "type": "library"
+    },
+    "types": {
+      "root": "packages/types",
+      "type": "library"
+    },
+    "typescript-estree": {
+      "root": "packages/typescript-estree",
+      "type": "library"
+    },
+    "visitor-keys": {
+      "root": "packages/visitor-keys",
+      "type": "library"
+    }
+  }
+}

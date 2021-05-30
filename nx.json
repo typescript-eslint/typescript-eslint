@@ -1,0 +1,65 @@
+{
+  "npmScope": "typescript-eslint",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "nx.json": "*",
+    ".github/workflows/ci.yml": "*"
+  },
+  "workspaceLayout": {
+    "libsDir": "packages"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "test", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
+        "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "projects": {
+    "ast-spec": {
+      "implicitDependencies": []
+    },
+    "eslint-plugin": {
+      "implicitDependencies": []
+    },
+    "eslint-plugin-internal": {
+      "implicitDependencies": []
+    },
+    "eslint-plugin-tslint": {
+      "implicitDependencies": []
+    },
+    "experimental-utils": {
+      "implicitDependencies": []
+    },
+    "parser": {
+      "implicitDependencies": []
+    },
+    "scope-manager": {
+      "implicitDependencies": []
+    },
+    "shared-fixtures": {
+      "implicitDependencies": []
+    },
+    "types": {
+      "implicitDependencies": []
+    },
+    "typescript-estree": {
+      "implicitDependencies": []
+    },
+    "visitor-keys": {
+      "implicitDependencies": []
+    }
+  },
+  "affected": {
+    "defaultBase": "master"
+  }
+}
