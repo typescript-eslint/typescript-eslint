@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration abstract Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [19, 21],
+        loc: {
+          start: { column: 19, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [15, 18],
+        loc: {
+          start: { column: 15, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 21],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 21, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 22],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

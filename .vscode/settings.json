@@ -31,6 +31,7 @@
             ".tsx.shot",
             ".js.shot",
             ".jsx.shot",
+            ".shot",
         ],
         "extends": "jest_snapshot"
     },

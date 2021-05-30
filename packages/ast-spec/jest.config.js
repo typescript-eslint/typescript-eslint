@@ -17,4 +17,5 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coverageReporters: ['text-summary', 'lcov'],
+  setupFilesAfterEnv: ['./tests/util/setupJest.ts'],
 };

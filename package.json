@@ -17,7 +17,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "lerna run build --ignore ast-spec",
+    "build": "lerna run build --ignore @typescript-eslint/ast-spec",
     "check:clean-workspace-after-install": "git diff --quiet --exit-code",
     "check:configs": "lerna run check:configs",
     "check:docs": "lerna run check:docs",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/code-frame": "^7.12.13",
+    "@babel/eslint-parser": "^7.14.4",
     "@babel/parser": "^7.14.4",
     "@babel/types": "^7.14.4",
     "@commitlint/cli": "^12.1.4",
@@ -105,6 +106,8 @@
     "glob": "^7.1.7",
     "husky": "^5.0.9",
     "jest": "^27.0.3",
+    "jest-diff": "^27.0.2",
+    "jest-snapshot": "^27.0.2",
     "jest-specific-snapshot": "^5.0.0",
     "lerna": "^3.22.1",
     "lint-staged": "^11.0.0",

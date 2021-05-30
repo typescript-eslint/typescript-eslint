@@ -34,6 +34,7 @@
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf .rollup.cache && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "funding": {
@@ -41,6 +42,17 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.15.2"
+    "@babel/core": "*",
+    "@babel/eslint-parser": "*",
+    "@babel/parser": "*",
+    "@microsoft/api-extractor": "^7.15.2",
+    "@types/babel__core": "*",
+    "@typescript-eslint/typescript-estree": "4.25.0",
+    "glob": "*",
+    "jest-diff": "*",
+    "jest-snapshot": "*",
+    "jest-specific-snapshot": "*",
+    "make-dir": "*",
+    "pretty-format": "*"
   }
 }

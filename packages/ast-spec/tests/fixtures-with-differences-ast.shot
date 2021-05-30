@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures List fixtures with AST differences 1`] = `
+Set {
+  "src/declaration/ClassDeclaration/fixtures/implementsMany/fixture.ts",
+  "src/declaration/ClassDeclaration/fixtures/implementsOne/fixture.ts",
+  "src/declaration/ClassDeclaration/fixtures/typeParameters/fixture.ts",
+  "src/declaration/ClassDeclaration/fixtures/typeParametersExtendsTypeParameters/fixture.ts",
+}
+`;
