@@ -64,9 +64,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.FunctionDeclaration,
     ]);
 
-    function* iterateDeclarations(
-      variable: TSESLint.Scope.Variable,
-    ): Generator<
+    function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
       {
         type: 'builtin' | 'syntax' | 'comment';
         node?: TSESTree.Identifier | TSESTree.Comment;
@@ -181,9 +179,8 @@ export default util.createRule<Options, MessageIds>({
 
     function findVariablesInScope(scope: TSESLint.Scope.Scope): void {
       for (const variable of scope.variables) {
-        const [declaration, ...extraDeclarations] = iterateDeclarations(
-          variable,
-        );
+        const [declaration, ...extraDeclarations] =
+          iterateDeclarations(variable);
 
         if (extraDeclarations.length === 0) {
           continue;

@@ -170,8 +170,9 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (isTokenOnSameLine(first, second)) {
         const firstSpaced = sourceCode.isSpaceBetween!(first, second);
-        const secondType = sourceCode.getNodeByRangeIndex(second.range[0])!
-          .type;
+        const secondType = sourceCode.getNodeByRangeIndex(
+          second.range[0],
+        )!.type;
 
         const openingCurlyBraceMustBeSpaced =
           options.arraysInObjectsException &&

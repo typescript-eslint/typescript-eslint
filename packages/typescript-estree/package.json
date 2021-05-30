@@ -43,16 +43,16 @@
   "dependencies": {
     "@typescript-eslint/types": "4.25.0",
     "@typescript-eslint/visitor-keys": "4.25.0",
-    "debug": "^4.1.1",
-    "globby": "^11.0.1",
+    "debug": "^4.3.1",
+    "globby": "^11.0.3",
     "is-glob": "^4.0.1",
-    "semver": "^7.3.2",
-    "tsutils": "^3.17.1"
+    "semver": "^7.3.5",
+    "tsutils": "^3.21.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.12.13",
-    "@babel/parser": "^7.14.4",
-    "@babel/types": "^7.14.2",
+    "@babel/code-frame": "*",
+    "@babel/parser": "*",
+    "@babel/types": "*",
     "@types/babel__code-frame": "*",
     "@types/debug": "*",
     "@types/glob": "*",

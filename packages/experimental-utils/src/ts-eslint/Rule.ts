@@ -115,9 +115,8 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
-type ReportSuggestionArray<
-  TMessageIds extends string
-> = ReportDescriptorBase<TMessageIds>[];
+type ReportSuggestionArray<TMessageIds extends string> =
+  ReportDescriptorBase<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -162,14 +161,13 @@ interface ReportDescriptorLocOnly {
    */
   loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.LineAndColumnData>;
 }
-type ReportDescriptor<
-  TMessageIds extends string
-> = ReportDescriptorWithSuggestion<TMessageIds> &
-  (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+type ReportDescriptor<TMessageIds extends string> =
+  ReportDescriptorWithSuggestion<TMessageIds> &
+    (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
 
 interface RuleContext<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 > {
   /**
    * The rule ID.
@@ -420,7 +418,7 @@ interface RuleModule<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener
+  TRuleListener extends RuleListener = RuleListener,
 > {
   /**
    * Metadata about the rule
@@ -438,7 +436,7 @@ type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener
+  TRuleListener extends RuleListener = RuleListener,
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
 
 export {

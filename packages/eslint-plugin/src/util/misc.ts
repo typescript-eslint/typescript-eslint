@@ -91,11 +91,11 @@ function getNameFromMember(
 
 type ExcludeKeys<
   TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj
+  TKeys extends keyof TObj,
 > = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
 type RequireKeys<
   TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj
+  TKeys extends keyof TObj,
 > = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
