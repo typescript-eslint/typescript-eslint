@@ -135,13 +135,6 @@ export default createRule({
           tsutils.unionTypeParts(argumentType),
         );
         switch (argumentTypes) {
-          case ArgumentType.Both:
-          case ArgumentType.Other:
-            return context.report({
-              node: memberNode.property,
-              messageId: 'regExpExecOverStringMatch',
-            });
-
           case ArgumentType.RegExp:
             return context.report({
               node: memberNode.property,

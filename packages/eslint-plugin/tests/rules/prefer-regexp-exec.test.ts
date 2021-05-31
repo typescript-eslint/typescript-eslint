@@ -33,6 +33,28 @@ function f(s: string | string[]) {
   s.match(/e/);
 }
     `,
+    "'212'.match(2);",
+    "'212'.match(+2);",
+    "'oNaNo'.match(NaN);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+    "'void and null'.match(null);",
+    `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
   ],
   invalid: [
     {
@@ -96,79 +118,6 @@ RegExp(search).exec(text);
       `,
     },
     {
-      code: "'212'.match(2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'212'.match(+2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'oNaNo'.match(NaN);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 9,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code: "'void and null'.match(null);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 17,
-        },
-      ],
-    },
-    {
       code: `
 function f(s: 'a' | 'b') {
   s.match('a');
@@ -226,48 +175,6 @@ function f<T extends 'a' | 'b'>(s: T) {
   /thing/.exec(s);
 }
       `,
-    },
-    {
-      code: `
-const matchers = ['package-lock.json', /regexp/];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-      `,
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
-          column: 33,
-        },
-      ],
-    },
-    {
-      code: `
-const matchers = [/regexp/, 'package-lock.json'];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-      `,
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
-          column: 33,
-        },
-      ],
-    },
-    {
-      code: `
-const matchers = [{ match: (s: RegExp) => false }];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-      `,
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
-          column: 33,
-        },
-      ],
     },
   ],
 });
