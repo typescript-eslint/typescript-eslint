@@ -71,7 +71,7 @@ declare class CLIEngineBase {
     TMessageIds extends string = string,
     TOptions extends readonly unknown[] = unknown[],
     // for extending base rules
-    TRuleListener extends RuleListener = RuleListener
+    TRuleListener extends RuleListener = RuleListener,
   >(): Map<string, RuleModule<TMessageIds, TOptions, TRuleListener>>;
 
   ////////////////////

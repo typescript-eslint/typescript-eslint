@@ -9,7 +9,7 @@ import * as util from '.';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 > extends Visitor {
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
@@ -32,7 +32,7 @@ class UnusedVarsVisitor<
 
   public static collectUnusedVariables<
     TMessageIds extends string,
-    TOptions extends readonly unknown[]
+    TOptions extends readonly unknown[],
   >(
     context: TSESLint.RuleContext<TMessageIds, TOptions>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
@@ -747,7 +747,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  */
 function collectUnusedVariables<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 >(
   context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
 ): ReadonlySet<TSESLint.Scope.Variable> {

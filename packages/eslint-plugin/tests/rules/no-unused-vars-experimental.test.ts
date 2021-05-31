@@ -21,7 +21,7 @@ const ruleTester = new RuleTester({
 const hasExport = /^export/m;
 // const hasImport = /^import .+? from ['"]/m;
 function makeExternalModule<
-  T extends ValidTestCase<Options> | InvalidTestCase<MessageIds, Options>
+  T extends ValidTestCase<Options> | InvalidTestCase<MessageIds, Options>,
 >(tests: T[]): T[] {
   return tests.map(t => {
     if (!hasExport.test(t.code)) {

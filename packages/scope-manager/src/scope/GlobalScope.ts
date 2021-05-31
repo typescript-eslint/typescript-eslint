@@ -40,9 +40,12 @@ class GlobalScope extends ScopeBase<
     };
   }
 
-  public defineImplicitVariable(options: ImplicitLibVariableOptions): void {
+  public defineImplicitVariable(
+    name: string,
+    options: ImplicitLibVariableOptions,
+  ): void {
     this.defineVariable(
-      new ImplicitLibVariable(this, options),
+      new ImplicitLibVariable(this, name, options),
       this.set,
       this.variables,
       null,

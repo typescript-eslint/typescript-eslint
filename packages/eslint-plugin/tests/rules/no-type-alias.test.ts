@@ -430,8 +430,7 @@ type KeyNames = keyof typeof SCALARS;
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -451,8 +450,7 @@ type KeyNames = keyof typeof SCALARS;
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -472,8 +470,7 @@ type KeyNames = keyof typeof SCALARS;
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
