@@ -22,6 +22,7 @@ let str: string;
 let array: any[];
 let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
+let maybe: string;
 let userDefined: {
   indexOf(x: any): number;
   includes(x: any): boolean;
@@ -31,6 +32,7 @@ str.indexOf(value) !== -1;
 array.indexOf(value) !== -1;
 readonlyArray.indexOf(value) === -1;
 typedArray.indexOf(value) > -1;
+maybe?.indexOf('') !== -1;
 userDefined.indexOf(value) >= 0;
 
 // simple RegExp test
@@ -60,10 +62,6 @@ userDefined.includes(value);
 
 // the two methods have different parameters.
 mismatchExample.indexOf(value) >= 0;
-
-// ?. optional chaining changes the logic flow
-let maybe: string;
-maybe?.indexOf('');
 ```
 
 ## Options

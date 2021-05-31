@@ -29,16 +29,6 @@ ruleTester.run('prefer-includes', rule, {
       }
     `,
     `
-      function f(a?: string): void {
-        a?.indexOf(b) === -1;
-      }
-    `,
-    `
-      function f(a?: string): void {
-        a?.indexOf(b) !== -1;
-      }
-    `,
-    `
       type UserDefined = {
         indexOf(x: any): number; // don't have 'includes'
       };
@@ -209,6 +199,22 @@ ruleTester.run('prefer-includes', rule, {
       output: `
         function f(a: string): void {
           !a.includes(b);
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+    },
+    {
+      code: `
+        function f(a?: string): void {
+          a?.indexOf(b) === -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+    },
+    {
+      code: `
+        function f(a?: string): void {
+          a?.indexOf(b) !== -1;
         }
       `,
       errors: [{ messageId: 'preferIncludes' }],
