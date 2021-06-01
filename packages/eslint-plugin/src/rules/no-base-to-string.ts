@@ -1,7 +1,6 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
-  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 
@@ -100,9 +99,7 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (
-        ignoredTypeNames.includes(ESLintUtils.getTypeName(typeChecker, type))
-      ) {
+      if (ignoredTypeNames.includes(util.getTypeName(typeChecker, type))) {
         return Usefulness.Always;
       }
 
@@ -168,11 +165,9 @@ export default util.createRule<Options, MessageIds>({
           parserServices.esTreeNodeToTSNodeMap.get(node.right),
         );
 
-        if (ESLintUtils.getTypeName(typeChecker, leftType) === 'string') {
+        if (util.getTypeName(typeChecker, leftType) === 'string') {
           checkExpression(node.right, rightType);
-        } else if (
-          ESLintUtils.getTypeName(typeChecker, rightType) === 'string'
-        ) {
+        } else if (util.getTypeName(typeChecker, rightType) === 'string') {
           checkExpression(node.left, leftType);
         }
       },

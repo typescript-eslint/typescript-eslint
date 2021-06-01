@@ -2,7 +2,6 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
-  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -111,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (
-        !ESLintUtils.containsAllTypesByName(
+        !util.containsAllTypesByName(
           returnType,
           allowAny!,
           allAllowedPromiseNames,
@@ -137,10 +136,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       if (
-        ESLintUtils.isTypeFlagSet(
-          returnType,
-          ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-        )
+        util.isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
       ) {
         // Report without auto fixer because the return type is unknown
         return context.report({

@@ -2,7 +2,6 @@ import {
   TSESTree,
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import {
@@ -14,11 +13,17 @@ import {
   isStrictCompilerOptionEnabled,
 } from 'tsutils';
 import {
+  isTypeFlagSet,
   createRule,
   getParserServices,
+  getConstrainedTypeAtLocation,
+  isNullableType,
   nullThrows,
   NullThrowsReasons,
   isIdentifier,
+  isTypeAnyType,
+  isTypeUnknownType,
+  getTypeName,
   getTypeOfPropertyOfName,
 } from '../util';
 
@@ -32,7 +37,7 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
-    .some(type => ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
+    .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
   unionTypeParts(type).some(type => !isFalsyType(type));
@@ -40,7 +45,7 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
 const isNullishType = (type: ts.Type): boolean =>
-  ESLintUtils.isTypeFlagSet(type, nullishFlag);
+  isTypeFlagSet(type, nullishFlag);
 
 const isPossiblyNullish = (type: ts.Type): boolean =>
   unionTypeParts(type).some(isNullishType);
@@ -164,7 +169,7 @@ export default createRule<Options, MessageId>({
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return ESLintUtils.getConstrainedTypeAtLocation(checker, tsNode);
+      return getConstrainedTypeAtLocation(checker, tsNode);
     }
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
@@ -233,16 +238,16 @@ export default createRule<Options, MessageId>({
       if (
         unionTypeParts(type).some(
           part =>
-            ESLintUtils.isTypeAnyType(part) ||
-            ESLintUtils.isTypeUnknownType(part) ||
-            ESLintUtils.isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
+            isTypeAnyType(part) ||
+            isTypeUnknownType(part) ||
+            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
         )
       ) {
         return;
       }
       let messageId: MessageId | null = null;
 
-      if (ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.Never)) {
+      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
       } else if (!isPossiblyTruthy(type)) {
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
@@ -264,15 +269,12 @@ export default createRule<Options, MessageId>({
       }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
-      if (
-        ESLintUtils.isTypeAnyType(type) ||
-        ESLintUtils.isTypeUnknownType(type)
-      ) {
+      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return;
       }
 
       let messageId: MessageId | null = null;
-      if (ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.Never)) {
+      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
       } else if (!isPossiblyNullish(type)) {
         messageId = 'neverNullish';
@@ -333,7 +335,7 @@ export default createRule<Options, MessageId>({
             flag |= NULL | UNDEFINED;
           }
 
-          return ESLintUtils.isTypeFlagSet(type, flag);
+          return isTypeFlagSet(type, flag);
         };
 
         if (
@@ -449,12 +451,7 @@ export default createRule<Options, MessageId>({
           return;
         }
         // Predicate is always necessary if it involves `any` or `unknown`
-        if (
-          returnTypes.some(
-            t =>
-              ESLintUtils.isTypeAnyType(t) || ESLintUtils.isTypeUnknownType(t),
-          )
-        ) {
+        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
           return;
         }
         if (!returnTypes.some(isPossiblyFalsy)) {
@@ -513,10 +510,10 @@ export default createRule<Options, MessageId>({
           propertyType.value.toString(),
         );
         if (propType) {
-          return ESLintUtils.isNullableType(propType, { allowUndefined: true });
+          return isNullableType(propType, { allowUndefined: true });
         }
       }
-      const typeName = ESLintUtils.getTypeName(checker, propertyType);
+      const typeName = getTypeName(checker, propertyType);
       return !!(
         (typeName === 'string' &&
           checker.getIndexInfoOfType(objType, ts.IndexKind.String)) ||
@@ -549,14 +546,10 @@ export default createRule<Options, MessageId>({
             type,
             property.name,
           );
-          return (
-            propType &&
-            ESLintUtils.isNullableType(propType, { allowUndefined: true })
-          );
+          return propType && isNullableType(propType, { allowUndefined: true });
         });
         return (
-          !isOwnNullable &&
-          ESLintUtils.isNullableType(prevType, { allowUndefined: true })
+          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
         );
       }
       return false;
@@ -571,10 +564,9 @@ export default createRule<Options, MessageId>({
           ? !isNullableOriginFromPrev(node)
           : true;
       return (
-        ESLintUtils.isTypeAnyType(type) ||
-        ESLintUtils.isTypeUnknownType(type) ||
-        (ESLintUtils.isNullableType(type, { allowUndefined: true }) &&
-          isOwnNullable)
+        isTypeAnyType(type) ||
+        isTypeUnknownType(type) ||
+        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
       );
     }
 

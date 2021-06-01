@@ -1,4 +1,4 @@
-import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -59,7 +59,7 @@ export default util.createRule<Options, MessageIds>({
       }
       if (
         type.isStringLiteral() ||
-        ESLintUtils.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
+        util.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
       ) {
         return 'string';
       }
@@ -96,10 +96,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getNodeType(node: TSESTree.Expression): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = ESLintUtils.getConstrainedTypeAtLocation(
-        typeChecker,
-        tsNode,
-      );
+      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 
       return getBaseTypeOfLiteralType(type);
     }
