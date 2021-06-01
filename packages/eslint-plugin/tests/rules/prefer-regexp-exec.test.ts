@@ -33,6 +33,7 @@ function f(s: string | string[]) {
   s.match(/e/);
 }
     `,
+    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
     "'212'.match(2);",
     "'212'.match(+2);",
     "'oNaNo'.match(NaN);",
