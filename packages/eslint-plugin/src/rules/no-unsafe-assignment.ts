@@ -1,7 +1,6 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
-  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -75,7 +74,7 @@ export default util.createRule({
     ): boolean {
       // any array
       // const [x] = ([] as any[]);
-      if (ESLintUtils.isTypeAnyArrayType(senderType, checker)) {
+      if (util.isTypeAnyArrayType(senderType, checker)) {
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
@@ -87,7 +86,7 @@ export default util.createRule({
         return true;
       }
 
-      const tupleElements = ESLintUtils.getTypeArguments(senderType, checker);
+      const tupleElements = util.getTypeArguments(senderType, checker);
 
       // tuple with any
       // const [x] = [1 as any];
@@ -113,7 +112,7 @@ export default util.createRule({
         }
 
         // check for the any type first so we can handle [[[x]]] = [any]
-        if (ESLintUtils.isTypeAnyType(senderType)) {
+        if (util.isTypeAnyType(senderType)) {
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
@@ -204,7 +203,7 @@ export default util.createRule({
         }
 
         // check for the any type first so we can handle {x: {y: z}} = {x: any}
-        if (ESLintUtils.isTypeAnyType(senderType)) {
+        if (util.isTypeAnyType(senderType)) {
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
@@ -242,18 +241,16 @@ export default util.createRule({
       const receiverTsNode = esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
-          ? ESLintUtils.getContextualType(
-              checker,
-              receiverTsNode as ts.Expression,
-            ) ?? checker.getTypeAtLocation(receiverTsNode)
+          ? util.getContextualType(checker, receiverTsNode as ts.Expression) ??
+            checker.getTypeAtLocation(receiverTsNode)
           : checker.getTypeAtLocation(receiverTsNode);
       const senderType = checker.getTypeAtLocation(
         esTreeNodeToTSNodeMap.get(senderNode),
       );
 
-      if (ESLintUtils.isTypeAnyType(senderType)) {
+      if (util.isTypeAnyType(senderType)) {
         // handle cases when we assign any ==> unknown.
-        if (ESLintUtils.isTypeUnknownType(receiverType)) {
+        if (util.isTypeUnknownType(receiverType)) {
           return false;
         }
 
@@ -264,8 +261,8 @@ export default util.createRule({
           const thisExpression = getThisExpression(senderNode);
           if (
             thisExpression &&
-            ESLintUtils.isTypeAnyType(
-              ESLintUtils.getConstrainedTypeAtLocation(
+            util.isTypeAnyType(
+              util.getConstrainedTypeAtLocation(
                 checker,
                 esTreeNodeToTSNodeMap.get(thisExpression),
               ),
@@ -286,11 +283,7 @@ export default util.createRule({
         return false;
       }
 
-      const result = ESLintUtils.isUnsafeAssignment(
-        senderType,
-        receiverType,
-        checker,
-      );
+      const result = util.isUnsafeAssignment(senderType, receiverType, checker);
       if (!result) {
         return false;
       }
@@ -381,8 +374,8 @@ export default util.createRule({
         const resetNode = esTreeNodeToTSNodeMap.get(node.argument);
         const restType = checker.getTypeAtLocation(resetNode);
         if (
-          ESLintUtils.isTypeAnyType(restType) ||
-          ESLintUtils.isTypeAnyArrayType(restType, checker)
+          util.isTypeAnyType(restType) ||
+          util.isTypeAnyArrayType(restType, checker)
         ) {
           context.report({
             node: node,

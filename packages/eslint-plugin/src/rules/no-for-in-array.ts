@@ -1,4 +1,3 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -26,13 +25,13 @@ export default util.createRule({
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-        const type = ESLintUtils.getConstrainedTypeAtLocation(
+        const type = util.getConstrainedTypeAtLocation(
           checker,
           originalNode.expression,
         );
 
         if (
-          ESLintUtils.isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
+          util.isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({

@@ -1,4 +1,4 @@
-import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export type Options = [
@@ -55,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
         return typeArgs.every(
-          arg => ESLintUtils.getTypeName(checker, arg) === 'string',
+          arg => util.getTypeName(checker, arg) === 'string',
         );
       }
       return false;
@@ -66,7 +66,7 @@ export default util.createRule<Options, MessageIds>({
         callee: TSESTree.MemberExpression,
       ): void {
         const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
-        const calleeObjType = ESLintUtils.getConstrainedTypeAtLocation(
+        const calleeObjType = util.getConstrainedTypeAtLocation(
           checker,
           tsNode,
         );
@@ -75,9 +75,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          ESLintUtils.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)
-        ) {
+        if (util.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
           context.report({ node: callee.parent!, messageId: 'requireCompare' });
         }
       },

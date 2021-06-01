@@ -1,11 +1,8 @@
-import {
-  TSESLint,
-  TSESTree,
-  ESLintUtils,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
@@ -40,7 +37,7 @@ export default createRule({
 
     function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return ESLintUtils.getConstrainedTypeAtLocation(checker, tsNode);
+      return getConstrainedTypeAtLocation(checker, tsNode);
     }
 
     function fixSwitch(

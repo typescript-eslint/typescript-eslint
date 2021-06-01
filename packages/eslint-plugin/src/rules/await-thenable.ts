@@ -1,4 +1,3 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 
 import * as util from '../util';
@@ -30,8 +29,8 @@ export default util.createRule({
         const type = checker.getTypeAtLocation(originalNode.expression);
 
         if (
-          !ESLintUtils.isTypeAnyType(type) &&
-          !ESLintUtils.isTypeUnknownType(type) &&
+          !util.isTypeAnyType(type) &&
+          !util.isTypeUnknownType(type) &&
           !tsutils.isThenableType(checker, originalNode.expression, type)
         ) {
           context.report({

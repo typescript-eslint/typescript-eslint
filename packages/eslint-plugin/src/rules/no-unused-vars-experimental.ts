@@ -1,6 +1,6 @@
 /* eslint-disable no-fallthrough */
 
-import { TSESTree, ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -294,16 +294,13 @@ export default util.createRule<Options, MessageIds>({
     return {
       'Program:exit'(program: TSESTree.Program): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(program);
-        const sourceFile = ESLintUtils.getSourceFileOfNode(tsNode);
+        const sourceFile = util.getSourceFileOfNode(tsNode);
         const diagnostics = tsProgram.getSemanticDiagnostics(sourceFile);
 
         diagnostics.forEach(diag => {
           if (isUnusedDiagnostic(diag.code)) {
             if (diag.start !== undefined) {
-              const node = ESLintUtils.getTokenAtPosition(
-                sourceFile,
-                diag.start,
-              );
+              const node = util.getTokenAtPosition(sourceFile, diag.start);
               const parent = node.parent;
               if (isIdentifier(node)) {
                 handleIdentifier(node);
