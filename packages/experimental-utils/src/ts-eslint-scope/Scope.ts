@@ -142,8 +142,9 @@ const ModuleScope = ESLintModuleScope as ScopeConstructor &
   ScopeChildConstructorWithUpperScope<ModuleScope>;
 
 interface FunctionExpressionNameScope extends Scope {}
-const FunctionExpressionNameScope = ESLintFunctionExpressionNameScope as ScopeConstructor &
-  ScopeChildConstructorWithUpperScope<FunctionExpressionNameScope>;
+const FunctionExpressionNameScope =
+  ESLintFunctionExpressionNameScope as ScopeConstructor &
+    ScopeChildConstructorWithUpperScope<FunctionExpressionNameScope>;
 
 interface CatchScope extends Scope {}
 const CatchScope = ESLintCatchScope as ScopeConstructor &

@@ -53,9 +53,8 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = ESLintUtils.getParserServices(
-      context,
-    );
+    const { program, esTreeNodeToTSNodeMap } =
+      ESLintUtils.getParserServices(context);
     const checker = program.getTypeChecker();
 
     return {

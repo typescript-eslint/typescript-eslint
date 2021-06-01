@@ -3,12 +3,8 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { TYPE } from './base-config';
 
 export const es2018_promise = {
-  Promise: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Promise',
-  },
+  Promise: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

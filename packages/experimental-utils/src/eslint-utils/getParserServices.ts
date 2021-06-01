@@ -9,7 +9,7 @@ const ERROR_MESSAGE =
  */
 function getParserServices<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 >(
   context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
   allowWithoutFullTypeInformation = false,

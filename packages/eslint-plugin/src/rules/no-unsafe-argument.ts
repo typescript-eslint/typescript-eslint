@@ -207,9 +207,8 @@ export default util.createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments = checker.getTypeArguments(
-                  spreadArgType,
-                );
+                const spreadTypeArguments =
+                  checker.getTypeArguments(spreadArgType);
                 for (let j = 0; j < spreadTypeArguments.length; j += 1) {
                   const tupleType = spreadTypeArguments[j];
                   const parameterType = signature.getNextParameterType();

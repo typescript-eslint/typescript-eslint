@@ -59,7 +59,7 @@ interface SuggestionOutput<TMessageIds extends string> {
 
 interface InvalidTestCase<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 > extends ValidTestCase<TOptions> {
   /**
    * Expected errors.
@@ -111,7 +111,7 @@ interface TestCaseError<TMessageIds extends string> {
 
 interface RunTests<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly valid: readonly (ValidTestCase<TOptions> | string)[];

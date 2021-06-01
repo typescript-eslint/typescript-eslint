@@ -55,8 +55,8 @@ declare class TokenStore {
    * @returns An object representing the token.
    */
   getFirstTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
@@ -77,8 +77,8 @@ declare class TokenStore {
    * @returns Tokens between left and right.
    */
   getFirstTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
@@ -99,8 +99,8 @@ declare class TokenStore {
    * @returns An object representing the token.
    */
   getLastTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
@@ -121,8 +121,8 @@ declare class TokenStore {
    * @returns Tokens between left and right.
    */
   getLastTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
@@ -132,7 +132,7 @@ declare class TokenStore {
    * @returns An object representing the token.
    */
   getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
-    node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    node: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
@@ -142,7 +142,7 @@ declare class TokenStore {
    * @returns An object representing the token.
    */
   getTokenBefore<T extends SourceCode.CursorWithSkipOptions>(
-    node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    node: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
@@ -184,7 +184,7 @@ declare class TokenStore {
    * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
-    node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    node: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
@@ -194,7 +194,7 @@ declare class TokenStore {
    * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
-    node: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    node: TSESTree.Node | TSESTree.Token,
     options?: T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
@@ -205,8 +205,8 @@ declare class TokenStore {
    * @returns Tokens between left and right.
    */
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     padding?: T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
@@ -217,8 +217,8 @@ declare class TokenStore {
    * @returns Tokens between left and right.
    */
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
-    right: TSESTree.Node | TSESTree.Token | TSESTree.Comment,
+    left: TSESTree.Node | TSESTree.Token,
+    right: TSESTree.Node | TSESTree.Token,
     padding?: number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
@@ -250,9 +250,10 @@ declare class SourceCodeBase extends TokenStore {
    * @param node The AST node to get the comments for.
    * @returns An object containing a leading and trailing array of comments indexed by their position.
    */
-  getComments(
-    node: TSESTree.Node,
-  ): { leading: TSESTree.Comment[]; trailing: TSESTree.Comment[] };
+  getComments(node: TSESTree.Node): {
+    leading: TSESTree.Comment[];
+    trailing: TSESTree.Comment[];
+  };
   /**
    * Converts a (line, column) pair into a range index.
    * @param loc A line/column location
@@ -303,8 +304,8 @@ declare class SourceCodeBase extends TokenStore {
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
   isSpaceBetween?(
-    first: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
-    second: TSESTree.Token | TSESTree.Comment | TSESTree.Node,
+    first: TSESTree.Token | TSESTree.Node,
+    second: TSESTree.Token | TSESTree.Node,
   ): boolean;
   /**
    * Determines if two nodes or tokens have at least one whitespace character
@@ -342,8 +343,10 @@ declare class SourceCodeBase extends TokenStore {
   text: string;
   /**
    * All of the tokens and comments in the AST.
+   *
+   * TODO: rename to 'tokens'
    */
-  tokensAndComments: (TSESTree.Comment | TSESTree.Token)[];
+  tokensAndComments: TSESTree.Token[];
   /**
    * The visitor keys to traverse AST.
    */
@@ -394,9 +397,7 @@ namespace SourceCode {
     [nodeType: string]: string[];
   }
 
-  export type FilterPredicate = (
-    tokenOrComment: TSESTree.Token | TSESTree.Comment,
-  ) => boolean;
+  export type FilterPredicate = (token: TSESTree.Token) => boolean;
 
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? TSESTree.Token
