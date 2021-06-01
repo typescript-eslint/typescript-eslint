@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.25.0...v4.26.0) (2021-05-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-type-alias] consider type imports as alias types ([#3433](https://github.com/typescript-eslint/typescript-eslint/issues/3433)) ([d4f0774](https://github.com/typescript-eslint/typescript-eslint/commit/d4f077473afb04f7c4d377dd87318749632b4404))
+
+
+### Features
+
+* **eslint-plugin:** [member-ordering] add callback as an ordering type of node ([#3354](https://github.com/typescript-eslint/typescript-eslint/issues/3354)) ([d134b1f](https://github.com/typescript-eslint/typescript-eslint/commit/d134b1fa2540dec7094728f3dec1bbb8c644fe58))
+* **eslint-plugin:** [space-infix-ops] Add support for Union and intersection of type declarations ([#3360](https://github.com/typescript-eslint/typescript-eslint/issues/3360)) ([3d29323](https://github.com/typescript-eslint/typescript-eslint/commit/3d2932390cc335ab2cf80ae7a7fad066fd2eb22b))
+
+
+
+
+
 # [4.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.24.0...v4.25.0) (2021-05-24)
 
 
