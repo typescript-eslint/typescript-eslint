@@ -34,15 +34,18 @@ class GlobalScope extends ScopeBase<
   constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {
     super(scopeManager, ScopeType.global, null, block, false);
     this.implicit = {
-      set: new Map(),
+      set: new Map<string, Variable>(),
       variables: [],
       leftToBeResolved: [],
     };
   }
 
-  public defineImplicitVariable(options: ImplicitLibVariableOptions): void {
+  public defineImplicitVariable(
+    name: string,
+    options: ImplicitLibVariableOptions,
+  ): void {
     this.defineVariable(
-      new ImplicitLibVariable(this, options),
+      new ImplicitLibVariable(this, name, options),
       this.set,
       this.variables,
       null,

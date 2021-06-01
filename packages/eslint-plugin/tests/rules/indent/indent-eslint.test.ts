@@ -846,8 +846,7 @@ ruleTester.run('indent', rule, {
       options: [2, { SwitchCase: 1 }],
     },
     {
-      code:
-        'var geometry, box, face1, face2, colorT, colorB, sprite, padding, maxWidth;',
+      code: 'var geometry, box, face1, face2, colorT, colorB, sprite, padding, maxWidth;',
       options: [2, { SwitchCase: 1 }],
     },
     {

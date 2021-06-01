@@ -126,8 +126,7 @@ RegExp(search).exec(text);
       ],
     },
     {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+      code: "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
       errors: [
         {
           messageId: 'regExpExecOverStringMatch',
@@ -137,8 +136,7 @@ RegExp(search).exec(text);
       ],
     },
     {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+      code: "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
       errors: [
         {
           messageId: 'regExpExecOverStringMatch',
@@ -148,8 +146,7 @@ RegExp(search).exec(text);
       ],
     },
     {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+      code: "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
       errors: [
         {
           messageId: 'regExpExecOverStringMatch',
