@@ -423,7 +423,7 @@ ruleTester.run('prefer-includes', rule, {
             | Int32Array
             | Uint32Array
             | Float32Array
-            | Float64Array
+            | Float64Array,
         >(a: U): void {
           a.indexOf(b) !== -1;
         }
@@ -441,7 +441,7 @@ ruleTester.run('prefer-includes', rule, {
             | Int32Array
             | Uint32Array
             | Float32Array
-            | Float64Array
+            | Float64Array,
         >(a: U): void {
           a.includes(b);
         }
