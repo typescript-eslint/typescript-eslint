@@ -20,42 +20,43 @@
         "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
-        "showUsageWarnings": true
+        "showUsageWarnings": true,
+        "runtimeCacheInputs": ["node -v"]
       }
     }
   },
   "projects": {
-    "ast-spec": {
+    "@typescript-eslint/ast-spec": {
       "implicitDependencies": []
     },
-    "eslint-plugin": {
+    "@typescript-eslint/eslint-plugin": {
       "implicitDependencies": []
     },
-    "eslint-plugin-internal": {
+    "@typescript-eslint/eslint-plugin-internal": {
       "implicitDependencies": []
     },
-    "eslint-plugin-tslint": {
+    "@typescript-eslint/eslint-plugin-tslint": {
       "implicitDependencies": []
     },
-    "experimental-utils": {
+    "@typescript-eslint/experimental-utils": {
       "implicitDependencies": []
     },
-    "parser": {
+    "@typescript-eslint/parser": {
       "implicitDependencies": []
     },
-    "scope-manager": {
+    "@typescript-eslint/scope-manager": {
       "implicitDependencies": []
     },
-    "shared-fixtures": {
+    "@typescript-eslint/shared-fixtures": {
       "implicitDependencies": []
     },
-    "types": {
+    "@typescript-eslint/types": {
+      "implicitDependencies": ["@typescript-eslint/ast-spec"]
+    },
+    "@typescript-eslint/typescript-estree": {
       "implicitDependencies": []
     },
-    "typescript-estree": {
-      "implicitDependencies": []
-    },
-    "visitor-keys": {
+    "@typescript-eslint/visitor-keys": {
       "implicitDependencies": []
     }
   },

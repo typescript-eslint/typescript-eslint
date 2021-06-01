@@ -92,42 +92,42 @@ jobs:
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: npx nx test typescript-estree
+        run: npx nx test @typescript-eslint/typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: npx nx test visitor-keys
+        run: npx nx test @typescript-eslint/visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test scope-manager
+        run: npx nx test @typescript-eslint/scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: npx nx test experimental-utils
+        run: npx nx test @typescript-eslint/experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: npx nx test parser
+        run: npx nx test @typescript-eslint/parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: npx nx test eslint-plugin
+        run: npx nx test @typescript-eslint/eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test eslint-plugin-tslint
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-internal
-        run: npx nx test eslint-plugin-internal
+        run: npx nx test @typescript-eslint/eslint-plugin-internal
         env:
           CI: true
 
@@ -252,37 +252,37 @@ jobs:
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: npx nx test typescript-estree
+        run: npx nx test @typescript-eslint/typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: npx nx test visitor-keys
+        run: npx nx test @typescript-eslint/visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test scope-manager
+        run: npx nx test @typescript-eslint/scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: npx nx test experimental-utils
+        run: npx nx test @typescript-eslint/experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: npx nx test parser
+        run: npx nx test @typescript-eslint/parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: npx nx test eslint-plugin
+        run: npx nx test @typescript-eslint/eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test eslint-plugin-tslint
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint
         env:
           CI: true
 
