@@ -1314,7 +1314,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
 
         export const used_var = 1;
@@ -1328,7 +1328,7 @@ ruleTester.run('naming-convention', rule, {
         export interface used_interface {}
         export type used_type<
           // this line is intentionally broken out
-          used_typeparam
+          used_typeparam,
         > = used_typeparam;
       `,
       options: [
@@ -2157,7 +2157,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
       `,
       options: [

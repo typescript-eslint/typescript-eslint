@@ -5,32 +5,13 @@
 import { ImplicitLibVariableOptions } from '../variable';
 import { es2015_symbol } from './es2015.symbol';
 import { es2015_iterable } from './es2015.iterable';
+import { TYPE } from './base-config';
 
 export const es2018_asynciterable = {
   ...es2015_symbol,
   ...es2015_iterable,
-  SymbolConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'SymbolConstructor',
-  },
-  AsyncIterator: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncIterator',
-  },
-  AsyncIterable: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncIterable',
-  },
-  AsyncIterableIterator: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncIterableIterator',
-  },
+  SymbolConstructor: TYPE,
+  AsyncIterator: TYPE,
+  AsyncIterable: TYPE,
+  AsyncIterableIterator: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

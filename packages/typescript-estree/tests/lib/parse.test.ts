@@ -90,7 +90,7 @@ describe('parseWithNodeMaps()', () => {
   describe('non string code', () => {
     // testing a non string code..
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = (12345 as any) as string;
+    const code = 12345 as any as string;
     const config: TSESTreeOptions = {
       comment: true,
       tokens: true,
@@ -492,24 +492,23 @@ describe('parseAndGenerateServices', () => {
       tsconfigRootDir: PROJECT_DIR,
       project: './tsconfig.json',
     };
-    const testParse = (
-      filePath: string,
-      extraFileExtensions: string[] = ['.vue'],
-    ) => (): void => {
-      try {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          extraFileExtensions,
-          filePath: join(PROJECT_DIR, filePath),
-        });
-      } catch (error) {
-        /**
-         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-         */
-        error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
-        throw error;
-      }
-    };
+    const testParse =
+      (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+      (): void => {
+        try {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+          });
+        } catch (error) {
+          /**
+           * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+           */
+          error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
+          throw error;
+        }
+      };
 
     describe('project includes', () => {
       it("doesn't error for matched files", () => {
@@ -647,16 +646,18 @@ describe('parseAndGenerateServices', () => {
       project: './**/tsconfig.json',
     };
 
-    const testParse = (
-      filePath: 'ignoreme' | 'includeme',
-      projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
-    ) => (): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        projectFolderIgnoreList,
-        filePath: join(PROJECT_DIR, filePath, './file.ts'),
-      });
-    };
+    const testParse =
+      (
+        filePath: 'ignoreme' | 'includeme',
+        projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
+      ) =>
+      (): void => {
+        parser.parseAndGenerateServices(code, {
+          ...config,
+          projectFolderIgnoreList,
+          filePath: join(PROJECT_DIR, filePath, './file.ts'),
+        });
+      };
 
     it('ignores nothing when given nothing', () => {
       expect(testParse('ignoreme')).not.toThrow();

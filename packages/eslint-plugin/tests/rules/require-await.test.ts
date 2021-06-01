@@ -197,7 +197,7 @@ const numberOne = async function (): Promise<number> {
         {
           messageId: 'missingAwait',
           data: {
-            name: 'Async function',
+            name: "Async function 'numberOne'",
           },
         },
       ],
@@ -272,7 +272,7 @@ const foo = async function* () {
         {
           messageId: 'missingAwait',
           data: {
-            name: 'Async generator function',
+            name: "Async generator function 'foo'",
           },
         },
       ],

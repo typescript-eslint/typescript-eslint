@@ -44,7 +44,7 @@ You can pass an object option:
   "@typescript-eslint/no-this-alias": [
     "error",
     {
-      "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
+      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
       "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
     }
   ]

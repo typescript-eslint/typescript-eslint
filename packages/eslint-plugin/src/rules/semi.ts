@@ -36,7 +36,8 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const checkForSemicolon = rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
+    const checkForSemicolon =
+      rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
 
     /*
       The following nodes are handled by the member-delimiter-style rule

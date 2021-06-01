@@ -81,17 +81,17 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
-    const context: Context =
+    const context =
       contextWithoutDefaults.options &&
       contextWithoutDefaults.options.length > 0
         ? contextWithoutDefaults
         : // only apply the defaults when the user provides no config
-          Object.setPrototypeOf(
+          (Object.setPrototypeOf(
             {
               options: defaultCamelCaseAllTheThingsConfig,
             },
             contextWithoutDefaults,
-          );
+          ) as Context);
 
     const validators = parseOptions(context);
 
