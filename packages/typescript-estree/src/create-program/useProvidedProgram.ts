@@ -1,4 +1,5 @@
 import debug from 'debug';
+import * as path from 'path';
 import { Program } from 'typescript';
 import { Extra } from '../parser-options';
 import { ASTAndProgram, getAstFromProgram } from './shared';
@@ -14,9 +15,13 @@ function useProvidedProgram(
   const astAndProgram = getAstFromProgram(programInstance, extra);
 
   if (!astAndProgram) {
+    const relativeFilePath = path.relative(
+      extra.tsconfigRootDir || process.cwd(),
+      extra.filePath,
+    );
     const errorLines = [
       '"parserOptions.program" has been provided for @typescript-eslint/parser.',
-      `The file was not found in the provided program instance: ${extra.filePath}`,
+      `The file was not found in the provided program instance: ${relativeFilePath}`,
     ];
 
     throw new Error(errorLines.join('\n'));

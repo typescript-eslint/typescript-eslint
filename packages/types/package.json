@@ -50,6 +50,6 @@
     }
   },
   "devDependencies": {
-    "typescript": ">=2.6.0"
+    "typescript": "*"
   }
 }

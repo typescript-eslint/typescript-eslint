@@ -269,14 +269,14 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  if (typeof options.program === 'object') {
+  if (options.program && typeof options.program === 'object') {
     extra.program = options.program;
     log(
       'parserOptions.program was provided, so parserOptions.project will be ignored.',
     );
   }
 
-  if (extra.program === null) {
+  if (!extra.program) {
     // providing a program overrides project resolution
     const projectFolderIgnoreList = (
       options.projectFolderIgnoreList ?? ['**/node_modules/**']

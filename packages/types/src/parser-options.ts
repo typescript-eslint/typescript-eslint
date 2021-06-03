@@ -1,5 +1,5 @@
 import { Lib } from './lib';
-import { Program } from 'typescript';
+import type { Program } from 'typescript';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
