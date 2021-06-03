@@ -316,7 +316,12 @@ describe('semanticInfo', () => {
     };
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsProjectString),
-    ).toThrowErrorMatchingSnapshot();
+    ).toThrow(
+      `The file was not found in the provided program instance: ${path.resolve(
+        FIXTURES_DIR,
+        filename,
+      )}`,
+    );
   });
 });
 
