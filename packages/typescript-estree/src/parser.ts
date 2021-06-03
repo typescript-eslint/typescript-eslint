@@ -276,7 +276,7 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
     );
   }
 
-  if (extra.program !== null) {
+  if (extra.program === null) {
     // providing a program overrides project resolution
     const projectFolderIgnoreList = (
       options.projectFolderIgnoreList ?? ['**/node_modules/**']
