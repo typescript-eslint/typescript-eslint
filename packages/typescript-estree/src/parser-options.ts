@@ -171,8 +171,9 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
-   * TypeScript program instance to be used in place of a project built and managed by this library.
-   * Intended for use by CI scenarios only.
+   * Instance of a TypeScript Program object to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program.
    */
   program?: Program;
 

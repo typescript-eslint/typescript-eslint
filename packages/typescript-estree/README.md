@@ -209,6 +209,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
+   * Instance of a TypeScript Program object to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program.
+   */
+  program?: import('typescript').Program;
+
+  /**
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************

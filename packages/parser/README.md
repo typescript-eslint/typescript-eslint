@@ -64,6 +64,8 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
+
+  program?: import('typescript').Program;
 }
 ```
 
@@ -210,6 +212,14 @@ This option allows you to toggle the warning that the parser will give you if yo
 Default `false`.
 
 This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
+
+### `parserOptions.program`
+
+Default `undefined`.
+
+This option allows you to programmatically provide an instance of a TypeScript Program object that will provide type information to rules.
+This will override any program that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+All linted files must be part of the provided program.
 
 ## Supported TypeScript Version
 
