@@ -64,6 +64,9 @@
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "tmp": "^0.2.1",
+    "typescript": "^4.3.2"
+  },
+  "peerDependencies": {
     "typescript": "*"
   },
   "peerDependenciesMeta": {

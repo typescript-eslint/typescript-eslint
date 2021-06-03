@@ -1,5 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`semanticInfo file not in provided program instance 1`] = `
+"\\"parserOptions.program\\" has been provided for @typescript-eslint/parser.
+The file was not found in the provided program instance: C:\\\\Repos\\\\typescript-eslint\\\\packages\\\\typescript-estree\\\\tests\\\\fixtures\\\\semanticInfo\\\\non-existent-file.ts"
+`;
+
 exports[`semanticInfo fixtures/export-file.src 1`] = `
 Object {
   "body": Array [
