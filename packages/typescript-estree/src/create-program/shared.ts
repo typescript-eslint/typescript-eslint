@@ -1,5 +1,6 @@
 import path from 'path';
 import * as ts from 'typescript';
+import { Program } from 'typescript';
 import { Extra } from '../parser-options';
 
 interface ASTAndProgram {
@@ -93,6 +94,29 @@ function getScriptKind(
   }
 }
 
+function getExtension(fileName: string | undefined): string | null {
+  if (!fileName) {
+    return null;
+  }
+  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName);
+}
+
+function getAstFromProgram(
+  currentProgram: Program,
+  extra: Extra,
+): ASTAndProgram | undefined {
+  const ast = currentProgram.getSourceFile(extra.filePath);
+
+  // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
+  const expectedExt = getExtension(extra.filePath);
+  const returnedExt = getExtension(ast?.fileName);
+  if (expectedExt !== returnedExt) {
+    return undefined;
+  }
+
+  return ast && { ast, program: currentProgram };
+}
+
 export {
   ASTAndProgram,
   canonicalDirname,
@@ -101,4 +125,5 @@ export {
   ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
+  getAstFromProgram,
 };
