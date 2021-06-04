@@ -10,6 +10,7 @@ import {
 } from '../../tools/test-utils';
 import {
   clearCaches,
+  createProgram,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
 } from '../../src';
@@ -294,7 +295,7 @@ describe('semanticInfo', () => {
 
   it(`provided program instance is returned in result`, () => {
     const filename = testFiles[0];
-    const program = createTSProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
@@ -307,8 +308,8 @@ describe('semanticInfo', () => {
   });
 
   it('file not in provided program instance', () => {
-    const filename = 'non-existent-file.ts';
-    const program = createTSProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const filename = 'non-existant-file.ts';
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -319,6 +320,16 @@ describe('semanticInfo', () => {
     ).toThrow(
       `The file was not found in the provided program instance: ${filename}`,
     );
+  });
+
+  it('createProgram fails on non-existant file', () => {
+    expect(() => createProgram('tsconfig.non-existant.json')).toThrow();
+  });
+
+  it('createProgram fails on tsconfig with errors', () => {
+    expect(() =>
+      createProgram(path.join(FIXTURES_DIR, 'badTSConfig', 'tsconfig.json')),
+    ).toThrow();
   });
 });
 
@@ -381,27 +392,4 @@ function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const typeArguments = checker.getTypeArguments(nodeType as ts.TypeReference);
   expect(typeArguments).toHaveLength(1);
   expect(typeArguments[0].flags).toBe(ts.TypeFlags.Number);
-}
-
-function createTSProgram(configFile: string): ts.Program {
-  const projectDirectory = path.dirname(configFile);
-  const config = ts.readConfigFile(configFile, ts.sys.readFile);
-  expect(config.error).toBeUndefined();
-  const parseConfigHost: ts.ParseConfigHost = {
-    fileExists: fs.existsSync,
-    readDirectory: ts.sys.readDirectory,
-    readFile: file => fs.readFileSync(file, 'utf8'),
-    useCaseSensitiveFileNames: true,
-  };
-  const parsed = ts.parseJsonConfigFileContent(
-    config.config,
-    parseConfigHost,
-    path.resolve(projectDirectory),
-    { noEmit: true },
-  );
-  expect(parsed.errors).toHaveLength(0);
-  const host = ts.createCompilerHost(parsed.options, true);
-  const program = ts.createProgram(parsed.fileNames, parsed.options, host);
-
-  return program;
 }

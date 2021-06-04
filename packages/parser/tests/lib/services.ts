@@ -4,10 +4,10 @@ import glob from 'glob';
 import { ParserOptions } from '../../src/parser';
 import {
   createSnapshotTestBlock,
-  createTSProgram,
   formatSnapshotName,
   testServices,
 } from '../tools/test-utils';
+import { createProgram } from '@typescript-eslint/typescript-estree';
 
 //------------------------------------------------------------------------------
 // Setup
@@ -31,7 +31,7 @@ function createConfig(filename: string): ParserOptions {
 //------------------------------------------------------------------------------
 
 describe('services', () => {
-  const program = createTSProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
+  const program = createProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
   testFiles.forEach(filename => {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const config = createConfig(filename);

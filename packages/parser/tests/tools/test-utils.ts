@@ -92,26 +92,3 @@ export function formatSnapshotName(
     .replace(fixturesDir + '/', '')
     .replace(fileExtension, '')}`;
 }
-
-export function createTSProgram(configFile: string): ts.Program {
-  const projectDirectory = path.dirname(configFile);
-  const config = ts.readConfigFile(configFile, ts.sys.readFile);
-  expect(config.error).toBeUndefined();
-  const parseConfigHost: ts.ParseConfigHost = {
-    fileExists: fs.existsSync,
-    readDirectory: ts.sys.readDirectory,
-    readFile: file => fs.readFileSync(file, 'utf8'),
-    useCaseSensitiveFileNames: true,
-  };
-  const parsed = ts.parseJsonConfigFileContent(
-    config.config,
-    parseConfigHost,
-    path.resolve(projectDirectory),
-    { noEmit: true },
-  );
-  expect(parsed.errors).toHaveLength(0);
-  const host = ts.createCompilerHost(parsed.options, true);
-  const program = ts.createProgram(parsed.fileNames, parsed.options, host);
-
-  return program;
-}

@@ -62,20 +62,14 @@ function createProgramFromConfigFile(
     path.resolve(projectDirectory),
     { noEmit: true },
   );
-  if (parsed.errors !== undefined) {
-    // ignore warnings and 'TS18003: No inputs were found in config file ...'
-    const errors = parsed.errors.filter(
-      d => d.category === ts.DiagnosticCategory.Error && d.code !== 18003,
+  if (parsed.errors.length) {
+    throw new Error(
+      ts.formatDiagnostics(parsed.errors, {
+        getCanonicalFileName: f => f,
+        getCurrentDirectory: process.cwd,
+        getNewLine: () => '\n',
+      }),
     );
-    if (errors.length !== 0) {
-      throw new Error(
-        ts.formatDiagnostics(errors, {
-          getCanonicalFileName: f => f,
-          getCurrentDirectory: process.cwd,
-          getNewLine: () => '\n',
-        }),
-      );
-    }
   }
   const host = ts.createCompilerHost(parsed.options, true);
   const program = ts.createProgram(parsed.fileNames, parsed.options, host);
