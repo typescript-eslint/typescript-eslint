@@ -9,6 +9,7 @@ import type { JSXFragment } from '../expression/JSXFragment/spec';
 import type { MemberExpression } from '../expression/MemberExpression/spec';
 import type { MetaProperty } from '../expression/MetaProperty/spec';
 import type { ObjectExpression } from '../expression/ObjectExpression/spec';
+import type { SequenceExpression } from '../expression/spec';
 import type { Super } from '../expression/Super/spec';
 import type { TaggedTemplateExpression } from '../expression/TaggedTemplateExpression/spec';
 import type { TemplateLiteral } from '../expression/TemplateLiteral/spec';
@@ -35,6 +36,7 @@ export type LeftHandSideExpression =
   | MetaProperty
   | ObjectExpression
   | ObjectPattern
+  | SequenceExpression
   | Super
   | TaggedTemplateExpression
   | TemplateLiteral
