@@ -274,6 +274,7 @@ export function removeLocationDataAndSourceTypeFromProgramNode(
   if (ignoreSourceType) {
     delete ast.sourceType;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return ast;
 }
 
