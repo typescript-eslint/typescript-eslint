@@ -2,6 +2,7 @@
 // this rule tests new lines which prettier tries to fix, breaking the tests
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
+
 import rule from '../../src/rules/padding-line-between-statements';
 import { RuleTester } from '../RuleTester';
 
@@ -521,15 +522,13 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        '() => {\n\tsomeArray.forEach(x => doSomething(x));\n\treturn theThing;\n}',
+      code: '() => {\n\tsomeArray.forEach(x => doSomething(x));\n\treturn theThing;\n}',
       options: [
         { blankLine: 'always', prev: 'multiline-expression', next: 'return' },
       ],
     },
     {
-      code:
-        '() => {\n\tsomeArray.forEach(\n\t\tx => doSomething(x)\n\t);\n\n\treturn theThing;\n}',
+      code: '() => {\n\tsomeArray.forEach(\n\t\tx => doSomething(x)\n\t);\n\n\treturn theThing;\n}',
       options: [
         { blankLine: 'always', prev: 'multiline-expression', next: 'return' },
       ],
@@ -1444,8 +1443,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello';\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1469,8 +1467,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n/* block comment\nblock comment */\n\nconsole.log(greet);",
+      code: "var greet = 'hello';\n/* block comment\nblock comment */\n\nconsole.log(greet);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1481,8 +1478,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n// next-line comment\n// second-line comment\n\nconsole.log(greet);",
+      code: "var greet = 'hello';\n// next-line comment\n// second-line comment\n\nconsole.log(greet);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1495,8 +1491,7 @@ ruleTester.run('padding-line-between-statements', rule, {
 
     // should allow comments on the next line followed by no blank in "never" mode
     {
-      code:
-        "var greet = 'hello';\n// next-line comment\n// second-line comment\nconsole.log(greet);",
+      code: "var greet = 'hello';\n// next-line comment\n// second-line comment\nconsole.log(greet);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1507,8 +1502,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n// next-line comment\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello';\n// next-line comment\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1532,8 +1526,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\nvar name = 'world';\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\nvar name = 'world';\nconsole.log(greet, name);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1544,8 +1537,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1558,8 +1550,7 @@ ruleTester.run('padding-line-between-statements', rule, {
 
     // should allow a comment directly between `var` statements
     {
-      code:
-        "var greet = 'hello';\n// inline comment\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\n// inline comment\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1570,8 +1561,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n/* block comment\nblock comment */\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\n/* block comment\nblock comment */\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1582,8 +1572,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n// inline comment\nvar name = 'world';\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\n// inline comment\nvar name = 'world';\nconsole.log(greet, name);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1594,8 +1583,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello';\n/* block comment\nblock comment */\nvar name = 'world';\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\n/* block comment\nblock comment */\nvar name = 'world';\nconsole.log(greet, name);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1643,8 +1631,7 @@ ruleTester.run('padding-line-between-statements', rule, {
 
     // should handle single `var` statement with multi-line declaration
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello',\nname = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1666,8 +1653,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1678,8 +1664,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\nconsole.log(greet, name);",
+      code: "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\nconsole.log(greet, name);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1690,8 +1675,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n// next-line comment\nconsole.log(greet);",
+      code: "var greet = 'hello',\nname = 'world';\n// next-line comment\nconsole.log(greet);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1702,8 +1686,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello',\nname = 'world';\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1764,8 +1747,7 @@ ruleTester.run('padding-line-between-statements', rule, {
 
     // should handle a mix of `var`, `let`, or `const`
     {
-      code:
-        "let greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "let greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1776,8 +1758,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "const greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "const greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1788,8 +1769,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "let greet = 'hello';\nconst name = 'world';\n\nconsole.log(greet, name);",
+      code: "let greet = 'hello';\nconst name = 'world';\n\nconsole.log(greet, name);",
       options: [
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -1988,8 +1968,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "function example() {\nvar greet = 'hello';\nconsole.log(greet);\n}",
+      code: "function example() {\nvar greet = 'hello';\nconsole.log(greet);\n}",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2022,8 +2001,7 @@ ruleTester.run('padding-line-between-statements', rule, {
       ],
     },
     {
-      code:
-        "var f = function() {\nvar greet = 'hello';\nconsole.log(greet);\n};",
+      code: "var f = function() {\nvar greet = 'hello';\nconsole.log(greet);\n};",
       options: [
         { blankLine: 'never', prev: ['const', 'let', 'var'], next: '*' },
         {
@@ -2291,33 +2269,27 @@ var a = 1
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n}\n}',
+      code: 'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n} else {\nreturn d;\n}\n}',
+      code: 'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n} else {\nreturn d;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n} else {\nreturn d;\n}\n\nreturn a;\n}',
+      code: 'function a() {\nif (b) {\nreturn b;\n} else if (c) {\nreturn c;\n} else {\nreturn d;\n}\n\nreturn a;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) return b;\nelse if (c) return c;\nelse return d;\n}',
+      code: 'function a() {\nif (b) return b;\nelse if (c) return c;\nelse return d;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\nreturn d;\n}\n}',
+      code: 'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\nreturn d;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\n\nreturn d;\n}\n}',
+      code: 'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\n\nreturn d;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
@@ -2341,8 +2313,7 @@ var a = 1
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nvar c;\nwhile (b) {\n c = d; //comment\n}\n\nreturn c;\n}',
+      code: 'function a() {\nvar c;\nwhile (b) {\n c = d; //comment\n}\n\nreturn c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
@@ -2386,8 +2357,7 @@ var a = 1
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nfor (var b; b < c; b++) {\nif (d) {\nbreak; //comment\n}\n\nreturn;\n}\n}',
+      code: 'function a() {\nfor (var b; b < c; b++) {\nif (d) {\nbreak; //comment\n}\n\nreturn;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
@@ -2455,13 +2425,11 @@ var a = 1
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\n/*comment\ncomment*/\n//comment\nif (b) return;\n}',
+      code: 'function a() {\n/*comment\ncomment*/\n//comment\nif (b) return;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\n/*comment\ncomment*/\n//comment\nif (b) {\nc();\n\nreturn b;\n} else {\n//comment\nreturn d;\n}\n\n/*multi-line\ncomment*/\nreturn e;\n}',
+      code: 'function a() {\n/*comment\ncomment*/\n//comment\nif (b) {\nc();\n\nreturn b;\n} else {\n//comment\nreturn d;\n}\n\n/*multi-line\ncomment*/\nreturn e;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
@@ -2473,13 +2441,11 @@ var a = 1
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) { return; } /*multi-line\ncomment*/\n\nreturn c;\n}',
+      code: 'function a() {\nif (b) { return; } /*multi-line\ncomment*/\n\nreturn c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
-      code:
-        'function a() {\nif (b) { return; }\n\n/*multi-line\ncomment*/ return c;\n}',
+      code: 'function a() {\nif (b) { return; }\n\n/*multi-line\ncomment*/ return c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
     },
     {
@@ -2697,15 +2663,13 @@ var a = 1
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     {
-      code:
-        'var i = 0;\nwhile (i < 100) {\nif(i % 2 === 0) {continue;}\n++i;\n}',
+      code: 'var i = 0;\nwhile (i < 100) {\nif(i % 2 === 0) {continue;}\n++i;\n}',
       options: [
         { blankLine: 'always', prev: 'multiline-block-like', next: '*' },
       ],
     },
     {
-      code:
-        'var i = 0;\nwhile (i < 100) {\nif(i % 2 === 0) {if(i === 4) {continue;}}\n++i;\n}',
+      code: 'var i = 0;\nwhile (i < 100) {\nif(i % 2 === 0) {if(i === 4) {continue;}}\n++i;\n}',
       options: [
         { blankLine: 'always', prev: 'multiline-block-like', next: '*' },
       ],
@@ -3292,8 +3256,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        '() => {\n\tsomeArray.forEach(\n\t\tx => doSomething(x)\n\t);\n\treturn theThing;\n}',
+      code: '() => {\n\tsomeArray.forEach(\n\t\tx => doSomething(x)\n\t);\n\treturn theThing;\n}',
       output:
         '() => {\n\tsomeArray.forEach(\n\t\tx => doSomething(x)\n\t);\n\n\treturn theThing;\n}',
       options: [
@@ -4143,8 +4106,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello';\nvar name = 'world';\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\nvar name = 'world';\nconsole.log(greet, name);",
       output:
         "var greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
       options: [
@@ -4212,8 +4174,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "function example() {\nvar greet = 'hello';\nconsole.log(greet);\n}",
+      code: "function example() {\nvar greet = 'hello';\nconsole.log(greet);\n}",
       output:
         "function example() {\nvar greet = 'hello';\n\nconsole.log(greet);\n}",
       options: [
@@ -4227,8 +4188,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var f = function() {\nvar greet = 'hello';\nconsole.log(greet);\n};",
+      code: "var f = function() {\nvar greet = 'hello';\nconsole.log(greet);\n};",
       output:
         "var f = function() {\nvar greet = 'hello';\n\nconsole.log(greet);\n};",
       options: [
@@ -4322,8 +4282,7 @@ var a = 1
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello';\nvar name = 'world';\n\nconsole.log(greet, name);",
       output:
         "var greet = 'hello';\nvar name = 'world';\nconsole.log(greet, name);",
       options: [
@@ -4350,8 +4309,7 @@ var a = 1
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello',\nname = 'world';\n\nconsole.log(greet, name);",
       output:
         "var greet = 'hello',\nname = 'world';\nconsole.log(greet, name);",
       options: [
@@ -4365,8 +4323,7 @@ var a = 1
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\n\nconsole.log(greet, name);",
+      code: "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\n\nconsole.log(greet, name);",
       output:
         "var greet = 'hello', // inline comment\nname = 'world'; // inline comment\nconsole.log(greet, name);",
       options: [
@@ -4422,8 +4379,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello';\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello';\n/* block comment\nblock comment */\nconsole.log(greet);",
       output:
         "var greet = 'hello';\n\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
@@ -4437,8 +4393,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n// next-line comment\nconsole.log(greet);",
+      code: "var greet = 'hello',\nname = 'world';\n// next-line comment\nconsole.log(greet);",
       output:
         "var greet = 'hello',\nname = 'world';\n\n// next-line comment\nconsole.log(greet);",
       options: [
@@ -4452,8 +4407,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello',\nname = 'world';\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello',\nname = 'world';\n/* block comment\nblock comment */\nconsole.log(greet);",
       output:
         "var greet = 'hello',\nname = 'world';\n\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
@@ -4467,8 +4421,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello';\n// next-line comment\n// second-line comment\nconsole.log(greet);",
+      code: "var greet = 'hello';\n// next-line comment\n// second-line comment\nconsole.log(greet);",
       output:
         "var greet = 'hello';\n\n// next-line comment\n// second-line comment\nconsole.log(greet);",
       options: [
@@ -4482,8 +4435,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        "var greet = 'hello';\n// next-line comment\n/* block comment\nblock comment */\nconsole.log(greet);",
+      code: "var greet = 'hello';\n// next-line comment\n/* block comment\nblock comment */\nconsole.log(greet);",
       output:
         "var greet = 'hello';\n\n// next-line comment\n/* block comment\nblock comment */\nconsole.log(greet);",
       options: [
@@ -4556,16 +4508,14 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\nreturn d;\n}\n}',
+      code: 'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\nreturn d;\n}\n}',
       output:
         'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\n\nreturn d;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne(); return d;\n}\n}',
+      code: 'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne(); return d;\n}\n}',
       output:
         'function a() {\nif (b) return b;\nelse if (c) return c;\nelse {\ne();\n\n return d;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
@@ -4609,8 +4559,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\n/*comment\ncomment*/\nif (b) {\nc();\nreturn b;\n} else {\n//comment\n\nreturn d;\n}\n/*multi-line\ncomment*/\nreturn e;\n}',
+      code: 'function a() {\n/*comment\ncomment*/\nif (b) {\nc();\nreturn b;\n} else {\n//comment\n\nreturn d;\n}\n/*multi-line\ncomment*/\nreturn e;\n}',
       output:
         'function a() {\n/*comment\ncomment*/\nif (b) {\nc();\n\nreturn b;\n} else {\n//comment\n\nreturn d;\n}\n\n/*multi-line\ncomment*/\nreturn e;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
@@ -4626,24 +4575,21 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nif (b) { return; } /*multi-line\ncomment*/\nreturn c;\n}',
+      code: 'function a() {\nif (b) { return; } /*multi-line\ncomment*/\nreturn c;\n}',
       output:
         'function a() {\nif (b) { return; } /*multi-line\ncomment*/\n\nreturn c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nif (b) { return; }\n/*multi-line\ncomment*/ return c;\n}',
+      code: 'function a() {\nif (b) { return; }\n/*multi-line\ncomment*/ return c;\n}',
       output:
         'function a() {\nif (b) { return; }\n\n/*multi-line\ncomment*/ return c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nif (b) { return; } /*multi-line\ncomment*/ return c;\n}',
+      code: 'function a() {\nif (b) { return; } /*multi-line\ncomment*/ return c;\n}',
       output:
         'function a() {\nif (b) { return; } /*multi-line\ncomment*/\n\n return c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
@@ -4676,16 +4622,14 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nvar c;\nwhile (b) {\n c = d; //comment\n}\nreturn c;\n}',
+      code: 'function a() {\nvar c;\nwhile (b) {\n c = d; //comment\n}\nreturn c;\n}',
       output:
         'function a() {\nvar c;\nwhile (b) {\n c = d; //comment\n}\n\nreturn c;\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function a() {\nfor (var b; b < c; b++) {\nif (d) {\nbreak; //comment\n}\nreturn;\n}\n}',
+      code: 'function a() {\nfor (var b; b < c; b++) {\nif (d) {\nbreak; //comment\n}\nreturn;\n}\n}',
       output:
         'function a() {\nfor (var b; b < c; b++) {\nif (d) {\nbreak; //comment\n}\n\nreturn;\n}\n}',
       options: [{ blankLine: 'always', prev: '*', next: 'return' }],
@@ -4836,8 +4780,7 @@ var a = 1
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code:
-        'function x() { var a = true;\n\nfor (var i = 0; i < 10; i++) { a = !a; }; }',
+      code: 'function x() { var a = true;\n\nfor (var i = 0; i < 10; i++) { a = !a; }; }',
       output:
         'function x() { var a = true;\nfor (var i = 0; i < 10; i++) { a = !a; }; }',
       options: [
@@ -4850,8 +4793,7 @@ var a = 1
       errors: [{ messageId: 'unexpectedBlankLine' }],
     },
     {
-      code:
-        'function x() { var y = true;\n\nswitch ("Oranges") { case "Oranges": y = !y;\n\nbreak;\n\ncase "Apples": y = !y;\n\nbreak; default: y = !y; } }',
+      code: 'function x() { var y = true;\n\nswitch ("Oranges") { case "Oranges": y = !y;\n\nbreak;\n\ncase "Apples": y = !y;\n\nbreak; default: y = !y; } }',
       output:
         'function x() { var y = true;\nswitch ("Oranges") { case "Oranges": y = !y;\nbreak;\ncase "Apples": y = !y;\nbreak; default: y = !y; } }',
       options: [
@@ -4869,8 +4811,7 @@ var a = 1
       ],
     },
     {
-      code:
-        'function x() {try { var a;\n\nthrow 0; } catch (e) { var b = 0;\n\nthrow e; } }',
+      code: 'function x() {try { var a;\n\nthrow 0; } catch (e) { var b = 0;\n\nthrow e; } }',
       output:
         'function x() {try { var a;\nthrow 0; } catch (e) { var b = 0;\nthrow e; } }',
       options: [
@@ -4886,8 +4827,7 @@ var a = 1
       ],
     },
     {
-      code:
-        'function x(a) { var b = 0;\n\nif (!a) { return false; };\n\nfor (var i = 0; i < b; i++) { if (!a[i]) return false; }\n\nreturn true; }',
+      code: 'function x(a) { var b = 0;\n\nif (!a) { return false; };\n\nfor (var i = 0; i < b; i++) { if (!a[i]) return false; }\n\nreturn true; }',
       output:
         'function x(a) { var b = 0;\nif (!a) { return false; };\nfor (var i = 0; i < b; i++) { if (!a[i]) return false; }\nreturn true; }',
       options: [
@@ -4990,8 +4930,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function x() { var a = true; for (var i = 0; i < 10; i++) { a = !a; }; }',
+      code: 'function x() { var a = true; for (var i = 0; i < 10; i++) { a = !a; }; }',
       output:
         'function x() { var a = true;\n\n for (var i = 0; i < 10; i++) { a = !a; }; }',
       options: [
@@ -5014,8 +4953,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function x() { var y = true; switch ("Oranges") { case "Oranges": y = !y; break; case "Apples": y = !y; break; default: y = !y; } }',
+      code: 'function x() { var y = true; switch ("Oranges") { case "Oranges": y = !y; break; case "Apples": y = !y; break; default: y = !y; } }',
       output:
         'function x() { var y = true;\n\n switch ("Oranges") { case "Oranges": y = !y;\n\n break;\n\n case "Apples": y = !y;\n\n break;\n\n default: y = !y; } }',
       options: [
@@ -5066,8 +5004,7 @@ var a = 1
       errors: [{ messageId: 'expectedBlankLine' }],
     },
     {
-      code:
-        'function x() {try { var a; throw 0; } catch (e) { var b = 0; throw e; } }',
+      code: 'function x() {try { var a; throw 0; } catch (e) { var b = 0; throw e; } }',
       output:
         'function x() {try { var a;\n\n throw 0; } catch (e) { var b = 0;\n\n throw e; } }',
       options: [
@@ -5093,8 +5030,7 @@ var a = 1
       ],
     },
     {
-      code:
-        'function x(a) { var b = 0; if (!a) { return false; }; for (var i = 0; i < b; i++) { if (!a[i]) return false; } return true; }',
+      code: 'function x(a) { var b = 0; if (!a) { return false; }; for (var i = 0; i < b; i++) { if (!a[i]) return false; } return true; }',
       output:
         'function x(a) { var b = 0;\n\n if (!a) { return false; };\n\n for (var i = 0; i < b; i++) { if (!a[i]) return false; }\n\n return true; }',
       options: [

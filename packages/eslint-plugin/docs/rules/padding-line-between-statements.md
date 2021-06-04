@@ -4,6 +4,8 @@
 
 This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements) rule.
 
+It adds support for TypeScript constructs such as `interface` and `type`.
+
 ## How to use
 
 ```jsonc
