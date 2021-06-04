@@ -64,6 +64,7 @@ module.exports = {
     ],
 
     // TODO - enable these new recommended rules
+    '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
@@ -170,6 +171,7 @@ module.exports = {
       },
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
