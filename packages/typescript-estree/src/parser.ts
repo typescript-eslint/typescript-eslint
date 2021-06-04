@@ -461,11 +461,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
-   * Generate a full ts.Program in order to be able to provide parser
-   * services, such as type-checking
+   * Generate a full ts.Program or offer provided instance in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
-    extra.projects && extra.projects.length > 0;
+    !!extra.program || (extra.projects && extra.projects.length > 0);
   const { ast, program } = getProgramAndAST(
     code,
     extra.program,
