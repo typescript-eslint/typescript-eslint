@@ -24,7 +24,7 @@ const serializer: NewPlugin = {
       // make sure it's not one of the classes from the package
       Object.getPrototypeOf(val) === Object.prototype &&
       'type' in val &&
-      val.type in AST_NODE_TYPES
+      (val as Node).type in AST_NODE_TYPES
     );
   },
   serialize(node: Node): string {
