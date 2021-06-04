@@ -317,10 +317,7 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsProjectString),
     ).toThrow(
-      `The file was not found in the provided program instance: ${path.resolve(
-        FIXTURES_DIR,
-        filename,
-      )}`,
+      `The file was not found in the provided program instance: ${filename}`,
     );
   });
 });
