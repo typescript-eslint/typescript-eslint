@@ -12,7 +12,6 @@ import type { ObjectExpression } from '../expression/ObjectExpression/spec';
 import type { SequenceExpression } from '../expression/spec';
 import type { Super } from '../expression/Super/spec';
 import type { TaggedTemplateExpression } from '../expression/TaggedTemplateExpression/spec';
-import type { TemplateLiteral } from '../expression/TemplateLiteral/spec';
 import type { ThisExpression } from '../expression/ThisExpression/spec';
 import type { TSAsExpression } from '../expression/TSAsExpression/spec';
 import type { TSNonNullExpression } from '../expression/TSNonNullExpression/spec';
@@ -39,7 +38,6 @@ export type LeftHandSideExpression =
   | SequenceExpression
   | Super
   | TaggedTemplateExpression
-  | TemplateLiteral
   | ThisExpression
   | TSAsExpression
   | TSNonNullExpression

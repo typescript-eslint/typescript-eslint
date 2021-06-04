@@ -2,14 +2,13 @@
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { TokenOrComment } from './BinarySearchTree';
 
 /**
  * A helper class to get token-based info related to indentation
  */
 export class TokenInfo {
   private readonly sourceCode: TSESLint.SourceCode;
-  public firstTokensByLineNumber: Map<number, TSESTree.Token>;
+  public readonly firstTokensByLineNumber: Map<number, TSESTree.Token>;
 
   constructor(sourceCode: TSESLint.SourceCode) {
     this.sourceCode = sourceCode;
@@ -28,7 +27,7 @@ export class TokenInfo {
         }
         return map;
       },
-      new Map(),
+      new Map<number, TSESTree.Token>(),
     );
   }
 
@@ -37,8 +36,8 @@ export class TokenInfo {
    * @returns The first token on the given line
    */
   public getFirstTokenOfLine(
-    token: TokenOrComment | TSESTree.Node,
-  ): TokenOrComment {
+    token: TSESTree.Token | TSESTree.Node,
+  ): TSESTree.Token {
     return this.firstTokensByLineNumber.get(token.loc.start.line)!;
   }
 
@@ -46,7 +45,7 @@ export class TokenInfo {
    * Determines whether a token is the first token in its line
    * @returns `true` if the token is the first on its line
    */
-  public isFirstTokenOfLine(token: TokenOrComment): boolean {
+  public isFirstTokenOfLine(token: TSESTree.Token): boolean {
     return this.getFirstTokenOfLine(token) === token;
   }
 
@@ -55,7 +54,7 @@ export class TokenInfo {
    * @param token Token to examine. This should be the first token on its line.
    * @returns The indentation characters that precede the token
    */
-  public getTokenIndent(token: TokenOrComment): string {
+  public getTokenIndent(token: TSESTree.Token): string {
     return this.sourceCode.text.slice(
       token.range[0] - token.loc.start.column,
       token.range[0],

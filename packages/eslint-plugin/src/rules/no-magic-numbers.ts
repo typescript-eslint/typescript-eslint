@@ -84,9 +84,8 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
 
-          let fullNumberNode:
-            | TSESTree.Literal
-            | TSESTree.UnaryExpression = node;
+          let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
+            node;
           let raw = node.raw;
 
           if (

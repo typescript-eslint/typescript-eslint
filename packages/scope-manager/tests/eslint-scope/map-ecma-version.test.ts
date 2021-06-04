@@ -33,7 +33,7 @@ describe('ecma version mapping', () => {
   });
 });
 
-const fakeNode = ({} as unknown) as TSESTree.Node;
+const fakeNode = {} as unknown as TSESTree.Node;
 
 function expectMapping(ecmaVersion: number | undefined, lib: Lib): void {
   (Referencer as jest.Mock).mockClear();

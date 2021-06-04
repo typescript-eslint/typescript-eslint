@@ -1,5 +1,5 @@
 // babel types are something we don't really care about
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-plus-operands */
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
 import * as BabelTypes from '@babel/types';
@@ -149,11 +149,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             range: [node.range[0], node.range[0] + node.name.length],
             type: AST_NODE_TYPES.Identifier,
           };
-        }
-      },
-      TSTypePredicate(node) {
-        if (!node.typeAnnotation) {
-          node.typeAnnotation = null;
         }
       },
       MethodDefinition(node) {

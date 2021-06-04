@@ -42,9 +42,9 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
       method: 'GET',
     });
-    const contributors:
+    const contributors = (await response.json()) as
       | Contributor[]
-      | { message: string } = await response.json();
+      | { message: string };
 
     if (!Array.isArray(contributors)) {
       throw new Error(contributors.message);
