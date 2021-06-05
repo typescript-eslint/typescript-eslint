@@ -221,6 +221,31 @@ This option allows you to programmatically provide an instance of a TypeScript P
 This will override any program that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
 All linted files must be part of the provided program.
 
+## Utilities
+
+### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `parserOptions.program` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory?: string,
+): import('typescript').Program;
+```
+
+Example usage in .eslintrc.js:
+
+```js
+const parser = require('@typescript-eslint/parser');
+const program = parser.createProgram('tsconfig.json');
+module.exports = {
+  parserOptions: {
+    program,
+  },
+};
+```
+
 ## Supported TypeScript Version
 
 Please see [`typescript-eslint`](https://github.com/typescript-eslint/typescript-eslint) for the supported TypeScript version.

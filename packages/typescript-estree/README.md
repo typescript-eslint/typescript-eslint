@@ -310,6 +310,34 @@ Types for the AST produced by the parse functions.
 - `AST_NODE_TYPES` is an enum which provides the values for every single AST node's `type` property.
 - `AST_TOKEN_TYPES` is an enum which provides the values for every single AST token's `type` property.
 
+### Utilities
+
+#### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `ParseOptions.program` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory?: string,
+): import('typescript').Program;
+```
+
+Example usage:
+
+```js
+const tsESTree = require('@typescript-eslint/typescript-estree');
+
+const program = tsESTree.createProgram('tsconfig.json');
+const code = `const hello: string = 'world';`;
+const { ast, services } = parseAndGenerateServices(code, {
+  filePath: '/some/path/to/file/foo.ts',
+  loc: true,
+  program,
+  range: true,
+});
+```
+
 ## Supported TypeScript Version
 
 See the [Supported TypeScript Version](../../README.md#supported-typescript-version) section in the project root.
