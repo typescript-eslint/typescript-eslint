@@ -38,43 +38,37 @@ function useProvidedProgram(
  */
 function createProgramFromConfigFile(
   configFile: string,
-  projectDirectory: string = path.dirname(configFile),
+  projectDirectory?: string,
 ): ts.Program {
-  const config = ts.readConfigFile(configFile, ts.sys.readFile);
-  if (config.error !== undefined) {
-    throw new Error(
-      ts.formatDiagnostics([config.error], {
-        getCanonicalFileName: f => f,
-        getCurrentDirectory: process.cwd,
-        getNewLine: () => '\n',
-      }),
-    );
-  }
-  const parseConfigHost: ts.ParseConfigHost = {
-    fileExists: fs.existsSync,
-    readDirectory: ts.sys.readDirectory,
-    readFile: file => fs.readFileSync(file, 'utf8'),
-    useCaseSensitiveFileNames: true,
-  };
-  const parsed = ts.parseJsonConfigFileContent(
-    config.config,
-    parseConfigHost,
-    path.resolve(projectDirectory),
+  const parsed = ts.getParsedCommandLineOfConfigFile(
+    configFile,
     { noEmit: true },
+    {
+      onUnRecoverableConfigFileDiagnostic: diag => {
+        throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
+      },
+      fileExists: fs.existsSync,
+      getCurrentDirectory: () =>
+        (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
+      readDirectory: ts.sys.readDirectory,
+      readFile: file => fs.readFileSync(file, 'utf-8'),
+      useCaseSensitiveFileNames: true,
+    },
   );
-  if (parsed.errors.length) {
-    throw new Error(
-      ts.formatDiagnostics(parsed.errors, {
-        getCanonicalFileName: f => f,
-        getCurrentDirectory: process.cwd,
-        getNewLine: () => '\n',
-      }),
-    );
+  const result = parsed!; // parsed is not undefined, since we throw on failure.
+  if (result.errors.length) {
+    throw new Error(formatDiagnostics(result.errors));
   }
-  const host = ts.createCompilerHost(parsed.options, true);
-  const program = ts.createProgram(parsed.fileNames, parsed.options, host);
+  const host = ts.createCompilerHost(result.options, true);
+  return ts.createProgram(result.fileNames, result.options, host);
+}
 
-  return program;
+function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
+  return ts.formatDiagnostics(diagnostics, {
+    getCanonicalFileName: f => f,
+    getCurrentDirectory: process.cwd,
+    getNewLine: () => '\n',
+  });
 }
 
 export { useProvidedProgram, createProgramFromConfigFile };
