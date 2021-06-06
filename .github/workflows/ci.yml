@@ -231,6 +231,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 14.x]
+        eslint-version: [5, 6, 7]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -255,49 +257,59 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check:clean-workspace-after-install
 
-      - name: Build
+      - name: Use eslint v${{ matrix.eslint-version }}
         run: |
-          yarn build
+          yarn add -DW eslint@${{ matrix.eslint-version }} --ignore-scripts
+
+      - name: Build
+        run: yarn build
 
       - name: Run unit tests for typescript-estree
         run: yarn test
         working-directory: packages/typescript-estree
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
         run: yarn test
         working-directory: packages/visitor-keys
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
         run: yarn test
         working-directory: packages/scope-manager
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
         run: yarn test
         working-directory: packages/experimental-utils
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for parser
         run: yarn test
         working-directory: packages/parser
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
         run: yarn test
         working-directory: packages/eslint-plugin
+        if: ${{ always() }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
         run: yarn test
         working-directory: packages/eslint-plugin-tslint
+        if: ${{ always() }}
         env:
           CI: true
 
