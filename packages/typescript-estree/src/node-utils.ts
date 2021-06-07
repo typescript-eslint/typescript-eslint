@@ -611,7 +611,7 @@ export function convertToken(
   } else {
     return {
       type: tokenType,
-      value,
+      value: value as never,
       range: [start, end],
       loc: getLocFor(start, end, ast),
     };
