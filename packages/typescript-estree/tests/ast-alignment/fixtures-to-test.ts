@@ -391,6 +391,7 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: Unexpected token, expected ","
      */
     'class-with-constructor-and-parameter-property-with-modifiers',
+    'class-with-constructor-and-parameter-proptery-with-override-modifier',
   ],
   ignoreSourceType: [
     /**
