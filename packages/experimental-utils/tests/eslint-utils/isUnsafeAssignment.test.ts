@@ -1,9 +1,8 @@
 import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { parseForESLint } from '@typescript-eslint/parser';
+import { getFixturesRootDir } from '@typescript-eslint/eslint-plugin/tests/RuleTester';
 import path from 'path';
-import { getFixturesRootDir } from '../RuleTester';
-import { isUnsafeAssignment } from '../../src/util';
+import { ESLintUtils, TSESTree } from '../../src';
 
 describe('isUnsafeAssignment', () => {
   const rootDir = getFixturesRootDir();
@@ -38,7 +37,7 @@ describe('isUnsafeAssignment', () => {
 
   describe('unsafe', () => {
     function expectTypesAre(
-      result: ReturnType<typeof isUnsafeAssignment>,
+      result: ReturnType<typeof ESLintUtils.isUnsafeAssignment>,
       checker: ts.TypeChecker,
       senderStr: string,
       receiverStr: string,
