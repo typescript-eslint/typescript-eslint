@@ -3,7 +3,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { Extra } from '../parser-options';
-import { ASTAndProgram, getAstFromProgram } from './shared';
+import {
+  ASTAndProgram,
+  CORE_COMPILER_OPTIONS,
+  getAstFromProgram,
+} from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
@@ -35,14 +39,23 @@ function useProvidedProgram(
 
 /**
  * Utility offered by parser to help consumers construct their own program instance.
+ *
+ * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
+ * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
 function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.Program {
+  if (ts.sys === undefined) {
+    throw new Error(
+      '`createProgramFromConfigFile` is only supported in a Node-like environment.',
+    );
+  }
+
   const parsed = ts.getParsedCommandLineOfConfigFile(
     configFile,
-    { noEmit: true },
+    CORE_COMPILER_OPTIONS,
     {
       onUnRecoverableConfigFileDiagnostic: diag => {
         throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
@@ -52,7 +65,7 @@ function createProgramFromConfigFile(
         (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
       readDirectory: ts.sys.readDirectory,
       readFile: file => fs.readFileSync(file, 'utf-8'),
-      useCaseSensitiveFileNames: true,
+      useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
     },
   );
   const result = parsed!; // parsed is not undefined, since we throw on failure.

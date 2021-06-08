@@ -319,7 +319,7 @@ This serves as a utility method for users of the `ParseOptions.program` feature 
 ```ts
 declare function createProgram(
   configFile: string,
-  projectDirectory?: string,
+  projectDirectory: string = process.cwd(),
 ): import('typescript').Program;
 ```
 

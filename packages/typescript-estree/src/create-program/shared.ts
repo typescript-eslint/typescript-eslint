@@ -9,19 +9,26 @@ interface ASTAndProgram {
 }
 
 /**
- * Default compiler options for program generation from single root file
+ * Compiler options required to avoid critical functionality issues
  */
-const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
-  allowNonTsExtensions: true,
-  allowJs: true,
-  checkJs: true,
-  noEmit: true,
-  // extendedDiagnostics: true,
+const CORE_COMPILER_OPTIONS: ts.CompilerOptions = {
+  noEmit: true, // required to avoid parse from causing emit to occur
+
   /**
    * Flags required to make no-unused-vars work
    */
   noUnusedLocals: true,
   noUnusedParameters: true,
+};
+
+/**
+ * Default compiler options for program generation
+ */
+const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
+  ...CORE_COMPILER_OPTIONS,
+  allowNonTsExtensions: true,
+  allowJs: true,
+  checkJs: true,
 };
 
 function createDefaultCompilerOptionsFromExtra(
@@ -119,6 +126,7 @@ function getAstFromProgram(
 
 export {
   ASTAndProgram,
+  CORE_COMPILER_OPTIONS,
   canonicalDirname,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,

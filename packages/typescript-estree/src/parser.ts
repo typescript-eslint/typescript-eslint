@@ -464,7 +464,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Generate a full ts.Program or offer provided instance in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
-    !!extra.program || (extra.projects && extra.projects.length > 0);
+    extra.program != null || (extra.projects && extra.projects.length > 0);
   const { ast, program } = getProgramAndAST(
     code,
     extra.program,
