@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs';
+import * as fs from 'fs';
 import glob from 'glob';
-import { extname, join, resolve } from 'path';
+import * as path from 'path';
 import * as ts from 'typescript';
 import { TSESTreeOptions } from '../../src/parser-options';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../tools/test-utils';
 import {
   clearCaches,
+  createProgram,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
 } from '../../src';
@@ -30,7 +31,7 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
     useJSXTextNode: false,
     errorOnUnknownASTType: true,
     filePath: fileName,
-    tsconfigRootDir: join(process.cwd(), FIXTURES_DIR),
+    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
     project: `./tsconfig.json`,
     loggerFn: false,
   };
@@ -42,9 +43,9 @@ beforeEach(() => clearCaches());
 describe('semanticInfo', () => {
   // test all AST snapshots
   testFiles.forEach(filename => {
-    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     it(
-      formatSnapshotName(filename, FIXTURES_DIR, extname(filename)),
+      formatSnapshotName(filename, FIXTURES_DIR, path.extname(filename)),
       createSnapshotTestBlock(
         code,
         createOptions(filename),
@@ -55,7 +56,7 @@ describe('semanticInfo', () => {
 
   it(`should cache the created ts.program`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -70,7 +71,7 @@ describe('semanticInfo', () => {
 
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -87,7 +88,7 @@ describe('semanticInfo', () => {
 
   it(`should resolve absolute and relative tsconfig paths the same`, () => {
     const filename = testFiles[0];
-    const code = readFileSync(join(FIXTURES_DIR, filename), 'utf8');
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsAbsolutePath = {
       ...options,
@@ -119,9 +120,9 @@ describe('semanticInfo', () => {
 
   // case-specific tests
   it('isolated-file tests', () => {
-    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
-      readFileSync(fileName, 'utf8'),
+      fs.readFileSync(fileName, 'utf8'),
       createOptions(fileName),
     );
 
@@ -129,9 +130,9 @@ describe('semanticInfo', () => {
   });
 
   it('isolated-vue-file tests', () => {
-    const fileName = resolve(FIXTURES_DIR, 'extra-file-extension.vue');
+    const fileName = path.resolve(FIXTURES_DIR, 'extra-file-extension.vue');
     const parseResult = parseCodeAndGenerateServices(
-      readFileSync(fileName, 'utf8'),
+      fs.readFileSync(fileName, 'utf8'),
       {
         ...createOptions(fileName),
         extraFileExtensions: ['.vue'],
@@ -142,9 +143,12 @@ describe('semanticInfo', () => {
   });
 
   it('non-existent-estree-nodes tests', () => {
-    const fileName = resolve(FIXTURES_DIR, 'non-existent-estree-nodes.src.ts');
+    const fileName = path.resolve(
+      FIXTURES_DIR,
+      'non-existent-estree-nodes.src.ts',
+    );
     const parseResult = parseCodeAndGenerateServices(
-      readFileSync(fileName, 'utf8'),
+      fs.readFileSync(fileName, 'utf8'),
       createOptions(fileName),
     );
 
@@ -166,9 +170,9 @@ describe('semanticInfo', () => {
   });
 
   it('imported-file tests', () => {
-    const fileName = resolve(FIXTURES_DIR, 'import-file.src.ts');
+    const fileName = path.resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
-      readFileSync(fileName, 'utf8'),
+      fs.readFileSync(fileName, 'utf8'),
       createOptions(fileName),
     );
 
@@ -242,20 +246,26 @@ describe('semanticInfo', () => {
   });
 
   it('non-existent project file', () => {
-    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = './tsconfigs.json';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
+      parseCodeAndGenerateServices(
+        fs.readFileSync(fileName, 'utf8'),
+        badConfig,
+      ),
     ).toThrow(/Cannot read file .+tsconfigs\.json'/);
   });
 
   it('fail to read project file', () => {
-    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = '.';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
+      parseCodeAndGenerateServices(
+        fs.readFileSync(fileName, 'utf8'),
+        badConfig,
+      ),
     ).toThrow(
       // case insensitive because unix based systems are case insensitive
       /Cannot read file .+semanticInfo'./i,
@@ -263,11 +273,14 @@ describe('semanticInfo', () => {
   });
 
   it('malformed project file', () => {
-    const fileName = resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.project = './badTSConfig/tsconfig.json';
     expect(() =>
-      parseCodeAndGenerateServices(readFileSync(fileName, 'utf8'), badConfig),
+      parseCodeAndGenerateServices(
+        fs.readFileSync(fileName, 'utf8'),
+        badConfig,
+      ),
     ).toThrowErrorMatchingSnapshot();
   });
 
@@ -278,6 +291,45 @@ describe('semanticInfo', () => {
     });
 
     expect(parseResult.services.program).toBeDefined();
+  });
+
+  it(`provided program instance is returned in result`, () => {
+    const filename = testFiles[0];
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      program: program,
+      project: './tsconfig.json',
+    };
+    const parseResult = parseAndGenerateServices(code, optionsProjectString);
+    expect(parseResult.services.program).toBe(program);
+  });
+
+  it('file not in provided program instance', () => {
+    const filename = 'non-existant-file.ts';
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const options = createOptions(filename);
+    const optionsProjectString = {
+      ...options,
+      program: program,
+    };
+    expect(() =>
+      parseAndGenerateServices('const foo = 5;', optionsProjectString),
+    ).toThrow(
+      `The file was not found in the provided program instance: ${filename}`,
+    );
+  });
+
+  it('createProgram fails on non-existant file', () => {
+    expect(() => createProgram('tsconfig.non-existant.json')).toThrow();
+  });
+
+  it('createProgram fails on tsconfig with errors', () => {
+    expect(() =>
+      createProgram(path.join(FIXTURES_DIR, 'badTSConfig', 'tsconfig.json')),
+    ).toThrow();
   });
 });
 

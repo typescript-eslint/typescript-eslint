@@ -48,5 +48,8 @@
         "_ts3.4/*"
       ]
     }
+  },
+  "devDependencies": {
+    "typescript": "*"
   }
 }

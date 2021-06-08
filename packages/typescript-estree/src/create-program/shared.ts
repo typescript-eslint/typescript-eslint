@@ -1,5 +1,6 @@
 import path from 'path';
 import * as ts from 'typescript';
+import { Program } from 'typescript';
 import { Extra } from '../parser-options';
 
 interface ASTAndProgram {
@@ -8,19 +9,26 @@ interface ASTAndProgram {
 }
 
 /**
- * Default compiler options for program generation from single root file
+ * Compiler options required to avoid critical functionality issues
  */
-const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
-  allowNonTsExtensions: true,
-  allowJs: true,
-  checkJs: true,
-  noEmit: true,
-  // extendedDiagnostics: true,
+const CORE_COMPILER_OPTIONS: ts.CompilerOptions = {
+  noEmit: true, // required to avoid parse from causing emit to occur
+
   /**
    * Flags required to make no-unused-vars work
    */
   noUnusedLocals: true,
   noUnusedParameters: true,
+};
+
+/**
+ * Default compiler options for program generation
+ */
+const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
+  ...CORE_COMPILER_OPTIONS,
+  allowNonTsExtensions: true,
+  allowJs: true,
+  checkJs: true,
 };
 
 function createDefaultCompilerOptionsFromExtra(
@@ -93,12 +101,37 @@ function getScriptKind(
   }
 }
 
+function getExtension(fileName: string | undefined): string | null {
+  if (!fileName) {
+    return null;
+  }
+  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName);
+}
+
+function getAstFromProgram(
+  currentProgram: Program,
+  extra: Extra,
+): ASTAndProgram | undefined {
+  const ast = currentProgram.getSourceFile(extra.filePath);
+
+  // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
+  const expectedExt = getExtension(extra.filePath);
+  const returnedExt = getExtension(ast?.fileName);
+  if (expectedExt !== returnedExt) {
+    return undefined;
+  }
+
+  return ast && { ast, program: currentProgram };
+}
+
 export {
   ASTAndProgram,
+  CORE_COMPILER_OPTIONS,
   canonicalDirname,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   ensureAbsolutePath,
   getCanonicalFileName,
   getScriptKind,
+  getAstFromProgram,
 };

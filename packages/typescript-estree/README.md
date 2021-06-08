@@ -209,6 +209,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
+   * Instance of a TypeScript Program object to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program.
+   */
+  program?: import('typescript').Program;
+
+  /**
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************
@@ -302,6 +309,34 @@ Types for the AST produced by the parse functions.
 - `TSESTree` is a namespace which contains object types representing all of the AST Nodes produced by the parser.
 - `AST_NODE_TYPES` is an enum which provides the values for every single AST node's `type` property.
 - `AST_TOKEN_TYPES` is an enum which provides the values for every single AST token's `type` property.
+
+### Utilities
+
+#### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `ParseOptions.program` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory: string = process.cwd(),
+): import('typescript').Program;
+```
+
+Example usage:
+
+```js
+const tsESTree = require('@typescript-eslint/typescript-estree');
+
+const program = tsESTree.createProgram('tsconfig.json');
+const code = `const hello: string = 'world';`;
+const { ast, services } = parseAndGenerateServices(code, {
+  filePath: '/some/path/to/file/foo.ts',
+  loc: true,
+  program,
+  range: true,
+});
+```
 
 ## Supported TypeScript Version
 

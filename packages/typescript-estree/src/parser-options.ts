@@ -20,6 +20,7 @@ export interface Extra {
   loc: boolean;
   log: (message: string) => void;
   preserveNodeMaps?: boolean;
+  program: null | Program;
   projects: CanonicalPath[];
   range: boolean;
   strict: boolean;
@@ -168,6 +169,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir?: string;
+
+  /**
+   * Instance of a TypeScript Program object to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program.
+   */
+  program?: Program;
 
   /**
    ***************************************************************************************
