@@ -9,7 +9,7 @@ import {
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
 import {
-  clearCaches,
+  clearWatchCaches,
   createProgram,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
@@ -37,8 +37,8 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   };
 }
 
-// ensure tsconfig-parser caches are clean for each test
-beforeEach(() => clearCaches());
+// ensure tsconfig-parser watch caches are clean for each test
+beforeEach(() => clearWatchCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots

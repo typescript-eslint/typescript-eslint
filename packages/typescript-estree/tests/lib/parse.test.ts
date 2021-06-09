@@ -632,7 +632,7 @@ describe('parseAndGenerateServices', () => {
 
   describe('projectFolderIgnoreList', () => {
     beforeEach(() => {
-      parser.clearCaches();
+      parser.clearWatchCaches();
     });
 
     const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectFolderIgnoreList');

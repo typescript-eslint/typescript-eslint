@@ -18,6 +18,7 @@ export interface Extra {
   filePath: string;
   jsx: boolean;
   loc: boolean;
+  singleRun: boolean;
   log: (message: string) => void;
   preserveNodeMaps?: boolean;
   programs: null | Program[];

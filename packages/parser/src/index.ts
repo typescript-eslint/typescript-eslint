@@ -1,7 +1,7 @@
 export { parse, parseForESLint, ParserOptions } from './parser';
 export {
   ParserServices,
-  clearCaches,
+  clearWatchCaches,
   createProgram,
 } from '@typescript-eslint/typescript-estree';
 
