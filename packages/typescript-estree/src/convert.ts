@@ -1585,6 +1585,8 @@ export class Converter {
               hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
             static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
             export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
+            override:
+              hasModifier(SyntaxKind.OverrideKeyword, node) || undefined,
             parameter: result,
           });
         }
