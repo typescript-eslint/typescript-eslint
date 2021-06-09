@@ -11,15 +11,23 @@ import {
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
-function useProvidedProgram(
-  programInstance: ts.Program,
+function useProvidedPrograms(
+  programInstances: ts.Program[],
   extra: Extra,
 ): ASTAndProgram | undefined {
-  log('Retrieving ast for %s from provided program instance', extra.filePath);
+  log(
+    'Retrieving ast for %s from provided program instance(s)',
+    extra.filePath,
+  );
 
-  programInstance.getTypeChecker(); // ensure parent pointers are set in source files
-
-  const astAndProgram = getAstFromProgram(programInstance, extra);
+  let astAndProgram: ASTAndProgram | undefined;
+  for (const programInstance of programInstances) {
+    astAndProgram = getAstFromProgram(programInstance, extra);
+    // Stop at the first applicable program instance
+    if (astAndProgram) {
+      break;
+    }
+  }
 
   if (!astAndProgram) {
     const relativeFilePath = path.relative(
@@ -27,12 +35,14 @@ function useProvidedProgram(
       extra.filePath,
     );
     const errorLines = [
-      '"parserOptions.program" has been provided for @typescript-eslint/parser.',
-      `The file was not found in the provided program instance: ${relativeFilePath}`,
+      '"parserOptions.programs" has been provided for @typescript-eslint/parser.',
+      `The file was not found in any of the provided program instance(s): ${relativeFilePath}`,
     ];
 
     throw new Error(errorLines.join('\n'));
   }
+
+  astAndProgram.program.getTypeChecker(); // ensure parent pointers are set in source files
 
   return astAndProgram;
 }
@@ -84,4 +94,4 @@ function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
   });
 }
 
-export { useProvidedProgram, createProgramFromConfigFile };
+export { useProvidedPrograms, createProgramFromConfigFile };

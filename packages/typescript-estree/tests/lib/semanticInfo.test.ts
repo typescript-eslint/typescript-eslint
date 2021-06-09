@@ -293,37 +293,58 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeDefined();
   });
 
-  it(`provided program instance is returned in result`, () => {
+  it('empty programs array should throw', () => {
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const badConfig = createOptions(fileName);
+    badConfig.programs = [];
+    expect(() => parseAndGenerateServices('const foo = 5;', badConfig)).toThrow(
+      'You have set parserOptions.programs to an empty array. This will cause all files to not be found in existing programs. Either provide one or more existing TypeScript Program instances in the array, or remove the parserOptions.programs setting.',
+    );
+  });
+
+  it(`first matching provided program instance is returned in result`, () => {
     const filename = testFiles[0];
-    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
-      program: program,
+      programs: [program1, program2],
       project: './tsconfig.json',
     };
     const parseResult = parseAndGenerateServices(code, optionsProjectString);
-    expect(parseResult.services.program).toBe(program);
+    expect(parseResult.services.program).toBe(program1);
   });
 
-  it('file not in provided program instance', () => {
-    const filename = 'non-existant-file.ts';
-    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+  it('file not in provided program instance(s)', () => {
+    const filename = 'non-existent-file.ts';
+    const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const options = createOptions(filename);
-    const optionsProjectString = {
+    const optionsWithSingleProgram = {
       ...options,
-      program: program,
+      programs: [program1],
     };
     expect(() =>
-      parseAndGenerateServices('const foo = 5;', optionsProjectString),
+      parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      `The file was not found in the provided program instance: ${filename}`,
+      `The file was not found in any of the provided program instance(s): ${filename}`,
+    );
+
+    const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const optionsWithMultiplePrograms = {
+      ...options,
+      programs: [program1, program2],
+    };
+    expect(() =>
+      parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
+    ).toThrow(
+      `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
 
-  it('createProgram fails on non-existant file', () => {
-    expect(() => createProgram('tsconfig.non-existant.json')).toThrow();
+  it('createProgram fails on non-existent file', () => {
+    expect(() => createProgram('tsconfig.non-existent.json')).toThrow();
   });
 
   it('createProgram fails on tsconfig with errors', () => {
