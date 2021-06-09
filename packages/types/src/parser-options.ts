@@ -1,4 +1,5 @@
 import { Lib } from './lib';
+import type { Program } from 'typescript';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
@@ -41,6 +42,7 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   loc?: boolean;
+  program?: Program;
   project?: string | string[];
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;

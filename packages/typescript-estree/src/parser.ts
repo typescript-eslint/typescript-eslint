@@ -18,6 +18,8 @@ import {
   ensureAbsolutePath,
   getCanonicalFileName,
 } from './create-program/shared';
+import { Program } from 'typescript';
+import { useProvidedProgram } from './create-program/useProvidedProgram';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -61,10 +63,12 @@ function enforceString(code: unknown): string {
  */
 function getProgramAndAST(
   code: string,
+  programInstance: Program | null,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
 ): ASTAndProgram {
   return (
+    (programInstance && useProvidedProgram(programInstance, extra)) ||
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
     (shouldProvideParserServices &&
@@ -105,6 +109,7 @@ function resetExtra(): void {
     loc: false,
     log: console.log, // eslint-disable-line no-console
     preserveNodeMaps: true,
+    program: null,
     projects: [],
     range: false,
     strict: false,
@@ -264,22 +269,32 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  const projectFolderIgnoreList = (
-    options.projectFolderIgnoreList ?? ['**/node_modules/**']
-  )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
-  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
-  extra.projects = prepareAndTransformProjects(
-    options.project,
-    projectFolderIgnoreList,
-  );
+  if (options.program && typeof options.program === 'object') {
+    extra.program = options.program;
+    log(
+      'parserOptions.program was provided, so parserOptions.project will be ignored.',
+    );
+  }
+
+  if (!extra.program) {
+    // providing a program overrides project resolution
+    const projectFolderIgnoreList = (
+      options.projectFolderIgnoreList ?? ['**/node_modules/**']
+    )
+      .reduce<string[]>((acc, folder) => {
+        if (typeof folder === 'string') {
+          acc.push(folder);
+        }
+        return acc;
+      }, [])
+      // prefix with a ! for not match glob
+      .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+    // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
+    extra.projects = prepareAndTransformProjects(
+      options.project,
+      projectFolderIgnoreList,
+    );
+  }
 
   if (
     Array.isArray(options.extraFileExtensions) &&
@@ -446,13 +461,13 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
-   * Generate a full ts.Program in order to be able to provide parser
-   * services, such as type-checking
+   * Generate a full ts.Program or offer provided instance in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
-    extra.projects && extra.projects.length > 0;
+    extra.program != null || (extra.projects && extra.projects.length > 0);
   const { ast, program } = getProgramAndAST(
     code,
+    extra.program,
     shouldProvideParserServices,
     extra.createDefaultProgram,
   )!;
