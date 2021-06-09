@@ -20,7 +20,7 @@ export interface Extra {
   loc: boolean;
   log: (message: string) => void;
   preserveNodeMaps?: boolean;
-  program: null | Program;
+  programs: null | Program[];
   projects: CanonicalPath[];
   range: boolean;
   strict: boolean;
@@ -171,11 +171,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
-   * Instance of a TypeScript Program object to be used for type information.
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
    * This overrides any program or programs that would have been computed from the `project` option.
-   * All linted files must be part of the provided program.
+   * All linted files must be part of the provided program(s).
    */
-  program?: Program;
+  programs?: Program[];
 
   /**
    ***************************************************************************************

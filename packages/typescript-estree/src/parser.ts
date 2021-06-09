@@ -19,7 +19,7 @@ import {
   getCanonicalFileName,
 } from './create-program/shared';
 import { Program } from 'typescript';
-import { useProvidedProgram } from './create-program/useProvidedProgram';
+import { useProvidedPrograms } from './create-program/useProvidedPrograms';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -57,18 +57,20 @@ function enforceString(code: unknown): string {
 
 /**
  * @param code The code of the file being linted
+ * @param programInstances One or more existing programs to use
  * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
  * @param shouldCreateDefaultProgram True if the program should be created from compiler host
  * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   code: string,
-  programInstance: Program | null,
+  programInstances: Program[] | null,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
 ): ASTAndProgram {
   return (
-    (programInstance && useProvidedProgram(programInstance, extra)) ||
+    (programInstances?.length &&
+      useProvidedPrograms(programInstances, extra)) ||
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
     (shouldProvideParserServices &&
@@ -109,7 +111,7 @@ function resetExtra(): void {
     loc: false,
     log: console.log, // eslint-disable-line no-console
     preserveNodeMaps: true,
-    program: null,
+    programs: null,
     projects: [],
     range: false,
     strict: false,
@@ -269,14 +271,19 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  if (options.program && typeof options.program === 'object') {
-    extra.program = options.program;
+  if (Array.isArray(options.programs)) {
+    if (!options.programs.length) {
+      throw new Error(
+        `You have set parserOptions.programs to an empty array. This will cause all files to not be found in existing programs. Either provide one or more existing TypeScript Program instances in the array, or remove the parserOptions.programs setting.`,
+      );
+    }
+    extra.programs = options.programs;
     log(
-      'parserOptions.program was provided, so parserOptions.project will be ignored.',
+      'parserOptions.programs was provided, so parserOptions.project will be ignored.',
     );
   }
 
-  if (!extra.program) {
+  if (!extra.programs) {
     // providing a program overrides project resolution
     const projectFolderIgnoreList = (
       options.projectFolderIgnoreList ?? ['**/node_modules/**']
@@ -464,10 +471,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Generate a full ts.Program or offer provided instance in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
-    extra.program != null || (extra.projects && extra.projects.length > 0);
+    extra.programs != null || (extra.projects && extra.projects.length > 0);
   const { ast, program } = getProgramAndAST(
     code,
-    extra.program,
+    extra.programs,
     shouldProvideParserServices,
     extra.createDefaultProgram,
   )!;
