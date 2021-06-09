@@ -213,19 +213,19 @@ Default `false`.
 
 This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
 
-### `parserOptions.program`
+### `parserOptions.programs`
 
 Default `undefined`.
 
-This option allows you to programmatically provide an instance of a TypeScript Program object that will provide type information to rules.
-This will override any program that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
-All linted files must be part of the provided program.
+This option allows you to programmatically provide an array of one or more instances of a TypeScript Program object that will provide type information to rules.
+This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+All linted files must be part of the provided program(s).
 
 ## Utilities
 
 ### `createProgram(configFile, projectDirectory)`
 
-This serves as a utility method for users of the `parserOptions.program` feature to create a TypeScript program instance from a config file.
+This serves as a utility method for users of the `parserOptions.programs` feature to create a TypeScript program instance from a config file.
 
 ```ts
 declare function createProgram(
@@ -238,10 +238,10 @@ Example usage in .eslintrc.js:
 
 ```js
 const parser = require('@typescript-eslint/parser');
-const program = parser.createProgram('tsconfig.json');
+const programs = [parser.createProgram('tsconfig.json')];
 module.exports = {
   parserOptions: {
-    program,
+    programs,
   },
 };
 ```

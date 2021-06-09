@@ -35,7 +35,7 @@ function useProvidedPrograms(
       extra.filePath,
     );
     const errorLines = [
-      '"parserOptions.program" has been provided for @typescript-eslint/parser.',
+      '"parserOptions.programs" has been provided for @typescript-eslint/parser.',
       `The file was not found in any of the provided program instance(s): ${relativeFilePath}`,
     ];
 
