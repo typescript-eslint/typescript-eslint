@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { clearWatchCaches, parseAndGenerateServices } from '../../src';
+import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { parseAndGenerateServices } from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',

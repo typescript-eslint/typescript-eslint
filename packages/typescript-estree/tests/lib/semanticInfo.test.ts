@@ -2,19 +2,19 @@ import * as fs from 'fs';
 import glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
+import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
+import {
+  parseAndGenerateServices,
+  ParseAndGenerateServicesResult,
+} from '../../src/parser';
 import { TSESTreeOptions } from '../../src/parser-options';
+import { TSESTree } from '../../src/ts-estree';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../../tools/test-utils';
-import {
-  clearWatchCaches,
-  createProgram,
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-} from '../../src';
-import { TSESTree } from '../../src/ts-estree';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`**/*.src.ts`, {
