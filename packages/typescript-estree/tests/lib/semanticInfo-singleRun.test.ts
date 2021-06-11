@@ -94,12 +94,19 @@ describe('semanticInfo - singleRun', () => {
   });
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {
+    // For when these tests themselves are running in CI, we need to ignore that for this particular spec
+    const originalEnvCI = process.env.CI;
+    process.env.CI = 'false';
+
     /**
-     * Nothing to indicate it is a single run, so createProgramFromConfigFile should
+     * At this point there is nothing to indicate it is a single run, so createProgramFromConfigFile should
      * never be called
      */
     parseAndGenerateServices(code, options);
     expect(createProgramFromConfigFile).not.toHaveBeenCalled();
+
+    // Restore process data
+    process.env.CI = originalEnvCI;
   });
 
   it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inferrence criteria apply', () => {
