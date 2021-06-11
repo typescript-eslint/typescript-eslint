@@ -71,13 +71,14 @@ const testFiles = glob.sync(`**/*.src.ts`, {
 });
 
 const code = 'const foo = 5;';
-// File will not be found in the first tsconfig's Program, but will be in the second
+// File will not be found in the first Program, but will be in the second
 const tsconfigs = ['./non-matching-tsconfig.json', './tsconfig.json'];
 const options = {
   filePath: testFiles[0],
   tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   loggerFn: false,
   project: tsconfigs,
+  allowAutomaticSingleRunInference: true,
 } as const;
 
 const resolvedProject = (p: string): string =>
