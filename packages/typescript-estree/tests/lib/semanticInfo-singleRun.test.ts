@@ -1,6 +1,7 @@
 import glob from 'glob';
 import * as path from 'path';
 import { clearProgramCache, parseAndGenerateServices } from '../../src';
+import { getCanonicalFileName } from '../../src/create-program/shared';
 
 const mockProgram = {
   getSourceFile(): void {
@@ -82,7 +83,7 @@ const options = {
 } as const;
 
 const resolvedProject = (p: string): string =>
-  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p).toLowerCase();
+  getCanonicalFileName(path.resolve(path.join(process.cwd(), FIXTURES_DIR), p));
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {
