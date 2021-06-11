@@ -2,7 +2,7 @@ export * from './parser';
 export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
-export { clearCaches } from './create-program/createWatchProgram';
+export { clearWatchCaches as clearCaches } from './create-program/createWatchProgram';
 export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 
 // re-export for backwards-compat

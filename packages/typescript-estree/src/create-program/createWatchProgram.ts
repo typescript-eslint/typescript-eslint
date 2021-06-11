@@ -50,7 +50,7 @@ const parsedFilesSeenHash = new Map<CanonicalPath, string>();
  * Clear all of the parser caches.
  * This should only be used in testing to ensure the parser is clean between tests.
  */
-function clearCaches(): void {
+function clearWatchCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
@@ -530,4 +530,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearCaches, createWatchProgram, getProgramsForProjects };
+export { clearWatchCaches, createWatchProgram, getProgramsForProjects };
