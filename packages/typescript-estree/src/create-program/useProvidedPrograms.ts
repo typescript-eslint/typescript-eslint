@@ -12,7 +12,7 @@ import {
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
 function useProvidedPrograms(
-  programInstances: ts.Program[],
+  programInstances: ts.Program[] | Iterable<ts.Program>,
   extra: Extra,
 ): ASTAndProgram | undefined {
   log(

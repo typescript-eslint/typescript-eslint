@@ -225,6 +225,20 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
   createDefaultProgram?: boolean;
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
+   * whether or not ESLint is being used as part of a single run.
+   */
+  allowAutomaticSingleRunInference?: boolean;
 }
 
 interface ParserServices {
