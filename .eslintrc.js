@@ -25,6 +25,7 @@ module.exports = {
       './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
     ],
+    allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,

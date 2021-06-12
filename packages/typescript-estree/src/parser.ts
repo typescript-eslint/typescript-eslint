@@ -2,6 +2,7 @@ import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
 import semver from 'semver';
+import { normalize } from 'path';
 import * as ts from 'typescript';
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
@@ -18,8 +19,10 @@ import {
   ensureAbsolutePath,
   getCanonicalFileName,
 } from './create-program/shared';
-import { Program } from 'typescript';
-import { useProvidedPrograms } from './create-program/useProvidedPrograms';
+import {
+  createProgramFromConfigFile,
+  useProvidedPrograms,
+} from './create-program/useProvidedPrograms';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -44,6 +47,16 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 let extra: Extra;
 let warnedAboutTSVersion = false;
 
+/**
+ * Cache existing programs for the single run use-case.
+ *
+ * clearProgramCache() is only intended to be used in testing to ensure the parser is clean between tests.
+ */
+const existingPrograms = new Map<CanonicalPath, ts.Program>();
+function clearProgramCache(): void {
+  existingPrograms.clear();
+}
+
 function enforceString(code: unknown): string {
   /**
    * Ensure the source code is a string
@@ -57,20 +70,19 @@ function enforceString(code: unknown): string {
 
 /**
  * @param code The code of the file being linted
- * @param programInstances One or more existing programs to use
+ * @param programInstances One or more (potentially lazily constructed) existing programs to use
  * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
  * @param shouldCreateDefaultProgram True if the program should be created from compiler host
  * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   code: string,
-  programInstances: Program[] | null,
+  programInstances: Iterable<ts.Program> | null,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
 ): ASTAndProgram {
   return (
-    (programInstances?.length &&
-      useProvidedPrograms(programInstances, extra)) ||
+    (programInstances && useProvidedPrograms(programInstances, extra)) ||
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
     (shouldProvideParserServices &&
@@ -118,6 +130,11 @@ function resetExtra(): void {
     tokens: null,
     tsconfigRootDir: process.cwd(),
     useJSXTextNode: false,
+    /**
+     * Unless we can reliably infer otherwise, we default to assuming that this run could be part
+     * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
+     */
+    singleRun: false,
   };
 }
 
@@ -347,6 +364,47 @@ function warnAboutTSVersion(): void {
   }
 }
 
+/**
+ * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+ * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+ * on a file in an IDE).
+ *
+ * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+ * is important because there is significant overhead to managing the so called Watch Programs
+ * needed for the long-running use-case. We therefore use the following logic to figure out which
+ * of these contexts applies to the current execution.
+ */
+function inferSingleRun(options: TSESTreeOptions | undefined): void {
+  // Allow users to explicitly inform us of their intent to perform a single run (or not) with TSESTREE_SINGLE_RUN
+  if (process.env.TSESTREE_SINGLE_RUN === 'false') {
+    extra.singleRun = false;
+    return;
+  }
+  if (process.env.TSESTREE_SINGLE_RUN === 'true') {
+    extra.singleRun = true;
+    return;
+  }
+
+  // Currently behind a flag while we gather real-world feedback
+  if (options?.allowAutomaticSingleRunInference) {
+    if (
+      // Default to single runs for CI processes. CI=true is set by most CI providers by default.
+      process.env.CI === 'true' ||
+      // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
+      process.argv[1].endsWith(normalize('node_modules/.bin/eslint'))
+    ) {
+      extra.singleRun = true;
+      return;
+    }
+  }
+
+  /**
+   * We default to assuming that this run could be part of a long-running session (e.g. in an IDE)
+   * and watch programs will therefore be required
+   */
+  extra.singleRun = false;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
@@ -409,6 +467,11 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
+   * Figure out whether this is a single run or part of a long-running process
+   */
+  inferSingleRun(options);
+
+  /**
    * Create a ts.SourceFile directly, no ts.Program is needed for a simple
    * parse
    */
@@ -468,7 +531,38 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
-   * Generate a full ts.Program or offer provided instance in order to be able to provide parser services, such as type-checking
+   * Figure out whether this is a single run or part of a long-running process
+   */
+  inferSingleRun(options);
+
+  /**
+   * If this is a single run in which the user has not provided any existing programs but there
+   * are programs which need to be created from the provided "project" option,
+   * create an Iterable which will lazily create the programs as needed by the iteration logic
+   */
+  if (extra.singleRun && !extra.programs && extra.projects?.length > 0) {
+    extra.programs = {
+      *[Symbol.iterator](): Iterator<ts.Program> {
+        for (const configFile of extra.projects) {
+          const existingProgram = existingPrograms.get(configFile);
+          if (existingProgram) {
+            yield existingProgram;
+          } else {
+            log(
+              'Detected single-run/CLI usage, creating Program once ahead of time for project: %s',
+              configFile,
+            );
+            const newProgram = createProgramFromConfigFile(configFile);
+            existingPrograms.set(configFile, newProgram);
+            yield newProgram;
+          }
+        }
+      },
+    };
+  }
+
+  /**
+   * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
     extra.programs != null || (extra.projects && extra.projects.length > 0);
@@ -519,4 +613,5 @@ export {
   parseWithNodeMaps,
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
+  clearProgramCache,
 };
