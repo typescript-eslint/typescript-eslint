@@ -13,7 +13,7 @@ const LOGICAL_OPERATORS: (
   SyntaxKind.QuestionQuestionToken,
 ];
 
-interface TokenToText {
+interface PunctuatorTokenToText {
   [SyntaxKind.OpenBraceToken]: '{';
   [SyntaxKind.CloseBraceToken]: '}';
   [SyntaxKind.OpenParenToken]: '(';
@@ -24,14 +24,15 @@ interface TokenToText {
   [SyntaxKind.DotDotDotToken]: '...';
   [SyntaxKind.SemicolonToken]: ';';
   [SyntaxKind.CommaToken]: ',';
+  [SyntaxKind.QuestionDotToken]: '?.';
   [SyntaxKind.LessThanToken]: '<';
+  [SyntaxKind.LessThanSlashToken]: '</';
   [SyntaxKind.GreaterThanToken]: '>';
   [SyntaxKind.LessThanEqualsToken]: '<=';
   [SyntaxKind.GreaterThanEqualsToken]: '>=';
   [SyntaxKind.EqualsEqualsToken]: '==';
   [SyntaxKind.ExclamationEqualsToken]: '!=';
   [SyntaxKind.EqualsEqualsEqualsToken]: '===';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
   [SyntaxKind.ExclamationEqualsEqualsToken]: '!==';
   [SyntaxKind.EqualsGreaterThanToken]: '=>';
   [SyntaxKind.PlusToken]: '+';
@@ -43,7 +44,6 @@ interface TokenToText {
   [SyntaxKind.PlusPlusToken]: '++';
   [SyntaxKind.MinusMinusToken]: '--';
   [SyntaxKind.LessThanLessThanToken]: '<<';
-  [SyntaxKind.LessThanSlashToken]: '</';
   [SyntaxKind.GreaterThanGreaterThanToken]: '>>';
   [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>';
   [SyntaxKind.AmpersandToken]: '&';
@@ -55,6 +55,8 @@ interface TokenToText {
   [SyntaxKind.BarBarToken]: '||';
   [SyntaxKind.QuestionToken]: '?';
   [SyntaxKind.ColonToken]: ':';
+  [SyntaxKind.AtToken]: '@';
+  [SyntaxKind.QuestionQuestionToken]: '??';
   [SyntaxKind.EqualsToken]: '=';
   [SyntaxKind.PlusEqualsToken]: '+=';
   [SyntaxKind.MinusEqualsToken]: '-=';
@@ -66,20 +68,21 @@ interface TokenToText {
   [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
   [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
   [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
   [SyntaxKind.BarEqualsToken]: '|=';
   [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
+  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
   [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.AtToken]: '@';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.UniqueKeyword]: 'unique';
-  [SyntaxKind.KeyOfKeyword]: 'keyof';
-  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.CaretEqualsToken]: '^=';
+}
+
+interface TokenToText extends PunctuatorTokenToText {
   [SyntaxKind.ImportKeyword]: 'import';
+  [SyntaxKind.InKeyword]: 'in';
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
+  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
-  [SyntaxKind.QuestionQuestionToken]: '??';
-  [SyntaxKind.QuestionDotToken]: '?.';
+  [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
 /**
