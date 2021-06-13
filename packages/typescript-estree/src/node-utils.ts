@@ -612,9 +612,11 @@ export function convertToken(
       },
     };
   } else {
+    // @ts-expect-error TS is complaining about `value` not being the correct
+    // type but it is
     return {
       type: tokenType,
-      value: value as never,
+      value,
       range: [start, end],
       loc: getLocFor(start, end, ast),
     };
