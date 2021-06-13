@@ -21,6 +21,10 @@ The answer is that `Foo.c` will be `1` at runtime. The [playground](https://www.
 
 This rule is meant to prevent unexpected results in code by requiring the use of literal values as enum members to prevent unexpected runtime behavior. Template literals, arrays, objects, constructors, and all other expression types can end up using a variable from its scope or the parent scope, which can result in the same unexpected behavior at runtime.
 
+## Options
+
+- `allowBitwiseExpressions` set to `true` will allow you to use bitwise expressions in enum initializer (Default: `false`).
+
 Examples of **incorrect** code for this rule:
 
 ```ts
@@ -43,6 +47,37 @@ enum Valid {
   C = 4, // A number
   D = null,
   E = /some_regex/,
+}
+```
+
+### `allowBitwiseExpressions`
+
+Examples of **incorrect** code for the `{ "allowBitwiseExpressions": true }` option:
+
+```ts
+const x = 1;
+enum Foo {
+  A = x << 0,
+  B = x >> 0,
+  C = x >>> 0,
+  D = x | 0,
+  E = x & 0,
+  F = x ^ 0,
+  G = ~x,
+}
+```
+
+Examples of **correct** code for the `{ "allowBitwiseExpressions": true }` option:
+
+```ts
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
 }
 ```
 
