@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** allow explicit any for no-unsafe-return ([#3498](https://github.com/typescript-eslint/typescript-eslint/issues/3498)) ([b15a2b2](https://github.com/typescript-eslint/typescript-eslint/commit/b15a2b2a02dc9af2b47b77eb3aede73ffa85ac66))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-literal-enum-member] add allowBitwiseExpressions option ([#3515](https://github.com/typescript-eslint/typescript-eslint/issues/3515)) ([288092a](https://github.com/typescript-eslint/typescript-eslint/commit/288092a085fdd9abaffe0aa1d0b37a8844dd86ff))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 

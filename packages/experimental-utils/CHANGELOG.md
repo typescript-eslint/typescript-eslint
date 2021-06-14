@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **typescript-estree:** allow providing more one than one existing program in config ([#3508](https://github.com/typescript-eslint/typescript-eslint/issues/3508)) ([4f1806e](https://github.com/typescript-eslint/typescript-eslint/commit/4f1806e548affb7265da360d1fc8d033e25de325))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

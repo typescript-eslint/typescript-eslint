@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Features
+
+* allow user to provide TS program instance in parser options ([#3484](https://github.com/typescript-eslint/typescript-eslint/issues/3484)) ([e855b18](https://github.com/typescript-eslint/typescript-eslint/commit/e855b18b8feee0edb5c617c11006861426a6f530))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 **Note:** Version bump only for package @typescript-eslint/types

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **typescript-estree:** support override modifier for parameter property ([#3485](https://github.com/typescript-eslint/typescript-eslint/issues/3485)) ([33b9f69](https://github.com/typescript-eslint/typescript-eslint/commit/33b9f69a681cd3219a2acca5b0b2fa67609f099e))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 **Note:** Version bump only for package @typescript-eslint/shared-fixtures

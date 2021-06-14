@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **typescript-estree:** support override modifier for parameter property ([#3485](https://github.com/typescript-eslint/typescript-eslint/issues/3485)) ([33b9f69](https://github.com/typescript-eslint/typescript-eslint/commit/33b9f69a681cd3219a2acca5b0b2fa67609f099e))
+
+
+### Features
+
+* **ast-spec:** specify `LogicalExpression`'s `operator` type ([#3497](https://github.com/typescript-eslint/typescript-eslint/issues/3497)) ([9e343fd](https://github.com/typescript-eslint/typescript-eslint/commit/9e343fdaa0b04ed007b873c781e8cc98fc1fb7f5))
+* **ast-spec:** specify `PunctuatorToken`'s `value` type ([#3496](https://github.com/typescript-eslint/typescript-eslint/issues/3496)) ([fdb1d81](https://github.com/typescript-eslint/typescript-eslint/commit/fdb1d81f0fcf75a9216e6a90469f18c24c91f718))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

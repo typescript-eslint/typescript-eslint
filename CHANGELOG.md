@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** allow explicit any for no-unsafe-return ([#3498](https://github.com/typescript-eslint/typescript-eslint/issues/3498)) ([b15a2b2](https://github.com/typescript-eslint/typescript-eslint/commit/b15a2b2a02dc9af2b47b77eb3aede73ffa85ac66))
+* **typescript-estree:** allow providing more one than one existing program in config ([#3508](https://github.com/typescript-eslint/typescript-eslint/issues/3508)) ([4f1806e](https://github.com/typescript-eslint/typescript-eslint/commit/4f1806e548affb7265da360d1fc8d033e25de325))
+* **typescript-estree:** support override modifier for parameter property ([#3485](https://github.com/typescript-eslint/typescript-eslint/issues/3485)) ([33b9f69](https://github.com/typescript-eslint/typescript-eslint/commit/33b9f69a681cd3219a2acca5b0b2fa67609f099e))
+
+
+### Features
+
+* **ast-spec:** specify `LogicalExpression`'s `operator` type ([#3497](https://github.com/typescript-eslint/typescript-eslint/issues/3497)) ([9e343fd](https://github.com/typescript-eslint/typescript-eslint/commit/9e343fdaa0b04ed007b873c781e8cc98fc1fb7f5))
+* **ast-spec:** specify `PunctuatorToken`'s `value` type ([#3496](https://github.com/typescript-eslint/typescript-eslint/issues/3496)) ([fdb1d81](https://github.com/typescript-eslint/typescript-eslint/commit/fdb1d81f0fcf75a9216e6a90469f18c24c91f718))
+* **eslint-plugin:** [prefer-literal-enum-member] add allowBitwiseExpressions option ([#3515](https://github.com/typescript-eslint/typescript-eslint/issues/3515)) ([288092a](https://github.com/typescript-eslint/typescript-eslint/commit/288092a085fdd9abaffe0aa1d0b37a8844dd86ff))
+* **typescript-estree:** add opt-in inference for single runs and create programs for projects up front ([#3512](https://github.com/typescript-eslint/typescript-eslint/issues/3512)) ([06c2d9b](https://github.com/typescript-eslint/typescript-eslint/commit/06c2d9ba5442330f56637ecb14fae7e41696699c))
+* allow user to provide TS program instance in parser options ([#3484](https://github.com/typescript-eslint/typescript-eslint/issues/3484)) ([e855b18](https://github.com/typescript-eslint/typescript-eslint/commit/e855b18b8feee0edb5c617c11006861426a6f530))
+
+
+
+
+
 ## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
 
 
