@@ -1,6 +1,4 @@
-import * as ts from 'typescript';
-
-const SyntaxKind = ts.SyntaxKind;
+import type { SyntaxKind } from 'typescript';
 
 export interface PunctuatorTokenToText {
   [SyntaxKind.OpenBraceToken]: '{';
