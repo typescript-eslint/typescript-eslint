@@ -41,6 +41,7 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.15.2"
+    "@microsoft/api-extractor": "^7.15.2",
+    "typescript": "*"
   }
 }

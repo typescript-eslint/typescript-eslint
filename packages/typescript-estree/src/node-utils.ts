@@ -13,73 +13,14 @@ const LOGICAL_OPERATORS: (
   SyntaxKind.QuestionQuestionToken,
 ];
 
-interface TokenToText {
-  [SyntaxKind.OpenBraceToken]: '{';
-  [SyntaxKind.CloseBraceToken]: '}';
-  [SyntaxKind.OpenParenToken]: '(';
-  [SyntaxKind.CloseParenToken]: ')';
-  [SyntaxKind.OpenBracketToken]: '[';
-  [SyntaxKind.CloseBracketToken]: ']';
-  [SyntaxKind.DotToken]: '.';
-  [SyntaxKind.DotDotDotToken]: '...';
-  [SyntaxKind.SemicolonToken]: ';';
-  [SyntaxKind.CommaToken]: ',';
-  [SyntaxKind.LessThanToken]: '<';
-  [SyntaxKind.GreaterThanToken]: '>';
-  [SyntaxKind.LessThanEqualsToken]: '<=';
-  [SyntaxKind.GreaterThanEqualsToken]: '>=';
-  [SyntaxKind.EqualsEqualsToken]: '==';
-  [SyntaxKind.ExclamationEqualsToken]: '!=';
-  [SyntaxKind.EqualsEqualsEqualsToken]: '===';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
-  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==';
-  [SyntaxKind.EqualsGreaterThanToken]: '=>';
-  [SyntaxKind.PlusToken]: '+';
-  [SyntaxKind.MinusToken]: '-';
-  [SyntaxKind.AsteriskToken]: '*';
-  [SyntaxKind.AsteriskAsteriskToken]: '**';
-  [SyntaxKind.SlashToken]: '/';
-  [SyntaxKind.PercentToken]: '%';
-  [SyntaxKind.PlusPlusToken]: '++';
-  [SyntaxKind.MinusMinusToken]: '--';
-  [SyntaxKind.LessThanLessThanToken]: '<<';
-  [SyntaxKind.LessThanSlashToken]: '</';
-  [SyntaxKind.GreaterThanGreaterThanToken]: '>>';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>';
-  [SyntaxKind.AmpersandToken]: '&';
-  [SyntaxKind.BarToken]: '|';
-  [SyntaxKind.CaretToken]: '^';
-  [SyntaxKind.ExclamationToken]: '!';
-  [SyntaxKind.TildeToken]: '~';
-  [SyntaxKind.AmpersandAmpersandToken]: '&&';
-  [SyntaxKind.BarBarToken]: '||';
-  [SyntaxKind.QuestionToken]: '?';
-  [SyntaxKind.ColonToken]: ':';
-  [SyntaxKind.EqualsToken]: '=';
-  [SyntaxKind.PlusEqualsToken]: '+=';
-  [SyntaxKind.MinusEqualsToken]: '-=';
-  [SyntaxKind.AsteriskEqualsToken]: '*=';
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
-  [SyntaxKind.SlashEqualsToken]: '/=';
-  [SyntaxKind.PercentEqualsToken]: '%=';
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
-  [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
-  [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
-  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.AtToken]: '@';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.UniqueKeyword]: 'unique';
-  [SyntaxKind.KeyOfKeyword]: 'keyof';
-  [SyntaxKind.NewKeyword]: 'new';
+interface TokenToText extends TSESTree.PunctuatorTokenToText {
   [SyntaxKind.ImportKeyword]: 'import';
+  [SyntaxKind.InKeyword]: 'in';
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
+  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
-  [SyntaxKind.QuestionQuestionToken]: '??';
-  [SyntaxKind.QuestionDotToken]: '?.';
+  [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
 /**
@@ -609,6 +550,8 @@ export function convertToken(
       },
     };
   } else {
+    // @ts-expect-error TS is complaining about `value` not being the correct
+    // type but it is
     return {
       type: tokenType,
       value,
