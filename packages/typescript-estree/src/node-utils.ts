@@ -518,7 +518,7 @@ export function getTokenType(
 
   if (
     token.kind >= SyntaxKind.FirstPunctuation &&
-    token.kind <= SyntaxKind.LastBinaryOperator
+    token.kind <= SyntaxKind.LastPunctuation
   ) {
     return AST_TOKEN_TYPES.Punctuator;
   }
