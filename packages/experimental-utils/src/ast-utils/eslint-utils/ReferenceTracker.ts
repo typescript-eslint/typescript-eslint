@@ -48,11 +48,11 @@ interface ReferenceTrackerStatic {
        * If this is `"strict"`, the method binds CommonJS modules to the default export. Otherwise, the method binds
        * CommonJS modules to both the default export and named exports. Optional. Default is `"strict"`.
        */
-      mode: 'strict' | 'legacy';
+      mode?: 'strict' | 'legacy';
       /**
        * The name list of Global Object. Optional. Default is `["global", "globalThis", "self", "window"]`.
        */
-      globalObjectNames: readonly string[];
+      globalObjectNames?: readonly string[];
     },
   ): ReferenceTracker;
 
