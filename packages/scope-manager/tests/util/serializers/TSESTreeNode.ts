@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import { NewPlugin } from 'pretty-format';
 import { createIdGenerator } from '../../../src/ID';
 
