@@ -5,7 +5,12 @@ function isOptionalChainPunctuator(
 ): token is TSESTree.PunctuatorToken & { value: '?.' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
 }
-function isNotOptionalChainPunctuator(token: TSESTree.Token): boolean {
+function isNotOptionalChainPunctuator(
+  token: TSESTree.Token,
+): token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '?.' }
+> {
   return !isOptionalChainPunctuator(token);
 }
 
@@ -14,7 +19,9 @@ function isNonNullAssertionPunctuator(
 ): token is TSESTree.PunctuatorToken & { value: '!' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
 }
-function isNotNonNullAssertionPunctuator(token: TSESTree.Token): boolean {
+function isNotNonNullAssertionPunctuator(
+  token: TSESTree.Token,
+): token is Exclude<TSESTree.Token, TSESTree.PunctuatorToken & { value: '!' }> {
   return !isNonNullAssertionPunctuator(token);
 }
 
