@@ -7,6 +7,7 @@ const ReferenceTrackerREAD: unique symbol = eslintUtils.ReferenceTracker.READ;
 const ReferenceTrackerCALL: unique symbol = eslintUtils.ReferenceTracker.CALL;
 const ReferenceTrackerCONSTRUCT: unique symbol =
   eslintUtils.ReferenceTracker.CONSTRUCT;
+const ReferenceTrackerESM: unique symbol = eslintUtils.ReferenceTracker.ESM;
 
 interface ReferenceTracker {
   /**
@@ -59,12 +60,14 @@ interface ReferenceTrackerStatic {
   readonly READ: typeof ReferenceTrackerREAD;
   readonly CALL: typeof ReferenceTrackerCALL;
   readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
+  readonly ESM: typeof ReferenceTrackerESM;
 }
 
 namespace ReferenceTracker {
   export type READ = ReferenceTrackerStatic['READ'];
   export type CALL = ReferenceTrackerStatic['CALL'];
   export type CONSTRUCT = ReferenceTrackerStatic['CONSTRUCT'];
+  export type ESM = ReferenceTrackerStatic['ESM'];
   export type ReferenceType = READ | CALL | CONSTRUCT;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
@@ -72,6 +75,7 @@ namespace ReferenceTracker {
     [ReferenceTrackerREAD]?: T;
     [ReferenceTrackerCALL]?: T;
     [ReferenceTrackerCONSTRUCT]?: T;
+    [ReferenceTrackerESM]?: true;
     [key: string]: TraceMapElement<T>;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
