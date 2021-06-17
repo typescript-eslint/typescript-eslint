@@ -6,42 +6,60 @@ const isArrowToken = eslintUtils.isArrowToken as (
 ) => token is TSESTree.PunctuatorToken & { value: '=>' };
 const isNotArrowToken = eslintUtils.isNotArrowToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '=>' }
+>;
 
 const isClosingBraceToken = eslintUtils.isClosingBraceToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: '}' };
 const isNotClosingBraceToken = eslintUtils.isNotClosingBraceToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '}' }
+>;
 
 const isClosingBracketToken = eslintUtils.isClosingBracketToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: ']' };
 const isNotClosingBracketToken = eslintUtils.isNotClosingBracketToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: ']' }
+>;
 
 const isClosingParenToken = eslintUtils.isClosingParenToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: ')' };
 const isNotClosingParenToken = eslintUtils.isNotClosingParenToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: ')' }
+>;
 
 const isColonToken = eslintUtils.isColonToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: ':' };
 const isNotColonToken = eslintUtils.isNotColonToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: ':' }
+>;
 
 const isCommaToken = eslintUtils.isCommaToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: ',' };
 const isNotCommaToken = eslintUtils.isNotCommaToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: ',' }
+>;
 
 const isCommentToken = eslintUtils.isCommentToken as (
   token: TSESTree.Token,
@@ -55,28 +73,40 @@ const isOpeningBraceToken = eslintUtils.isOpeningBraceToken as (
 ) => token is TSESTree.PunctuatorToken & { value: '{' };
 const isNotOpeningBraceToken = eslintUtils.isNotOpeningBraceToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '{' }
+>;
 
 const isOpeningBracketToken = eslintUtils.isOpeningBracketToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: '[' };
 const isNotOpeningBracketToken = eslintUtils.isNotOpeningBracketToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '[' }
+>;
 
 const isOpeningParenToken = eslintUtils.isOpeningParenToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: '(' };
 const isNotOpeningParenToken = eslintUtils.isNotOpeningParenToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '(' }
+>;
 
 const isSemicolonToken = eslintUtils.isSemicolonToken as (
   token: TSESTree.Token,
 ) => token is TSESTree.PunctuatorToken & { value: ';' };
 const isNotSemicolonToken = eslintUtils.isNotSemicolonToken as (
   token: TSESTree.Token,
-) => boolean;
+) => token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: ';' }
+>;
 
 export {
   isArrowToken,
