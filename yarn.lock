@@ -1776,7 +1776,7 @@
     strip-json-comments "^3.1.1"
     tar "5.0.5"
 
-"@nrwl/tao@12.4.0":
+"@nrwl/tao@12.4.0", "@nrwl/tao@^12.3.5":
   version "12.4.0"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-12.4.0.tgz#90620513fc66faca22c98a64623b2d1c058bb1a4"
   integrity sha512-WH8SqOuJuuBwXpLX9vIVVWEovDqfLmiyFQS4Ebz35KWXNoIv9MS3QgItXKCu7X463hiJnxjAA3RqVYIt8U1vXg==
@@ -1788,22 +1788,6 @@
     rxjs "^6.5.4"
     rxjs-for-await "0.0.2"
     semver "7.3.4"
-    tmp "~0.2.1"
-    tslib "^2.0.0"
-    yargs-parser "20.0.0"
-
-"@nrwl/tao@^12.3.5":
-  version "12.3.5"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-12.3.5.tgz#7cbc65a561e5f9255403dc55bddf0f9a6743397c"
-  integrity sha512-K/Q0GsrLzqXubmLgm8tFSjvrG61lQ00DrtNZ5dHywOAXREeV11A0bR7lXVDTohABk3D9Wgly5IKZPZ3iUwscsg==
-  dependencies:
-    chalk "4.1.0"
-    enquirer "~2.3.6"
-    fs-extra "^9.1.0"
-    rxjs "^6.5.4"
-    rxjs-for-await "0.0.2"
-    semver "7.3.4"
-    strip-json-comments "^3.1.1"
     tmp "~0.2.1"
     tslib "^2.0.0"
     yargs-parser "20.0.0"
