@@ -42,6 +42,18 @@ function foo() {
   return [];
 }
     `,
+    // explicit any return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any {
+  return {} as any;
+}
+    `,
+    // explicit any array return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any[] {
+  return [] as any[];
+}
+    `,
     // explicit any generic return type is allowed, if you want to be unsafe like that
     `
 function foo(): Set<any> {

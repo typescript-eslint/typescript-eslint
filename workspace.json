@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "projects": {
+    "@typescript-eslint/ast-spec": {
+      "root": "packages/ast-spec",
+      "type": "library"
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "root": "packages/eslint-plugin",
+      "type": "library"
+    },
+    "@typescript-eslint/eslint-plugin-internal": {
+      "root": "packages/eslint-plugin-internal",
+      "type": "library"
+    },
+    "@typescript-eslint/eslint-plugin-tslint": {
+      "root": "packages/eslint-plugin-tslint",
+      "type": "library"
+    },
+    "@typescript-eslint/experimental-utils": {
+      "root": "packages/experimental-utils",
+      "type": "library"
+    },
+    "@typescript-eslint/parser": {
+      "root": "packages/parser",
+      "type": "library"
+    },
+    "@typescript-eslint/scope-manager": {
+      "root": "packages/scope-manager",
+      "type": "library"
+    },
+    "@typescript-eslint/shared-fixtures": {
+      "root": "packages/shared-fixtures",
+      "type": "library"
+    },
+    "@typescript-eslint/types": {
+      "root": "packages/types",
+      "type": "library"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "root": "packages/typescript-estree",
+      "type": "library"
+    },
+    "@typescript-eslint/visitor-keys": {
+      "root": "packages/visitor-keys",
+      "type": "library"
+    }
+  }
+}
