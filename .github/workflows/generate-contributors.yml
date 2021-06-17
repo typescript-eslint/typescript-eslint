@@ -35,7 +35,7 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
 
       - name: Generate contributors
-        run: yarn generate:contributors
+        run: yarn generate-contributors
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3

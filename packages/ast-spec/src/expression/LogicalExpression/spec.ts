@@ -3,4 +3,5 @@ import type { BinaryExpressionBase } from '../../base/BinaryExpressionBase';
 
 export interface LogicalExpression extends BinaryExpressionBase {
   type: AST_NODE_TYPES.LogicalExpression;
+  operator: '??' | '&&' | '||';
 }
