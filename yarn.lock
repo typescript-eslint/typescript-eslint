@@ -1767,9 +1767,9 @@
     tslib "^2.0.0"
 
 "@nrwl/nx-cloud@^12.1.3":
-  version "12.1.3"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-12.1.3.tgz#a22b34b787ecebade1c7fcb21e6c1cf765b80d3b"
-  integrity sha512-IC+CNSXGuInEnIwDS6wVl25vQJm5z9Duh1PzP5k0e30JcoUTqjL08KKwvzo8cmKpUvgLNo3rABc5J5F+fXaJGQ==
+  version "12.2.4"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-12.2.4.tgz#a6b054a627e6c68741ce503ebb414e9e80b60561"
+  integrity sha512-q1tqh87VqPZhvByOMit6q9aWF0MjRx1ItqQFQvwXOBx0Hx8z/8UfRgSwPK5AQBL7Npue10KMgwAooR4r/nvvMw==
   dependencies:
     axios "^0.21.1"
     chalk "4.1.0"
@@ -1777,7 +1777,6 @@
     rxjs "6.5.5"
     strip-json-comments "^3.1.1"
     tar "5.0.5"
-    uuid "^3.3.3"
 
 "@nrwl/tao@12.3.5", "@nrwl/tao@^12.3.5":
   version "12.3.5"
@@ -2171,9 +2170,9 @@
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
 "@types/prettier@*", "@types/prettier@^2.1.5", "@types/prettier@^2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.2.3.tgz#ef65165aea2924c9359205bf748865b8881753c0"
-  integrity sha512-PijRCG/K3s3w1We6ynUKdxEc5AcuuH3NBmMDP8uvKVp6X43UY7NQlTzczakXP3DJR0F4dfNQIGjU2cUeRYs2AA==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.3.0.tgz#2e8332cc7363f887d32ec5496b207d26ba8052bb"
+  integrity sha512-hkc1DATxFLQo4VxPDpMH1gCkPpBbpOoJ/4nhuXw4n63/0R6bCpQECj4+K226UJ4JO/eJQz+1mC2I7JsWanAdQw==
 
 "@types/rimraf@^3.0.0":
   version "3.0.0"
@@ -8093,9 +8092,9 @@ regex-not@^1.0.0, regex-not@^1.0.2:
     safe-regex "^1.1.0"
 
 regexpp@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-3.1.0.tgz#206d0ad0a5648cffbdb8ae46438f3dc51c9f78e2"
-  integrity sha512-ZOIzd8yVsQQA7j8GCSlPGXwg5PfmA1mrq0JP4nGhh54LaKN3xdai/vHUDu74pKwV8OxseMS65u2NImosQcSD0Q==
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-3.2.0.tgz#0425a2768d8f23bad70ca4b90461fa2f1213e1b2"
+  integrity sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==
 
 repeat-element@^1.1.2:
   version "1.1.3"
@@ -9429,7 +9428,7 @@ util-promisify@^2.1.0:
   dependencies:
     object.getownpropertydescriptors "^2.0.3"
 
-uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3:
+uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
