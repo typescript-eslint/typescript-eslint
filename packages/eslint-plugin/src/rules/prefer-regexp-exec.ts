@@ -13,10 +13,10 @@ import {
 } from '../util';
 
 enum ArgumentType {
-  Both,
-  Other,
-  RegExp,
-  String,
+  Other = 0,
+  String = 1 << 0,
+  RegExp = 1 << 1,
+  Both = String | RegExp,
 }
 
 export default createRule({
@@ -66,17 +66,9 @@ export default createRule({
 
       for (const type of types) {
         if (isRegExpType(type)) {
-          if (result === ArgumentType.Other) {
-            result = ArgumentType.RegExp;
-          } else if (result === ArgumentType.String) {
-            result = ArgumentType.Both;
-          }
+          result |= ArgumentType.RegExp;
         } else if (isStringType(type)) {
-          if (result === ArgumentType.Other) {
-            result = ArgumentType.String;
-          } else if (result === ArgumentType.RegExp) {
-            result = ArgumentType.Both;
-          }
+          result |= ArgumentType.String;
         }
       }
 
