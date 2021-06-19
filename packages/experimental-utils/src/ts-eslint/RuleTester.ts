@@ -36,6 +36,10 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
    * Settings for the test case.
    */
   readonly settings?: Readonly<Record<string, unknown>>;
+  /**
+   * Run this case exclusively for debugging in supported test frameworks.
+   */
+  readonly only?: boolean;
 }
 
 interface SuggestionOutput<TMessageIds extends string> {
