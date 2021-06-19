@@ -1,1 +1,1 @@
-export const something = true;
+export const something = () => true;
