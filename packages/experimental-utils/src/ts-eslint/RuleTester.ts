@@ -1,6 +1,7 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import { ParserOptions } from './ParserOptions';
+import { Linter } from './Linter';
 import { RuleCreateFunction, RuleModule } from './Rule';
 
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
@@ -121,7 +122,7 @@ interface RunTests<
   readonly valid: readonly (ValidTestCase<TOptions> | string)[];
   readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
 }
-interface RuleTesterConfig {
+interface RuleTesterConfig extends Linter.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;
