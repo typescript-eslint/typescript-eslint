@@ -9,7 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
     labels:
       - "dependencies"
     ignore:
