@@ -199,7 +199,7 @@ export class Converter {
    */
   private registerTSNodeInNodeMap(
     node: ts.Node,
-    result: TSESTree.BaseNode | null,
+    result: TSESTree.Node | null,
   ): void {
     if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
