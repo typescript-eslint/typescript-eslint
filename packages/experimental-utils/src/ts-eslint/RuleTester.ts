@@ -2,7 +2,11 @@ import { RuleTester as ESLintRuleTester } from 'eslint';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import { ParserOptions } from './ParserOptions';
 import { Linter } from './Linter';
-import { RuleCreateFunction, RuleModule } from './Rule';
+import {
+  RuleCreateFunction,
+  RuleModule,
+  SharedConfigurationSettings,
+} from './Rule';
 
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
@@ -36,7 +40,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * Settings for the test case.
    */
-  readonly settings?: Readonly<Record<string, unknown>>;
+  readonly settings?: Readonly<SharedConfigurationSettings>;
   /**
    * Run this case exclusively for debugging in supported test frameworks.
    */
