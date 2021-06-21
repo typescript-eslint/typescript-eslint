@@ -165,15 +165,10 @@ jobs:
         # We use --ignore-scripts to skip automatic postinstall and give us more control to distribute tasks
         run: yarn --ignore-engines --frozen-lockfile --prefer-offline --ignore-scripts
 
-      - name: Run parallel tasks for build and test targets on Node ${{ matrix.node }} (not distributable)
-        uses: jameshenry/parallel-bash-commands@v1
-        env:
-          # We cannot distribute these because the agents are set up to run the primary node version, not this alternative we are testing
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
-        with:
-          # @typescript-eslint/eslint-plugin-internal is internal only - so don't care about compat on other versions
-          cmd1: yarn build --exclude @typescript-eslint/eslint-plugin-internal
-          cmd2: yarn test --exclude @typescript-eslint/eslint-plugin-internal
+      # We cannot distribute these because the agents are set up to run the primary node version, not this alternative we are testing
+      - name: Run unit tests on Node ${{ matrix.node }} (not distributable)
+        # @typescript-eslint/eslint-plugin-internal is internal only - so don't care about compat on other versions
+        run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn test --exclude @typescript-eslint/eslint-plugin-internal
 
   publish_canary_version:
     name: Publish the latest code as a canary version
