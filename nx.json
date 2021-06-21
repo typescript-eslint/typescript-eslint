@@ -67,7 +67,7 @@
       "implicitDependencies": []
     },
     "@typescript-eslint/experimental-utils": {
-      "implicitDependencies": []
+      "implicitDependencies": ["@typescript-eslint/parser"]
     },
     "@typescript-eslint/parser": {
       "implicitDependencies": []
