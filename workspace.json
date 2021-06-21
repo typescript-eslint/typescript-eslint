@@ -35,7 +35,83 @@
     },
     "@typescript-eslint/types": {
       "root": "packages/types",
-      "type": "library"
+      "type": "library",
+      "targets": {
+        "build": {
+          "dependsOn": [
+            {
+              "target": "copy-ast-spec",
+              "projects": "self"
+            },
+            {
+              "target": "build",
+              "projects": "dependencies"
+            }
+          ],
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": ["packages/types/dist"],
+          "options": {
+            "cwd": "packages/types",
+            "parallel": false,
+            "commands": [
+              "npx tsc -b tsconfig.build.json",
+              "npx downlevel-dts dist _ts3.4/dist"
+            ]
+          }
+        },
+        "copy-ast-spec": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": ["packages/types/src/ast-spec.ts"],
+          "options": {
+            "cwd": "packages/types",
+            "parallel": false,
+            "commands": [
+              "yarn ts-node --transpile-only ./tools/copy-ast-spec.ts"
+            ]
+          }
+        },
+        "clean": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "packages/types",
+            "parallel": false,
+            "commands": [
+              "npx tsc -b tsconfig.build.json --clean",
+              "npx rimraf dist",
+              "npx rimraf _ts3.4",
+              "npx rimraf coverage"
+            ]
+          }
+        },
+        "typecheck": {
+          "dependsOn": [
+            {
+              "target": "copy-ast-spec",
+              "projects": "self"
+            },
+            {
+              "target": "build",
+              "projects": "dependencies"
+            }
+          ],
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "packages/types",
+            "parallel": false,
+            "commands": ["npx tsc -p tsconfig.json --noEmit"]
+          }
+        },
+        "generate-lib": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "packages/types",
+            "parallel": false,
+            "commands": [
+              "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts"
+            ]
+          }
+        }
+      }
     },
     "@typescript-eslint/typescript-estree": {
       "root": "packages/typescript-estree",
