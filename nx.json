@@ -58,16 +58,16 @@
       "implicitDependencies": []
     },
     "@typescript-eslint/eslint-plugin": {
-      "implicitDependencies": []
+      "implicitDependencies": ["@typescript-eslint/parser"]
     },
     "@typescript-eslint/eslint-plugin-internal": {
-      "implicitDependencies": []
+      "implicitDependencies": ["@typescript-eslint/parser"]
     },
     "@typescript-eslint/eslint-plugin-tslint": {
-      "implicitDependencies": []
+      "implicitDependencies": ["@typescript-eslint/parser"]
     },
     "@typescript-eslint/experimental-utils": {
-      "implicitDependencies": ["@typescript-eslint/parser"]
+      "implicitDependencies": []
     },
     "@typescript-eslint/parser": {
       "implicitDependencies": []
