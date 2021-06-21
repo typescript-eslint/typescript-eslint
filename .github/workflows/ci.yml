@@ -62,7 +62,7 @@ jobs:
       run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn check-format
 
     - name: Lint markdown files (not distributable)
-      run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn check-format
+      run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn lint-markdown
 
     - name: Check spelling (not distributable)
       run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn check-spelling
@@ -74,8 +74,11 @@ jobs:
         # whereas the build only checks src files
         cmd1: yarn typecheck
         cmd2: yarn build
-        cmd4: yarn lint
         cmd5: yarn test
+
+    # We leverage our own plugins as part of linting, so this needs to come after build
+    - name: Lint source files (not distributable)
+      run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn lint
 
     - run: yarn test-integration
 
