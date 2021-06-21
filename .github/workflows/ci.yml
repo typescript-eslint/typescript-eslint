@@ -67,14 +67,11 @@ jobs:
     - name: Check spelling (not distributable)
       run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn check-spelling
 
-    - name: Run parallel distributed tasks for build, typecheck, lint and test targets
-      uses: jameshenry/parallel-bash-commands@v1
-      with:
-        # Note that the typecheck target *also* typechecks tests/tools,
-        # whereas the build only checks src files
-        cmd1: yarn typecheck --maxParallel=3
-        cmd2: yarn build --maxParallel=3
-        cmd5: yarn test --maxParallel=3
+    - run: yarn typecheck --maxParallel=3
+
+    - run: yarn build --maxParallel=3
+
+    - run: yarn test --maxParallel=3
 
     # We leverage our own plugins as part of linting, so this needs to come after build
     - name: Lint source files (not distributable)
