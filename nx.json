@@ -7,6 +7,7 @@
       "devDependencies": "*"
     },
     "nx.json": "*",
+    ".eslintrc.js": "*",
     ".github/workflows/ci.yml": "*"
   },
   "workspaceLayout": {
@@ -16,7 +17,13 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "test", "package", "prepare"],
+        "cacheableOperations": [
+          "build",
+          "test",
+          "package",
+          "prepare",
+          "typecheck"
+        ],
         "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
@@ -24,6 +31,26 @@
         "runtimeCacheInputs": ["node -v"]
       }
     }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "typecheck": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "test": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
   },
   "projects": {
     "@typescript-eslint/ast-spec": {
