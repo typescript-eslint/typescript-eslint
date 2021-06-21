@@ -67,9 +67,9 @@ jobs:
     - name: Check spelling (not distributable)
       run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn check-spelling
 
-    - run: yarn build --maxParallel=3
-    - run: yarn typecheck --maxParallel=3
-    - run: yarn test --maxParallel=3
+    - run: yarn build
+    - run: yarn typecheck
+    - run: yarn test
 
     # We leverage our own plugins as part of linting, so this needs to come after build
     - name: Lint source files (not distributable)
