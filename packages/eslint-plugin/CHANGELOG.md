@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.27.0...v4.28.0) (2021-06-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-regexp-exec] factor in union types ([#3434](https://github.com/typescript-eslint/typescript-eslint/issues/3434)) ([ac86a79](https://github.com/typescript-eslint/typescript-eslint/commit/ac86a79bd416f031beccc7bdac28a938cb354ba5))
+
+
+
+
+
 # [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
 
 
