@@ -24,7 +24,7 @@
           "prepare",
           "typecheck"
         ],
-        "strictlyOrderedTargets": ["build", "package", "prepare"],
+        "strictlyOrderedTargets": ["prebuild", "build", "package", "prepare"],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true,
@@ -34,6 +34,10 @@
   },
   "targetDependencies": {
     "build": [
+      {
+        "target": "prebuild",
+        "projects": "dependencies"
+      },
       {
         "target": "build",
         "projects": "dependencies"
