@@ -25,7 +25,6 @@
           "prepare",
           "typecheck"
         ],
-        "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true,

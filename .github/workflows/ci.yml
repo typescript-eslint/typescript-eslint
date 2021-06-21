@@ -72,9 +72,9 @@ jobs:
       with:
         # Note that the typecheck target *also* typechecks tests/tools,
         # whereas the build only checks src files
-        cmd1: yarn typecheck
-        cmd2: yarn build
-        cmd5: yarn test
+        cmd1: yarn typecheck --maxParallel=3
+        cmd2: yarn build --maxParallel=3
+        cmd5: yarn test --maxParallel=3
 
     # We leverage our own plugins as part of linting, so this needs to come after build
     - name: Lint source files (not distributable)
