@@ -96,14 +96,18 @@
           }
         },
         "copy-ast-spec": {
+          "dependsOn": [
+            {
+              "target": "build",
+              "projects": "dependencies"
+            }
+          ],
           "executor": "@nrwl/workspace:run-commands",
           "outputs": ["packages/types/src/ast-spec.ts"],
           "options": {
             "cwd": "packages/types",
             "parallel": false,
-            "commands": [
-              "yarn ts-node --transpile-only ./tools/copy-ast-spec.ts"
-            ]
+            "commands": ["npx ts-node -s ./tools/copy-ast-spec.ts"]
           }
         },
         "clean": {
