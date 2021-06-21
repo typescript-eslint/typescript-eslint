@@ -3,7 +3,43 @@
   "projects": {
     "@typescript-eslint/ast-spec": {
       "root": "packages/ast-spec",
-      "type": "library"
+      "type": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": ["packages/ast-spec/dist"],
+          "options": {
+            "cwd": "packages/ast-spec",
+            "parallel": false,
+            "commands": [
+              "npx tsc -b tsconfig.build.json",
+              "npx api-extractor run --local"
+            ]
+          }
+        },
+        "clean": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "packages/ast-spec",
+            "parallel": false,
+            "commands": [
+              "npx tsc -b tsconfig.build.json --clean",
+              "npx rimraf dist",
+              "npx rimraf _ts3.4",
+              "npx rimraf coverage",
+              "npx rimraf .rollup.cache"
+            ]
+          }
+        },
+        "typecheck": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "packages/ast-spec",
+            "parallel": false,
+            "commands": ["npx tsc -p tsconfig.json --noEmit"]
+          }
+        }
+      }
     },
     "@typescript-eslint/eslint-plugin": {
       "root": "packages/eslint-plugin",
