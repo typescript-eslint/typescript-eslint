@@ -38,7 +38,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string;
+  jsxPragma?: string | null;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -108,7 +108,10 @@ function analyze(
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
-    jsxPragma: providedOptions?.jsxPragma ?? DEFAULT_OPTIONS.jsxPragma,
+    jsxPragma:
+      providedOptions?.jsxPragma === undefined
+        ? DEFAULT_OPTIONS.jsxPragma
+        : providedOptions.jsxPragma,
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
