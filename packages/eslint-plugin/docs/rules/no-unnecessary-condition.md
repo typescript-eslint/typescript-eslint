@@ -100,6 +100,8 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 
 The main downside to using this rule is the need for type information.
 
+If your type definitions lie, it can be risky to remove seemingly unnecessary conditions. They may stem from experience of actually running the code.
+
 ## Related To
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.
