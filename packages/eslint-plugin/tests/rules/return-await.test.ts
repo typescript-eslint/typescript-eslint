@@ -232,6 +232,21 @@ ruleTester.run('return-await', rule, {
         }
       `,
     },
+    {
+      code: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return await Promise.resolve('error');
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -839,7 +854,7 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
             const callback6 = async () => {};
             return Promise.resolve('try');
           } finally {
-            console.log('cleanup');
+            return Promise.resolve('finally');
           }
         }
       `,
@@ -854,7 +869,7 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
             const callback6 = async () => {};
             return await Promise.resolve('try');
           } finally {
-            console.log('cleanup');
+            return Promise.resolve('finally');
           }
         }
       `,

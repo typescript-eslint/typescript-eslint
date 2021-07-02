@@ -50,7 +50,7 @@ export default util.createRule({
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    let scopeInfoStack: ScopeInfo[];
+    const scopeInfoStack: ScopeInfo[] = [];
 
     function enterFunction(node: FunctionNode): void {
       scopeInfoStack.push({
@@ -271,9 +271,9 @@ export default util.createRule({
 
       "FunctionDeclaration:exit": exitFunction,
       "FunctionExpression:exit": exitFunction,
-      // FIXME: check if this executes before after, and sometimes/never compared with the filtered ArrowFunctionExpr[async=true]:exit
       "ArrowFunctionExpression:exit": exitFunction,
 
+      // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
@@ -283,7 +283,6 @@ export default util.createRule({
             test(node, tsNode);
           });
         }
-        exitFunction();
       },
       ReturnStatement(node): void {
         const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
