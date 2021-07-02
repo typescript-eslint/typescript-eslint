@@ -827,5 +827,43 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
         },
       ],
     },
+    {
+      code: `
+        async function test() {
+          try {
+            const callback1 = function() {};
+            const callback2 = async function() {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return Promise.resolve('try');
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      output: `
+        async function test() {
+          try {
+            const callback1 = function() {};
+            const callback2 = async function() {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return await Promise.resolve('try');
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
   ],
 });
