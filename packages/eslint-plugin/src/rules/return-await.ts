@@ -59,7 +59,7 @@ export default util.createRule({
       });
     }
 
-    function exitFunction(node: FunctionNode): void {
+    function exitFunction(): void {
       scopeInfoStack.pop();
     }
 
@@ -283,7 +283,7 @@ export default util.createRule({
             test(node, tsNode);
           });
         }
-        exitFunction(node);
+        exitFunction();
       },
       ReturnStatement(node): void {
         const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
