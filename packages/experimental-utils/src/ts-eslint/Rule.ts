@@ -165,6 +165,14 @@ type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
     (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
 
+/**
+ * Plugins can add their settings using declaration
+ * merging against this interface.
+ */
+interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
+
 interface RuleContext<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
@@ -194,7 +202,7 @@ interface RuleContext<
    * The shared settings from configuration.
    * We do not have any shared settings in this plugin.
    */
-  settings: Record<string, unknown>;
+  settings: SharedConfigurationSettings;
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -452,4 +460,5 @@ export {
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,
+  SharedConfigurationSettings,
 };
