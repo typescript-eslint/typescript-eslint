@@ -269,9 +269,9 @@ export default util.createRule({
       FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
 
-      "FunctionDeclaration:exit": exitFunction,
-      "FunctionExpression:exit": exitFunction,
-      "ArrowFunctionExpression:exit": exitFunction,
+      'FunctionDeclaration:exit': exitFunction,
+      'FunctionExpression:exit': exitFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
 
       // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
