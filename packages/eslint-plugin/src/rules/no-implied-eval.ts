@@ -106,10 +106,9 @@ export default util.createRule({
         case AST_NODE_TYPES.FunctionExpression:
           return true;
 
-        case AST_NODE_TYPES.MemberExpression:
-        case AST_NODE_TYPES.Identifier:
-        case AST_NODE_TYPES.ConditionalExpression:
-          return isFunctionType(node);
+        case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.TemplateLiteral:
+          return false;
 
         case AST_NODE_TYPES.CallExpression:
           return (
@@ -119,7 +118,7 @@ export default util.createRule({
           );
 
         default:
-          return false;
+          return isFunctionType(node);
       }
     }
 
