@@ -90,7 +90,7 @@
     "@types/jest-specific-snapshot": "^0.5.5",
     "@types/lodash": "^4.14.170",
     "@types/marked": "^2.0.3",
-    "@types/node": "^15.6.1",
+    "@types/node": "^16.3.1",
     "@types/node-fetch": "^2.5.10",
     "@types/prettier": "^2.2.3",
     "@types/rimraf": "^3.0.0",
