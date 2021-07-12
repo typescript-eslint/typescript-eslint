@@ -827,5 +827,34 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
         },
       ],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+      code: `
+async function test<T>(): Promise<T> {
+  const res = await fetch('...');
+  try {
+    return res.json() as Promise<T>;
+  } catch (err) {
+    throw Error('Request Failed.');
+  }
+}
+      `,
+      output: `
+async function test<T>(): Promise<T> {
+  const res = await fetch('...');
+  try {
+    return await (res.json() as Promise<T>);
+  } catch (err) {
+    throw Error('Request Failed.');
+  }
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
   ],
 });
