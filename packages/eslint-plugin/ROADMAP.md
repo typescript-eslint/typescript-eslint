@@ -315,7 +315,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-image-button-has-alt`         | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-img-has-alt`                  | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-input-elements`               | 🛑  | N/A                                                        |
-| `react-a11y-lang`                         | 🔌  | [`jsx-a11y/html-has-lang`] & [`jsx-a11y/lang`]             |
+| `react-a11y-lang`                         | 🔌  | [`jsx-a11y/lang`]                                          |
 | `react-a11y-meta`                         | 🛑  | N/A                                                        |
 | `react-a11y-no-onchange`                  | 🔌  | [`jsx-a11y/no-onchange`]                                   |
 | `react-a11y-props`                        | 🔌  | [`jsx-a11y/aria-props`]                                    |
