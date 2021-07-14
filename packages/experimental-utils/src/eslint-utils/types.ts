@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '../index';
 import debug from 'debug';
 import {
   isCallExpression,
@@ -19,7 +16,7 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 
-const log = debug('typescript-eslint:eslint-plugin:utils:types');
+const log = debug('typescript-eslint:experimental-utils:eslint-utils:types');
 
 /**
  * Checks if the given type is either an array type,

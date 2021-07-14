@@ -43,10 +43,13 @@
     "@typescript-eslint/scope-manager": "4.28.3",
     "@typescript-eslint/types": "4.28.3",
     "@typescript-eslint/typescript-estree": "4.28.3",
+    "debug": "^4.3.1",
     "eslint-scope": "^5.1.1",
-    "eslint-utils": "^3.0.0"
+    "eslint-utils": "^3.0.0",
+    "tsutils": "^3.21.0"
   },
   "peerDependencies": {
+    "@typescript-eslint/parser": "^4.0.0",
     "eslint": "*"
   },
   "devDependencies": {
