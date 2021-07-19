@@ -78,6 +78,7 @@ export = {
     '@typescript-eslint/no-loss-of-precision': 'error',
     'no-magic-numbers': 'off',
     '@typescript-eslint/no-magic-numbers': 'error',
+    '@typescript-eslint/no-meaningless-void-operator': 'error',
     '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
     '@typescript-eslint/no-namespace': 'error',
