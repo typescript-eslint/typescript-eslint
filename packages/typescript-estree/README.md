@@ -239,6 +239,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * whether or not ESLint is being used as part of a single run.
    */
   allowAutomaticSingleRunInference?: boolean;
+
+  /**
+   * Path to a file exporting a custom ModuleResolver.
+   */
+  moduleResolver?: string;
 }
 
 interface ParserServices {

@@ -135,6 +135,7 @@ function resetExtra(): void {
      * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
      */
     singleRun: false,
+    moduleResolver: '',
   };
 }
 
@@ -342,6 +343,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
     typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
       'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
+
+  if (typeof options.moduleResolver === 'string') {
+    extra.moduleResolver = options.moduleResolver;
+  }
 }
 
 function warnAboutTSVersion(): void {

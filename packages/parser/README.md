@@ -66,6 +66,7 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 
   program?: import('typescript').Program;
+  moduleResolver?: string;
 }
 ```
 
@@ -220,6 +221,29 @@ Default `undefined`.
 This option allows you to programmatically provide an array of one or more instances of a TypeScript Program object that will provide type information to rules.
 This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
 All linted files must be part of the provided program(s).
+
+### `parserOptions.moduleResolver`
+
+Default `undefined`.
+
+This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
+
+```ts
+interface ModuleResolver {
+  version: 1;
+  resolveModuleNames(
+    moduleNames: string[],
+    containingFile: string,
+    reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ): (ts.ResolvedModule | undefined)[];
+}
+```
+
+[Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
+
+Note that if you pass custom programs via `options.programs` this option will not have any effect over them (you can simply add the custom resolution on them directly).
 
 ## Utilities
 

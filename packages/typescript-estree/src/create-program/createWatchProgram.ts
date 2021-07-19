@@ -9,6 +9,7 @@ import {
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -268,6 +269,12 @@ function createWatchProgram(
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+
+  if (extra.moduleResolver) {
+    watchCompilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
