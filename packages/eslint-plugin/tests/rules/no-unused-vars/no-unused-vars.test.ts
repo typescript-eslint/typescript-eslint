@@ -1576,6 +1576,33 @@ export const ComponentFoo = () => {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3303
+    {
+      code: `
+import React from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: null,
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'React',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
     {
       code: `
 declare module 'foo' {

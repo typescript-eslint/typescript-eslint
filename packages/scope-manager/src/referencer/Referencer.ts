@@ -22,7 +22,7 @@ import { lib as TSLibraries } from '../lib';
 import { Scope, GlobalScope } from '../scope';
 
 interface ReferencerOptions extends VisitorOptions {
-  jsxPragma: string;
+  jsxPragma: string | null;
   jsxFragmentName: string | null;
   lib: Lib[];
   emitDecoratorMetadata: boolean;
@@ -30,7 +30,7 @@ interface ReferencerOptions extends VisitorOptions {
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
-  #jsxPragma: string;
+  #jsxPragma: string | null;
   #jsxFragmentName: string | null;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
@@ -120,7 +120,7 @@ class Referencer extends Visitor {
   }
 
   private referenceJsxPragma(): void {
-    if (this.#hasReferencedJsxFactory) {
+    if (this.#jsxPragma === null || this.#hasReferencedJsxFactory) {
       return;
     }
     this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
