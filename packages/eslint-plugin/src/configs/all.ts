@@ -116,6 +116,8 @@ export = {
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
     'object-curly-spacing': 'off',
     '@typescript-eslint/object-curly-spacing': 'error',
+    'padding-line-between-statements': 'off',
+    '@typescript-eslint/padding-line-between-statements': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
