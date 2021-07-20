@@ -186,7 +186,7 @@ export default util.createRule<Options, MessageIds>({
           range:
             expression.range[0] < against.range[0]
               ? [expression.range[1], against.range[1]]
-              : [against.range[1], expression.range[1]],
+              : [against.range[0], expression.range[0]],
         };
       }
 
