@@ -257,6 +257,26 @@ const bar = () => {};
 
 setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
     `,
+    `
+class Foo {
+  func1() {}
+  func2(): void {
+    setTimeout(this.func1.bind(this), 1);
+  }
+}
+    `,
+    `
+class Foo {
+  private a = {
+    b: {
+      c: function () {},
+    },
+  };
+  funcw(): void {
+    setTimeout(this.a.b.c.bind(this), 1);
+  }
+}
+    `,
   ],
 
   invalid: [
