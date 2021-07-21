@@ -9,7 +9,7 @@ import * as TSESLint from '../../ts-eslint';
  */
 const findVariable = eslintUtils.findVariable as (
   initialScope: TSESLint.Scope.Scope,
-  name: string,
+  nameOrNode: string | TSESTree.Identifier,
 ) => TSESLint.Scope.Variable | null;
 
 /**
