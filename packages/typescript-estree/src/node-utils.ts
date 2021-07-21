@@ -632,8 +632,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      !!(n as any).jsDoc
+    ? !!(n as ts.JSDocContainer).jsDoc
     : n.getWidth(ast) !== 0;
 }
 
