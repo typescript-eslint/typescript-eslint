@@ -128,6 +128,13 @@ namespace A {}
     },
     {
       code: `
+enum A {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
 function A() {}
 namespace A {}
       `,
@@ -600,6 +607,23 @@ class A {}
             id: 'A',
           },
           line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum A {}
+namespace A {}
+enum A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'A',
+          },
+          line: 4,
         },
       ],
     },
