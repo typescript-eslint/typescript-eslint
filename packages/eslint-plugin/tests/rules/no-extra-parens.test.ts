@@ -28,7 +28,7 @@ for (a in b, c);
 for (a in b);
 a<import('')>(1);
 new a<import('')>(1);
-a<(A)>(1);
+a<A>(1);
       `,
     }),
     ...batchedSingleLineTests({

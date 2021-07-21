@@ -127,7 +127,7 @@ const invalid = (
     },
     {
       code: noFormat`type T = (B) ${operator} (A);`,
-      output: noFormat`type T = (A) ${operator} (B);`,
+      output: noFormat`type T = A ${operator} B;`,
       errors: [
         {
           messageId: 'notSortedNamed',
