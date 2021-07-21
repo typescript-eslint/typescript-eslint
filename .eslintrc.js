@@ -1,4 +1,7 @@
-module.exports = {
+// @ts-check
+const { typedConfig } = require('@typescript-eslint/typed-config');
+
+module.exports = typedConfig({
   root: true,
   plugins: [
     'eslint-plugin',
@@ -290,4 +293,4 @@ module.exports = {
       },
     },
   ],
-};
+});
