@@ -78,9 +78,9 @@ async function main(): Promise<void> {
 
   // fetch the user info
   const users = await Promise.all(
-    githubContributors.map<Promise<User>>(async c => {
+    githubContributors.map(async c => {
       const response = await fetch(c.url, { method: 'GET' });
-      return response.json();
+      return (await response.json()) as User;
     }),
   );
 

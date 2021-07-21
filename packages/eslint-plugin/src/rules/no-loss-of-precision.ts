@@ -4,7 +4,9 @@ import * as util from '../util';
 
 const baseRule = ((): typeof BaseRule | null => {
   try {
-    return require('eslint/lib/rules/no-loss-of-precision');
+    return require('eslint/lib/rules/no-loss-of-precision') as
+      | typeof BaseRule
+      | null;
   } catch {
     /* istanbul ignore next */
     return null;

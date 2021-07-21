@@ -18,7 +18,7 @@ const SEEN_NODES = new Map<Node, number>();
 
 const serializer: NewPlugin = {
   test(val): boolean {
-    return (
+    return !!(
       val &&
       typeof val === 'object' &&
       // make sure it's not one of the classes from the package

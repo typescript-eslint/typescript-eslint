@@ -43,7 +43,7 @@ const staticElements = {
     emojiKey.fixable,
     emojiKey.requiresTypeChecking,
   ],
-  listSpacerRow: Array(5).fill('-'),
+  listSpacerRow: Array<string>(5).fill('-'),
 };
 
 const returnEmojiIfTrue = <TKey extends keyof typeof emojiKey>(
