@@ -1,16 +1,20 @@
 import * as eslintUtils from 'eslint-utils';
 import { TSESTree } from '../../ts-estree';
 
-type IsPunctuatorTokenWithValueFunction<Value extends string> = (
+type IsSpecificTokenFunction<SpecificToken extends TSESTree.Token> = (
   token: TSESTree.Token,
-) => token is TSESTree.PunctuatorToken & { value: Value };
+) => token is SpecificToken;
 
-type IsNotPunctuatorTokenWithValueFunction<Value extends string> = (
+type IsNotSpecificTokenFunction<SpecificToken extends TSESTree.Token> = (
   token: TSESTree.Token,
-) => token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: Value }
->;
+) => token is Exclude<TSESTree.Token, SpecificToken>;
+
+type PunctuatorTokenWithValue<Value extends string> =
+  TSESTree.PunctuatorToken & { value: Value };
+type IsPunctuatorTokenWithValueFunction<Value extends string> =
+  IsSpecificTokenFunction<PunctuatorTokenWithValue<Value>>;
+type IsNotPunctuatorTokenWithValueFunction<Value extends string> =
+  IsNotSpecificTokenFunction<PunctuatorTokenWithValue<Value>>;
 
 const isArrowToken =
   eslintUtils.isArrowToken as IsPunctuatorTokenWithValueFunction<'=>'>;
@@ -42,12 +46,10 @@ const isCommaToken =
 const isNotCommaToken =
   eslintUtils.isNotCommaToken as IsNotPunctuatorTokenWithValueFunction<','>;
 
-const isCommentToken = eslintUtils.isCommentToken as (
-  token: TSESTree.Token,
-) => token is TSESTree.Comment;
-const isNotCommentToken = eslintUtils.isNotCommentToken as (
-  token: TSESTree.Token,
-) => token is Exclude<TSESTree.Token, TSESTree.Comment>;
+const isCommentToken =
+  eslintUtils.isCommentToken as IsSpecificTokenFunction<TSESTree.Comment>;
+const isNotCommentToken =
+  eslintUtils.isNotCommentToken as IsNotSpecificTokenFunction<TSESTree.Comment>;
 
 const isOpeningBraceToken =
   eslintUtils.isOpeningBraceToken as IsPunctuatorTokenWithValueFunction<'{'>;
