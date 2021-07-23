@@ -3,7 +3,7 @@ import * as path from 'path';
 import {
   clearProgramCache,
   parseAndGenerateServices,
-  ɵclearParseAndGenerateServicesCalls,
+  ɵclearParseAndGenerateServicesCalls as clearParseAndGenerateServicesCalls,
 } from '../../src';
 import { getCanonicalFileName } from '../../src/create-program/shared';
 
@@ -96,7 +96,7 @@ describe('semanticInfo - singleRun', () => {
     // ensure invocations of mock are clean for each test
     (createProgramFromConfigFile as jest.Mock).mockClear();
     // Do not track invocations per file across tests
-    ɵclearParseAndGenerateServicesCalls();
+    clearParseAndGenerateServicesCalls();
   });
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {
