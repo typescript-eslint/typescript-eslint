@@ -137,9 +137,10 @@ describe('Validating README.md', () => {
 
   for (const [ruleName, rule] of notDeprecated) {
     describe(`Checking rule ${ruleName}`, () => {
-      const ruleRow: string[] | undefined = (rule.meta.docs?.extendsBaseRule
-        ? rulesTables.extension.cells
-        : rulesTables.base.cells
+      const ruleRow: string[] | undefined = (
+        rule.meta.docs?.extendsBaseRule
+          ? rulesTables.extension.cells
+          : rulesTables.base.cells
       ).find(row => row[0].includes(`/${ruleName}.md`));
       if (!ruleRow) {
         // rule is in the wrong table, the first two tests will catch this, so no point in creating noise;

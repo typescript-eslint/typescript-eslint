@@ -8,6 +8,7 @@ node /usr/utils/generate-package-json.js
 npm install
 
 # Use the local volumes for our own packages
+npm install $(npm pack /usr/ast-spec | tail -1)
 npm install $(npm pack /usr/types | tail -1)
 npm install $(npm pack /usr/visitor-keys | tail -1)
 npm install $(npm pack /usr/scope-manager | tail -1)

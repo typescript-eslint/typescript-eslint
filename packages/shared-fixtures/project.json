@@ -1,0 +1,5 @@
+{
+  "root": "packages/shared-fixtures",
+  "type": "library",
+  "implicitDependencies": []
+}

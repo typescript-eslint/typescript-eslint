@@ -67,3 +67,7 @@ dist
 _ts3.4
 *.tsbuildinfo
 .watchmanconfig
+.rollup.cache
+
+# Files copied as part of the build
+packages/types/src/ast-spec.ts

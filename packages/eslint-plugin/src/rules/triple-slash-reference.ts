@@ -94,7 +94,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         programNode = node;
-        const referenceRegExp = /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
+        const referenceRegExp =
+          /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
         const commentsBefore = sourceCode.getCommentsBefore(programNode);
 
         commentsBefore.forEach(comment => {

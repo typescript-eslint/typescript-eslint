@@ -140,6 +140,13 @@ function predicate(arg: any): asserts arg is T {
   }
 }
     `,
+    `
+interface ITest {
+  attr: string;
+}
+let test: unknown;
+(test as ITest) = { attr: '' };
+    `,
     {
       code: `
 function Foo() {}

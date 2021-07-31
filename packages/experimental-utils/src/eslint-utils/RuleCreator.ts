@@ -19,7 +19,7 @@ function RuleCreator(urlCreator: (ruleName: string) => string) {
   return function createRule<
     TOptions extends readonly unknown[],
     TMessageIds extends string,
-    TRuleListener extends RuleListener = RuleListener
+    TRuleListener extends RuleListener = RuleListener,
   >({
     name,
     meta,

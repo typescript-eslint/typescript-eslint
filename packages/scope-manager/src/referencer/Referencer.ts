@@ -87,14 +87,13 @@ class Referencer extends Visitor {
       /* istanbul ignore if */ if (!variables) {
         throw new Error(`Invalid value for lib provided: ${lib}`);
       }
-      for (const variable of Object.values(variables)) {
-        globalScope.defineImplicitVariable(variable);
+      for (const [name, variable] of Object.entries(variables)) {
+        globalScope.defineImplicitVariable(name, variable);
       }
     }
 
     // for const assertions (`{} as const` / `<const>{}`)
-    globalScope.defineImplicitVariable({
-      name: 'const',
+    globalScope.defineImplicitVariable('const', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
@@ -320,7 +319,7 @@ class Referencer extends Visitor {
       case AST_NODE_TYPES.TSAsExpression:
       case AST_NODE_TYPES.TSTypeAssertion:
         // explicitly visit the type annotation
-        this.visit(left.typeAnnotation);
+        this.visitType(left.typeAnnotation);
       // intentional fallthrough
       case AST_NODE_TYPES.TSNonNullExpression:
         // unwrap the expression

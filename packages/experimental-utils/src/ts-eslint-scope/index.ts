@@ -9,4 +9,5 @@ export * from './Referencer';
 export * from './Scope';
 export * from './ScopeManager';
 export * from './Variable';
+
 export const version: string = ESLintVersion;

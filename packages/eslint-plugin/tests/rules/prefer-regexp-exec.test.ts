@@ -33,6 +33,29 @@ function f(s: string | string[]) {
   s.match(/e/);
 }
     `,
+    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
+    "'212'.match(2);",
+    "'212'.match(+2);",
+    "'oNaNo'.match(NaN);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+    "'void and null'.match(null);",
+    `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
   ],
   invalid: [
     {
@@ -94,79 +117,6 @@ const text = 'something';
 const search = 'thing';
 RegExp(search).exec(text);
       `,
-    },
-    {
-      code: "'212'.match(2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'212'.match(+2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'oNaNo'.match(NaN);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 9,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code: "'void and null'.match(null);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 17,
-        },
-      ],
     },
     {
       code: `

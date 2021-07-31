@@ -164,14 +164,15 @@ export default createRule<Options, MessageIds>({
     function validateBraceSpacing(
       node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       first: TSESTree.Token,
-      second: TSESTree.Token | TSESTree.Comment,
-      penultimate: TSESTree.Token | TSESTree.Comment,
+      second: TSESTree.Token,
+      penultimate: TSESTree.Token,
       last: TSESTree.Token,
     ): void {
       if (isTokenOnSameLine(first, second)) {
         const firstSpaced = sourceCode.isSpaceBetween!(first, second);
-        const secondType = sourceCode.getNodeByRangeIndex(second.range[0])!
-          .type;
+        const secondType = sourceCode.getNodeByRangeIndex(
+          second.range[0],
+        )!.type;
 
         const openingCurlyBraceMustBeSpaced =
           options.arraysInObjectsException &&

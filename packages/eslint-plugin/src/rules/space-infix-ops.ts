@@ -8,6 +8,8 @@ import * as util from '../util';
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const UNIONS = ['|', '&'];
+
 export default util.createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
@@ -34,6 +36,41 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const sourceCode = context.getSourceCode();
 
+    const report = (
+      node: TSESTree.Node | TSESTree.Token,
+      operator: TSESTree.Token,
+    ): void => {
+      context.report({
+        node: node,
+        loc: operator.loc,
+        messageId: 'missingSpace',
+        data: {
+          operator: operator.value,
+        },
+        fix(fixer) {
+          const previousToken = sourceCode.getTokenBefore(operator);
+          const afterToken = sourceCode.getTokenAfter(operator);
+          let fixString = '';
+
+          if (operator.range[0] - previousToken!.range[1] === 0) {
+            fixString = ' ';
+          }
+
+          fixString += operator.value;
+
+          if (afterToken!.range[0] - operator.range[1] === 0) {
+            fixString += ' ';
+          }
+
+          return fixer.replaceText(operator, fixString);
+        },
+      });
+    };
+
+    function isSpaceChar(token: TSESTree.Token): boolean {
+      return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=';
+    }
+
     function checkAndReportAssignmentSpace(
       node: TSESTree.Node,
       leftNode: TSESTree.Token,
@@ -46,42 +83,17 @@ export default util.createRule<Options, MessageIds>({
       const operator = sourceCode.getFirstTokenBetween(
         leftNode,
         rightNode,
-        token =>
-          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=',
+        isSpaceChar,
       );
+
       const prev = sourceCode.getTokenBefore(operator!);
       const next = sourceCode.getTokenAfter(operator!);
 
       if (
-        operator &&
-        (!sourceCode.isSpaceBetweenTokens(prev!, operator) ||
-          !sourceCode.isSpaceBetweenTokens(operator, next!))
+        !sourceCode.isSpaceBetween!(prev!, operator!) ||
+        !sourceCode.isSpaceBetween!(operator!, next!)
       ) {
-        context.report({
-          node: node,
-          loc: operator.loc,
-          messageId: 'missingSpace',
-          data: {
-            operator: operator.value,
-          },
-          fix(fixer) {
-            const previousToken = sourceCode.getTokenBefore(operator);
-            const afterToken = sourceCode.getTokenAfter(operator);
-            let fixString = '';
-
-            if (operator.range[0] - previousToken!.range[1] === 0) {
-              fixString = ' ';
-            }
-
-            fixString += operator.value;
-
-            if (afterToken!.range[0] - operator.range[1] === 0) {
-              fixString += ' ';
-            }
-
-            return fixer.replaceText(operator, fixString);
-          },
-        });
+        report(node, operator!);
       }
     }
 
@@ -120,10 +132,36 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Check if it is missing spaces between type annotations chaining
+     * @param typeAnnotation TypeAnnotations list
+     */
+    function checkForTypeAnnotationSpace(
+      typeAnnotation: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+    ): void {
+      const types = typeAnnotation.types;
+
+      types.forEach(type => {
+        const operator = sourceCode.getTokenBefore(type);
+
+        if (operator != null && UNIONS.includes(operator.value)) {
+          const prev = sourceCode.getTokenBefore(operator);
+          const next = sourceCode.getTokenAfter(operator);
+
+          if (
+            !sourceCode.isSpaceBetween!(prev!, operator) ||
+            !sourceCode.isSpaceBetween!(operator, next!)
+          ) {
+            report(typeAnnotation, operator);
+          }
+        }
+      });
+    }
+
+    /**
      * Check if it has an assignment char and report if it's faulty
      * @param node The node to report
      */
-    function checkForTypeAliasAssignmentSpace(
+    function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
       const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
@@ -138,7 +176,9 @@ export default util.createRule<Options, MessageIds>({
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
       ClassProperty: checkForClassPropertyAssignmentSpace,
-      TSTypeAliasDeclaration: checkForTypeAliasAssignmentSpace,
+      TSTypeAliasDeclaration: checkForTypeAliasAssignment,
+      TSUnionType: checkForTypeAnnotationSpace,
+      TSIntersectionType: checkForTypeAnnotationSpace,
     };
   },
 });

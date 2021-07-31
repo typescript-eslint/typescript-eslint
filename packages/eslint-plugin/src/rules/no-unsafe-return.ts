@@ -91,6 +91,16 @@ export default util.createRule({
         functionType = checker.getTypeAtLocation(functionTSNode);
       }
 
+      // If there is an explicit type annotation *and* that type matches the actual
+      // function return type, we shouldn't complain (it's intentional, even if unsafe)
+      if (functionTSNode.type) {
+        for (const signature of functionType.getCallSignatures()) {
+          if (returnNodeType === signature.getReturnType()) {
+            return;
+          }
+        }
+      }
+
       if (anyType !== util.AnyType.Safe) {
         // Allow cases when the declared return type of the function is either unknown or unknown[]
         // and the function is returning any or any[].
@@ -140,17 +150,11 @@ export default util.createRule({
 
       for (const signature of functionType.getCallSignatures()) {
         const functionReturnType = signature.getReturnType();
-        if (returnNodeType === functionReturnType) {
-          // don't bother checking if they're the same
-          // either the function is explicitly declared to return the same type
-          // or there was no declaration, so the return type is implicit
-          return;
-        }
-
         const result = util.isUnsafeAssignment(
           returnNodeType,
           functionReturnType,
           checker,
+          returnNode,
         );
         if (!result) {
           return;

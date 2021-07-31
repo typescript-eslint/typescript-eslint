@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import escapeRegExp from 'lodash/escapeRegExp';
+import { escapeRegExp } from './escapeRegExp';
 import * as ts from 'typescript';
 
 // deeply re-export, for convenience
