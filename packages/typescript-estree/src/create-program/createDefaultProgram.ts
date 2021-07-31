@@ -6,6 +6,7 @@ import {
   ASTAndProgram,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
@@ -43,6 +44,13 @@ function createDefaultProgram(
     commandLine.options,
     /* setParentNodes */ true,
   );
+
+  if (extra.moduleResolver) {
+    compilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
+
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(extra.filePath)

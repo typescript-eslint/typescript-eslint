@@ -1,5 +1,5 @@
 // There's lots of funny stuff due to the typing of ts.Node
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import * as ts from 'typescript';
 import {
   canContainDirective,
