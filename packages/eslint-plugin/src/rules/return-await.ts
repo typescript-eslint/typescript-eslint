@@ -7,14 +7,15 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
-interface ScopeInfo {
-  hasAsync: boolean;
-}
-
 type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.ArrowFunctionExpression;
+
+interface ScopeInfo {
+  hasAsync: boolean;
+  owningFunc: FunctionNode;
+}
 
 export default util.createRule({
   name: 'return-await',
@@ -49,12 +50,17 @@ export default util.createRule({
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    let scopeInfo: ScopeInfo | null = null;
+    const scopeInfoStack: ScopeInfo[] = [];
 
     function enterFunction(node: FunctionNode): void {
-      scopeInfo = {
+      scopeInfoStack.push({
         hasAsync: node.async,
-      };
+        owningFunc: node,
+      });
+    }
+
+    function exitFunction(): void {
+      scopeInfoStack.pop();
     }
 
     function inTry(node: ts.Node): boolean {
@@ -263,6 +269,11 @@ export default util.createRule({
       FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
 
+      'FunctionDeclaration:exit': exitFunction,
+      'FunctionExpression:exit': exitFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+
+      // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
@@ -274,6 +285,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
+        const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
         if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
           return;
         }
