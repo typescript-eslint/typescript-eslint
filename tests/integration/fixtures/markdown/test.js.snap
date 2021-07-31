@@ -4,6 +4,7 @@ exports[`it should produce the expected lint ouput 1`] = `
 Array [
   Object {
     "errorCount": 10,
+    "fatalErrorCount": 0,
     "filePath": "/usr/linked/Doc.md",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
