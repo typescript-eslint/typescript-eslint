@@ -277,7 +277,7 @@ interface RuleListener {
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
   ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
-  Comment?: RuleFunction<TSESTree.Comment>;
+  // Comment?: RuleFunction<TSESTree.Comment>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
   DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
@@ -338,7 +338,7 @@ interface RuleListener {
   TemplateLiteral?: RuleFunction<TSESTree.TemplateLiteral>;
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
-  Token?: RuleFunction<TSESTree.Token>;
+  // Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
   TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
