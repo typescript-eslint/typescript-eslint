@@ -3,7 +3,12 @@
 import { Linter as ESLintLinter } from 'eslint';
 import { TSESTree, ParserServices } from '../ts-estree';
 import { ParserOptions as TSParserOptions } from './ParserOptions';
-import { RuleCreateFunction, RuleFix, RuleModule } from './Rule';
+import {
+  RuleCreateFunction,
+  RuleFix,
+  RuleModule,
+  SharedConfigurationSettings,
+} from './Rule';
 import { Scope } from './Scope';
 import { SourceCode } from './SourceCode';
 
@@ -164,7 +169,7 @@ namespace Linter {
     /**
      * The shared settings.
      */
-    settings?: { [name: string]: unknown };
+    settings?: SharedConfigurationSettings;
   }
 
   export interface ConfigOverride extends BaseConfig {

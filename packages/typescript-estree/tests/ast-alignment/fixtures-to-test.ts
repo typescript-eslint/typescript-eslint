@@ -386,12 +386,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
-    /**
-     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
-     * SyntaxError: Unexpected token, expected ","
-     */
-    'class-with-constructor-and-parameter-property-with-modifiers',
-    'class-with-constructor-and-parameter-proptery-with-override-modifier',
   ],
   ignoreSourceType: [
     /**
