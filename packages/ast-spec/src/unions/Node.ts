@@ -3,6 +3,7 @@ import type { ExportAllDeclaration } from '../declaration/ExportAllDeclaration/s
 import type { ExportDefaultDeclaration } from '../declaration/ExportDefaultDeclaration/spec';
 import type { ExportNamedDeclaration } from '../declaration/ExportNamedDeclaration/spec';
 import type { FunctionDeclaration } from '../declaration/FunctionDeclaration/spec';
+import type { ImportDeclaration } from '../declaration/ImportDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
 import type { TSImportEqualsDeclaration } from '../declaration/TSImportEqualsDeclaration/spec';
@@ -103,7 +104,6 @@ import type { ForInStatement } from '../statement/ForInStatement/spec';
 import type { ForOfStatement } from '../statement/ForOfStatement/spec';
 import type { ForStatement } from '../statement/ForStatement/spec';
 import type { IfStatement } from '../statement/IfStatement/spec';
-import type { ImportDeclaration } from '../statement/ImportDeclaration/spec';
 import type { LabeledStatement } from '../statement/LabeledStatement/spec';
 import type { ReturnStatement } from '../statement/ReturnStatement/spec';
 import type { SwitchStatement } from '../statement/SwitchStatement/spec';

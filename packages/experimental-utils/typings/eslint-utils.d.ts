@@ -35,6 +35,7 @@ declare module 'eslint-utils' {
     readonly READ: never;
     readonly CALL: never;
     readonly CONSTRUCT: never;
+    readonly ESM: never;
     new (): never;
   };
 }
