@@ -1,22 +1,15 @@
 // import type { Node } from '../unions/Node';
-import type { Range } from './Range';
-import type { SourceLocation } from './SourceLocation';
+import type { AST_NODE_TYPES } from '../ast-node-types';
+import type { NodeOrTokenData } from './NodeOrTokenData';
 
-export interface BaseNode {
-  /**
-   * The source location information of the node.
-   * @see {SourceLocation}
-   */
-  loc: SourceLocation;
-  /**
-   * @see {Range}
-   */
-  range: Range;
+export interface BaseNode extends NodeOrTokenData {
   /**
    * The parent node of the current node
+   *
+   * This is added in the @typescript-eslint/types package as ESLint adds it
+   * while traversing.
    */
   // parent?: Node;
 
-  // every node *will* have a type, but let the nodes define their own exact string
-  // type: string;
+  type: AST_NODE_TYPES;
 }

@@ -224,5 +224,39 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         }
       `,
     },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (false !== varBoolean) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (varBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (true !== varBoolean) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!varBoolean) {
+        }
+      `,
+    },
   ],
 });

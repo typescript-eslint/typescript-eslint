@@ -29,7 +29,7 @@ interface ParserOptions {
   ecmaVersion?: EcmaVersion;
 
   // scope-manager specific
-  jsxPragma?: string;
+  jsxPragma?: string | null;
   jsxFragmentName?: string | null;
   lib?: Lib[];
 
@@ -51,6 +51,7 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
+  moduleResolver?: string;
 }
 
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };

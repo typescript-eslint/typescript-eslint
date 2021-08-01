@@ -1,5 +1,5 @@
 // There's lots of funny stuff due to the typing of ts.Node
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
 import {
   canContainDirective,
@@ -199,7 +199,7 @@ export class Converter {
    */
   private registerTSNodeInNodeMap(
     node: ts.Node,
-    result: TSESTree.BaseNode | null,
+    result: TSESTree.Node | null,
   ): void {
     if (result && this.options.shouldPreserveNodeMaps) {
       if (!this.tsNodeToESTreeNodeMap.has(node)) {
