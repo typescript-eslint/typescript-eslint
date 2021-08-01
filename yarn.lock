@@ -1856,26 +1856,37 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@nrwl/devkit@12.6.0":
-  version "12.6.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-12.6.0.tgz#a2bdd4c144f05597302580bcf31443abdd9dc6be"
-  integrity sha512-tvw/4n2JD/38UuzdxFCoj1+x02BAKK4EvtLhwUK5XSBF0wDYFBp5rHfxvUD9ZcoiRRrZA4QGFjhDljrfj95F2A==
+"@nrwl/cli@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-12.6.3.tgz#d74a0a639698d0b8c9347e0679ef9e8ba97182a4"
+  integrity sha512-UaVaoknao2+EHWlcyMahNHwelXVdDPDc13ki6T2pFYm9oFj+36YLXexhjwUxafeD/Po8nahaVWhsgqGcjUNgxQ==
   dependencies:
-    "@nrwl/tao" "12.6.0"
+    "@nrwl/tao" "12.6.3"
+    chalk "4.1.0"
+    v8-compile-cache "2.3.0"
+    yargs "15.4.1"
+    yargs-parser "20.0.0"
+
+"@nrwl/devkit@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-12.6.3.tgz#990885aef16c6e312de8655ba254b22b6eb21c76"
+  integrity sha512-HeBYesksZirm85sp5a2F23y/V8z2ajBN+Ej29R9E/hpnhOsZScpLxgxmhl+Cq4bd1omVJ6XRvUDwGwuIf1kQmg==
+  dependencies:
+    "@nrwl/tao" "12.6.3"
     ejs "^3.1.5"
     ignore "^5.0.4"
     rxjs "^6.5.4"
     semver "7.3.4"
     tslib "^2.0.0"
 
-"@nrwl/jest@12.6.0":
-  version "12.6.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-12.6.0.tgz#4ae63b175c2a3a189267606d4e3796d0c4c406eb"
-  integrity sha512-xg9tqKgY1XIhA7GOhW9D9g3i3ulLa/Ofjuse0vPNG/e9qRrOUKAdK88OB5CB0AbrARCplf9//45i5NoeW9ZzDA==
+"@nrwl/jest@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-12.6.3.tgz#9d020f61a1fbf63280034b7387c9f62bebafc1c6"
+  integrity sha512-wcWoq0bLFZeYGR7V4oAzzhp3RxnmeNRLJsYFVI7ShWaYW7em2MGyFiqYt6/Vp5lPT0WlgQH7HujDCx5EYCXVPQ==
   dependencies:
     "@jest/reporters" "27.0.6"
     "@jest/test-result" "27.0.6"
-    "@nrwl/devkit" "12.6.0"
+    "@nrwl/devkit" "12.6.3"
     chalk "4.1.0"
     identity-obj-proxy "3.0.0"
     jest-config "27.0.6"
@@ -1884,12 +1895,12 @@
     rxjs "^6.5.4"
     tslib "^2.0.0"
 
-"@nrwl/linter@12.6.0":
-  version "12.6.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-12.6.0.tgz#b102b481a166a9ead4a1df1a05bcaa81305f31ab"
-  integrity sha512-qOk6tOUqwLNYmeNNLFUgnbEr+v2G9VqZUBUWpVWT8PR78Rd0vI2AJDkE/VrjPKIfHzbXraKTuWcwTCijX8324w==
+"@nrwl/linter@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-12.6.3.tgz#f66134a1cea2cf890c3c6e31ca3a3bbbddfaa02d"
+  integrity sha512-9Dmz7/ke0SMxVJLLdBfqa4U373Hrc7HDrbVPutUImNH/aEybhhYIc6yIURm+kUMswiwYSHvLpbb3QbvsxUZnYQ==
   dependencies:
-    "@nrwl/devkit" "12.6.0"
+    "@nrwl/devkit" "12.6.3"
     glob "7.1.4"
     minimatch "3.0.4"
     tmp "~0.2.1"
@@ -1939,19 +1950,19 @@
     tslib "^2.0.0"
     yargs-parser "20.0.0"
 
-"@nrwl/workspace@12.6.0":
-  version "12.6.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-12.6.0.tgz#101fda472268008ca64ac5478b95ae17735f93b4"
-  integrity sha512-g7RqXHLWiB7dO6YhH0Vcb1JRs/q/lSA49Q5DzJqXrVng63LA0wBovmFdOF9slcYNcsow35cDBgWvup+BQgq6gg==
+"@nrwl/workspace@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-12.6.3.tgz#42a0228ae6e6b788055f672e422676a863fbaf46"
+  integrity sha512-/5bCdRYqn/R50YGjNMZRbnOx7ACKoOsuwW1hpe6in36qNjquT0QXlukSTo72dqCoHgDf5Ha34sgZndsEMSnHPg==
   dependencies:
-    "@nrwl/cli" "12.6.0"
-    "@nrwl/devkit" "12.6.0"
-    "@nrwl/jest" "12.6.0"
-    "@nrwl/linter" "12.6.0"
+    "@nrwl/cli" "12.6.3"
+    "@nrwl/devkit" "12.6.3"
+    "@nrwl/jest" "12.6.3"
+    "@nrwl/linter" "12.6.3"
     chalk "4.1.0"
     chokidar "^3.5.1"
     cosmiconfig "^4.0.0"
-    dotenv "8.2.0"
+    dotenv "~10.0.0"
     enquirer "~2.3.6"
     flat "^5.0.2"
     fs-extra "^9.1.0"
@@ -4012,10 +4023,10 @@ dot-prop@^5.1.0, dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv@8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
-  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+dotenv@~10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
+  integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
 
 downlevel-dts@^0.7.0:
   version "0.7.0"
