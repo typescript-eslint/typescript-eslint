@@ -292,7 +292,7 @@ jobs:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
     needs: [typecheck, test_on_primary_node_version, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
-    if: github.ref == 'refs/heads/master'
+    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       # Fetch all history for all tags and branches in this job because lerna needs it
