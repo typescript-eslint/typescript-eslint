@@ -76,7 +76,7 @@
     "@babel/types": "^7.14.4",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^12.1.4",
-    "@commitlint/config-lerna-scopes": "^12.1.4",
+    "@commitlint/config-lerna-scopes": "^13.1.0",
     "@nrwl/cli": "12.6.0",
     "@nrwl/nx-cloud": "12.3.0",
     "@nrwl/tao": "12.6.3",
