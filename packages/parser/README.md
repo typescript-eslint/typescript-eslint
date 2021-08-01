@@ -55,7 +55,7 @@ interface ParserOptions {
   };
   ecmaVersion?: number;
 
-  jsxPragma?: string;
+  jsxPragma?: string | null;
   jsxFragmentName?: string | null;
   lib?: string[];
 
@@ -111,7 +111,7 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 Default `'React'`
 
 The identifier that's used for JSX Elements creation (after transpilation).
-If you're using a library other than React (like `preact`), then you should change this value.
+If you're using a library other than React (like `preact`), then you should change this value. If you are using the [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) you can set this to `null`.
 
 This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
 
