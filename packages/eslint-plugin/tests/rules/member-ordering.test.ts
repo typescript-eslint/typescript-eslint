@@ -5316,14 +5316,14 @@ class Foo {
       {
         code: `
 class Foo {
-  @Bar
   get a() {}
 
+  @Bar
   get b() {}
 
-  @Bar
   set c() {}
 
+  @Bar
   set d() {}
 }
             `,

@@ -357,7 +357,13 @@ function getRank(
 
   if (supportsModifiers) {
     const decorated = 'decorators' in node && node.decorators!.length > 0;
-    if (decorated && (type === 'field' || type === 'method')) {
+    if (
+      decorated &&
+      (type === 'field' ||
+        type === 'method' ||
+        type === 'get' ||
+        type === 'set')
+    ) {
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
     }
