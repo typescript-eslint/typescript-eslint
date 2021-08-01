@@ -4,6 +4,7 @@ exports[`it should produce the expected lint ouput 1`] = `
 Array [
   Object {
     "errorCount": 1,
+    "fatalErrorCount": 0,
     "filePath": "/usr/linked/Hello.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -89,6 +90,7 @@ export default Vue.extend({
   },
   Object {
     "errorCount": 0,
+    "fatalErrorCount": 0,
     "filePath": "/usr/linked/Utility.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -114,6 +116,7 @@ export default class Utility {
   },
   Object {
     "errorCount": 0,
+    "fatalErrorCount": 0,
     "filePath": "/usr/linked/World.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,

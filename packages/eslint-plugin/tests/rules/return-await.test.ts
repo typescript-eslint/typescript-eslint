@@ -232,6 +232,21 @@ ruleTester.run('return-await', rule, {
         }
       `,
     },
+    {
+      code: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return await Promise.resolve('error');
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -852,6 +867,44 @@ async function test<T>(): Promise<T> {
       errors: [
         {
           line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            const callback1 = function () {};
+            const callback2 = async function () {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return Promise.resolve('try');
+          } finally {
+            return Promise.resolve('finally');
+          }
+        }
+      `,
+      output: `
+        async function test() {
+          try {
+            const callback1 = function () {};
+            const callback2 = async function () {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return await Promise.resolve('try');
+          } finally {
+            return Promise.resolve('finally');
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 10,
           messageId: 'requiredPromiseAwait',
         },
       ],
