@@ -153,8 +153,15 @@ export default util.createRule({
     function insertAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
-    ): TSESLint.RuleFix | null {
-      return fixer.insertTextBefore(node, 'await ');
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      if (node.type !== AST_NODE_TYPES.TSAsExpression) {
+        return fixer.insertTextBefore(node, 'await ');
+      }
+
+      return [
+        fixer.insertTextBefore(node, 'await ('),
+        fixer.insertTextAfter(node, ')'),
+      ];
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
