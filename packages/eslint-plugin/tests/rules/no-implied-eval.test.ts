@@ -256,6 +256,7 @@ const foo = () => {};
 const bar = () => {};
 
 setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+setTimeout(foo || bar, 500);
     `,
     `
 class Foo {
@@ -813,6 +814,21 @@ globalThis['execScript'](\`\`);
           messageId: 'noImpliedEvalError',
           line: 12,
           column: 26,
+        },
+      ],
+    },
+    {
+      code: `
+const foo: string | undefined = 'hello';
+const bar = () => {};
+
+setTimeout(foo || bar, 500);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
         },
       ],
     },
