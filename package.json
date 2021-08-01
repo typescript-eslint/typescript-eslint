@@ -107,7 +107,7 @@
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^7.1.7",
-    "husky": "^5.0.9",
+    "husky": "^7.0.1",
     "jest": "^27.0.3",
     "jest-specific-snapshot": "^5.0.0",
     "lerna": "^3.22.1",
