@@ -75,7 +75,7 @@
     "@babel/parser": "^7.14.6",
     "@babel/types": "^7.14.4",
     "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/config-conventional": "^13.1.0",
     "@commitlint/config-lerna-scopes": "^13.1.0",
     "@nrwl/cli": "12.6.3",
     "@nrwl/nx-cloud": "12.3.0",
