@@ -3,8 +3,8 @@ import * as path from 'path';
 import {
   clearProgramCache,
   parseAndGenerateServices,
-  ɵclearParseAndGenerateServicesCalls as clearParseAndGenerateServicesCalls,
-} from '../../src';
+  clearParseAndGenerateServicesCalls,
+} from '../../src/parser';
 import { getCanonicalFileName } from '../../src/create-program/shared';
 
 const mockProgram = {

@@ -498,7 +498,7 @@ function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
 
 let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
-function ɵclearParseAndGenerateServicesCalls(): void {
+function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};
 }
 
@@ -586,9 +586,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
 
   if (extra.singleRun && options.filePath) {
     parseAndGenerateServicesCalls[options.filePath] =
-      parseAndGenerateServicesCalls[options.filePath] || 0;
-    parseAndGenerateServicesCalls[options.filePath] =
-      parseAndGenerateServicesCalls[options.filePath] + 1;
+      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
   }
 
   if (
@@ -651,5 +649,5 @@ export {
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
   clearProgramCache,
-  ɵclearParseAndGenerateServicesCalls,
+  clearParseAndGenerateServicesCalls,
 };
