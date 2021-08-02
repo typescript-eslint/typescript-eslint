@@ -17,7 +17,7 @@ export default util.createRule<[], 'meaninglessVoidOperator'>({
     },
     fixable: 'code',
     messages: {
-      meaninglessVoidOperator: `void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored`,
+      meaninglessVoidOperator: "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
     },
     schema: [],
   },
@@ -29,7 +29,7 @@ export default util.createRule<[], 'meaninglessVoidOperator'>({
     const sourceCode = context.getSourceCode();
 
     return {
-      [`UnaryExpression[operator="void"]`](
+      'UnaryExpression[operator="void"]'(
         node: TSESTree.UnaryExpression,
       ): void {
         const argTsNode = parserServices.esTreeNodeToTSNodeMap.get(
