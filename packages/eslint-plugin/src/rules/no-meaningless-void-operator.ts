@@ -13,7 +13,10 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, 'meaninglessVoidOperator'>({
+export default util.createRule<
+  Options,
+  'meaninglessVoidOperator' | 'removeVoid'
+>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
@@ -29,6 +32,7 @@ export default util.createRule<Options, 'meaninglessVoidOperator'>({
     messages: {
       meaninglessVoidOperator:
         "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
+      removeVoid: "Remove 'void'",
     },
     schema: [
       {
@@ -87,7 +91,7 @@ export default util.createRule<Options, 'meaninglessVoidOperator'>({
             node,
             messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
-            suggest: [{ messageId: 'meaninglessVoidOperator', fix }],
+            suggest: [{ messageId: 'removeVoid', fix }],
           });
         }
       },

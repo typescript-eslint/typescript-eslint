@@ -75,7 +75,7 @@ function bar(x: never) {
           column: 3,
           suggestions: [
             {
-              messageId: 'meaninglessVoidOperator',
+              messageId: 'removeVoid',
               output: `
 function bar(x: never) {
   x;
