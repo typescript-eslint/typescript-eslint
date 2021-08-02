@@ -6,6 +6,12 @@ By default, TypeScript will type a catch clause variable as `any`, so explicitly
 
 The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons.
 
+## Warning
+
+With TypeScript 4.4 starts defaulting to the `unknown` Type in Catch Variables
+
+see <https://devblogs.microsoft.com/typescript/announcing-typescript-4-4-beta/#use-unknown-catch-variables>
+
 ## Rule Details
 
 This rule requires an explicit type to be declared on a catch clause variable.
