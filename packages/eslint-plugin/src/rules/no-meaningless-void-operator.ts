@@ -1,9 +1,19 @@
-import { ESLintUtils, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  ESLintUtils,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 import * as ts from 'typescript';
 
-export default util.createRule<[], 'meaninglessVoidOperator'>({
+type Options = [
+  {
+    checkNever: boolean;
+  },
+];
+
+export default util.createRule<Options, 'meaninglessVoidOperator'>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
@@ -17,46 +27,67 @@ export default util.createRule<[], 'meaninglessVoidOperator'>({
     },
     fixable: 'code',
     messages: {
-      meaninglessVoidOperator: "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
+      meaninglessVoidOperator:
+        "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          checkNever: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
+  defaultOptions: [{ checkNever: false }],
 
-  create(context, _options) {
+  create(context, [{ checkNever }]) {
     const parserServices = ESLintUtils.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     return {
-      'UnaryExpression[operator="void"]'(
-        node: TSESTree.UnaryExpression,
-      ): void {
+      'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
+        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+          return fixer.removeRange([
+            sourceCode.getTokens(node)[0].range[0],
+            sourceCode.getTokens(node)[1].range[0],
+          ]);
+        };
+
         const argTsNode = parserServices.esTreeNodeToTSNodeMap.get(
           node.argument,
         );
         const argType = checker.getTypeAtLocation(argTsNode);
+        const unionParts = tsutils.unionTypeParts(argType);
         if (
-          tsutils
-            .unionTypeParts(argType)
-            .every(
-              part =>
-                part.flags &
-                (ts.TypeFlags.Void |
-                  ts.TypeFlags.Undefined |
-                  ts.TypeFlags.Never),
-            )
+          unionParts.every(
+            part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),
+          )
         ) {
           context.report({
             node,
             messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
-            fix(fixer) {
-              return fixer.removeRange([
-                sourceCode.getTokens(node)[0].range[0],
-                sourceCode.getTokens(node)[1].range[0],
-              ]);
-            },
+            fix,
+          });
+        } else if (
+          checkNever &&
+          unionParts.every(
+            part =>
+              part.flags &
+              (ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never),
+          )
+        ) {
+          context.report({
+            node,
+            messageId: 'meaninglessVoidOperator',
+            data: { type: checker.typeToString(argType) },
+            suggest: [{ messageId: 'meaninglessVoidOperator', fix }],
           });
         }
       },

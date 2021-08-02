@@ -26,6 +26,11 @@ function bar(x: number) {
 }
 void bar(); // discarding a number
     `,
+    `
+function bar(x: never) {
+  void x;
+}
+    `,
   ],
   invalid: [
     {
@@ -57,21 +62,27 @@ foo();
       ],
     },
     {
+      options: [{ checkNever: true }],
       code: `
 function bar(x: never) {
   void x;
 }
-      `,
-      output: `
-function bar(x: never) {
-  x;
-}
-      `,
+      `.trimRight(),
       errors: [
         {
           messageId: 'meaninglessVoidOperator',
           line: 3,
           column: 3,
+          suggestions: [
+            {
+              messageId: 'meaninglessVoidOperator',
+              output: `
+function bar(x: never) {
+  x;
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },

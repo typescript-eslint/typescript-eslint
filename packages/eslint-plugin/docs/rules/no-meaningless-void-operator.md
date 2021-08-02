@@ -1,6 +1,6 @@
 # Disallow the `void` operator except when used to discard a value (`no-meaningless-void-operator`)
 
-Disallow the `void` operator when its argument is already of type `void`, `undefined`, or `never`.
+Disallow the `void` operator when its argument is already of type `void` or `undefined`.
 
 ## Rule Details
 
@@ -15,10 +15,6 @@ void (() => {})();
 
 function foo() {}
 void foo();
-
-function bar(x: never) {
-  void x;
-}
 ```
 
 Examples of **correct** code for this rule:
@@ -35,3 +31,20 @@ function bar(x: number) {
 }
 void bar(); // discarding a number
 ```
+
+### Options
+
+This rule accepts a single object option with the following default configuration:
+
+```json
+{
+  "@typescript-eslint/no-meaningless-void-operator": [
+    "error",
+    {
+      "checkNever": false
+    }
+  ]
+}
+```
+
+- `checkNever: true` will suggest removing `void` when the argument has type `never`.
