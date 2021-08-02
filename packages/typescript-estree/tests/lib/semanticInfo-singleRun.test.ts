@@ -1,6 +1,10 @@
 import glob from 'glob';
 import * as path from 'path';
-import { clearProgramCache, parseAndGenerateServices } from '../../src';
+import {
+  clearProgramCache,
+  parseAndGenerateServices,
+  clearParseAndGenerateServicesCalls,
+} from '../../src/parser';
 import { getCanonicalFileName } from '../../src/create-program/shared';
 
 const mockProgram = {
@@ -91,6 +95,8 @@ describe('semanticInfo - singleRun', () => {
     clearProgramCache();
     // ensure invocations of mock are clean for each test
     (createProgramFromConfigFile as jest.Mock).mockClear();
+    // Do not track invocations per file across tests
+    clearParseAndGenerateServicesCalls();
   });
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {

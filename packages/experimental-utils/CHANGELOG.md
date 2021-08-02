@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Bug Fixes
+
+* **experimental-utils:** simplify `eslint-utils`' `findVariable`'s signature in `ast-utils` ([#3574](https://github.com/typescript-eslint/typescript-eslint/issues/3574)) ([3ef5267](https://github.com/typescript-eslint/typescript-eslint/commit/3ef5267b850e1ffb7115e263e89a98c455fd2532))
+
+
+### Features
+
+* **ast-spec:** make `BaseNode` & `BaseToken` more type-safe ([#3560](https://github.com/typescript-eslint/typescript-eslint/issues/3560)) ([a6c5604](https://github.com/typescript-eslint/typescript-eslint/commit/a6c5604b65b6330d047aa016fc46b8a597a6ae58))
+
+
+
+
+
+## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
 ## [4.28.4](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.3...v4.28.4) (2021-07-19)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

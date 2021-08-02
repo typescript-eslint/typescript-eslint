@@ -1,7 +1,7 @@
 import path from 'path';
 import * as ts from 'typescript';
 import { Program } from 'typescript';
-import { Extra } from '../parser-options';
+import { Extra, ModuleResolver } from '../parser-options';
 
 interface ASTAndProgram {
   ast: ts.SourceFile;
@@ -124,6 +124,23 @@ function getAstFromProgram(
   return ast && { ast, program: currentProgram };
 }
 
+function getModuleResolver(moduleResolverPath: string): ModuleResolver {
+  let moduleResolver: ModuleResolver;
+
+  try {
+    moduleResolver = require(moduleResolverPath) as ModuleResolver;
+  } catch (error) {
+    const errorLines = [
+      'Could not find the provided parserOptions.moduleResolver.',
+      'Hint: use an absolute path if you are not in control over where the ESLint instance runs.',
+    ];
+
+    throw new Error(errorLines.join('\n'));
+  }
+
+  return moduleResolver;
+}
+
 export {
   ASTAndProgram,
   CORE_COMPILER_OPTIONS,
@@ -134,4 +151,5 @@ export {
   getCanonicalFileName,
   getScriptKind,
   getAstFromProgram,
+  getModuleResolver,
 };

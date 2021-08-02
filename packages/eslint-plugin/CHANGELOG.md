@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-implied-eval] handle bind on nested member expressions ([#3598](https://github.com/typescript-eslint/typescript-eslint/issues/3598)) ([f5a6806](https://github.com/typescript-eslint/typescript-eslint/commit/f5a6806ae4291f540eef73cd5c182c985c5059e7))
+* **eslint-plugin:** [no-implied-eval] permit more expression types ([#3624](https://github.com/typescript-eslint/typescript-eslint/issues/3624)) ([ca7c549](https://github.com/typescript-eslint/typescript-eslint/commit/ca7c549426d885ecb43cc8fe99518e58041ad152))
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] incorrect fix when condition is reversed ([#3581](https://github.com/typescript-eslint/typescript-eslint/issues/3581)) ([b595575](https://github.com/typescript-eslint/typescript-eslint/commit/b595575ccef7bceb04c6317fb903f4bedeb19a69))
+* **eslint-plugin:** [return-await] handle nested functions correctly ([#3601](https://github.com/typescript-eslint/typescript-eslint/issues/3601)) ([4a196b5](https://github.com/typescript-eslint/typescript-eslint/commit/4a196b5818bb8557a7d3c5abae81fbd8021d9cb9))
+* **eslint-plugin:** [return-await] properly handle fixes for `TSAsExpression` ([#3631](https://github.com/typescript-eslint/typescript-eslint/issues/3631)) ([00a4369](https://github.com/typescript-eslint/typescript-eslint/commit/00a436986ceb2520fdeb7efed9ad8b2d866700b7))
+
+
+### Features
+
+* **eslint-plugin:** [no-redeclare] ignoreDeclarationMerge of enum+namespace ([#3572](https://github.com/typescript-eslint/typescript-eslint/issues/3572)) ([18e30cb](https://github.com/typescript-eslint/typescript-eslint/commit/18e30cb601ee4e990d6becdfb9d98ae8119b7919))
+* **eslint-plugin:** [prefer-return-this-type] add a new rule ([#3228](https://github.com/typescript-eslint/typescript-eslint/issues/3228)) ([5e1a615](https://github.com/typescript-eslint/typescript-eslint/commit/5e1a61500472ff186eede686b2257464476d3d87))
+* **eslint-plugin:** Catch unused React import with new JSX transform ([#3577](https://github.com/typescript-eslint/typescript-eslint/issues/3577)) ([02998ea](https://github.com/typescript-eslint/typescript-eslint/commit/02998eac510665758b9a093d43afc310f3ac980d))
+
+
+
+
+
+## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
 ## [4.28.4](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.3...v4.28.4) (2021-07-19)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

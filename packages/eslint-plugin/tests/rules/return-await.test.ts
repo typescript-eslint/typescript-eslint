@@ -232,6 +232,21 @@ ruleTester.run('return-await', rule, {
         }
       `,
     },
+    {
+      code: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return await Promise.resolve('error');
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -823,6 +838,73 @@ const buzz = async () => ((await foo()) ? 1 : await bar());
         },
         {
           line: 4,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+      code: `
+async function test<T>(): Promise<T> {
+  const res = await fetch('...');
+  try {
+    return res.json() as Promise<T>;
+  } catch (err) {
+    throw Error('Request Failed.');
+  }
+}
+      `,
+      output: `
+async function test<T>(): Promise<T> {
+  const res = await fetch('...');
+  try {
+    return await (res.json() as Promise<T>);
+  } catch (err) {
+    throw Error('Request Failed.');
+  }
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            const callback1 = function () {};
+            const callback2 = async function () {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return Promise.resolve('try');
+          } finally {
+            return Promise.resolve('finally');
+          }
+        }
+      `,
+      output: `
+        async function test() {
+          try {
+            const callback1 = function () {};
+            const callback2 = async function () {};
+            function callback3() {}
+            async function callback4() {}
+            const callback5 = () => {};
+            const callback6 = async () => {};
+            return await Promise.resolve('try');
+          } finally {
+            return Promise.resolve('finally');
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 10,
           messageId: 'requiredPromiseAwait',
         },
       ],

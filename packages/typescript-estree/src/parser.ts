@@ -135,6 +135,7 @@ function resetExtra(): void {
      * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
      */
     singleRun: false,
+    moduleResolver: '',
   };
 }
 
@@ -342,11 +343,16 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
     typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
       'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
+
+  if (typeof options.moduleResolver === 'string') {
+    extra.moduleResolver = options.moduleResolver;
+  }
 }
 
 function warnAboutTSVersion(): void {
   if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
-    const isTTY = typeof process === undefined ? false : process.stdout?.isTTY;
+    const isTTY =
+      typeof process === 'undefined' ? false : process.stdout?.isTTY;
     if (isTTY) {
       const border = '=============';
       const versionWarning = [
@@ -496,6 +502,12 @@ function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
   return parseWithNodeMapsInternal(code, options, true);
 }
 
+let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+// Privately exported utility intended for use in typescript-eslint unit tests only
+function clearParseAndGenerateServicesCalls(): void {
+  parseAndGenerateServicesCalls = {};
+}
+
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options: T,
@@ -566,12 +578,41 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   const shouldProvideParserServices =
     extra.programs != null || (extra.projects && extra.projects.length > 0);
-  const { ast, program } = getProgramAndAST(
-    code,
-    extra.programs,
-    shouldProvideParserServices,
-    extra.createDefaultProgram,
-  )!;
+
+  /**
+   * If we are in singleRun mode but the parseAndGenerateServices() function has been called more than once for the current file,
+   * it must mean that we are in the middle of an ESLint automated fix cycle (in which parsing can be performed up to an additional
+   * 10 times in order to apply all possible fixes for the file).
+   *
+   * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
+   * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
+   */
+  let ast: ts.SourceFile;
+  let program: ts.Program;
+
+  if (extra.singleRun && options.filePath) {
+    parseAndGenerateServicesCalls[options.filePath] =
+      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
+  }
+
+  if (
+    extra.singleRun &&
+    options.filePath &&
+    parseAndGenerateServicesCalls[options.filePath] > 1
+  ) {
+    const isolatedAstAndProgram = createIsolatedProgram(code, extra);
+    ast = isolatedAstAndProgram.ast;
+    program = isolatedAstAndProgram.program;
+  } else {
+    const astAndProgram = getProgramAndAST(
+      code,
+      extra.programs,
+      shouldProvideParserServices,
+      extra.createDefaultProgram,
+    )!;
+    ast = astAndProgram.ast;
+    program = astAndProgram.program;
+  }
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -614,4 +655,5 @@ export {
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
   clearProgramCache,
+  clearParseAndGenerateServicesCalls,
 };
