@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-implied-eval] handle bind on nested member expressions ([#3598](https://github.com/typescript-eslint/typescript-eslint/issues/3598)) ([f5a6806](https://github.com/typescript-eslint/typescript-eslint/commit/f5a6806ae4291f540eef73cd5c182c985c5059e7))
+* **eslint-plugin:** [no-implied-eval] permit more expression types ([#3624](https://github.com/typescript-eslint/typescript-eslint/issues/3624)) ([ca7c549](https://github.com/typescript-eslint/typescript-eslint/commit/ca7c549426d885ecb43cc8fe99518e58041ad152))
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] incorrect fix when condition is reversed ([#3581](https://github.com/typescript-eslint/typescript-eslint/issues/3581)) ([b595575](https://github.com/typescript-eslint/typescript-eslint/commit/b595575ccef7bceb04c6317fb903f4bedeb19a69))
+* **eslint-plugin:** [return-await] handle nested functions correctly ([#3601](https://github.com/typescript-eslint/typescript-eslint/issues/3601)) ([4a196b5](https://github.com/typescript-eslint/typescript-eslint/commit/4a196b5818bb8557a7d3c5abae81fbd8021d9cb9))
+* **eslint-plugin:** [return-await] properly handle fixes for `TSAsExpression` ([#3631](https://github.com/typescript-eslint/typescript-eslint/issues/3631)) ([00a4369](https://github.com/typescript-eslint/typescript-eslint/commit/00a436986ceb2520fdeb7efed9ad8b2d866700b7))
+* **experimental-utils:** simplify `eslint-utils`' `findVariable`'s signature in `ast-utils` ([#3574](https://github.com/typescript-eslint/typescript-eslint/issues/3574)) ([3ef5267](https://github.com/typescript-eslint/typescript-eslint/commit/3ef5267b850e1ffb7115e263e89a98c455fd2532))
+* **typescript-estree:** correct tty check ([#3635](https://github.com/typescript-eslint/typescript-eslint/issues/3635)) ([62bcc93](https://github.com/typescript-eslint/typescript-eslint/commit/62bcc937f08cd18296ffbe96a3551ec1fb87aecd))
+* **typescript-estree:** ensure --fix works with singleRun mode ([#3655](https://github.com/typescript-eslint/typescript-eslint/issues/3655)) ([99eca0d](https://github.com/typescript-eslint/typescript-eslint/commit/99eca0d428187d4c29ded9ddd1b57b40ab463c01))
+
+
+### Features
+
+* **ast-spec:** extract `ExportKind` & `ImportKind` ([#3564](https://github.com/typescript-eslint/typescript-eslint/issues/3564)) ([120d566](https://github.com/typescript-eslint/typescript-eslint/commit/120d566c980c61d3823fbe8b2db30d76b8c31140))
+* **ast-spec:** make `BaseNode` & `BaseToken` more type-safe ([#3560](https://github.com/typescript-eslint/typescript-eslint/issues/3560)) ([a6c5604](https://github.com/typescript-eslint/typescript-eslint/commit/a6c5604b65b6330d047aa016fc46b8a597a6ae58))
+* **eslint-plugin:** [no-redeclare] ignoreDeclarationMerge of enum+namespace ([#3572](https://github.com/typescript-eslint/typescript-eslint/issues/3572)) ([18e30cb](https://github.com/typescript-eslint/typescript-eslint/commit/18e30cb601ee4e990d6becdfb9d98ae8119b7919))
+* **eslint-plugin:** [prefer-return-this-type] add a new rule ([#3228](https://github.com/typescript-eslint/typescript-eslint/issues/3228)) ([5e1a615](https://github.com/typescript-eslint/typescript-eslint/commit/5e1a61500472ff186eede686b2257464476d3d87))
+* **eslint-plugin:** Catch unused React import with new JSX transform ([#3577](https://github.com/typescript-eslint/typescript-eslint/issues/3577)) ([02998ea](https://github.com/typescript-eslint/typescript-eslint/commit/02998eac510665758b9a093d43afc310f3ac980d))
+* **typescript-estree:** add support for custom module resolution ([#3516](https://github.com/typescript-eslint/typescript-eslint/issues/3516)) ([d48429d](https://github.com/typescript-eslint/typescript-eslint/commit/d48429d97326545bb727f88ce9056270b1599a31))
+
+
+
+
+
 ## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-eslint

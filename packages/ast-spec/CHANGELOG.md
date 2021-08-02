@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Features
+
+* **ast-spec:** extract `ExportKind` & `ImportKind` ([#3564](https://github.com/typescript-eslint/typescript-eslint/issues/3564)) ([120d566](https://github.com/typescript-eslint/typescript-eslint/commit/120d566c980c61d3823fbe8b2db30d76b8c31140))
+* **ast-spec:** make `BaseNode` & `BaseToken` more type-safe ([#3560](https://github.com/typescript-eslint/typescript-eslint/issues/3560)) ([a6c5604](https://github.com/typescript-eslint/typescript-eslint/commit/a6c5604b65b6330d047aa016fc46b8a597a6ae58))
+
+
+
+
+
 ## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec
