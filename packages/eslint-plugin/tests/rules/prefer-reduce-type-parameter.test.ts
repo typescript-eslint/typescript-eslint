@@ -40,6 +40,23 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
   ],
   invalid: [
     {
+      code: `
+declare const arr: string[];
+arr.reduce<string>(acc => acc, arr.shift() as string);
+      `,
+      output: `
+declare const arr: string[];
+arr.reduce<string>(acc => acc, arr.shift());
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 32,
+          line: 3,
+        },
+      ],
+    },
+    {
       code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), [] as number[]);',
       output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
