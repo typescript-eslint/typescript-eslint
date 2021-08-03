@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-non-null-asserted-nullish-coalescing';
-import { RuleTester } from '../RuleTester';
+import { RuleTester, noFormat } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -47,6 +47,18 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
     `
       let x = foo();
       x ?? '';
+    `,
+    `
+      function foo() {
+        let x: string;
+        return x ?? '';
+      }
+    `,
+    `
+      let x: string;
+      function foo() {
+        return x ?? '';
+      }
     `,
   ],
   invalid: [
@@ -242,6 +254,74 @@ x! ?? '';
               output: `
 let x = foo();
 x ?? '';
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  let x!: string;
+  return x! ?? '';
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+function foo() {
+  let x!: string;
+  return x ?? '';
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let x!: string;
+function foo() {
+  return x! ?? '';
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+let x!: string;
+function foo() {
+  return x ?? '';
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let x = foo();
+x  ! ?? '';
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: noFormat`
+let x = foo();
+x   ?? '';
               `.trimRight(),
             },
           ],

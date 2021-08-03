@@ -1,13 +1,13 @@
-import { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import {
-  Definition,
-  DefinitionType,
-  Variable,
-} from '@typescript-eslint/scope-manager';
+  ASTUtils,
+  TSESTree,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
+import { Definition, DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 function hasAssignmentBeforeNode(
-  variable: Variable,
+  variable: TSESLint.Scope.Variable,
   node: TSESTree.Node,
 ): boolean {
   return (
@@ -27,7 +27,9 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
   }
 
   const variableDeclarator = definition.node;
-  return variableDeclarator.definite ?? variableDeclarator.init !== null;
+  return (
+    variableDeclarator.definite === true || variableDeclarator.init !== null
+  );
 }
 
 export default util.createRule({
@@ -44,7 +46,7 @@ export default util.createRule({
     messages: {
       noNonNullAssertedNullishCoalescing:
         'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
-      suggestRemovingNonNull: 'You should remove the non-null assertion.',
+      suggestRemovingNonNull: 'Remove the non-null assertion.',
     },
     schema: [],
   },
@@ -57,11 +59,13 @@ export default util.createRule({
         if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
           const scope = context.getScope();
           const identifier = node.expression;
-          const variable = scope.set.get(identifier.name);
+          const variable = ASTUtils.findVariable(scope, identifier.name);
           if (variable && !hasAssignmentBeforeNode(variable, node)) {
             return;
           }
         }
+
+        const sourceCode = context.getSourceCode();
 
         context.report({
           node,
@@ -83,7 +87,17 @@ export default util.createRule({
             {
               messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
-                return fixer.removeRange([node.range[1] - 1, node.range[1]]);
+                const exclamationMark = util.nullThrows(
+                  sourceCode.getLastToken(
+                    node,
+                    ASTUtils.isNonNullAssertionPunctuator,
+                  ),
+                  util.NullThrowsReasons.MissingToken(
+                    '!',
+                    'Non-null Assertion',
+                  ),
+                );
+                return fixer.remove(exclamationMark);
               },
             },
           ],

@@ -41,7 +41,7 @@ x! ?? '';
 
 ## When Not To Use It
 
-If you are not using TypeScript 3.7 (or greater), then you will not need to use this rule, as the operator is not supported.
+If you are not using TypeScript 3.7 (or greater), then you will not need to use this rule, as the nullish coalescing operator is not supported.
 
 ## Further Reading
 
