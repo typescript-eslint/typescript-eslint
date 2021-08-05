@@ -26,7 +26,7 @@ interface ScopeManagerOptions {
   globalReturn?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: number;
+  ecmaVersion?: number | 'latest';
 }
 
 class ScopeManager {
@@ -76,11 +76,17 @@ class ScopeManager {
     return this.#options.impliedStrict === true;
   }
   public isStrictModeSupported(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 5;
+    return (
+      this.#options.ecmaVersion === 'latest' ||
+      (this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 5)
+    );
   }
 
   public isES6(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6;
+    return (
+      this.#options.ecmaVersion === 'latest' ||
+      (this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6)
+    );
   }
 
   /**

@@ -31,11 +31,18 @@ describe('ecma version mapping', () => {
   it("should map to 'es2018' when undefined", () => {
     expectMapping(undefined, 'es2018');
   });
+
+  it("should map to 'es2018' when 'latest'", () => {
+    expectMapping('latest', 'esnext');
+  });
 });
 
 const fakeNode = {} as unknown as TSESTree.Node;
 
-function expectMapping(ecmaVersion: number | undefined, lib: Lib): void {
+function expectMapping(
+  ecmaVersion: number | undefined | 'latest',
+  lib: Lib,
+): void {
   (Referencer as jest.Mock).mockClear();
   analyze(fakeNode, { ecmaVersion: ecmaVersion as EcmaVersion });
   expect(Referencer).toHaveBeenCalledWith(

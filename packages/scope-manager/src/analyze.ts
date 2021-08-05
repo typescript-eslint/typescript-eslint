@@ -82,6 +82,10 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
 };
 
 function mapEcmaVersion(version: EcmaVersion | undefined): Lib {
+  if (version === 'latest') {
+    return 'esnext';
+  }
+
   if (version == null || version === 3 || version === 5) {
     return 'es5';
   }
