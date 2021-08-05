@@ -32,7 +32,7 @@ describe('ecma version mapping', () => {
     expectMapping(undefined, 'es2018');
   });
 
-  it("should map to 'es2018' when 'latest'", () => {
+  it("should map to 'esnext' when 'latest'", () => {
     expectMapping('latest', 'esnext');
   });
 });
