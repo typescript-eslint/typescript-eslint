@@ -5470,6 +5470,47 @@ class FooTestGetter {
         ],
       },
 
+      // default option + class + custom + alphabetically
+      {
+        code: `
+class Foo {
+  @Bar
+  get a() {}
+
+  get b() {}
+
+  @Bar
+  set c() {}
+
+  set d() {}
+}
+                  `,
+        options: [
+          {
+            default: {
+              memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'b',
+              rank: 'decorated get',
+            },
+          },
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'decorated set',
+            },
+          },
+        ],
+      },
+
       // default option + class + wrong order within group and wrong group order + alphabetically
       {
         code: `
