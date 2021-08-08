@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Features
+
+* **eslint-plugin:** Catch unused React import with new JSX transform ([#3577](https://github.com/typescript-eslint/typescript-eslint/issues/3577)) ([02998ea](https://github.com/typescript-eslint/typescript-eslint/commit/02998eac510665758b9a093d43afc310f3ac980d))
+* **typescript-estree:** add support for custom module resolution ([#3516](https://github.com/typescript-eslint/typescript-eslint/issues/3516)) ([d48429d](https://github.com/typescript-eslint/typescript-eslint/commit/d48429d97326545bb727f88ce9056270b1599a31))
+
+
+
+
+
 ## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
 
 **Note:** Version bump only for package @typescript-eslint/parser
