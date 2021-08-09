@@ -19,10 +19,6 @@ import * as util from '../util';
  * Reference rule - https://github.com/eslint/eslint/blob/master/lib/rules/padding-line-between-statements.js
  */
 
-//------------------------------------------------------------------------------
-// Local Types
-//------------------------------------------------------------------------------
-
 type NodeTest = (
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
@@ -41,10 +37,6 @@ interface PaddingOption {
 type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
 type Options = PaddingOption[];
 
-//------------------------------------------------------------------------------
-// Helpers
-//------------------------------------------------------------------------------
-
 const LT = `[${Array.from(
   new Set(['\r\n', '\r', '\n', '\u2028', '\u2029']),
 ).join('')}]`;
@@ -55,8 +47,8 @@ const PADDING_LINE_SEQUENCE = new RegExp(
 
 /**
  * Creates tester which check if a node starts with specific keyword.
- * @param {string} keyword The keyword to test.
- * @returns {Object} the created tester.
+ * @param keyword The keyword to test.
+ * @returns the created tester.
  * @private
  */
 function newKeywordTester(keyword: string): NodeTestObject {
@@ -69,8 +61,8 @@ function newKeywordTester(keyword: string): NodeTestObject {
 
 /**
  * Creates tester which check if a node starts with specific keyword and spans a single line.
- * @param {string} keyword The keyword to test.
- * @returns {Object} the created tester.
+ * @param keyword The keyword to test.
+ * @returns the created tester.
  * @private
  */
 function newSinglelineKeywordTester(keyword: string): NodeTestObject {
@@ -86,8 +78,8 @@ function newSinglelineKeywordTester(keyword: string): NodeTestObject {
 
 /**
  * Creates tester which check if a node starts with specific keyword and spans multiple lines.
- * @param {string} keyword The keyword to test.
- * @returns {Object} the created tester.
+ * @param keyword The keyword to test.
+ * @returns the created tester.
  * @private
  */
 function newMultilineKeywordTester(keyword: string): NodeTestObject {
@@ -103,8 +95,8 @@ function newMultilineKeywordTester(keyword: string): NodeTestObject {
 
 /**
  * Creates tester which check if a node is specific type.
- * @param {string} type The node type to test.
- * @returns {Object} the created tester.
+ * @param type The node type to test.
+ * @returns the created tester.
  * @private
  */
 function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
@@ -115,8 +107,8 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
 
 /**
  * Skips a chain expression node
- * @param {TSESTree.Node} node The node to test
- * @returns {TSESTree.Node} A non-chain expression
+ * @paramnode The node to test
+ * @returnsA non-chain expression
  * @private
  */
 function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
@@ -127,8 +119,8 @@ function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
 
 /**
  * Checks the given node is an expression statement of IIFE.
- * @param {TSESTree.Node} node The node to check.
- * @returns {boolean} `true` if the node is an expression statement of IIFE.
+ * @paramnode The node to check.
+ * @returns `true` if the node is an expression statement of IIFE.
  * @private
  */
 function isIIFEStatement(node: TSESTree.Node): boolean {
@@ -150,8 +142,8 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
 
 /**
  * Checks the given node is a CommonJS require statement
- * @param {TSESTree.Node} node The node to check.
- * @returns {boolean} `true` if the node is a CommonJS require statement.
+ * @paramnode The node to check.
+ * @returns `true` if the node is a CommonJS require statement.
  * @private
  */
 function isCJSRequire(node: TSESTree.Node): boolean {
@@ -176,9 +168,9 @@ function isCJSRequire(node: TSESTree.Node): boolean {
 /**
  * Checks whether the given node is a block-like statement.
  * This checks the last token of the node is the closing brace of a block.
- * @param {TSESLint.SourceCode} sourceCode The source code to get tokens.
- * @param {TSESTree.Node} node The node to check.
- * @returns {boolean} `true` if the node is a block-like statement.
+ * @param sourceCode The source code to get tokens.
+ * @paramnode The node to check.
+ * @returns `true` if the node is a block-like statement.
  * @private
  */
 function isBlockLikeStatement(
@@ -217,9 +209,9 @@ function isBlockLikeStatement(
 
 /**
  * Check whether the given node is a directive or not.
- * @param {TSESTree.Node} node The node to check.
- * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
- * @returns {boolean} `true` if the node is a directive.
+ * @paramnode The node to check.
+ * @param sourceCode The source code object to get tokens.
+ * @returns `true` if the node is a directive.
  */
 function isDirective(
   node: TSESTree.Node,
@@ -238,9 +230,9 @@ function isDirective(
 
 /**
  * Check whether the given node is a part of directive prologue or not.
- * @param {TSESTree.Node} node The node to check.
- * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
- * @returns {boolean} `true` if the node is a part of directive prologue.
+ * @paramnode The node to check.
+ * @param sourceCode The source code object to get tokens.
+ * @returns `true` if the node is a part of directive prologue.
  */
 function isDirectivePrologue(
   node: TSESTree.Node,
@@ -267,8 +259,8 @@ function isDirectivePrologue(
 
 /**
  * Checks the given node is a CommonJS export statement
- * @param {TSESTree.Node} node The node to check.
- * @returns {boolean} `true` if the node is a CommonJS export statement.
+ * @paramnode The node to check.
+ * @returns `true` if the node is a CommonJS export statement.
  * @private
  */
 function isCJSExport(node: TSESTree.Node): boolean {
@@ -295,9 +287,9 @@ function isCJSExport(node: TSESTree.Node): boolean {
 
 /**
  * Check whether the given node is an expression
- * @param {TSESTree.Node} node The node to check.
- * @param {TSESLint.SourceCode} sourceCode The source code object to get tokens.
- * @returns {boolean} `true` if the node is an expression
+ * @paramnode The node to check.
+ * @param sourceCode The source code object to get tokens.
+ * @returns `true` if the node is an expression
  */
 function isExpression(
   node: TSESTree.Node,
@@ -317,9 +309,9 @@ function isExpression(
  *
  *     foo()
  *     ;[1, 2, 3].forEach(bar)
- * @param {TSESLint.SourceCode} sourceCode The source code to get tokens.
- * @param {TSESTree.Node} node The node to get.
- * @returns {Token} The actual last token.
+ * @param sourceCode The source code to get tokens.
+ * @paramnode The node to get.
+ * @returns The actual last token.
  * @private
  */
 function getActualLastToken(
@@ -342,10 +334,10 @@ function getActualLastToken(
 
 /**
  * This returns the concatenation of the first 2 captured strings.
- * @param {string} _ Unused. Whole matched string.
- * @param {string} trailingSpaces The trailing spaces of the first line.
- * @param {string} indentSpaces The indentation spaces of the last line.
- * @returns {string} The concatenation of trailingSpaces and indentSpaces.
+ * @param _ Unused. Whole matched string.
+ * @param trailingSpaces The trailing spaces of the first line.
+ * @param indentSpaces The indentation spaces of the last line.
+ * @returns The concatenation of trailingSpaces and indentSpaces.
  * @private
  */
 function replacerToRemovePaddingLines(
@@ -359,7 +351,7 @@ function replacerToRemovePaddingLines(
 /**
  * Check and report statements for `any` configuration.
  * It does nothing.
- * @returns {void}
+ *
  * @private
  */
 function verifyForAny(): void {
@@ -371,12 +363,12 @@ function verifyForAny(): void {
  * This autofix removes blank lines between the given 2 statements.
  * However, if comments exist between 2 blank lines, it does not remove those
  * blank lines automatically.
- * @param {TSESLint.RuleContext} context The rule context to report.
- * @param {TSESTree.Node} _ Unused. The previous node to check.
- * @param {TSESTree.Node} nextNode The next node to check.
- * @param {Array<Token[]>} paddingLines The array of token pairs that blank
+ * @param context The rule context to report.
+ * @param_ Unused. The previous node to check.
+ * @paramnextNode The next node to check.
+ * @param paddingLines The array of token pairs that blank
  * lines exist between the pair.
- * @returns {void}
+ *
  * @private
  */
 function verifyForNever(
@@ -416,12 +408,12 @@ function verifyForNever(
  * This autofix inserts a blank line between the given 2 statements.
  * If the `prevNode` has trailing comments, it inserts a blank line after the
  * trailing comments.
- * @param {TSESLint.RuleContext} context The rule context to report.
- * @param {TSESTree.Node} prevNode The previous node to check.
- * @param {TSESTree.Node} nextNode The next node to check.
- * @param {Array<Token[]>} paddingLines The array of token pairs that blank
+ * @param context The rule context to report.
+ * @paramprevNode The previous node to check.
+ * @paramnextNode The next node to check.
+ * @param paddingLines The array of token pairs that blank
  * lines exist between the pair.
- * @returns {void}
+ *
  * @private
  */
 function verifyForAlways(
@@ -463,8 +455,8 @@ function verifyForAlways(
            *
            *     // comment.
            *     bar();
-           * @param {Token} token The token to check.
-           * @returns {boolean} `true` if the token is not a trailing comment.
+           * @param token The token to check.
+           * @returns `true` if the token is not a trailing comment.
            * @private
            */
           filter(token) {
@@ -625,7 +617,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Processes to enter to new scope.
      * This manages the current previous statement.
-     * @returns {void}
+     *
      * @private
      */
     function enterScope(): void {
@@ -637,7 +629,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Processes to exit from the current scope.
-     * @returns {void}
+     *
      * @private
      */
     function exitScope(): void {
@@ -648,9 +640,9 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks whether the given node matches the given type.
-     * @param {TSESTree.Node} node The statement node to check.
-     * @param {string|string[]} type The statement type to check.
-     * @returns {boolean} `true` if the statement node matched the type.
+     * @paramnode The statement node to check.
+     * @param type The statement type to check.
+     * @returns `true` if the statement node matched the type.
      * @private
      */
     function match(node: TSESTree.Node, type: string | string[]): boolean {
@@ -669,9 +661,9 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Finds the last matched configure from configureList.
-     * @param {TSESTree.Node} prevNode The previous statement to match.
-     * @param {TSESTree.Node} nextNode The current statement to match.
-     * @returns {Object} The tester of the last matched configure.
+     * @paramprevNode The previous statement to match.
+     * @paramnextNode The current statement to match.
+     * @returns The tester of the last matched configure.
      * @private
      */
     function getPaddingType(
@@ -693,9 +685,9 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Gets padding line sequences between the given 2 statements.
      * Comments are separators of the padding line sequences.
-     * @param {TSESTree.Node} prevNode The previous statement to count.
-     * @param {TSESTree.Node} nextNode The current statement to count.
-     * @returns {Array<Token[]>} The array of token pairs.
+     * @paramprevNode The previous statement to count.
+     * @paramnextNode The current statement to count.
+     * @returns The array of token pairs.
      * @private
      */
     function getPaddingLineSequences(
@@ -723,8 +715,8 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Verify padding lines between the given node and the previous node.
-     * @param {TSESTree.Node} node The node to verify.
-     * @returns {void}
+     * @paramnode The node to verify.
+     *
      * @private
      */
     function verify(node: TSESTree.Node): void {
@@ -757,8 +749,8 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Verify padding lines between the given node and the previous node.
      * Then process to enter to new scope.
-     * @param {TSESTree.Node} node The node to verify.
-     * @returns {void}
+     * @paramnode The node to verify.
+     *
      * @private
      */
     function verifyThenEnterScope(node: TSESTree.Node): void {
