@@ -11,7 +11,7 @@ When sorting numbers, this results in the classic "10 before 2" order:
 [1, 2, 3, 10, 20, 30].sort(); //→ [1, 10, 2, 20, 3, 30]
 ```
 
-This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the noted in the language specification thusly:
+This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the language specification thusly:
 
 > NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 
