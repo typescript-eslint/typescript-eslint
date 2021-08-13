@@ -135,6 +135,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ReturnStatement]: ts.ReturnStatement;
   [AST_NODE_TYPES.SequenceExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.SpreadElement]: ts.SpreadElement | ts.SpreadAssignment;
+  [AST_NODE_TYPES.StaticBlock]: ts.ClassStaticBlockDeclaration;
   [AST_NODE_TYPES.Super]: ts.SuperExpression;
   [AST_NODE_TYPES.SwitchCase]: ts.CaseClause | ts.DefaultClause;
   [AST_NODE_TYPES.SwitchStatement]: ts.SwitchStatement;
