@@ -250,6 +250,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           }
         }
       },
+      /**
+       * Babel adds a `static` property to the StaticBlock when the
+       * `typescript` plugin and the `classStaticBlock` plugin are enabled.
+       * @see https://github.com/babel/babel/issues/13674
+       */
+      StaticBlock(node: any) {
+        if (node.static != null) {
+          delete node.static;
+        }
+      },
     },
   );
 }

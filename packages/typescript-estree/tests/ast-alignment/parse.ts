@@ -26,6 +26,7 @@ function parseWithBabelParser(text: string, jsx = true): File {
   const plugins: ParserPlugin[] = [
     'classProperties',
     'decorators-legacy',
+    'classStaticBlock',
     'estree',
     'typescript',
   ];
