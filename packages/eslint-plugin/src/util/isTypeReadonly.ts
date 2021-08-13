@@ -23,7 +23,12 @@ function isTypeReadonlyArrayOrTuple(
   seenTypes: Set<ts.Type>,
 ): Readonlyness {
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
-    const typeArguments = checker.getTypeArguments(arrayType);
+    const typeArguments =
+      // getTypeArguments was only added in TS3.7
+      checker.getTypeArguments
+        ? checker.getTypeArguments(arrayType)
+        : arrayType.typeArguments ?? [];
+
     // this shouldn't happen in reality as:
     // - tuples require at least 1 type argument
     // - ReadonlyArray requires at least 1 type argument
