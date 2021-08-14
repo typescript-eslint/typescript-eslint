@@ -115,7 +115,6 @@ export function parse(
       );
       error.message += `\n${error.codeFrame}`;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result.parseError = error;
   }
 
