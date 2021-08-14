@@ -62,7 +62,7 @@ function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
       jsx,
     });
     return result.ast;
-  } catch (e) {
+  } catch (e: any) {
     throw createError(e.message, e.lineNumber, e.column);
   }
 }
@@ -98,7 +98,7 @@ export function parse(
           'Please provide a valid parser: either "typescript-estree" or "@babel/parser"',
         );
     }
-  } catch (error) {
+  } catch (error: any) {
     const loc = error.loc as TSESTree.LineAndColumnData | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
@@ -115,6 +115,7 @@ export function parse(
       );
       error.message += `\n${error.codeFrame}`;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result.parseError = error;
   }
 

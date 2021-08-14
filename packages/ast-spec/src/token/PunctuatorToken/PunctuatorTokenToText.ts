@@ -45,7 +45,7 @@ export interface PunctuatorTokenToText {
   [SyntaxKind.AtToken]: '@';
   [SyntaxKind.QuestionQuestionToken]: '??';
   [SyntaxKind.BacktickToken]: '`';
-  // [SyntaxKind.HashToken]: '#'; // new in PunctuationSyntaxKind in TS 4.4
+  [SyntaxKind.HashToken]: '#'; // new in PunctuationSyntaxKind in TS 4.4
   [SyntaxKind.EqualsToken]: '=';
   [SyntaxKind.PlusEqualsToken]: '+=';
   [SyntaxKind.MinusEqualsToken]: '-=';
