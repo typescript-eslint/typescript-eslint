@@ -26,6 +26,7 @@ export default util.createRule<Options, MessageIds>({
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       preferNullish:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',

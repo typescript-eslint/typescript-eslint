@@ -1,20 +1,11 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import BaseRule from 'eslint/lib/rules/no-loss-of-precision';
 import * as util from '../util';
+import { getEslintCoreRule } from '../util/getEslintCoreRule';
 
-const baseRule = ((): typeof BaseRule | null => {
-  try {
-    return require('eslint/lib/rules/no-loss-of-precision') as
-      | typeof BaseRule
-      | null;
-  } catch {
-    /* istanbul ignore next */
-    return null;
-  }
-})();
+const baseRule = getEslintCoreRule('no-loss-of-precision');
 
-type Options = util.InferOptionsTypeFromRule<typeof BaseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof BaseRule>;
+type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
@@ -26,6 +17,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [],
     messages: baseRule?.meta.messages ?? { noLossOfPrecision: '' },
   },

@@ -14,6 +14,7 @@ export default util.createRule<[], MessageIds>({
       recommended: false,
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       defineInitializer:
         "The value of the member '{{ name }}' should be explicitly defined",

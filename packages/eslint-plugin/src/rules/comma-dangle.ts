@@ -1,9 +1,11 @@
 import * as util from '../util';
-import baseRule from 'eslint/lib/rules/comma-dangle';
+import { getEslintCoreRule } from '../util/getEslintCoreRule';
 import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+
+const baseRule = getEslintCoreRule('comma-dangle');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -82,6 +84,7 @@ export default util.createRule<Options, MessageIds>({
       ],
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['never'],

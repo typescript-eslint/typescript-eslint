@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/prefer-const';
+import { getEslintCoreRule } from '../../src/util/getEslintCoreRule';
 import { RuleTester } from '../RuleTester';
+
+const rule = getEslintCoreRule('prefer-const');
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

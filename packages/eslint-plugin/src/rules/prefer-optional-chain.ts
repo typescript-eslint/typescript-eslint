@@ -41,6 +41,7 @@ export default util.createRule({
       recommended: false,
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",

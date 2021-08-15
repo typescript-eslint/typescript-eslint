@@ -230,7 +230,12 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
       Program(): void;
       ClassBody(): void;
       'ClassBody:exit'(): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+      ) => void;
     }
   >;
   export = rule;
@@ -637,7 +642,12 @@ declare module 'eslint/lib/rules/no-extra-semi' {
     {
       EmptyStatement(node: TSESTree.EmptyStatement): void;
       ClassBody(node: TSESTree.ClassBody): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+      ) => void;
     }
   >;
   export = rule;

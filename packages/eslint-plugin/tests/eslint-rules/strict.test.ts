@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/strict';
+import { getEslintCoreRule } from '../../src/util/getEslintCoreRule';
 import { RuleTester } from '../RuleTester';
+
+const rule = getEslintCoreRule('strict');
 
 const ruleTester = new RuleTester({
   parserOptions: {
