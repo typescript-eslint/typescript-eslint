@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    hasSuggestions: baseRule.meta.hasSuggestions,
+    hasSuggestions: baseRule?.meta.hasSuggestions,
     schema: [],
     messages: baseRule?.meta.messages ?? { noLossOfPrecision: '' },
   },
