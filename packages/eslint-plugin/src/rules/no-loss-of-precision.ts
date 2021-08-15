@@ -4,8 +4,10 @@ import { getEslintCoreRule } from '../util/getEslintCoreRule';
 
 const baseRule = getEslintCoreRule('no-loss-of-precision');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = util.InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
+type MessageIds = util.InferMessageIdsTypeFromRule<
+  NonNullable<typeof baseRule>
+>;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',

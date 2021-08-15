@@ -24,7 +24,9 @@ interface RuleMap {
   'no-implicit-globals': typeof import('eslint/lib/rules/no-implicit-globals');
   'no-invalid-this': typeof import('eslint/lib/rules/no-invalid-this');
   'no-loop-func': typeof import('eslint/lib/rules/no-loop-func');
-  'no-loss-of-precision': typeof import('eslint/lib/rules/no-loss-of-precision');
+  'no-loss-of-precision':
+    | typeof import('eslint/lib/rules/no-loss-of-precision')
+    | null /* ESLint < 7.1.0 */;
   'no-magic-numbers': typeof import('eslint/lib/rules/no-magic-numbers');
   'no-undef': typeof import('eslint/lib/rules/no-undef');
   'no-unused-expressions': typeof import('eslint/lib/rules/no-unused-expressions');
@@ -41,5 +43,5 @@ interface RuleMap {
 type RuleId = keyof RuleMap;
 
 export function getEslintCoreRule<R extends RuleId>(ruleId: R): RuleMap[R] {
-  return getRules().get(ruleId)! as never;
+  return (getRules().get(ruleId) ?? null) as RuleMap[R];
 }
