@@ -31,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
     function wrapMemberDefinitionListener(
       coreListener: (node: TSESTree.MethodDefinition) => void,
     ): (node: TSESTree.MethodDefinition) => void {
-      return (node: TSESTree.MethodDefinition) => {
+      return (node: TSESTree.MethodDefinition): void => {
         if (node.computed) {
           return;
         }
