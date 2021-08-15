@@ -1,12 +1,9 @@
-import {
-  Linter,
-  RuleModule,
-} from '@typescript-eslint/experimental-utils/src/ts-eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-let rules: Map<string, RuleModule<string, unknown[]>> | null = null;
+let rules: Map<string, TSESLint.RuleModule<string, unknown[]>> | null = null;
 
-function getRules(): Map<string, RuleModule<string, unknown[]>> {
-  return rules ?? (rules = new Linter().getRules());
+function getRules(): Map<string, TSESLint.RuleModule<string, unknown[]>> {
+  return rules ?? (rules = new TSESLint.Linter().getRules());
 }
 
 interface RuleMap {
