@@ -9,8 +9,7 @@ declare module 'eslint' {
   const Linter: unknown;
   const RuleTester: unknown;
   const SourceCode: unknown;
-  const CLIEngine: unknown;
   const ESLint: unknown;
 
-  export { Linter, RuleTester, SourceCode, CLIEngine, ESLint };
+  export { Linter, RuleTester, SourceCode, ESLint };
 }
