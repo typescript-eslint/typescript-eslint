@@ -2,8 +2,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-useless-constructor';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['no-useless-constructor'];
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

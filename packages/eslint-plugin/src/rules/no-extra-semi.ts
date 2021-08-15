@@ -1,5 +1,7 @@
-import baseRule from 'eslint/lib/rules/no-extra-semi';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['no-extra-semi'];
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

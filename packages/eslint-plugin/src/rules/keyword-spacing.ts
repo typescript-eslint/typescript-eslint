@@ -1,6 +1,8 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/keyword-spacing';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['keyword-spacing'];
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

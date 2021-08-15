@@ -3,8 +3,10 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-loop-func';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['no-loop-func'];
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

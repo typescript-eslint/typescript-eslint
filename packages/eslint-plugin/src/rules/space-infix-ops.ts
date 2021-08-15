@@ -2,8 +2,10 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/space-infix-ops';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['space-infix-ops'];
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

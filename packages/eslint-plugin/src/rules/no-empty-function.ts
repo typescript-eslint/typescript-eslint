@@ -2,8 +2,10 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-empty-function';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['no-empty-function'];
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

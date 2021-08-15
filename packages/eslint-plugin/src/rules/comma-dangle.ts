@@ -1,9 +1,11 @@
 import * as util from '../util';
-import baseRule from 'eslint/lib/rules/comma-dangle';
 import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['comma-dangle'];
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

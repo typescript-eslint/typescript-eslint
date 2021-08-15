@@ -1,13 +1,15 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
-import baseRule from 'eslint/lib/rules/dot-notation';
 import {
   createRule,
   getParserServices,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['dot-notation'];
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;

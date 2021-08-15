@@ -2,12 +2,14 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/init-declarations';
 import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
 } from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['init-declarations'];
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;

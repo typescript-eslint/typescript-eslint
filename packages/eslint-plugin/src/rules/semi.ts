@@ -3,8 +3,10 @@ import {
   TSESLint,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/semi';
 import * as util from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['semi'];
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

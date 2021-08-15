@@ -2,12 +2,14 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-invalid-this';
 import {
   InferOptionsTypeFromRule,
   createRule,
   InferMessageIdsTypeFromRule,
 } from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['no-invalid-this'];
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;

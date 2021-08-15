@@ -1,11 +1,13 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/brace-style';
 import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
   isTokenOnSameLine,
 } from '../util';
+
+import { builtinRules } from 'eslint/use-at-your-own-risk';
+const baseRule = builtinRules['brace-style'];
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
