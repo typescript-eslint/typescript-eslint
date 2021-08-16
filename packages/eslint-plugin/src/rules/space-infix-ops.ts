@@ -2,10 +2,10 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { getEslintCoreRule } from '../util/getEslintCoreRule';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
 
-const baseRule = getEslintCoreRule('space-infix-ops');
+const baseRule = getESLintCoreRule('space-infix-ops');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

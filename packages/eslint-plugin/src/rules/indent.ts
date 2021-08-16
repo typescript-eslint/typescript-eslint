@@ -9,10 +9,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import { getEslintCoreRule } from '../util/getEslintCoreRule';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
 
-const baseRule = getEslintCoreRule('indent');
+const baseRule = getESLintCoreRule('indent');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

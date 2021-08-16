@@ -1,7 +1,7 @@
-import { getEslintCoreRule } from '../util/getEslintCoreRule';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
 
-const baseRule = getEslintCoreRule('no-extra-semi');
+const baseRule = getESLintCoreRule('no-extra-semi');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;

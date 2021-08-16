@@ -1,7 +1,7 @@
-import { getEslintCoreRule } from '../../src/util/getEslintCoreRule';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
 
-const rule = getEslintCoreRule('no-implicit-globals');
+const rule = getESLintCoreRule('no-implicit-globals');
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,

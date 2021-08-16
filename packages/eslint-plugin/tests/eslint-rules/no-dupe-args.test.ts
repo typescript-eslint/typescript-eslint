@@ -1,7 +1,7 @@
-import { getEslintCoreRule } from '../../src/util/getEslintCoreRule';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
 
-const rule = getEslintCoreRule('no-dupe-args');
+const rule = getESLintCoreRule('no-dupe-args');
 
 const ruleTester = new RuleTester({
   parserOptions: {

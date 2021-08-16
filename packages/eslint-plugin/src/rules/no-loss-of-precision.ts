@@ -1,8 +1,8 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { getEslintCoreRule } from '../util/getEslintCoreRule';
+import { maybeGetESLintCoreRule } from '../util/getESLintCoreRule';
 
-const baseRule = getEslintCoreRule('no-loss-of-precision');
+const baseRule = maybeGetESLintCoreRule('no-loss-of-precision');
 
 type Options = util.InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
 type MessageIds = util.InferMessageIdsTypeFromRule<

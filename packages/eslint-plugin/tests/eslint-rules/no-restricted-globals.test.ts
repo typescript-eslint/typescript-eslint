@@ -1,7 +1,7 @@
-import { getEslintCoreRule } from '../../src/util/getEslintCoreRule';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
 
-const rule = getEslintCoreRule('no-restricted-globals');
+const rule = getESLintCoreRule('no-restricted-globals');
 
 const ruleTester = new RuleTester({
   parserOptions: {
