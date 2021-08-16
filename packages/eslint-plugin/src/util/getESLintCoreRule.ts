@@ -42,7 +42,7 @@ export const getESLintCoreRule: <R extends RuleId>(ruleId: R) => RuleMap[R] =
   isESLintV8
     ? ruleId =>
         nullThrows(
-          require('eslint/use-at-your-own-risk').builtinRules[ruleId],
+          require('eslint/use-at-your-own-risk').builtinRules.get(ruleId),
           `ESLint's core rule '${ruleId}' not found.`,
         )
     : ruleId => require(`eslint/lib/rules/${ruleId}`);
