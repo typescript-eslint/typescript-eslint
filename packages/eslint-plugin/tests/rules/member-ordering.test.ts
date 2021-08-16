@@ -1311,7 +1311,7 @@ abstract class Foo {
     private D: string;
     protected static F(): {};
     public E(): {};
-    public abstract A = () => {};
+    public abstract A(): void;
     protected abstract G(): void;
 }
     `,
@@ -3618,7 +3618,7 @@ type Foo = {
     {
       code: `
 abstract class Foo {
-    abstract A = () => {};
+    abstract A(): void;
     B: string;
 }
           `,
@@ -3628,6 +3628,25 @@ abstract class Foo {
           data: {
             name: 'B',
             rank: 'public abstract method',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {};
+    B: string;
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
           },
           line: 4,
           column: 5,
@@ -3650,27 +3669,6 @@ abstract class Foo {
           data: {
             name: 'B',
             rank: 'public abstract field',
-          },
-          line: 4,
-          column: 5,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-    B: string;
-    abstract C = () => {};
-    abstract A: () => {};
-}
-          `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'field',
           },
           line: 4,
           column: 5,

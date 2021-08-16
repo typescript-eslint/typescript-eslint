@@ -237,7 +237,9 @@ class ClassVisitor extends Visitor {
       this.#referencer.visit(node.key);
     }
 
-    this.#referencer.visit(node.value);
+    if (node.type !== AST_NODE_TYPES.TSAbstractClassProperty) {
+      this.#referencer.visit(node.value);
+    }
 
     if ('decorators' in node) {
       node.decorators?.forEach(d => this.#referencer.visit(d));

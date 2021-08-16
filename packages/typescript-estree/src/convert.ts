@@ -1091,7 +1091,7 @@ export class Converter {
             ? AST_NODE_TYPES.TSAbstractClassProperty
             : AST_NODE_TYPES.ClassProperty,
           key: this.convertChild(node.name),
-          value: this.convertChild(node.initializer),
+          ...(isAbstract ? {} : { value: this.convertChild(node.initializer) }),
           computed: isComputedProperty(node.name),
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
