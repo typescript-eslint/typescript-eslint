@@ -33,6 +33,9 @@
 
 ## Getting Started / Installation
 
+- **[You can find our full Getting Started docs here](./docs/getting-started/README.md)**
+- **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
+
 tl;dr:
 
 ```
@@ -62,9 +65,6 @@ Or, if you like Airbnb's config, `npm i --save-dev eslint-config-airbnb-typescri
 +     'airbnb-typescript',
     ],
 ```
-
-- **[You can find more in our Getting Started docs here](./docs/getting-started/README.md)**
-- **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
 
