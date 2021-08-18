@@ -33,7 +33,37 @@
 
 ## Getting Started / Installation
 
-- **[You can find our Getting Started docs here](./docs/getting-started/README.md)**
+tl;dr:
+
+```
+$ npm i --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+A minimal `.eslintrc`:
+
+```js
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+};
+```
+Or, if you like Airbnb's config, `npm i --save-dev eslint-config-airbnb-typescript` and extend from it:
+```diff
+    extends: [
+-     'eslint:recommended',
+-     'plugin:@typescript-eslint/recommended',
++     'airbnb-typescript',
+    ],
+```
+
+- **[You can find more in our Getting Started docs here](./docs/getting-started/README.md)**
 - **[You can find our Linting FAQ / Troubleshooting docs here](./docs/getting-started/linting/FAQ.md)**
 
 The documentation below will give you an overview of what this project is, why it exists and how it works at a high level.
