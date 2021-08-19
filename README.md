@@ -57,7 +57,9 @@ module.exports = {
   ],
 };
 ```
+
 Or, if you like Airbnb's config, `npm i --save-dev eslint-config-airbnb-typescript` and extend from it:
+
 ```diff
     extends: [
 -     'eslint:recommended',
