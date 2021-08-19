@@ -109,6 +109,18 @@ function getSoleUse(
     }
     if (sig.type) {
       recur(sig.type);
+    } else if (sig.kind !== ts.SyntaxKind.Constructor && 'body' in sig) {
+      // if body is missing, there is no point inferring return type.
+      const sigType = checker.getSignatureFromDeclaration(sig);
+      if (!sigType) {
+        return { type: 'ok' };
+      }
+
+      const returnType = checker.getReturnTypeOfSignature(sigType);
+      // TODO: is it possiable to check if a TypeParameter is used in a type?
+      if (returnType.flags & ts.TypeFlags.StructuredOrInstantiable) {
+        return { type: 'ok' };
+      }
     }
   } catch (err) {
     if (err === exit) {
