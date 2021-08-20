@@ -79,6 +79,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Check if the variable is in an enum scope.
+     */
+    function isEnum(scope: TSESLint.Scope.Variable): boolean {
+      return scope.scope.type === ScopeType.tsEnum;
+    }
+
+    /**
      * Check if variable is a `this` parameter.
      */
     function isThisParam(variable: TSESLint.Scope.Variable): boolean {
@@ -360,6 +367,11 @@ export default util.createRule<Options, MessageIds>({
       for (const variable of variables) {
         // ignore "arguments"
         if (variable.identifiers.length === 0) {
+          continue;
+        }
+
+        // enum values require literals and cannot be shadowed
+        if (isEnum(variable)) {
           continue;
         }
 

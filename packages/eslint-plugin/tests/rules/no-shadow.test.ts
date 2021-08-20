@@ -11,6 +11,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-shadow TS tests', rule, {
   valid: [
+    // enums
+    `
+let foo;
+
+enum Bar {
+  foo = 1,
+}
+    `,
     // nested conditional types
     `
 export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
