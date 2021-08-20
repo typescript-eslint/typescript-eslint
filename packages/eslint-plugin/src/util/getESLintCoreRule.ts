@@ -40,12 +40,16 @@ type RuleId = keyof RuleMap;
 
 export const getESLintCoreRule: <R extends RuleId>(ruleId: R) => RuleMap[R] =
   isESLintV8
-    ? ruleId =>
+    ? <R extends RuleId>(ruleId: R): RuleMap[R] =>
         nullThrows(
-          require('eslint/use-at-your-own-risk').builtinRules.get(ruleId),
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+          require('eslint/use-at-your-own-risk').builtinRules.get(
+            ruleId,
+          ) as RuleMap[R],
           `ESLint's core rule '${ruleId}' not found.`,
         )
-    : ruleId => require(`eslint/lib/rules/${ruleId}`);
+    : <R extends RuleId>(ruleId: R): RuleMap[R] =>
+        require(`eslint/lib/rules/${ruleId}`) as RuleMap[R];
 
 export function maybeGetESLintCoreRule<R extends RuleId>(
   ruleId: R,
