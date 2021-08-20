@@ -1,4 +1,4 @@
-{
+
   "name": "@typescript-eslint/typescript-eslint",
   "private": true,
   "workspaces": [
@@ -65,11 +65,11 @@
       "header-max-length": [
         0
       ]
-    }
-  },
+    
+  
   "engines": {
     "node": "^10.12.0 || >=12.0.0"
-  },
+  
   "devDependencies": {
     "@babel/code-frame": "^7.12.13",
     "@babel/parser": "^7.14.6",
@@ -122,11 +122,10 @@
     "ts-node": "^10.0.0",
     "tslint": "^6.1.3",
     "typescript": ">=3.3.1 <4.4.0"
-  },
+  
   "resolutions": {
     "@types/node": "^15.6.1",
     "jest-diff": "^27.0.0",
     "pretty-format": "^27.0.0",
     "typescript": "4.3.5"
-  }
-}
+  
