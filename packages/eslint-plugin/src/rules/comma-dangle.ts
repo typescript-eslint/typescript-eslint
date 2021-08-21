@@ -82,6 +82,7 @@ export default util.createRule<Options, MessageIds>({
           ],
         },
       ],
+      additionalProperties: false,
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
