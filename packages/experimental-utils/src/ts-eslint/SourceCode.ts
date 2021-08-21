@@ -246,15 +246,6 @@ declare class SourceCodeBase extends TokenStore {
    */
   getAllComments(): TSESTree.Comment[];
   /**
-   * Gets all comments for the given node.
-   * @param node The AST node to get the comments for.
-   * @returns An object containing a leading and trailing array of comments indexed by their position.
-   */
-  getComments(node: TSESTree.Node): {
-    leading: TSESTree.Comment[];
-    trailing: TSESTree.Comment[];
-  };
-  /**
    * Converts a (line, column) pair into a range index.
    * @param loc A line/column location
    * @returns The range index of the location in the file.
