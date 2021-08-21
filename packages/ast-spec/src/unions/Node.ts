@@ -77,6 +77,7 @@ import type { TSParameterProperty } from '../parameter/TSParameterProperty/spec'
 import type { CatchClause } from '../special/CatchClause/spec';
 import type { ClassBody } from '../special/ClassBody/spec';
 import type { Decorator } from '../special/Decorator/spec';
+import type { Directive } from '../special/Directive/spec';
 import type { EmptyStatement } from '../special/EmptyStatement/spec';
 import type { ExportSpecifier } from '../special/ExportSpecifier/spec';
 import type { ImportDefaultSpecifier } from '../special/ImportDefaultSpecifier/spec';
@@ -187,6 +188,7 @@ export type Node =
   | ContinueStatement
   | DebuggerStatement
   | Decorator
+  | Directive
   | DoWhileStatement
   | EmptyStatement
   | ExportAllDeclaration

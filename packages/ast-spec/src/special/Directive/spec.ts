@@ -1,8 +1,9 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
-import type { Expression } from '../../unions/Expression';
+import type { Literal } from '../../unions/Literal';
 
-export interface ExpressionStatement extends BaseNode {
+export interface Directive extends BaseNode {
   type: AST_NODE_TYPES.ExpressionStatement;
-  expression: Expression;
+  expression: Literal;
+  directive: string;
 }

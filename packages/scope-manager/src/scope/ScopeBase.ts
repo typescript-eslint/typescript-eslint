@@ -1,10 +1,10 @@
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { FunctionScope } from './FunctionScope';
-import { GlobalScope } from './GlobalScope';
+import type { FunctionScope } from './FunctionScope';
+import type { GlobalScope } from './GlobalScope';
 import { ScopeType } from './ScopeType';
-import { ScopeManager } from '../ScopeManager';
-import { Scope } from './Scope';
-import { ModuleScope } from './ModuleScope';
+import type { ScopeManager } from '../ScopeManager';
+import type { Scope } from './Scope';
+import type { ModuleScope } from './ModuleScope';
 import { assert } from '../assert';
 import { Definition, DefinitionType } from '../definition';
 import { createIdGenerator } from '../ID';
@@ -15,7 +15,7 @@ import {
   ReferenceTypeFlag,
 } from '../referencer/Reference';
 import { Variable } from '../variable';
-import { TSModuleScope } from './TSModuleScope';
+import type { TSModuleScope } from './TSModuleScope';
 
 /**
  * Test if scope is strict
@@ -88,7 +88,7 @@ function isStrictScope(
       break;
     }
 
-    if (stmt.directive === 'use strict') {
+    if ('directive' in stmt && stmt.directive === 'use strict') {
       return true;
     }
 

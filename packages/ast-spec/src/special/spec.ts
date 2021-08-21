@@ -1,6 +1,7 @@
 export * from './CatchClause/spec';
 export * from './ClassBody/spec';
 export * from './Decorator/spec';
+export * from './Directive/spec';
 export * from './EmptyStatement/spec';
 export * from './ExportSpecifier/spec';
 export * from './ImportDefaultSpecifier/spec';
