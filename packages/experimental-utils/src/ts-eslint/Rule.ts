@@ -149,13 +149,13 @@ interface ReportDescriptorNodeOptionalLoc {
    */
   readonly loc?:
     | Readonly<TSESTree.SourceLocation>
-    | Readonly<TSESTree.LineAndColumnData>;
+    | Readonly<TSESTree.Position>;
 }
 interface ReportDescriptorLocOnly {
   /**
    * An override of the location of the report
    */
-  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.LineAndColumnData>;
+  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.Position>;
 }
 type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
