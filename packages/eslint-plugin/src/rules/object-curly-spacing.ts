@@ -3,7 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/object-curly-spacing';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
   InferMessageIdsTypeFromRule,
@@ -12,6 +12,8 @@ import {
   isClosingBracketToken,
   isTokenOnSameLine,
 } from '../util';
+
+const baseRule = getESLintCoreRule('object-curly-spacing');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;

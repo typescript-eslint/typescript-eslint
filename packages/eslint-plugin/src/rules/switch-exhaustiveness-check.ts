@@ -21,6 +21,7 @@ export default createRule({
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       switchIsNotExhaustive:
