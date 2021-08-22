@@ -49,6 +49,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     type: 'suggestion',
     fixable: 'code',
+    hasSuggestions: true,
     docs: {
       description: 'Restricts the types allowed in boolean expressions',
       category: 'Best Practices',

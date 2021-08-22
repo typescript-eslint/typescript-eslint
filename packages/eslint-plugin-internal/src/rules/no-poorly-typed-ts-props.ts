@@ -44,6 +44,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     schema: [],
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',

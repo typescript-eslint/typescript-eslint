@@ -19,6 +19,7 @@ export default util.createRule<Options, MessageIds>({
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:

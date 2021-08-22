@@ -86,7 +86,7 @@ module.exports = {
     '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
-    // eslint base
+    // eslint-base
     //
 
     curly: ['error', 'all'],
