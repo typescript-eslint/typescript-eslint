@@ -100,7 +100,6 @@ export interface EstreeToTsNodeTypes {
     | ts.StringLiteral
     | ts.NumericLiteral
     | ts.RegularExpressionLiteral
-    | ts.JsxText
     | ts.NullLiteral
     | ts.BooleanLiteral
     | ts.BigIntLiteral;

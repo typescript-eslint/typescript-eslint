@@ -42,7 +42,7 @@ Object {
                   61,
                 ],
                 "raw": "http://example.com",
-                "type": "Literal",
+                "type": "JSXText",
                 "value": "http://example.com",
               },
             ],

@@ -36,7 +36,6 @@ const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
   errorOnUnknownASTType: boolean;
-  useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
 }
 
@@ -2250,32 +2249,17 @@ export class Converter {
         });
       }
 
-      /**
-       * The JSX AST changed the node type for string literals
-       * inside a JSX Element from `Literal` to `JSXText`. We
-       * provide a flag to support both types until `Literal`
-       * node type is deprecated in ESLint v5.
-       */
       case SyntaxKind.JsxText: {
         const start = node.getFullStart();
         const end = node.getEnd();
         const text = this.ast.text.slice(start, end);
 
-        if (this.options.useJSXTextNode) {
-          return this.createNode<TSESTree.JSXText>(node, {
-            type: AST_NODE_TYPES.JSXText,
-            value: unescapeStringLiteralText(text),
-            raw: text,
-            range: [start, end],
-          });
-        } else {
-          return this.createNode<TSESTree.StringLiteral>(node, {
-            type: AST_NODE_TYPES.Literal,
-            value: unescapeStringLiteralText(text),
-            raw: text,
-            range: [start, end],
-          });
-        }
+        return this.createNode<TSESTree.JSXText>(node, {
+          type: AST_NODE_TYPES.JSXText,
+          value: unescapeStringLiteralText(text),
+          raw: text,
+          range: [start, end],
+        });
       }
 
       case SyntaxKind.JsxSpreadAttribute:
