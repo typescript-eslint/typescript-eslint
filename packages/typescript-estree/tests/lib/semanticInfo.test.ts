@@ -28,7 +28,6 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
     tokens: true,
     comment: true,
     jsx: false,
-    useJSXTextNode: false,
     errorOnUnknownASTType: true,
     filePath: fileName,
     tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
