@@ -224,14 +224,18 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+      if (
+        node.type === AST_NODE_TYPES.VariableDeclarator ||
+        node.type === AST_NODE_TYPES.FunctionDeclaration
+      ) {
         return (
-          node.id.type === AST_NODE_TYPES.Identifier &&
+          node.id?.type === AST_NODE_TYPES.Identifier &&
           options.allowedNames.includes(node.id.name)
         );
       } else if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
-        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+        (node.type === AST_NODE_TYPES.Property && node.method)
       ) {
         if (
           node.key.type === AST_NODE_TYPES.Literal &&
@@ -390,6 +394,10 @@ export default util.createRule<Options, MessageIds>({
     function ancestorHasReturnType(node: FunctionNode): boolean {
       let ancestor = node.parent;
 
+      if (ancestor?.type === AST_NODE_TYPES.Property) {
+        ancestor = ancestor.value;
+      }
+
       // if the ancestor is not a return, then this function was not returned at all, so we can exit early
       const isReturnStatement =
         ancestor?.type === AST_NODE_TYPES.ReturnStatement;
@@ -477,7 +485,7 @@ export default util.createRule<Options, MessageIds>({
       }
       checkedFunctions.add(node);
 
-      if (isAllowedName(node.parent) || ancestorHasReturnType(node)) {
+      if (isAllowedName(node) || ancestorHasReturnType(node)) {
         return;
       }
 

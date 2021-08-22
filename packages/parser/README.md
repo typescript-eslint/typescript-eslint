@@ -45,7 +45,7 @@ By far the most common case will be installing the [`@typescript-eslint/eslint-p
 
 ## Configuration
 
-The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring#specifying-parser-options) in your ESLint configuration file.
+The following additional configuration options are available by specifying them in [`parserOptions`](https://eslint.org/docs/user-guide/configuring/language-options#specifying-parser-options) in your ESLint configuration file.
 
 ```ts
 interface ParserOptions {
@@ -55,7 +55,7 @@ interface ParserOptions {
   };
   ecmaVersion?: number;
 
-  jsxPragma?: string;
+  jsxPragma?: string | null;
   jsxFragmentName?: string | null;
   lib?: string[];
 
@@ -64,6 +64,9 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
+
+  program?: import('typescript').Program;
+  moduleResolver?: string;
 }
 ```
 
@@ -99,6 +102,8 @@ Accepts any valid ECMAScript version number:
 - A version: es3, es5, es6, es7, es8, es9, es10, es11, ..., or
 - A year: es2015, es2016, es2017, es2018, es2019, es2020, ...
 
+The value **must** be a number - so do not include the `es` prefix.
+
 Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
 
 ### `parserOptions.jsxPragma`
@@ -106,7 +111,7 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 Default `'React'`
 
 The identifier that's used for JSX Elements creation (after transpilation).
-If you're using a library other than React (like `preact`), then you should change this value.
+If you're using a library other than React (like `preact`), then you should change this value. If you are using the [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) you can set this to `null`.
 
 This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
 
@@ -208,6 +213,62 @@ This option allows you to toggle the warning that the parser will give you if yo
 Default `false`.
 
 This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
+
+### `parserOptions.programs`
+
+Default `undefined`.
+
+This option allows you to programmatically provide an array of one or more instances of a TypeScript Program object that will provide type information to rules.
+This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+All linted files must be part of the provided program(s).
+
+### `parserOptions.moduleResolver`
+
+Default `undefined`.
+
+This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
+
+```ts
+interface ModuleResolver {
+  version: 1;
+  resolveModuleNames(
+    moduleNames: string[],
+    containingFile: string,
+    reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ): (ts.ResolvedModule | undefined)[];
+}
+```
+
+[Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
+
+Note that if you pass custom programs via `options.programs` this option will not have any effect over them (you can simply add the custom resolution on them directly).
+
+## Utilities
+
+### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `parserOptions.programs` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory?: string,
+): import('typescript').Program;
+```
+
+Example usage in .eslintrc.js:
+
+```js
+const parser = require('@typescript-eslint/parser');
+const programs = [parser.createProgram('tsconfig.json')];
+module.exports = {
+  parserOptions: {
+    programs,
+  },
+};
+```
 
 ## Supported TypeScript Version
 

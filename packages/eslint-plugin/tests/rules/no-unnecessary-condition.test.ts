@@ -235,6 +235,14 @@ function length(x: string) {
 function nonEmptyStrings(x: string[]) {
   return x.filter(length);
 }
+
+// filter-like predicate
+function count(
+  list: string[],
+  predicate: (value: string, index: number, array: string[]) => unknown,
+) {
+  return list.filter(predicate).length;
+}
     `,
     // Ignores non-array methods of the same name
     `

@@ -25,7 +25,7 @@ const defaultOptions: Options = {
 
 This option defines the expected import kind for type-only imports. Valid values for `prefer` are:
 
-- `type-imports` will enforce that you always use `import type Foo from '...'`. It is default.
+- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is default.
 - `no-type-imports` will enforce that you always use `import Foo from '...'`.
 
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
@@ -61,4 +61,6 @@ const x: import('Bar') = 1;
 ## When Not To Use It
 
 - If you are not using TypeScript 3.8 (or greater), then you will not be able to use this rule, as type-only imports are not allowed.
+- Certain libraries use the non-inlined imports to infer information about the variables. For example, for dependency injection.<br/>
+  type-only imports cannot be used with these libraries. See [#2559](https://github.com/typescript-eslint/typescript-eslint/issues/2559#issuecomment-692780580)
 - If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.

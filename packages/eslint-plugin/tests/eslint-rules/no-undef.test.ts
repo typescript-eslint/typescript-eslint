@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/no-undef';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
+
+const rule = getESLintCoreRule('no-undef');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -140,6 +142,13 @@ function predicate(arg: any): asserts arg is T {
   }
 }
     `,
+    `
+interface ITest {
+  attr: string;
+}
+let test: unknown;
+(test as ITest) = { attr: '' };
+    `,
     {
       code: `
 function Foo() {}
@@ -223,6 +232,21 @@ function Foo() {}
     // https://github.com/typescript-eslint/typescript-eslint/issues/2477
     `
 const x = 1 as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2942
+    `
+declare function deco(...param: any): (...param: any) => any;
+
+@deco({
+  components: {
+    val: true,
+  },
+})
+class Foo {}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3006
+    `
+export type AppState = typeof import('./src/store/reducers').default;
     `,
   ],
   invalid: [

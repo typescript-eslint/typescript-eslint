@@ -1,0 +1,5 @@
+{
+  "root": "packages/typescript-estree",
+  "type": "library",
+  "implicitDependencies": []
+}

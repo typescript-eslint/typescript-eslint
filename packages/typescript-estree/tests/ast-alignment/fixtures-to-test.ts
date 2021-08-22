@@ -1,4 +1,3 @@
-import jsxKnownIssues from '@typescript-eslint/shared-fixtures/dist/jsx-known-issues';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -109,20 +108,6 @@ class FixturesTester {
  */
 const tester = new FixturesTester();
 
-/**
- * JSX fixtures which have known issues for typescript-estree
- */
-const jsxFilesWithKnownIssues = jsxKnownIssues.map(f => f.replace('jsx/', ''));
-
-/**
- * Current random error difference on jsx/invalid-no-tag-name.src.js
- * ts-estree - SyntaxError
- * Babel - RangeError
- *
- * Reported here: https://github.com/babel/babel/issues/6680
- */
-jsxFilesWithKnownIssues.push('invalid-no-tag-name');
-
 tester.addFixturePatternConfig('javascript/basics');
 
 tester.addFixturePatternConfig('comments');
@@ -166,8 +151,8 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
      * TS1100: "Invalid use of '{0}' in strict mode."
      * TODO: do we want TS1100 error code?
      */
-    'error-strict-eval', // babel parse errors
     'error-strict-default-param-eval',
+    'error-strict-eval',
     'error-strict-eval-return',
     'error-strict-param-arguments',
     'error-strict-param-eval',
@@ -176,15 +161,7 @@ tester.addFixturePatternConfig('javascript/arrowFunctions', {
     'error-strict-param-no-paren-eval',
   ],
 });
-tester.addFixturePatternConfig('javascript/function', {
-  ignore: [
-    /**
-     * Babel has invalid end range of multiline SequenceExpression
-     * TODO: report it to babel
-     */
-    'return-multiline-sequence',
-  ],
-});
+tester.addFixturePatternConfig('javascript/function');
 
 tester.addFixturePatternConfig('javascript/bigIntLiterals');
 tester.addFixturePatternConfig('javascript/binaryLiterals');
@@ -195,9 +172,11 @@ tester.addFixturePatternConfig('javascript/callExpression');
 tester.addFixturePatternConfig('javascript/classes', {
   ignore: [
     /**
-     * super() is being used outside of constructor. Other parsers (e.g. espree, acorn) do not error on this.
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * super() is being used outside of constructor.
+     * Other parsers (e.g. espree, acorn) do not error on this.
      */
-    'class-one-method-super', // babel parse errors
+    'class-one-method-super',
     /**
      * TS3.6 made computed constructors parse as actual constructors.
      */
@@ -314,7 +293,26 @@ tester.addFixturePatternConfig('javascript/unicodeCodePointEscapes');
 /* ================================================== */
 
 tester.addFixturePatternConfig('jsx', {
-  ignore: jsxFilesWithKnownIssues,
+  ignore: [
+    /**
+     * JSX fixtures which have known issues for typescript-estree
+     * https://github.com/Microsoft/TypeScript/issues/7410
+     */
+    'embedded-tags',
+    /**
+     * Current random error difference on jsx/invalid-no-tag-name.src.js
+     * ts-estree - SyntaxError
+     * Babel - RangeError
+     * @see https://github.com/babel/babel/issues/6680
+     */
+    'invalid-no-tag-name',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Unexpected token
+     * TODO: investigate if this code is valid as there is no typescript error
+     */
+    'invalid-namespace-value-with-dots',
+  ],
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
 
@@ -344,19 +342,18 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
-     * TODO: report it to babel
+     * @see https://github.com/babel/babel/issues/12884
      */
     'interface-with-extends-member-expression',
     /**
-     * Was expected to be fixed by PR into Babel: https://github.com/babel/babel/pull/9302
-     * But not fixed in Babel 7.3
-     * TODO: Investigate differences
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/2998
      */
     'type-import-type',
     'type-import-type-with-type-parameters-in-type-reference',
     /**
-     * Not yet supported in Babel https://github.com/babel/babel/issues/9228
+     * Not yet supported in Babel
      * Directive field is not added to module and namespace
+     * @see https://github.com/babel/babel/issues/9228
      */
     'directive-in-module',
     'directive-in-namespace',
@@ -373,53 +370,33 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * TODO: report this to babel
+     * https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
-    /**
-     * Babel: TSTypePredicate includes `:` statement in range
-     * ts-estree: TSTypePredicate does not include `:` statement in range
-     * TODO: report this to babel
-     */
-    'type-assertion-in-arrow-function',
-    'type-assertion-in-function',
-    'type-assertion-in-interface',
-    'type-assertion-in-method',
-    'type-assertion-with-guard-in-arrow-function',
-    'type-assertion-with-guard-in-function',
-    'type-assertion-with-guard-in-interface',
-    'type-assertion-with-guard-in-method',
-    'type-guard-in-arrow-function',
-    'type-guard-in-function',
-    'type-guard-in-interface',
-    /**
-     * TS 3.7: declare class properties
-     * Babel: declare is not allowed with accessibility modifiers
-     * TODO: report this to babel
-     */
-    'abstract-class-with-declare-properties',
-    'class-with-declare-properties',
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * This is intentional; we don't error on semantic problems for these cases
      */
-    'catch-clause-with-invalid-annotation',
+    'class-with-constructor-and-type-parameters',
+    'class-with-two-methods-computed-constructor',
     'export-type-star-from',
     'import-type-error',
     /**
-     * Babel reports incorrect location
-     * https://github.com/babel/babel/issues/11939
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * This is intentional; babel is not checking types
      */
-    'catch-clause-with-annotation',
+    'catch-clause-with-invalid-annotation',
   ],
   ignoreSourceType: [
     /**
      * Babel reports sourceType script
-     * https://github.com/babel/babel/issues/9213
+     * @see https://github.com/babel/babel/issues/9213
      */
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration',
+    'import-equal-type-declaration',
+    'import-export-equal-type-declaration',
     // babel treats declare and types as not a module
     'export-declare-const-named-enum',
     'export-declare-named-enum',
@@ -475,20 +452,6 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
      */
     'interface-with-optional-index-signature',
     /**
-     * Expected error on empty type arguments and type parameters
-     * TypeScript report diagnostics correctly but babel not
-     * https://github.com/babel/babel/issues/9462
-     */
-    'empty-type-arguments',
-    'empty-type-arguments-in-call-expression',
-    'empty-type-arguments-in-new-expression',
-    'empty-type-parameters',
-    'empty-type-parameters-in-arrow-function',
-    'empty-type-parameters-in-constructor',
-    'empty-type-parameters-in-function-expression',
-    'empty-type-parameters-in-method',
-    'empty-type-parameters-in-method-signature',
-    /**
      * Babel correctly errors on this
      * TODO: enable error code TS1024: 'readonly' modifier can only appear on a property declaration or index signature.
      */
@@ -498,6 +461,18 @@ tester.addFixturePatternConfig('typescript/errorRecovery', {
 
 tester.addFixturePatternConfig('typescript/types', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * TS Template Literal Types
+     *
+     * Babel uses a representation much further from TS's representation.
+     * They produce TSTypeLiteral -> TemplateLiteral, and then force override the expression parser to parse types
+     * We instead just emit TSTemplateLiteralType.
+     */
+    'template-literal-type-2',
+    'template-literal-type-3',
+    'template-literal-type-4',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/declare', {
@@ -514,6 +489,4 @@ tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   ],
 });
 
-const fixturesToTest = tester.getFixtures();
-
-export { fixturesToTest };
+export const fixturesToTest = tester.getFixtures();

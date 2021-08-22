@@ -76,7 +76,6 @@ interface Foo {
   [];
 }
     `,
-
     // 'index-signature'
     // Unhandled type
     {
@@ -140,6 +139,85 @@ type Foo = Record<string, any>;
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
+    // Readonly interface
+    {
+      code: `
+interface Foo {
+  readonly [key: string]: any;
+}
+      `,
+      output: `
+type Foo = Readonly<Record<string, any>>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Interface with generic parameter
+    {
+      code: `
+interface Foo<A> {
+  [key: string]: A;
+}
+      `,
+      output: `
+type Foo<A> = Record<string, A>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Interface with extends
+    {
+      code: `
+interface B extends A {
+  [index: number]: unknown;
+}
+      `,
+      output: `
+interface B extends A {
+  [index: number]: unknown;
+}
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+    // Readonly interface with generic parameter
+    {
+      code: `
+interface Foo<A> {
+  readonly [key: string]: A;
+}
+      `,
+      output: `
+type Foo<A> = Readonly<Record<string, A>>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Interface with multiple generic parameters
+    {
+      code: `
+interface Foo<A, B> {
+  [key: A]: B;
+}
+      `,
+      output: `
+type Foo<A, B> = Record<A, B>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Readonly interface with multiple generic parameters
+    {
+      code: `
+interface Foo<A, B> {
+  readonly [key: A]: B;
+}
+      `,
+      output: `
+type Foo<A, B> = Readonly<Record<A, B>>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
     // Type literal
     {
       code: 'type Foo = { [key: string]: any };',
@@ -147,10 +225,24 @@ type Foo = Record<string, any>;
       errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
 
+    // Readonly type literal
+    {
+      code: 'type Foo = { readonly [key: string]: any };',
+      output: 'type Foo = Readonly<Record<string, any>>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+
     // Generic
     {
       code: 'type Foo = Generic<{ [key: string]: any }>;',
       output: 'type Foo = Generic<Record<string, any>>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 20 }],
+    },
+
+    // Readonly Generic
+    {
+      code: 'type Foo = Generic<{ readonly [key: string]: any }>;',
+      output: 'type Foo = Generic<Readonly<Record<string, any>>>;',
       errors: [{ messageId: 'preferRecord', line: 1, column: 20 }],
     },
 
@@ -166,6 +258,18 @@ type Foo = Record<string, any>;
       errors: [{ messageId: 'preferRecord', line: 1, column: 17 }],
     },
 
+    // Readonly function types
+    {
+      code: 'function foo(arg: { readonly [key: string]: any }) {}',
+      output: 'function foo(arg: Readonly<Record<string, any>>) {}',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 19 }],
+    },
+    {
+      code: 'function foo(): { readonly [key: string]: any } {}',
+      output: 'function foo(): Readonly<Record<string, any>> {}',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 17 }],
+    },
+
     // Never
     // Type literal
     {
@@ -173,6 +277,14 @@ type Foo = Record<string, any>;
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 12 }],
+    },
+
+    // Type literal with generic parameter
+    {
+      code: 'type Foo<T> = Record<string, T>;',
+      options: ['index-signature'],
+      output: 'type Foo<T> = { [key: string]: T };',
+      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 15 }],
     },
 
     // Generic

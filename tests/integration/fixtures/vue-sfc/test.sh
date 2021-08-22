@@ -8,6 +8,7 @@ node /usr/utils/generate-package-json.js
 npm install
 
 # Use the local volumes for our own packages
+npm install $(npm pack /usr/ast-spec | tail -1)
 npm install $(npm pack /usr/types | tail -1)
 npm install $(npm pack /usr/visitor-keys | tail -1)
 npm install $(npm pack /usr/scope-manager | tail -1)
@@ -23,7 +24,7 @@ npm install vuex@latest vue-property-decorator@latest
 
 # Run the linting
 # (the "|| true" helps make sure that we run our tests on failed linting runs as well)
-npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.js /usr/linked/**/*.vue || true
+npx eslint --format json --output-file /usr/lint-output.json --config /usr/linked/.eslintrc.js /usr/linked/**/*.vue --fix-dry-run || true
 
 # Run our assertions against the linting output
 npx jest /usr/test.js --snapshotResolver=/usr/utils/jest-snapshot-resolver.js

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-
 import * as eslintUtils from 'eslint-utils';
 import { TSESTree } from '../../ts-estree';
 import * as TSESLint from '../../ts-eslint';
@@ -8,6 +7,7 @@ const ReferenceTrackerREAD: unique symbol = eslintUtils.ReferenceTracker.READ;
 const ReferenceTrackerCALL: unique symbol = eslintUtils.ReferenceTracker.CALL;
 const ReferenceTrackerCONSTRUCT: unique symbol =
   eslintUtils.ReferenceTracker.CONSTRUCT;
+const ReferenceTrackerESM: unique symbol = eslintUtils.ReferenceTracker.ESM;
 
 interface ReferenceTracker {
   /**
@@ -49,23 +49,25 @@ interface ReferenceTrackerStatic {
        * If this is `"strict"`, the method binds CommonJS modules to the default export. Otherwise, the method binds
        * CommonJS modules to both the default export and named exports. Optional. Default is `"strict"`.
        */
-      mode: 'strict' | 'legacy';
+      mode?: 'strict' | 'legacy';
       /**
        * The name list of Global Object. Optional. Default is `["global", "globalThis", "self", "window"]`.
        */
-      globalObjectNames: readonly string[];
+      globalObjectNames?: readonly string[];
     },
   ): ReferenceTracker;
 
   readonly READ: typeof ReferenceTrackerREAD;
   readonly CALL: typeof ReferenceTrackerCALL;
   readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
+  readonly ESM: typeof ReferenceTrackerESM;
 }
 
 namespace ReferenceTracker {
   export type READ = ReferenceTrackerStatic['READ'];
   export type CALL = ReferenceTrackerStatic['CALL'];
   export type CONSTRUCT = ReferenceTrackerStatic['CONSTRUCT'];
+  export type ESM = ReferenceTrackerStatic['ESM'];
   export type ReferenceType = READ | CALL | CONSTRUCT;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
@@ -73,6 +75,7 @@ namespace ReferenceTracker {
     [ReferenceTrackerREAD]?: T;
     [ReferenceTrackerCALL]?: T;
     [ReferenceTrackerCONSTRUCT]?: T;
+    [ReferenceTrackerESM]?: true;
     [key: string]: TraceMapElement<T>;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,8 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -51,20 +55,16 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
+    const checkedNodes = new Set<TSESTree.Node>();
+
     const conditionalChecks: TSESLint.RuleListener = {
       ConditionalExpression: checkTestConditional,
       DoWhileStatement: checkTestConditional,
       ForStatement: checkTestConditional,
       IfStatement: checkTestConditional,
-      LogicalExpression(node) {
-        // We only check the lhs of a logical expression because the rhs might
-        // be the return value of a short circuit expression.
-        checkConditional(node.left);
-      },
-      UnaryExpression(node) {
-        if (node.operator === '!') {
-          checkConditional(node.argument);
-        }
+      LogicalExpression: checkConditional,
+      'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
+        checkConditional(node.argument, true);
       },
       WhileStatement: checkTestConditional,
     };
@@ -78,11 +78,37 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
       test: TSESTree.Expression | null;
     }): void {
       if (node.test) {
-        checkConditional(node.test);
+        checkConditional(node.test, true);
       }
     }
 
-    function checkConditional(node: TSESTree.Expression): void {
+    /**
+     * This function analyzes the type of a node and checks if it is a Promise in a boolean conditional.
+     * It uses recursion when checking nested logical operators.
+     * @param node The AST node to check.
+     * @param isTestExpr Whether the node is a descendant of a test expression.
+     */
+    function checkConditional(
+      node: TSESTree.Expression,
+      isTestExpr = false,
+    ): void {
+      // prevent checking the same node multiple times
+      if (checkedNodes.has(node)) {
+        return;
+      }
+      checkedNodes.add(node);
+
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        // ignore the left operand for nullish coalescing expressions not in a context of a test expression
+        if (node.operator !== '??' || isTestExpr) {
+          checkConditional(node.left, isTestExpr);
+        }
+        // we ignore the right operand when not in a context of a test expression
+        if (isTestExpr) {
+          checkConditional(node.right, isTestExpr);
+        }
+        return;
+      }
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({

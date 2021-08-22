@@ -175,9 +175,8 @@ export default util.createRule<Options, MessageIds>({
             token.type === AST_TOKEN_TYPES.Keyword &&
             token.value === 'public'
           ) {
-            const commensAfterPublicKeyword = sourceCode.getCommentsAfter(
-              token,
-            );
+            const commensAfterPublicKeyword =
+              sourceCode.getCommentsAfter(token);
             if (commensAfterPublicKeyword.length) {
               // public /* Hi there! */ static foo()
               // ^^^^^^^

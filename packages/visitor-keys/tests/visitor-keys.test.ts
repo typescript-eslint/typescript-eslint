@@ -16,7 +16,6 @@ describe('Every ast node type should have a visitor key defined', () => {
 const IGNORED_KEYS = new Set([
   'ExperimentalRestProperty',
   'ExperimentalSpreadProperty',
-  'JSXNamespacedName',
 ]);
 describe('Every visitor key should have an ast node type defined', () => {
   for (const key of keys) {

@@ -230,7 +230,12 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
       Program(): void;
       ClassBody(): void;
       'ClassBody:exit'(): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+      ) => void;
     }
   >;
   export = rule;
@@ -520,9 +525,13 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       ClassExpression(node: TSESTree.ClassExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       DoWhileStatement(node: TSESTree.DoWhileStatement): void;
+      // -- eslint < 7.19.0
       'ForInStatement, ForOfStatement'(
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
+      // -- eslint >= 7.19.0
+      ForInStatement(node: TSESTree.ForInStatement): void;
+      ForOfStatement(node: TSESTree.ForOfStatement): void;
       ForStatement(node: TSESTree.ForStatement): void;
       'ForStatement > *.init:exit'(node: TSESTree.Node): void;
       IfStatement(node: TSESTree.IfStatement): void;
@@ -633,7 +642,12 @@ declare module 'eslint/lib/rules/no-extra-semi' {
     {
       EmptyStatement(node: TSESTree.EmptyStatement): void;
       ClassBody(node: TSESTree.ClassBody): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+      ) => void;
     }
   >;
   export = rule;
@@ -708,6 +722,8 @@ declare module 'eslint/lib/rules/dot-notation' {
         allowKeywords?: boolean;
         allowPattern?: string;
         allowPrivateClassPropertyAccess?: boolean;
+        allowProtectedClassPropertyAccess?: boolean;
+        allowIndexSignaturePropertyAccess?: boolean;
       },
     ],
     {
@@ -784,6 +800,72 @@ declare module 'eslint/lib/rules/no-duplicate-imports' {
       ImportDeclaration(node: TSESTree.ImportDeclaration): void;
       ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
       ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/space-infix-ops' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingSpace',
+    [
+      {
+        int32Hint?: boolean;
+      },
+    ],
+    {
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      AssignmentPattern(node: TSESTree.AssignmentPattern): void;
+      BinaryExpression(node: TSESTree.BinaryExpression): void;
+      LogicalExpression(node: TSESTree.LogicalExpression): void;
+      ConditionalExpression(node: TSESTree.ConditionalExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/prefer-const' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    'useConst',
+    [
+      {
+        destructuring?: 'any' | 'all';
+        ignoreReadBeforeAssign?: boolean;
+      },
+    ],
+    {
+      'Program:exit'(node: TSESTree.Program): void;
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/object-curly-spacing' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  const rule: TSESLint.RuleModule<
+    | 'requireSpaceBefore'
+    | 'requireSpaceAfter'
+    | 'unexpectedSpaceBefore'
+    | 'unexpectedSpaceAfter',
+    [
+      'always' | 'never',
+      {
+        arraysInObjects?: boolean;
+        objectsInObjects?: boolean;
+      }?,
+    ],
+    {
+      ObjectPattern(node: TSESTree.ObjectPattern): void;
+      ObjectExpression(node: TSESTree.ObjectExpression): void;
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
     }
   >;
   export = rule;

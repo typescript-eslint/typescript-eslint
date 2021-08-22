@@ -11,11 +11,13 @@ import { es2017 } from './es2017';
 import { es2018 } from './es2018';
 import { es2019 } from './es2019';
 import { es2020 } from './es2020';
+import { es2021 } from './es2021';
 import { esnext } from './esnext';
 import { dom } from './dom';
 import { dom_iterable } from './dom.iterable';
 import { webworker } from './webworker';
 import { webworker_importscripts } from './webworker.importscripts';
+import { webworker_iterable } from './webworker.iterable';
 import { scripthost } from './scripthost';
 import { es2015_core } from './es2015.core';
 import { es2015_collection } from './es2015.collection';
@@ -43,9 +45,13 @@ import { es2019_string } from './es2019.string';
 import { es2019_symbol } from './es2019.symbol';
 import { es2020_bigint } from './es2020.bigint';
 import { es2020_promise } from './es2020.promise';
+import { es2020_sharedmemory } from './es2020.sharedmemory';
 import { es2020_string } from './es2020.string';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
 import { es2020_intl } from './es2020.intl';
+import { es2021_promise } from './es2021.promise';
+import { es2021_string } from './es2021.string';
+import { es2021_weakref } from './es2021.weakref';
 import { esnext_array } from './esnext.array';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -53,11 +59,13 @@ import { esnext_intl } from './esnext.intl';
 import { esnext_bigint } from './esnext.bigint';
 import { esnext_string } from './esnext.string';
 import { esnext_promise } from './esnext.promise';
+import { esnext_weakref } from './esnext.weakref';
 import { es2016_full } from './es2016.full';
 import { es2017_full } from './es2017.full';
 import { es2018_full } from './es2018.full';
 import { es2019_full } from './es2019.full';
 import { es2020_full } from './es2020.full';
+import { es2021_full } from './es2021.full';
 import { esnext_full } from './esnext.full';
 import { lib as libBase } from './lib';
 
@@ -71,11 +79,13 @@ const lib = {
   es2018,
   es2019,
   es2020,
+  es2021,
   esnext,
   dom,
   'dom.iterable': dom_iterable,
   webworker,
   'webworker.importscripts': webworker_importscripts,
+  'webworker.iterable': webworker_iterable,
   scripthost,
   'es2015.core': es2015_core,
   'es2015.collection': es2015_collection,
@@ -103,9 +113,13 @@ const lib = {
   'es2019.symbol': es2019_symbol,
   'es2020.bigint': es2020_bigint,
   'es2020.promise': es2020_promise,
+  'es2020.sharedmemory': es2020_sharedmemory,
   'es2020.string': es2020_string,
   'es2020.symbol.wellknown': es2020_symbol_wellknown,
   'es2020.intl': es2020_intl,
+  'es2021.promise': es2021_promise,
+  'es2021.string': es2021_string,
+  'es2021.weakref': es2021_weakref,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,
@@ -113,11 +127,13 @@ const lib = {
   'esnext.bigint': esnext_bigint,
   'esnext.string': esnext_string,
   'esnext.promise': esnext_promise,
+  'esnext.weakref': esnext_weakref,
   'es2016.full': es2016_full,
   'es2017.full': es2017_full,
   'es2018.full': es2018_full,
   'es2019.full': es2019_full,
   'es2020.full': es2020_full,
+  'es2021.full': es2021_full,
   'esnext.full': esnext_full,
   lib: libBase,
 } as const;

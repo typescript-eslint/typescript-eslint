@@ -209,6 +209,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
+   * Instance of a TypeScript Program object to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program.
+   */
+  program?: import('typescript').Program;
+
+  /**
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************
@@ -218,6 +225,37 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
   createDefaultProgram?: boolean;
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
+   * whether or not ESLint is being used as part of a single run.
+   */
+  allowAutomaticSingleRunInference?: boolean;
+
+  /**
+   * Path to a file exporting a custom ModuleResolver.
+   */
+  moduleResolver?: string;
+}
+
+interface ParserServices {
+  program: ts.Program;
+  esTreeNodeToTSNodeMap: WeakMap<TSESTree.Node, ts.Node | ts.Token>;
+  tsNodeToESTreeNodeMap: WeakMap<ts.Node | ts.Token, TSESTree.Node>;
+  hasFullTypeInformation: boolean;
+}
+
+interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
+  ast: TSESTree.Program;
+  services: ParserServices;
 }
 
 const PARSE_AND_GENERATE_SERVICES_DEFAULT_OPTIONS: ParseOptions = {
@@ -233,7 +271,7 @@ const PARSE_AND_GENERATE_SERVICES_DEFAULT_OPTIONS: ParseOptions = {
 declare function parseAndGenerateServices(
   code: string,
   options: ParseOptions = PARSE_DEFAULT_OPTIONS,
-): TSESTree.Program;
+): ParseAndGenerateServicesResult;
 ```
 
 Example usage:
@@ -242,12 +280,45 @@ Example usage:
 import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 
 const code = `const hello: string = 'world';`;
-const ast = parseAndGenerateServices(code, {
+const { ast, services } = parseAndGenerateServices(code, {
   filePath: '/some/path/to/file/foo.ts',
   loc: true,
   project: './tsconfig.json',
   range: true,
 });
+```
+
+#### `parseWithNodeMaps(code, options)`
+
+Parses the given string of code with the options provided and returns both the ESTree-compatible AST as well as the node maps.
+This allows you to work with both ASTs without the overhead of types that may come with `parseAndGenerateServices`.
+
+```ts
+interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
+  ast: TSESTree.Program;
+  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
+  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
+}
+
+declare function parseWithNodeMaps(
+  code: string,
+  options: ParseOptions = PARSE_DEFAULT_OPTIONS,
+): ParseWithNodeMapsResult;
+```
+
+Example usage:
+
+```js
+import { parseWithNodeMaps } from '@typescript-eslint/typescript-estree';
+
+const code = `const hello: string = 'world';`;
+const { ast, esTreeNodeToTSNodeMap, tsNodeToESTreeNodeMap } = parseWithNodeMaps(
+  code,
+  {
+    loc: true,
+    range: true,
+  },
+);
 ```
 
 ### `TSESTree`, `AST_NODE_TYPES` and `AST_TOKEN_TYPES`
@@ -257,6 +328,34 @@ Types for the AST produced by the parse functions.
 - `TSESTree` is a namespace which contains object types representing all of the AST Nodes produced by the parser.
 - `AST_NODE_TYPES` is an enum which provides the values for every single AST node's `type` property.
 - `AST_TOKEN_TYPES` is an enum which provides the values for every single AST token's `type` property.
+
+### Utilities
+
+#### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `ParseOptions.program` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory: string = process.cwd(),
+): import('typescript').Program;
+```
+
+Example usage:
+
+```js
+const tsESTree = require('@typescript-eslint/typescript-estree');
+
+const program = tsESTree.createProgram('tsconfig.json');
+const code = `const hello: string = 'world';`;
+const { ast, services } = parseAndGenerateServices(code, {
+  filePath: '/some/path/to/file/foo.ts',
+  loc: true,
+  program,
+  range: true,
+});
+```
 
 ## Supported TypeScript Version
 

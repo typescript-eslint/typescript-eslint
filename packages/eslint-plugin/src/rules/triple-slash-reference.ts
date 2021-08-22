@@ -1,4 +1,5 @@
 import {
+  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -81,9 +82,11 @@ export default util.createRule<Options, MessageIds>({
       },
       TSImportEqualsDeclaration(node): void {
         if (programNode) {
-          const source = (node.moduleReference as TSESTree.TSExternalModuleReference)
-            .expression as TSESTree.Literal;
-          hasMatchingReference(source);
+          const reference = node.moduleReference;
+
+          if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
+            hasMatchingReference(reference.expression as TSESTree.Literal);
+          }
         }
       },
       Program(node): void {
@@ -91,7 +94,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         programNode = node;
-        const referenceRegExp = /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
+        const referenceRegExp =
+          /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
         const commentsBefore = sourceCode.getCommentsBefore(programNode);
 
         commentsBefore.forEach(comment => {

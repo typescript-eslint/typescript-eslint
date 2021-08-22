@@ -79,13 +79,13 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.ClassExpression
           | undefined;
 
-        if (!parent || parent.superClass) {
+        if (!parent || parent.superClass || isAllowWithDecorator(parent)) {
           return;
         }
 
         const reportNode = 'id' in parent && parent.id ? parent.id : parent;
         if (node.body.length === 0) {
-          if (allowEmpty || isAllowWithDecorator(parent)) {
+          if (allowEmpty) {
             return;
           }
 

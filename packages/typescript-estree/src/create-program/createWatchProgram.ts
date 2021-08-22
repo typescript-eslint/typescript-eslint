@@ -9,7 +9,7 @@ import {
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
-  getTsconfigPath,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -51,7 +51,7 @@ const parsedFilesSeenHash = new Map<CanonicalPath, string>();
  * Clear all of the parser caches.
  * This should only be used in testing to ensure the parser is clean between tests.
  */
-function clearCaches(): void {
+function clearWatchCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
@@ -197,9 +197,7 @@ function getProgramsForProjects(
    * - the required program hasn't been created yet, or
    * - the file is new/renamed, and the program hasn't been updated.
    */
-  for (const rawTsconfigPath of extra.projects) {
-    const tsconfigPath = getTsconfigPath(rawTsconfigPath, extra);
-
+  for (const tsconfigPath of extra.projects) {
     const existingWatch = knownWatchProgramMap.get(tsconfigPath);
 
     if (existingWatch) {
@@ -271,6 +269,12 @@ function createWatchProgram(
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+
+  if (extra.moduleResolver) {
+    watchCompilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
@@ -391,9 +395,8 @@ function createWatchProgram(
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
   const stat = fs.statSync(tsconfigPath);
   const lastModifiedAt = stat.mtimeMs;
-  const cachedLastModifiedAt = tsconfigLastModifiedTimestampCache.get(
-    tsconfigPath,
-  );
+  const cachedLastModifiedAt =
+    tsconfigLastModifiedTimestampCache.get(tsconfigPath);
 
   tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 
@@ -534,4 +537,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearCaches, createWatchProgram, getProgramsForProjects };
+export { clearWatchCaches, createWatchProgram, getProgramsForProjects };

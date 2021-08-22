@@ -113,6 +113,16 @@ ruleTester.run('no-var-requires', rule, {
       ],
     },
     {
+      code: "const foo = <Foo>require('./foo.json');",
+      errors: [
+        {
+          messageId: 'noVarReqs',
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
       code: "const foo: Foo = require('./foo.json').default;",
       errors: [
         {

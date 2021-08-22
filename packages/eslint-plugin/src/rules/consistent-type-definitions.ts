@@ -1,4 +1,5 @@
 import {
+  AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
@@ -30,6 +31,21 @@ export default util.createRule({
   defaultOptions: ['interface'],
   create(context, [option]) {
     const sourceCode = context.getSourceCode();
+
+    /**
+     * Iterates from the highest parent to the currently traversed node
+     * to determine whether any node in tree is globally declared module declaration
+     */
+    function isCurrentlyTraversedNodeWithinModuleDeclaration(): boolean {
+      return context
+        .getAncestors()
+        .some(
+          node =>
+            node.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            node.declare &&
+            node.global,
+        );
+    }
 
     return {
       "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
@@ -73,32 +89,41 @@ export default util.createRule({
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
-            fix(fixer) {
-              const typeNode = node.typeParameters ?? node.id;
-              const fixes: TSESLint.RuleFix[] = [];
+            /**
+             * remove automatically fix when the interface is within a declare global
+             * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
+             */
+            fix: isCurrentlyTraversedNodeWithinModuleDeclaration()
+              ? null
+              : (fixer): TSESLint.RuleFix[] => {
+                  const typeNode = node.typeParameters ?? node.id;
+                  const fixes: TSESLint.RuleFix[] = [];
 
-              const firstToken = sourceCode.getFirstToken(node);
-              if (firstToken) {
-                fixes.push(fixer.replaceText(firstToken, 'type'));
-                fixes.push(
-                  fixer.replaceTextRange(
-                    [typeNode.range[1], node.body.range[0]],
-                    ' = ',
-                  ),
-                );
-              }
+                  const firstToken = sourceCode.getFirstToken(node);
+                  if (firstToken) {
+                    fixes.push(fixer.replaceText(firstToken, 'type'));
+                    fixes.push(
+                      fixer.replaceTextRange(
+                        [typeNode.range[1], node.body.range[0]],
+                        ' = ',
+                      ),
+                    );
+                  }
 
-              if (node.extends) {
-                node.extends.forEach(heritage => {
-                  const typeIdentifier = sourceCode.getText(heritage);
-                  fixes.push(
-                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                  );
-                });
-              }
+                  if (node.extends) {
+                    node.extends.forEach(heritage => {
+                      const typeIdentifier = sourceCode.getText(heritage);
+                      fixes.push(
+                        fixer.insertTextAfter(
+                          node.body,
+                          ` & ${typeIdentifier}`,
+                        ),
+                      );
+                    });
+                  }
 
-              return fixes;
-            },
+                  return fixes;
+                },
           });
         }
       },

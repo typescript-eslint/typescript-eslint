@@ -251,6 +251,33 @@ const foo = (callback: Function) => {
   setTimeout(callback, 0);
 };
     `,
+    `
+const foo = () => {};
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+setTimeout(foo || bar, 500);
+    `,
+    `
+class Foo {
+  func1() {}
+  func2(): void {
+    setTimeout(this.func1.bind(this), 1);
+  }
+}
+    `,
+    `
+class Foo {
+  private a = {
+    b: {
+      c: function () {},
+    },
+  };
+  funcw(): void {
+    setTimeout(this.a.b.c.bind(this), 1);
+  }
+}
+    `,
   ],
 
   invalid: [
@@ -606,6 +633,21 @@ const fn = (foo: string | any) => {
     },
     {
       code: `
+const foo = 'foo';
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
 window.setTimeout(\`\`, 0);
 window['setTimeout'](\`\`, 0);
 
@@ -772,6 +814,21 @@ globalThis['execScript'](\`\`);
           messageId: 'noImpliedEvalError',
           line: 12,
           column: 26,
+        },
+      ],
+    },
+    {
+      code: `
+const foo: string | undefined = 'hello';
+const bar = () => {};
+
+setTimeout(foo || bar, 500);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
         },
       ],
     },

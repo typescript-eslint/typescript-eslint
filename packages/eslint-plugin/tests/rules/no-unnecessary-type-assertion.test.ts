@@ -186,6 +186,28 @@ const c = <const>[...a, ...b];
     {
       code: "const a = <const>{ foo: 'foo' };",
     },
+    {
+      code: `
+let a: number | undefined;
+let b: number | undefined;
+let c: number;
+a = b;
+c = b!;
+a! -= 1;
+      `,
+    },
+    {
+      code: `
+let a: { b?: string } | undefined;
+a!.b = '';
+      `,
+    },
+    `
+let value: number | undefined;
+let values: number[] = [];
+
+value = values.pop()!;
+    `,
   ],
 
   invalid: [
@@ -342,6 +364,22 @@ function foo<T extends string>(bar: T) {
     },
     {
       code: `
+declare const foo: Foo;
+const bar = <Foo>foo;
+      `,
+      output: `
+declare const foo: Foo;
+const bar = foo;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
 declare function nonNull(s: string | null);
 let s: string | null = null;
 nonNull(s!);
@@ -450,6 +488,26 @@ function Test(props: { id?: string | number }) {
         },
       ],
       filename: 'react.tsx',
+    },
+    {
+      code: `
+let x: number | undefined;
+let y: number | undefined;
+y = x!;
+y! = 0;
+      `,
+      output: `
+let x: number | undefined;
+let y: number | undefined;
+y = x!;
+y = 0;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 5,
+        },
+      ],
     },
   ],
 });

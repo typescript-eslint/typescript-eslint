@@ -57,7 +57,10 @@ export default util.createRule<Options, MessageIds>({
       if (type.isNumberLiteral()) {
         return 'number';
       }
-      if (type.isStringLiteral()) {
+      if (
+        type.isStringLiteral() ||
+        util.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
+      ) {
         return 'string';
       }
       // is BigIntLiteral
@@ -68,6 +71,11 @@ export default util.createRule<Options, MessageIds>({
         const types = type.types.map(getBaseTypeOfLiteralType);
 
         return types.every(value => value === types[0]) ? types[0] : 'invalid';
+      }
+
+      if (type.isIntersection()) {
+        const types = type.types.map(getBaseTypeOfLiteralType);
+        return types.some(value => value === 'string') ? 'string' : 'invalid';
       }
 
       const stringType = typeChecker.typeToString(type);

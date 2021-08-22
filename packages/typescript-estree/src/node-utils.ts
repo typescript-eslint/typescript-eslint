@@ -1,6 +1,6 @@
-import unescape from 'lodash/unescape';
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import { xhtmlEntities } from './jsx/xhtml-entities';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -13,73 +13,14 @@ const LOGICAL_OPERATORS: (
   SyntaxKind.QuestionQuestionToken,
 ];
 
-interface TokenToText {
-  [SyntaxKind.OpenBraceToken]: '{';
-  [SyntaxKind.CloseBraceToken]: '}';
-  [SyntaxKind.OpenParenToken]: '(';
-  [SyntaxKind.CloseParenToken]: ')';
-  [SyntaxKind.OpenBracketToken]: '[';
-  [SyntaxKind.CloseBracketToken]: ']';
-  [SyntaxKind.DotToken]: '.';
-  [SyntaxKind.DotDotDotToken]: '...';
-  [SyntaxKind.SemicolonToken]: ';';
-  [SyntaxKind.CommaToken]: ',';
-  [SyntaxKind.LessThanToken]: '<';
-  [SyntaxKind.GreaterThanToken]: '>';
-  [SyntaxKind.LessThanEqualsToken]: '<=';
-  [SyntaxKind.GreaterThanEqualsToken]: '>=';
-  [SyntaxKind.EqualsEqualsToken]: '==';
-  [SyntaxKind.ExclamationEqualsToken]: '!=';
-  [SyntaxKind.EqualsEqualsEqualsToken]: '===';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
-  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==';
-  [SyntaxKind.EqualsGreaterThanToken]: '=>';
-  [SyntaxKind.PlusToken]: '+';
-  [SyntaxKind.MinusToken]: '-';
-  [SyntaxKind.AsteriskToken]: '*';
-  [SyntaxKind.AsteriskAsteriskToken]: '**';
-  [SyntaxKind.SlashToken]: '/';
-  [SyntaxKind.PercentToken]: '%';
-  [SyntaxKind.PlusPlusToken]: '++';
-  [SyntaxKind.MinusMinusToken]: '--';
-  [SyntaxKind.LessThanLessThanToken]: '<<';
-  [SyntaxKind.LessThanSlashToken]: '</';
-  [SyntaxKind.GreaterThanGreaterThanToken]: '>>';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>';
-  [SyntaxKind.AmpersandToken]: '&';
-  [SyntaxKind.BarToken]: '|';
-  [SyntaxKind.CaretToken]: '^';
-  [SyntaxKind.ExclamationToken]: '!';
-  [SyntaxKind.TildeToken]: '~';
-  [SyntaxKind.AmpersandAmpersandToken]: '&&';
-  [SyntaxKind.BarBarToken]: '||';
-  [SyntaxKind.QuestionToken]: '?';
-  [SyntaxKind.ColonToken]: ':';
-  [SyntaxKind.EqualsToken]: '=';
-  [SyntaxKind.PlusEqualsToken]: '+=';
-  [SyntaxKind.MinusEqualsToken]: '-=';
-  [SyntaxKind.AsteriskEqualsToken]: '*=';
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
-  [SyntaxKind.SlashEqualsToken]: '/=';
-  [SyntaxKind.PercentEqualsToken]: '%=';
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
-  [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
-  [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
-  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.AtToken]: '@';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.UniqueKeyword]: 'unique';
-  [SyntaxKind.KeyOfKeyword]: 'keyof';
-  [SyntaxKind.NewKeyword]: 'new';
+interface TokenToText extends TSESTree.PunctuatorTokenToText {
   [SyntaxKind.ImportKeyword]: 'import';
+  [SyntaxKind.InKeyword]: 'in';
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
+  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
-  [SyntaxKind.QuestionQuestionToken]: '??';
-  [SyntaxKind.QuestionDotToken]: '?.';
+  [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
 /**
@@ -165,7 +106,9 @@ export function getLastModifier(node: ts.Node): ts.Modifier | null {
  * @param token the TypeScript token
  * @returns is comma
  */
-export function isComma(token: ts.Node): boolean {
+export function isComma(
+  token: ts.Node,
+): token is ts.Token<ts.SyntaxKind.CommaToken> {
   return token.kind === SyntaxKind.CommaToken;
 }
 
@@ -186,7 +129,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  * @returns is JSDoc comment
  */
-export function isJSDocComment(node: ts.Node): boolean {
+export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -285,7 +228,7 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
  * @param node the ts.Node
  * @returns is a token
  */
-export function isToken(node: ts.Node): boolean {
+export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -414,7 +357,19 @@ export function hasJSXAncestor(node: ts.Node): boolean {
  * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
-  return unescape(text);
+  return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
+    const item = entity.slice(1, -1);
+    if (item[0] === '#') {
+      const codePoint =
+        item[1] === 'x'
+          ? parseInt(item.slice(2), 16)
+          : parseInt(item.slice(1), 10);
+      return codePoint > 0x10ffff // RangeError: Invalid code point
+        ? entity
+        : String.fromCodePoint(codePoint);
+    }
+    return xhtmlEntities[item] || entity;
+  });
 }
 
 /**
@@ -422,7 +377,9 @@ export function unescapeStringLiteralText(text: string): string {
  * @param node ts.Node to be checked
  * @returns is Computed Property
  */
-export function isComputedProperty(node: ts.Node): boolean {
+export function isComputedProperty(
+  node: ts.Node,
+): node is ts.ComputedPropertyName {
   return node.kind === SyntaxKind.ComputedPropertyName;
 }
 
@@ -459,15 +416,11 @@ export function isChildUnwrappableOptionalChain(
     | ts.NonNullExpression,
   child: TSESTree.Node,
 ): boolean {
-  if (
+  return (
     isChainExpression(child) &&
     // (x?.y).z is semantically different, and as such .z is no longer optional
     node.expression.kind !== ts.SyntaxKind.ParenthesizedExpression
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -506,7 +459,7 @@ export function getTokenType(
 
   if (
     token.kind >= SyntaxKind.FirstPunctuation &&
-    token.kind <= SyntaxKind.LastBinaryOperator
+    token.kind <= SyntaxKind.LastPunctuation
   ) {
     return AST_TOKEN_TYPES.Punctuator;
   }
@@ -546,7 +499,7 @@ export function getTokenType(
     case SyntaxKind.GetKeyword:
     case SyntaxKind.SetKeyword:
 
-    // falls through
+    // intentional fallthrough
     default:
   }
 
@@ -574,7 +527,7 @@ export function getTokenType(
  * @returns the converted Token
  */
 export function convertToken(
-  token: ts.Node,
+  token: ts.Token<ts.TokenSyntaxKind>,
   ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =
@@ -597,6 +550,8 @@ export function convertToken(
       },
     };
   } else {
+    // @ts-expect-error TS is complaining about `value` not being the correct
+    // type but it is
     return {
       type: tokenType,
       value,
@@ -637,16 +592,26 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   return result;
 }
 
-export interface TSError {
-  index: number;
-  lineNumber: number;
-  column: number;
-  message: string;
+export class TSError extends Error {
+  constructor(
+    message: string,
+    public readonly fileName: string,
+    public readonly index: number,
+    public readonly lineNumber: number,
+    public readonly column: number,
+  ) {
+    super(message);
+    Object.defineProperty(this, 'name', {
+      value: new.target.name,
+      enumerable: false,
+      configurable: true,
+    });
+  }
 }
 
 /**
  * @param ast     the AST object
- * @param start      the index at which the error starts
+ * @param start   the index at which the error starts
  * @param message the error message
  * @returns converted error object
  */
@@ -656,12 +621,7 @@ export function createError(
   message: string,
 ): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
-  return {
-    index: start,
-    lineNumber: loc.line + 1,
-    column: loc.character,
-    message,
-  };
+  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
 }
 
 /**
@@ -672,8 +632,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      !!(n as any).jsDoc
+    ? !!(n as ts.JSDocContainer).jsDoc
     : n.getWidth(ast) !== 0;
 }
 

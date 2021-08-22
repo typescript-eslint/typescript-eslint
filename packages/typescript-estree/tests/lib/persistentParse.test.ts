@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { clearCaches, parseAndGenerateServices } from '../../src';
+import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { parseAndGenerateServices } from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -17,7 +18,7 @@ const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
   // stop watching the files and folders
-  clearCaches();
+  clearWatchCaches();
 
   // clean up the temporary files and folders
   tmpDirs.forEach(t => t.removeCallback());
@@ -116,7 +117,7 @@ function baseTests(
 
   it('allows parsing of deeply nested new files', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, false);
-    const bazSlashBar = path.join('baz', 'bar') as 'baz/bar';
+    const bazSlashBar = 'baz/bar' as const;
 
     // parse once to: assert the config as correct, and to make sure the program is setup
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
@@ -141,7 +142,7 @@ function baseTests(
     fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat'));
     fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat', 'baz'));
 
-    const bazSlashBar = path.join('bat', 'baz', 'bar') as 'bat/baz/bar';
+    const bazSlashBar = 'bat/baz/bar' as const;
 
     // write a new file and attempt to parse it
     writeFile(PROJECT_DIR, bazSlashBar);
@@ -151,7 +152,7 @@ function baseTests(
 
   it('allows renaming of files', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, true);
-    const bazSlashBar = path.join('baz', 'bar') as 'baz/bar';
+    const bazSlashBar = 'baz/bar' as const;
 
     // parse once to: assert the config as correct, and to make sure the program is setup
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
@@ -279,7 +280,7 @@ describe('persistent parse', () => {
 
     it('handles tsconfigs with no includes/excludes (nested)', () => {
       const PROJECT_DIR = setup({}, false);
-      const bazSlashBar = path.join('baz', 'bar') as 'baz/bar';
+      const bazSlashBar = 'baz/bar' as const;
 
       // parse once to: assert the config as correct, and to make sure the program is setup
       expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();

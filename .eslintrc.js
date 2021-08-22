@@ -7,6 +7,7 @@ module.exports = {
     'import',
     'eslint-comments',
     '@typescript-eslint/internal',
+    'simple-import-sort',
   ],
   env: {
     es6: true,
@@ -24,9 +25,10 @@ module.exports = {
       './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
     ],
+    allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   },
   rules: {
     //
@@ -63,12 +65,6 @@ module.exports = {
     ],
 
     // TODO - enable these new recommended rules
-    '@typescript-eslint/no-floating-promises': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/restrict-plus-operands': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
@@ -82,13 +78,17 @@ module.exports = {
     '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
-    // eslint base
+    // eslint-base
     //
 
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
+    'no-fallthrough': [
+      'warn',
+      { commentPattern: '.*intentional fallthrough.*' },
+    ],
 
     //
     // eslint-plugin-eslint-comment
@@ -162,14 +162,19 @@ module.exports = {
     // all test files
     {
       files: [
-        'packages/*/tests/**/*.test.ts',
         'packages/*/tests/**/*.spec.ts',
+        'packages/*/tests/**/*.test.ts',
+        'packages/*/tests/**/spec.ts',
+        'packages/*/tests/**/test.ts',
         'packages/parser/tests/**/*.ts',
       ],
       env: {
         'jest/globals': true,
       },
       rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
@@ -178,11 +183,26 @@ module.exports = {
         'jest/no-jasmine-globals': 'error',
         'jest/no-jest-import': 'error',
         'jest/no-test-prefixes': 'error',
-        'jest/no-test-callback': 'error',
+        'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
+        'jest/prefer-to-be-null': 'warn',
+        'jest/prefer-to-be-undefined': 'warn',
+        'jest/prefer-to-contain': 'warn',
         'jest/prefer-to-have-length': 'warn',
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
+        'jest/no-deprecated-functions': 'error',
+      },
+    },
+    // test utility scripts
+    {
+      files: ['tests/**/*.js'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/restrict-plus-operands': 'off',
       },
     },
     // plugin source files
@@ -221,6 +241,15 @@ module.exports = {
         '@typescript-eslint/internal/plugin-test-formatting': 'error',
       },
     },
+    // files which list all the things
+    {
+      files: ['packages/eslint-plugin/src/rules/index.ts'],
+      rules: {
+        // enforce alphabetical ordering
+        'sort-keys': 'error',
+        'import/order': ['error', { alphabetize: { order: 'asc' } }],
+      },
+    },
     // tools and tests
     {
       files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
@@ -240,6 +269,28 @@ module.exports = {
         '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
         '@typescript-eslint/internal/no-typescript-default-import': 'off',
         '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+      },
+    },
+    // ast spec specific standardization
+    {
+      files: ['packages/ast-spec/src/**/*.ts'],
+      rules: {
+        '@typescript-eslint/consistent-type-imports': [
+          'error',
+          { prefer: 'type-imports', disallowTypeAnnotations: true },
+        ],
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/sort-type-union-intersection-members': 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        'simple-import-sort/imports': 'error',
+      },
+    },
+    {
+      files: ['rollup.config.ts'],
+      rules: {
+        'import/no-default-export': 'off',
       },
     },
   ],

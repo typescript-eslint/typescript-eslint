@@ -75,6 +75,30 @@ x['priv_prop'] = 123;
       `,
       options: [{ allowPrivateClassPropertyAccess: true }],
     },
+
+    {
+      code: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+      `,
+      options: [{ allowProtectedClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x['hello'] = 3;
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+    },
   ],
   invalid: [
     {
@@ -254,6 +278,48 @@ x.pub_prop = 123;
       output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'if' } }],
+    },
+    {
+      code: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+      `,
+      options: [{ allowProtectedClassPropertyAccess: false }],
+      output: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x.protected_prop = 123;
+      `,
+      errors: [{ messageId: 'useDot' }],
+    },
+    {
+      code: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x['prop'] = 'hello';
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+      errors: [{ messageId: 'useDot' }],
+      output: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x.prop = 'hello';
+      `,
     },
   ],
 });

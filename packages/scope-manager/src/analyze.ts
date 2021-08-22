@@ -38,7 +38,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string;
+  jsxPragma?: string | null;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -61,6 +61,12 @@ interface AnalyzeOptions {
    * The source type of the script.
    */
   sourceType?: 'script' | 'module';
+
+  /**
+   * Emit design-type metadata for decorated declarations in source.
+   * Defaults to `false`.
+   */
+  emitDecoratorMetadata?: boolean;
 }
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
@@ -72,6 +78,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   jsxFragmentName: null,
   lib: ['es2018'],
   sourceType: 'script',
+  emitDecoratorMetadata: false,
 };
 
 function mapEcmaVersion(version: EcmaVersion | undefined): Lib {
@@ -101,11 +108,17 @@ function analyze(
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
-    jsxPragma: providedOptions?.jsxPragma ?? DEFAULT_OPTIONS.jsxPragma,
+    jsxPragma:
+      providedOptions?.jsxPragma === undefined
+        ? DEFAULT_OPTIONS.jsxPragma
+        : providedOptions.jsxPragma,
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
     lib: providedOptions?.lib ?? [mapEcmaVersion(ecmaVersion)],
+    emitDecoratorMetadata:
+      providedOptions?.emitDecoratorMetadata ??
+      DEFAULT_OPTIONS.emitDecoratorMetadata,
   };
 
   // ensure the option is lower cased

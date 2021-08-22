@@ -38,6 +38,7 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               25,
               38,
@@ -78,6 +79,7 @@ Object {
                 "line": 3,
               },
             },
+            "override": false,
             "range": Array [
               43,
               60,

@@ -16,6 +16,7 @@ export default util.createRule({
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       preferConstAssertion:
         'Expected a `const` instead of a literal type assertion.',

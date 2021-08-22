@@ -185,6 +185,34 @@ export const x: Foo = {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2864
+    {
+      filename: 'test.ts',
+      code: `
+export const x = {
+  foo: { bar: () => {} },
+} as Foo;
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const x = <Foo>{
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const x: Foo = {
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/484
     {
       code: `
@@ -259,7 +287,8 @@ export function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          (): number => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          (): number =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -312,6 +341,23 @@ export const func4 = (value: number) => x as const;
       code: `
 export const func1 = (value: string) => value;
 export const func2 = (value: number) => ({ type: 'X', value });
+      `,
+      options: [
+        {
+          allowedNames: ['func1', 'func2'],
+        },
+      ],
+    },
+    {
+      code: `
+export function func1() {
+  return 0;
+}
+export const foo = {
+  func2() {
+    return 0;
+  },
+};
       `,
       options: [
         {
@@ -660,6 +706,26 @@ export declare class Foo {
 export class A {
   b = A;
 }
+    `,
+    `
+interface Foo {
+  f: (x: boolean) => boolean;
+}
+
+export const a: Foo[] = [
+  {
+    f: (x: boolean) => x,
+  },
+];
+    `,
+    `
+interface Foo {
+  f: (x: boolean) => boolean;
+}
+
+export const a: Foo = {
+  f: (x: boolean) => x,
+};
     `,
   ],
   invalid: [
@@ -1016,7 +1082,8 @@ export function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          () => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          () =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -1567,18 +1634,20 @@ export { test };
     },
     {
       code: `
-export const foo = () => (a: string): ((n: number) => string) => {
-  return function (n) {
-    return String(n);
+export const foo =
+  () =>
+  (a: string): ((n: number) => string) => {
+    return function (n) {
+      return String(n);
+    };
   };
-};
       `,
       options: [{ allowHigherOrderFunctions: false }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
-          column: 20,
+          line: 3,
+          column: 3,
         },
       ],
     },
@@ -1775,6 +1844,39 @@ export function foo(...[a]: any): void {}
           data: {
             type: 'Rest',
           },
+        },
+      ],
+    },
+    {
+      code: `
+export function func1() {
+  return 0;
+}
+export const foo = {
+  func2() {
+    return 0;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: [],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 8,
+          endColumn: 24,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 6,
+          endLine: 6,
+          column: 3,
+          endColumn: 10,
         },
       ],
     },

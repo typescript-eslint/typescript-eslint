@@ -8,18 +8,48 @@ import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
-describe('parse()', () => {
+describe('parseWithNodeMaps()', () => {
   describe('basic functionality', () => {
     it('should parse an empty string', () => {
-      expect(parser.parse('').body).toEqual([]);
-      expect(parser.parse('', {}).body).toEqual([]);
+      expect(parser.parseWithNodeMaps('').ast.body).toEqual([]);
+      expect(parser.parseWithNodeMaps('', {}).ast.body).toEqual([]);
+    });
+
+    it('parse() should be the same as parseWithNodeMaps().ast', () => {
+      const code = 'const x: number = 1;';
+      expect(parser.parseWithNodeMaps(code).ast).toMatchObject(
+        parser.parse(code),
+      );
+    });
+
+    it('should simple code', () => {
+      const result = parser.parseWithNodeMaps('1;');
+      expect(result.ast).toMatchInlineSnapshot(`
+        Object {
+          "body": Array [
+            Object {
+              "expression": Object {
+                "raw": "1",
+                "type": "Literal",
+                "value": 1,
+              },
+              "type": "ExpressionStatement",
+            },
+          ],
+          "sourceType": "script",
+          "type": "Program",
+        }
+      `);
+      const tsNode = result.esTreeNodeToTSNodeMap.get(result.ast.body[0]);
+      expect(tsNode).toBeDefined();
+      expect(result.tsNodeToESTreeNodeMap.get(tsNode)).toBeDefined();
     });
   });
 
   describe('modules', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
-        parser.parse('function fn(a, a) {\n}');
+        parser.parseWithNodeMaps('function fn(a, a) {\n}');
       } catch (err) {
         expect(err.column).toEqual(16);
       }
@@ -60,7 +90,7 @@ describe('parse()', () => {
   describe('non string code', () => {
     // testing a non string code..
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = (12345 as any) as string;
+    const code = 12345 as any as string;
     const config: TSESTreeOptions = {
       comment: true,
       tokens: true,
@@ -85,7 +115,7 @@ describe('parse()', () => {
 
       const loggerFn = jest.fn(() => {});
 
-      parser.parse('let foo = bar;', {
+      parser.parseWithNodeMaps('let foo = bar;', {
         loggerFn,
         comment: true,
         tokens: true,
@@ -105,7 +135,9 @@ describe('parse()', () => {
       });
     });
   });
+});
 
+describe('parseAndGenerateServices', () => {
   describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
     const code = '@test const foo = 2';
     const options: TSESTreeOptions = {
@@ -116,9 +148,9 @@ describe('parse()', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
     };
 
-    it('should throw on invalid option when used in parse', () => {
+    it('should throw on invalid option when used in parseWithNodeMaps', () => {
       expect(() => {
-        parser.parse(code, options);
+        parser.parseWithNodeMaps(code, options);
       }).toThrow(
         `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
       );
@@ -168,6 +200,31 @@ describe('parse()', () => {
         ...baseConfig,
         preserveNodeMaps: undefined,
       });
+
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
+      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
+      expect(resultWithNoOptionSet).toMatchObject(
+        resultWithOptionSetExplicitlyToUndefined,
+      );
+    });
+
+    it('should not impact the use of parseWithNodeMaps()', () => {
+      const resultWithNoOptionSet = parser.parseWithNodeMaps(code, baseConfig);
+      const resultWithOptionSetToTrue = parser.parseWithNodeMaps(code, {
+        ...baseConfig,
+        preserveNodeMaps: true,
+      });
+      const resultWithOptionSetToFalse = parser.parseWithNodeMaps(code, {
+        ...baseConfig,
+        preserveNodeMaps: false,
+      });
+      const resultWithOptionSetExplicitlyToUndefined = parser.parseWithNodeMaps(
+        code,
+        {
+          ...baseConfig,
+          preserveNodeMaps: undefined,
+        },
+      );
 
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
@@ -435,24 +492,23 @@ describe('parse()', () => {
       tsconfigRootDir: PROJECT_DIR,
       project: './tsconfig.json',
     };
-    const testParse = (
-      filePath: string,
-      extraFileExtensions: string[] = ['.vue'],
-    ) => (): void => {
-      try {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          extraFileExtensions,
-          filePath: join(PROJECT_DIR, filePath),
-        });
-      } catch (error) {
-        /**
-         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-         */
-        error.message = error.message.replace(/\\(?!["])/gm, '/');
-        throw error;
-      }
-    };
+    const testParse =
+      (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+      (): void => {
+        try {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+          });
+        } catch (error) {
+          /**
+           * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+           */
+          error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
+          throw error;
+        }
+      };
 
     describe('project includes', () => {
       it("doesn't error for matched files", () => {
@@ -590,16 +646,18 @@ describe('parse()', () => {
       project: './**/tsconfig.json',
     };
 
-    const testParse = (
-      filePath: 'ignoreme' | 'includeme',
-      projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
-    ) => (): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        projectFolderIgnoreList,
-        filePath: join(PROJECT_DIR, filePath, './file.ts'),
-      });
-    };
+    const testParse =
+      (
+        filePath: 'ignoreme' | 'includeme',
+        projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
+      ) =>
+      (): void => {
+        parser.parseAndGenerateServices(code, {
+          ...config,
+          projectFolderIgnoreList,
+          filePath: join(PROJECT_DIR, filePath, './file.ts'),
+        });
+      };
 
     it('ignores nothing when given nothing', () => {
       expect(testParse('ignoreme')).not.toThrow();
@@ -610,6 +668,96 @@ describe('parse()', () => {
       const ignore = ['**/ignoreme/**'];
       expect(testParse('ignoreme', ignore)).toThrow();
       expect(testParse('includeme', ignore)).not.toThrow();
+    });
+  });
+
+  describe('moduleResolver', () => {
+    beforeEach(() => {
+      parser.clearCaches();
+    });
+
+    const PROJECT_DIR = resolve(FIXTURES_DIR, '../moduleResolver');
+    const code = `
+      import { something } from '__PLACEHOLDER__';
+
+      something();
+    `;
+    const config: TSESTreeOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+      project: './tsconfig.json',
+      tsconfigRootDir: PROJECT_DIR,
+      filePath: resolve(PROJECT_DIR, 'file.ts'),
+    };
+    const withDefaultProgramConfig: TSESTreeOptions = {
+      ...config,
+      project: './tsconfig.defaultProgram.json',
+      createDefaultProgram: true,
+    };
+
+    describe('when file is in the project', () => {
+      it('returns error if __PLACEHOLDER__ can not be resolved', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, config)
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveProperty(
+          [0, 'messageText'],
+          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
+        );
+      });
+
+      it('throws error if moduleResolver can not be found', () => {
+        expect(() =>
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            moduleResolver: resolve(
+              PROJECT_DIR,
+              './this_moduleResolver_does_not_exist.js',
+            ),
+          }),
+        ).toThrowErrorMatchingInlineSnapshot(`
+        "Could not find the provided parserOptions.moduleResolver.
+        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
+      `);
+      });
+
+      it('resolves __PLACEHOLDER__ correctly', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, {
+              ...config,
+              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+            })
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveLength(0);
+      });
+    });
+
+    describe('when file is not in the project and createDefaultProgram=true', () => {
+      it('returns error because __PLACEHOLDER__ can not be resolved', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, withDefaultProgramConfig)
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveProperty(
+          [0, 'messageText'],
+          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
+        );
+      });
+
+      it('resolves __PLACEHOLDER__ correctly', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, {
+              ...withDefaultProgramConfig,
+              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+            })
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveLength(0);
+      });
     });
   });
 });

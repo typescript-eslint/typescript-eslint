@@ -230,6 +230,16 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         x.test(s)
       }
     `,
+    `
+      function f(s: string) {
+        s.slice(0, -4) === "car"
+      }
+    `,
+    `
+      function f(x: string, s: string) {
+        x.endsWith('foo') && x.slice(0, -4) === 'bar'
+      }
+    `,
   ]),
   invalid: addOptional([
     // String indexing.
@@ -1059,13 +1069,13 @@ function addOptional<TOptions extends Readonly<unknown[]>>(
 ): TSESLint.ValidTestCase<TOptions>[];
 function addOptional<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   cases: TSESLint.InvalidTestCase<TMessageIds, TOptions>[],
 ): TSESLint.InvalidTestCase<TMessageIds, TOptions>[];
 function addOptional<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   cases: (Case<TMessageIds, TOptions> | string)[],
 ): Case<TMessageIds, TOptions>[] {

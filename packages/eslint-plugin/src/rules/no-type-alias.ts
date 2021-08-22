@@ -122,6 +122,7 @@ export default util.createRule<Options, MessageIds>({
     ];
     const aliasTypes = new Set([
       AST_NODE_TYPES.TSArrayType,
+      AST_NODE_TYPES.TSImportType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTypeQuery,
@@ -264,9 +265,10 @@ export default util.createRule<Options, MessageIds>({
         type.node.type.endsWith('Keyword') ||
         aliasTypes.has(type.node.type) ||
         (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
-          type.node.operator === 'readonly' &&
-          type.node.typeAnnotation &&
-          aliasTypes.has(type.node.typeAnnotation.type))
+          (type.node.operator === 'keyof' ||
+            (type.node.operator === 'readonly' &&
+              type.node.typeAnnotation &&
+              aliasTypes.has(type.node.typeAnnotation.type))))
       ) {
         // alias / keyword
         checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');

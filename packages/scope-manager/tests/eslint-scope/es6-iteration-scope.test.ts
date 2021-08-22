@@ -54,7 +54,7 @@ describe('ES6 iteration scope', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBe(null);
+    expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });
@@ -112,7 +112,7 @@ describe('ES6 iteration scope', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBe(null);
+    expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });

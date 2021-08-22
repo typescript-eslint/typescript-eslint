@@ -4,8 +4,9 @@ import * as ts from 'typescript';
 import { Extra } from '../parser-options';
 import {
   ASTAndProgram,
-  getTsconfigPath,
+  CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
@@ -27,7 +28,7 @@ function createDefaultProgram(
     return undefined;
   }
 
-  const tsconfigPath = getTsconfigPath(extra.projects[0], extra);
+  const tsconfigPath: CanonicalPath = extra.projects[0];
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
@@ -43,6 +44,13 @@ function createDefaultProgram(
     commandLine.options,
     /* setParentNodes */ true,
   );
+
+  if (extra.moduleResolver) {
+    compilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
+
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(extra.filePath)

@@ -394,6 +394,54 @@ declare global {
   }
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2824
+    `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+    `,
+    {
+      code: `
+@Directive({
+  selector: '[rcCidrIpPattern]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: CidrIpPatternDirective,
+      multi: true,
+    },
+  ],
+})
+export class CidrIpPatternDirective implements Validator {}
+      `,
+      options: [
+        {
+          classes: false,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2941
+    `
+class A {
+  constructor(printName) {
+    this.printName = printName;
+  }
+
+  openPort(printerName = this.printerName) {
+    this.tscOcx.ActiveXopenport(printerName);
+
+    return this;
+  }
+}
+    `,
   ],
   invalid: [
     {

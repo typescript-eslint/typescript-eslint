@@ -92,6 +92,25 @@ const e: string[] = ['a', 'b'];
 const f: readonly string[] = ['a', 'b'];
 ```
 
+## Combination matrix
+
+This matrix lists all possible option combinations and their expected results for different types of Arrays.
+
+| defaultOption  | readonlyOption | Array with simple type | Array with non simple type | Readonly array with simple type | Readonly array with non simple type |
+| -------------- | -------------- | ---------------------- | -------------------------- | ------------------------------- | ----------------------------------- |
+| `array`        |                | `number[]`             | `(Foo & Bar)[]`            | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
+| `array`        | `array`        | `number[]`             | `(Foo & Bar)[]`            | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
+| `array`        | `array-simple` | `number[]`             | `(Foo & Bar)[]`            | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
+| `array`        | `generic`      | `number[]`             | `(Foo & Bar)[]`            | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
+| `array-simple` |                | `number[]`             | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
+| `array-simple` | `array`        | `number[]`             | `Array<Foo & Bar>`         | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
+| `array-simple` | `array-simple` | `number[]`             | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
+| `array-simple` | `generic`      | `number[]`             | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
+| `generic`      |                | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
+| `generic`      | `array`        | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
+| `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
+| `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
+
 ## Related to
 
 - TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)

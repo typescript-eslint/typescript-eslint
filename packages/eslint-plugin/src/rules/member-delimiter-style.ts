@@ -1,4 +1,5 @@
 import {
+  TSESLint,
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
@@ -11,6 +12,9 @@ type TypeOptions = {
   delimiter?: Delimiter;
   requireLast?: boolean;
 };
+type TypeOptionsWithType = TypeOptions & {
+  type: string;
+};
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BaseOptions = {
   multiline?: TypeOptions;
@@ -21,6 +25,7 @@ type Config = BaseOptions & {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
+  multilineDetection?: 'brackets' | 'last-member';
 };
 type Options = [Config];
 type MessageIds =
@@ -28,6 +33,20 @@ type MessageIds =
   | 'unexpectedSemi'
   | 'expectedComma'
   | 'expectedSemi';
+type LastTokenType = TSESTree.Token;
+
+interface MakeFixFunctionParams {
+  optsNone: boolean;
+  optsSemi: boolean;
+  lastToken: LastTokenType;
+  missingDelimiter: boolean;
+  lastTokenLine: string;
+  isSingleLine: boolean;
+}
+
+type MakeFixFunctionReturnType =
+  | ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix)
+  | null;
 
 const definition = {
   type: 'object',
@@ -51,6 +70,47 @@ const definition = {
     },
   },
   additionalProperties: false,
+};
+
+const isLastTokenEndOfLine = (token: string, line: string): boolean => {
+  const positionInLine = line.indexOf(token);
+
+  return positionInLine === line.length - 1;
+};
+
+const makeFixFunction = ({
+  optsNone,
+  optsSemi,
+  lastToken,
+  missingDelimiter,
+  lastTokenLine,
+  isSingleLine,
+}: MakeFixFunctionParams): MakeFixFunctionReturnType => {
+  // if removing is the action but last token is not the end of the line
+  if (
+    optsNone &&
+    !isLastTokenEndOfLine(lastToken.value, lastTokenLine) &&
+    !isSingleLine
+  ) {
+    return null;
+  }
+
+  return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+    if (optsNone) {
+      // remove the unneeded token
+      return fixer.remove(lastToken);
+    }
+
+    const token = optsSemi ? ';' : ',';
+
+    if (missingDelimiter) {
+      // add the missing delimiter
+      return fixer.insertTextAfter(lastToken, token);
+    }
+
+    // correct the current delimiter
+    return fixer.replaceText(lastToken, token);
+  };
 };
 
 export default util.createRule<Options, MessageIds>({
@@ -82,6 +142,9 @@ export default util.createRule<Options, MessageIds>({
             },
             additionalProperties: false,
           },
+          multilineDetection: {
+            enum: ['brackets', 'last-member'],
+          },
         }),
         additionalProperties: false,
       },
@@ -97,6 +160,7 @@ export default util.createRule<Options, MessageIds>({
         delimiter: 'semi',
         requireLast: false,
       },
+      multilineDetection: 'brackets',
     },
   ],
   create(context, [options]) {
@@ -122,7 +186,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkLastToken(
       member: TSESTree.TypeElement,
-      opts: TypeOptions,
+      opts: TypeOptionsWithType,
       isLast: boolean,
     ): void {
       /**
@@ -142,9 +206,13 @@ export default util.createRule<Options, MessageIds>({
       const lastToken = sourceCode.getLastToken(member, {
         includeComments: false,
       });
+
       if (!lastToken) {
         return;
       }
+
+      const sourceCodeLines = sourceCode.getLines();
+      const lastTokenLine = sourceCodeLines[lastToken?.loc.start.line - 1];
 
       const optsSemi = getOption('semi');
       const optsComma = getOption('comma');
@@ -188,22 +256,14 @@ export default util.createRule<Options, MessageIds>({
             },
           },
           messageId,
-          fix(fixer) {
-            if (optsNone) {
-              // remove the unneeded token
-              return fixer.remove(lastToken);
-            }
-
-            const token = optsSemi ? ';' : ',';
-
-            if (missingDelimiter) {
-              // add the missing delimiter
-              return fixer.insertTextAfter(lastToken, token);
-            }
-
-            // correct the current delimiter
-            return fixer.replaceText(lastToken, token);
-          },
+          fix: makeFixFunction({
+            optsNone,
+            optsSemi,
+            lastToken,
+            missingDelimiter,
+            lastTokenLine,
+            isSingleLine: opts.type === 'single-line',
+          }),
         });
       }
     }
@@ -215,16 +275,28 @@ export default util.createRule<Options, MessageIds>({
     function checkMemberSeparatorStyle(
       node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral,
     ): void {
-      const isSingleLine = node.loc.start.line === node.loc.end.line;
-
       const members =
         node.type === AST_NODE_TYPES.TSInterfaceBody ? node.body : node.members;
+
+      let isSingleLine = node.loc.start.line === node.loc.end.line;
+      if (
+        options.multilineDetection === 'last-member' &&
+        !isSingleLine &&
+        members.length > 0
+      ) {
+        const lastMember = members[members.length - 1];
+        if (lastMember.loc.end.line === node.loc.end.line) {
+          isSingleLine = true;
+        }
+      }
 
       const typeOpts =
         node.type === AST_NODE_TYPES.TSInterfaceBody
           ? interfaceOptions
           : typeLiteralOptions;
-      const opts = isSingleLine ? typeOpts.singleline : typeOpts.multiline;
+      const opts = isSingleLine
+        ? { ...typeOpts.singleline, type: 'single-line' }
+        : { ...typeOpts.multiline, type: 'multi-line' };
 
       members.forEach((member, index) => {
         checkLastToken(member, opts ?? {}, index === members.length - 1);

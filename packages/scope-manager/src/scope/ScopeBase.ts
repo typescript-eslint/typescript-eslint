@@ -87,22 +87,20 @@ function isStrictScope(
     if (stmt.type !== AST_NODE_TYPES.ExpressionStatement) {
       break;
     }
-    const expr = stmt.expression;
 
-    if (
-      expr.type !== AST_NODE_TYPES.Literal ||
-      typeof expr.value !== 'string'
-    ) {
+    if (stmt.directive === 'use strict') {
+      return true;
+    }
+
+    const expr = stmt.expression;
+    if (expr.type !== AST_NODE_TYPES.Literal) {
       break;
     }
-    if (expr.raw !== null && expr.raw !== undefined) {
-      if (expr.raw === '"use strict"' || expr.raw === "'use strict'") {
-        return true;
-      }
-    } else {
-      if (expr.value === 'use strict') {
-        return true;
-      }
+    if (expr.raw === '"use strict"' || expr.raw === "'use strict'") {
+      return true;
+    }
+    if (expr.value === 'use strict') {
+      return true;
     }
   }
   return false;
@@ -137,7 +135,7 @@ type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
 abstract class ScopeBase<
   TType extends ScopeType,
   TBlock extends TSESTree.Node,
-  TUpper extends Scope | null
+  TUpper extends Scope | null,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
@@ -389,7 +387,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = (this.upper as Scope) as AnyScope;
+    const upper = this.upper as Scope as AnyScope;
     if (upper?.leftToResolve) {
       upper.leftToResolve.push(ref);
     }

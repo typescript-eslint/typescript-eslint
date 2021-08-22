@@ -90,10 +90,13 @@ export default createRule<Options, MessageIds>({
     function addTypeParametersTrailingCommaToIgnoreList(
       node: TSESTree.TSTypeParameterDeclaration,
     ): void {
-      const param = node.params[node.params.length - 1];
-      const afterToken = sourceCode.getTokenAfter(param);
-      if (afterToken && isCommaToken(afterToken)) {
-        ignoredTokens.add(afterToken);
+      const paramLength = node.params.length;
+      if (paramLength) {
+        const param = node.params[paramLength - 1];
+        const afterToken = sourceCode.getTokenAfter(param);
+        if (afterToken && isCommaToken(afterToken)) {
+          ignoredTokens.add(afterToken);
+        }
       }
     }
 
@@ -105,8 +108,8 @@ export default createRule<Options, MessageIds>({
      */
     function validateCommaSpacing(
       commaToken: TSESTree.PunctuatorToken,
-      prevToken: TSESTree.Token | TSESTree.Comment | null,
-      nextToken: TSESTree.Token | TSESTree.Comment | null,
+      prevToken: TSESTree.Token | null,
+      nextToken: TSESTree.Token | null,
     ): void {
       if (
         prevToken &&

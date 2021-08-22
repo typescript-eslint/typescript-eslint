@@ -471,7 +471,7 @@ export default util.createRule({
 
     const scopes: Scope[] = [];
     let currentScope: Scope = {
-      overloads: new Map(),
+      overloads: new Map<string, OverloadNode[]>(),
     };
 
     function createScope(
@@ -480,7 +480,7 @@ export default util.createRule({
     ): void {
       currentScope && scopes.push(currentScope);
       currentScope = {
-        overloads: new Map(),
+        overloads: new Map<string, OverloadNode[]>(),
         parent,
         typeParameters,
       };
