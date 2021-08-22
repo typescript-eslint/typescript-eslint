@@ -23,9 +23,6 @@ enum Group {
 
 function getGroup(node: TSESTree.TypeNode): Group {
   switch (node.type) {
-    case AST_NODE_TYPES.TSParenthesizedType:
-      return getGroup(node.typeAnnotation);
-
     case AST_NODE_TYPES.TSConditionalType:
       return Group.conditional;
 
@@ -89,6 +86,10 @@ function getGroup(node: TSESTree.TypeNode): Group {
       /* istanbul ignore next */
       throw new Error(`Unexpected Type ${node.type}`);
   }
+}
+
+function requiresParentheses(node: TSESTree.TypeNode): boolean {
+  return node.type === AST_NODE_TYPES.TSFunctionType;
 }
 
 export type Options = [
@@ -212,7 +213,7 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => t.text)
+              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );

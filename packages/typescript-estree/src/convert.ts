@@ -2694,10 +2694,7 @@ export class Converter {
 
       // TypeScript specific types
       case SyntaxKind.ParenthesizedType: {
-        return this.createNode<TSESTree.TSParenthesizedType>(node, {
-          type: AST_NODE_TYPES.TSParenthesizedType,
-          typeAnnotation: this.convertType(node.type),
-        });
+        return this.convertType(node.type);
       }
       case SyntaxKind.UnionType: {
         return this.createNode<TSESTree.TSUnionType>(node, {

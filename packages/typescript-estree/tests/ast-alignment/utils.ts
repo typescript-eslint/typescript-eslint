@@ -250,6 +250,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           }
         }
       },
+      /**
+       * Remove TSParenthesizedType from babel AST. Babel 8 will stop generating the TSParenthesizedType.
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/12608
+       */
+      TSParenthesizedType(node: any) {
+        const { typeAnnotation } = node;
+        Object.keys(node).forEach(key => delete node[key]);
+        Object.assign(node, typeAnnotation);
+      },
     },
   );
 }
