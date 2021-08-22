@@ -84,9 +84,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.arguments.length === 1 &&
         node.typeParameters?.params.some(
-          param =>
-            param.type === AST_NODE_TYPES.TSParenthesizedType ||
-            param.type === AST_NODE_TYPES.TSImportType,
+          param => param.type === AST_NODE_TYPES.TSImportType,
         )
       ) {
         return rule({

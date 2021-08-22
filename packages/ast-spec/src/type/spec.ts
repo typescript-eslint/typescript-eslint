@@ -17,7 +17,6 @@ export * from './TSNullKeyword/spec';
 export * from './TSNumberKeyword/spec';
 export * from './TSObjectKeyword/spec';
 export * from './TSOptionalType/spec';
-export * from './TSParenthesizedType/spec';
 export * from './TSQualifiedName/spec';
 export * from './TSRestType/spec';
 export * from './TSStringKeyword/spec';

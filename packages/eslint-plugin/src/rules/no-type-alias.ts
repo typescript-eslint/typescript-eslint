@@ -311,9 +311,6 @@ export default util.createRule<Options, MessageIds>({
           return acc;
         }, []);
       }
-      if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
-        return getTypes(node.typeAnnotation, compositionType);
-      }
       return [{ node, compositionType }];
     }
 
