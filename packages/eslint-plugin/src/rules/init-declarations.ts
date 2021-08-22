@@ -27,12 +27,7 @@ export default createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      initialized:
-        "Variable '{{idName}}' should be initialized on declaration.",
-      notInitialized:
-        "Variable '{{idName}}' should not be initialized on declaration.",
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],
   create(context) {
