@@ -142,7 +142,6 @@ import type { TSNullKeyword } from '../type/TSNullKeyword/spec';
 import type { TSNumberKeyword } from '../type/TSNumberKeyword/spec';
 import type { TSObjectKeyword } from '../type/TSObjectKeyword/spec';
 import type { TSOptionalType } from '../type/TSOptionalType/spec';
-import type { TSParenthesizedType } from '../type/TSParenthesizedType/spec';
 import type { TSQualifiedName } from '../type/TSQualifiedName/spec';
 import type { TSRestType } from '../type/TSRestType/spec';
 import type { TSStringKeyword } from '../type/TSStringKeyword/spec';
@@ -293,7 +292,6 @@ export type Node =
   | TSObjectKeyword
   | TSOptionalType
   | TSParameterProperty
-  | TSParenthesizedType
   | TSPrivateKeyword
   | TSPropertySignature
   | TSProtectedKeyword

@@ -192,7 +192,6 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSNonNullExpression]: ts.NonNullExpression;
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
   [AST_NODE_TYPES.TSParameterProperty]: ts.ParameterDeclaration;
-  [AST_NODE_TYPES.TSParenthesizedType]: ts.ParenthesizedTypeNode;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
   [AST_NODE_TYPES.TSQualifiedName]: ts.QualifiedName;
   [AST_NODE_TYPES.TSRestType]:
