@@ -100,10 +100,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'whitespace',
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      wrongIndentation:
-        'Expected indentation of {{expected}} but found {{actual}}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent

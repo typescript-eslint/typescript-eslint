@@ -24,10 +24,7 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [],
-    messages: baseRule?.meta.messages ?? {
-      unsafeRefs:
-        'Function declared in a loop contains unsafe references to variable(s) {{ varNames }}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
