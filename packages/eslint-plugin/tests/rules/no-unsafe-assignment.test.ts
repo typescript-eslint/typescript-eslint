@@ -68,7 +68,7 @@ function assignmentTest(
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -141,6 +141,8 @@ declare function Foo(props: { a: string }): never;
     'const x: unknown = y as any;',
     'const x: unknown[] = y as any[];',
     'const x: Set<unknown> = y as Set<any>;',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    'const x: Map<string, string> = new Map();',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -344,6 +346,21 @@ declare function Foo(props: Props): never;
           line: 4,
           column: 9,
           endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  const bar = this;
+}
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignmentThis',
+          line: 3,
+          column: 9,
+          endColumn: 19,
         },
       ],
     },

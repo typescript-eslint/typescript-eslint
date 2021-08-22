@@ -13,73 +13,14 @@ const LOGICAL_OPERATORS: (
   SyntaxKind.QuestionQuestionToken,
 ];
 
-interface TokenToText {
-  [SyntaxKind.OpenBraceToken]: '{';
-  [SyntaxKind.CloseBraceToken]: '}';
-  [SyntaxKind.OpenParenToken]: '(';
-  [SyntaxKind.CloseParenToken]: ')';
-  [SyntaxKind.OpenBracketToken]: '[';
-  [SyntaxKind.CloseBracketToken]: ']';
-  [SyntaxKind.DotToken]: '.';
-  [SyntaxKind.DotDotDotToken]: '...';
-  [SyntaxKind.SemicolonToken]: ';';
-  [SyntaxKind.CommaToken]: ',';
-  [SyntaxKind.LessThanToken]: '<';
-  [SyntaxKind.GreaterThanToken]: '>';
-  [SyntaxKind.LessThanEqualsToken]: '<=';
-  [SyntaxKind.GreaterThanEqualsToken]: '>=';
-  [SyntaxKind.EqualsEqualsToken]: '==';
-  [SyntaxKind.ExclamationEqualsToken]: '!=';
-  [SyntaxKind.EqualsEqualsEqualsToken]: '===';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
-  [SyntaxKind.ExclamationEqualsEqualsToken]: '!==';
-  [SyntaxKind.EqualsGreaterThanToken]: '=>';
-  [SyntaxKind.PlusToken]: '+';
-  [SyntaxKind.MinusToken]: '-';
-  [SyntaxKind.AsteriskToken]: '*';
-  [SyntaxKind.AsteriskAsteriskToken]: '**';
-  [SyntaxKind.SlashToken]: '/';
-  [SyntaxKind.PercentToken]: '%';
-  [SyntaxKind.PlusPlusToken]: '++';
-  [SyntaxKind.MinusMinusToken]: '--';
-  [SyntaxKind.LessThanLessThanToken]: '<<';
-  [SyntaxKind.LessThanSlashToken]: '</';
-  [SyntaxKind.GreaterThanGreaterThanToken]: '>>';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanToken]: '>>>';
-  [SyntaxKind.AmpersandToken]: '&';
-  [SyntaxKind.BarToken]: '|';
-  [SyntaxKind.CaretToken]: '^';
-  [SyntaxKind.ExclamationToken]: '!';
-  [SyntaxKind.TildeToken]: '~';
-  [SyntaxKind.AmpersandAmpersandToken]: '&&';
-  [SyntaxKind.BarBarToken]: '||';
-  [SyntaxKind.QuestionToken]: '?';
-  [SyntaxKind.ColonToken]: ':';
-  [SyntaxKind.EqualsToken]: '=';
-  [SyntaxKind.PlusEqualsToken]: '+=';
-  [SyntaxKind.MinusEqualsToken]: '-=';
-  [SyntaxKind.AsteriskEqualsToken]: '*=';
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
-  [SyntaxKind.SlashEqualsToken]: '/=';
-  [SyntaxKind.PercentEqualsToken]: '%=';
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
-  [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
-  [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
-  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.AtToken]: '@';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.UniqueKeyword]: 'unique';
-  [SyntaxKind.KeyOfKeyword]: 'keyof';
-  [SyntaxKind.NewKeyword]: 'new';
+interface TokenToText extends TSESTree.PunctuatorTokenToText {
   [SyntaxKind.ImportKeyword]: 'import';
+  [SyntaxKind.InKeyword]: 'in';
+  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
+  [SyntaxKind.NewKeyword]: 'new';
+  [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
-  [SyntaxKind.QuestionQuestionToken]: '??';
-  [SyntaxKind.QuestionDotToken]: '?.';
+  [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
 /**
@@ -518,7 +459,7 @@ export function getTokenType(
 
   if (
     token.kind >= SyntaxKind.FirstPunctuation &&
-    token.kind <= SyntaxKind.LastBinaryOperator
+    token.kind <= SyntaxKind.LastPunctuation
   ) {
     return AST_TOKEN_TYPES.Punctuator;
   }
@@ -558,7 +499,7 @@ export function getTokenType(
     case SyntaxKind.GetKeyword:
     case SyntaxKind.SetKeyword:
 
-    // falls through
+    // intentional fallthrough
     default:
   }
 
@@ -609,6 +550,8 @@ export function convertToken(
       },
     };
   } else {
+    // @ts-expect-error TS is complaining about `value` not being the correct
+    // type but it is
     return {
       type: tokenType,
       value,
@@ -649,16 +592,26 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
   return result;
 }
 
-export interface TSError {
-  index: number;
-  lineNumber: number;
-  column: number;
-  message: string;
+export class TSError extends Error {
+  constructor(
+    message: string,
+    public readonly fileName: string,
+    public readonly index: number,
+    public readonly lineNumber: number,
+    public readonly column: number,
+  ) {
+    super(message);
+    Object.defineProperty(this, 'name', {
+      value: new.target.name,
+      enumerable: false,
+      configurable: true,
+    });
+  }
 }
 
 /**
  * @param ast     the AST object
- * @param start      the index at which the error starts
+ * @param start   the index at which the error starts
  * @param message the error message
  * @returns converted error object
  */
@@ -668,12 +621,7 @@ export function createError(
   message: string,
 ): TSError {
   const loc = ast.getLineAndCharacterOfPosition(start);
-  return {
-    index: start,
-    lineNumber: loc.line + 1,
-    column: loc.character,
-    message,
-  };
+  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
 }
 
 /**
@@ -684,8 +632,7 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      !!(n as any).jsDoc
+    ? !!(n as ts.JSDocContainer).jsDoc
     : n.getWidth(ast) !== 0;
 }
 

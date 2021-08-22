@@ -1,5 +1,5 @@
 // deeplyCopy is private internal
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call */
 import { Converter } from '../../src/convert';
 import * as ts from 'typescript';
 
@@ -19,8 +19,7 @@ describe('convert', () => {
 
     function fakeUnknownKind(node: ts.Node): void {
       ts.forEachChild(node, fakeUnknownKind);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- intentionally writing to a readonly field
-      // @ts-expect-error
+      // @ts-expect-error -- intentionally writing to a readonly field
       node.kind = ts.SyntaxKind.UnparsedPrologue;
     }
 

@@ -33,6 +33,29 @@ function f(s: string | string[]) {
   s.match(/e/);
 }
     `,
+    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
+    "'212'.match(2);",
+    "'212'.match(+2);",
+    "'oNaNo'.match(NaN);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+    "'void and null'.match(null);",
+    `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
   ],
   invalid: [
     {
@@ -41,9 +64,21 @@ function f(s: string | string[]) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 1,
-          column: 1,
+          column: 13,
         },
       ],
+      output: "/thing/.exec('something');",
+    },
+    {
+      code: "'something'.match('^[a-z]+thing/?$');",
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 1,
+          column: 13,
+        },
+      ],
+      output: "/^[a-z]+thing\\/?$/.exec('something');",
     },
     {
       code: `
@@ -55,82 +90,33 @@ text.match(search);
         {
           messageId: 'regExpExecOverStringMatch',
           line: 4,
-          column: 1,
+          column: 6,
         },
       ],
+      output: `
+const text = 'something';
+const search = /thing/;
+search.exec(text);
+      `,
     },
     {
-      code: "'212'.match(2);",
+      code: `
+const text = 'something';
+const search = 'thing';
+text.match(search);
+      `,
       errors: [
         {
           messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
+          line: 4,
+          column: 6,
         },
       ],
-    },
-    {
-      code: "'212'.match(+2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: "'oNaNo'.match(NaN);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: "'void and null'.match(null);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 1,
-        },
-      ],
+      output: `
+const text = 'something';
+const search = 'thing';
+RegExp(search).exec(text);
+      `,
     },
     {
       code: `
@@ -142,9 +128,14 @@ function f(s: 'a' | 'b') {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 3,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+function f(s: 'a' | 'b') {
+  /a/.exec(s);
+}
+      `,
     },
     {
       code: `
@@ -157,9 +148,15 @@ function f(s: SafeString) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 4,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+type SafeString = string & { __HTML_ESCAPED__: void };
+function f(s: SafeString) {
+  /thing/.exec(s);
+}
+      `,
     },
     {
       code: `
@@ -171,9 +168,14 @@ function f<T extends 'a' | 'b'>(s: T) {
         {
           messageId: 'regExpExecOverStringMatch',
           line: 3,
-          column: 3,
+          column: 5,
         },
       ],
+      output: `
+function f<T extends 'a' | 'b'>(s: T) {
+  /thing/.exec(s);
+}
+      `,
     },
   ],
 });

@@ -59,6 +59,13 @@
       "contributions": []
     },
     {
+      "login": "JoshuaKGoldberg",
+      "name": "Josh Goldberg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3335181?v=4",
+      "profile": "https://github.com/JoshuaKGoldberg",
+      "contributions": []
+    },
+    {
       "login": "nzakas",
       "name": "Nicholas C. Zakas",
       "avatar_url": "https://avatars.githubusercontent.com/u/38546?v=4",
@@ -73,10 +80,10 @@
       "contributions": []
     },
     {
-      "login": "JoshuaKGoldberg",
-      "name": "Josh Goldberg",
-      "avatar_url": "https://avatars.githubusercontent.com/u/3335181?v=4",
-      "profile": "https://github.com/JoshuaKGoldberg",
+      "login": "yeonjuan",
+      "name": "YeonJuan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41323220?v=4",
+      "profile": "https://github.com/yeonjuan",
       "contributions": []
     },
     {
@@ -87,10 +94,10 @@
       "contributions": []
     },
     {
-      "login": "yeonjuan",
-      "name": "YeonJuan",
-      "avatar_url": "https://avatars.githubusercontent.com/u/41323220?v=4",
-      "profile": "https://github.com/yeonjuan",
+      "login": "phaux",
+      "name": "Nikita Stefaniak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1270987?v=4",
+      "profile": "https://github.com/phaux",
       "contributions": []
     },
     {
@@ -136,13 +143,6 @@
       "contributions": []
     },
     {
-      "login": "phaux",
-      "name": "Nikita Stefaniak",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1270987?v=4",
-      "profile": "https://github.com/phaux",
-      "contributions": []
-    },
-    {
       "login": "azz",
       "name": "Lucas Azzola",
       "avatar_url": "https://avatars.githubusercontent.com/u/1297597?v=4",
@@ -168,6 +168,13 @@
       "name": "mackie",
       "avatar_url": "https://avatars.githubusercontent.com/u/2344137?v=4",
       "profile": "https://github.com/macklinu",
+      "contributions": []
+    },
+    {
+      "login": "JounQin",
+      "name": "JounQin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8336744?v=4",
+      "profile": "https://github.com/JounQin",
       "contributions": []
     },
     {
@@ -207,7 +214,7 @@
     },
     {
       "login": "ldrick",
-      "name": "Ricky Lippmann",
+      "name": "ldrick",
       "avatar_url": "https://avatars.githubusercontent.com/u/3674067?v=4",
       "profile": "https://github.com/ldrick",
       "contributions": []
@@ -350,6 +357,20 @@
       "name": "Tim Kraut",
       "avatar_url": "https://avatars.githubusercontent.com/u/509669?v=4",
       "profile": "https://github.com/timkraut",
+      "contributions": []
+    },
+    {
+      "login": "magurotuna",
+      "name": "Yusuke Tanaka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23649474?v=4",
+      "profile": "https://github.com/magurotuna",
+      "contributions": []
+    },
+    {
+      "login": "Zzzen",
+      "name": "Zzzen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6630042?v=4",
+      "profile": "https://github.com/Zzzen",
       "contributions": []
     },
     {

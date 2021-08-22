@@ -3,12 +3,8 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { TYPE_VALUE } from './base-config';
 
 export const esnext_intl = {
-  Intl: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Intl',
-  },
+  Intl: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;

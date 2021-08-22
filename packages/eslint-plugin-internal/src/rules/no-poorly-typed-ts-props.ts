@@ -43,6 +43,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     schema: [],
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',
@@ -53,9 +54,8 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = ESLintUtils.getParserServices(
-      context,
-    );
+    const { program, esTreeNodeToTSNodeMap } =
+      ESLintUtils.getParserServices(context);
     const checker = program.getTypeChecker();
 
     return {

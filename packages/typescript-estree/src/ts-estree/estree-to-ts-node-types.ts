@@ -93,6 +93,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.JSXSpreadAttribute]: ts.JsxSpreadAttribute;
   [AST_NODE_TYPES.JSXSpreadChild]: ts.JsxExpression;
   [AST_NODE_TYPES.JSXMemberExpression]: ts.PropertyAccessExpression;
+  [AST_NODE_TYPES.JSXNamespacedName]: ts.Identifier | ts.ThisExpression;
   [AST_NODE_TYPES.JSXText]: ts.JsxText;
   [AST_NODE_TYPES.LabeledStatement]: ts.LabeledStatement;
   [AST_NODE_TYPES.Literal]:
@@ -156,15 +157,11 @@ export interface EstreeToTsNodeTypes {
     | ts.ConstructorDeclaration;
   [AST_NODE_TYPES.TSArrayType]: ts.ArrayTypeNode;
   [AST_NODE_TYPES.TSAsExpression]: ts.AsExpression;
-  [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.PropertySignature;
+  [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.CallSignatureDeclaration;
   [AST_NODE_TYPES.TSClassImplements]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSConditionalType]: ts.ConditionalTypeNode;
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
-  [AST_NODE_TYPES.TSConstructSignatureDeclaration]:
-    | ts.ConstructorTypeNode
-    | ts.FunctionTypeNode
-    | ts.ConstructSignatureDeclaration
-    | ts.CallSignatureDeclaration;
+  [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;
@@ -182,7 +179,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
-  [AST_NODE_TYPES.TSMethodSignature]: ts.MethodSignature;
+  [AST_NODE_TYPES.TSMethodSignature]:
+    | ts.MethodSignature
+    | ts.GetAccessorDeclaration
+    | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSModuleBlock]: ts.ModuleBlock;
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
   [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;

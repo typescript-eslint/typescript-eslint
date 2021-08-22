@@ -22,7 +22,6 @@ Object {
       12,
       12,
     ],
-    "transformFlags": 0,
     "type": "TSEndOfFileToken",
   },
   "externalModuleIndicator": undefined,
@@ -170,7 +169,6 @@ Object {
     },
   ],
   "text": "new foo<T>()",
-  "transformFlags": 9,
   "type": "TSSourceFile",
   "typeReferenceDirectives": Array [],
 }
@@ -210,7 +208,6 @@ Object {
           5,
           8,
         ],
-        "transformFlags": 0,
         "type": "TSUnparsedPrologue",
       },
       "nextContainer": undefined,
@@ -219,7 +216,6 @@ Object {
         35,
       ],
       "symbol": undefined,
-      "transformFlags": 1,
       "type": "TSUnparsedPrologue",
       "typeAnnotation": null,
       "typeParameters": null,
@@ -322,7 +318,6 @@ Object {
     18,
   ],
   "symbol": undefined,
-  "transformFlags": 2305,
   "type": "TSClassDeclaration",
   "typeParameters": null,
 }
@@ -363,7 +358,6 @@ Object {
     0,
     12,
   ],
-  "transformFlags": 9,
   "type": "TSNewExpression",
   "typeParameters": Object {
     "loc": Object {
@@ -464,7 +458,6 @@ Object {
     15,
   ],
   "symbol": undefined,
-  "transformFlags": 257,
   "type": "TSClassDeclaration",
   "typeParameters": Object {
     "loc": Object {

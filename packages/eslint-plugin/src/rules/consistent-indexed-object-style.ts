@@ -2,6 +2,7 @@ import { createRule } from '../util';
 import {
   AST_NODE_TYPES,
   TSESTree,
+  TSESLint,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferRecord' | 'preferIndexSignature';
@@ -66,6 +67,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.Node,
       prefix: string,
       postfix: string,
+      safeFix = true,
     ): void {
       if (members.length !== 1) {
         return;
@@ -98,14 +100,16 @@ export default createRule<Options, MessageIds>({
       context.report({
         node,
         messageId: 'preferRecord',
-        fix(fixer) {
-          const key = sourceCode.getText(keyType.typeAnnotation);
-          const value = sourceCode.getText(valueType.typeAnnotation);
-          const record = member.readonly
-            ? `Readonly<Record<${key}, ${value}>>`
-            : `Record<${key}, ${value}>`;
-          return fixer.replaceText(node, `${prefix}${record}${postfix}`);
-        },
+        fix: safeFix
+          ? (fixer): TSESLint.RuleFix => {
+              const key = sourceCode.getText(keyType.typeAnnotation);
+              const value = sourceCode.getText(valueType.typeAnnotation);
+              const record = member.readonly
+                ? `Readonly<Record<${key}, ${value}>>`
+                : `Record<${key}, ${value}>`;
+              return fixer.replaceText(node, `${prefix}${record}${postfix}`);
+            }
+          : null,
       });
     }
 
@@ -128,6 +132,7 @@ export default createRule<Options, MessageIds>({
           node,
           `type ${node.id.name}${genericTypes} = `,
           ';',
+          !node.extends?.length,
         );
       },
     };

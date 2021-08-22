@@ -1,4 +1,14 @@
 {
+  "compilerOptions": {
+    "types": ["@types/node"],
+    "noEmit": true,
+    "allowJs": true
+  },
   "extends": "./tsconfig.base.json",
-  "include": ["tests/**/*.ts", "tools/**/*.ts", ".eslintrc.js"]
+  "include": [
+    "tests/**/*.ts",
+    "tools/**/*.ts",
+    ".eslintrc.js",
+    "tests/jest-resolver.js"
+  ]
 }

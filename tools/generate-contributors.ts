@@ -3,7 +3,7 @@
 // this endpoint returns a list of contributors sorted by number of contributions
 
 import * as fs from 'fs';
-import 'isomorphic-fetch';
+import fetch from 'node-fetch';
 import * as path from 'path';
 
 const IGNORED_USERS = new Set([
@@ -42,9 +42,9 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
       method: 'GET',
     });
-    const contributors:
+    const contributors = (await response.json()) as
       | Contributor[]
-      | { message: string } = await response.json();
+      | { message: string };
 
     if (!Array.isArray(contributors)) {
       throw new Error(contributors.message);
@@ -78,9 +78,9 @@ async function main(): Promise<void> {
 
   // fetch the user info
   const users = await Promise.all(
-    githubContributors.map<Promise<User>>(async c => {
+    githubContributors.map(async c => {
       const response = await fetch(c.url, { method: 'GET' });
-      return response.json();
+      return (await response.json()) as User;
     }),
   );
 
@@ -114,4 +114,7 @@ async function main(): Promise<void> {
   fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));
 }
 
-main();
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});

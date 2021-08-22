@@ -32,8 +32,10 @@ export default util.createRule({
 
     return {
       'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
-      'MemberExpression[optional = true] > TSNonNullExpression.object': checkExtraNonNullAssertion,
-      'CallExpression[optional = true] > TSNonNullExpression.callee': checkExtraNonNullAssertion,
+      'MemberExpression[optional = true] > TSNonNullExpression.object':
+        checkExtraNonNullAssertion,
+      'CallExpression[optional = true] > TSNonNullExpression.callee':
+        checkExtraNonNullAssertion,
     };
   },
 });

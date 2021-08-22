@@ -8,9 +8,12 @@ import { isUnsafeAssignment } from '../../src/util/types';
 describe('isUnsafeAssignment', () => {
   const rootDir = getFixturesRootDir();
 
-  function getTypes(
-    code: string,
-  ): { sender: ts.Type; receiver: ts.Type; checker: ts.TypeChecker } {
+  function getTypes(code: string): {
+    sender: ts.Type;
+    senderNode: TSESTree.Node;
+    receiver: ts.Type;
+    checker: ts.TypeChecker;
+  } {
     const { ast, services } = parseForESLint(code, {
       project: './tsconfig.json',
       filePath: path.join(rootDir, 'file.ts'),
@@ -28,6 +31,7 @@ describe('isUnsafeAssignment', () => {
       sender: checker.getTypeAtLocation(
         esTreeNodeToTSNodeMap.get(declarator.init!),
       ),
+      senderNode: declarator.init!,
       checker,
     };
   }
@@ -52,7 +56,7 @@ describe('isUnsafeAssignment', () => {
       );
 
       expectTypesAre(
-        isUnsafeAssignment(sender, receiver, checker),
+        isUnsafeAssignment(sender, receiver, checker, null),
         checker,
         'any',
         'string',
@@ -65,7 +69,7 @@ describe('isUnsafeAssignment', () => {
       );
 
       expectTypesAre(
-        isUnsafeAssignment(sender, receiver, checker),
+        isUnsafeAssignment(sender, receiver, checker, null),
         checker,
         'Set<any>',
         'Set<string>',
@@ -78,7 +82,7 @@ describe('isUnsafeAssignment', () => {
       );
 
       expectTypesAre(
-        isUnsafeAssignment(sender, receiver, checker),
+        isUnsafeAssignment(sender, receiver, checker, null),
         checker,
         'Map<string, any>',
         'Map<string, string>',
@@ -91,7 +95,7 @@ describe('isUnsafeAssignment', () => {
       );
 
       expectTypesAre(
-        isUnsafeAssignment(sender, receiver, checker),
+        isUnsafeAssignment(sender, receiver, checker, null),
         checker,
         'Set<any[]>',
         'Set<string[]>',
@@ -104,7 +108,7 @@ describe('isUnsafeAssignment', () => {
       );
 
       expectTypesAre(
-        isUnsafeAssignment(sender, receiver, checker),
+        isUnsafeAssignment(sender, receiver, checker, null),
         checker,
         'Set<Set<Set<any>>>',
         'Set<Set<Set<string>>>',
@@ -118,13 +122,13 @@ describe('isUnsafeAssignment', () => {
         'const test: string = "";',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any to a any', () => {
       const { sender, receiver, checker } = getTypes('const test: any = "";');
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any in a generic position to a non-any', () => {
@@ -132,7 +136,7 @@ describe('isUnsafeAssignment', () => {
         'const test: Set<string> = new Set<string>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any in a generic position to a non-any (multiple generics)', () => {
@@ -140,7 +144,7 @@ describe('isUnsafeAssignment', () => {
         'const test: Map<string, string> = new Map<string, string>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any[] in a generic position to a non-any[]', () => {
@@ -148,7 +152,7 @@ describe('isUnsafeAssignment', () => {
         'const test: Set<string[]> = new Set<string[]>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any in a generic position to a non-any (nested)', () => {
@@ -156,7 +160,7 @@ describe('isUnsafeAssignment', () => {
         'const test: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('non-any in a generic position to a any (nested)', () => {
@@ -164,7 +168,7 @@ describe('isUnsafeAssignment', () => {
         'const test: Set<Set<Set<any>>> = new Set<Set<Set<string>>>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('any to a unknown', () => {
@@ -172,7 +176,7 @@ describe('isUnsafeAssignment', () => {
         'const test: unknown = [] as any;',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('any[] in a generic position to a unknown[]', () => {
@@ -180,7 +184,7 @@ describe('isUnsafeAssignment', () => {
         'const test: unknown[] = [] as any[]',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
     });
 
     it('any in a generic position to a unknown (nested)', () => {
@@ -188,7 +192,18 @@ describe('isUnsafeAssignment', () => {
         'const test: Set<Set<Set<unknown>>> = new Set<Set<Set<any>>>();',
       );
 
-      expect(isUnsafeAssignment(sender, receiver, checker)).toBeFalsy();
+      expect(isUnsafeAssignment(sender, receiver, checker, null)).toBeFalsy();
+    });
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    it('special cases the empty map constructor with no generics', () => {
+      const { sender, senderNode, receiver, checker } = getTypes(
+        'const test: Map<string, string> = new Map();',
+      );
+
+      expect(
+        isUnsafeAssignment(sender, receiver, checker, senderNode),
+      ).toBeFalsy();
     });
   });
 });

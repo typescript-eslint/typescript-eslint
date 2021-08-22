@@ -1,6 +1,11 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-dupe-class-members';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-dupe-class-members');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -15,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
@@ -22,9 +28,10 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
 
-    return {
-      ...rules,
-      MethodDefinition(node): void {
+    function wrapMemberDefinitionListener(
+      coreListener: (node: TSESTree.MethodDefinition) => void,
+    ): (node: TSESTree.MethodDefinition) => void {
+      return (node: TSESTree.MethodDefinition): void => {
         if (node.computed) {
           return;
         }
@@ -33,8 +40,29 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        return rules.MethodDefinition(node);
-      },
+        return coreListener(node);
+      };
+    }
+
+    return {
+      ...rules,
+      // for ESLint <= v7
+      ...(rules.MethodDefinition
+        ? {
+            MethodDefinition: wrapMemberDefinitionListener(
+              rules.MethodDefinition,
+            ),
+          }
+        : {}),
+      // for ESLint v8
+      ...(rules['MethodDefinition, PropertyDefinition']
+        ? {
+            'MethodDefinition, PropertyDefinition':
+              wrapMemberDefinitionListener(
+                rules['MethodDefinition, PropertyDefinition'],
+              ),
+          }
+        : {}),
     };
   },
 });

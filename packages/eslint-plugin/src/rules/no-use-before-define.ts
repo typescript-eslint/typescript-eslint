@@ -5,7 +5,8 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
-const SENTINEL_TYPE = /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
+const SENTINEL_TYPE =
+  /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
 
 /**
  * Parses a given value as options.

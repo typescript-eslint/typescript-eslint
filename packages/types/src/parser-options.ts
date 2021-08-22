@@ -1,4 +1,5 @@
 import { Lib } from './lib';
+import type { Program } from 'typescript';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
@@ -28,7 +29,7 @@ interface ParserOptions {
   ecmaVersion?: EcmaVersion;
 
   // scope-manager specific
-  jsxPragma?: string;
+  jsxPragma?: string | null;
   jsxFragmentName?: string | null;
   lib?: Lib[];
 
@@ -41,6 +42,7 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   loc?: boolean;
+  program?: Program;
   project?: string | string[];
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
@@ -49,6 +51,7 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
+  moduleResolver?: string;
 }
 
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };

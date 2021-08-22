@@ -3,6 +3,220 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.29.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.1...v4.29.2) (2021-08-16)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.29.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.0...v4.29.1) (2021-08-09)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Features
+
+* **eslint-plugin:** Catch unused React import with new JSX transform ([#3577](https://github.com/typescript-eslint/typescript-eslint/issues/3577)) ([02998ea](https://github.com/typescript-eslint/typescript-eslint/commit/02998eac510665758b9a093d43afc310f3ac980d))
+
+
+
+
+
+## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.28.4](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.3...v4.28.4) (2021-07-19)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.28.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.2...v4.28.3) (2021-07-12)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.28.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.1...v4.28.2) (2021-07-05)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.28.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.0...v4.28.1) (2021-06-28)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.27.0...v4.28.0) (2021-06-21)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.25.0...v4.26.0) (2021-05-31)
+
+
+### Bug Fixes
+
+* generate library types for TypeScript v4.3 ([#3460](https://github.com/typescript-eslint/typescript-eslint/issues/3460)) ([ed4776a](https://github.com/typescript-eslint/typescript-eslint/commit/ed4776afa1374279027b9b7d82aa4b453b334998)), closes [#3449](https://github.com/typescript-eslint/typescript-eslint/issues/3449)
+
+
+### Features
+
+* **scope-manager:** reduce generated lib file size ([#3468](https://github.com/typescript-eslint/typescript-eslint/issues/3468)) ([258116b](https://github.com/typescript-eslint/typescript-eslint/commit/258116ba7b0dd4ac7a1cc3876fab12f2556bda74))
+
+
+
+
+
+# [4.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.24.0...v4.25.0) (2021-05-24)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.23.0...v4.24.0) (2021-05-17)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.22.1...v4.23.0) (2021-05-10)
+
+
+### Bug Fixes
+
+* **scope-manager:** fix visiting TSAsExpression in assignment ([#3355](https://github.com/typescript-eslint/typescript-eslint/issues/3355)) ([87521a0](https://github.com/typescript-eslint/typescript-eslint/commit/87521a024103bc5fc643861649bee9a288f55b7b))
+
+
+### Features
+
+* refactor to split AST specification out as its own module ([#2911](https://github.com/typescript-eslint/typescript-eslint/issues/2911)) ([25ea953](https://github.com/typescript-eslint/typescript-eslint/commit/25ea953cc60b118bd385c71e0a9b61c286c26fcf))
+
+
+
+
+
+## [4.22.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.22.0...v4.22.1) (2021-05-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.21.0...v4.22.0) (2021-04-12)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.20.0...v4.21.0) (2021-04-05)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.19.0...v4.20.0) (2021-03-29)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.18.0...v4.19.0) (2021-03-22)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.1...v4.17.0) (2021-03-08)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.16.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.16.0...v4.16.1) (2021-03-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.2...v4.16.0) (2021-03-01)
+
+
+### Bug Fixes
+
+* **scope-manager:** update libs for typescript 4.2 ([#3118](https://github.com/typescript-eslint/typescript-eslint/issues/3118)) ([0336c79](https://github.com/typescript-eslint/typescript-eslint/commit/0336c798c9502fc250d2eaa045661950da55e52f))
+
+
+
+
+
 ## [4.15.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.15.1...v4.15.2) (2021-02-22)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

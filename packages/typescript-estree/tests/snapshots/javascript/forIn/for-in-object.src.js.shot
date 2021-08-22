@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`javascript forIn for-in-object.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,
