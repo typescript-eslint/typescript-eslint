@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/no-undef';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
+
+const rule = getESLintCoreRule('no-undef');
 
 const ruleTester = new RuleTester({
   parserOptions: {

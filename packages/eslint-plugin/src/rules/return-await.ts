@@ -28,6 +28,7 @@ export default util.createRule({
       extendsBaseRule: 'no-return-await',
     },
     fixable: 'code',
+    hasSuggestions: true,
     type: 'problem',
     messages: {
       nonPromiseAwait:
