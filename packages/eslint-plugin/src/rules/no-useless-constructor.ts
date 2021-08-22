@@ -57,7 +57,10 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
+    messages: baseRule.meta.messages ?? {
+      noUselessConstructor: 'Useless constructor.',
+    },
   },
   defaultOptions: [],
   create(context) {
