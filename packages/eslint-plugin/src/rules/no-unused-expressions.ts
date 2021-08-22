@@ -2,8 +2,10 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-unused-expressions';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-unused-expressions');
 
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
@@ -18,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages ?? {
       unusedExpression:

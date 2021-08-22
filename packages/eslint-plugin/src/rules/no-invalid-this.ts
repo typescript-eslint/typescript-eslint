@@ -2,12 +2,14 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-invalid-this';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   InferOptionsTypeFromRule,
   createRule,
   InferMessageIdsTypeFromRule,
 } from '../util';
+
+const baseRule = getESLintCoreRule('no-invalid-this');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -26,6 +28,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages ?? {
       unexpectedThis: "Unexpected 'this'.",
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],

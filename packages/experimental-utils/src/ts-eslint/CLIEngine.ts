@@ -175,6 +175,8 @@ namespace CLIEngine {
  * important information so you can deal with the output yourself.
  * @deprecated use the ESLint class instead
  */
-class CLIEngine extends (ESLintCLIEngine as typeof CLIEngineBase) {}
+const CLIEngine = ESLintCLIEngine
+  ? class CLIEngine extends (ESLintCLIEngine as typeof CLIEngineBase) {}
+  : undefined;
 
 export { CLIEngine };

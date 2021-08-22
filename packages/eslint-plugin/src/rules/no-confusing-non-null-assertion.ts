@@ -17,6 +17,7 @@ export default util.createRule({
       recommended: false,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       confusingEqual:
         'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',

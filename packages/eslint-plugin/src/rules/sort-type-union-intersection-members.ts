@@ -111,6 +111,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type members must be sorted.',
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',

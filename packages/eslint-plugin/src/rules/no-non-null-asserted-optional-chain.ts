@@ -26,6 +26,7 @@ export default util.createRule({
       recommended: 'error',
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       noNonNullOptionalChain:
         'Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.',

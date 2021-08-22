@@ -58,6 +58,10 @@ interface RuleMetaData<TMessageIds extends string> {
    */
   fixable?: 'code' | 'whitespace';
   /**
+   * Specifies whether rules can return suggestions. Omit if there is no suggestions
+   */
+  hasSuggestions?: boolean;
+  /**
    * A map of messages which the rule can report.
    * The key is the messageId, and the string is the parameterised error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids

@@ -1,5 +1,7 @@
-import baseRule from 'eslint/lib/rules/no-extra-semi';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-extra-semi');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -15,6 +17,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
@@ -25,7 +28,13 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...rules,
       ClassProperty(node): void {
-        rules.MethodDefinition(node as never);
+        if (rules.MethodDefinition) {
+          // for ESLint <= v7
+          rules.MethodDefinition(node as never);
+        } else {
+          // for ESLint v8
+          rules['MethodDefinition, PropertyDefinition']?.(node as never);
+        }
       },
     };
   },
