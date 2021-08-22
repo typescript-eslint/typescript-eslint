@@ -101,14 +101,6 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
-
-  /*
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  useJSXTextNode?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
@@ -120,7 +112,6 @@ const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   loggerFn: undefined,
   range: false,
   tokens: false,
-  useJSXTextNode: false,
 };
 
 declare function parse(
