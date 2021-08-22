@@ -212,6 +212,14 @@ ruleTester.run('no-restricted-imports', rule, {
         },
       ],
     },
+    {
+      code: "export * from 'foo';",
+      options: ['import1'],
+    },
+    {
+      code: 'export { foo } from foo;',
+      options: ['import1', 'import2'],
+    },
   ],
   invalid: [
     {
@@ -517,6 +525,16 @@ ruleTester.run('no-restricted-imports', rule, {
         {
           messageId: 'patternWithCustomMessage',
           type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+      ],
+    },
+    {
+      code: "export * from 'import1';",
+      options: ['import1'],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ExportAllDeclaration,
         },
       ],
     },

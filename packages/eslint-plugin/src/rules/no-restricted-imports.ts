@@ -72,9 +72,6 @@ function isObjectOfPatterns(
 function isOptionsArrayOfStringOrObject(
   options: Options,
 ): options is ArrayOfStringOrObject {
-  if (options.length > 1) {
-    return true;
-  }
   if (isObjectOfPaths(options[0])) {
     return false;
   }
@@ -85,11 +82,11 @@ function isOptionsArrayOfStringOrObject(
 }
 
 function getRestrictedPaths(options: Options): ArrayOfStringOrObject {
-  if (isObjectOfPaths(options[0])) {
-    return options[0].paths;
-  }
   if (isOptionsArrayOfStringOrObject(options)) {
     return options;
+  }
+  if (isObjectOfPaths(options[0])) {
+    return options[0].paths;
   }
   return [];
 }
@@ -167,10 +164,10 @@ export default createRule<Options, MessageIds>({
         }
       },
       ExportNamedDeclaration(node): void {
-        if (
-          node.exportKind === 'type' &&
-          node.source?.type === AST_NODE_TYPES.Literal
-        ) {
+        if (node.source?.type !== AST_NODE_TYPES.Literal) {
+          return;
+        }
+        if (node.exportKind === 'type') {
           const importSource = (node.source.value as string).trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
