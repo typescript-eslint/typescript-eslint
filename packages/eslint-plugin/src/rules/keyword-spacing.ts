@@ -20,12 +20,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'whitespace',
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      expectedBefore: 'Expected space(s) before "{{value}}".',
-      expectedAfter: 'Expected space(s) after "{{value}}".',
-      unexpectedBefore: 'Unexpected space(s) before "{{value}}".',
-      unexpectedAfter: 'Unexpected space(s) after "{{value}}".',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [{}],
 

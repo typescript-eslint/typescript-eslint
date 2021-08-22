@@ -41,7 +41,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0"
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0-0"
   },
   "dependencies": {
     "@typescript-eslint/scope-manager": "4.33.0",
