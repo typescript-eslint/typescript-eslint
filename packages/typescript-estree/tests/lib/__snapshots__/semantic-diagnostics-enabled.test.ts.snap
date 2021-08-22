@@ -908,6 +908,15 @@ TSError {
 }
 `;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-module-specifier.src 1`] = `
+TSError {
+  "column": 19,
+  "index": 19,
+  "lineNumber": 1,
+  "message": "Module specifier must be a string literal.",
+}
+`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-named-default.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-export-named-extra-comma.src 1`] = `
@@ -966,10 +975,10 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-default-module-specifier.src 1`] = `
 TSError {
-  "column": 16,
-  "index": 16,
+  "column": 15,
+  "index": 15,
   "lineNumber": 1,
-  "message": "String literal expected.",
+  "message": "Module specifier must be a string literal.",
 }
 `;
 
@@ -984,10 +993,10 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/modules/invalid-import-module-specifier.src 1`] = `
 TSError {
-  "column": 18,
-  "index": 18,
+  "column": 17,
+  "index": 17,
   "lineNumber": 1,
-  "message": "String literal expected.",
+  "message": "Module specifier must be a string literal.",
 }
 `;
 

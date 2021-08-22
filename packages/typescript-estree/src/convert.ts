@@ -728,6 +728,21 @@ export class Converter {
     }
   }
 
+  private assertModuleSpecifier(
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
+  ): void {
+    if (
+      node.moduleSpecifier &&
+      node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
+    ) {
+      throw createError(
+        this.ast,
+        node.moduleSpecifier.pos,
+        'Module specifier must be a string literal.',
+      );
+    }
+  }
+
   /**
    * Converts a TypeScript node into an ESTree node.
    * The core of the conversion logic:
@@ -1694,6 +1709,8 @@ export class Converter {
         });
 
       case SyntaxKind.ImportDeclaration: {
+        this.assertModuleSpecifier(node);
+
         const result = this.createNode<TSESTree.ImportDeclaration>(node, {
           type: AST_NODE_TYPES.ImportDeclaration,
           source: this.convertChild(node.moduleSpecifier),
@@ -1752,7 +1769,8 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.ExportDeclaration:
+      case SyntaxKind.ExportDeclaration: {
+        this.assertModuleSpecifier(node);
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
@@ -1779,6 +1797,7 @@ export class Converter {
                 : null,
           });
         }
+      }
 
       case SyntaxKind.ExportSpecifier:
         return this.createNode<TSESTree.ExportSpecifier>(node, {
