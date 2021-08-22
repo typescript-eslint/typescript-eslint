@@ -24,6 +24,7 @@ export default util.createRule<Options, MessageIds>({
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
       suggestUnknown:

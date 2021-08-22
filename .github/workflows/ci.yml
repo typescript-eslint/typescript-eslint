@@ -45,6 +45,10 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
+
       - name: Build
         run: |
           yarn build
@@ -86,6 +90,10 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
+
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
 
       - name: Build
         run: |
@@ -165,6 +173,10 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
+
       - name: Build
         run: |
           yarn build
@@ -208,6 +220,10 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
+
       - name: Build
         run: |
           yarn build
@@ -222,7 +238,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 14.x]
+        node-version: [12.x, 14.x, 16.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -246,6 +262,10 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
+
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
 
       - name: Build
         run: |
@@ -321,6 +341,10 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
+
+      - name: Patch Dependencies
+        run: |
+          yarn patch-package
 
       - name: Build
         run: |

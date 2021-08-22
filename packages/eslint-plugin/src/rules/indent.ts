@@ -9,8 +9,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/indent';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('indent');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -65,7 +67,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSNonNullExpression,
   AST_NODE_TYPES.TSParameterProperty,
-  AST_NODE_TYPES.TSParenthesizedType,
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
@@ -96,11 +97,9 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      wrongIndentation:
-        'Expected indentation of {{expected}} but found {{actual}}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent

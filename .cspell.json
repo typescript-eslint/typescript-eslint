@@ -47,6 +47,7 @@
     "bigint",
     "bivariant",
     "blockless",
+    "camelcase",
     "codebases",
     "Codecov",
     "contravariant",

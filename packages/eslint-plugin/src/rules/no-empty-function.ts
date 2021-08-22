@@ -2,8 +2,10 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-empty-function';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-empty-function');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -47,6 +49,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'error',
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [schema],
     messages: baseRule.meta.messages,
   },

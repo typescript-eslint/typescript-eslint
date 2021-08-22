@@ -114,7 +114,6 @@ const additionalKeys: AdditionalKeys = {
   TSObjectKeyword: [],
   TSOptionalType: ['typeAnnotation'],
   TSParameterProperty: ['decorators', 'parameter'],
-  TSParenthesizedType: ['typeAnnotation'],
   TSPrivateKeyword: [],
   TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
   TSProtectedKeyword: [],

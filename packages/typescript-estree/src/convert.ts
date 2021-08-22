@@ -36,7 +36,6 @@ const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
   errorOnUnknownASTType: boolean;
-  useJSXTextNode: boolean;
   shouldPreserveNodeMaps: boolean;
 }
 
@@ -721,6 +720,21 @@ export class Converter {
     if (childRange[1] > result.range[1]) {
       result.range[1] = childRange[1];
       result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
+    }
+  }
+
+  private assertModuleSpecifier(
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
+  ): void {
+    if (
+      node.moduleSpecifier &&
+      node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
+    ) {
+      throw createError(
+        this.ast,
+        node.moduleSpecifier.pos,
+        'Module specifier must be a string literal.',
+      );
     }
   }
 
@@ -1690,6 +1704,8 @@ export class Converter {
         });
 
       case SyntaxKind.ImportDeclaration: {
+        this.assertModuleSpecifier(node);
+
         const result = this.createNode<TSESTree.ImportDeclaration>(node, {
           type: AST_NODE_TYPES.ImportDeclaration,
           source: this.convertChild(node.moduleSpecifier),
@@ -1748,7 +1764,8 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.ExportDeclaration:
+      case SyntaxKind.ExportDeclaration: {
+        this.assertModuleSpecifier(node);
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
@@ -1775,6 +1792,7 @@ export class Converter {
                 : null,
           });
         }
+      }
 
       case SyntaxKind.ExportSpecifier:
         return this.createNode<TSESTree.ExportSpecifier>(node, {
@@ -2227,32 +2245,17 @@ export class Converter {
         });
       }
 
-      /**
-       * The JSX AST changed the node type for string literals
-       * inside a JSX Element from `Literal` to `JSXText`. We
-       * provide a flag to support both types until `Literal`
-       * node type is deprecated in ESLint v5.
-       */
       case SyntaxKind.JsxText: {
         const start = node.getFullStart();
         const end = node.getEnd();
         const text = this.ast.text.slice(start, end);
 
-        if (this.options.useJSXTextNode) {
-          return this.createNode<TSESTree.JSXText>(node, {
-            type: AST_NODE_TYPES.JSXText,
-            value: unescapeStringLiteralText(text),
-            raw: text,
-            range: [start, end],
-          });
-        } else {
-          return this.createNode<TSESTree.StringLiteral>(node, {
-            type: AST_NODE_TYPES.Literal,
-            value: unescapeStringLiteralText(text),
-            raw: text,
-            range: [start, end],
-          });
-        }
+        return this.createNode<TSESTree.JSXText>(node, {
+          type: AST_NODE_TYPES.JSXText,
+          value: unescapeStringLiteralText(text),
+          raw: text,
+          range: [start, end],
+        });
       }
 
       case SyntaxKind.JsxSpreadAttribute:
@@ -2675,10 +2678,7 @@ export class Converter {
 
       // TypeScript specific types
       case SyntaxKind.ParenthesizedType: {
-        return this.createNode<TSESTree.TSParenthesizedType>(node, {
-          type: AST_NODE_TYPES.TSParenthesizedType,
-          typeAnnotation: this.convertType(node.type),
-        });
+        return this.convertType(node.type);
       }
       case SyntaxKind.UnionType: {
         return this.createNode<TSESTree.TSUnionType>(node, {

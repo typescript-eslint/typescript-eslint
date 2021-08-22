@@ -2,8 +2,10 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/quotes';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('quotes');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -20,6 +22,8 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       wrongQuotes: 'Strings must use {{description}}.',
     },
