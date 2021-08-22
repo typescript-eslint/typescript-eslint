@@ -2,12 +2,14 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/init-declarations';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
 } from '../util';
+
+const baseRule = getESLintCoreRule('init-declarations');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -23,13 +25,9 @@ export default createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      initialized:
-        "Variable '{{idName}}' should be initialized on declaration.",
-      notInitialized:
-        "Variable '{{idName}}' should not be initialized on declaration.",
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],
   create(context) {

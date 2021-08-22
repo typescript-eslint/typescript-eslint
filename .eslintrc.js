@@ -25,9 +25,10 @@ module.exports = {
       './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
     ],
+    allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: true,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   },
   rules: {
     //
@@ -64,9 +65,6 @@ module.exports = {
     ],
 
     // TODO - enable these new recommended rules
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
@@ -80,13 +78,17 @@ module.exports = {
     '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
-    // eslint base
+    // eslint-base
     //
 
     curly: ['error', 'all'],
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
+    'no-fallthrough': [
+      'warn',
+      { commentPattern: '.*intentional fallthrough.*' },
+    ],
 
     //
     // eslint-plugin-eslint-comment
@@ -160,14 +162,19 @@ module.exports = {
     // all test files
     {
       files: [
-        'packages/*/tests/**/*.test.ts',
         'packages/*/tests/**/*.spec.ts',
+        'packages/*/tests/**/*.test.ts',
+        'packages/*/tests/**/spec.ts',
+        'packages/*/tests/**/test.ts',
         'packages/parser/tests/**/*.ts',
       ],
       env: {
         'jest/globals': true,
       },
       rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
@@ -193,6 +200,8 @@ module.exports = {
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/restrict-plus-operands': 'off',
       },
     },

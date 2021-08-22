@@ -1,7 +1,7 @@
 import { DebugLevel } from '@typescript-eslint/types';
-import { Program } from 'typescript';
-import { TSESTree, TSNode, TSESTreeToTSNode, TSToken } from './ts-estree';
+import * as ts from 'typescript';
 import { CanonicalPath } from './create-program/shared';
+import { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 
@@ -18,14 +18,17 @@ export interface Extra {
   filePath: string;
   jsx: boolean;
   loc: boolean;
+  singleRun: boolean;
   log: (message: string) => void;
   preserveNodeMaps?: boolean;
+  programs: null | Iterable<ts.Program>;
   projects: CanonicalPath[];
   range: boolean;
   strict: boolean;
   tokens: null | TSESTree.Token[];
   tsconfigRootDir: string;
   useJSXTextNode: boolean;
+  moduleResolver: string;
 }
 
 ////////////////////////////////////////////////////
@@ -170,6 +173,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program(s).
+   */
+  programs?: ts.Program[];
+
+  /**
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************
@@ -179,6 +189,22 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
   createDefaultProgram?: boolean;
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
+   * whether or not ESLint is being used as part of a single run.
+   */
+  allowAutomaticSingleRunInference?: boolean;
+
+  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -191,15 +217,26 @@ export interface ParserWeakMap<TKey, TValueBase> {
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node
+  TKey extends TSESTree.Node = TSESTree.Node,
 > {
   get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
   has(key: unknown): boolean;
 }
 
 export interface ParserServices {
-  program: Program;
+  program: ts.Program;
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
   hasFullTypeInformation: boolean;
+}
+
+export interface ModuleResolver {
+  version: 1;
+  resolveModuleNames(
+    moduleNames: string[],
+    containingFile: string,
+    reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ): (ts.ResolvedModule | undefined)[];
 }

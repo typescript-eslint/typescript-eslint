@@ -41,6 +41,7 @@ export default util.createRule({
       recommended: false,
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
@@ -65,10 +66,12 @@ export default util.createRule({
           | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
-        const initialExpression = (initialIdentifierOrNotEqualsExpr.parent
-          ?.type === AST_NODE_TYPES.ChainExpression
-          ? initialIdentifierOrNotEqualsExpr.parent.parent
-          : initialIdentifierOrNotEqualsExpr.parent) as TSESTree.LogicalExpression;
+        const initialExpression = (
+          initialIdentifierOrNotEqualsExpr.parent?.type ===
+          AST_NODE_TYPES.ChainExpression
+            ? initialIdentifierOrNotEqualsExpr.parent.parent
+            : initialIdentifierOrNotEqualsExpr.parent
+        ) as TSESTree.LogicalExpression;
 
         if (initialExpression.left !== initialIdentifierOrNotEqualsExpr) {
           // the node(identifier or member expression) is not the deepest left node

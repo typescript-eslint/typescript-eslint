@@ -180,7 +180,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
-  [AST_NODE_TYPES.TSMethodSignature]: ts.MethodSignature;
+  [AST_NODE_TYPES.TSMethodSignature]:
+    | ts.MethodSignature
+    | ts.GetAccessorDeclaration
+    | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSModuleBlock]: ts.ModuleBlock;
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
   [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;

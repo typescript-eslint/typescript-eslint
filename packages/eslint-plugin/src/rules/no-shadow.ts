@@ -126,6 +126,84 @@ export default util.createRule<Options, MessageIds>({
       return util.isFunctionType(id.parent);
     }
 
+    function isGenericOfStaticMethod(
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      if (!('isTypeVariable' in variable)) {
+        // this shouldn't happen...
+        return false;
+      }
+
+      if (!variable.isTypeVariable) {
+        return false;
+      }
+
+      if (variable.identifiers.length === 0) {
+        return false;
+      }
+
+      const typeParameter = variable.identifiers[0].parent;
+      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+        return false;
+      }
+      const typeParameterDecl = typeParameter.parent;
+      if (
+        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+      ) {
+        return false;
+      }
+      const functionExpr = typeParameterDecl.parent;
+      if (
+        !functionExpr ||
+        (functionExpr.type !== AST_NODE_TYPES.FunctionExpression &&
+          functionExpr.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression)
+      ) {
+        return false;
+      }
+      const methodDefinition = functionExpr.parent;
+      if (methodDefinition?.type !== AST_NODE_TYPES.MethodDefinition) {
+        return false;
+      }
+      return methodDefinition.static;
+    }
+
+    function isGenericOfClassDecl(variable: TSESLint.Scope.Variable): boolean {
+      if (!('isTypeVariable' in variable)) {
+        // this shouldn't happen...
+        return false;
+      }
+
+      if (!variable.isTypeVariable) {
+        return false;
+      }
+
+      if (variable.identifiers.length === 0) {
+        return false;
+      }
+
+      const typeParameter = variable.identifiers[0].parent;
+      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+        return false;
+      }
+      const typeParameterDecl = typeParameter.parent;
+      if (
+        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+      ) {
+        return false;
+      }
+      const classDecl = typeParameterDecl.parent;
+      return classDecl?.type === AST_NODE_TYPES.ClassDeclaration;
+    }
+
+    function isGenericOfAStaticMethodShadow(
+      variable: TSESLint.Scope.Variable,
+      shadowed: TSESLint.Scope.Variable,
+    ): boolean {
+      return (
+        isGenericOfStaticMethod(variable) && isGenericOfClassDecl(shadowed)
+      );
+    }
+
     /**
      * Check if variable name is allowed.
      * @param variable The variable to check.
@@ -318,6 +396,13 @@ export default util.createRule<Options, MessageIds>({
 
         // ignore function type parameter name shadowing if configured
         if (isFunctionTypeParameterNameValueShadow(variable, shadowed)) {
+          continue;
+        }
+
+        // ignore static class method generic shadowing class generic
+        // this is impossible for the scope analyser to understand
+        // so we have to handle this manually in this rule
+        if (isGenericOfAStaticMethodShadow(variable, shadowed)) {
           continue;
         }
 

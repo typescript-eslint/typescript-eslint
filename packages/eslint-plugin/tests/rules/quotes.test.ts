@@ -290,18 +290,15 @@ ruleTester.run('quotes', rule, {
       options: ['backtick'],
     },
     {
-      code:
-        'function foo() { "use strict"; "use strong"; "use asm"; var foo = `backtick`; }',
+      code: 'function foo() { "use strict"; "use strong"; "use asm"; var foo = `backtick`; }',
       options: ['backtick'],
     },
     {
-      code:
-        "(function() { 'use strict'; 'use strong'; 'use asm'; var foo = `backtick`; })();",
+      code: "(function() { 'use strict'; 'use strong'; 'use asm'; var foo = `backtick`; })();",
       options: ['backtick'],
     },
     {
-      code:
-        '(() => { "use strict"; "use strong"; "use asm"; var foo = `backtick`; })();',
+      code: '(() => { "use strict"; "use strong"; "use asm"; var foo = `backtick`; })();',
       options: ['backtick'],
     },
 

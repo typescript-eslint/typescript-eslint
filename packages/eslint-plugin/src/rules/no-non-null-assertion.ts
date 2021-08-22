@@ -17,6 +17,7 @@ export default util.createRule<[], MessageIds>({
       recommended: 'warn',
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       noNonNull: 'Forbidden non-null assertion.',
       suggestOptionalChain:

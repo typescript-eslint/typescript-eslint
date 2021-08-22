@@ -3,14 +3,16 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
 
 import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/indent';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('indent');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -95,11 +97,9 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      wrongIndentation:
-        'Expected indentation of {{expected}} but found {{actual}}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent
@@ -240,10 +240,9 @@ export default util.createRule<Options, MessageIds>({
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
-          properties: (node.members as (
-            | TSESTree.TSEnumMember
-            | TSESTree.TypeElement
-          )[]).map(
+          properties: (
+            node.members as (TSESTree.TSEnumMember | TSESTree.TypeElement)[]
+          ).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),
@@ -395,7 +394,7 @@ export default util.createRule<Options, MessageIds>({
               computed: false,
               method: false,
               shorthand: false,
-            } as any,
+            },
           ],
 
           // location data

@@ -22,6 +22,7 @@ interface TSMethodSignatureBase extends BaseNode {
   accessibility?: Accessibility;
   export?: boolean;
   static?: boolean;
+  kind: 'get' | 'method' | 'set';
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {

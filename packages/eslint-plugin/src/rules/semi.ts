@@ -3,8 +3,10 @@ import {
   TSESLint,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/semi';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('semi');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -21,7 +23,9 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       missingSemi: 'Missing semicolon.',
       extraSemi: 'Extra semicolon.',
@@ -36,7 +40,8 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const checkForSemicolon = rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
+    const checkForSemicolon =
+      rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
 
     /*
       The following nodes are handled by the member-delimiter-style rule

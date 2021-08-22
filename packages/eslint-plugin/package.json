@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "4.22.1",
+  "version": "4.29.2",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -9,7 +9,7 @@
     "typescript"
   ],
   "engines": {
-    "node": "^10.12.0 || >=12.0.0"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",
@@ -32,8 +32,8 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "check:docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
-    "check:configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
+    "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
+    "check-configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
@@ -44,27 +44,26 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "4.22.1",
-    "@typescript-eslint/scope-manager": "4.22.1",
-    "debug": "^4.1.1",
+    "@typescript-eslint/experimental-utils": "4.29.2",
+    "@typescript-eslint/scope-manager": "4.29.2",
+    "debug": "^4.3.1",
     "functional-red-black-tree": "^1.0.1",
-    "lodash": "^4.17.15",
-    "regexpp": "^3.0.0",
-    "semver": "^7.3.2",
-    "tsutils": "^3.17.1"
+    "regexpp": "^3.1.0",
+    "semver": "^7.3.5",
+    "tsutils": "^3.21.0"
   },
   "devDependencies": {
     "@types/debug": "*",
     "@types/marked": "*",
     "@types/prettier": "*",
-    "chalk": "^4.0.0",
-    "marked": "^2.0.0",
+    "chalk": "^4.1.1",
+    "marked": "^2.0.6",
     "prettier": "*",
     "typescript": "*"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^4.0.0",
-    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0"
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0-0"
   },
   "peerDependenciesMeta": {
     "typescript": {

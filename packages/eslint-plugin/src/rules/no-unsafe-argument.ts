@@ -207,9 +207,8 @@ export default util.createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments = checker.getTypeArguments(
-                  spreadArgType,
-                );
+                const spreadTypeArguments =
+                  checker.getTypeArguments(spreadArgType);
                 for (let j = 0; j < spreadTypeArguments.length; j += 1) {
                   const tupleType = spreadTypeArguments[j];
                   const parameterType = signature.getNextParameterType();
@@ -220,6 +219,9 @@ export default util.createRule<[], MessageIds>({
                     tupleType,
                     parameterType,
                     checker,
+                    // we can't pass the individual tuple members in here as this will most likely be a spread variable
+                    // not a spread array
+                    null,
                   );
                   if (result) {
                     context.report({
@@ -258,6 +260,7 @@ export default util.createRule<[], MessageIds>({
                 argumentType,
                 parameterType,
                 checker,
+                argument,
               );
               if (result) {
                 context.report({

@@ -202,8 +202,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
-      code:
-        'declare function functionDeclaration<T extends void>(arg: T): void;',
+      code: 'declare function functionDeclaration<T extends void>(arg: T): void;',
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -223,8 +222,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
-      code:
-        'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
+      code: 'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',

@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import { NewPlugin } from 'pretty-format';
 import { createIdGenerator } from '../../../src/ID';
 
@@ -18,13 +18,13 @@ const SEEN_NODES = new Map<Node, number>();
 
 const serializer: NewPlugin = {
   test(val): boolean {
-    return (
+    return !!(
       val &&
       typeof val === 'object' &&
       // make sure it's not one of the classes from the package
       Object.getPrototypeOf(val) === Object.prototype &&
       'type' in val &&
-      val.type in AST_NODE_TYPES
+      (val as TSESTree.Node).type in AST_NODE_TYPES
     );
   },
   serialize(node: Node): string {

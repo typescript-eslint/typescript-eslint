@@ -3,6 +3,7 @@ export * from './ExportAllDeclaration/spec';
 export * from './ExportDefaultDeclaration/spec';
 export * from './ExportNamedDeclaration/spec';
 export * from './FunctionDeclaration/spec';
+export * from './ImportDeclaration/spec';
 export * from './TSDeclareFunction/spec';
 export * from './TSEnumDeclaration/spec';
 export * from './TSImportEqualsDeclaration/spec';

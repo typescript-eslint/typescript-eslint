@@ -41,6 +41,7 @@ When set to `true`, the rule will ignore declaration merges between the followin
 - class + namespace
 - class + interface + namespace
 - function + namespace
+- enum + namespace
 
 Examples of **correct** code with `{ ignoreDeclarationMerge: true }`:
 

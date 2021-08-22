@@ -122,6 +122,7 @@ export default util.createRule<Options, MessageIds>({
     ];
     const aliasTypes = new Set([
       AST_NODE_TYPES.TSArrayType,
+      AST_NODE_TYPES.TSImportType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTypeQuery,

@@ -27,6 +27,7 @@ export default util.createRule<Options, MessageId>({
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       floating: 'Promises must be handled appropriately.',
       floatingVoid:
