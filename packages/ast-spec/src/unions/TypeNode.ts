@@ -18,7 +18,6 @@ import type { TSNullKeyword } from '../type/TSNullKeyword/spec';
 import type { TSNumberKeyword } from '../type/TSNumberKeyword/spec';
 import type { TSObjectKeyword } from '../type/TSObjectKeyword/spec';
 import type { TSOptionalType } from '../type/TSOptionalType/spec';
-import type { TSParenthesizedType } from '../type/TSParenthesizedType/spec';
 import type { TSRestType } from '../type/TSRestType/spec';
 import type { TSStringKeyword } from '../type/TSStringKeyword/spec';
 import type { TSSymbolKeyword } from '../type/TSSymbolKeyword/spec';
@@ -56,7 +55,6 @@ export type TypeNode =
   | TSNumberKeyword
   | TSObjectKeyword
   | TSOptionalType
-  | TSParenthesizedType
   | TSRestType
   | TSStringKeyword
   | TSSymbolKeyword

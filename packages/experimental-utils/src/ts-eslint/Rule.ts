@@ -399,7 +399,6 @@ interface RuleListener {
   TSObjectKeyword?: RuleFunction<TSESTree.TSObjectKeyword>;
   TSOptionalType?: RuleFunction<TSESTree.TSOptionalType>;
   TSParameterProperty?: RuleFunction<TSESTree.TSParameterProperty>;
-  TSParenthesizedType?: RuleFunction<TSESTree.TSParenthesizedType>;
   TSPrivateKeyword?: RuleFunction<TSESTree.TSPrivateKeyword>;
   TSPropertySignature?: RuleFunction<TSESTree.TSPropertySignature>;
   TSProtectedKeyword?: RuleFunction<TSESTree.TSProtectedKeyword>;

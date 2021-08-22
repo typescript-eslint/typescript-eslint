@@ -451,29 +451,6 @@ class Foo {
             `,
     ],
   },
-  {
-    node: AST_NODE_TYPES.TSParenthesizedType,
-    code: [
-      `
-const x: Array<(
-    | {
-        __typename: "Foo",
-    }
-    | {
-        __typename: "Baz",
-    }
-    | (
-        | {
-            __typename: "Baz",
-        }
-        | {
-            __typename: "Buzz",
-        }
-    )
-)>;
-            `,
-    ],
-  },
   // TSPlusToken - tested in TSMappedType
   {
     node: AST_NODE_TYPES.TSPropertySignature,
