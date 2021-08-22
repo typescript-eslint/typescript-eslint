@@ -25,10 +25,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      missingSemi: 'Missing semicolon.',
-      extraSemi: 'Extra semicolon.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     'always',

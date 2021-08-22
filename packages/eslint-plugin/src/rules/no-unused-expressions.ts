@@ -22,10 +22,7 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      unusedExpression:
-        'Expected an assignment or function call and instead saw an expression.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
