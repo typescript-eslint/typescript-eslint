@@ -93,6 +93,64 @@ export const defaultOrder = [
 
   'constructor',
 
+  // Getters
+  'public-static-get',
+  'protected-static-get',
+  'private-static-get',
+
+  'public-decorated-get',
+  'protected-decorated-get',
+  'private-decorated-get',
+
+  'public-instance-get',
+  'protected-instance-get',
+  'private-instance-get',
+
+  'public-abstract-get',
+  'protected-abstract-get',
+  'private-abstract-get',
+
+  'public-get',
+  'protected-get',
+  'private-get',
+
+  'static-get',
+  'instance-get',
+  'abstract-get',
+
+  'decorated-get',
+
+  'get',
+
+  // Setters
+  'public-static-set',
+  'protected-static-set',
+  'private-static-set',
+
+  'public-decorated-set',
+  'protected-decorated-set',
+  'private-decorated-set',
+
+  'public-instance-set',
+  'protected-instance-set',
+  'private-instance-set',
+
+  'public-abstract-set',
+  'protected-abstract-set',
+  'private-abstract-set',
+
+  'public-set',
+  'protected-set',
+  'private-set',
+
+  'static-set',
+  'instance-set',
+  'abstract-set',
+
+  'decorated-set',
+
+  'set',
+
   // Methods
   'public-static-method',
   'protected-static-method',
@@ -129,6 +187,8 @@ const allMemberTypes = [
   'method',
   'call-signature',
   'constructor',
+  'get',
+  'set',
 ].reduce<string[]>((all, type) => {
   all.push(type);
 
@@ -137,8 +197,13 @@ const allMemberTypes = [
       all.push(`${accessibility}-${type}`); // e.g. `public-field`
     }
 
-    // Only class instance fields and methods can have decorators attached to them
-    if (type === 'field' || type === 'method') {
+    // Only class instance fields, methods, get and set can have decorators attached to them
+    if (
+      type === 'field' ||
+      type === 'method' ||
+      type === 'get' ||
+      type === 'set'
+    ) {
       const decoratedMemberType = `${accessibility}-decorated-${type}`;
       const decoratedMemberTypeNoAccessibility = `decorated-${type}`;
       if (!all.includes(decoratedMemberType)) {
@@ -292,7 +357,13 @@ function getRank(
 
   if (supportsModifiers) {
     const decorated = 'decorators' in node && node.decorators!.length > 0;
-    if (decorated && (type === 'field' || type === 'method')) {
+    if (
+      decorated &&
+      (type === 'field' ||
+        type === 'method' ||
+        type === 'get' ||
+        type === 'set')
+    ) {
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
     }
