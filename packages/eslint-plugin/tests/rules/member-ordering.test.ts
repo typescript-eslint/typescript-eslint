@@ -5282,6 +5282,61 @@ class Foo {
           { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
         ],
       },
+
+      // default option + class + defaultOrder + alphabetically
+      {
+        code: `
+class Foo {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  constructor() {}
+
+  get h() {}
+
+  set g() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
+
+      // default option + class + custom + alphabetically
+      {
+        code: `
+class Foo {
+  get a() {}
+
+  @Bar
+  get b() {}
+
+  set c() {}
+
+  @Bar
+  set d() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
+
       // default option + class + decorators + default order + alphabetically
       {
         code: `
@@ -5377,6 +5432,130 @@ const foo = class Foo {
       },
     ],
     invalid: [
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  get h() {}
+
+  set g() {}
+
+  constructor() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'constructor',
+              rank: 'public instance get',
+            },
+          },
+        ],
+      },
+
+      // default option + class + custom + alphabetically
+      {
+        code: `
+class Foo {
+  @Bar
+  get a() {}
+
+  get b() {}
+
+  @Bar
+  set c() {}
+
+  set d() {}
+}
+                  `,
+        options: [
+          {
+            default: {
+              memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'b',
+              rank: 'decorated get',
+            },
+          },
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'decorated set',
+            },
+          },
+        ],
+      },
+
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  set g() {}
+
+  constructor() {}
+
+  get h() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'constructor',
+              rank: 'public instance set',
+            },
+          },
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'h',
+              rank: 'public instance set',
+            },
+          },
+        ],
+      },
+
       // default option + interface + wrong order within group and wrong group order + alphabetically
       {
         code: `
