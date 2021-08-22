@@ -26,8 +26,10 @@ export default util.createRule<Options, MessageIds>({
     fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
+    messages: {
+      // @ts-expect-error -- we report on this messageId so we need to ensure it's there in case ESLint changes in future
       missingSpace: "Operator '{{operator}}' must be spaced.",
+      ...baseRule.meta.messages,
     },
   },
   defaultOptions: [
