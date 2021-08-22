@@ -60,6 +60,7 @@ import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRedeclare from './no-redeclare';
 import noRequireImports from './no-require-imports';
+import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
@@ -182,6 +183,7 @@ export default {
   'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
   'no-require-imports': noRequireImports,
+  'no-restricted-imports': noRestrictedImports,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
