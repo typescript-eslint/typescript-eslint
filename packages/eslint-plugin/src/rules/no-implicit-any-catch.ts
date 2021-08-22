@@ -25,6 +25,7 @@ export default util.createRule<Options, MessageIds>({
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       implicitAnyInCatch: 'Implicit any in catch clause.',
       explicitAnyInCatch: 'Explicit any in catch clause.',

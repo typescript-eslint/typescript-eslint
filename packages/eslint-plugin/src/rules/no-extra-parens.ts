@@ -6,8 +6,10 @@ import {
   TSESTree,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-extra-parens';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-extra-parens');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -23,6 +25,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },

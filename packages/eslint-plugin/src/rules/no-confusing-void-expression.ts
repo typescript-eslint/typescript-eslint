@@ -71,6 +71,7 @@ export default util.createRule<Options, MessageId>({
     ],
     type: 'problem',
     fixable: 'code',
+    hasSuggestions: true,
   },
   defaultOptions: [{}],
 
