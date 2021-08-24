@@ -61,13 +61,14 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`',
-      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as types',
-      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types',
+        'All imports in the declaration are only used as types. Use `import type`.',
+      someImportsAreOnlyTypes:
+        'Imports {{typeImports}} are only used as types.',
+      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types.',
       someImportsInDecoMeta:
-        'Type imports {{typeImports}} are used by decorator metadata',
+        'Type imports {{typeImports}} are used by decorator metadata.',
       aImportInDecoMeta:
-        'Type import {{typeImports}} is used by decorator metadata',
+        'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },

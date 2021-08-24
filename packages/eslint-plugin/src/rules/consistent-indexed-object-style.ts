@@ -19,7 +19,7 @@ export default createRule<Options, MessageIds>({
       recommended: false,
     },
     messages: {
-      preferRecord: 'A record is preferred over an index signature',
+      preferRecord: 'A record is preferred over an index signature.',
       preferIndexSignature: 'An index signature is preferred over a record.',
     },
     fixable: 'code',

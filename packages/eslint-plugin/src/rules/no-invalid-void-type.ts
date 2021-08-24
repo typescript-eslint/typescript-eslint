@@ -28,14 +28,14 @@ export default util.createRule<[Options], MessageIds>({
     },
     messages: {
       invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type variable',
+        '{{ generic }} may not have void as a type variable.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable',
-      invalidVoidNotReturn: 'void is only valid as a return type',
+        'void is only valid as a return type or generic type variable.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of `this` parameter',
+        'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type variable or the type of a `this` parameter',
+        'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
     },
     schema: [
       {

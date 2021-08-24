@@ -26,8 +26,8 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      implicitAnyInCatch: 'Implicit any in catch clause',
-      explicitAnyInCatch: 'Explicit any in catch clause',
+      implicitAnyInCatch: 'Implicit any in catch clause.',
+      explicitAnyInCatch: 'Explicit any in catch clause.',
       suggestExplicitUnknown:
         'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
     },
