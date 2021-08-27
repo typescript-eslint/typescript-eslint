@@ -209,11 +209,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
-   * Instance of a TypeScript Program object to be used for type information.
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
    * This overrides any program or programs that would have been computed from the `project` option.
-   * All linted files must be part of the provided program.
+   * All linted files must be part of the provided program(s).
    */
-  program?: import('typescript').Program;
+  programs?: Program[];
 
   /**
    ***************************************************************************************
@@ -333,7 +333,7 @@ Types for the AST produced by the parse functions.
 
 #### `createProgram(configFile, projectDirectory)`
 
-This serves as a utility method for users of the `ParseOptions.program` feature to create a TypeScript program instance from a config file.
+This serves as a utility method for users of the `ParseOptions.programs` feature to create a TypeScript program instance from a config file.
 
 ```ts
 declare function createProgram(
