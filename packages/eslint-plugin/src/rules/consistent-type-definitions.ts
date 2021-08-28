@@ -13,7 +13,6 @@ export default util.createRule({
     docs: {
       description:
         'Consistent with type definition either `interface` or `type`',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },

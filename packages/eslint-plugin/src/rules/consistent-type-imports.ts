@@ -56,7 +56,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces consistent usage of type imports',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {

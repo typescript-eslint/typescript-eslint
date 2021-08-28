@@ -23,7 +23,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforces consistent spacing before function parenthesis',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },

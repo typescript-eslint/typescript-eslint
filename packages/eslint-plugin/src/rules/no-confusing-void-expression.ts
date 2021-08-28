@@ -30,7 +30,6 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Requires expressions of type void to appear in statement position',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },

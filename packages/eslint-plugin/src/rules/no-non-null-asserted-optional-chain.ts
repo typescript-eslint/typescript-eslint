@@ -22,7 +22,6 @@ export default util.createRule({
     docs: {
       description:
         'Disallows using a non-null assertion after an optional chain expression',
-      category: 'Possible Errors',
       recommended: 'error',
       suggestion: true,
     },

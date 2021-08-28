@@ -25,7 +25,6 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      category: 'Best Practices',
       description: 'Enforces consistent usage of type assertions',
       recommended: false,
     },
