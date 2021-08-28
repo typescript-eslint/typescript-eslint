@@ -48,6 +48,7 @@ const additionalKeys: AdditionalKeys = {
   MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  PropertyDefinition: ['decorators', 'key', 'typeAnnotation', 'value'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
   StaticBlock: ['body'],
@@ -59,13 +60,12 @@ const additionalKeys: AdditionalKeys = {
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
 
   // TS-prefixed nodes
-  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
+  TSAbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
   TSAsExpression: ['expression', 'typeAnnotation'],

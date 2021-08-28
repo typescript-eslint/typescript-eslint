@@ -1,5 +1,6 @@
 export * from './BlockScope';
 export * from './CatchScope';
+export * from './ClassFieldInitializerScope';
 export * from './ClassScope';
 export * from './ConditionalTypeScope';
 export * from './ForScope';

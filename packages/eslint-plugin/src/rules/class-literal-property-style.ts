@@ -99,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      ClassProperty(node: TSESTree.ClassProperty): void {
+      PropertyDefinition(node: TSESTree.PropertyDefinition): void {
         if (!node.readonly || node.declare) {
           return;
         }

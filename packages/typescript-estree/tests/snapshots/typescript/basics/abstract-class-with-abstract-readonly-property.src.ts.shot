@@ -46,7 +46,7 @@ Object {
             ],
             "readonly": true,
             "static": false,
-            "type": "TSAbstractClassProperty",
+            "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
