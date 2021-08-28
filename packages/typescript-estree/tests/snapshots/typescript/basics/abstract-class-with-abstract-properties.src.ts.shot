@@ -46,6 +46,7 @@ Object {
             "readonly": undefined,
             "static": false,
             "type": "TSAbstractClassProperty",
+            "value": null,
           },
           Object {
             "computed": false,
@@ -120,6 +121,7 @@ Object {
                 "type": "TSNumberKeyword",
               },
             },
+            "value": null,
           },
         ],
         "loc": Object {

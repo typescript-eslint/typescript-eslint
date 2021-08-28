@@ -46,6 +46,7 @@ Object {
             "readonly": undefined,
             "static": false,
             "type": "TSAbstractClassProperty",
+            "value": null,
           },
         ],
         "loc": Object {

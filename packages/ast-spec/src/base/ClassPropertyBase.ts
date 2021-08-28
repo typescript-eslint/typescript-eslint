@@ -1,5 +1,6 @@
 import type { Decorator } from '../special/Decorator/spec';
 import type { TSTypeAnnotation } from '../special/TSTypeAnnotation/spec';
+import type { Expression } from '../unions/Expression';
 import type {
   PropertyName,
   PropertyNameComputed,
@@ -10,6 +11,7 @@ import type { BaseNode } from './BaseNode';
 
 interface ClassPropertyBase extends BaseNode {
   key: PropertyName;
+  value: Expression | null;
   computed: boolean;
   static: boolean;
   declare: boolean;

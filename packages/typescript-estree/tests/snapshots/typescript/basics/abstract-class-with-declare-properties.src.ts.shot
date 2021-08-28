@@ -155,6 +155,7 @@ Object {
                 "type": "TSStringKeyword",
               },
             },
+            "value": null,
           },
           Object {
             "accessibility": "public",
@@ -230,6 +231,7 @@ Object {
                 "type": "TSStringKeyword",
               },
             },
+            "value": null,
           },
           Object {
             "computed": false,
@@ -304,6 +306,7 @@ Object {
                 "type": "TSStringKeyword",
               },
             },
+            "value": null,
           },
           Object {
             "accessibility": "public",
@@ -379,6 +382,7 @@ Object {
                 "type": "TSStringKeyword",
               },
             },
+            "value": null,
           },
         ],
         "loc": Object {
