@@ -55,7 +55,6 @@ export default util.createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
     docs: {
-      category: 'Variables',
       description:
         'Enforces naming conventions for everything across a codebase',
       recommended: false,

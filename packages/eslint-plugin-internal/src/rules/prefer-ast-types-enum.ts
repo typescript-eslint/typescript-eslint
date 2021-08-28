@@ -14,7 +14,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      category: 'Best Practices',
       recommended: 'error',
       description:
         'Ensures consistent usage of AST_NODE_TYPES & AST_TOKEN_TYPES enums.',

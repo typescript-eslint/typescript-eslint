@@ -1,19 +1,11 @@
-import { JSONSchema4 } from '../json-schema';
-import { ParserServices, TSESTree } from '../ts-estree';
-import { AST } from './AST';
-import { Linter } from './Linter';
-import { Scope } from './Scope';
-import { SourceCode } from './SourceCode';
+import type { JSONSchema4 } from '../json-schema';
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { AST } from './AST';
+import type { Linter } from './Linter';
+import type { Scope } from './Scope';
+import type { SourceCode } from './SourceCode';
 
 interface RuleMetaDataDocs {
-  /**
-   * The general category the rule falls within
-   */
-  category:
-    | 'Best Practices'
-    | 'Stylistic Issues'
-    | 'Variables'
-    | 'Possible Errors';
   /**
    * Concise description of the rule
    */

@@ -138,7 +138,6 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallows calling an function with an any type value',
-      category: 'Possible Errors',
       // TODO - enable this with next breaking
       recommended: false,
       requiresTypeChecking: true,

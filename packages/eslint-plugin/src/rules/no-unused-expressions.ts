@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow unused expressions',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },

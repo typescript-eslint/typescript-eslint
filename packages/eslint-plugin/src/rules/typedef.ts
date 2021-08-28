@@ -24,7 +24,6 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     docs: {
       description: 'Requires type annotations to exist',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
