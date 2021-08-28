@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@types/prettier": "*",
-    "@typescript-eslint/experimental-utils": "4.29.3",
+    "@typescript-eslint/experimental-utils": "^5.0.0-0",
     "prettier": "*"
   }
 }

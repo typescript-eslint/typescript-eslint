@@ -39,12 +39,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "4.29.3",
-    "@typescript-eslint/visitor-keys": "4.29.3"
+    "@typescript-eslint/types": "^5.0.0-0",
+    "@typescript-eslint/visitor-keys": "^5.0.0-0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "4.29.3",
+    "@typescript-eslint/typescript-estree": "^5.0.0-0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

@@ -41,8 +41,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "4.29.3",
-    "@typescript-eslint/visitor-keys": "4.29.3",
+    "@typescript-eslint/types": "^5.0.0-0",
+    "@typescript-eslint/visitor-keys": "^5.0.0-0",
     "debug": "^4.3.1",
     "globby": "^11.0.3",
     "is-glob": "^4.0.1",
@@ -59,7 +59,7 @@
     "@types/is-glob": "*",
     "@types/semver": "*",
     "@types/tmp": "*",
-    "@typescript-eslint/shared-fixtures": "4.29.3",
+    "@typescript-eslint/shared-fixtures": "^5.0.0-0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

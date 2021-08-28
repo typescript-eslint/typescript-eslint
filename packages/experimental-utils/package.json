@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.7",
-    "@typescript-eslint/scope-manager": "4.29.3",
-    "@typescript-eslint/types": "4.29.3",
-    "@typescript-eslint/typescript-estree": "4.29.3",
+    "@typescript-eslint/scope-manager": "^5.0.0-0",
+    "@typescript-eslint/types": "^5.0.0-0",
+    "@typescript-eslint/typescript-estree": "^5.0.0-0",
     "eslint-scope": "^5.1.1",
     "eslint-utils": "^3.0.0"
   },
