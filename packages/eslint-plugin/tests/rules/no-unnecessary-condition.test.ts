@@ -765,6 +765,14 @@ function test(a: null) {
     },
     {
       code: `
+function test(a: null[]) {
+  return a[0] ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
 function test(a: never) {
   return a ?? 'default';
 }

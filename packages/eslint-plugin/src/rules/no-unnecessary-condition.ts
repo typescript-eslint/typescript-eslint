@@ -261,12 +261,6 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      // Since typescript array index signature types don't represent the
-      //  possibility of out-of-bounds access, if we're indexing into an array
-      //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(node)) {
-        return;
-      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -277,7 +271,12 @@ export default createRule<Options, MessageId>({
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
       } else if (!isPossiblyNullish(type)) {
-        messageId = 'neverNullish';
+        // Since typescript array index signature types don't represent the
+        //  possibility of out-of-bounds access, if we're indexing into an array
+        //  just skip the check, to avoid false positives
+        if (!isArrayIndexExpression(node)) {
+          messageId = 'neverNullish';
+        }
       } else if (isAlwaysNullish(type)) {
         messageId = 'alwaysNullish';
       }
