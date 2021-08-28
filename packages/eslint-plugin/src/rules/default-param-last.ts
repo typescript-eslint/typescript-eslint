@@ -10,7 +10,6 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce default parameters to be last',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },

@@ -10,7 +10,6 @@ const rule = createRule({
     fixable: 'code',
     docs: {
       description: 'Add void operator in random places for test purposes.',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {

@@ -16,7 +16,6 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Recommends using `@ts-expect-error` over `@ts-ignore`',
-      category: 'Best Practices',
       recommended: false,
     },
     fixable: 'code',

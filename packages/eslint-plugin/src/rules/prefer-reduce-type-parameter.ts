@@ -30,7 +30,6 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      category: 'Best Practices',
       recommended: false,
       description:
         'Prefer using type parameter when calling `Array#reduce` instead of casting',

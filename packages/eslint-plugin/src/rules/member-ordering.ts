@@ -423,7 +423,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
