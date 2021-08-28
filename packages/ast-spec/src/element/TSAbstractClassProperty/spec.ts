@@ -7,11 +7,13 @@ import type {
 export interface TSAbstractClassPropertyComputedName
   extends ClassPropertyComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractClassProperty;
+  value: null;
 }
 
 export interface TSAbstractClassPropertyNonComputedName
   extends ClassPropertyNonComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractClassProperty;
+  value: null;
 }
 
 export type TSAbstractClassProperty =

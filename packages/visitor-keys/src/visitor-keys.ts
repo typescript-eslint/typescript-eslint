@@ -63,7 +63,7 @@ const additionalKeys: AdditionalKeys = {
   Decorator: ['expression'],
 
   // TS-prefixed nodes
-  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
+  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
   TSAnyKeyword: [],
