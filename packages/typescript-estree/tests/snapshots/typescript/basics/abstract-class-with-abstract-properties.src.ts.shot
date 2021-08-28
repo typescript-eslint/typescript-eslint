@@ -45,7 +45,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "TSAbstractClassProperty",
+            "type": "TSAbstractPropertyDefinition",
             "value": null,
           },
           Object {
@@ -86,7 +86,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "TSAbstractClassProperty",
+            "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {

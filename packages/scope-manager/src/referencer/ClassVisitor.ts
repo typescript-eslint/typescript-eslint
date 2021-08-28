@@ -80,8 +80,8 @@ class ClassVisitor extends Visitor {
     this.#referencer.close(node);
   }
 
-  protected visitClassProperty(
-    node: TSESTree.TSAbstractClassProperty | TSESTree.ClassProperty,
+  protected visitPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition | TSESTree.PropertyDefinition,
   ): void {
     this.visitProperty(node);
     /**
@@ -229,16 +229,26 @@ class ClassVisitor extends Visitor {
 
   protected visitProperty(
     node:
-      | TSESTree.ClassProperty
-      | TSESTree.TSAbstractClassProperty
+      | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractPropertyDefinition
       | TSESTree.TSAbstractMethodDefinition,
   ): void {
     if (node.computed) {
       this.#referencer.visit(node.key);
     }
 
-    if (node.type !== AST_NODE_TYPES.TSAbstractClassProperty) {
+    if (node.value) {
+      if (node.type === AST_NODE_TYPES.PropertyDefinition) {
+        this.#referencer.scopeManager.nestClassFieldInitializerScope(
+          node.value,
+        );
+      }
+
       this.#referencer.visit(node.value);
+
+      if (node.type === AST_NODE_TYPES.PropertyDefinition) {
+        this.#referencer.close(node.value);
+      }
     }
 
     if ('decorators' in node) {
@@ -320,18 +330,18 @@ class ClassVisitor extends Visitor {
     this.visitChildren(node);
   }
 
-  protected ClassProperty(node: TSESTree.ClassProperty): void {
-    this.visitClassProperty(node);
+  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
+    this.visitPropertyDefinition(node);
   }
 
   protected MethodDefinition(node: TSESTree.MethodDefinition): void {
     this.visitMethod(node);
   }
 
-  protected TSAbstractClassProperty(
-    node: TSESTree.TSAbstractClassProperty,
+  protected TSAbstractPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition,
   ): void {
-    this.visitClassProperty(node);
+    this.visitPropertyDefinition(node);
   }
 
   protected TSAbstractMethodDefinition(

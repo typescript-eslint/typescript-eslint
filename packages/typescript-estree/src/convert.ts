@@ -1103,11 +1103,11 @@ export class Converter {
       case SyntaxKind.PropertyDeclaration: {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
         const result = this.createNode<
-          TSESTree.TSAbstractClassProperty | TSESTree.ClassProperty
+          TSESTree.TSAbstractPropertyDefinition | TSESTree.PropertyDefinition
         >(node, {
           type: isAbstract
-            ? AST_NODE_TYPES.TSAbstractClassProperty
-            : AST_NODE_TYPES.ClassProperty,
+            ? AST_NODE_TYPES.TSAbstractPropertyDefinition
+            : AST_NODE_TYPES.PropertyDefinition,
           key: this.convertChild(node.name),
           value: isAbstract ? null : this.convertChild(node.initializer),
           computed: isComputedProperty(node.name),

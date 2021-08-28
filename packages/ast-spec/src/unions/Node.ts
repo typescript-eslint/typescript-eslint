@@ -12,13 +12,13 @@ import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spe
 import type { TSNamespaceExportDeclaration } from '../declaration/TSNamespaceExportDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
 import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
-import type { ClassProperty } from '../element/ClassProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
+import type { PropertyDefinition } from '../element/PropertyDefinition/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
 import type { StaticBlock } from '../element/StaticBlock/spec';
-import type { TSAbstractClassProperty } from '../element/TSAbstractClassProperty/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
+import type { TSAbstractPropertyDefinition } from '../element/TSAbstractPropertyDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
 import type { TSConstructSignatureDeclaration } from '../element/TSConstructSignatureDeclaration/spec';
 import type { TSEnumMember } from '../element/TSEnumMember/spec';
@@ -181,7 +181,6 @@ export type Node =
   | ClassBody
   | ClassDeclaration
   | ClassExpression
-  | ClassProperty
   | ConditionalExpression
   | ContinueStatement
   | DebuggerStatement
@@ -231,6 +230,7 @@ export type Node =
   | ObjectPattern
   | Program
   | Property
+  | PropertyDefinition
   | RestElement
   | ReturnStatement
   | SequenceExpression
@@ -245,9 +245,9 @@ export type Node =
   | ThisExpression
   | ThrowStatement
   | TryStatement
-  | TSAbstractClassProperty
   | TSAbstractKeyword
   | TSAbstractMethodDefinition
+  | TSAbstractPropertyDefinition
   | TSAnyKeyword
   | TSArrayType
   | TSAsExpression

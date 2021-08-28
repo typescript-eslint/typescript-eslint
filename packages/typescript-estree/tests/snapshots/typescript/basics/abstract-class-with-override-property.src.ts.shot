@@ -45,7 +45,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "TSAbstractClassProperty",
+            "type": "TSAbstractPropertyDefinition",
             "value": null,
           },
         ],

@@ -66,15 +66,15 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
 
 /**
  * Gets a string name representation of the name of the given MethodDefinition
- * or ClassProperty node, with handling for computed property names.
+ * or PropertyDefinition node, with handling for computed property names.
  */
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSAbstractMethodDefinition
-    | TSESTree.ClassProperty
-    | TSESTree.TSAbstractClassProperty
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.Property
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,

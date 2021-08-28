@@ -125,8 +125,9 @@ const generator = createIdGenerator();
 
 type VariableScope = GlobalScope | FunctionScope | ModuleScope | TSModuleScope;
 const VARIABLE_SCOPE_TYPES = new Set([
-  ScopeType.global,
+  ScopeType.classFieldInitializer,
   ScopeType.function,
+  ScopeType.global,
   ScopeType.module,
   ScopeType.tsModule,
 ]);

@@ -423,7 +423,7 @@ interface Foo {
       options: ['backtick'],
     },
 
-    // ClassProperty
+    // PropertyDefinition
     {
       code: `
 class Foo {
@@ -451,7 +451,7 @@ class Foo {
       options: ['backtick'],
     },
 
-    // TSAbstractClassProperty
+    // TSAbstractPropertyDefinition
     {
       code: `
 abstract class Foo {
@@ -951,7 +951,7 @@ interface Foo {
       options: ['single'],
     },
 
-    // ClassProperty
+    // PropertyDefinition
     {
       code: `
 class Foo {
@@ -1043,7 +1043,7 @@ class Foo {
       options: ['backtick'],
     },
 
-    // TSAbstractClassProperty
+    // TSAbstractPropertyDefinition
     {
       code: `
 abstract class Foo {
