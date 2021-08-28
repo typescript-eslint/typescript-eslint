@@ -1337,6 +1337,17 @@ foo?.fooOrBar.baz?.qux;
     },
     {
       code: `
+declare const x: { a: { b: number } }[];
+x[0].a?.b;
+      `,
+      output: `
+declare const x: { a: { b: number } }[];
+x[0].a.b;
+      `,
+      errors: [ruleError(3, 7, 'neverOptionalChain')],
+    },
+    {
+      code: `
 type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
 type Key = 'bar' | 'foo';
 declare const foo: Foo;
