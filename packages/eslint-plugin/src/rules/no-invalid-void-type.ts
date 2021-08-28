@@ -68,7 +68,7 @@ export default util.createRule<[Options], MessageIds>({
     const invalidGrandParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.CallExpression,
-      AST_NODE_TYPES.ClassProperty,
+      AST_NODE_TYPES.PropertyDefinition,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [

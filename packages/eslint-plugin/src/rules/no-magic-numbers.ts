@@ -77,7 +77,7 @@ export default util.createRule<Options, MessageIds>({
         // Check if the node is a readonly class property
         if (
           typeof node.value === 'number' &&
-          isParentTSReadonlyClassProperty(node)
+          isParentTSReadonlyPropertyDefinition(node)
         ) {
           if (options.ignoreReadonlyClassProperties) {
             return;
@@ -211,10 +211,10 @@ function isTSNumericLiteralType(node: TSESTree.Node): boolean {
  * @returns true if the node parent is a readonly class property
  * @private
  */
-function isParentTSReadonlyClassProperty(node: TSESTree.Literal): boolean {
+function isParentTSReadonlyPropertyDefinition(node: TSESTree.Literal): boolean {
   const parent = getLiteralParent(node);
 
-  if (parent?.type === AST_NODE_TYPES.ClassProperty && parent.readonly) {
+  if (parent?.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly) {
     return true;
   }
 

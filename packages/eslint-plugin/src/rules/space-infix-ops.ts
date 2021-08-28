@@ -122,8 +122,8 @@ export default util.createRule<Options, MessageIds>({
      * Check if it has an assignment char and report if it's faulty
      * @param node The node to report
      */
-    function checkForClassPropertyAssignmentSpace(
-      node: TSESTree.ClassProperty,
+    function checkForPropertyDefinitionAssignmentSpace(
+      node: TSESTree.PropertyDefinition,
     ): void {
       const leftNode = sourceCode.getTokenByRangeStart(
         node.typeAnnotation?.range[0] ?? node.range[0],
@@ -179,7 +179,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
-      ClassProperty: checkForClassPropertyAssignmentSpace,
+      PropertyDefinition: checkForPropertyDefinitionAssignmentSpace,
       TSTypeAliasDeclaration: checkForTypeAliasAssignment,
       TSUnionType: checkForTypeAnnotationSpace,
       TSIntersectionType: checkForTypeAnnotationSpace,

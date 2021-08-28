@@ -81,7 +81,7 @@ Object {
             ],
             "readonly": undefined,
             "static": true,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": null,
           },
           Object {
@@ -159,7 +159,7 @@ Object {
             ],
             "readonly": undefined,
             "static": true,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": null,
           },
         ],

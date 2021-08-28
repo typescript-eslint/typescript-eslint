@@ -154,7 +154,9 @@ export default createRule({
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
         checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
       },
-      'ClassBody > ClassProperty'(node: TSESTree.ClassProperty): void {
+      'ClassBody > PropertyDefinition'(
+        node: TSESTree.PropertyDefinition,
+      ): void {
         if (
           !(
             node.value?.type === AST_NODE_TYPES.FunctionExpression ||

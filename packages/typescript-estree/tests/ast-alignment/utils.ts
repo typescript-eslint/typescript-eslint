@@ -168,13 +168,15 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.override = false;
         }
       },
-      ClassProperty(node) {
+      PropertyDefinition(node) {
+        // babel does not
+        // node.type = AST_NODE_TYPES.PropertyDefinition;
         /**
          * Babel: ClassProperty + abstract: true
          * ts-estree: TSAbstractClassProperty
          */
         if (node.abstract) {
-          node.type = AST_NODE_TYPES.TSAbstractClassProperty;
+          node.type = AST_NODE_TYPES.TSAbstractPropertyDefinition;
           delete node.abstract;
           node.value = null;
         }

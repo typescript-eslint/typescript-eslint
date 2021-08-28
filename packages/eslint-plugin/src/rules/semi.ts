@@ -51,8 +51,8 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSPropertySignature,
     */
     const nodesToCheck = [
-      AST_NODE_TYPES.ClassProperty,
-      AST_NODE_TYPES.TSAbstractClassProperty,
+      AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.TSAbstractPropertyDefinition,
       AST_NODE_TYPES.TSAbstractMethodDefinition,
       AST_NODE_TYPES.TSDeclareFunction,
       AST_NODE_TYPES.TSExportAssignment,

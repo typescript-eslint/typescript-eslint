@@ -194,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.VariableDeclarator
         | TSESTree.Parameter
-        | TSESTree.ClassProperty,
+        | TSESTree.PropertyDefinition,
       typeNode: TSESTree.TSTypeAnnotation | undefined,
       initNode: TSESTree.Expression | null | undefined,
     ): void {
@@ -252,7 +252,9 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    function inferrablePropertyVisitor(node: TSESTree.ClassProperty): void {
+    function inferrablePropertyVisitor(
+      node: TSESTree.PropertyDefinition,
+    ): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
@@ -268,7 +270,7 @@ export default util.createRule<Options, MessageIds>({
       FunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
-      ClassProperty: inferrablePropertyVisitor,
+      PropertyDefinition: inferrablePropertyVisitor,
     };
   },
 });
