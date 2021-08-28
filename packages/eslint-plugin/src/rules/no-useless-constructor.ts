@@ -51,7 +51,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },

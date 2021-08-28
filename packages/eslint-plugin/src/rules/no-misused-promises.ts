@@ -20,7 +20,6 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
   meta: {
     docs: {
       description: 'Avoid using promises in places not designed to handle them',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },

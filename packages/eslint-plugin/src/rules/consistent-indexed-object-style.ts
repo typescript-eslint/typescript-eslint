@@ -14,7 +14,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce or disallow the use of the record type',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },

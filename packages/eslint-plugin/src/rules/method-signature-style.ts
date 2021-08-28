@@ -13,7 +13,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces using a particular method signature syntax.',
-      category: 'Best Practices',
       recommended: false,
     },
     fixable: 'code',

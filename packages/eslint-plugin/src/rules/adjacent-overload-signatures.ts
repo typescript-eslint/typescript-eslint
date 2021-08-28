@@ -21,7 +21,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Require that member overloads be consecutive',
-      category: 'Best Practices',
       recommended: 'error',
     },
     schema: [],

@@ -4373,9 +4373,9 @@ eslint-visitor-keys@^3.0.0:
   integrity sha512-mJOZa35trBTb3IyRmo8xmKBZlxf+N7OnUl4+ZhJHs/r+0770Wh/LEACE2pqMGMe27G/4y8P2bYGk4J70IC5k1Q==
 
 eslint@^8.0.0-0:
-  version "8.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.0.0-beta.0.tgz#965fa5161b7cc93f1c82fb9c617a3814dc95ba38"
-  integrity sha512-Q5wCLXSpq+RIa9QBrmHApNCpgqjBU5aeQbVfeAuc9DyBIWzsdivbiirbCmYBrdoFWUoGSYCYWSIpqrS2une7jg==
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.0.0-beta.1.tgz#5cd74684dbcfd8abee08cc10de578294124539b5"
+  integrity sha512-+3EHhCIJHUXuksq6dUSe1Nv9+sdFaLfct6ZiWdFYrHU8u9tX6QQWGdKJQuQXUlUdhMMh6cchRFIQ7OqSAcyq7A==
   dependencies:
     "@eslint/eslintrc" "^1.0.0"
     "@humanwhocodes/config-array" "^0.6.0"

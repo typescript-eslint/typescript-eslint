@@ -124,7 +124,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Bans specific types from being used',
-      category: 'Best Practices',
       recommended: 'error',
     },
     fixable: 'code',

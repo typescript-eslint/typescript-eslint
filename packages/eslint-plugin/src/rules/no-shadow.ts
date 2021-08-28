@@ -30,7 +30,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      category: 'Variables',
       recommended: false,
       extendsBaseRule: true,
     },

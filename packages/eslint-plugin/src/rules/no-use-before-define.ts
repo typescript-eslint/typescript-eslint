@@ -232,7 +232,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow the use of variables before they are defined',
-      category: 'Variables',
       recommended: false,
       extendsBaseRule: true,
     },

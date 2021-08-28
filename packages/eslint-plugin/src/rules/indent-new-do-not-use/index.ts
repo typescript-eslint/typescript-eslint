@@ -257,7 +257,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation.',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     fixable: 'whitespace',

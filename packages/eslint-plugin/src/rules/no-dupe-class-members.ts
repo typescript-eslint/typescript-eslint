@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow duplicate class members',
-      category: 'Possible Errors',
       recommended: false,
       extendsBaseRule: true,
     },
