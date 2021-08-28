@@ -43,6 +43,7 @@ export type TSNode =
   | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
   | ts.ImportTypeNode
   | ts.ThisTypeNode
+  | ts.ClassStaticBlockDeclaration
   // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
   | ts.ConstructorTypeNode
   | ts.FunctionTypeNode

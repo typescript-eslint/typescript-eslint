@@ -179,7 +179,7 @@ export class OffsetStorage {
       fromToken.range[1] <= range[1];
     // this has to be before the delete + insert below or else you'll get into a cycle
     const fromTokenDescriptor = fromTokenIsInRange
-      ? this.getOffsetDescriptor(fromToken!)
+      ? this.getOffsetDescriptor(fromToken)
       : null;
 
     // First, remove any existing nodes in the range from the tree.
@@ -193,8 +193,8 @@ export class OffsetStorage {
      * even if it's in the current range.
      */
     if (fromTokenIsInRange) {
-      this.tree.insert(fromToken!.range[0], fromTokenDescriptor!);
-      this.tree.insert(fromToken!.range[1], descriptorToInsert);
+      this.tree.insert(fromToken.range[0], fromTokenDescriptor!);
+      this.tree.insert(fromToken.range[1], descriptorToInsert);
     }
 
     /*

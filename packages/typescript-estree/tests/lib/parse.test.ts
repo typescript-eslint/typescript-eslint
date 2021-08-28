@@ -50,7 +50,10 @@ describe('parseWithNodeMaps()', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
         parser.parseWithNodeMaps('function fn(a, a) {\n}');
-      } catch (err) {
+      } catch (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        err: any
+      ) {
         expect(err.column).toEqual(16);
       }
     });
@@ -505,7 +508,10 @@ describe('parseAndGenerateServices', () => {
           /**
            * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
            */
-          error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
+          (error as Error).message = (error as Error).message.replace(
+            /\\(?!["])/gm,
+            '/',
+          );
           throw error;
         }
       };

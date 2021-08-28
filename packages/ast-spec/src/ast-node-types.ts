@@ -68,6 +68,7 @@ export enum AST_NODE_TYPES {
   ReturnStatement = 'ReturnStatement',
   SequenceExpression = 'SequenceExpression',
   SpreadElement = 'SpreadElement',
+  StaticBlock = 'StaticBlock',
   Super = 'Super',
   SwitchCase = 'SwitchCase',
   SwitchStatement = 'SwitchStatement',
