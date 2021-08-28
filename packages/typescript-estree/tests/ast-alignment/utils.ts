@@ -176,6 +176,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         if (node.abstract) {
           node.type = AST_NODE_TYPES.TSAbstractClassProperty;
           delete node.abstract;
+          node.value = null;
         }
         /**
          * TS 3.7: declare class properties

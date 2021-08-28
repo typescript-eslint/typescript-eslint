@@ -46,25 +46,7 @@ Object {
             "readonly": undefined,
             "static": false,
             "type": "TSAbstractClassProperty",
-            "value": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 27,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 26,
-                  "line": 2,
-                },
-              },
-              "range": Array [
-                86,
-                87,
-              ],
-              "raw": "1",
-              "type": "Literal",
-              "value": 1,
-            },
+            "value": null,
           },
         ],
         "loc": Object {

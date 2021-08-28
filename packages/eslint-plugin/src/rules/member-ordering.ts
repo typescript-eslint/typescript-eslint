@@ -251,6 +251,7 @@ function getNodeType(node: Member): string | null {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractClassProperty:
+      return 'field';
     case AST_NODE_TYPES.ClassProperty:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
