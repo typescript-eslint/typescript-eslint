@@ -26,6 +26,7 @@ function parseWithBabelParser(text: string, jsx = true): File {
   const plugins: ParserPlugin[] = [
     'classProperties',
     'decorators-legacy',
+    'classStaticBlock',
     'estree',
     'typescript',
   ];
@@ -61,7 +62,7 @@ function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
       jsx,
     });
     return result.ast;
-  } catch (e) {
+  } catch (e: any) {
     throw createError(e.message, e.lineNumber, e.column);
   }
 }
@@ -97,7 +98,7 @@ export function parse(
           'Please provide a valid parser: either "typescript-estree" or "@babel/parser"',
         );
     }
-  } catch (error) {
+  } catch (error: any) {
     const loc = error.loc as TSESTree.LineAndColumnData | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(

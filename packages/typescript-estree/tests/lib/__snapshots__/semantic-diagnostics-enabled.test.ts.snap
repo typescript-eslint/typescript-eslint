@@ -1408,8 +1408,8 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-closing-tag.src 1`] = `
 TSError {
-  "column": 3,
-  "index": 3,
+  "column": 5,
+  "index": 5,
   "lineNumber": 1,
   "message": "Expected corresponding JSX closing tag for 'a'.",
 }
@@ -1426,8 +1426,8 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-dot-tag-name.src 1`] = `
 TSError {
-  "column": 7,
-  "index": 7,
+  "column": 9,
+  "index": 9,
   "lineNumber": 1,
   "message": "Expected corresponding JSX closing tag for 'a.b.c'.",
 }
@@ -1435,8 +1435,8 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/invalid-mismatched-namespace-tag.src 1`] = `
 TSError {
-  "column": 5,
-  "index": 5,
+  "column": 7,
+  "index": 7,
   "lineNumber": 1,
   "message": "Expected corresponding JSX closing tag for 'a:b'.",
 }
@@ -1741,6 +1741,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-multi-line-keyword-abstract.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-multi-line-keyword-declare.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-static-blocks.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/class-with-accessibility-modifiers.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

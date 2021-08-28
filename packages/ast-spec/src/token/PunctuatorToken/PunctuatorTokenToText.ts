@@ -45,7 +45,7 @@ export interface PunctuatorTokenToText {
   [SyntaxKind.AtToken]: '@';
   [SyntaxKind.QuestionQuestionToken]: '??';
   [SyntaxKind.BacktickToken]: '`';
-  // [SyntaxKind.HashToken]: '#'; // new in PunctuationSyntaxKind in TS 4.4
+  [SyntaxKind.HashToken]: '#';
   [SyntaxKind.EqualsToken]: '=';
   [SyntaxKind.PlusEqualsToken]: '+=';
   [SyntaxKind.MinusEqualsToken]: '-=';
@@ -58,8 +58,8 @@ export interface PunctuatorTokenToText {
   [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
   [SyntaxKind.AmpersandEqualsToken]: '&=';
   [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||='; // included in PunctuationSyntaxKind in TS 4.4
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&='; // included in PunctuationSyntaxKind in TS 4.4
-  [SyntaxKind.QuestionQuestionEqualsToken]: '??='; // included in PunctuationSyntaxKind in TS 4.4
+  [SyntaxKind.BarBarEqualsToken]: '||=';
+  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
+  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
   [SyntaxKind.CaretEqualsToken]: '^=';
 }
