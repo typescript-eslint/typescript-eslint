@@ -274,7 +274,14 @@ export default createRule<Options, MessageId>({
         // Since typescript array index signature types don't represent the
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
-        if (!isArrayIndexExpression(node)) {
+        if (
+          !isArrayIndexExpression(node) &&
+          !(
+            node.type === AST_NODE_TYPES.ChainExpression &&
+            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+            optionChainContainsArrayIndex(node.expression)
+          )
+        ) {
           messageId = 'neverNullish';
         }
       } else if (isAlwaysNullish(type)) {

@@ -316,6 +316,11 @@ returnsArr?.()[42]?.toUpperCase();
 declare const arr: string[][];
 arr[x] ?? [];
     `,
+    // nullish + optional array index
+    `
+declare const arr: { foo: number }[];
+const bar = arr[42]?.foo ?? 0;
+    `,
     // Doesn't check the right-hand side of a logical expression
     //  in a non-conditional context
     {
@@ -751,6 +756,15 @@ function test(a: string) {
       code: `
 function test(a: string | false) {
   return a ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
+    // nullish + array index without optional chaining
+    {
+      code: `
+function test(a: { foo: string }[]) {
+  return a[0].foo ?? 'default';
 }
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
