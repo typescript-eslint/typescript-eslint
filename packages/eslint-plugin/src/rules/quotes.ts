@@ -53,8 +53,8 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSEnumMember:
           return node === parent.id;
 
-        case AST_NODE_TYPES.TSAbstractClassProperty:
-        case AST_NODE_TYPES.ClassProperty:
+        case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+        case AST_NODE_TYPES.PropertyDefinition:
           return node === parent.key;
 
         default:

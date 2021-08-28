@@ -259,8 +259,8 @@ interface RuleListener {
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
-  AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
+  AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
   BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
   BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
@@ -272,7 +272,6 @@ interface RuleListener {
   ClassBody?: RuleFunction<TSESTree.ClassBody>;
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
-  ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
   DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
@@ -321,6 +320,7 @@ interface RuleListener {
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
+  PropertyDefinition?: RuleFunction<TSESTree.PropertyDefinition>;
   RestElement?: RuleFunction<TSESTree.RestElement>;
   ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
   SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
@@ -334,9 +334,9 @@ interface RuleListener {
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
-  TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
+  TSAbstractPropertyDefinition?: RuleFunction<TSESTree.TSAbstractPropertyDefinition>;
   TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
   TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
   TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
@@ -348,8 +348,8 @@ interface RuleListener {
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
   TSConstructorType?: RuleFunction<TSESTree.TSConstructorType>;
   TSConstructSignatureDeclaration?: RuleFunction<TSESTree.TSConstructSignatureDeclaration>;
-  TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
+  TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;

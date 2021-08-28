@@ -28,7 +28,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ClassBody]: ts.ClassDeclaration | ts.ClassExpression;
   [AST_NODE_TYPES.ClassDeclaration]: ts.ClassDeclaration;
   [AST_NODE_TYPES.ClassExpression]: ts.ClassExpression;
-  [AST_NODE_TYPES.ClassProperty]: ts.PropertyDeclaration;
+  [AST_NODE_TYPES.PropertyDefinition]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.ConditionalExpression]: ts.ConditionalExpression;
   [AST_NODE_TYPES.ContinueStatement]: ts.ContinueStatement;
   [AST_NODE_TYPES.DebuggerStatement]: ts.DebuggerStatement;
@@ -150,7 +150,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ThisExpression]: ts.ThisExpression | ts.KeywordTypeNode;
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
-  [AST_NODE_TYPES.TSAbstractClassProperty]: ts.PropertyDeclaration;
+  [AST_NODE_TYPES.TSAbstractPropertyDefinition]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.TSAbstractMethodDefinition]:
     | ts.GetAccessorDeclaration
     | ts.SetAccessorDeclaration

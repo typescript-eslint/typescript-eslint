@@ -44,7 +44,7 @@ Object {
             ],
             "readonly": undefined,
             "static": true,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {

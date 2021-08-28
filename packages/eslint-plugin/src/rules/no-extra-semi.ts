@@ -26,13 +26,15 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      ClassProperty(node): void {
+      'TSAbstractMethodDefinition, TSAbstractPropertyDefinition'(
+        node: never,
+      ): void {
         if (rules.MethodDefinition) {
           // for ESLint <= v7
-          rules.MethodDefinition(node as never);
+          rules.MethodDefinition(node);
         } else {
           // for ESLint v8
-          rules['MethodDefinition, PropertyDefinition']?.(node as never);
+          rules['MethodDefinition, PropertyDefinition']?.(node);
         }
       },
     };
