@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow magic numbers',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },

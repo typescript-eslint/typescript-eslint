@@ -17,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce the consistent use of either backticks, double, or single quotes',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
