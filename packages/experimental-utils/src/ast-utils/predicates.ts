@@ -151,10 +151,10 @@ function isClassOrTypeElement(
 
   return [
     // ClassElement
-    AST_NODE_TYPES.ClassProperty,
+    AST_NODE_TYPES.PropertyDefinition,
     AST_NODE_TYPES.FunctionExpression,
     AST_NODE_TYPES.MethodDefinition,
-    AST_NODE_TYPES.TSAbstractClassProperty,
+    AST_NODE_TYPES.TSAbstractPropertyDefinition,
     AST_NODE_TYPES.TSAbstractMethodDefinition,
     AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     AST_NODE_TYPES.TSIndexSignature,

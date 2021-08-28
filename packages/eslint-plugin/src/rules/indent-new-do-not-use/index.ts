@@ -113,7 +113,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.ImportNamespaceSpecifier,
 
   // Class properties aren't yet supported by eslint...
-  AST_NODE_TYPES.ClassProperty,
+  AST_NODE_TYPES.PropertyDefinition,
 
   // ts keywords
   AST_NODE_TYPES.TSAbstractKeyword,
@@ -129,7 +129,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSNullKeyword,
 
   // ts specific nodes we want to support
-  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
   AST_NODE_TYPES.TSAsExpression,

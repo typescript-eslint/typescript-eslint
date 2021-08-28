@@ -159,7 +159,7 @@ export default util.createRule<[Options], MessageIds>({
           checkParameters(node.params);
         }
       },
-      ClassProperty(node): void {
+      PropertyDefinition(node): void {
         if (node.value && isVariableDeclarationIgnoreFunction(node.value)) {
           return;
         }

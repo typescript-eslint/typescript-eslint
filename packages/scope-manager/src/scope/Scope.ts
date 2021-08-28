@@ -1,5 +1,6 @@
 import { BlockScope } from './BlockScope';
 import { CatchScope } from './CatchScope';
+import { ClassFieldInitializerScope } from './ClassFieldInitializerScope';
 import { ClassScope } from './ClassScope';
 import { ConditionalTypeScope } from './ConditionalTypeScope';
 import { ForScope } from './ForScope';
@@ -19,6 +20,7 @@ type Scope =
   | BlockScope
   | CatchScope
   | ClassScope
+  | ClassFieldInitializerScope
   | ConditionalTypeScope
   | ForScope
   | FunctionExpressionNameScope

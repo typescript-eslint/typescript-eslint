@@ -162,7 +162,7 @@ export default util.createRule<Options, MessageIds>({
     function getUnwantedPublicAccessibilityFixer(
       node:
         | TSESTree.MethodDefinition
-        | TSESTree.ClassProperty
+        | TSESTree.PropertyDefinition
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
@@ -198,30 +198,36 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks if property has an accessibility modifier.
-     * @param classProperty The node representing a ClassProperty.
+     * @param propertyDefinition The node representing a PropertyDefinition.
      */
     function checkPropertyAccessibilityModifier(
-      classProperty: TSESTree.ClassProperty,
+      propertyDefinition: TSESTree.PropertyDefinition,
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromMember(classProperty, sourceCode);
+      const propertyName = util.getNameFromMember(
+        propertyDefinition,
+        sourceCode,
+      );
       if (
         propCheck === 'no-public' &&
-        classProperty.accessibility === 'public'
+        propertyDefinition.accessibility === 'public'
       ) {
         reportIssue(
           'unwantedPublicAccessibility',
           nodeType,
-          classProperty,
+          propertyDefinition,
           propertyName,
-          getUnwantedPublicAccessibilityFixer(classProperty),
+          getUnwantedPublicAccessibilityFixer(propertyDefinition),
         );
-      } else if (propCheck === 'explicit' && !classProperty.accessibility) {
+      } else if (
+        propCheck === 'explicit' &&
+        !propertyDefinition.accessibility
+      ) {
         reportIssue(
           'missingAccessibility',
           nodeType,
-          classProperty,
+          propertyDefinition,
           propertyName,
         );
       }
@@ -273,7 +279,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
-      ClassProperty: checkPropertyAccessibilityModifier,
+      PropertyDefinition: checkPropertyAccessibilityModifier,
       MethodDefinition: checkMethodAccessibilityModifier,
     };
   },

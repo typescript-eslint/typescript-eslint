@@ -24,10 +24,15 @@ function createError(
 function parseWithBabelParser(text: string, jsx = true): File {
   const babel = require('@babel/parser') as typeof babelParser;
   const plugins: ParserPlugin[] = [
-    'classProperties',
+    [
+      'estree',
+      {
+        // @ts-expect-error -- this isn't exposed in the types yet
+        classFeatures: true,
+      },
+    ],
     'decorators-legacy',
     'classStaticBlock',
-    'estree',
     'typescript',
   ];
   if (jsx) {

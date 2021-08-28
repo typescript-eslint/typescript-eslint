@@ -250,9 +250,9 @@ function getNodeType(node: Member): string | null {
       return 'call-signature';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
-    case AST_NODE_TYPES.TSAbstractClassProperty:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
       return 'field';
-    case AST_NODE_TYPES.ClassProperty:
+    case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : 'field';
@@ -278,8 +278,8 @@ function getMemberName(
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
-    case AST_NODE_TYPES.TSAbstractClassProperty:
-    case AST_NODE_TYPES.ClassProperty:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.PropertyDefinition:
       return util.getNameFromMember(node, sourceCode);
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -339,7 +339,7 @@ function getRank(
   }
 
   const abstract =
-    node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+    node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
     node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
   const scope =
