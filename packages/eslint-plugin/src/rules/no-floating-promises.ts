@@ -22,7 +22,6 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description: 'Requires Promise-like values to be handled appropriately',
-      category: 'Best Practices',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,

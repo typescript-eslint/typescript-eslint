@@ -9,7 +9,6 @@ export default util.createRule<[], MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Prefer initializing each enums member value',
-      category: 'Best Practices',
       recommended: false,
       suggestion: true,
     },

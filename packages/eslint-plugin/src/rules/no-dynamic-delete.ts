@@ -10,7 +10,6 @@ export default util.createRule({
   name: 'no-dynamic-delete',
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow the delete operator with computed key expressions',
       recommended: false,
     },

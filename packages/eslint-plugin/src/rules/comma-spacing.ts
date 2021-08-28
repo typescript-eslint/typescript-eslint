@@ -23,7 +23,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces consistent spacing before and after commas',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },

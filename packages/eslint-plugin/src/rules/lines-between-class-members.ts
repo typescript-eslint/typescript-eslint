@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow an empty line between class members',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },

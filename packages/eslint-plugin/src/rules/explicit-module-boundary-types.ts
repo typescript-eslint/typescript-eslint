@@ -37,7 +37,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      category: 'Stylistic Issues',
       recommended: 'warn',
     },
     messages: {

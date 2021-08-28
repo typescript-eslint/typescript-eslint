@@ -36,7 +36,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },

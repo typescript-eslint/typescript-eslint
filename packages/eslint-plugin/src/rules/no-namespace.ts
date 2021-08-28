@@ -19,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow the use of custom TypeScript modules and namespaces',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {

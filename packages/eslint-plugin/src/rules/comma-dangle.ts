@@ -45,7 +45,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing comma',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },

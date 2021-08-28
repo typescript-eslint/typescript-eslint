@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      category: 'Best Practices',
       recommended: 'error',
     },
     fixable: 'code',

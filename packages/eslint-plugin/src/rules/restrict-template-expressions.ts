@@ -23,7 +23,6 @@ export default util.createRule<Options, MessageId>({
     type: 'problem',
     docs: {
       description: 'Enforce template literal expressions to be of string type',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },
