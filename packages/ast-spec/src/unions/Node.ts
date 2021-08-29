@@ -82,6 +82,7 @@ import type { ExportSpecifier } from '../special/ExportSpecifier/spec';
 import type { ImportDefaultSpecifier } from '../special/ImportDefaultSpecifier/spec';
 import type { ImportNamespaceSpecifier } from '../special/ImportNamespaceSpecifier/spec';
 import type { ImportSpecifier } from '../special/ImportSpecifier/spec';
+import type { PrivateIdentifier } from '../special/PrivateIdentifier/spec';
 import type { Program } from '../special/Program/spec';
 import type { SwitchCase } from '../special/SwitchCase/spec';
 import type { TemplateElement } from '../special/TemplateElement/spec';
@@ -228,6 +229,7 @@ export type Node =
   | NewExpression
   | ObjectExpression
   | ObjectPattern
+  | PrivateIdentifier
   | Program
   | Property
   | PropertyDefinition
