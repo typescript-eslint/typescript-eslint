@@ -1,0 +1,5 @@
+{
+  "root": "packages/ast-spec",
+  "type": "library",
+  "implicitDependencies": []
+}

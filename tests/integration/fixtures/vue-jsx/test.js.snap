@@ -4,6 +4,7 @@ exports[`it should produce the expected lint ouput 1`] = `
 Array [
   Object {
     "errorCount": 1,
+    "fatalErrorCount": 0,
     "filePath": "/usr/linked/Jsx.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -23,8 +24,8 @@ Array [
             "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
             "fix": Object {
               "range": Array [
-                390,
-                393,
+                394,
+                397,
               ],
               "text": "unknown",
             },
@@ -34,8 +35,8 @@ Array [
             "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
             "fix": Object {
               "range": Array [
-                390,
-                393,
+                394,
+                397,
               ],
               "text": "never",
             },
@@ -45,38 +46,40 @@ Array [
       },
     ],
     "source": "<script lang=\\"tsx\\">
-import Vue from 'vue'
-import { mapMutations } from 'vuex'
-import { Component } from 'vue-property-decorator'
+import Vue from 'vue';
+import { mapMutations } from 'vuex';
+import { Component } from 'vue-property-decorator';
 
 @Component({
-  created () {
-    this.toggleHeader(false)
+  created() {
+    this.toggleHeader(false);
   },
   methods: {
-    ...mapMutations('APP_SCOPE_NAME', ['toggleHeader'])
-  }
+    ...mapMutations('APP_SCOPE_NAME', ['toggleHeader']),
+  },
 })
 export default class Jsx extends Vue {
-  render (): JSX.Element {
+  render(): JSX.Element {
     // expected error - no-explicit-any
     const path: any = '/';
     return (
       // An error occurred in the next line: \\"Parsing error: '>' expected.eslint\\"
       <div class=\\"mg-notFound\\">
         <div class=\\"fixed-center text-center\\">
-          <p>
-            img goes here
+          <p>img goes here</p>
+          <p class=\\"text-faded\\">
+            Sorry, nothing here...<strong>(404)</strong>
           </p>
-          <p class=\\"text-faded\\">Sorry, nothing here...<strong>(404)</strong></p>
           <q-btn
             color=\\"secondary\\"
             style=\\"width:200px;\\"
             onClick={() => console.log(path)}
-          >Go back</q-btn>
+          >
+            Go back
+          </q-btn>
         </div>
       </div>
-    )
+    );
   }
 }
 </script>

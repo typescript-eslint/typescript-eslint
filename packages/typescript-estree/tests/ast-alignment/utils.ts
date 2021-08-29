@@ -1,5 +1,5 @@
 // babel types are something we don't really care about
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
 import * as BabelTypes from '@babel/types';
@@ -151,11 +151,6 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           };
         }
       },
-      TSTypePredicate(node) {
-        if (!node.typeAnnotation) {
-          node.typeAnnotation = null;
-        }
-      },
       MethodDefinition(node) {
         /**
          * Babel: MethodDefinition + abstract: true
@@ -164,6 +159,13 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         if (node.abstract) {
           node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
           delete node.abstract;
+        }
+        /**
+         * TS 4.3: overrides on class members
+         * Babel doesn't ever emit a false override flag
+         */
+        if (node.override == null) {
+          node.override = false;
         }
       },
       ClassProperty(node) {
@@ -182,6 +184,13 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
          */
         if (!node.declare) {
           node.declare = false;
+        }
+        /**
+         * TS 4.3: overrides on class members
+         * Babel doesn't ever emit a false override flag
+         */
+        if (node.override == null) {
+          node.override = false;
         }
       },
       TSExpressionWithTypeArguments(node, parent: any) {
@@ -239,6 +248,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             q.range[1] += 2;
             q.loc.end.column += 2;
           }
+        }
+      },
+      /**
+       * Babel adds a `static` property to the StaticBlock when the
+       * `typescript` plugin and the `classStaticBlock` plugin are enabled.
+       * @see https://github.com/babel/babel/issues/13674
+       */
+      StaticBlock(node: any) {
+        if (node.static != null) {
+          delete node.static;
         }
       },
     },

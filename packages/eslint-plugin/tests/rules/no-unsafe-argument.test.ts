@@ -85,6 +85,11 @@ foo('a', 'b', 1 as any);
 declare function toHaveBeenCalledWith<E extends any[]>(...params: E): void;
 toHaveBeenCalledWith(1 as any);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    `
+declare function acceptsMap(arg: Map<string, string>): void;
+acceptsMap(new Map());
+    `,
   ],
   invalid: [
     {

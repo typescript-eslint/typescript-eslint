@@ -2,6 +2,7 @@ import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
 import semver from 'semver';
+import { normalize } from 'path';
 import * as ts from 'typescript';
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
@@ -18,6 +19,10 @@ import {
   ensureAbsolutePath,
   getCanonicalFileName,
 } from './create-program/shared';
+import {
+  createProgramFromConfigFile,
+  useProvidedPrograms,
+} from './create-program/useProvidedPrograms';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -25,12 +30,12 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.3.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.5.0';
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
  */
-const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.1.1-rc', '4.1.0-beta'];
+const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.4.0-beta', '4.4.1-rc'];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -41,6 +46,16 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 
 let extra: Extra;
 let warnedAboutTSVersion = false;
+
+/**
+ * Cache existing programs for the single run use-case.
+ *
+ * clearProgramCache() is only intended to be used in testing to ensure the parser is clean between tests.
+ */
+const existingPrograms = new Map<CanonicalPath, ts.Program>();
+function clearProgramCache(): void {
+  existingPrograms.clear();
+}
 
 function enforceString(code: unknown): string {
   /**
@@ -55,16 +70,19 @@ function enforceString(code: unknown): string {
 
 /**
  * @param code The code of the file being linted
+ * @param programInstances One or more (potentially lazily constructed) existing programs to use
  * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
  * @param shouldCreateDefaultProgram True if the program should be created from compiler host
  * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   code: string,
+  programInstances: Iterable<ts.Program> | null,
   shouldProvideParserServices: boolean,
   shouldCreateDefaultProgram: boolean,
 ): ASTAndProgram {
   return (
+    (programInstances && useProvidedPrograms(programInstances, extra)) ||
     (shouldProvideParserServices &&
       createProjectProgram(code, shouldCreateDefaultProgram, extra)) ||
     (shouldProvideParserServices &&
@@ -105,12 +123,19 @@ function resetExtra(): void {
     loc: false,
     log: console.log, // eslint-disable-line no-console
     preserveNodeMaps: true,
+    programs: null,
     projects: [],
     range: false,
     strict: false,
     tokens: null,
     tsconfigRootDir: process.cwd(),
     useJSXTextNode: false,
+    /**
+     * Unless we can reliably infer otherwise, we default to assuming that this run could be part
+     * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
+     */
+    singleRun: false,
+    moduleResolver: '',
   };
 }
 
@@ -264,22 +289,37 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   // NOTE - ensureAbsolutePath relies upon having the correct tsconfigRootDir in extra
   extra.filePath = ensureAbsolutePath(extra.filePath, extra);
 
-  const projectFolderIgnoreList = (
-    options.projectFolderIgnoreList ?? ['**/node_modules/**']
-  )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
-  // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
-  extra.projects = prepareAndTransformProjects(
-    options.project,
-    projectFolderIgnoreList,
-  );
+  if (Array.isArray(options.programs)) {
+    if (!options.programs.length) {
+      throw new Error(
+        `You have set parserOptions.programs to an empty array. This will cause all files to not be found in existing programs. Either provide one or more existing TypeScript Program instances in the array, or remove the parserOptions.programs setting.`,
+      );
+    }
+    extra.programs = options.programs;
+    log(
+      'parserOptions.programs was provided, so parserOptions.project will be ignored.',
+    );
+  }
+
+  if (!extra.programs) {
+    // providing a program overrides project resolution
+    const projectFolderIgnoreList = (
+      options.projectFolderIgnoreList ?? ['**/node_modules/**']
+    )
+      .reduce<string[]>((acc, folder) => {
+        if (typeof folder === 'string') {
+          acc.push(folder);
+        }
+        return acc;
+      }, [])
+      // prefix with a ! for not match glob
+      .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+    // NOTE - prepareAndTransformProjects relies upon having the correct tsconfigRootDir in extra
+    extra.projects = prepareAndTransformProjects(
+      options.project,
+      projectFolderIgnoreList,
+    );
+  }
 
   if (
     Array.isArray(options.extraFileExtensions) &&
@@ -303,11 +343,16 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
     typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
       'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
+
+  if (typeof options.moduleResolver === 'string') {
+    extra.moduleResolver = options.moduleResolver;
+  }
 }
 
 function warnAboutTSVersion(): void {
   if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
-    const isTTY = typeof process === undefined ? false : process.stdout?.isTTY;
+    const isTTY =
+      typeof process === 'undefined' ? false : process.stdout?.isTTY;
     if (isTTY) {
       const border = '=============';
       const versionWarning = [
@@ -323,6 +368,47 @@ function warnAboutTSVersion(): void {
     }
     warnedAboutTSVersion = true;
   }
+}
+
+/**
+ * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+ * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+ * on a file in an IDE).
+ *
+ * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+ * is important because there is significant overhead to managing the so called Watch Programs
+ * needed for the long-running use-case. We therefore use the following logic to figure out which
+ * of these contexts applies to the current execution.
+ */
+function inferSingleRun(options: TSESTreeOptions | undefined): void {
+  // Allow users to explicitly inform us of their intent to perform a single run (or not) with TSESTREE_SINGLE_RUN
+  if (process.env.TSESTREE_SINGLE_RUN === 'false') {
+    extra.singleRun = false;
+    return;
+  }
+  if (process.env.TSESTREE_SINGLE_RUN === 'true') {
+    extra.singleRun = true;
+    return;
+  }
+
+  // Currently behind a flag while we gather real-world feedback
+  if (options?.allowAutomaticSingleRunInference) {
+    if (
+      // Default to single runs for CI processes. CI=true is set by most CI providers by default.
+      process.env.CI === 'true' ||
+      // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
+      process.argv[1].endsWith(normalize('node_modules/.bin/eslint'))
+    ) {
+      extra.singleRun = true;
+      return;
+    }
+  }
+
+  /**
+   * We default to assuming that this run could be part of a long-running session (e.g. in an IDE)
+   * and watch programs will therefore be required
+   */
+  extra.singleRun = false;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -387,6 +473,11 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
+   * Figure out whether this is a single run or part of a long-running process
+   */
+  inferSingleRun(options);
+
+  /**
    * Create a ts.SourceFile directly, no ts.Program is needed for a simple
    * parse
    */
@@ -409,6 +500,12 @@ function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
   options?: T,
 ): ParseWithNodeMapsResult<T> {
   return parseWithNodeMapsInternal(code, options, true);
+}
+
+let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+// Privately exported utility intended for use in typescript-eslint unit tests only
+function clearParseAndGenerateServicesCalls(): void {
+  parseAndGenerateServicesCalls = {};
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
@@ -446,16 +543,76 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   warnAboutTSVersion();
 
   /**
-   * Generate a full ts.Program in order to be able to provide parser
-   * services, such as type-checking
+   * Figure out whether this is a single run or part of a long-running process
+   */
+  inferSingleRun(options);
+
+  /**
+   * If this is a single run in which the user has not provided any existing programs but there
+   * are programs which need to be created from the provided "project" option,
+   * create an Iterable which will lazily create the programs as needed by the iteration logic
+   */
+  if (extra.singleRun && !extra.programs && extra.projects?.length > 0) {
+    extra.programs = {
+      *[Symbol.iterator](): Iterator<ts.Program> {
+        for (const configFile of extra.projects) {
+          const existingProgram = existingPrograms.get(configFile);
+          if (existingProgram) {
+            yield existingProgram;
+          } else {
+            log(
+              'Detected single-run/CLI usage, creating Program once ahead of time for project: %s',
+              configFile,
+            );
+            const newProgram = createProgramFromConfigFile(configFile);
+            existingPrograms.set(configFile, newProgram);
+            yield newProgram;
+          }
+        }
+      },
+    };
+  }
+
+  /**
+   * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
   const shouldProvideParserServices =
-    extra.projects && extra.projects.length > 0;
-  const { ast, program } = getProgramAndAST(
-    code,
-    shouldProvideParserServices,
-    extra.createDefaultProgram,
-  )!;
+    extra.programs != null || (extra.projects && extra.projects.length > 0);
+
+  /**
+   * If we are in singleRun mode but the parseAndGenerateServices() function has been called more than once for the current file,
+   * it must mean that we are in the middle of an ESLint automated fix cycle (in which parsing can be performed up to an additional
+   * 10 times in order to apply all possible fixes for the file).
+   *
+   * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
+   * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
+   */
+  let ast: ts.SourceFile;
+  let program: ts.Program;
+
+  if (extra.singleRun && options.filePath) {
+    parseAndGenerateServicesCalls[options.filePath] =
+      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
+  }
+
+  if (
+    extra.singleRun &&
+    options.filePath &&
+    parseAndGenerateServicesCalls[options.filePath] > 1
+  ) {
+    const isolatedAstAndProgram = createIsolatedProgram(code, extra);
+    ast = isolatedAstAndProgram.ast;
+    program = isolatedAstAndProgram.program;
+  } else {
+    const astAndProgram = getProgramAndAST(
+      code,
+      extra.programs,
+      shouldProvideParserServices,
+      extra.createDefaultProgram,
+    )!;
+    ast = astAndProgram.ast;
+    program = astAndProgram.program;
+  }
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -497,4 +654,6 @@ export {
   parseWithNodeMaps,
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
+  clearProgramCache,
+  clearParseAndGenerateServicesCalls,
 };

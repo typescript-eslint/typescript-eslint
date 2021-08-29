@@ -27,13 +27,14 @@ const Definition = ESLintDefinition as DefinitionConstructor;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ParameterDefinition extends Definition {}
-const ParameterDefinition = ESLintParameterDefinition as DefinitionConstructor & {
-  new (
-    name: TSESTree.Node,
-    node: TSESTree.Node,
-    index?: number | null,
-    rest?: boolean,
-  ): ParameterDefinition;
-};
+const ParameterDefinition =
+  ESLintParameterDefinition as DefinitionConstructor & {
+    new (
+      name: TSESTree.Node,
+      node: TSESTree.Node,
+      index?: number | null,
+      rest?: boolean,
+    ): ParameterDefinition;
+  };
 
 export { Definition, ParameterDefinition };

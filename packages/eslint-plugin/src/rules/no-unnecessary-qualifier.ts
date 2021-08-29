@@ -170,12 +170,16 @@ export default util.createRule({
     return {
       TSModuleDeclaration: enterDeclaration,
       TSEnumDeclaration: enterDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]': enterDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]': enterDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
+        enterDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]':
+        enterDeclaration,
       'TSModuleDeclaration:exit': exitDeclaration,
       'TSEnumDeclaration:exit': exitDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit': exitDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit': exitDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit':
+        exitDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit':
+        exitDeclaration,
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },

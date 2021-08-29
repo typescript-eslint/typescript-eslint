@@ -115,9 +115,8 @@ interface RuleFixer {
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
-type ReportSuggestionArray<
-  TMessageIds extends string
-> = ReportDescriptorBase<TMessageIds>[];
+type ReportSuggestionArray<TMessageIds extends string> =
+  ReportDescriptorBase<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -148,7 +147,7 @@ interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
    */
-  readonly node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
+  readonly node: TSESTree.Node | TSESTree.Token;
   /**
    * An override of the location of the report
    */
@@ -162,14 +161,21 @@ interface ReportDescriptorLocOnly {
    */
   loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.LineAndColumnData>;
 }
-type ReportDescriptor<
-  TMessageIds extends string
-> = ReportDescriptorWithSuggestion<TMessageIds> &
-  (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+type ReportDescriptor<TMessageIds extends string> =
+  ReportDescriptorWithSuggestion<TMessageIds> &
+    (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+
+/**
+ * Plugins can add their settings using declaration
+ * merging against this interface.
+ */
+interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
 
 interface RuleContext<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 > {
   /**
    * The rule ID.
@@ -196,7 +202,7 @@ interface RuleContext<
    * The shared settings from configuration.
    * We do not have any shared settings in this plugin.
    */
-  settings: Record<string, unknown>;
+  settings: SharedConfigurationSettings;
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -210,6 +216,14 @@ interface RuleContext<
    * This information can be used to track references to variables.
    */
   getDeclaredVariables(node: TSESTree.Node): Scope.Variable[];
+
+  /**
+   * Returns the current working directory passed to Linter.
+   * It is a path to a directory that should be considered as the current working directory.
+   * This was added in v6.6.0
+   * @since 6.6.0
+   */
+  getCwd?(): string;
 
   /**
    * Returns the filename associated with the source.
@@ -263,7 +277,6 @@ interface RuleListener {
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
   ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
-  Comment?: RuleFunction<TSESTree.Comment>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
   DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
@@ -324,7 +337,6 @@ interface RuleListener {
   TemplateLiteral?: RuleFunction<TSESTree.TemplateLiteral>;
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
-  Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
   TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
@@ -412,7 +424,7 @@ interface RuleModule<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener
+  TRuleListener extends RuleListener = RuleListener,
 > {
   /**
    * Metadata about the rule
@@ -430,7 +442,7 @@ type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener
+  TRuleListener extends RuleListener = RuleListener,
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
 
 export {
@@ -446,4 +458,5 @@ export {
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,
+  SharedConfigurationSettings,
 };

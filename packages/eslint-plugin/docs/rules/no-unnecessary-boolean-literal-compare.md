@@ -124,10 +124,10 @@ if (!(someNullCondition ?? true)) {
 
 |           Comparison           | Fixer Output                    | Notes                                                                               |
 | :----------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
-|     `booleanVar === true`      | `booleanLiteral`                |                                                                                     |
-|     `booleanVar !== true`      | `!booleanLiteral`               |                                                                                     |
-|     `booleanVar === false`     | `!booleanLiteral`               |                                                                                     |
-|     `booleanVar !== false`     | `booleanLiteral`                |                                                                                     |
+|     `booleanVar === true`      | `booleanVar`                    |                                                                                     |
+|     `booleanVar !== true`      | `!booleanVar`                   |                                                                                     |
+|     `booleanVar === false`     | `!booleanVar`                   |                                                                                     |
+|     `booleanVar !== false`     | `booleanVar`                    |                                                                                     |
 | `nullableBooleanVar === true`  | `nullableBooleanVar`            | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
 | `nullableBooleanVar !== true`  | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |

@@ -167,7 +167,7 @@ export default createRule<Options, MessageId>({
       });
     }
 
-    function getNodeType(node: TSESTree.Expression): ts.Type {
+    function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
     }
@@ -443,9 +443,9 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(
-          getNodeType(callback),
-        ).map(sig => sig.getReturnType());
+        const returnTypes = getCallSignaturesOfType(getNodeType(callback)).map(
+          sig => sig.getReturnType(),
+        );
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;

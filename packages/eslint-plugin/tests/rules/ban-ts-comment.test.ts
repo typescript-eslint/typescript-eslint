@@ -173,8 +173,7 @@ ruleTester.run('ts-ignore', rule, {
       options: [{ 'ts-ignore': false }],
     },
     {
-      code:
-        '// @ts-ignore I think that I am exempted from any need to follow the rules!',
+      code: '// @ts-ignore I think that I am exempted from any need to follow the rules!',
       options: [{ 'ts-ignore': 'allow-with-description' }],
     },
     {
@@ -340,8 +339,7 @@ ruleTester.run('ts-nocheck', rule, {
       options: [{ 'ts-nocheck': false }],
     },
     {
-      code:
-        '// @ts-nocheck no doubt, people will put nonsense here from time to time just to get the rule to stop reporting, perhaps even long messages with other nonsense in them like other // @ts-nocheck or // @ts-ignore things',
+      code: '// @ts-nocheck no doubt, people will put nonsense here from time to time just to get the rule to stop reporting, perhaps even long messages with other nonsense in them like other // @ts-nocheck or // @ts-ignore things',
       options: [{ 'ts-nocheck': 'allow-with-description' }],
     },
     {
@@ -488,8 +486,7 @@ ruleTester.run('ts-check', rule, {
       options: [{ 'ts-check': false }],
     },
     {
-      code:
-        '// @ts-check with a description and also with a no-op // @ts-ignore',
+      code: '// @ts-check with a description and also with a no-op // @ts-ignore',
       options: [
         { 'ts-check': 'allow-with-description', minimumDescriptionLength: 3 },
       ],

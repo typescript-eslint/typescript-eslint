@@ -135,6 +135,7 @@ Object {
                         "line": 5,
                       },
                     },
+                    "override": false,
                     "range": Array [
                       78,
                       129,
@@ -188,6 +189,7 @@ Object {
                               "line": 5,
                             },
                           },
+                          "override": undefined,
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {
@@ -261,6 +263,7 @@ Object {
                               "line": 5,
                             },
                           },
+                          "override": undefined,
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {

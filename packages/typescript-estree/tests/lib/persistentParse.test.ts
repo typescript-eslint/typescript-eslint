@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { clearCaches, parseAndGenerateServices } from '../../src';
+import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { parseAndGenerateServices } from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -17,7 +18,7 @@ const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
   // stop watching the files and folders
-  clearCaches();
+  clearWatchCaches();
 
   // clean up the temporary files and folders
   tmpDirs.forEach(t => t.removeCallback());

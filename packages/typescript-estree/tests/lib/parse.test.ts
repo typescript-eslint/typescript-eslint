@@ -50,7 +50,10 @@ describe('parseWithNodeMaps()', () => {
     it('should have correct column number when strict mode error occurs', () => {
       try {
         parser.parseWithNodeMaps('function fn(a, a) {\n}');
-      } catch (err) {
+      } catch (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        err: any
+      ) {
         expect(err.column).toEqual(16);
       }
     });
@@ -90,7 +93,7 @@ describe('parseWithNodeMaps()', () => {
   describe('non string code', () => {
     // testing a non string code..
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = (12345 as any) as string;
+    const code = 12345 as any as string;
     const config: TSESTreeOptions = {
       comment: true,
       tokens: true,
@@ -492,24 +495,26 @@ describe('parseAndGenerateServices', () => {
       tsconfigRootDir: PROJECT_DIR,
       project: './tsconfig.json',
     };
-    const testParse = (
-      filePath: string,
-      extraFileExtensions: string[] = ['.vue'],
-    ) => (): void => {
-      try {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          extraFileExtensions,
-          filePath: join(PROJECT_DIR, filePath),
-        });
-      } catch (error) {
-        /**
-         * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-         */
-        error.message = (error as Error).message.replace(/\\(?!["])/gm, '/');
-        throw error;
-      }
-    };
+    const testParse =
+      (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+      (): void => {
+        try {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+          });
+        } catch (error) {
+          /**
+           * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+           */
+          (error as Error).message = (error as Error).message.replace(
+            /\\(?!["])/gm,
+            '/',
+          );
+          throw error;
+        }
+      };
 
     describe('project includes', () => {
       it("doesn't error for matched files", () => {
@@ -647,16 +652,18 @@ describe('parseAndGenerateServices', () => {
       project: './**/tsconfig.json',
     };
 
-    const testParse = (
-      filePath: 'ignoreme' | 'includeme',
-      projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
-    ) => (): void => {
-      parser.parseAndGenerateServices(code, {
-        ...config,
-        projectFolderIgnoreList,
-        filePath: join(PROJECT_DIR, filePath, './file.ts'),
-      });
-    };
+    const testParse =
+      (
+        filePath: 'ignoreme' | 'includeme',
+        projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
+      ) =>
+      (): void => {
+        parser.parseAndGenerateServices(code, {
+          ...config,
+          projectFolderIgnoreList,
+          filePath: join(PROJECT_DIR, filePath, './file.ts'),
+        });
+      };
 
     it('ignores nothing when given nothing', () => {
       expect(testParse('ignoreme')).not.toThrow();
@@ -667,6 +674,96 @@ describe('parseAndGenerateServices', () => {
       const ignore = ['**/ignoreme/**'];
       expect(testParse('ignoreme', ignore)).toThrow();
       expect(testParse('includeme', ignore)).not.toThrow();
+    });
+  });
+
+  describe('moduleResolver', () => {
+    beforeEach(() => {
+      parser.clearCaches();
+    });
+
+    const PROJECT_DIR = resolve(FIXTURES_DIR, '../moduleResolver');
+    const code = `
+      import { something } from '__PLACEHOLDER__';
+
+      something();
+    `;
+    const config: TSESTreeOptions = {
+      comment: true,
+      tokens: true,
+      range: true,
+      loc: true,
+      project: './tsconfig.json',
+      tsconfigRootDir: PROJECT_DIR,
+      filePath: resolve(PROJECT_DIR, 'file.ts'),
+    };
+    const withDefaultProgramConfig: TSESTreeOptions = {
+      ...config,
+      project: './tsconfig.defaultProgram.json',
+      createDefaultProgram: true,
+    };
+
+    describe('when file is in the project', () => {
+      it('returns error if __PLACEHOLDER__ can not be resolved', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, config)
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveProperty(
+          [0, 'messageText'],
+          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
+        );
+      });
+
+      it('throws error if moduleResolver can not be found', () => {
+        expect(() =>
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            moduleResolver: resolve(
+              PROJECT_DIR,
+              './this_moduleResolver_does_not_exist.js',
+            ),
+          }),
+        ).toThrowErrorMatchingInlineSnapshot(`
+        "Could not find the provided parserOptions.moduleResolver.
+        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
+      `);
+      });
+
+      it('resolves __PLACEHOLDER__ correctly', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, {
+              ...config,
+              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+            })
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveLength(0);
+      });
+    });
+
+    describe('when file is not in the project and createDefaultProgram=true', () => {
+      it('returns error because __PLACEHOLDER__ can not be resolved', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, withDefaultProgramConfig)
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveProperty(
+          [0, 'messageText'],
+          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
+        );
+      });
+
+      it('resolves __PLACEHOLDER__ correctly', () => {
+        expect(
+          parser
+            .parseAndGenerateServices(code, {
+              ...withDefaultProgramConfig,
+              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+            })
+            .services.program.getSemanticDiagnostics(),
+        ).toHaveLength(0);
+      });
     });
   });
 });
