@@ -2,6 +2,7 @@ import type { Decorator } from '../special/Decorator/spec';
 import type { TSTypeAnnotation } from '../special/TSTypeAnnotation/spec';
 import type { Expression } from '../unions/Expression';
 import type {
+  ClassPropertyNameNonComputed,
   PropertyName,
   PropertyNameComputed,
   PropertyNameNonComputed,
@@ -33,5 +34,11 @@ export interface PropertyDefinitionComputedNameBase
 export interface PropertyDefinitionNonComputedNameBase
   extends PropertyDefinitionBase {
   key: PropertyNameNonComputed;
+  computed: false;
+}
+
+export interface ClassPropertyDefinitionNonComputedNameBase
+  extends PropertyDefinitionBase {
+  key: ClassPropertyNameNonComputed;
   computed: false;
 }

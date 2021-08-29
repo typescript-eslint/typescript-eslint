@@ -334,6 +334,16 @@ class Test {
       `,
       options: [{ accessibility: 'no-public' }],
     },
+    // private members
+    {
+      code: `
+class Test {
+  #foo = 1;
+  #bar() {}
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
   ],
   invalid: [
     {
@@ -1070,6 +1080,64 @@ class EnsureWhiteSPaceSpan {
       output: `
 class EnsureWhiteSPaceSpan {
   /* */ constructor() {}
+}
+      `,
+    },
+    // quoted names
+    {
+      code: noFormat`
+class Test {
+  public 'foo' = 1;
+  public 'foo foo' = 2;
+  public 'bar'() {}
+  public 'bar bar'() {}
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: 'class property',
+            name: 'foo',
+          },
+          line: 3,
+          column: 3,
+        },
+        {
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: 'class property',
+            name: '"foo foo"',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: 'method definition',
+            name: 'bar',
+          },
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: 'method definition',
+            name: '"bar bar"',
+          },
+          line: 6,
+          column: 3,
+        },
+      ],
+      output: noFormat`
+class Test {
+  'foo' = 1;
+  'foo foo' = 2;
+  'bar'() {}
+  'bar bar'() {}
 }
       `,
     },

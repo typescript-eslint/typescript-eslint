@@ -6,6 +6,7 @@ export * from './ExportSpecifier/spec';
 export * from './ImportDefaultSpecifier/spec';
 export * from './ImportNamespaceSpecifier/spec';
 export * from './ImportSpecifier/spec';
+export * from './PrivateIdentifier/spec';
 export * from './Program/spec';
 export * from './SwitchCase/spec';
 export * from './TSClassImplements/spec';

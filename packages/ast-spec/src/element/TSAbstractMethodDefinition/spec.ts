@@ -10,6 +10,7 @@ export interface TSAbstractMethodDefinitionComputedName
 }
 
 export interface TSAbstractMethodDefinitionNonComputedName
+  // this does not extend ClassMethodDefinitionNonComputedNameBase because abstract private names are not allowed
   extends MethodDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractMethodDefinition;
 }

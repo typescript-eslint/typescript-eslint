@@ -353,6 +353,10 @@ class ClassVisitor extends Visitor {
   protected Identifier(node: TSESTree.Identifier): void {
     this.#referencer.visit(node);
   }
+
+  protected PrivateIdentifier(): void {
+    // intentionally skip
+  }
 }
 
 /**
