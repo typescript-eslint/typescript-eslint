@@ -280,12 +280,12 @@ function getMemberName(
     case AST_NODE_TYPES.TSMethodSignature:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
     case AST_NODE_TYPES.PropertyDefinition:
-      return util.getNameFromMember(node, sourceCode);
+      return util.getNameFromMember(node, sourceCode).name;
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind === 'constructor'
         ? 'constructor'
-        : util.getNameFromMember(node, sourceCode);
+        : util.getNameFromMember(node, sourceCode).name;
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'new';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
@@ -428,7 +428,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       incorrectOrder:
-        'Member "{{member}}" should be declared before member "{{beforeMember}}".',
+        'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
     },

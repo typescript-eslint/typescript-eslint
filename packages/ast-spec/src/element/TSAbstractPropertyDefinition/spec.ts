@@ -11,6 +11,7 @@ export interface TSAbstractPropertyDefinitionComputedName
 }
 
 export interface TSAbstractPropertyDefinitionNonComputedName
+  // this does not extend ClassPropertyDefinitionNonComputedNameBase because abstract private names are not allowed
   extends PropertyDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractPropertyDefinition;
   value: null;

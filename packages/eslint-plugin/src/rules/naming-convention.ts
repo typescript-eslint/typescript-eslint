@@ -620,11 +620,14 @@ function isGlobal(scope: TSESLint.Scope.Scope | null): boolean {
 }
 
 function requiresQuoting(
-  node: TSESTree.Identifier | TSESTree.Literal,
+  node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
   target: ScriptTarget | undefined,
 ): boolean {
   const name =
-    node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+      ? node.name
+      : `${node.value}`;
   return util.requiresQuoting(name, target);
 }
 

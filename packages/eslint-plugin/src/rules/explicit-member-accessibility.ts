@@ -113,6 +113,10 @@ export default util.createRule<Options, MessageIds>({
     function checkMethodAccessibilityModifier(
       methodDefinition: TSESTree.MethodDefinition,
     ): void {
+      if (methodDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return;
+      }
+
       let nodeType = 'method definition';
       let check = baseCheck;
       switch (methodDefinition.kind) {
@@ -129,7 +133,10 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
+      const { name: methodName } = util.getNameFromMember(
+        methodDefinition,
+        sourceCode,
+      );
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -205,7 +212,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromMember(
+      const { name: propertyName } = util.getNameFromMember(
         propertyDefinition,
         sourceCode,
       );
