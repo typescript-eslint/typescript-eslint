@@ -23,6 +23,8 @@ function parseWithBabelParser(text: string, jsx = true): any {
   const babel: typeof babelParser = require('@babel/parser');
   const plugins: ParserPlugin[] = [
     'classProperties',
+    'classPrivateProperties',
+    'classPrivateMethods',
     'decorators-legacy',
     'estree',
     'typescript',

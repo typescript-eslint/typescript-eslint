@@ -79,7 +79,10 @@ function getNameFromMember(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  if (member.key.type === AST_NODE_TYPES.Identifier) {
+  if (
+    member.key.type === AST_NODE_TYPES.Identifier ||
+    member.key.type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
     return member.key.name;
   }
   if (member.key.type === AST_NODE_TYPES.Literal) {
