@@ -50,7 +50,7 @@ const additionalKeys: AdditionalKeys = {
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
-  StaticBlock: [],
+  StaticBlock: ['body'],
 
   // JSX
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
