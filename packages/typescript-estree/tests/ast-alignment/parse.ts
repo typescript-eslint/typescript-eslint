@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
-
 import type babelParser from '@babel/parser';
-import { ParserPlugin } from '@babel/parser';
+import type { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
 import type { File } from '@babel/types';
-import * as parser from '../../src/parser';
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST, parseAndGenerateServices } from '../../src/parser';
+import type { TSError } from '../../src/node-utils';
 
 function createError(
   message: string,
@@ -48,9 +48,9 @@ function parseWithBabelParser(text: string, jsx = true): File {
   });
 }
 
-function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
+function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
   try {
-    const result = parser.parseAndGenerateServices(text, {
+    const result = parseAndGenerateServices(text, {
       loc: true,
       range: true,
       tokens: false,
@@ -66,8 +66,10 @@ function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
       jsx,
     });
     return result.ast;
-  } catch (e: any) {
-    throw createError(e.message, e.lineNumber, e.column);
+  } catch (e: unknown) {
+    const error = e as TSError;
+
+    throw createError(error.message, error.lineNumber, error.column);
   }
 }
 
