@@ -234,7 +234,7 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
       MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
       // for ESLint v8
       'MethodDefinition, PropertyDefinition'?: (
-        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+        node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
       ) => void;
     }
   >;
@@ -646,7 +646,7 @@ declare module 'eslint/lib/rules/no-extra-semi' {
       MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
       // for ESLint v8
       'MethodDefinition, PropertyDefinition'?: (
-        node: TSESTree.MethodDefinition /* | TSESTree.PropertyDefinition */,
+        node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
       ) => void;
     }
   >;
