@@ -1,7 +1,7 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type {
+  ClassPropertyDefinitionNonComputedNameBase,
   PropertyDefinitionComputedNameBase,
-  PropertyDefinitionNonComputedNameBase,
 } from '../../base/PropertyDefinitionBase';
 
 export interface PropertyDefinitionComputedName
@@ -10,7 +10,7 @@ export interface PropertyDefinitionComputedName
 }
 
 export interface PropertyDefinitionNonComputedName
-  extends PropertyDefinitionNonComputedNameBase {
+  extends ClassPropertyDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.PropertyDefinition;
 }
 

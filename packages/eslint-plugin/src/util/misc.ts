@@ -7,6 +7,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { requiresQuoting } from './requiresQuoting';
 
 /**
  * Check if the context file name is *.d.ts or *.d.tsx
@@ -64,6 +65,13 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
   return propName ? propName.name : '(index signature)';
 }
 
+enum MemberNameType {
+  Private = 1,
+  Quoted = 2,
+  Normal = 3,
+  Expression = 4,
+}
+
 /**
  * Gets a string name representation of the name of the given MethodDefinition
  * or PropertyDefinition node, with handling for computed property names.
@@ -78,15 +86,38 @@ function getNameFromMember(
     | TSESTree.Property
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
-): string {
+): { type: MemberNameType; name: string } {
   if (member.key.type === AST_NODE_TYPES.Identifier) {
-    return member.key.name;
+    return {
+      type: MemberNameType.Normal,
+      name: member.key.name,
+    };
+  }
+  if (member.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return {
+      type: MemberNameType.Private,
+      name: `#${member.key.name}`,
+    };
   }
   if (member.key.type === AST_NODE_TYPES.Literal) {
-    return `${member.key.value}`;
+    const name = `${member.key.value}`;
+    if (requiresQuoting(name)) {
+      return {
+        type: MemberNameType.Quoted,
+        name: `"${name}"`,
+      };
+    } else {
+      return {
+        type: MemberNameType.Normal,
+        name,
+      };
+    }
   }
 
-  return sourceCode.text.slice(...member.key.range);
+  return {
+    type: MemberNameType.Expression,
+    name: sourceCode.text.slice(...member.key.range),
+  };
 }
 
 type ExcludeKeys<
@@ -111,6 +142,7 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  MemberNameType,
   RequireKeys,
   upperCaseFirst,
 };
