@@ -3996,6 +3996,20 @@ class Foo {
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
+
+    // default option + private identifiers
+    {
+      code: `
+class Foo {
+  #a = 1;
+  #b = 2;
+  #c = 3;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
   ],
   invalid: [
     // default option + interface + wrong order
@@ -6346,6 +6360,32 @@ type Foo = {
             name: 'new',
             rank: 'method',
           },
+        },
+      ],
+    },
+
+    // default option + private identifiers
+    {
+      code: `
+class Foo {
+  #c = 3;
+  #b = 2;
+  #a = 1;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectOrder',
+          line: 5,
+          column: 3,
         },
       ],
     },
