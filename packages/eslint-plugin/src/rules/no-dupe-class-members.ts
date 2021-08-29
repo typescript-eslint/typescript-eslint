@@ -27,15 +27,18 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
 
-    function wrapMemberDefinitionListener(
-      coreListener: (node: TSESTree.MethodDefinition) => void,
-    ): (node: TSESTree.MethodDefinition) => void {
-      return (node: TSESTree.MethodDefinition): void => {
+    function wrapMemberDefinitionListener<
+      N extends TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+    >(coreListener: (node: N) => void): (node: N) => void {
+      return (node: N): void => {
         if (node.computed) {
           return;
         }
 
-        if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+        if (
+          node.value &&
+          node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+        ) {
           return;
         }
 
