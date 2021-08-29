@@ -551,6 +551,10 @@ class Referencer extends Visitor {
     this.visitType(node.typeParameters);
   }
 
+  protected PrivateIdentifier(): void {
+    // private identifiers are members on classes and thus have no variables to to reference
+  }
+
   protected Program(node: TSESTree.Program): void {
     const globalScope = this.scopeManager.nestGlobalScope(node);
     this.populateGlobalsFromLib(globalScope);
