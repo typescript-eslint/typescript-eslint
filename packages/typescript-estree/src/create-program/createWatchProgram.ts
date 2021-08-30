@@ -370,7 +370,7 @@ function createWatchProgram(
     log('Running without timeout fix');
     // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
     // instead save it and call before getProgram is called
-    watchCompilerHost.setTimeout = (cb, _ms, ...args): unknown => {
+    watchCompilerHost.setTimeout = (cb, _ms, ...args: unknown[]): unknown => {
       callback = cb.bind(/*this*/ undefined, ...args);
       return callback;
     };
