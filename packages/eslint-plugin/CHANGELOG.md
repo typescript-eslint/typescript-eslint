@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [dot-notation] false positive with optional chaining ([#3711](https://github.com/typescript-eslint/typescript-eslint/issues/3711)) ([c19fc6e](https://github.com/typescript-eslint/typescript-eslint/commit/c19fc6e03072ed549bc9b35ebe6961e10f8f9b43)), closes [#3510](https://github.com/typescript-eslint/typescript-eslint/issues/3510)
+* **eslint-plugin:** [prefer-reduce-type-parameter] handle already existing type params ([#3706](https://github.com/typescript-eslint/typescript-eslint/issues/3706)) ([71dd273](https://github.com/typescript-eslint/typescript-eslint/commit/71dd27361a1bc93b5d5eb2279d805922b10002fd))
+* **eslint-plugin:** isTypeReadonly error with <TS3.7 ([#3731](https://github.com/typescript-eslint/typescript-eslint/issues/3731)) ([5696407](https://github.com/typescript-eslint/typescript-eslint/commit/569640739999d85111def13ac7ba1d16e02f10b8))
+
+
+### Features
+
+* **typescript-estree:** add support for class static blocks ([#3730](https://github.com/typescript-eslint/typescript-eslint/issues/3730)) ([f81831b](https://github.com/typescript-eslint/typescript-eslint/commit/f81831bd279a32da6dbab0f1c061053ea43965f6))
+
+
+
+
+
 ## [4.29.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.2...v4.29.3) (2021-08-23)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

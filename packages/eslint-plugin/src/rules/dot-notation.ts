@@ -110,10 +110,9 @@ export default createRule<Options, MessageIds>({
             const objectType = typeChecker.getTypeAtLocation(
               esTreeNodeToTSNodeMap.get(node.object),
             );
-            const indexType = typeChecker.getIndexTypeOfType(
-              objectType,
-              ts.IndexKind.String,
-            );
+            const indexType = objectType
+              .getNonNullableType()
+              .getStringIndexType();
             if (indexType != undefined) {
               return;
             }

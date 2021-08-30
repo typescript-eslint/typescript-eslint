@@ -99,6 +99,25 @@ x['hello'] = 3;
       `,
       options: [{ allowIndexSignaturePropertyAccess: true }],
     },
+    {
+      code: `
+interface Nested {
+  property: string;
+  [key: string]: number | string;
+}
+
+class Dingus {
+  nested: Nested;
+}
+
+let dingus: Dingus | undefined;
+
+dingus?.nested.property;
+dingus?.nested['hello'];
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+      parserOptions: { ecmaVersion: 2020 },
+    },
   ],
   invalid: [
     {
