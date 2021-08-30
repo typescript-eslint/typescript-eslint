@@ -18,7 +18,7 @@ interface AnalyzeOptions {
    * Which ECMAScript version is considered.
    * Defaults to `2018`.
    */
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: number;
 
   /**
    * Whether the whole script is executed under node.js environment.
@@ -81,7 +81,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   emitDecoratorMetadata: false,
 };
 
-function mapEcmaVersion(version: EcmaVersion | undefined): Lib {
+function mapEcmaVersion(version: EcmaVersion | number | undefined): Lib {
   if (version === 'latest') {
     return 'esnext';
   }
