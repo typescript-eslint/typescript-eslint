@@ -1,7 +1,8 @@
 // deeplyCopy is private internal
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call */
-import { Converter } from '../../src/convert';
 import * as ts from 'typescript';
+import type { TSNode } from '../../src';
+import { Converter } from '../../src/convert';
 
 describe('convert', () => {
   function convertCode(code: string): ts.SourceFile {
@@ -114,7 +115,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node as any),
+              maps.tsNodeToESTreeNodeMap.get(node as TSNode),
             ),
           );
         }
@@ -146,7 +147,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node as any),
+              maps.tsNodeToESTreeNodeMap.get(node as TSNode),
             ),
           );
         }
@@ -187,7 +188,7 @@ describe('convert', () => {
 
     expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
-      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as any),
+      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as TSNode),
     );
     checkMaps(ast);
   });
