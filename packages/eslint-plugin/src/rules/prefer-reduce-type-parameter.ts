@@ -77,22 +77,31 @@ export default util.createRule({
           context.report({
             messageId: 'preferTypeParameter',
             node: secondArg,
-            fix: fixer => [
-              fixer.removeRange([
-                secondArg.range[0],
-                secondArg.expression.range[0],
-              ]),
-              fixer.removeRange([
-                secondArg.expression.range[1],
-                secondArg.range[1],
-              ]),
-              fixer.insertTextAfter(
-                callee,
-                `<${context
-                  .getSourceCode()
-                  .getText(secondArg.typeAnnotation)}>`,
-              ),
-            ],
+            fix: fixer => {
+              const fixes = [
+                fixer.removeRange([
+                  secondArg.range[0],
+                  secondArg.expression.range[0],
+                ]),
+                fixer.removeRange([
+                  secondArg.expression.range[1],
+                  secondArg.range[1],
+                ]),
+              ];
+
+              if (!callee.parent.typeParameters) {
+                fixes.push(
+                  fixer.insertTextAfter(
+                    callee,
+                    `<${context
+                      .getSourceCode()
+                      .getText(secondArg.typeAnnotation)}>`,
+                  ),
+                );
+              }
+
+              return fixes;
+            },
           });
 
           return;
