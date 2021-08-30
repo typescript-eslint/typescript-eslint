@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
+
+
+### Features
+
+* **experimental-utils:** add literal types to `global` option ([#3634](https://github.com/typescript-eslint/typescript-eslint/issues/3634)) ([820965c](https://github.com/typescript-eslint/typescript-eslint/commit/820965c41c58be918770ff6bbae313c0cfc75d3c))
+
+
+
+
+
 ## [4.29.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.2...v4.29.3) (2021-08-23)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
