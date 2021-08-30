@@ -68,6 +68,7 @@ export type TSNode =
   | ts.OmittedExpression
   | ts.PartiallyEmittedExpression
   | ts.PrefixUnaryExpression
+  | ts.PrivateIdentifier
   | ts.PostfixUnaryExpression
   | ts.NullLiteral
   | ts.BooleanLiteral

@@ -45,6 +45,7 @@ const additionalKeys: AdditionalKeys = {
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
+  PrivateIdentifier: [],
   MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
