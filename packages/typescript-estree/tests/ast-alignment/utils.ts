@@ -1,8 +1,8 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
+import type { File, Program } from '@babel/types';
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
-import * as BabelTypes from '@babel/types';
 
 /**
  * Common predicates for Babylon AST preprocessing
@@ -18,8 +18,8 @@ const ifNumber = (val: unknown): boolean => typeof val === 'number';
  * @param ast raw babylon AST
  * @returns processed babylon AST
  */
-export function preprocessBabylonAST(ast: BabelTypes.File): any {
-  return omitDeep<any>(
+export function preprocessBabylonAST(ast: File): any {
+  return omitDeep<Program>(
     ast.program,
     [
       {
@@ -258,7 +258,7 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
        * Once we use babel 8, this can be removed.
        * @see https://github.com/babel/babel/pull/12608
        */
-      TSParenthesizedType(node: any) {
+      TSParenthesizedType(node) {
         const { typeAnnotation } = node;
         Object.keys(node).forEach(key => delete node[key]);
         Object.assign(node, typeAnnotation);
