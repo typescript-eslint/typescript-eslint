@@ -16,6 +16,7 @@ import type { ClassProperty } from '../element/ClassProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
+import type { StaticBlock } from '../element/StaticBlock/spec';
 import type { TSAbstractClassProperty } from '../element/TSAbstractClassProperty/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
@@ -235,6 +236,7 @@ export type Node =
   | ReturnStatement
   | SequenceExpression
   | SpreadElement
+  | StaticBlock
   | Super
   | SwitchCase
   | SwitchStatement

@@ -2,8 +2,8 @@
 
 exports[`jsx invalid-mismatched-dot-tag-name.src 1`] = `
 TSError {
-  "column": 7,
-  "index": 7,
+  "column": 9,
+  "index": 9,
   "lineNumber": 1,
   "message": "Expected corresponding JSX closing tag for 'a.b.c'.",
 }

@@ -194,7 +194,11 @@ export function getLocFor(
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
-  node: ts.SourceFile | ts.Block | ts.ModuleBlock,
+  node:
+    | ts.SourceFile
+    | ts.Block
+    | ts.ModuleBlock
+    | ts.ClassStaticBlockDeclaration,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
     switch (node.parent.kind) {
