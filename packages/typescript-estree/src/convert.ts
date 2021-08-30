@@ -311,7 +311,11 @@ export class Converter {
    */
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
-    parent: ts.SourceFile | ts.Block | ts.ModuleBlock,
+    parent:
+      | ts.SourceFile
+      | ts.Block
+      | ts.ModuleBlock
+      | ts.ClassStaticBlockDeclaration,
   ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
@@ -2822,6 +2826,13 @@ export class Converter {
           result.quasis.push(this.convertChild(templateSpan.literal));
         });
         return result;
+      }
+
+      case SyntaxKind.ClassStaticBlockDeclaration: {
+        return this.createNode<TSESTree.StaticBlock>(node, {
+          type: AST_NODE_TYPES.StaticBlock,
+          body: this.convertBodyExpressions(node.body.statements, node),
+        });
       }
 
       default:
