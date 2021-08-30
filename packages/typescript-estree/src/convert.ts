@@ -23,7 +23,11 @@ import {
   TSError,
   unescapeStringLiteralText,
 } from './node-utils';
-import { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './parser-options';
+import type {
+  ParserWeakMap,
+  ParserWeakMapESTreeToTSNode,
+} from './parser-options';
+import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -31,6 +35,7 @@ import {
   TSNode,
 } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
+import { Expression } from '@typescript-eslint/types/src/ast-spec';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -44,11 +49,13 @@ interface ConverterOptions {
  * @param error the error object
  * @returns converted error object
  */
-export function convertError(error: any): TSError {
+export function convertError(
+  error: ts.DiagnosticWithLocation | SemanticOrSyntacticError,
+): TSError {
   return createError(
-    error.file,
-    error.start,
-    error.message || error.messageText,
+    error.file!,
+    error.start!,
+    ('message' in error && error.message) || (error.messageText as string),
   );
 }
 
@@ -264,7 +271,7 @@ export class Converter {
     tsType: ts.TypeNode | undefined,
     parent?: ts.Node,
   ): TSESTree.BindingName {
-    const id = this.convertPattern(name);
+    const id = this.convertPattern(name) as TSESTree.BindingName;
 
     if (tsType) {
       id.typeAnnotation = this.convertTypeAnnotation(tsType, parent);
@@ -509,10 +516,10 @@ export class Converter {
       )
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          result[key] = value.map(el => this.convertChild(el));
+          result[key] = value.map(el => this.convertChild(el as TSNode));
         } else if (value && typeof value === 'object' && value.kind) {
           // need to check node[key].kind to ensure we don't try to convert a symbol
-          result[key] = this.convertChild(value);
+          result[key] = this.convertChild(value as TSNode);
         } else {
           result[key] = value;
         }
@@ -694,7 +701,9 @@ export class Converter {
           result.declare = true;
           break;
         default:
-          remainingModifiers.push(this.convertChild(modifier));
+          remainingModifiers.push(
+            this.convertChild(modifier) as TSESTree.Modifier,
+          );
           break;
       }
     }
@@ -1505,8 +1514,12 @@ export class Converter {
         });
 
         node.templateSpans.forEach(templateSpan => {
-          result.expressions.push(this.convertChild(templateSpan.expression));
-          result.quasis.push(this.convertChild(templateSpan.literal));
+          result.expressions.push(
+            this.convertChild(templateSpan.expression) as TSESTree.Expression,
+          );
+          result.quasis.push(
+            this.convertChild(templateSpan.literal) as TSESTree.TemplateElement,
+          );
         });
         return result;
       }
@@ -1731,14 +1744,18 @@ export class Converter {
           }
 
           if (node.importClause.name) {
-            result.specifiers.push(this.convertChild(node.importClause));
+            result.specifiers.push(
+              this.convertChild(node.importClause) as TSESTree.ImportClause,
+            );
           }
 
           if (node.importClause.namedBindings) {
             switch (node.importClause.namedBindings.kind) {
               case SyntaxKind.NamespaceImport:
                 result.specifiers.push(
-                  this.convertChild(node.importClause.namedBindings),
+                  this.convertChild(
+                    node.importClause.namedBindings,
+                  ) as TSESTree.ImportClause,
                 );
                 break;
               case SyntaxKind.NamedImports:
@@ -1893,7 +1910,7 @@ export class Converter {
             expressions: [],
           });
 
-          const left = this.convertChild(node.left);
+          const left = this.convertChild(node.left) as Expression;
           if (
             left.type === AST_NODE_TYPES.SequenceExpression &&
             node.left.kind !== SyntaxKind.ParenthesizedExpression
@@ -1903,7 +1920,9 @@ export class Converter {
             result.expressions.push(left);
           }
 
-          result.expressions.push(this.convertChild(node.right));
+          result.expressions.push(
+            this.convertChild(node.right) as TSESTree.Expression,
+          );
           return result;
         } else {
           const type = getBinaryExpressionType(node.operatorToken);
@@ -2584,11 +2603,15 @@ export class Converter {
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
               for (const n of heritageClause.types) {
-                interfaceExtends.push(this.convertChild(n, node));
+                interfaceExtends.push(
+                  this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
+                );
               }
             } else {
               for (const n of heritageClause.types) {
-                interfaceImplements.push(this.convertChild(n, node));
+                interfaceImplements.push(
+                  this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
+                );
               }
             }
           }
@@ -2830,8 +2853,12 @@ export class Converter {
         });
 
         node.templateSpans.forEach(templateSpan => {
-          result.types.push(this.convertChild(templateSpan.type));
-          result.quasis.push(this.convertChild(templateSpan.literal));
+          result.types.push(
+            this.convertChild(templateSpan.type) as TSESTree.TypeNode,
+          );
+          result.quasis.push(
+            this.convertChild(templateSpan.literal) as TSESTree.TemplateElement,
+          );
         });
         return result;
       }

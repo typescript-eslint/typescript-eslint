@@ -33,7 +33,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallows unnecessary constraints on generic types',
-      recommended: false,
+      recommended: 'error',
       suggestion: true,
     },
     fixable: 'code',

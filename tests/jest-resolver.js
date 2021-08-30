@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // https://github.com/facebook/jest/issues/9771#issuecomment-871585234
 
 // temporary workaround while we wait for https://github.com/facebook/jest/issues/9771
