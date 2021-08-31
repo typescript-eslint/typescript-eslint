@@ -149,6 +149,7 @@ export default util.createRule<Options, MessageId>({
         );
       } else if (
         node.type === AST_NODE_TYPES.MemberExpression ||
+        node.type === AST_NODE_TYPES.ChainExpression ||
         node.type === AST_NODE_TYPES.Identifier ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {

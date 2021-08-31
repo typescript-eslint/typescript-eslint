@@ -317,24 +317,6 @@ async function test() {
   return promise;
 }
     `,
-
-    // optional chaining
-    `
-async function test() {
-  declare const returnsPromise: () => Promise<void> | null;
-  await returnsPromise?.();
-  returnsPromise()?.then(
-    () => {},
-    () => {},
-  );
-  returnsPromise()
-    ?.then(() => {})
-    ?.catch(() => {});
-  returnsPromise()?.catch(() => {});
-  returnsPromise()?.finally(() => {});
-  return returnsPromise();
-}
-    `,
     // ignoreIIFE
     {
       code: `
@@ -892,6 +874,21 @@ async function test() {
         },
         {
           line: 7,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      // optional chaining
+      code: `
+        async function test() {
+          declare const returnsPromise: () => Promise<void> | null;
+          returnsPromise?.();
+        }
+      `,
+      errors: [
+        {
+          line: 4,
           messageId: 'floatingVoid',
         },
       ],
