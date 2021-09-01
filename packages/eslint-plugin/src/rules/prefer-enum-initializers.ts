@@ -1,6 +1,5 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
