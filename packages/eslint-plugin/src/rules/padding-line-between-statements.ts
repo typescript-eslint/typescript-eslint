@@ -561,7 +561,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'require or disallow padding lines between statements',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
