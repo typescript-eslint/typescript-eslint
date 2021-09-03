@@ -50,9 +50,7 @@ export type Expression =
   | CallExpression
   | ChainExpression
   | ClassExpression
-  | ClassExpression
   | ConditionalExpression
-  | FunctionExpression
   | FunctionExpression
   | Identifier
   | ImportExpression
