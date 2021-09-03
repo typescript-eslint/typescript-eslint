@@ -121,11 +121,11 @@ export default createRule<Options, MessageId>({
       alwaysNullish:
         'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values',
+        'Unnecessary conditional, both sides of the expression are literal values.',
       noOverlapBooleanExpression:
-        'Unnecessary conditional, the types have no overlap',
-      never: 'Unnecessary conditional, value is `never`',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
+        'Unnecessary conditional, the types have no overlap.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },

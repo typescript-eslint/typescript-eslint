@@ -27,7 +27,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      useThisType: 'use `this` type instead.',
+      useThisType: 'Use `this` type instead.',
     },
     schema: [],
     fixable: 'code',
