@@ -189,11 +189,56 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allowRegExp
+    {
+      options: [{ allowRegExp: true }],
+      code: `
+        const arg = new RegExp('foo');
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowRegExp: true }],
+      code: `
+        const arg = /foo/;
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowRegExp: true }],
+      code: `
+        declare const arg: string | RegExp;
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowRegExp: true }],
+      code: `
+        function test<T extends RegExp>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    {
+      options: [{ allowRegExp: true }],
+      code: `
+        function test<T extends string | RegExp>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
     // allow ALL
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      options: [
+        {
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+          allowRegExp: true,
+        },
+      ],
       code: `
-        type All = string | number | boolean | null | undefined;
+        type All = string | number | boolean | null | undefined | RegExp;
         function test<T extends All>(arg: T) {
           return \`arg = \${arg}\`;
         }
@@ -335,6 +380,36 @@ ruleTester.run('restrict-template-expressions', rule, {
           data: { type: 'any' },
           line: 3,
           column: 27,
+        },
+      ],
+    },
+    {
+      options: [{ allowRegExp: false }],
+      code: `
+        const arg = new RegExp('foo');
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'RegExp' },
+          line: 3,
+          column: 30,
+        },
+      ],
+    },
+    {
+      options: [{ allowRegExp: false }],
+      code: `
+        const arg = /foo/;
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'RegExp' },
+          line: 3,
+          column: 30,
         },
       ],
     },

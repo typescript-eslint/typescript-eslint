@@ -11,6 +11,7 @@ type Options = [
     allowBoolean?: boolean;
     allowAny?: boolean;
     allowNullish?: boolean;
+    allowRegExp?: boolean;
   },
 ];
 
@@ -37,6 +38,7 @@ export default util.createRule<Options, MessageId>({
           allowBoolean: { type: 'boolean' },
           allowAny: { type: 'boolean' },
           allowNullish: { type: 'boolean' },
+          allowRegExp: { type: 'boolean' },
         },
       },
     ],
@@ -73,6 +75,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (options.allowAny && util.isTypeAnyType(type)) {
+        return true;
+      }
+
+      if (
+        options.allowRegExp &&
+        util.getTypeName(typeChecker, type) === 'RegExp'
+      ) {
         return true;
       }
 
