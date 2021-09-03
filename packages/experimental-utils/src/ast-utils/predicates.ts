@@ -1,5 +1,12 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
+const isNodeOfType =
+  <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+  (
+    node: TSESTree.Node | null | undefined,
+  ): node is TSESTree.Node & { type: NodeType } =>
+    node?.type === nodeType;
+
 function isOptionalChainPunctuator(
   token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '?.' } {
@@ -69,11 +76,7 @@ function isTypeAssertion(
   );
 }
 
-function isVariableDeclarator(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.VariableDeclarator {
-  return node?.type === AST_NODE_TYPES.VariableDeclarator;
-}
+const isVariableDeclarator = isNodeOfType(AST_NODE_TYPES.VariableDeclarator);
 
 function isFunction(
   node: TSESTree.Node | undefined,
@@ -130,17 +133,9 @@ function isFunctionOrFunctionType(
   return isFunction(node) || isFunctionType(node);
 }
 
-function isTSFunctionType(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.TSFunctionType {
-  return node?.type === AST_NODE_TYPES.TSFunctionType;
-}
+const isTSFunctionType = isNodeOfType(AST_NODE_TYPES.TSFunctionType);
 
-function isTSConstructorType(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.TSConstructorType {
-  return node?.type === AST_NODE_TYPES.TSConstructorType;
-}
+const isTSConstructorType = isNodeOfType(AST_NODE_TYPES.TSConstructorType);
 
 function isClassOrTypeElement(
   node: TSESTree.Node | undefined,
@@ -193,20 +188,12 @@ function isSetter(
   );
 }
 
-function isIdentifier(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.Identifier {
-  return node?.type === AST_NODE_TYPES.Identifier;
-}
+const isIdentifier = isNodeOfType(AST_NODE_TYPES.Identifier);
 
 /**
  * Checks if a node represents an `await …` expression.
  */
-function isAwaitExpression(
-  node: TSESTree.Node | undefined | null,
-): node is TSESTree.AwaitExpression {
-  return node?.type === AST_NODE_TYPES.AwaitExpression;
-}
+const isAwaitExpression = isNodeOfType(AST_NODE_TYPES.AwaitExpression);
 
 /**
  * Checks if a possible token is the `await` keyword.
