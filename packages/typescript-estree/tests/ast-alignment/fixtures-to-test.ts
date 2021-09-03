@@ -386,6 +386,14 @@ tester.addFixturePatternConfig('typescript/basics', {
      * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
+    /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * TypeScript 4.4 new feature
+     * @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#abstract-properties-do-not-allow-initializers
+     */
+    'abstract-class-with-abstract-readonly-property',
+    'abstract-class-with-abstract-properties',
+    'abstract-class-with-override-property',
   ],
   ignoreSourceType: [
     /**
