@@ -114,7 +114,7 @@ interface RuleFixer {
 
 type ReportFixFunction = (
   fixer: RuleFixer,
-) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
+) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
   ReportDescriptorBase<TMessageIds>[];
 

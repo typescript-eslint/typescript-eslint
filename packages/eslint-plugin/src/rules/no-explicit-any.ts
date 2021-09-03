@@ -1,9 +1,9 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 export type Options = [
   {
@@ -199,8 +199,8 @@ export default util.createRule<Options, MessageIds>({
         };
 
         if (fixToUnknown) {
-          fixOrSuggest.fix = (fixer =>
-            fixer.replaceText(node, 'unknown')) as TSESLint.ReportFixFunction;
+          fixOrSuggest.fix = (fixer): TSESLint.RuleFix =>
+            fixer.replaceText(node, 'unknown');
         }
 
         context.report({
