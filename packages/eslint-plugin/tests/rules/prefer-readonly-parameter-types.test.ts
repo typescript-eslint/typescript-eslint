@@ -154,6 +154,74 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       }
       function foo(arg: Readonly<Foo>) {}
     `,
+    // immutable methods
+    `
+      type MyType = Readonly<{
+        prop: string;
+        method(): string;
+      }>;
+      function foo(arg: MyType) {}
+    `,
+    `
+      type MyType = {
+        readonly prop: string;
+        readonly method: () => string;
+      };
+      function bar(arg: MyType) {}
+    `,
+    // methods treated as readonly
+    {
+      code: `
+        type MyType = {
+          readonly prop: string;
+          method(): string;
+        };
+        function foo(arg: MyType) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          method() {}
+        }
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          method(): void;
+        }
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
+    {
+      code: `
+        function foo(arg: ReadonlySet<string>) {}
+        function bar(arg: ReadonlyMap<string, string>) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
 
     // parameter properties should work fine
     {
@@ -712,6 +780,24 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 10,
           column: 43,
           endColumn: 67,
+        },
+      ],
+    },
+    // Mutable methods.
+    {
+      code: `
+        type MyType = {
+          readonly prop: string;
+          method(): string;
+        };
+        function foo(arg: MyType) {}
+      `,
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 33,
         },
       ],
     },
