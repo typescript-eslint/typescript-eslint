@@ -50,6 +50,7 @@ import noInvalidVoidType from './no-invalid-void-type';
 import noLoopFunc from './no-loop-func';
 import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
+import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
@@ -170,6 +171,7 @@ export default {
   'no-loop-func': noLoopFunc,
   'no-loss-of-precision': noLossOfPrecision,
   'no-magic-numbers': noMagicNumbers,
+  'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
