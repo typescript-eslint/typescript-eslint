@@ -3,12 +3,12 @@ import * as ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
 import {
-  TSESTree,
+  ASTUtils,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
-
 type Options = [
   {
     onlyInlineLambdas?: boolean;
@@ -135,15 +135,6 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function isConstructor(
-      node: TSESTree.Node,
-    ): node is TSESTree.MethodDefinition {
-      return (
-        node.type === AST_NODE_TYPES.MethodDefinition &&
-        node.kind === 'constructor'
-      );
-    }
-
     function isFunctionScopeBoundaryInStack(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -231,7 +222,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
             parserServices.esTreeNodeToTSNodeMap.get(node),
           );
@@ -246,7 +237,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].exitConstructor();
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].exitNonConstructor();
