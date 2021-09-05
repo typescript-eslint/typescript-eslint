@@ -107,7 +107,7 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
 
 /**
  * Skips a chain expression node
- * @paramnode The node to test
+ * @param node The node to test
  * @returnsA non-chain expression
  * @private
  */
@@ -119,7 +119,7 @@ function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
 
 /**
  * Checks the given node is an expression statement of IIFE.
- * @paramnode The node to check.
+ * @param node The node to check.
  * @returns `true` if the node is an expression statement of IIFE.
  * @private
  */
@@ -142,7 +142,7 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
 
 /**
  * Checks the given node is a CommonJS require statement
- * @paramnode The node to check.
+ * @param node The node to check.
  * @returns `true` if the node is a CommonJS require statement.
  * @private
  */
@@ -169,7 +169,7 @@ function isCJSRequire(node: TSESTree.Node): boolean {
  * Checks whether the given node is a block-like statement.
  * This checks the last token of the node is the closing brace of a block.
  * @param sourceCode The source code to get tokens.
- * @paramnode The node to check.
+ * @param node The node to check.
  * @returns `true` if the node is a block-like statement.
  * @private
  */
@@ -209,7 +209,7 @@ function isBlockLikeStatement(
 
 /**
  * Check whether the given node is a directive or not.
- * @paramnode The node to check.
+ * @param node The node to check.
  * @param sourceCode The source code object to get tokens.
  * @returns `true` if the node is a directive.
  */
@@ -230,7 +230,7 @@ function isDirective(
 
 /**
  * Check whether the given node is a part of directive prologue or not.
- * @paramnode The node to check.
+ * @param node The node to check.
  * @param sourceCode The source code object to get tokens.
  * @returns `true` if the node is a part of directive prologue.
  */
@@ -259,7 +259,7 @@ function isDirectivePrologue(
 
 /**
  * Checks the given node is a CommonJS export statement
- * @paramnode The node to check.
+ * @param node The node to check.
  * @returns `true` if the node is a CommonJS export statement.
  * @private
  */
@@ -287,7 +287,7 @@ function isCJSExport(node: TSESTree.Node): boolean {
 
 /**
  * Check whether the given node is an expression
- * @paramnode The node to check.
+ * @param node The node to check.
  * @param sourceCode The source code object to get tokens.
  * @returns `true` if the node is an expression
  */
@@ -310,7 +310,7 @@ function isExpression(
  *     foo()
  *     ;[1, 2, 3].forEach(bar)
  * @param sourceCode The source code to get tokens.
- * @paramnode The node to get.
+ * @param node The node to get.
  * @returns The actual last token.
  * @private
  */
@@ -364,8 +364,8 @@ function verifyForAny(): void {
  * However, if comments exist between 2 blank lines, it does not remove those
  * blank lines automatically.
  * @param context The rule context to report.
- * @param_ Unused. The previous node to check.
- * @paramnextNode The next node to check.
+ * @param _ Unused. The previous node to check.
+ * @param nextNode The next node to check.
  * @param paddingLines The array of token pairs that blank
  * lines exist between the pair.
  *
@@ -409,8 +409,8 @@ function verifyForNever(
  * If the `prevNode` has trailing comments, it inserts a blank line after the
  * trailing comments.
  * @param context The rule context to report.
- * @paramprevNode The previous node to check.
- * @paramnextNode The next node to check.
+ * @param prevNode The previous node to check.
+ * @param nextNode The next node to check.
  * @param paddingLines The array of token pairs that blank
  * lines exist between the pair.
  *
@@ -565,6 +565,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: true,
     schema: {
       definitions: {
         paddingType: {
@@ -639,7 +640,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks whether the given node matches the given type.
-     * @paramnode The statement node to check.
+     * @param node The statement node to check.
      * @param type The statement type to check.
      * @returns `true` if the statement node matched the type.
      * @private
@@ -714,7 +715,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Verify padding lines between the given node and the previous node.
-     * @paramnode The node to verify.
+     * @param node The node to verify.
      *
      * @private
      */
@@ -749,7 +750,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Verify padding lines between the given node and the previous node.
      * Then process to enter to new scope.
-     * @paramnode The node to verify.
+     * @param node The node to verify.
      *
      * @private
      */

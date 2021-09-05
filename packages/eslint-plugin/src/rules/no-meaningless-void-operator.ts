@@ -28,6 +28,7 @@ export default util.createRule<
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       meaninglessVoidOperator:
         "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
