@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.30.0...v4.31.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* **utils:** support immutable arrays in `ReportFixFunction` ([#3830](https://github.com/typescript-eslint/typescript-eslint/issues/3830)) ([8218055](https://github.com/typescript-eslint/typescript-eslint/commit/8218055d6dfd94c9e6c8645848f981d9d51ce08c))
+
+
+### Features
+
+* **experimental-utils:** extract `isNodeOfType` out of `ast-utils`' `predicates` ([#3677](https://github.com/typescript-eslint/typescript-eslint/issues/3677)) ([4bfa437](https://github.com/typescript-eslint/typescript-eslint/commit/4bfa4375aff8f65057d4aa116e435803cbc6b464))
+
+
+
+
+
 # [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
 
 

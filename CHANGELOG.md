@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.30.0...v4.31.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* **ast-spec:** remove duplicate union types from `Expression` ([#3770](https://github.com/typescript-eslint/typescript-eslint/issues/3770)) ([463e768](https://github.com/typescript-eslint/typescript-eslint/commit/463e768978731d019345f6552d7fd7a073a80192))
+* **utils:** support immutable arrays in `ReportFixFunction` ([#3830](https://github.com/typescript-eslint/typescript-eslint/issues/3830)) ([8218055](https://github.com/typescript-eslint/typescript-eslint/commit/8218055d6dfd94c9e6c8645848f981d9d51ce08c))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-readonly-parameter-types] add option treatMethodsAsReadonly ([#3733](https://github.com/typescript-eslint/typescript-eslint/issues/3733)) ([a46e318](https://github.com/typescript-eslint/typescript-eslint/commit/a46e3182c8a0b07c914605d6d9fe28ef36a7c32a))
+* **eslint-plugin:** [restrict-template-expressions] add option to allow RegExp ([#3709](https://github.com/typescript-eslint/typescript-eslint/issues/3709)) ([363b3dc](https://github.com/typescript-eslint/typescript-eslint/commit/363b3dc4dd0dc343311c729d75935b10f9d2fd5e))
+* **eslint-plugin:** add `no-meaningless-void-operator` rule ([#3641](https://github.com/typescript-eslint/typescript-eslint/issues/3641)) ([ea40ab6](https://github.com/typescript-eslint/typescript-eslint/commit/ea40ab659351ae7cf7235ea063d42ac155b11e5f))
+* **eslint-plugin:** add extension rule `padding-line-between-statements` ([#3418](https://github.com/typescript-eslint/typescript-eslint/issues/3418)) ([f79ae9b](https://github.com/typescript-eslint/typescript-eslint/commit/f79ae9b58e82f4fddef640a34a1d7ff92b763e65))
+* **experimental-utils:** extract `isNodeOfType` out of `ast-utils`' `predicates` ([#3677](https://github.com/typescript-eslint/typescript-eslint/issues/3677)) ([4bfa437](https://github.com/typescript-eslint/typescript-eslint/commit/4bfa4375aff8f65057d4aa116e435803cbc6b464))
+
+
+
+
+
 # [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
 
 

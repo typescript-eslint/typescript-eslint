@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.30.0...v4.31.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* **ast-spec:** remove duplicate union types from `Expression` ([#3770](https://github.com/typescript-eslint/typescript-eslint/issues/3770)) ([463e768](https://github.com/typescript-eslint/typescript-eslint/commit/463e768978731d019345f6552d7fd7a073a80192))
+
+
+### Features
+
+* **eslint-plugin:** add extension rule `padding-line-between-statements` ([#3418](https://github.com/typescript-eslint/typescript-eslint/issues/3418)) ([f79ae9b](https://github.com/typescript-eslint/typescript-eslint/commit/f79ae9b58e82f4fddef640a34a1d7ff92b763e65))
+
+
+
+
+
 # [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
 
 
