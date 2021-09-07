@@ -59,13 +59,21 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true,
+        allowBoolean: true,
+        allowAny: true,
+        allowNullish: true,
+        allowRegExp: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
 
-    // TODO - enable these new recommended rules
-    '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
 
