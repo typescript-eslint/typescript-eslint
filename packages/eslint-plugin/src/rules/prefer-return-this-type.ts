@@ -1,9 +1,9 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, forEachReturnStatement, getParserServices } from '../util';
 import * as ts from 'typescript';
+import { createRule, forEachReturnStatement, getParserServices } from '../util';
 
 type ClassLikeDeclaration =
   | TSESTree.ClassDeclaration
@@ -147,12 +147,14 @@ export default createRule({
       }
 
       if (isFunctionReturningThis(originalFunc, originalClass)) {
+        const node =
+          classNameRef.parent?.type === AST_NODE_TYPES.TSTypeReference
+            ? classNameRef.parent
+            : classNameRef;
         context.report({
-          node: classNameRef,
+          node,
           messageId: 'useThisType',
-          fix(fixer) {
-            return fixer.replaceText(classNameRef, 'this');
-          },
+          fix: fixer => fixer.replaceText(node, 'this'),
         });
       }
     }
