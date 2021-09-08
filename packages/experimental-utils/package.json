@@ -39,7 +39,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@types/json-schema": "^7.0.7",
+    "@types/json-schema": "^7.0.9",
     "@typescript-eslint/scope-manager": "5.0.0",
     "@typescript-eslint/types": "5.0.0",
     "@typescript-eslint/typescript-estree": "5.0.0",

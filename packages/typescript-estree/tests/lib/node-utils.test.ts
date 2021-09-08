@@ -3,17 +3,17 @@ import { unescapeStringLiteralText } from '../../src/node-utils';
 describe('unescapeStringLiteralText()', () => {
   it('should not modify content', () => {
     let text = 'amp;';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
     text = 'test';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
     text = 'foo&bar&baz;';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
     text = 'foo&bar&baz;';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
     text = '&notlisted;';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
     text = '\u20ac';
-    expect(unescapeStringLiteralText(text)).toEqual(text);
+    expect(unescapeStringLiteralText(text)).toBe(text);
   });
   it('should handle empty string', () => {
     expect(unescapeStringLiteralText('')).toBe('');
@@ -29,7 +29,7 @@ describe('unescapeStringLiteralText()', () => {
       '&amp=123&lang=en&amp,&',
     );
     expect(unescapeStringLiteralText('&#1;')).toBe('\u0001');
-    expect(unescapeStringLiteralText('&#x0021;')).toBe(`!`);
+    expect(unescapeStringLiteralText('&#x0021;')).toBe('!');
     expect(unescapeStringLiteralText('&#0;')).toBe('\u0000');
     expect(unescapeStringLiteralText('&OElig;')).toBe('\u0152');
     expect(unescapeStringLiteralText('&oelig;')).toBe('\u0153');
