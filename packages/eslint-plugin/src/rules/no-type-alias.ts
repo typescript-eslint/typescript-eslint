@@ -160,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Determines if the type is a  by the allowed flags.
+     * Determines if the alias name is in the list of allowed names.
      * @param node the kind of type alias being validated
      */
     function isAllowedAliasName(node: TSESTree.Node): boolean {
