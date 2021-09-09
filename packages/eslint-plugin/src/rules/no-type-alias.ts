@@ -27,6 +27,7 @@ type Options = [
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
+    allowedAliasNames?: string[];
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -79,6 +80,12 @@ export default util.createRule<Options, MessageIds>({
           allowTupleTypes: {
             enum: enumValues,
           },
+          allowedAliasNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -93,6 +100,7 @@ export default util.createRule<Options, MessageIds>({
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
+      allowedAliasNames: [],
     },
   ],
   create(
@@ -106,6 +114,7 @@ export default util.createRule<Options, MessageIds>({
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
+        allowedAliasNames,
       },
     ],
   ) {
@@ -147,6 +156,19 @@ export default util.createRule<Options, MessageIds>({
             unions.includes(allowed)) ||
             (compositionType === AST_NODE_TYPES.TSIntersectionType &&
               intersections.includes(allowed))))
+      );
+    }
+
+    /**
+     * Determines if the type is a  by the allowed flags.
+     * @param node the kind of type alias being validated
+     */
+    function isAllowedAliasName(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.TSTypeReference &&
+        node.typeName.type === AST_NODE_TYPES.Identifier &&
+        allowedAliasNames !== undefined &&
+        allowedAliasNames.includes(node.typeName.name)
       );
     }
 
@@ -210,8 +232,13 @@ export default util.createRule<Options, MessageIds>({
       label: string,
     ): void => {
       if (
-        optionValue === 'never' ||
-        !isSupportedComposition(isTopLevel, type.compositionType, optionValue)
+        (optionValue === 'never' ||
+          !isSupportedComposition(
+            isTopLevel,
+            type.compositionType,
+            optionValue,
+          )) &&
+        !isAllowedAliasName(type.node)
       ) {
         reportError(type.node, type.compositionType, isTopLevel, label);
       }
