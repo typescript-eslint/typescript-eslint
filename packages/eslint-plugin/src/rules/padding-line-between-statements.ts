@@ -723,10 +723,11 @@ export default util.createRule<Options, MessageIds>({
       if (
         !node.parent ||
         ![
-          AST_NODE_TYPES.SwitchStatement,
           AST_NODE_TYPES.BlockStatement,
           AST_NODE_TYPES.Program,
           AST_NODE_TYPES.SwitchCase,
+          AST_NODE_TYPES.SwitchStatement,
+          AST_NODE_TYPES.TSModuleBlock,
         ].includes(node.parent.type)
       ) {
         return;
