@@ -1,9 +1,9 @@
 import {
-  TSESTree,
-  TSESLint,
   AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { ScopeType } from '@typescript-eslint/scope-manager';
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 type MessageIds = 'noShadow';
@@ -99,7 +99,9 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const isShadowedValue =
-        'isValueVariable' in shadowed ? shadowed.isValueVariable : true;
+        !('isValueVariable' in shadowed) ||
+        (shadowed.defs[0]?.type !== DefinitionType.ImportBinding &&
+          shadowed.isValueVariable);
       return variable.isValueVariable !== isShadowedValue;
     }
 
