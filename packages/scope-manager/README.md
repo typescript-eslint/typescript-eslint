@@ -40,7 +40,7 @@ interface AnalyzeOptions {
    * Which ECMAScript version is considered.
    * Defaults to `2018`.
    */
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: EcmaVersion | 1e8;
 
   /**
    * Whether the whole script is executed under node.js environment.
