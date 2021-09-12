@@ -39,6 +39,7 @@ interface AnalyzeOptions {
   /**
    * Which ECMAScript version is considered.
    * Defaults to `2018`.
+   * `'latest'` is converted to 1e8 at parser.
    */
   ecmaVersion?: EcmaVersion | 1e8;
 
