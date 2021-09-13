@@ -483,7 +483,7 @@ type KeyNames = keyof typeof SCALARS;
     },
     {
       code: 'type Foo = Record<string, number>;',
-      options: [{ allowedAliasNames: ['Record'] }],
+      options: [{ allowGenerics: 'always' }],
     },
   ],
   invalid: [
@@ -3335,12 +3335,11 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = Record<string, number>;',
-      options: [{ allowedAliasNames: ['Other'] }],
       errors: [
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'generics',
           },
           line: 1,
           column: 12,

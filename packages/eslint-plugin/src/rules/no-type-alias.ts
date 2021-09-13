@@ -27,7 +27,7 @@ type Options = [
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
-    allowedAliasNames?: string[];
+    allowGenerics?: 'always' | 'never';
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -80,11 +80,8 @@ export default util.createRule<Options, MessageIds>({
           allowTupleTypes: {
             enum: enumValues,
           },
-          allowedAliasNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+          allowGenerics: {
+            enum: ['always', 'never'],
           },
         },
         additionalProperties: false,
@@ -100,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
-      allowedAliasNames: [],
+      allowGenerics: 'never',
     },
   ],
   create(
@@ -114,7 +111,7 @@ export default util.createRule<Options, MessageIds>({
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
-        allowedAliasNames,
+        allowGenerics,
       },
     ],
   ) {
@@ -156,19 +153,6 @@ export default util.createRule<Options, MessageIds>({
             unions.includes(allowed)) ||
             (compositionType === AST_NODE_TYPES.TSIntersectionType &&
               intersections.includes(allowed))))
-      );
-    }
-
-    /**
-     * Determines if the alias name is in the list of allowed names.
-     * @param node the kind of type alias being validated
-     */
-    function isAllowedAliasName(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.TSTypeReference &&
-        node.typeName.type === AST_NODE_TYPES.Identifier &&
-        allowedAliasNames !== undefined &&
-        allowedAliasNames.includes(node.typeName.name)
       );
     }
 
@@ -225,6 +209,17 @@ export default util.createRule<Options, MessageIds>({
       return false;
     };
 
+    /**
+     * Determines if the alias name is in the list of allowed names.
+     * @param node the kind of type alias being validated
+     */
+    const isValidGeneric = (type: TypeWithLabel): boolean => {
+      return (
+        type.node.type === AST_NODE_TYPES.TSTypeReference &&
+        type.node.typeParameters !== undefined
+      );
+    };
+
     const checkAndReport = (
       optionValue: Values,
       isTopLevel: boolean,
@@ -232,13 +227,8 @@ export default util.createRule<Options, MessageIds>({
       label: string,
     ): void => {
       if (
-        (optionValue === 'never' ||
-          !isSupportedComposition(
-            isTopLevel,
-            type.compositionType,
-            optionValue,
-          )) &&
-        !isAllowedAliasName(type.node)
+        optionValue === 'never' ||
+        !isSupportedComposition(isTopLevel, type.compositionType, optionValue)
       ) {
         reportError(type.node, type.compositionType, isTopLevel, label);
       }
@@ -287,6 +277,10 @@ export default util.createRule<Options, MessageIds>({
       } else if (isValidTupleType(type)) {
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
+      } else if (isValidGeneric(type)) {
+        if (allowGenerics === 'never') {
+          reportError(type.node, type.compositionType, isTopLevel, 'Generics');
+        }
       } else if (
         // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         type.node.type.endsWith('Keyword') ||

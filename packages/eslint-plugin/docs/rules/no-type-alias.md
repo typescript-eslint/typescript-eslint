@@ -89,7 +89,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
-- `allowedAliasNames` allows you to specify a list of alias names that the rule should ignore (Defaults to `[]`)
+- `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
 
 ### `allowAliases`
 
@@ -556,42 +556,26 @@ type Foo = [number] & [number, number];
 type Foo = [string] | [number];
 ```
 
-### `allowedAliasNames`
+### `allowGenerics`
 
-A string array of alias names that the rule should ignore.
+This applies to generic types, including TypeScript provided global utility types (`type Foo = Record<string, number>`).
 
-Use this option to avoid conflicts with other rules, for example:
+The setting accepts the following options:
 
-```ts
-/* eslint @typescript-eslint/consistent-indexed-object-style: "error" */
+- `"always"` or `"never"` to active or deactivate the feature.
 
-// error
-interface { [key: string]: number };
-
-// OK
-type Foo = Record<string, number>;
-```
+Examples of **correct** code for the `{ "allowGenerics": "always" }` options:
 
 ```ts
-/* eslint @typescript-eslint/no-type-alias: "error" */
+type Foo = Bar<string>;
 
-// error
 type Foo = Record<string, number>;
-```
 
-In the example above, the type alias is necessary to pass one rule, but triggers an error in another.
-To avoid a conflict such as this, you can tell the rule to ignore specific aliases such as `Record`.
+type Foo = Readonly<Bar>;
 
-Examples of **correct** code for the `{ "allowAliases": "never", "allowedAliasNames": ["Record"] }` options:
+type Foo = Partial<Bar>;
 
-```ts
-type Foo = Record<string, number>;
-```
-
-Examples of **incorrect** code for the `{ "allowAliases": "never", "allowedAliasNames": [] }` options:
-
-```ts
-type Foo = Record<string, number>;
+type Foo = Omit<Bar, 'a' | 'b'>;
 ```
 
 ## When Not To Use It
