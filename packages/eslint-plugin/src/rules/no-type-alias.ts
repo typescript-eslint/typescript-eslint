@@ -209,10 +209,6 @@ export default util.createRule<Options, MessageIds>({
       return false;
     };
 
-    /**
-     * Determines if the alias name is in the list of allowed names.
-     * @param node the kind of type alias being validated
-     */
     const isValidGeneric = (type: TypeWithLabel): boolean => {
       return (
         type.node.type === AST_NODE_TYPES.TSTypeReference &&
