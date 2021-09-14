@@ -1,4 +1,4 @@
-# Disallows calling an function with an any type value (`no-unsafe-argument`)
+# Disallows calling a function with an any type value (`no-unsafe-argument`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
