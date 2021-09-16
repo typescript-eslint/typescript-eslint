@@ -84,6 +84,7 @@ import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import preferAsConst from './prefer-as-const';
+import preferConsistentEnums from './prefer-consistent-enums';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
@@ -205,6 +206,7 @@ export default {
   'object-curly-spacing': objectCurlySpacing,
   'padding-line-between-statements': paddingLineBetweenStatements,
   'prefer-as-const': preferAsConst,
+  'prefer-consistent-enums': preferConsistentEnums,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
