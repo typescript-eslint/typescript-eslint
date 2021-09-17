@@ -470,10 +470,14 @@ export default util.createRule<Options, MessageIds>({
      * Checks if the members are alphabetically sorted.
      *
      * @param members Members to be validated.
+     * @param caseSensitive indicates if the alpha ordering is case sentitive or not.
      *
      * @return True if all members are correctly sorted.
      */
-    function checkAlphaSort(members: Member[], caseSensitive = true): boolean {
+    function checkAlphaSort(
+      members: Member[],
+      caseSensitive: boolean,
+    ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
 
