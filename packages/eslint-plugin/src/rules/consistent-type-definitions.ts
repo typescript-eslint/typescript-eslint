@@ -122,6 +122,19 @@ export default util.createRule({
                     });
                   }
 
+                  if (
+                    node.parent?.type ===
+                    AST_NODE_TYPES.ExportDefaultDeclaration
+                  ) {
+                    fixes.push(
+                      fixer.removeRange([node.parent.range[0], node.range[0]]),
+                      fixer.insertTextAfter(
+                        node.body,
+                        `\nexport default ${node.id.name}`,
+                      ),
+                    );
+                  }
+
                   return fixes;
                 },
           });
