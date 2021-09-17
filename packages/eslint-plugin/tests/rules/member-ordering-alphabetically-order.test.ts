@@ -399,6 +399,86 @@ const foo = class Foo {
         },
       ],
     },
+
+    // default option + interface + lower/upper case wrong order
+    {
+      code: `
+interface Foo {
+  a : b;
+  B : b;
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'a',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + lower/upper case wrong order
+    {
+      code: `
+type Foo = {
+  a : b;
+  B : b;
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'a',
+          },
+        },
+      ],
+    },
+
+    // default option + class + lower/upper case wrong order
+    {
+      code: `
+class Foo {
+  public static a : string;
+  public static B : string;
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'a',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + lower/upper case wrong order
+    {
+      code: `
+const foo = class Foo {
+  public static a : string;
+  public static B : string;
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'a',
+          },
+        },
+      ],
+    },
   ],
 };
 

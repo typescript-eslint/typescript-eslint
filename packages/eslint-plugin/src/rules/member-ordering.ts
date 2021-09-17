@@ -534,6 +534,9 @@ export default util.createRule<Options, MessageIds>({
         memberTypes = orderConfig.memberTypes;
       }
 
+      const hasAlphaSort = order?.startsWith('alphabetically');
+      const alphaSortIsCaseSensitive = order !== 'alphabetically-ci';
+
       // Check order
       if (Array.isArray(memberTypes)) {
         const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
@@ -542,14 +545,14 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (order?.startsWith('alphabetically')) {
+        if (hasAlphaSort) {
           grouped.some(
             groupMember =>
-              !checkAlphaSort(groupMember, order !== 'alphabetically-ci'),
+              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
           );
         }
-      } else if (order?.startsWith('alphabetically')) {
-        checkAlphaSort(members, order !== 'alphabetically-ci');
+      } else if (hasAlphaSort) {
+        checkAlphaSort(members, alphaSortIsCaseSensitive);
       }
     }
 

@@ -439,6 +439,94 @@ const foo = class Foo {
         },
       ],
     },
+
+    // default option + interface + lower/upper case wrong order
+    {
+      code: `
+interface Foo {
+  B : b;
+  a : b;
+}
+            `,
+      options: [
+        { default: { memberTypes: 'never', order: 'alphabetically-ci' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + lower/upper case wrong order
+    {
+      code: `
+type Foo = {
+  B : b;
+  a : b;
+}
+            `,
+      options: [
+        { default: { memberTypes: 'never', order: 'alphabetically-ci' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
+
+    // default option + class + lower/upper case wrong order
+    {
+      code: `
+class Foo {
+  public static B : string;
+  public static a : string;
+}
+            `,
+      options: [
+        { default: { memberTypes: 'never', order: 'alphabetically-ci' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + lower/upper case wrong order
+    {
+      code: `
+const foo = class Foo {
+  public static B : string;
+  public static a : string;
+}
+            `,
+      options: [
+        { default: { memberTypes: 'never', order: 'alphabetically-ci' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
   ],
 };
 
@@ -1485,13 +1573,13 @@ interface Foo {
   () : Baz;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 }
             `,
@@ -1507,11 +1595,11 @@ interface Foo {
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   [a: string] : number;
@@ -1537,13 +1625,13 @@ type Foo = {
   () : Baz;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 }
             `,
@@ -1561,11 +1649,11 @@ type Foo = {
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   () : Baz;
@@ -1590,7 +1678,7 @@ class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -1609,7 +1697,7 @@ class Foo {
   private static c: string = "";
 
   @Dec() public d: string;
-  @Dec() protected e: string;
+  @Dec() protected E: string;
   @Dec() private f: string;
 
   public g: string = "";
@@ -1631,7 +1719,7 @@ class Foo {
   constructor() {}
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   public static a: string;
@@ -1658,7 +1746,7 @@ const foo = class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -1676,7 +1764,7 @@ const foo = class Foo {
   constructor() {}
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   public static a: string;
@@ -1702,11 +1790,11 @@ interface Foo {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 
   () : Baz;
@@ -1742,11 +1830,11 @@ type Foo = {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 
   () : Baz;
@@ -1780,7 +1868,7 @@ type Foo = {
       code: `
 class Foo {
   public static c: string = "";
-  public static b: string = "";
+  public static B: string = "";
   public static a: string;
 
   constructor() {}
@@ -1807,7 +1895,7 @@ class Foo {
       code: `
 const foo = class Foo {
   public static c: string = "";
-  public static b: string = "";
+  public static B: string = "";
   public static a: string;
 
   constructor() {}
@@ -1894,13 +1982,13 @@ interface Foo {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -1916,13 +2004,13 @@ type Foo = {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -1938,7 +2026,7 @@ class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -1956,7 +2044,7 @@ class Foo {
   constructor() {}
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   public static a: string;
@@ -1983,7 +2071,7 @@ const foo = class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -1998,7 +2086,7 @@ const foo = class Foo {
       code: `
 class Foo {
   public static c: string = "";
-  public static b: string = "";
+  public static B: string = "";
   public static a: string;
 
   constructor() {}
@@ -2036,13 +2124,13 @@ interface Foo {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -2058,13 +2146,13 @@ type Foo = {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -2080,7 +2168,7 @@ class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2098,7 +2186,7 @@ const foo = class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2121,7 +2209,7 @@ const foo = class Foo {
   constructor() {}
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   public static a: string;
@@ -2145,7 +2233,7 @@ const foo = class Foo {
       code: `
 const foo = class Foo {
   public static c: string = "";
-  public static b: string = "";
+  public static B: string = "";
   public static a: string;
 
   constructor() {}
@@ -2181,11 +2269,11 @@ interface Foo {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   new () : Bar;
@@ -2210,11 +2298,11 @@ interface Foo {
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   [a: string] : number;
@@ -2240,13 +2328,13 @@ type Foo = {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -2262,7 +2350,7 @@ class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2280,7 +2368,7 @@ const foo = class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2297,11 +2385,11 @@ interface Foo {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 
   () : Baz;
@@ -2346,13 +2434,13 @@ interface Foo {
   () : Baz;
 
   c : x;
-  b : x;
+  B : x;
   a : x;
 
   new () : Bar;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 }
             `,
@@ -2366,11 +2454,11 @@ type Foo = {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   new () : Bar;
@@ -2395,11 +2483,11 @@ type Foo = {
   new () : Bar;
 
   a() : void;
-  b() : void;
+  B() : void;
   c() : void;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   [a: string] : number;
@@ -2425,7 +2513,7 @@ class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2443,7 +2531,7 @@ const foo = class Foo {
   private static c: string = "";
 
   public d: string = "";
-  protected e: string = "";
+  protected E: string = "";
   private f: string = "";
 
   constructor() {}
@@ -2460,11 +2548,11 @@ type Foo = {
   [a: string] : number;
 
   a : x;
-  b : x;
+  B : x;
   c : x;
 
   c() : void;
-  b() : void;
+  B() : void;
   a() : void;
 
   () : Baz;
