@@ -26,10 +26,10 @@ These options allow to specify how to group the members and sort their groups.
 type TypeOptions<T> =
   | {
     memberTypes: Array<T> | 'never',
-    order?: 'alphabetically' | 'as-written',
+    order?: 'alphabetically' | 'alphabetically-ci' | 'as-written',
   }
   | {
-    order: 'alphabetically',
+    order: 'alphabetically' | 'alphabetically-ci' | 'as-written',
   };
 
 {
@@ -797,21 +797,21 @@ It is possible to sort all members within a group alphabetically.
 
 #### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically" } }`
 
-This will apply the default order (see above) and enforce an alphabetic order within each group.
+This will apply the default order (see above) and enforce an alphabetic case-sensitive order within each group.
 
 ##### Incorrect examples
 
 ```ts
 interface Foo {
+  B: x;
   a: x;
-  b: x;
   c: x;
 
   new (): Bar;
   (): Baz;
 
+  B(): void;
   a(): void;
-  b(): void;
   c(): void;
 
   // Wrong group order, should be placed before all field definitions
@@ -823,8 +823,8 @@ interface Foo {
 interface Foo {
   [a: string]: number;
 
+  B: x;
   a: x;
-  b: x;
   c: x;
 
   new (): Bar;
@@ -832,7 +832,7 @@ interface Foo {
 
   // Wrong alphabetic order within group
   c(): void;
-  b(): void;
+  B(): void;
   a(): void;
 }
 ```
@@ -857,6 +857,73 @@ interface Foo {
 ```
 
 Note: Wrong alphabetic order `b(): void` should come after `a: b`.
+
+### Sorting alphabetically case-insensitive within member groups
+
+It is possible to sort all members within a group alphabetically with case insensitivity.
+
+#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically-ci" } }`
+
+This will apply the default order (see above) and enforce an alphabetic case-insensitive order within each group.
+
+##### Incorrect examples
+
+```ts
+interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  a(): void;
+  b(): void;
+  C(): void;
+
+  // Wrong group order, should be placed before all field definitions
+  [a: string]: number;
+}
+```
+
+```ts
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  // Wrong alphabetic order within group
+  C(): void;
+  b(): void;
+  a(): void;
+}
+```
+
+### Sorting alphabetically case-insensitive while ignoring member groups
+
+It is also possible to sort all members with case insensitivity and ignore the member groups completely.
+
+#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically-ci" } }`
+
+##### Incorrect example
+
+```ts
+interface Foo {
+  B(): void;
+  a: number;
+
+  [a: string]: number; // Order doesn't matter (no sortable identifier)
+  new (): Bar; // Order doesn't matter (no sortable identifier)
+  (): Baz; // Order doesn't matter (no sortable identifier)
+}
+```
+
+Note: Wrong alphabetic order `B(): void` should come after `a: number`.
 
 ## When Not To Use It
 
