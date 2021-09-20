@@ -54,6 +54,7 @@ import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
+import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
@@ -175,6 +176,7 @@ export default {
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
+  'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
