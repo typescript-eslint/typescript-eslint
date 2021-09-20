@@ -62,7 +62,7 @@ function createSerializer<TConstructor extends ConstructorSignature>(
         }
 
         outputLines.push(
-          `${childIndentation}${key}: ${printer(
+          `${childIndentation}${key as string}: ${printer(
             value,
             config,
             childIndentation,

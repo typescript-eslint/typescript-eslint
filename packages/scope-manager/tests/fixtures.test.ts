@@ -124,7 +124,7 @@ function nestDescribe(
           throw new Error(
             `Expected value for ${key} to be one of (${Array.from(type[1]).join(
               ' | ',
-            )}), but got ${value}`,
+            )}), but got ${value as string}`,
           );
         }
 
