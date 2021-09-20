@@ -26,7 +26,7 @@ This rule adds the following options:
 You can specify this option for a specific path or pattern as follows:
 
 ```jsonc
-"no-restricted-imports": ["error", {
+"@typescript-eslint/no-restricted-imports": ["error", {
   "paths": [{
     "name": "import-foo",
     "message": "Please use import-bar instead.",
