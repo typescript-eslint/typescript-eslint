@@ -40,7 +40,7 @@ while (await promise) {
 }
 ```
 
-----
+---
 
 Examples of **incorrect** code for this rule with `checksVoidReturn: true`:
 
@@ -70,10 +70,12 @@ for (const value of [1, 2, 3]) {
   await doSomething(value);
 }
 
-// If outer context is not `async`, handle error explicitly 
-Promise.all([1, 2, 3].map(async value => {
-  await doSomething(value);
-})).catch(handleError);
+// If outer context is not `async`, handle error explicitly
+Promise.all(
+  [1, 2, 3].map(async value => {
+    await doSomething(value);
+  }),
+).catch(handleError);
 
 // Use an async IIFE wrapper
 new Promise((resolve, reject) => {
@@ -91,13 +93,13 @@ eventEmitter.on('some-event', () => {
     await doSomething();
     otherSynchronousCall();
   };
-  
+
   try {
     synchronousCall();
   } catch (err) {
     handleSpecificError(err);
   }
-  
+
   handler().catch(handleError);
 });
 ```
