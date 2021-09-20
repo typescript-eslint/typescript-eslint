@@ -151,8 +151,11 @@ export default createRule<Options, MessageIds>({
 
     return {
       ImportDeclaration(node): void {
+        if (typeof node.source.value !== 'string') {
+          return;
+        }
         if (node.importKind === 'type') {
-          const importSource = (node.source.value as string).trim();
+          const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
@@ -164,11 +167,14 @@ export default createRule<Options, MessageIds>({
         }
       },
       ExportNamedDeclaration(node): void {
-        if (node.source?.type !== AST_NODE_TYPES.Literal) {
+        if (
+          node.source?.type !== AST_NODE_TYPES.Literal ||
+          typeof node.source.value !== 'string'
+        ) {
           return;
         }
         if (node.exportKind === 'type') {
-          const importSource = (node.source.value as string).trim();
+          const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)

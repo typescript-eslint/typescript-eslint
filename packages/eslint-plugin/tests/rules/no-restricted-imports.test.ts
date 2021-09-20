@@ -220,6 +220,10 @@ ruleTester.run('no-restricted-imports', rule, {
       code: 'export { foo } from foo;',
       options: ['import1', 'import2'],
     },
+    {
+      code: 'import { foo } from foo;',
+      options: ['import1', 'import2'],
+    },
   ],
   invalid: [
     {
