@@ -860,3 +860,51 @@ declare module 'eslint/lib/rules/object-curly-spacing' {
   >;
   export = rule;
 }
+
+declare module 'eslint/lib/rules/no-restricted-imports' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  namespace rule {
+    export type ArrayOfStringOrObject = (
+      | string
+      | {
+          name: string;
+          message?: string;
+          importNames?: string[];
+          // extended
+          allowTypeImports?: boolean;
+        }
+    )[];
+    export type ArrayOfStringOrObjectPatterns =
+      | string[]
+      | {
+          group: string[];
+          message?: string;
+          // extended
+          allowTypeImports?: boolean;
+        }[];
+  }
+
+  interface ObjectOfPathsAndPatterns {
+    paths?: rule.ArrayOfStringOrObject;
+    patterns?: rule.ArrayOfStringOrObjectPatterns;
+  }
+
+  const rule: TSESLint.RuleModule<
+    | 'path'
+    | 'pathWithCustomMessage'
+    | 'patterns'
+    | 'patternWithCustomMessage'
+    | 'everything'
+    | 'everythingWithCustomMessage'
+    | 'importName'
+    | 'importNameWithCustomMessage',
+    rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
+    {
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+    }
+  >;
+  export = rule;
+}
