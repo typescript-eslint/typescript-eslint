@@ -79,7 +79,7 @@
     "@commitlint/config-lerna-scopes": "^13.1.0",
     "@nrwl/cli": "12.7.2",
     "@nrwl/nx-cloud": "12.3.10",
-    "@nrwl/tao": "12.7.2",
+    "@nrwl/tao": "12.9.0",
     "@nrwl/workspace": "12.7.2",
     "@types/babel__code-frame": "^7.0.2",
     "@types/debug": "^4.1.5",
