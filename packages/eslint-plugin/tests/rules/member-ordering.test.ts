@@ -75,7 +75,16 @@ interface Foo {
             `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
-
+    {
+      code: `
+interface X {
+  (): void;
+  a:  unknown;
+  b(): void;
+}
+            `,
+      options: [{ default: ['call-signature', 'field', 'method'] }],
+    },
     {
       code: `
 // no accessibility === public
@@ -1443,6 +1452,27 @@ interface Foo {
           },
           line: 17,
           column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a:  unknown;
+  (): void;
+  b(): void;
+}
+            `,
+      options: [{ default: ['call-signature', 'field', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          line: 4,
+          column: 3,
         },
       ],
     },
@@ -3811,8 +3841,8 @@ const sortedWithoutGroupingDefaultOption: TSESLint.RunTests<
     {
       code: `
 interface Foo {
-  a(): Foo;
   (): Foo;
+  a(): Foo;
   b(): Foo;
 }
             `,
@@ -3850,8 +3880,8 @@ type Foo = {
   a : b;
   [a: string] : number;
   b() : void;
-  new () : Bar;
   () : Baz;
+  new () : Bar;
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -3990,6 +4020,13 @@ interface Foo {
             beforeMember: 'b',
           },
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'call',
+            beforeMember: 'new',
+          },
+        },
       ],
     },
 
@@ -4039,6 +4076,13 @@ type Foo = {
           data: {
             member: 'a',
             beforeMember: 'b',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'call',
+            beforeMember: 'new',
           },
         },
       ],
@@ -4190,10 +4234,10 @@ const sortedWithoutGroupingClassesOption: TSESLint.RunTests<
       code: `
 interface Foo {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -4226,10 +4270,10 @@ interface Foo {
       code: `
 type Foo = {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -4400,10 +4444,10 @@ const sortedWithoutGroupingClassExpressionsOption: TSESLint.RunTests<
       code: `
 interface Foo {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [
@@ -4442,10 +4486,10 @@ interface Foo {
       code: `
 type Foo = {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [
@@ -4639,8 +4683,8 @@ interface Foo {
   [a: string] : number;
   a : b;
   b() : void;
-  new () : Bar;
   () : Baz;
+  new () : Bar;
 }
             `,
       options: [
@@ -4679,10 +4723,10 @@ interface Foo {
       code: `
 type Foo = {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [
@@ -4827,6 +4871,13 @@ interface Foo {
             beforeMember: 'b',
           },
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'call',
+            beforeMember: 'new',
+          },
+        },
       ],
     },
 
@@ -4872,10 +4923,10 @@ const sortedWithoutGroupingTypeLiteralsOption: TSESLint.RunTests<
       code: `
 interface Foo {
   [a: string] : number;
+  () : Baz;
   c : b;
   new () : Bar;
   b() : void;
-  () : Baz;
 }
             `,
       options: [
@@ -4916,8 +4967,8 @@ type Foo = {
   [a: string] : number;
   a : b;
   b() : void;
-  new () : Bar;
   () : Baz;
+  new () : Bar;
 }
             `,
       options: [
@@ -5062,6 +5113,13 @@ type Foo = {
             beforeMember: 'b',
           },
         },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'call',
+            beforeMember: 'new',
+          },
+        },
       ],
     },
 
@@ -5108,6 +5166,8 @@ const sortedWithGroupingDefaultOption: TSESLint.RunTests<
 interface Foo {
   [a: string] : number;
 
+  () : Baz;
+
   a : x;
   b : x;
   c : x;
@@ -5117,8 +5177,6 @@ interface Foo {
   a() : void;
   b() : void;
   c() : void;
-
-  () : Baz;
 }
             `,
       options: [
@@ -5160,6 +5218,8 @@ interface Foo {
 type Foo = {
   [a: string] : number;
 
+  () : Baz;
+
   a : x;
   b : x;
   c : x;
@@ -5169,8 +5229,6 @@ type Foo = {
   a() : void;
   b() : void;
   c() : void;
-
-  () : Baz;
 }
             `,
       options: [
@@ -5347,6 +5405,13 @@ interface Foo {
         {
           messageId: 'incorrectGroupOrder',
           data: {
+            name: 'call',
+            rank: 'field',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
             name: 'new',
             rank: 'method',
           },
@@ -5377,6 +5442,13 @@ type Foo = {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -5503,6 +5575,8 @@ const sortedWithGroupingClassesOption: TSESLint.RunTests<
 interface Foo {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5512,8 +5586,6 @@ interface Foo {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ classes: { order: 'alphabetically' } }],
@@ -5525,6 +5597,8 @@ interface Foo {
 type Foo = {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5534,8 +5608,6 @@ type Foo = {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ classes: { order: 'alphabetically' } }],
@@ -5645,6 +5717,8 @@ const sortedWithGroupingClassExpressionsOption: TSESLint.RunTests<
 interface Foo {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5654,8 +5728,6 @@ interface Foo {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ classExpressions: { order: 'alphabetically' } }],
@@ -5667,6 +5739,8 @@ interface Foo {
 type Foo = {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5676,8 +5750,6 @@ type Foo = {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ classExpressions: { order: 'alphabetically' } }],
@@ -5849,6 +5921,8 @@ interface Foo {
 type Foo = {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5858,8 +5932,6 @@ type Foo = {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ interfaces: { order: 'alphabetically' } }],
@@ -5928,6 +6000,13 @@ interface Foo {
         {
           messageId: 'incorrectGroupOrder',
           data: {
+            name: 'call',
+            rank: 'field',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
             name: 'new',
             rank: 'method',
           },
@@ -5948,6 +6027,8 @@ const sortedWithGroupingTypeLiteralsOption: TSESLint.RunTests<
 interface Foo {
   [a: string] : number;
 
+  () : Baz;
+
   c : x;
   b : x;
   a : x;
@@ -5957,8 +6038,6 @@ interface Foo {
   c() : void;
   b() : void;
   a() : void;
-
-  () : Baz;
 }
             `,
       options: [{ typeLiterals: { order: 'alphabetically' } }],
@@ -6081,6 +6160,13 @@ type Foo = {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {

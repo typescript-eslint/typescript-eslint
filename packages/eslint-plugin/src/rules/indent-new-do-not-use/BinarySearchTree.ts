@@ -4,10 +4,9 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import createTree from 'functional-red-black-tree';
 
-export type TokenOrComment = TSESTree.Token | TSESTree.Comment;
 export interface TreeValue {
   offset: number;
-  from: TokenOrComment | null;
+  from: TSESTree.Token | null;
   force: boolean;
 }
 

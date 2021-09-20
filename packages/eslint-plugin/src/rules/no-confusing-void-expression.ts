@@ -57,7 +57,7 @@ export default util.createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {

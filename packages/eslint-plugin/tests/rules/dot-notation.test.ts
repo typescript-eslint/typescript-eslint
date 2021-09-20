@@ -87,6 +87,37 @@ x['protected_prop'] = 123;
       `,
       options: [{ allowProtectedClassPropertyAccess: true }],
     },
+    {
+      code: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x['hello'] = 3;
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+    },
+    {
+      code: `
+interface Nested {
+  property: string;
+  [key: string]: number | string;
+}
+
+class Dingus {
+  nested: Nested;
+}
+
+let dingus: Dingus | undefined;
+
+dingus?.nested.property;
+dingus?.nested['hello'];
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+      parserOptions: { ecmaVersion: 2020 },
+    },
   ],
   invalid: [
     {
@@ -286,6 +317,28 @@ const x = new X();
 x.protected_prop = 123;
       `,
       errors: [{ messageId: 'useDot' }],
+    },
+    {
+      code: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x['prop'] = 'hello';
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+      errors: [{ messageId: 'useDot' }],
+      output: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x.prop = 'hello';
+      `,
     },
   ],
 });

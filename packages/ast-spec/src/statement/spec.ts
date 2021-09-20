@@ -8,7 +8,6 @@ export * from './ForInStatement/spec';
 export * from './ForOfStatement/spec';
 export * from './ForStatement/spec';
 export * from './IfStatement/spec';
-export * from './ImportDeclaration/spec';
 export * from './LabeledStatement/spec';
 export * from './ReturnStatement/spec';
 export * from './SwitchStatement/spec';

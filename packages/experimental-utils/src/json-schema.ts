@@ -2,6 +2,7 @@
 // If we do export *, then it will also export these function declarations.
 // This will cause typescript to not scrub the require from the build, breaking anyone who doesn't have it as a dependency
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 export {
   JSONSchema4,
   JSONSchema4Type,
@@ -20,4 +21,4 @@ export {
   JSONSchema7Version,
   ValidationError,
   ValidationResult,
-} from 'json-schema'; // eslint-disable-line import/no-extraneous-dependencies
+} from 'json-schema';

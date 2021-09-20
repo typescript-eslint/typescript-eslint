@@ -1,24 +1,31 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
+const isNodeOfType = <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) => (
+  node: TSESTree.Node | null | undefined,
+): node is TSESTree.Node & { type: NodeType } => node?.type === nodeType;
+
 function isOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '?.' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
 }
 function isNotOptionalChainPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+  token: TSESTree.Token,
+): token is Exclude<
+  TSESTree.Token,
+  TSESTree.PunctuatorToken & { value: '?.' }
+> {
   return !isOptionalChainPunctuator(token);
 }
 
 function isNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '!' } {
   return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
 }
 function isNotNonNullAssertionPunctuator(
-  token: TSESTree.Token | TSESTree.Comment,
-): boolean {
+  token: TSESTree.Token,
+): token is Exclude<TSESTree.Token, TSESTree.PunctuatorToken & { value: '!' }> {
   return !isNonNullAssertionPunctuator(token);
 }
 
@@ -66,11 +73,7 @@ function isTypeAssertion(
   );
 }
 
-function isVariableDeclarator(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.VariableDeclarator {
-  return node?.type === AST_NODE_TYPES.VariableDeclarator;
-}
+const isVariableDeclarator = isNodeOfType(AST_NODE_TYPES.VariableDeclarator);
 
 function isFunction(
   node: TSESTree.Node | undefined,
@@ -127,17 +130,9 @@ function isFunctionOrFunctionType(
   return isFunction(node) || isFunctionType(node);
 }
 
-function isTSFunctionType(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.TSFunctionType {
-  return node?.type === AST_NODE_TYPES.TSFunctionType;
-}
+const isTSFunctionType = isNodeOfType(AST_NODE_TYPES.TSFunctionType);
 
-function isTSConstructorType(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.TSConstructorType {
-  return node?.type === AST_NODE_TYPES.TSConstructorType;
-}
+const isTSConstructorType = isNodeOfType(AST_NODE_TYPES.TSConstructorType);
 
 function isClassOrTypeElement(
   node: TSESTree.Node | undefined,
@@ -190,27 +185,19 @@ function isSetter(
   );
 }
 
-function isIdentifier(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.Identifier {
-  return node?.type === AST_NODE_TYPES.Identifier;
-}
+const isIdentifier = isNodeOfType(AST_NODE_TYPES.Identifier);
 
 /**
  * Checks if a node represents an `await …` expression.
  */
-function isAwaitExpression(
-  node: TSESTree.Node | undefined | null,
-): node is TSESTree.AwaitExpression {
-  return node?.type === AST_NODE_TYPES.AwaitExpression;
-}
+const isAwaitExpression = isNodeOfType(AST_NODE_TYPES.AwaitExpression);
 
 /**
  * Checks if a possible token is the `await` keyword.
  */
 function isAwaitKeyword(
-  node: TSESTree.Token | TSESTree.Comment | undefined | null,
-): node is TSESTree.KeywordToken & { value: 'await' } {
+  node: TSESTree.Token | undefined | null,
+): node is TSESTree.IdentifierToken & { value: 'await' } {
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 

@@ -9,6 +9,7 @@ import {
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -50,7 +51,7 @@ const parsedFilesSeenHash = new Map<CanonicalPath, string>();
  * Clear all of the parser caches.
  * This should only be used in testing to ensure the parser is clean between tests.
  */
-function clearCaches(): void {
+function clearWatchCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
@@ -268,6 +269,12 @@ function createWatchProgram(
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+
+  if (extra.moduleResolver) {
+    watchCompilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
@@ -531,4 +538,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearCaches, createWatchProgram, getProgramsForProjects };
+export { clearWatchCaches, createWatchProgram, getProgramsForProjects };

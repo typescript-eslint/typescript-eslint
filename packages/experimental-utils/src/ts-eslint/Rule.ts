@@ -114,7 +114,7 @@ interface RuleFixer {
 
 type ReportFixFunction = (
   fixer: RuleFixer,
-) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
+) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<
   TMessageIds extends string
 > = ReportDescriptorBase<TMessageIds>[];
@@ -148,7 +148,7 @@ interface ReportDescriptorNodeOptionalLoc {
   /**
    * The Node or AST Token which the report is being attached to
    */
-  readonly node: TSESTree.Node | TSESTree.Comment | TSESTree.Token;
+  readonly node: TSESTree.Node | TSESTree.Token;
   /**
    * An override of the location of the report
    */
@@ -166,6 +166,14 @@ type ReportDescriptor<
   TMessageIds extends string
 > = ReportDescriptorWithSuggestion<TMessageIds> &
   (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+
+/**
+ * Plugins can add their settings using declaration
+ * merging against this interface.
+ */
+interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
 
 interface RuleContext<
   TMessageIds extends string,
@@ -196,7 +204,7 @@ interface RuleContext<
    * The shared settings from configuration.
    * We do not have any shared settings in this plugin.
    */
-  settings: Record<string, unknown>;
+  settings: SharedConfigurationSettings;
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -271,7 +279,6 @@ interface RuleListener {
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
   ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
-  Comment?: RuleFunction<TSESTree.Comment>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
   DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
@@ -332,7 +339,6 @@ interface RuleListener {
   TemplateLiteral?: RuleFunction<TSESTree.TemplateLiteral>;
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
-  Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
   TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
@@ -454,4 +460,5 @@ export {
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,
+  SharedConfigurationSettings,
 };

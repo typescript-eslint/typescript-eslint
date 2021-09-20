@@ -50,6 +50,7 @@ import noInvalidVoidType from './no-invalid-void-type';
 import noLoopFunc from './no-loop-func';
 import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
+import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
@@ -82,6 +83,7 @@ import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
+import paddingLineBetweenStatements from './padding-line-between-statements';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -95,6 +97,7 @@ import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
+import preferReturnThisType from './prefer-return-this-type';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
@@ -169,6 +172,7 @@ export default {
   'no-loop-func': noLoopFunc,
   'no-loss-of-precision': noLossOfPrecision,
   'no-magic-numbers': noMagicNumbers,
+  'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
@@ -201,6 +205,7 @@ export default {
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
+  'padding-line-between-statements': paddingLineBetweenStatements,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
@@ -214,6 +219,7 @@ export default {
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
+  'prefer-return-this-type': preferReturnThisType,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,

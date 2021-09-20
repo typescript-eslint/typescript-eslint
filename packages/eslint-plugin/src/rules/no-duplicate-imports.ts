@@ -21,10 +21,10 @@ export default util.createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
     messages: {
       ...baseRule.meta.messages,
-      importType: '{{module}} type import is duplicated',
-      importTypeAs: '{{module}} type import is duplicated as type export',
-      exportType: '{{module}} type export is duplicated',
-      exportTypeAs: '{{module}} type export is duplicated as type import',
+      importType: '{{module}} type import is duplicated.',
+      importTypeAs: '{{module}} type import is duplicated as type export.',
+      exportType: '{{module}} type export is duplicated.',
+      exportTypeAs: '{{module}} type export is duplicated as type import.',
     },
   },
   defaultOptions: [

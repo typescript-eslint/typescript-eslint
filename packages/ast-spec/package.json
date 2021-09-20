@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "4.20.0",
+  "version": "4.31.2",
   "description": "TypeScript-ESTree AST spec",
   "private": true,
   "keywords": [
@@ -41,6 +41,7 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.13.2"
+    "@microsoft/api-extractor": "^7.15.2",
+    "typescript": "*"
   }
 }

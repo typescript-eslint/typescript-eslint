@@ -1,6 +1,5 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
@@ -16,7 +15,7 @@ export default util.createRule<[], MessageIds>({
     },
     messages: {
       defineInitializer:
-        "The value of the member '{{ name }}' should be explicitly defined",
+        "The value of the member '{{ name }}' should be explicitly defined.",
       defineInitializerSuggestion:
         'Can be fixed to {{ name }} = {{ suggested }}',
     },

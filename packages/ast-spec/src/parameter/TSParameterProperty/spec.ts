@@ -12,6 +12,7 @@ export interface TSParameterProperty extends BaseNode {
   readonly?: boolean;
   static?: boolean;
   export?: boolean;
+  override?: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
   decorators?: Decorator[];
 }

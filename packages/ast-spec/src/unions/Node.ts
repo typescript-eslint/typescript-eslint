@@ -3,6 +3,7 @@ import type { ExportAllDeclaration } from '../declaration/ExportAllDeclaration/s
 import type { ExportDefaultDeclaration } from '../declaration/ExportDefaultDeclaration/spec';
 import type { ExportNamedDeclaration } from '../declaration/ExportNamedDeclaration/spec';
 import type { FunctionDeclaration } from '../declaration/FunctionDeclaration/spec';
+import type { ImportDeclaration } from '../declaration/ImportDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
 import type { TSImportEqualsDeclaration } from '../declaration/TSImportEqualsDeclaration/spec';
@@ -15,6 +16,7 @@ import type { ClassProperty } from '../element/ClassProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
+import type { StaticBlock } from '../element/StaticBlock/spec';
 import type { TSAbstractClassProperty } from '../element/TSAbstractClassProperty/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
@@ -103,7 +105,6 @@ import type { ForInStatement } from '../statement/ForInStatement/spec';
 import type { ForOfStatement } from '../statement/ForOfStatement/spec';
 import type { ForStatement } from '../statement/ForStatement/spec';
 import type { IfStatement } from '../statement/IfStatement/spec';
-import type { ImportDeclaration } from '../statement/ImportDeclaration/spec';
 import type { LabeledStatement } from '../statement/LabeledStatement/spec';
 import type { ReturnStatement } from '../statement/ReturnStatement/spec';
 import type { SwitchStatement } from '../statement/SwitchStatement/spec';
@@ -235,6 +236,7 @@ export type Node =
   | ReturnStatement
   | SequenceExpression
   | SpreadElement
+  | StaticBlock
   | Super
   | SwitchCase
   | SwitchStatement
