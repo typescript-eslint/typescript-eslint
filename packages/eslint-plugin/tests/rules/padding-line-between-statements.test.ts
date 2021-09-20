@@ -5056,5 +5056,45 @@ var a = 1
         { messageId: 'expectedBlankLine' },
       ],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3863
+      code: `
+declare namespace Types {
+  type Foo = string;
+  type Bar = string;
+  interface FooBar {
+    [key: string]: string;
+  }
+  interface BarBaz {
+    [key: string]: string;
+  }
+}
+      `,
+      output: `
+declare namespace Types {
+  type Foo = string;
+
+  type Bar = string;
+
+  interface FooBar {
+    [key: string]: string;
+  }
+
+  interface BarBaz {
+    [key: string]: string;
+  }
+}
+
+      `,
+      options: [
+        { blankLine: 'always', prev: '*', next: ['interface', 'type'] },
+      ],
+      errors: [
+        { messageId: 'expectedBlankLine' },
+        { messageId: 'expectedBlankLine' },
+        { messageId: 'expectedBlankLine' },
+        { messageId: 'expectedBlankLine' },
+      ],
+    },
   ],
 });
