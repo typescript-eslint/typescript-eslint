@@ -1,8 +1,11 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
-const isNodeOfType = <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) => (
-  node: TSESTree.Node | null | undefined,
-): node is TSESTree.Node & { type: NodeType } => node?.type === nodeType;
+const isNodeOfType =
+  <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+  (
+    node: TSESTree.Node | null | undefined,
+  ): node is TSESTree.Node & { type: NodeType } =>
+    node?.type === nodeType;
 
 function isOptionalChainPunctuator(
   token: TSESTree.Token,

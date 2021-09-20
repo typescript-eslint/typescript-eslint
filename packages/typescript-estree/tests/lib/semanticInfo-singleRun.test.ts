@@ -47,15 +47,15 @@ jest.mock('../../src/create-program/shared.ts', () => {
 jest.mock('../../src/create-program/useProvidedPrograms.ts', () => {
   return {
     ...jest.requireActual('../../src/create-program/useProvidedPrograms.ts'),
-    createProgramFromConfigFile: jest.fn().mockImplementation(
-      (configFile): MockProgramWithConfigFile => {
+    createProgramFromConfigFile: jest
+      .fn()
+      .mockImplementation((configFile): MockProgramWithConfigFile => {
         return {
           // So we can differentiate our mock return values based on which tsconfig this is
           __FROM_CONFIG_FILE__: configFile,
           ...mockProgram,
         };
-      },
-    ),
+      }),
   };
 });
 

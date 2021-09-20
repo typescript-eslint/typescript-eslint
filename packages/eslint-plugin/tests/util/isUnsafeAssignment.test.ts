@@ -8,9 +8,7 @@ import { isUnsafeAssignment } from '../../src/util/types';
 describe('isUnsafeAssignment', () => {
   const rootDir = getFixturesRootDir();
 
-  function getTypes(
-    code: string,
-  ): {
+  function getTypes(code: string): {
     sender: ts.Type;
     senderNode: TSESTree.Node;
     receiver: ts.Type;

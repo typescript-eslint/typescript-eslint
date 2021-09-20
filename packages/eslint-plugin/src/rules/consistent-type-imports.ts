@@ -255,9 +255,10 @@ export default util.createRule<Options, MessageIds>({
                     const isTypeImport = report.node.importKind === 'type';
 
                     // we have a mixed type/value import, so we need to split them out into multiple exports
-                    const importNames = (isTypeImport
-                      ? report.valueSpecifiers
-                      : report.typeSpecifiers
+                    const importNames = (
+                      isTypeImport
+                        ? report.valueSpecifiers
+                        : report.typeSpecifiers
                     ).map(specifier => `"${specifier.local.name}"`);
 
                     const message = ((): {
@@ -343,9 +344,7 @@ export default util.createRule<Options, MessageIds>({
         : {}),
     };
 
-    function classifySpecifier(
-      node: TSESTree.ImportDeclaration,
-    ): {
+    function classifySpecifier(node: TSESTree.ImportDeclaration): {
       defaultSpecifier: TSESTree.ImportDefaultSpecifier | null;
       namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null;
       namedSpecifiers: TSESTree.ImportSpecifier[];
@@ -359,10 +358,11 @@ export default util.createRule<Options, MessageIds>({
           (specifier): specifier is TSESTree.ImportNamespaceSpecifier =>
             specifier.type === AST_NODE_TYPES.ImportNamespaceSpecifier,
         ) ?? null;
-      const namedSpecifiers: TSESTree.ImportSpecifier[] = node.specifiers.filter(
-        (specifier): specifier is TSESTree.ImportSpecifier =>
-          specifier.type === AST_NODE_TYPES.ImportSpecifier,
-      );
+      const namedSpecifiers: TSESTree.ImportSpecifier[] =
+        node.specifiers.filter(
+          (specifier): specifier is TSESTree.ImportSpecifier =>
+            specifier.type === AST_NODE_TYPES.ImportSpecifier,
+        );
       return {
         defaultSpecifier,
         namespaceSpecifier,
@@ -527,11 +527,8 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier && !defaultSpecifier) {
         // e.g.
@@ -738,11 +735,8 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier) {
         // e.g.

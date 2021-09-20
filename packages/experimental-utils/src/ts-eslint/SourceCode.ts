@@ -250,9 +250,7 @@ declare class SourceCodeBase extends TokenStore {
    * @param node The AST node to get the comments for.
    * @returns An object containing a leading and trailing array of comments indexed by their position.
    */
-  getComments(
-    node: TSESTree.Node,
-  ): {
+  getComments(node: TSESTree.Node): {
     leading: TSESTree.Comment[];
     trailing: TSESTree.Comment[];
   };

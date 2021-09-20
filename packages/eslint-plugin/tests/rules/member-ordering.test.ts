@@ -5155,14 +5155,12 @@ type Foo = {
   ],
 };
 
-const sortedWithGroupingDefaultOption: TSESLint.RunTests<
-  MessageIds,
-  Options
-> = {
-  valid: [
-    // default option + interface + default order + alphabetically
-    {
-      code: `
+const sortedWithGroupingDefaultOption: TSESLint.RunTests<MessageIds, Options> =
+  {
+    valid: [
+      // default option + interface + default order + alphabetically
+      {
+        code: `
 interface Foo {
   [a: string] : number;
 
@@ -5179,14 +5177,14 @@ interface Foo {
   c() : void;
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
 
-    // default option + interface + custom order + alphabetically
-    {
-      code: `
+      // default option + interface + custom order + alphabetically
+      {
+        code: `
 interface Foo {
   new () : Bar;
 
@@ -5202,19 +5200,19 @@ interface Foo {
   () : Baz;
 }
             `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'method', 'field'],
-            order: 'alphabetically',
+        options: [
+          {
+            default: {
+              memberTypes: ['constructor', 'method', 'field'],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + type literal + default order + alphabetically
-    {
-      code: `
+      // default option + type literal + default order + alphabetically
+      {
+        code: `
 type Foo = {
   [a: string] : number;
 
@@ -5231,14 +5229,14 @@ type Foo = {
   c() : void;
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
 
-    // default option + type literal + custom order + alphabetically
-    {
-      code: `
+      // default option + type literal + custom order + alphabetically
+      {
+        code: `
 type Foo = {
   [a: string] : number;
 
@@ -5255,19 +5253,19 @@ type Foo = {
   () : Baz;
 }
             `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'method', 'field'],
-            order: 'alphabetically',
+        options: [
+          {
+            default: {
+              memberTypes: ['constructor', 'method', 'field'],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + class + default order + alphabetically
-    {
-      code: `
+      // default option + class + default order + alphabetically
+      {
+        code: `
 class Foo {
   public static a: string;
   protected static b: string = "";
@@ -5280,13 +5278,13 @@ class Foo {
   constructor() {}
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-    // default option + class + decorators + default order + alphabetically
-    {
-      code: `
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
+      // default option + class + decorators + default order + alphabetically
+      {
+        code: `
 class Foo {
   public static a: string;
   protected static b: string = "";
@@ -5303,14 +5301,14 @@ class Foo {
   constructor() {}
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
 
-    // default option + class + custom order + alphabetically
-    {
-      code: `
+      // default option + class + custom order + alphabetically
+      {
+        code: `
 class Foo {
   constructor() {}
 
@@ -5323,19 +5321,19 @@ class Foo {
   private static c: string = "";
 }
             `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'instance-field', 'static-field'],
-            order: 'alphabetically',
+        options: [
+          {
+            default: {
+              memberTypes: ['constructor', 'instance-field', 'static-field'],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + class expression + default order + alphabetically
-    {
-      code: `
+      // default option + class expression + default order + alphabetically
+      {
+        code: `
 const foo = class Foo {
   public static a: string;
   protected static b: string = "";
@@ -5348,14 +5346,14 @@ const foo = class Foo {
   constructor() {}
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
 
-    // default option + class expression + custom order + alphabetically
-    {
-      code: `
+      // default option + class expression + custom order + alphabetically
+      {
+        code: `
 const foo = class Foo {
   constructor() {}
 
@@ -5368,20 +5366,20 @@ const foo = class Foo {
   private static c: string = "";
 }
             `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'instance-field', 'static-field'],
-            order: 'alphabetically',
+        options: [
+          {
+            default: {
+              memberTypes: ['constructor', 'instance-field', 'static-field'],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-    },
-  ],
-  invalid: [
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+        ],
+      },
+    ],
+    invalid: [
+      // default option + interface + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 interface Foo {
   [a: string] : number;
 
@@ -5398,30 +5396,30 @@ interface Foo {
   new () : Bar;
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'call',
+              rank: 'field',
+            },
           },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'new',
+              rank: 'method',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+      // default option + type literal + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 type Foo = {
   [a: string] : number;
 
@@ -5438,30 +5436,30 @@ type Foo = {
   new () : Bar;
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'call',
+              rank: 'field',
+            },
           },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'new',
+              rank: 'method',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 class Foo {
   public static c: string = "";
   public static b: string = "";
@@ -5472,23 +5470,23 @@ class Foo {
   public d: string = "";
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'public constructor',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // default option + class expression + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+      // default option + class expression + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 const foo = class Foo {
   public static c: string = "";
   public static b: string = "";
@@ -5499,22 +5497,22 @@ const foo = class Foo {
   public d: string = "";
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'public constructor',
+            },
           },
-        },
-      ],
-    },
-    // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+        ],
+      },
+      // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 class Foo {
   @Dec() a1: string;
   @Dec()
@@ -5531,47 +5529,45 @@ class Foo {
   @Dec() d(): void
 }
             `,
-      options: [
-        {
-          default: {
-            memberTypes: [
-              'decorated-field',
-              'field',
-              'constructor',
-              'decorated-method',
-            ],
-            order: 'alphabetically',
+        options: [
+          {
+            default: {
+              memberTypes: [
+                'decorated-field',
+                'field',
+                'constructor',
+                'decorated-method',
+              ],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'b1',
-            rank: 'constructor',
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'b1',
+              rank: 'constructor',
+            },
           },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'b2',
-            rank: 'constructor',
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'b2',
+              rank: 'constructor',
+            },
           },
-        },
-      ],
-    },
-  ],
-};
+        ],
+      },
+    ],
+  };
 
-const sortedWithGroupingClassesOption: TSESLint.RunTests<
-  MessageIds,
-  Options
-> = {
-  valid: [
-    // classes option + interface + alphabetically --> Default order applies
-    {
-      code: `
+const sortedWithGroupingClassesOption: TSESLint.RunTests<MessageIds, Options> =
+  {
+    valid: [
+      // classes option + interface + alphabetically --> Default order applies
+      {
+        code: `
 interface Foo {
   [a: string] : number;
 
@@ -5588,12 +5584,12 @@ interface Foo {
   a() : void;
 }
             `,
-      options: [{ classes: { order: 'alphabetically' } }],
-    },
+        options: [{ classes: { order: 'alphabetically' } }],
+      },
 
-    // classes option + type literal + alphabetically --> Default order applies
-    {
-      code: `
+      // classes option + type literal + alphabetically --> Default order applies
+      {
+        code: `
 type Foo = {
   [a: string] : number;
 
@@ -5610,12 +5606,12 @@ type Foo = {
   a() : void;
 }
             `,
-      options: [{ classes: { order: 'alphabetically' } }],
-    },
+        options: [{ classes: { order: 'alphabetically' } }],
+      },
 
-    // classes option + class + default order + alphabetically
-    {
-      code: `
+      // classes option + class + default order + alphabetically
+      {
+        code: `
 class Foo {
   public static a: string;
   protected static b: string = "";
@@ -5628,14 +5624,14 @@ class Foo {
   constructor() {}
 }
             `,
-      options: [
-        { classes: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
+        options: [
+          { classes: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+      },
 
-    // classes option + class + custom order + alphabetically
-    {
-      code: `
+      // classes option + class + custom order + alphabetically
+      {
+        code: `
 class Foo {
   constructor() {}
 
@@ -5648,19 +5644,19 @@ class Foo {
   private static c: string = "";
 }
             `,
-      options: [
-        {
-          classes: {
-            memberTypes: ['constructor', 'instance-field', 'static-field'],
-            order: 'alphabetically',
+        options: [
+          {
+            classes: {
+              memberTypes: ['constructor', 'instance-field', 'static-field'],
+              order: 'alphabetically',
+            },
           },
-        },
-      ],
-    },
+        ],
+      },
 
-    // classes option + class expression + alphabetically --> Default order applies
-    {
-      code: `
+      // classes option + class expression + alphabetically --> Default order applies
+      {
+        code: `
 const foo = class Foo {
   public static a: string;
   protected static b: string = "";
@@ -5673,13 +5669,13 @@ const foo = class Foo {
   constructor() {}
 }
             `,
-      options: [{ classes: { order: 'alphabetically' } }],
-    },
-  ],
-  invalid: [
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
+        options: [{ classes: { order: 'alphabetically' } }],
+      },
+    ],
+    invalid: [
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
 class Foo {
   public static c: string = "";
   public static b: string = "";
@@ -5690,21 +5686,21 @@ class Foo {
   public d: string = "";
 }
             `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
+        options: [
+          { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'public constructor',
+            },
           },
-        },
-      ],
-    },
-  ],
-};
+        ],
+      },
+    ],
+  };
 
 const sortedWithGroupingClassExpressionsOption: TSESLint.RunTests<
   MessageIds,

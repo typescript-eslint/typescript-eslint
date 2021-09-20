@@ -93,8 +93,8 @@ export default createRule<Options, MessageIds>({
           const propertySymbol = typeChecker.getSymbolAtLocation(
             esTreeNodeToTSNodeMap.get(node.property),
           );
-          const modifierKind = propertySymbol?.getDeclarations()?.[0]
-            ?.modifiers?.[0].kind;
+          const modifierKind =
+            propertySymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
               modifierKind == ts.SyntaxKind.PrivateKeyword) ||
