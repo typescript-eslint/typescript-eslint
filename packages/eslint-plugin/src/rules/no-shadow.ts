@@ -87,7 +87,10 @@ export default util.createRule<Options, MessageIds>({
      * Check if variable is a `this` parameter.
      */
     function isThisParam(variable: TSESLint.Scope.Variable): boolean {
-      return variable.defs[0].type === 'Parameter' && variable.name === 'this';
+      return (
+        variable.defs[0].type === DefinitionType.Parameter &&
+        variable.name === 'this'
+      );
     }
 
     function isTypeImport(
@@ -293,7 +296,7 @@ export default util.createRule<Options, MessageIds>({
         inner &&
         outer[0] < inner[0] &&
         inner[1] < outer[1] &&
-        ((innerDef.type === 'FunctionName' &&
+        ((innerDef.type === DefinitionType.FunctionName &&
           innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
           innerDef.node.type === AST_NODE_TYPES.ClassExpression) &&
         outerScope === innerScope.upper

@@ -1,7 +1,8 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 import {
   checkFunctionExpressionReturnType,
@@ -294,11 +295,12 @@ export default util.createRule<Options, MessageIds>({
       for (const definition of variable.defs) {
         // cases we don't care about in this rule
         if (
-          definition.type === 'ImplicitGlobalVariable' ||
-          definition.type === 'ImportBinding' ||
-          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-          definition.type === 'CatchClause' ||
-          definition.type === 'Parameter'
+          [
+            DefinitionType.ImplicitGlobalVariable,
+            DefinitionType.ImportBinding,
+            DefinitionType.CatchClause,
+            DefinitionType.Parameter,
+          ].includes(definition.type)
         ) {
           continue;
         }

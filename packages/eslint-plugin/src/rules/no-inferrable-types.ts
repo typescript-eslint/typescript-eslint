@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -129,7 +130,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSBooleanKeyword:
           return (
             hasUnaryPrefix(init, '!') ||
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'Boolean') ||
             isLiteral(init, 'boolean')
           );
@@ -151,7 +151,6 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'String') ||
             isLiteral(init, 'string') ||
             init.type === AST_NODE_TYPES.TemplateLiteral

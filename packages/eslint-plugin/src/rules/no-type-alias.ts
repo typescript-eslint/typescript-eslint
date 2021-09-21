@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
@@ -278,8 +279,7 @@ export default util.createRule<Options, MessageIds>({
           reportError(type.node, type.compositionType, isTopLevel, 'Generics');
         }
       } else if (
-        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        type.node.type.endsWith('Keyword') ||
+        type.node.type.endsWith(AST_TOKEN_TYPES.Keyword) ||
         aliasTypes.has(type.node.type) ||
         (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
           (type.node.operator === 'keyof' ||
