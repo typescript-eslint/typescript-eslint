@@ -1,6 +1,6 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-shadow';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -172,6 +172,18 @@ export class Wrapper<Wrapped> {
   }
 }
     `,
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3862
+      code: `
+import type { foo } from './foo';
+type bar = number;
+
+// 'foo' is already declared in the upper scope
+// 'bar' is fine
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+    },
   ],
   invalid: [
     {
@@ -1395,6 +1407,38 @@ function foo(cb) {
           type: AST_NODE_TYPES.Identifier,
           line: 3,
           column: 14,
+        },
+      ],
+    },
+    {
+      code: `
+import type { foo } from './foo';
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+import { foo } from './foo';
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
         },
       ],
     },

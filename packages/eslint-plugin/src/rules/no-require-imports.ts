@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { ASTUtils, TSESTree } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -18,13 +18,19 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      'CallExpression > Identifier[name="require"]'(
-        node: TSESTree.Identifier,
+      'CallExpression[callee.name="require"]'(
+        node: TSESTree.CallExpression,
       ): void {
-        context.report({
-          node: node.parent!,
-          messageId: 'noRequireImports',
-        });
+        const variable = ASTUtils.findVariable(context.getScope(), 'require');
+
+        // ignore non-global require usage as it's something user-land custom instead
+        // of the commonjs standard
+        if (!variable?.identifiers.length) {
+          context.report({
+            node,
+            messageId: 'noRequireImports',
+          });
+        }
       },
       TSExternalModuleReference(node): void {
         context.report({

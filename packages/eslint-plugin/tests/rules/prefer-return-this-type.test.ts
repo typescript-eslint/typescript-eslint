@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-return-this-type';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -280,6 +280,33 @@ class Foo {
       case 2:
         return this;
     }
+  }
+}
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3842
+      code: `
+class Animal<T> {
+  eat(): Animal<T> {
+    console.log("I'm moving!");
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'useThisType',
+          line: 3,
+          column: 10,
+          endColumn: 19,
+        },
+      ],
+      output: `
+class Animal<T> {
+  eat(): this {
+    console.log("I'm moving!");
+    return this;
   }
 }
       `,
