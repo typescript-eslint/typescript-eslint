@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/prettier": "*",
     "@typescript-eslint/experimental-utils": "4.31.2",
+    "@typescript-eslint/scope-manager": "^4.31.2",
     "prettier": "*"
   }
 }
