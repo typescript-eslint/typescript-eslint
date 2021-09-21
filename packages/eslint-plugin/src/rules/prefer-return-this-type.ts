@@ -40,13 +40,13 @@ export default createRule({
     function tryGetNameInType(
       name: string,
       typeNode: TSESTree.TypeNode,
-    ): TSESTree.Identifier | undefined {
+    ): TSESTree.TSTypeReference | undefined {
       if (
         typeNode.type === AST_NODE_TYPES.TSTypeReference &&
         typeNode.typeName.type === AST_NODE_TYPES.Identifier &&
         typeNode.typeName.name === name
       ) {
-        return typeNode.typeName;
+        return typeNode;
       }
 
       if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
@@ -130,27 +130,19 @@ export default createRule({
       originalClass: ClassLikeDeclaration,
     ): void {
       const className = originalClass.id?.name;
-      if (!className) {
+      if (!className || !originalFunc.returnType) {
         return;
       }
 
-      if (!originalFunc.returnType) {
-        return;
-      }
-
-      const classNameRef = tryGetNameInType(
+      const node = tryGetNameInType(
         className,
         originalFunc.returnType.typeAnnotation,
       );
-      if (!classNameRef) {
+      if (!node) {
         return;
       }
 
       if (isFunctionReturningThis(originalFunc, originalClass)) {
-        const node =
-          classNameRef.parent?.type === AST_NODE_TYPES.TSTypeReference
-            ? classNameRef.parent
-            : classNameRef;
         context.report({
           node,
           messageId: 'useThisType',
