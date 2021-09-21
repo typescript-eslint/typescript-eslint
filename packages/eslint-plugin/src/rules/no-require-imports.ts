@@ -23,7 +23,7 @@ export default util.createRule({
       ): void {
         const variable = ASTUtils.findVariable(context.getScope(), 'require');
 
-        // ignore non-global require usage as it's something userland custom instead
+        // ignore non-global require usage as it's something user-land custom instead
         // of the commonjs standard
         if (!variable?.identifiers.length) {
           context.report({
