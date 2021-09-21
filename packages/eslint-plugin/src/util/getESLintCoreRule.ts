@@ -24,6 +24,7 @@ interface RuleMap {
   'no-loop-func': typeof import('eslint/lib/rules/no-loop-func');
   'no-loss-of-precision': typeof import('eslint/lib/rules/no-loss-of-precision');
   'no-magic-numbers': typeof import('eslint/lib/rules/no-magic-numbers');
+  'no-restricted-imports': typeof import('eslint/lib/rules/no-restricted-imports');
   'no-undef': typeof import('eslint/lib/rules/no-undef');
   'no-unused-expressions': typeof import('eslint/lib/rules/no-unused-expressions');
   'no-useless-constructor': typeof import('eslint/lib/rules/no-useless-constructor');
