@@ -1426,5 +1426,21 @@ function doThing(foo: number, bar: number) {}
         },
       ],
     },
+    {
+      code: `
+import { foo } from './foo';
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
   ],
 });
