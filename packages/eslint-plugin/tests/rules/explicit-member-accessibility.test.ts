@@ -1,5 +1,5 @@
 import rule from '../../src/rules/explicit-member-accessibility';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1138,6 +1138,87 @@ class Test {
   'foo foo' = 2;
   'bar'() {}
   'bar bar'() {}
+}
+      `,
+    },
+    {
+      code: `
+abstract class SomeClass {
+  abstract method(): string;
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class SomeClass {
+  public abstract method(): string;
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+abstract class SomeClass {
+  abstract method(): string;
+}
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3835
+      code: `
+abstract class SomeClass {
+  abstract x: string;
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class SomeClass {
+  public abstract x: string;
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'no-public' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unwantedPublicAccessibility',
+          line: 3,
+          column: 3,
+        },
+      ],
+      output: `
+abstract class SomeClass {
+  abstract x: string;
 }
       `,
     },
