@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -96,13 +96,13 @@ export default util.createRule<Options, MessageIds>({
       fix: TSESLint.ReportFixFunction | null = null,
     ): void {
       context.report({
-        node: node,
-        messageId: messageId,
+        node,
+        messageId,
         data: {
           type: nodeType,
           name: nodeName,
         },
-        fix: fix,
+        fix,
       });
     }
 
@@ -170,6 +170,8 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
@@ -208,7 +210,9 @@ export default util.createRule<Options, MessageIds>({
      * @param propertyDefinition The node representing a PropertyDefinition.
      */
     function checkPropertyAccessibilityModifier(
-      propertyDefinition: TSESTree.PropertyDefinition,
+      propertyDefinition:
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
     ): void {
       const nodeType = 'class property';
 
@@ -285,9 +289,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      'MethodDefinition, TSAbstractMethodDefinition':
+        checkMethodAccessibilityModifier,
+      'PropertyDefinition, TSAbstractPropertyDefinition':
+        checkPropertyAccessibilityModifier,
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
-      PropertyDefinition: checkPropertyAccessibilityModifier,
-      MethodDefinition: checkMethodAccessibilityModifier,
     };
   },
 });
