@@ -107,7 +107,7 @@ export default util.createRule<Options, MessageIds>({
         ? {
             // prefer type imports
             ImportDeclaration(node: TSESTree.ImportDeclaration): void {
-              const source = node.source.value as string;
+              const source = node.source.value;
               const sourceImports =
                 sourceImportsMap[source] ??
                 (sourceImportsMap[source] = {
