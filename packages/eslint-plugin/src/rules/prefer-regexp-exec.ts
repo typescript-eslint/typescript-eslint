@@ -75,13 +75,31 @@ export default createRule({
       return result;
     }
 
+    function isLikelyToContainGlobalFlag(
+      node: TSESTree.CallExpressionArgument,
+    ): boolean {
+      if (
+        node.type === AST_NODE_TYPES.CallExpression ||
+        node.type === AST_NODE_TYPES.NewExpression
+      ) {
+        const [, flags] = node.arguments;
+        return (
+          flags.type === AST_NODE_TYPES.Literal &&
+          typeof flags.value === 'string' &&
+          flags.value.includes('g')
+        );
+      }
+
+      return node.type === AST_NODE_TYPES.Identifier;
+    }
+
     return {
       "CallExpression[arguments.length=1] > MemberExpression.callee[property.name='match'][computed=false]"(
         memberNode: TSESTree.MemberExpression,
       ): void {
         const objectNode = memberNode.object;
         const callNode = memberNode.parent as TSESTree.CallExpression;
-        const argumentNode = callNode.arguments[0];
+        const [argumentNode] = callNode.arguments;
         const argumentValue = getStaticValue(argumentNode, globalScope);
 
         if (
@@ -96,9 +114,10 @@ export default createRule({
 
         // Don't report regular expressions with global flag.
         if (
-          argumentValue &&
-          argumentValue.value instanceof RegExp &&
-          argumentValue.value.flags.includes('g')
+          (!argumentValue && isLikelyToContainGlobalFlag(argumentNode)) ||
+          (argumentValue &&
+            argumentValue.value instanceof RegExp &&
+            argumentValue.value.flags.includes('g'))
         ) {
           return;
         }
