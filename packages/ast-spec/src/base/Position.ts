@@ -1,4 +1,4 @@
-export interface LineAndColumnData {
+export interface Position {
   /**
    * Line number (1-indexed)
    */

@@ -105,7 +105,7 @@ export function parse(
         );
     }
   } catch (error: any) {
-    const loc = error.loc as TSESTree.LineAndColumnData | undefined;
+    const loc = error.loc as TSESTree.Position | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
         text,
