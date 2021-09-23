@@ -132,11 +132,11 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
-      "AssignmentExpression[operator='+=']"(node): void {
-        if (checkCompoundAssignments) {
+      ...(checkCompoundAssignments && {
+        "AssignmentExpression[operator='+=']"(node): void {
           checkPlusOperands(node);
-        }
-      },
+        },
+      }),
     };
   },
 });
