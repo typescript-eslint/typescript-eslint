@@ -24,15 +24,16 @@ export default util.createRule({
 
     return {
       'FunctionDeclaration, FunctionExpression, ArrowFunctionExpression, TSCallSignatureDeclaration, TSMethodSignature, TSFunctionType, TSConstructorType, TSDeclareFunction'(
-        node:
-          | TSESTree.FunctionDeclaration
-          | TSESTree.FunctionExpression
-          | TSESTree.ArrowFunctionExpression
-          | TSESTree.TSCallSignatureDeclaration
-          | TSESTree.TSMethodSignature
-          | TSESTree.TSFunctionType
-          | TSESTree.TSConstructorType
-          | TSESTree.TSDeclareFunction,
+        node: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        any,
+        // | TSESTree.FunctionDeclaration
+        // | TSESTree.FunctionExpression
+        // | TSESTree.ArrowFunctionExpression
+        // | TSESTree.TSCallSignatureDeclaration
+        // | TSESTree.TSMethodSignature
+        // | TSESTree.TSFunctionType
+        // | TSESTree.TSConstructorType
+        // | TSESTree.TSDeclareFunction,
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         if (tsNode && ts.isFunctionLike(tsNode)) {
@@ -93,6 +94,7 @@ function getSoleUse(
 ): Result {
   const exit = {};
   let soleUse: ts.Identifier | undefined;
+  const seenTypes = new Set<ts.Type>();
 
   try {
     if (sig.typeParameters) {
@@ -117,9 +119,22 @@ function getSoleUse(
       }
 
       const returnType = checker.getReturnTypeOfSignature(sigType);
-      // TODO: is it possiable to check if a TypeParameter is used in a type?
-      if (returnType.flags & ts.TypeFlags.StructuredOrInstantiable) {
-        return { type: 'ok' };
+      try {
+        forEachType(
+          returnType,
+          type => {
+            if (type.getSymbol() === typeParameterSymbol) {
+              throw exit;
+            }
+          },
+          checker,
+        );
+      } catch (error) {
+        if (error === exit) {
+          return { type: 'ok' };
+        } else {
+          throw error;
+        }
       }
     }
   } catch (err) {
@@ -143,6 +158,149 @@ function getSoleUse(
     } else {
       node.forEachChild(recur as (node: ts.Node) => void);
     }
+  }
+
+  function forEachType(
+    type: ts.Type,
+    cb: (type: ts.Type) => void,
+    checker: ts.TypeChecker,
+  ): void {
+    // prevent infinite recursion
+    if (seenTypes.has(type)) {
+      return;
+    } else {
+      seenTypes.add(type);
+    }
+
+    cb(type);
+
+    // T | P
+    if (type.flags & ts.TypeFlags.UnionOrIntersection) {
+      const types = (type as ts.UnionOrIntersectionType).types;
+      types.forEach(type => {
+        forEachType(type, cb, checker);
+      });
+      return;
+    }
+
+    // a simple type
+    if (!(type.flags & ts.TypeFlags.StructuredOrInstantiable)) {
+      return;
+    }
+
+    // keyof T
+    if (type.flags & ts.TypeFlags.Index) {
+      forEachType((type as ts.IndexType).type, cb, checker);
+      return;
+    }
+
+    // Indexed access types (TypeFlags.IndexedAccess)
+    // Possible forms are T[xxx], xxx[T], or xxx[keyof T], where T is a type variable
+    if (type.flags & ts.TypeFlags.IndexedAccess) {
+      forEachType((type as ts.IndexedAccessType).objectType, cb, checker);
+      forEachType((type as ts.IndexedAccessType).indexType, cb, checker);
+      return;
+    }
+
+    // TODO: true type and false type are not exposed. https://github.com/microsoft/TypeScript/issues/45537
+    if (type.flags & ts.TypeFlags.Conditional) {
+      throw exit;
+    }
+
+    // TODO: MappedType is not exposed.
+    if (getObjectFlags(type) & ts.ObjectFlags.Mapped) {
+      throw exit;
+    }
+
+    if (type.flags & ts.TypeFlags.TemplateLiteral) {
+      (type as ts.TemplateLiteralType).types.forEach(type =>
+        forEachType(type, cb, checker),
+      );
+      return;
+    }
+
+    if (type.flags & ts.TypeFlags.Object) {
+      type.aliasTypeArguments?.forEach(arg => {
+        forEachType(arg, cb, checker);
+      });
+
+      const properties = checker.getPropertiesOfType(type);
+      properties.forEach(prop => {
+        const declType = checker.getTypeOfSymbolAtLocation(prop, sig);
+        forEachType(declType, cb, checker);
+      });
+
+      const visitSignature = (signature: ts.Signature): void => {
+        signature.parameters.forEach(param => {
+          const decl = param.getDeclarations()?.[0];
+          if (decl) {
+            const declType = checker.getTypeOfSymbolAtLocation(param, decl);
+            forEachType(declType, cb, checker);
+          }
+        });
+
+        signature.getTypeParameters()?.forEach(typeParam => {
+          const decl = typeParam.symbol.getDeclarations()?.[0];
+          if (decl?.kind === ts.SyntaxKind.TypeParameter) {
+            const constrain = (decl as ts.TypeParameterDeclaration).constraint;
+            if (constrain) {
+              forEachType(checker.getTypeFromTypeNode(constrain), cb, checker);
+            }
+          }
+        });
+
+        forEachType(signature.getReturnType(), cb, checker);
+
+        // const predicate = checker.getTypePredicateOfSignature();
+        const decl = signature?.getDeclaration();
+        if (decl.type?.kind === ts.SyntaxKind.TypePredicate) {
+          const typeNode = (decl.type as ts.TypePredicateNode).type;
+          if (typeNode) {
+            forEachType(checker.getTypeAtLocation(typeNode), cb, checker);
+          }
+        }
+      };
+
+      const calls = type.getCallSignatures();
+      calls.forEach(signature => {
+        visitSignature(signature);
+      });
+      const constructors = type.getConstructSignatures();
+      constructors.forEach(signature => {
+        visitSignature(signature);
+      });
+
+      // TODO: `checker.getIndexInfosOfType()` might be better
+      const numberIndexType = type.getNumberIndexType();
+      if (numberIndexType) {
+        forEachType(numberIndexType, cb, checker);
+      }
+      const stringIndexType = type.getStringIndexType();
+      if (stringIndexType) {
+        forEachType(stringIndexType, cb, checker);
+      }
+
+      return;
+    }
+
+    // TODO: unknown type, abort?
+    throw exit;
+  }
+
+  // internal of ts compiler
+
+  function getObjectFlags(type: ts.Type): ts.ObjectFlags {
+    const ObjectFlagsType =
+      ts.TypeFlags.Any |
+      ts.TypeFlags.Undefined |
+      ts.TypeFlags.Null |
+      ts.TypeFlags.Never |
+      ts.TypeFlags.Object |
+      ts.TypeFlags.Union |
+      ts.TypeFlags.Intersection;
+    return type.flags & ObjectFlagsType
+      ? (type as ts.ObjectType).objectFlags
+      : 0;
   }
 }
 

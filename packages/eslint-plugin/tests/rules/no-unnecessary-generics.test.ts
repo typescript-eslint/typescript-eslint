@@ -22,6 +22,90 @@ function foo<T>(m: Map<T, T>): void {}
 // 'T appears in a constraint, so it appears twice.
 function f<T, U extends T>(t: T, u: U): U;
     `,
+    `
+function f<T>(t: T) {
+  return t;
+}
+    `,
+    `
+function f<T>(t: T) {
+  return null as { t: T };
+}
+    `,
+    `
+function f<T>(t: T) {
+  return null as T | null;
+}
+    `,
+    `
+function f<T>(t: T) {
+  return null as (t: T) => void;
+}
+    `,
+    `
+function f<T>(t: T) {
+  return (t: any): t is T => {
+    return true;
+  };
+}
+    `,
+    `
+function f<T>(t: T) {
+  return (t: any): t is () => T => {
+    return true;
+  };
+}
+    `,
+    `
+function f<T, P>(t: T) {
+  return null as { [k in keyof T]: string };
+}
+    `,
+    `
+function f<T, P>() {
+  return null as T[P];
+}
+    `,
+    `
+// not supported
+function f<A, B, C, D>() {
+  return null as A extends B ? 1 : 2;
+}
+    `,
+    `
+function f<A, B>() {
+  return null as A extends B ? string : number;
+}
+`,
+    `
+function f<A, B>() {
+  return null as [A, B];
+}
+`,
+    `
+function f<A>() {
+  return [] as A[];
+}
+`,
+    `
+function f<T>(t: T) {
+  return null as Record<keyof T, any>;
+}
+    `,
+    `
+function f1<T extends { new (): any }>(a: T) {
+  return class Foo extends a {
+    f = 1;
+  };
+}
+    `,
+    `
+function f1<T extends { new (...args: any[]): any }>(a: T) {
+  return class Foo extends a {
+    f = 1;
+  };
+}
+    `,
   ],
 
   invalid: [
@@ -128,6 +212,18 @@ function f<T, U extends T>(u: U): U;
           messageId: 'failureString',
           line: 2,
           column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+function f<T>(t: T) {}
+      `,
+      errors: [
+        {
+          messageId: 'failureString',
+          line: 2,
+          column: 18,
         },
       ],
     },
