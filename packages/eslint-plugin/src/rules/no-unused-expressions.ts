@@ -34,9 +34,8 @@ export default util.createRule<Options, MessageIds>({
       allowTaggedTemplates: false,
     },
   ],
-  create(context, options) {
+  create(context, [{ allowShortCircuit = false, allowTernary = false }]) {
     const rules = baseRule.create(context);
-    const { allowShortCircuit = false, allowTernary = false } = options[0];
 
     function isValidExpression(node: TSESTree.Node): boolean {
       if (allowShortCircuit && node.type === AST_NODE_TYPES.LogicalExpression) {

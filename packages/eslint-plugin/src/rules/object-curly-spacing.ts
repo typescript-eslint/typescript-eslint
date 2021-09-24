@@ -30,7 +30,8 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['never'],
   create(context) {
-    const spaced = context.options[0] === 'always';
+    const [firstOption, secondOption] = context.options;
+    const spaced = firstOption === 'always';
     const sourceCode = context.getSourceCode();
 
     /**
@@ -43,9 +44,7 @@ export default createRule<Options, MessageIds>({
     function isOptionSet(
       option: 'arraysInObjects' | 'objectsInObjects',
     ): boolean {
-      return context.options[1]
-        ? context.options[1][option] === !spaced
-        : false;
+      return secondOption ? secondOption[option] === !spaced : false;
     }
 
     const options = {

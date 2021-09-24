@@ -1,12 +1,12 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule,
   createRule,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
 
 const baseRule = getESLintCoreRule('init-declarations');
@@ -29,9 +29,8 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],
-  create(context) {
+  create(context, [mode]) {
     const rules = baseRule.create(context);
-    const mode = context.options[0] || 'always';
 
     return {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
