@@ -1,8 +1,9 @@
 name: Rule proposal
-description: Propose a new rule for the '@typescript-eslint/eslint-plugin' package
+description: "Propose a new rule for the '@typescript-eslint/eslint-plugin' package"
+title: "Rule proposal: "
 labels:
-  - 'enhancement: new base rule extension'
-  - 'package: eslint-plugin'
+  - "enhancement: new base rule extension"
+  - "package: eslint-plugin"
   - triage
 body:
   - type: markdown
@@ -12,13 +13,15 @@ body:
         - Look for existing [open or closed rule proposals](https://github.com/typescript-eslint/typescript-eslint/issues?q=label%3A%22enhancement%3A+new+base+rule+extension%22)
         - Look for [existing rules](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin)
         - Ensure that the rule you want to propose is related to types. If not, consider looking into [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn)
-- type: textarea
+  - type: textarea
+    validations:
+      required: true
     attributes:
       label: Description
       description: Explain here why this rule would be beneficial
+  - type: textarea
     validations:
       required: true
-  - type: textarea
     attributes:
       label: Fail
       description: Specify an example of code that should be detected
@@ -26,7 +29,9 @@ body:
         ```ts
         var replace = 'me';
         ```
-  - type: input
+  - type: textarea
+    validations:
+      required: true
     attributes:
       label: Pass
       description: Specify an example of code that would be accepted in its place
@@ -34,5 +39,3 @@ body:
         ```ts
         const replace = 'me';
         ```
-    validations:
-      required: true
