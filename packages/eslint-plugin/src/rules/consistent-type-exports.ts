@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   TSESTree,
   ParserServices,
@@ -131,8 +130,6 @@ export default util.createRule<Options, MessageIds>({
                   specifier,
                 );
 
-                console.log('specifier', specifier.local.name, isTypeBased);
-
                 if (isTypeBased === true) {
                   typeSpecifiers.push(specifier);
                 } else if (isTypeBased === false) {
@@ -155,8 +152,6 @@ export default util.createRule<Options, MessageIds>({
 
             'Program:exit'(): void {
               for (const sourceExports of Object.values(sourceExportsMap)) {
-                console.log('sourceExports', sourceExports);
-
                 // If this export has no issues, move on.
                 if (sourceExports.reportValueExports.length === 0) {
                   continue;
@@ -212,7 +207,6 @@ export default util.createRule<Options, MessageIds>({
                           yield* fixSeparateNamedExports(
                             fixer,
                             sourceCode,
-                            sourceExports,
                             report,
                           );
                         },
@@ -233,7 +227,6 @@ export default util.createRule<Options, MessageIds>({
                           yield* fixSeparateNamedExports(
                             fixer,
                             sourceCode,
-                            sourceExports,
                             report,
                           );
                         },
@@ -301,7 +294,6 @@ function* fixToTypeExportByInsertType(
 function* fixSeparateNamedExports(
   fixer: TSESLint.RuleFixer,
   sourceCode: Readonly<TSESLint.SourceCode>,
-  sourceExports: SourceExports,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
   const { node, typeSpecifiers, valueSpecifiers } = report;
@@ -310,8 +302,6 @@ function* fixSeparateNamedExports(
   const specifierNames = specifiersToSeparate.map(
     specifier => specifier.local.name,
   );
-
-  console.log('separating types:', separateTypes, node, specifierNames);
 
   const exportToken = util.nullThrows(
     sourceCode.getFirstToken(node),
@@ -332,9 +322,6 @@ function* fixSeparateNamedExports(
     sourceCode.getLastToken(node, util.isClosingBraceToken),
     util.NullThrowsReasons.MissingToken('}', node.type),
   );
-
-  console.log('opentoken', openToken);
-  console.log('closeToken', closeToken);
 
   yield fixer.replaceTextRange(
     [openToken.range[1], closeToken.range[0]],

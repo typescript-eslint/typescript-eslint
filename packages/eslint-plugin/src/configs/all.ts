@@ -22,6 +22,7 @@ export = {
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/consistent-type-exports': 'error',
     'default-param-last': 'off',
     '@typescript-eslint/default-param-last': 'error',
     'dot-notation': 'off',
