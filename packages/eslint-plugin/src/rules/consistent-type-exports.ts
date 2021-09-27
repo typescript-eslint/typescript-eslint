@@ -50,13 +50,14 @@ export default util.createRule<Options, MessageIds>({
       typeOverValue:
         'All exports in the declaration are only used as types. Use `export type`.',
       valueOverType: 'Use an `export` instead of an `export type`.',
-      singleExportIsType: 'Export {{typeExports}} is only used as types.',
+      singleExportIsType:
+        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
-        'Exports {{typeExports}} should be exported using `export type`.',
+        'Type exports {{exportNames}} are not values and should be exported using `export type`.',
       singleExportisValue:
-        'Type export {{typeExports}} is not a type and should be exported using `export`.',
+        'Value export {{exportNames}} is exported as a type only and should be exported using `export`.',
       multipleExportsAreValues:
-        'Exports {{typeExports}} are not types and should be exported using `export`.',
+        'Value exports {{exportNames}} are exported as types only and should be exported using `export`.',
     },
     schema: [
       {
@@ -154,6 +155,8 @@ export default util.createRule<Options, MessageIds>({
 
             'Program:exit'(): void {
               for (const sourceExports of Object.values(sourceExportsMap)) {
+                console.log('sourceExports', sourceExports);
+
                 // If this export has no issues, move on.
                 if (sourceExports.reportValueExports.length === 0) {
                   continue;
@@ -175,57 +178,67 @@ export default util.createRule<Options, MessageIds>({
                     });
                   } else if (!report.typeSpecifiers.length) {
                     // we only have value violations; remove the `type` from the export
+                    // TODO: remove the `type` from the export
+                    context.report({
+                      node: report.node,
+                      messageId: 'valueOverType',
+                      // *fix(fixer) {
+                      //   yield* fixToValueExportByRemovingType(
+                      //     fixer,
+                      //     sourceCode,
+                      //     report.node
+                      //   )
+                      // }
+                    });
                   } else {
                     // We have both type and value violations.
-                    const isTypeExport = (report.node.exportKind = 'type');
-                    const exportNames = (
+                    const isTypeExport = report.node.exportKind === 'type';
+                    const allExportNames = (
                       isTypeExport
                         ? report.valueSpecifiers
                         : report.typeSpecifiers
                     ).map(specifier => `${specifier.local.name}`);
 
-                    const message = ((): {
-                      messageId: MessageIds;
-                      data: Record<string, unknown>;
-                    } => {
-                      if (exportNames.length === 1) {
-                        const typeExports = exportNames[0];
-                        return {
-                          messageId: isTypeExport
-                            ? 'singleExportisValue'
-                            : 'singleExportIsType',
-                          data: { typeExports },
-                        };
-                      } else {
-                        const typeExports = [
-                          exportNames.slice(0, -1).join(', '),
-                          exportNames.slice(-1)[0],
-                        ].join(' and ');
+                    if (allExportNames.length === 1) {
+                      const exportNames = allExportNames[0];
 
-                        return {
-                          messageId: isTypeExport
-                            ? 'multipleExportsAreValues'
-                            : 'multipleExportsAreTypes',
-                          data: { typeExports },
-                        };
-                      }
-                    })();
+                      context.report({
+                        node: report.node,
+                        messageId: isTypeExport
+                          ? 'singleExportisValue'
+                          : 'singleExportIsType',
+                        data: { exportNames },
+                        *fix(fixer) {
+                          yield* fixSeparateNamedExports(
+                            fixer,
+                            sourceCode,
+                            sourceExports,
+                            report,
+                          );
+                        },
+                      });
+                    } else {
+                      const exportNames = [
+                        allExportNames.slice(0, -1).join(', '),
+                        allExportNames.slice(-1)[0],
+                      ].join(' and ');
 
-                    context.report({
-                      node: report.node,
-                      ...message,
-                      // *fix(fixer) {
-                      //   if (isTypeExport) {
-                      //     yield* fixToValueImportInDecoMeta(
-                      //       fixer,
-                      //       report,
-                      //       sourceImports,
-                      //     );
-                      //   } else {
-                      //     yield* fixToTypeImport(fixer, report, sourceImports);
-                      //   }
-                      // },
-                    });
+                      context.report({
+                        node: report.node,
+                        messageId: isTypeExport
+                          ? 'multipleExportsAreValues'
+                          : 'multipleExportsAreTypes',
+                        data: { exportNames },
+                        *fix(fixer) {
+                          yield* fixSeparateNamedExports(
+                            fixer,
+                            sourceCode,
+                            sourceExports,
+                            report,
+                          );
+                        },
+                      });
+                    }
                   }
                 }
               }
@@ -278,4 +291,61 @@ function* fixToTypeExportByInsertType(
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
+}
+
+/**
+ * Separates the exports which mismatch the kind of export the given
+ * node represents. For example, a type export's named specifiers which
+ * represent values will be inserted in a separate `export` statement.
+ */
+function* fixSeparateNamedExports(
+  fixer: TSESLint.RuleFixer,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+  sourceExports: SourceExports,
+  report: ReportValueExport,
+): IterableIterator<TSESLint.RuleFix> {
+  const { node, typeSpecifiers, valueSpecifiers } = report;
+  const separateTypes = node.exportKind !== 'type';
+  const specifiersToSeparate = separateTypes ? typeSpecifiers : valueSpecifiers;
+  const specifierNames = specifiersToSeparate.map(
+    specifier => specifier.local.name,
+  );
+
+  console.log('separating types:', separateTypes, node, specifierNames);
+
+  const exportToken = util.nullThrows(
+    sourceCode.getFirstToken(node),
+    util.NullThrowsReasons.MissingToken('export', node.type),
+  );
+
+  // Filter the bad exports from the current line.
+  const filteredSpecifierNames = (
+    separateTypes ? valueSpecifiers : typeSpecifiers
+  )
+    .map(specifier => specifier.local.name)
+    .join(', ');
+  const openToken = util.nullThrows(
+    sourceCode.getFirstToken(node, util.isOpeningBraceToken),
+    util.NullThrowsReasons.MissingToken('{', node.type),
+  );
+  const closeToken = util.nullThrows(
+    sourceCode.getLastToken(node, util.isClosingBraceToken),
+    util.NullThrowsReasons.MissingToken('}', node.type),
+  );
+
+  console.log('opentoken', openToken);
+  console.log('closeToken', closeToken);
+
+  yield fixer.replaceTextRange(
+    [openToken.range[1], closeToken.range[0]],
+    ` ${filteredSpecifierNames} `,
+  );
+
+  // Insert the bad exports into a new export line.
+  yield fixer.insertTextBefore(
+    exportToken,
+    `export ${separateTypes ? 'type ' : ''}{ ${specifierNames.join(
+      ', ',
+    )} } from ${sourceCode.getText(node.source!)};\n`,
+  );
 }
