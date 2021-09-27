@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-definitions] correct fix for `export default` ([#3899](https://github.com/typescript-eslint/typescript-eslint/issues/3899)) ([ebb33ed](https://github.com/typescript-eslint/typescript-eslint/commit/ebb33ed8bc29f69ca2a657ec5b31857c0aeb4b56))
+* **eslint-plugin:** [no-require-imports] report only global `require` ([#3871](https://github.com/typescript-eslint/typescript-eslint/issues/3871)) ([8aa87a1](https://github.com/typescript-eslint/typescript-eslint/commit/8aa87a136e7cd7b40fbf09fcfa26bf04d1c6d5fe))
+* **eslint-plugin:** [no-shadow] ignore type-only imports properly ([#3868](https://github.com/typescript-eslint/typescript-eslint/issues/3868)) ([dda9cee](https://github.com/typescript-eslint/typescript-eslint/commit/dda9cee68a5cd78b358a854027999c739ac623e9))
+* **eslint-plugin:** [no-var-requires] report problems within `NewExpression` ([#3884](https://github.com/typescript-eslint/typescript-eslint/issues/3884)) ([ed5e459](https://github.com/typescript-eslint/typescript-eslint/commit/ed5e45983fa052accf3a7b5fcdbfcb15ed09490f))
+* **eslint-plugin:** [padding-line-between-statements] problems within namespaces not being reported ([#3869](https://github.com/typescript-eslint/typescript-eslint/issues/3869)) ([1861356](https://github.com/typescript-eslint/typescript-eslint/commit/186135698b40b510ffff6a2402aa34f2726596ea))
+* **eslint-plugin:** [prefer-regexp-exec] respect flags when using `RegExp` ([#3855](https://github.com/typescript-eslint/typescript-eslint/issues/3855)) ([ffdb5ff](https://github.com/typescript-eslint/typescript-eslint/commit/ffdb5ff9900e07374a2f3686447e3e2c78fbc38a))
+* **eslint-plugin:** [prefer-return-this-type] handle generics properly in fixer ([#3852](https://github.com/typescript-eslint/typescript-eslint/issues/3852)) ([9e98b8f](https://github.com/typescript-eslint/typescript-eslint/commit/9e98b8f43ca6aadc9758a4e9a0d1d3c250af6cca))
+* **eslint-plugin:** false-positive/negative with array index in no-unnecessary-condition ([#3805](https://github.com/typescript-eslint/typescript-eslint/issues/3805)) ([bdb8f0b](https://github.com/typescript-eslint/typescript-eslint/commit/bdb8f0be1466e4a4b713e91199be91030650ed01))
+
+
+### Features
+
+* **eslint-plugin:** [no-type-alias]: add allowGenerics option ([#3865](https://github.com/typescript-eslint/typescript-eslint/issues/3865)) ([4195919](https://github.com/typescript-eslint/typescript-eslint/commit/41959199735a6d4fe3ae7825f3087e8fb249be9f))
+* **eslint-plugin:** add `no-non-null-asserted-nullish-coalescing` rule ([#3349](https://github.com/typescript-eslint/typescript-eslint/issues/3349)) ([4e99961](https://github.com/typescript-eslint/typescript-eslint/commit/4e999614e9761f6dc7e5aa0c5bad76ab164ab3fb))
+* **eslint-plugin:** add new extended rule `no-restricted-imports` ([#3775](https://github.com/typescript-eslint/typescript-eslint/issues/3775)) ([ec5d506](https://github.com/typescript-eslint/typescript-eslint/commit/ec5d50696b249a207d322e4a2fc66582122eb010))
+* **eslint-plugin-internal:** [prefer-ast-types-enum] add `DefinitionType` enum ([#3916](https://github.com/typescript-eslint/typescript-eslint/issues/3916)) ([13b7de5](https://github.com/typescript-eslint/typescript-eslint/commit/13b7de508e0f8eac492879ff9ab99acd8d3e977e))
+
+
+
+
+
 ## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

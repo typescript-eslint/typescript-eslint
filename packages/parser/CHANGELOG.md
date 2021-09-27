@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Features
+
+* Support `'latest'` as `ecmaVersion` ([#3873](https://github.com/typescript-eslint/typescript-eslint/issues/3873)) ([25a42c0](https://github.com/typescript-eslint/typescript-eslint/commit/25a42c0bbe92d1ecbc2e8ff9ef3a3ef413f728b0))
+
+
+
+
+
 ## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
 
 **Note:** Version bump only for package @typescript-eslint/parser
