@@ -20,6 +20,7 @@ export type Options = [
   {
     types?: Types;
     extendDefaults?: boolean;
+    allowObjectInGenerics?: boolean;
   },
 ];
 export type MessageIds = 'bannedTypeMessage';
@@ -156,6 +157,9 @@ export default util.createRule<Options, MessageIds>({
           extendDefaults: {
             type: 'boolean',
           },
+          allowObjectInGenerics: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -164,6 +168,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const extendDefaults = options.extendDefaults ?? true;
+    const allowObjectInGenerics = options.allowObjectInGenerics ?? true;
     const customTypes = options.types ?? {};
     const types = Object.assign(
       {},
@@ -174,6 +179,31 @@ export default util.createRule<Options, MessageIds>({
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );
 
+    function isObjectInGeneric(typeNode: TSESTree.Node): boolean {
+      const { parent, type } = typeNode;
+      if (!parent || type !== AST_NODE_TYPES.TSObjectKeyword) {
+        return false;
+      }
+
+      // Case of: T extends object ? true : false;
+      if (
+        parent.type === AST_NODE_TYPES.TSConditionalType &&
+        parent.extendsType === typeNode
+      ) {
+        return true;
+      }
+
+      // Case of: interface I<T extends object> {};
+      if (
+        parent.type === AST_NODE_TYPES.TSTypeParameter &&
+        parent.constraint === typeNode
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
     function checkBannedTypes(
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
@@ -181,6 +211,10 @@ export default util.createRule<Options, MessageIds>({
       const bannedType = bannedTypes.get(name);
 
       if (bannedType === undefined || bannedType === false) {
+        return;
+      }
+
+      if (allowObjectInGenerics && isObjectInGeneric(typeNode)) {
         return;
       }
 

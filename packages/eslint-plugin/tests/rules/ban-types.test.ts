@@ -110,6 +110,8 @@ ruleTester.run('ban-types', rule, {
       ],
     },
     'let a: [];',
+    'interface A<T extends object> {}',
+    'type IsObject<T> = T extends object ? true : false;',
   ],
   invalid: [
     {
@@ -607,6 +609,52 @@ let bar: object = {};
           types: {
             '[]': '`[]` does only allow empty arrays.',
           },
+        },
+      ],
+    },
+    {
+      code: 'interface A<T extends object> {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'object',
+            customMessage: '',
+          },
+          line: 1,
+          column: 23,
+        },
+      ],
+      options: [
+        {
+          types: {
+            object: null,
+          },
+          allowObjectInGenerics: false,
+          extendDefaults: false,
+        },
+      ],
+    },
+    {
+      code: 'type IsObject<T> = T extends object ? true : false;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'object',
+            customMessage: '',
+          },
+          line: 1,
+          column: 30,
+        },
+      ],
+      options: [
+        {
+          types: {
+            object: null,
+          },
+          allowObjectInGenerics: false,
+          extendDefaults: false,
         },
       ],
     },

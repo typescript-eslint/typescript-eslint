@@ -22,6 +22,7 @@ type Options = {
         };
   };
   extendDefaults?: boolean;
+  allowObjectInGenerics?: boolean;
 };
 ```
 
@@ -36,6 +37,7 @@ The rule accepts a single object as options, with the following keys:
 - `extendDefaults` - if you're specifying custom `types`, you can set this to `true` to extend the default `types` configuration.
   - This is a convenience option to save you copying across the defaults when adding another type.
   - If this is `false`, the rule will _only_ use the types defined in your configuration.
+- `allowObjectInGenerics` - Allows `object` type usage in some special cases related to generics.
 
 Example configuration:
 
@@ -175,6 +177,8 @@ const func: () => number = () => 1;
 
 // use safer object types
 const lowerObj: Record<string, unknown> = {};
+// but you are allowed to use 'object' type in generic's conditionals
+interface Something<T extends object> {}
 
 const capitalObj1: number = 1;
 const capitalObj2: { a: string } = { a: 'string' };
