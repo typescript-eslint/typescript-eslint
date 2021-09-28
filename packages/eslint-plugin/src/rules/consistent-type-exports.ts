@@ -325,14 +325,7 @@ function* fixSeparateNamedExports(
   const { node, typeSpecifiers, valueSpecifiers } = report;
   const separateTypes = node.exportKind !== 'type';
   const specifiersToSeparate = separateTypes ? typeSpecifiers : valueSpecifiers;
-  const specifierNames = specifiersToSeparate.map(
-    specifier =>
-      `${specifier.local.name}${
-        specifier.exported.name !== specifier.local.name
-          ? ` as ${specifier.exported.name}`
-          : ''
-      }`,
-  );
+  const specifierNames = specifiersToSeparate.map(getSpecifierText).join(', ');
 
   const exportToken = util.nullThrows(
     sourceCode.getFirstToken(node),
@@ -343,7 +336,7 @@ function* fixSeparateNamedExports(
   const filteredSpecifierNames = (
     separateTypes ? valueSpecifiers : typeSpecifiers
   )
-    .map(specifier => specifier.local.name)
+    .map(getSpecifierText)
     .join(', ');
   const openToken = util.nullThrows(
     sourceCode.getFirstToken(node, util.isOpeningBraceToken),
@@ -354,16 +347,25 @@ function* fixSeparateNamedExports(
     util.NullThrowsReasons.MissingToken('}', node.type),
   );
 
+  // Remove exports from the current line which we're going to re-insert.
   yield fixer.replaceTextRange(
     [openToken.range[1], closeToken.range[0]],
     ` ${filteredSpecifierNames} `,
   );
 
-  // Insert the bad exports into a new export line.
+  // Insert the bad exports into a new export line above.
   yield fixer.insertTextBefore(
     exportToken,
-    `export ${separateTypes ? 'type ' : ''}{ ${specifierNames.join(
-      ', ',
-    )} } from ${sourceCode.getText(node.source!)};\n`,
+    `export ${
+      separateTypes ? 'type ' : ''
+    }{ ${specifierNames} } from ${sourceCode.getText(node.source!)};\n`,
   );
+}
+
+function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {
+  return `${specifier.local.name}${
+    specifier.exported.name !== specifier.local.name
+      ? ` as ${specifier.exported.name}`
+      : ''
+  }`;
 }
