@@ -7,13 +7,7 @@ import {
 import { SymbolFlags } from 'typescript';
 import * as util from '../util';
 
-type Prefer = 'type-exports' | 'no-type-exports';
-
-type Options = [
-  {
-    prefer?: Prefer;
-  },
-];
+type Options = [];
 
 interface SourceExports {
   source: string;
@@ -38,12 +32,14 @@ type MessageIds =
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
+  defaultOptions: [],
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforces consistent usage of type exports',
       category: 'Stylistic Issues',
       recommended: false,
+      requiresTypeChecking: true,
     },
     messages: {
       typeOverValue:
@@ -72,172 +68,139 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
   },
 
-  defaultOptions: [
-    {
-      prefer: 'type-exports',
-    },
-  ],
-
-  create(context, [option]) {
+  create(context) {
     const sourceCode = context.getSourceCode();
-    const prefer = option.prefer ?? 'type-exports';
     // const sourceCode = context.getSourceCode();
     const sourceExportsMap: { [key: string]: SourceExports } = {};
 
     return {
-      ...(prefer === 'type-exports'
-        ? {
-            ExportNamedDeclaration(
-              node: TSESTree.ExportNamedDeclaration,
-            ): void {
-              // Coerce the node.source.value to a string via asserting.
-              if (
-                node.source?.type !== AST_NODE_TYPES.Literal ||
-                typeof node.source?.value !== 'string'
-              ) {
-                return;
-              }
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
+        // Coerce the node.source.value to a string via asserting.
+        if (
+          node.source?.type !== AST_NODE_TYPES.Literal ||
+          typeof node.source?.value !== 'string'
+        ) {
+          return;
+        }
 
-              const source = node.source.value;
-              const sourceExports = (sourceExportsMap[source] =
-                sourceExportsMap[source] || {
-                  source,
-                  reportValueExports: [],
-                  typeOnlyNamedExport: null,
-                  valueOnlyNamedExport: null,
-                });
-              const parserServices = util.getParserServices(context);
+        const source = node.source.value;
+        const sourceExports = (sourceExportsMap[source] = sourceExportsMap[
+          source
+        ] || {
+          source,
+          reportValueExports: [],
+          typeOnlyNamedExport: null,
+          valueOnlyNamedExport: null,
+        });
+        const parserServices = util.getParserServices(context);
 
-              // Cache the first encountered exports for the package. We will need to come
-              // back to these later when fixing the problems.
-              if (node.exportKind === 'type') {
-                if (!sourceExports.typeOnlyNamedExport) {
-                  // The export is a type export
-                  sourceExports.typeOnlyNamedExport = node;
-                }
-              } else if (!sourceExports.valueOnlyNamedExport) {
-                // The export is a value export
-                sourceExports.valueOnlyNamedExport = node;
-              }
-
-              // Next for the current import, we will separate type/value specifiers.
-              const typeSpecifiers: TSESTree.ExportSpecifier[] = [];
-              const valueSpecifiers: TSESTree.ExportSpecifier[] = [];
-
-              for (const specifier of node.specifiers) {
-                const isTypeBased = isSpecifierTypeBased(
-                  parserServices,
-                  specifier,
-                );
-
-                if (isTypeBased === true) {
-                  typeSpecifiers.push(specifier);
-                } else if (isTypeBased === false) {
-                  // undefined means we don't know.
-                  valueSpecifiers.push(specifier);
-                }
-              }
-
-              if (
-                (node.exportKind === 'value' && typeSpecifiers.length) ||
-                (node.exportKind === 'type' && valueSpecifiers.length)
-              ) {
-                sourceExports.reportValueExports.push({
-                  node,
-                  typeSpecifiers,
-                  valueSpecifiers,
-                });
-              }
-            },
-
-            'Program:exit'(): void {
-              for (const sourceExports of Object.values(sourceExportsMap)) {
-                // If this export has no issues, move on.
-                if (sourceExports.reportValueExports.length === 0) {
-                  continue;
-                }
-
-                for (const report of sourceExports.reportValueExports) {
-                  if (!report.valueSpecifiers.length) {
-                    // export is all type-only; convert the entire export to `export type`
-                    context.report({
-                      node: report.node,
-                      messageId: 'typeOverValue',
-                      *fix(fixer) {
-                        yield* fixExportInsertType(
-                          fixer,
-                          sourceCode,
-                          report.node,
-                        );
-                      },
-                    });
-                  } else if (!report.typeSpecifiers.length) {
-                    // we only have value violations; remove the `type` from the export
-                    // TODO: remove the `type` from the export
-                    context.report({
-                      node: report.node,
-                      messageId: 'valueOverType',
-                      *fix(fixer) {
-                        yield* fixExportRemoveType(
-                          fixer,
-                          sourceCode,
-                          report.node,
-                        );
-                      },
-                    });
-                  } else {
-                    // We have both type and value violations.
-                    const isTypeExport = report.node.exportKind === 'type';
-                    const allExportNames = (
-                      isTypeExport
-                        ? report.valueSpecifiers
-                        : report.typeSpecifiers
-                    ).map(specifier => `${specifier.local.name}`);
-
-                    if (allExportNames.length === 1) {
-                      const exportNames = allExportNames[0];
-
-                      context.report({
-                        node: report.node,
-                        messageId: isTypeExport
-                          ? 'singleExportIsValue'
-                          : 'singleExportIsType',
-                        data: { exportNames },
-                        *fix(fixer) {
-                          yield* fixSeparateNamedExports(
-                            fixer,
-                            sourceCode,
-                            report,
-                          );
-                        },
-                      });
-                    } else {
-                      const exportNames = [
-                        allExportNames.slice(0, -1).join(', '),
-                        allExportNames.slice(-1)[0],
-                      ].join(' and ');
-
-                      context.report({
-                        node: report.node,
-                        messageId: isTypeExport
-                          ? 'multipleExportsAreValues'
-                          : 'multipleExportsAreTypes',
-                        data: { exportNames },
-                        *fix(fixer) {
-                          yield* fixSeparateNamedExports(
-                            fixer,
-                            sourceCode,
-                            report,
-                          );
-                        },
-                      });
-                    }
-                  }
-                }
-              }
-            },
+        // Cache the first encountered exports for the package. We will need to come
+        // back to these later when fixing the problems.
+        if (node.exportKind === 'type') {
+          if (!sourceExports.typeOnlyNamedExport) {
+            // The export is a type export
+            sourceExports.typeOnlyNamedExport = node;
           }
-        : {}),
+        } else if (!sourceExports.valueOnlyNamedExport) {
+          // The export is a value export
+          sourceExports.valueOnlyNamedExport = node;
+        }
+
+        // Next for the current import, we will separate type/value specifiers.
+        const typeSpecifiers: TSESTree.ExportSpecifier[] = [];
+        const valueSpecifiers: TSESTree.ExportSpecifier[] = [];
+
+        for (const specifier of node.specifiers) {
+          const isTypeBased = isSpecifierTypeBased(parserServices, specifier);
+
+          if (isTypeBased === true) {
+            typeSpecifiers.push(specifier);
+          } else if (isTypeBased === false) {
+            // undefined means we don't know.
+            valueSpecifiers.push(specifier);
+          }
+        }
+
+        if (
+          (node.exportKind === 'value' && typeSpecifiers.length) ||
+          (node.exportKind === 'type' && valueSpecifiers.length)
+        ) {
+          sourceExports.reportValueExports.push({
+            node,
+            typeSpecifiers,
+            valueSpecifiers,
+          });
+        }
+      },
+
+      'Program:exit'(): void {
+        for (const sourceExports of Object.values(sourceExportsMap)) {
+          // If this export has no issues, move on.
+          if (sourceExports.reportValueExports.length === 0) {
+            continue;
+          }
+
+          for (const report of sourceExports.reportValueExports) {
+            if (!report.valueSpecifiers.length) {
+              // export is all type-only; convert the entire export to `export type`
+              context.report({
+                node: report.node,
+                messageId: 'typeOverValue',
+                *fix(fixer) {
+                  yield* fixExportInsertType(fixer, sourceCode, report.node);
+                },
+              });
+            } else if (!report.typeSpecifiers.length) {
+              // we only have value violations; remove the `type` from the export
+              // TODO: remove the `type` from the export
+              context.report({
+                node: report.node,
+                messageId: 'valueOverType',
+                *fix(fixer) {
+                  yield* fixExportRemoveType(fixer, sourceCode, report.node);
+                },
+              });
+            } else {
+              // We have both type and value violations.
+              const isTypeExport = report.node.exportKind === 'type';
+              const allExportNames = (
+                isTypeExport ? report.valueSpecifiers : report.typeSpecifiers
+              ).map(specifier => `${specifier.local.name}`);
+
+              if (allExportNames.length === 1) {
+                const exportNames = allExportNames[0];
+
+                context.report({
+                  node: report.node,
+                  messageId: isTypeExport
+                    ? 'singleExportIsValue'
+                    : 'singleExportIsType',
+                  data: { exportNames },
+                  *fix(fixer) {
+                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                  },
+                });
+              } else {
+                const exportNames = [
+                  allExportNames.slice(0, -1).join(', '),
+                  allExportNames.slice(-1)[0],
+                ].join(' and ');
+
+                context.report({
+                  node: report.node,
+                  messageId: isTypeExport
+                    ? 'multipleExportsAreValues'
+                    : 'multipleExportsAreTypes',
+                  data: { exportNames },
+                  *fix(fixer) {
+                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                  },
+                });
+              }
+            }
+          }
+        }
+      },
     };
   },
 });
