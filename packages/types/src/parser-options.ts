@@ -12,12 +12,16 @@ type EcmaVersion =
   | 9
   | 10
   | 11
+  | 12
+  | 13
   | 2015
   | 2016
   | 2017
   | 2018
   | 2019
-  | 2020;
+  | 2020
+  | 2021
+  | 2022;
 
 type SourceType = 'script' | 'module';
 
@@ -26,7 +30,7 @@ interface ParserOptions {
     globalReturn?: boolean;
     jsx?: boolean;
   };
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: EcmaVersion | 'latest';
 
   // scope-manager specific
   jsxPragma?: string | null;

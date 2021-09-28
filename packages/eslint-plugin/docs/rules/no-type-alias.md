@@ -89,6 +89,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
+- `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
 
 ### `allowAliases`
 
@@ -553,6 +554,28 @@ Examples of **correct** code for the `{ "allowLiterals": "in-unions-and-intersec
 type Foo = [number] & [number, number];
 
 type Foo = [string] | [number];
+```
+
+### `allowGenerics`
+
+This applies to generic types, including TypeScript provided global utility types (`type Foo = Record<string, number>`).
+
+The setting accepts the following options:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+
+Examples of **correct** code for the `{ "allowGenerics": "always" }` options:
+
+```ts
+type Foo = Bar<string>;
+
+type Foo = Record<string, number>;
+
+type Foo = Readonly<Bar>;
+
+type Foo = Partial<Bar>;
+
+type Foo = Omit<Bar, 'a' | 'b'>;
 ```
 
 ## When Not To Use It

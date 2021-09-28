@@ -53,7 +53,7 @@ interface ParserOptions {
     jsx?: boolean;
     globalReturn?: boolean;
   };
-  ecmaVersion?: number;
+  ecmaVersion?: number | 'latest';
 
   jsxPragma?: string | null;
   jsxFragmentName?: string | null;
@@ -97,12 +97,13 @@ This options allows you to tell the parser if you want to allow global `return` 
 
 Default `2018`.
 
-Accepts any valid ECMAScript version number:
+Accepts any valid ECMAScript version number or `'latest'`:
 
-- A version: es3, es5, es6, es7, es8, es9, es10, es11, ..., or
-- A year: es2015, es2016, es2017, es2018, es2019, es2020, ...
+- A version: es3, es5, es6, es7, es8, es9, es10, es11, es12, es13, ..., or
+- A year: es2015, es2016, es2017, es2018, es2019, es2020, es2021, es2022, ..., or
+- `'latest'`
 
-The value **must** be a number - so do not include the `es` prefix.
+When it's a version or a year, the value **must** be a number - so do not include the `es` prefix.
 
 Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
 

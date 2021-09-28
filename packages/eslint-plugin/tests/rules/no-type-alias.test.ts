@@ -481,6 +481,10 @@ type KeyNames = keyof typeof SCALARS;
       code: 'type Foo = new (bar: number) => string | null;',
       options: [{ allowConstructors: 'always' }],
     },
+    {
+      code: 'type Foo = Record<string, number>;',
+      options: [{ allowGenerics: 'always' }],
+    },
   ],
   invalid: [
     {
@@ -3326,6 +3330,19 @@ type Foo<T> = {
           },
           line: 1,
           column: 29,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Record<string, number>;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'generics',
+          },
+          line: 1,
+          column: 12,
         },
       ],
     },

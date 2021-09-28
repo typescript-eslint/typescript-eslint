@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import rule, {
   DEFAULT_IGNORED_REGEX_STRING,
-  Options,
   MessageIds,
+  Options,
 } from '../../src/rules/no-unused-vars-experimental';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -544,7 +545,6 @@ export class Foo {
           messageId: 'unusedWithIgnorePattern',
           data: {
             name: 'foo',
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             type: 'Property',
             pattern: DEFAULT_IGNORED_REGEX,
           },

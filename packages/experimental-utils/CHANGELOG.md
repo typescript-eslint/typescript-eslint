@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add missing signature for `isParenthesized` ([#3887](https://github.com/typescript-eslint/typescript-eslint/issues/3887)) ([806eaac](https://github.com/typescript-eslint/typescript-eslint/commit/806eaac6af5325664634690e9ebd7ffaed276549))
+
+
+
+
+
 ## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

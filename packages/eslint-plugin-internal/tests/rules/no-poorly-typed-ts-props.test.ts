@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import rule from '../../src/rules/no-poorly-typed-ts-props';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

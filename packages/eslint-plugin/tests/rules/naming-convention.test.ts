@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/naming-convention';
 import {
   PredefinedFormatsString,
-  selectorTypeToMessageString,
   Selector,
+  selectorTypeToMessageString,
 } from '../../src/rules/naming-convention-utils';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

@@ -3,6 +3,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 const SENTINEL_TYPE =
@@ -44,14 +45,14 @@ function parseOptions(options: string | Config | null): Required<Config> {
  * Checks whether or not a given variable is a function declaration.
  */
 function isFunction(variable: TSESLint.Scope.Variable): boolean {
-  return variable.defs[0].type === 'FunctionName';
+  return variable.defs[0].type === DefinitionType.FunctionName;
 }
 
 /**
  * Checks whether or not a given variable is a type declaration.
  */
 function isTypedef(variable: TSESLint.Scope.Variable): boolean {
-  return variable.defs[0].type === 'Type';
+  return variable.defs[0].type === DefinitionType.Type;
 }
 
 /**
@@ -62,7 +63,7 @@ function isOuterEnum(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type == 'TSEnumName' &&
+    variable.defs[0].type == DefinitionType.TSEnumName &&
     variable.scope.variableScope !== reference.from.variableScope
   );
 }
@@ -75,7 +76,7 @@ function isOuterClass(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type === 'ClassName' &&
+    variable.defs[0].type === DefinitionType.ClassName &&
     variable.scope.variableScope !== reference.from.variableScope
   );
 }
@@ -88,7 +89,7 @@ function isOuterVariable(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type === 'Variable' &&
+    variable.defs[0].type === DefinitionType.Variable &&
     variable.scope.variableScope !== reference.from.variableScope
   );
 }
@@ -142,7 +143,7 @@ function isClassRefInClassDecorator(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  if (variable.defs[0].type !== 'ClassName') {
+  if (variable.defs[0].type !== DefinitionType.ClassName) {
     return false;
   }
 

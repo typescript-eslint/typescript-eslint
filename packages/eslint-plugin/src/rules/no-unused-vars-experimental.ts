@@ -1,5 +1,4 @@
-/* eslint-disable no-fallthrough */
-
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum, no-fallthrough */
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -161,7 +160,6 @@ export default util.createRule<Options, MessageIds>({
           break;
 
         case ts.SyntaxKind.PropertyDeclaration:
-          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
           report('Property');
           break;
 

@@ -31,6 +31,11 @@ describe('ecma version mapping', () => {
   it("should map to 'es2018' when undefined", () => {
     expectMapping(undefined, 'es2018');
   });
+
+  it("should map to 'esnext' when 'latest'", () => {
+    // `'latest'` is converted to 1e8 at parser.
+    expectMapping(1e8, 'esnext');
+  });
 });
 
 const fakeNode = {} as unknown as TSESTree.Node;

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-regexp-exec';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -55,6 +55,24 @@ matchers.some(matcher => !!file.match(matcher));
 const matchers = [{ match: (s: RegExp) => false }];
 const file = '';
 matchers.some(matcher => !!file.match(matcher));
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(RegExp(pattern, 'g'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+const matchCount = (str: string, re: RegExp) => {
+  return (str.match(re) || []).length;
+};
     `,
   ],
   invalid: [
@@ -174,6 +192,44 @@ function f<T extends 'a' | 'b'>(s: T) {
       output: `
 function f<T extends 'a' | 'b'>(s: T) {
   /thing/.exec(s);
+}
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+const search = new RegExp('test', '');
+text.match(search);
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 6,
+        },
+      ],
+      output: `
+const text = 'something';
+const search = new RegExp('test', '');
+search.exec(text);
+      `,
+    },
+    {
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern, undefined));
+}
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 11,
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern, undefined).exec('check');
 }
       `,
     },
