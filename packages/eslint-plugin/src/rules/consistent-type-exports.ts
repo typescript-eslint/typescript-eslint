@@ -33,7 +33,7 @@ type MessageIds =
   | 'valueOverType'
   | 'singleExportIsType'
   | 'multipleExportsAreTypes'
-  | 'singleExportisValue'
+  | 'singleExportIsValue'
   | 'multipleExportsAreValues';
 
 export default util.createRule<Options, MessageIds>({
@@ -53,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
         'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
-      singleExportisValue:
+      singleExportIsValue:
         'Value export {{exportNames}} is exported as a type only and should be exported using `export`.',
       multipleExportsAreValues:
         'Value exports {{exportNames}} are exported as types only and should be exported using `export`.',
@@ -164,7 +164,7 @@ export default util.createRule<Options, MessageIds>({
                       node: report.node,
                       messageId: 'typeOverValue',
                       *fix(fixer) {
-                        yield* fixToTypeExportByInsertType(
+                        yield* fixExportInsertType(
                           fixer,
                           sourceCode,
                           report.node,
@@ -177,13 +177,13 @@ export default util.createRule<Options, MessageIds>({
                     context.report({
                       node: report.node,
                       messageId: 'valueOverType',
-                      // *fix(fixer) {
-                      //   yield* fixToValueExportByRemovingType(
-                      //     fixer,
-                      //     sourceCode,
-                      //     report.node
-                      //   )
-                      // }
+                      *fix(fixer) {
+                        yield* fixExportRemoveType(
+                          fixer,
+                          sourceCode,
+                          report.node,
+                        );
+                      },
                     });
                   } else {
                     // We have both type and value violations.
@@ -200,7 +200,7 @@ export default util.createRule<Options, MessageIds>({
                       context.report({
                         node: report.node,
                         messageId: isTypeExport
-                          ? 'singleExportisValue'
+                          ? 'singleExportIsValue'
                           : 'singleExportIsType',
                         data: { exportNames },
                         *fix(fixer) {
@@ -273,7 +273,7 @@ function isSpecifierTypeBased(
  * export type { Foo } from 'foo';
  *        ^^^^
  */
-function* fixToTypeExportByInsertType(
+function* fixExportInsertType(
   fixer: TSESLint.RuleFixer,
   sourceCode: Readonly<TSESLint.SourceCode>,
   node: TSESTree.ExportNamedDeclaration,
@@ -284,6 +284,32 @@ function* fixToTypeExportByInsertType(
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
+}
+
+/**
+ * Removes "type" from an export.
+ *
+ * Example:
+ *
+ * export type { Foo } from 'foo';
+ *        ^^^^
+ */
+function* fixExportRemoveType(
+  fixer: TSESLint.RuleFixer,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+  node: TSESTree.ExportNamedDeclaration,
+): IterableIterator<TSESLint.RuleFix> {
+  const exportToken = util.nullThrows(
+    sourceCode.getFirstToken(node),
+    util.NullThrowsReasons.MissingToken('export', node.type),
+  );
+
+  const typeToken = util.nullThrows(
+    sourceCode.getTokenAfter(exportToken),
+    util.NullThrowsReasons.MissingToken('type', node.type),
+  );
+
+  yield fixer.removeRange([exportToken.range[1], typeToken.range[1]]);
 }
 
 /**
@@ -300,7 +326,12 @@ function* fixSeparateNamedExports(
   const separateTypes = node.exportKind !== 'type';
   const specifiersToSeparate = separateTypes ? typeSpecifiers : valueSpecifiers;
   const specifierNames = specifiersToSeparate.map(
-    specifier => specifier.local.name,
+    specifier =>
+      `${specifier.local.name}${
+        specifier.exported.name !== specifier.local.name
+          ? ` as ${specifier.exported.name}`
+          : ''
+      }`,
   );
 
   const exportToken = util.nullThrows(

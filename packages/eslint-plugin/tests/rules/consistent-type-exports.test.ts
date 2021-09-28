@@ -32,5 +32,118 @@ ruleTester.run('consistent-type-exports', rule, {
         },
       ],
     },
+    {
+      code: `export type { BlockScope } from '@typescript-eslint/scope-manager';`,
+      output: `export { BlockScope } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'valueOverType',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export { AnalyzeOptions, BlockScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';\n` +
+        `export { BlockScope } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export { AnalyzeOptions, BlockScope, CatchScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';\n` +
+        `export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export { AnalyzeOptions, BlockScope, Definition, CatchScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';\n` +
+        `export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'multipleExportsAreTypes',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export type { AnalyzeOptions, BlockScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export { BlockScope } from '@typescript-eslint/scope-manager';\n` +
+        `export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'singleExportIsValue',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export type { AnalyzeOptions, BlockScope, Definition } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export { BlockScope } from '@typescript-eslint/scope-manager';\n` +
+        `export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'singleExportIsValue',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export type { AnalyzeOptions, BlockScope, Definition, CatchScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';\n` +
+        `export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'multipleExportsAreValues',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export { Definition as Foo } from '@typescript-eslint/scope-manager';`,
+      output: `export type { Definition as Foo } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `export { Definition as Foo, BlockScope } from '@typescript-eslint/scope-manager';`,
+      output:
+        `export type { Definition as Foo } from '@typescript-eslint/scope-manager';\n` +
+        `export { BlockScope } from '@typescript-eslint/scope-manager';`,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
