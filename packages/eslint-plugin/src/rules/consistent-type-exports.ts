@@ -75,15 +75,8 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
-        // Coerce the node.source.value to a string via asserting.
-        if (
-          node.source?.type !== AST_NODE_TYPES.Literal ||
-          typeof node.source?.value !== 'string'
-        ) {
-          return;
-        }
-
-        const source = node.source.value;
+        // Coerce the source into a string for use as a lookup entry.
+        const source = getSourceFromExport(node) ?? 'undefined';
         const sourceExports = (sourceExportsMap[source] = sourceExportsMap[
           source
         ] || {
@@ -286,6 +279,7 @@ function* fixSeparateNamedExports(
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
   const { node, typeSpecifiers, valueSpecifiers } = report;
+  const source = getSourceFromExport(node);
   const separateTypes = node.exportKind !== 'type';
   const specifiersToSeparate = separateTypes ? typeSpecifiers : valueSpecifiers;
   const specifierNames = specifiersToSeparate.map(getSpecifierText).join(', ');
@@ -319,10 +313,26 @@ function* fixSeparateNamedExports(
   // Insert the bad exports into a new export line above.
   yield fixer.insertTextBefore(
     exportToken,
-    `export ${
-      separateTypes ? 'type ' : ''
-    }{ ${specifierNames} } from ${sourceCode.getText(node.source!)};\n`,
+    `export ${separateTypes ? 'type ' : ''}{ ${specifierNames} }${
+      source ? ` from '${source}'` : ''
+    };\n`,
   );
+}
+
+/**
+ * Returns the source of the export, or undefined if the named export has no source.
+ */
+function getSourceFromExport(
+  node: TSESTree.ExportNamedDeclaration,
+): string | undefined {
+  if (
+    node.source?.type === AST_NODE_TYPES.Literal &&
+    typeof node.source.value === 'string'
+  ) {
+    return node.source.value;
+  }
+
+  return undefined;
 }
 
 function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {

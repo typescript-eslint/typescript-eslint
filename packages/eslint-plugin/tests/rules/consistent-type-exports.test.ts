@@ -212,5 +212,40 @@ export { BlockScope as BScope, CatchScope as CScope } from '@typescript-eslint/s
         },
       ],
     },
+    {
+      code: `
+import { Definition } from '@typescript-eslint/scope-manager';
+export { Definition };
+      `,
+      output: `
+import { Definition } from '@typescript-eslint/scope-manager';
+export type { Definition };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import { CatchScope, Definition } from '@typescript-eslint/scope-manager';
+export { CatchScope, Definition };
+      `,
+      output: `
+import { CatchScope, Definition } from '@typescript-eslint/scope-manager';
+export type { Definition };
+export { CatchScope };
+      `,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
