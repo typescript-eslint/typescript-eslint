@@ -22,11 +22,12 @@ ruleTester.run('no-confusing-void-expression', rule, {
   valid: [
     ...batchedSingleLineTests<Options>({
       code: `
-        () => Math.random();
         console.log('foo');
+        () => Math.random();
         foo && console.log(foo);
         foo || console.log(foo);
         foo ? console.log(true) : console.log(false);
+        console?.log?.('foo');
       `,
     }),
 
@@ -69,6 +70,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         (console.log('foo') && true) || false;
         (cond && console.log('ok')) || console.log('error');
         !console.log('foo');
+        const x = console?.log?.('foo');
       `,
       errors: [
         { line: 2, column: 11, messageId: 'invalidVoidExpr' },
@@ -80,6 +82,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         { line: 8, column: 10, messageId: 'invalidVoidExpr' },
         { line: 9, column: 18, messageId: 'invalidVoidExpr' },
         { line: 10, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 11, column: 19, messageId: 'invalidVoidExpr' },
       ],
     }),
 
