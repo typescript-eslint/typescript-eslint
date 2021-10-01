@@ -57,6 +57,10 @@ export default util.createRule({
           type.flags !== ts.TypeFlags.Undefined,
       );
 
+      if (nonNullishOriginalTypes.length === originalTypes.length) {
+        return false;
+      }
+
       for (const assertedType of assertedTypes) {
         if (!nonNullishOriginalTypes.includes(assertedType)) {
           return false;
@@ -67,10 +71,6 @@ export default util.createRule({
         if (!assertedTypes.includes(originalType)) {
           return false;
         }
-      }
-
-      if (assertedTypes.length === originalTypes.length) {
-        return false;
       }
 
       return true;
