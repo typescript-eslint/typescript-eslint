@@ -69,6 +69,10 @@ export default util.createRule({
         }
       }
 
+      if (assertedTypes.length === originalTypes.length) {
+        return false;
+      }
+
       return true;
     };
 
