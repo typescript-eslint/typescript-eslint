@@ -84,6 +84,7 @@ export default createRule({
       ) {
         const [, flags] = node.arguments;
         return (
+          flags &&
           flags.type === AST_NODE_TYPES.Literal &&
           typeof flags.value === 'string' &&
           flags.value.includes('g')
