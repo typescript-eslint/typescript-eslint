@@ -5093,7 +5093,6 @@ declare namespace Types {
         { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },
-        { messageId: 'expectedBlankLine' },
       ],
     },
   ],
