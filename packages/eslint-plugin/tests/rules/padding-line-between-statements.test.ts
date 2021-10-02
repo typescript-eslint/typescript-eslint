@@ -5084,7 +5084,6 @@ declare namespace Types {
     [key: string]: string;
   }
 }
-
       `,
       options: [
         { blankLine: 'always', prev: '*', next: ['interface', 'type'] },
