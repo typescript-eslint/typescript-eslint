@@ -763,9 +763,11 @@ export default util.createRule<Options, MessageIds>({
       Program: enterScope,
       BlockStatement: enterScope,
       SwitchStatement: enterScope,
+      TSModuleBlock: enterScope,
       'Program:exit': exitScope,
       'BlockStatement:exit': exitScope,
       'SwitchStatement:exit': exitScope,
+      'TSModuleBlock:exit': exitScope,
 
       ':statement': verify,
 
