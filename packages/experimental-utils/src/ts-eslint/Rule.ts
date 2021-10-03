@@ -112,11 +112,16 @@ interface RuleFixer {
   replaceTextRange(range: AST.Range, text: string): RuleFix;
 }
 
+interface SuggestionReportDescriptor<TMessageIds extends string>
+  extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
+  readonly fix: ReportFixFunction;
+}
+
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
-  ReportDescriptorBase<TMessageIds>[];
+  SuggestionReportDescriptor<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
