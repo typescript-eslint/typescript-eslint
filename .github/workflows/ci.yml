@@ -12,6 +12,8 @@ env:
   PRIMARY_NODE_VERSION: 12
   NX_BRANCH: ${{ github.event.number }}
   NX_RUN_GROUP: ${{ github.run_id }}
+  # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+  NX_CLOUD_ENV_NAME: "Node 12.x -"
 
 jobs:
   typecheck:
@@ -223,6 +225,9 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 14.x]
+    env:
+      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+      NX_CLOUD_ENV_NAME: "Node ${{ matrix.node-version }} -"
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
