@@ -27,6 +27,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         foo && console.log(foo);
         foo || console.log(foo);
         foo ? console.log(true) : console.log(false);
+        console?.log('foo');
       `,
     }),
 
@@ -61,6 +62,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
     ...batchedSingleLineTests<MessageId, Options>({
       code: `
         const x = console.log('foo');
+        const x = console?.log('foo');
         console.error(console.log('foo'));
         [console.log('foo')];
         ({ x: console.log('foo') });
@@ -72,14 +74,15 @@ ruleTester.run('no-confusing-void-expression', rule, {
       `,
       errors: [
         { line: 2, column: 11, messageId: 'invalidVoidExpr' },
-        { line: 3, column: 23, messageId: 'invalidVoidExpr' },
-        { line: 4, column: 10, messageId: 'invalidVoidExpr' },
-        { line: 5, column: 15, messageId: 'invalidVoidExpr' },
-        { line: 6, column: 14, messageId: 'invalidVoidExpr' },
-        { line: 7, column: 9, messageId: 'invalidVoidExpr' },
-        { line: 8, column: 10, messageId: 'invalidVoidExpr' },
-        { line: 9, column: 18, messageId: 'invalidVoidExpr' },
-        { line: 10, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 3, column: 19, messageId: 'invalidVoidExpr' },
+        { line: 4, column: 23, messageId: 'invalidVoidExpr' },
+        { line: 5, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 6, column: 15, messageId: 'invalidVoidExpr' },
+        { line: 7, column: 14, messageId: 'invalidVoidExpr' },
+        { line: 8, column: 9, messageId: 'invalidVoidExpr' },
+        { line: 9, column: 10, messageId: 'invalidVoidExpr' },
+        { line: 10, column: 18, messageId: 'invalidVoidExpr' },
+        { line: 11, column: 10, messageId: 'invalidVoidExpr' },
       ],
     }),
 
