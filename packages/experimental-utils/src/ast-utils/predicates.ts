@@ -7,6 +7,28 @@ const isNodeOfType =
   ): node is TSESTree.Node & { type: NodeType } =>
     node?.type === nodeType;
 
+type ObjectEntry<BaseType> = [keyof BaseType, BaseType[keyof BaseType]];
+type ObjectEntries<BaseType> = Array<ObjectEntry<BaseType>>;
+const isNodeOfTypeWithConditions = <
+  NodeType extends AST_NODE_TYPES,
+  Conditions extends Partial<TSESTree.Node & { type: NodeType }>,
+>(
+  nodeType: NodeType,
+  conditions: Conditions,
+): ((
+  node: TSESTree.Node | null | undefined,
+) => node is TSESTree.Node & { type: NodeType } & Conditions) => {
+  const entries = Object.entries(conditions) as ObjectEntries<
+    TSESTree.Node & { type: NodeType }
+  >;
+
+  return (
+    node: TSESTree.Node | null | undefined,
+  ): node is TSESTree.Node & { type: NodeType } & Conditions =>
+    node?.type === nodeType &&
+    entries.every(([key, value]) => node[key] === value);
+};
+
 function isOptionalChainPunctuator(
   token: TSESTree.Token,
 ): token is TSESTree.PunctuatorToken & { value: '?.' } {
@@ -35,27 +57,20 @@ function isNotNonNullAssertionPunctuator(
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
-function isOptionalCallExpression(
-  node: TSESTree.Node,
-): node is TSESTree.CallExpression & { optional: true } {
-  return (
-    node.type === AST_NODE_TYPES.CallExpression &&
-    // this flag means the call expression itself is option
-    // i.e. it is foo.bar?.() and not foo?.bar()
-    node.optional
-  );
-}
+const isOptionalCallExpression = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.CallExpression,
+  // this flag means the call expression itself is option
+  // i.e. it is foo.bar?.() and not foo?.bar()
+  { optional: true },
+);
 
 /**
  * Returns true if and only if the node represents logical OR
  */
-function isLogicalOrOperator(
-  node: TSESTree.Node,
-): node is TSESTree.LogicalExpression & { operator: '||' } {
-  return (
-    node.type === AST_NODE_TYPES.LogicalExpression && node.operator === '||'
-  );
-}
+const isLogicalOrOperator = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.LogicalExpression,
+  { operator: '||' },
+);
 
 /**
  * Checks if a node is a type assertion:
@@ -165,14 +180,10 @@ function isClassOrTypeElement(
 /**
  * Checks if a node is a constructor method.
  */
-function isConstructor(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.MethodDefinition {
-  return (
-    node?.type === AST_NODE_TYPES.MethodDefinition &&
-    node.kind === 'constructor'
-  );
-}
+const isConstructor = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.MethodDefinition,
+  { kind: 'constructor' },
+);
 
 /**
  * Checks if a node is a setter method.
