@@ -210,7 +210,7 @@ interface RuleContext<
    * the root of the AST and continuing through the direct parent of the current node.
    * This array does not include the currently-traversed node itself.
    */
-  getAncestors(): readonly TSESTree.Node[];
+  getAncestors(): TSESTree.Node[];
 
   /**
    * Returns a list of variables declared by the given node.
