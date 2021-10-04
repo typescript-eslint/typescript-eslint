@@ -95,10 +95,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isTypeImport(
-      definition: Definition,
+      definition?: Definition,
     ): definition is ImportBindingDefinition {
       return (
-        definition.type === DefinitionType.ImportBinding &&
+        definition?.type === DefinitionType.ImportBinding &&
         definition.parent.importKind === 'type'
       );
     }
@@ -222,6 +222,58 @@ export default util.createRule<Options, MessageIds>({
     ): boolean {
       return (
         isGenericOfStaticMethod(variable) && isGenericOfClassDecl(shadowed)
+      );
+    }
+
+    function isImportDeclaration(
+      definition:
+        | TSESTree.ImportDeclaration
+        | TSESTree.TSImportEqualsDeclaration,
+    ): definition is TSESTree.ImportDeclaration {
+      return definition.type === AST_NODE_TYPES.ImportDeclaration;
+    }
+
+    function isStringLiteral(
+      node: TSESTree.Node | null,
+    ): node is TSESTree.StringLiteral {
+      return (
+        !!node &&
+        node.type === AST_NODE_TYPES.Literal &&
+        typeof node.value === 'string'
+      );
+    }
+
+    function isExternalModuleDeclarationWithName(
+      scope: TSESLint.Scope.Scope,
+      name: string,
+    ): boolean {
+      return (
+        scope.type === ScopeType.tsModule &&
+        scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
+        scope.block.id.type === AST_NODE_TYPES.Literal &&
+        scope.block.id.value === name
+      );
+    }
+
+    function isExternalDeclerationMerging(
+      scope: TSESLint.Scope.Scope,
+      variable: TSESLint.Scope.Variable,
+      shadowed: TSESLint.Scope.Variable,
+    ): boolean {
+      const [firstDefinition] = shadowed.defs;
+      const [secondDefinition] = variable.defs;
+
+      return (
+        isTypeImport(firstDefinition) &&
+        isImportDeclaration(firstDefinition.parent) &&
+        isStringLiteral(firstDefinition.parent.source) &&
+        isExternalModuleDeclarationWithName(
+          scope,
+          firstDefinition.parent.source.value,
+        ) &&
+        secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
+        secondDefinition.node.parent?.type ===
+          AST_NODE_TYPES.ExportNamedDeclaration
       );
     }
 
@@ -401,6 +453,10 @@ export default util.createRule<Options, MessageIds>({
         // this is impossible for the scope analyser to understand
         // so we have to handle this manually in this rule
         if (isGenericOfAStaticMethodShadow(variable, shadowed)) {
+          continue;
+        }
+
+        if (isExternalDeclerationMerging(scope, variable, shadowed)) {
           continue;
         }
 
