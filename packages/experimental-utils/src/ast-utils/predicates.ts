@@ -4,13 +4,14 @@ import {
   isNodeOfType,
   isNodeOfTypes,
   isNodeOfTypeWithConditions,
+  isTokenOfTypeWithConditions,
 } from './helpers';
 
-function isOptionalChainPunctuator(
-  token: TSESTree.Token,
-): token is TSESTree.PunctuatorToken & { value: '?.' } {
-  return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.';
-}
+const isOptionalChainPunctuator = isTokenOfTypeWithConditions(
+  AST_TOKEN_TYPES.Punctuator,
+  { value: '?.' },
+);
+
 function isNotOptionalChainPunctuator(
   token: TSESTree.Token,
 ): token is Exclude<
@@ -20,11 +21,11 @@ function isNotOptionalChainPunctuator(
   return !isOptionalChainPunctuator(token);
 }
 
-function isNonNullAssertionPunctuator(
-  token: TSESTree.Token,
-): token is TSESTree.PunctuatorToken & { value: '!' } {
-  return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '!';
-}
+const isNonNullAssertionPunctuator = isTokenOfTypeWithConditions(
+  AST_TOKEN_TYPES.Punctuator,
+  { value: '!' },
+);
+
 function isNotNonNullAssertionPunctuator(
   token: TSESTree.Token,
 ): token is Exclude<TSESTree.Token, TSESTree.PunctuatorToken & { value: '!' }> {
@@ -138,11 +139,9 @@ const isAwaitExpression = isNodeOfType(AST_NODE_TYPES.AwaitExpression);
 /**
  * Checks if a possible token is the `await` keyword.
  */
-function isAwaitKeyword(
-  node: TSESTree.Token | undefined | null,
-): node is TSESTree.IdentifierToken & { value: 'await' } {
-  return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
-}
+const isAwaitKeyword = isTokenOfTypeWithConditions(AST_TOKEN_TYPES.Identifier, {
+  value: 'await',
+});
 
 const isLoop = isNodeOfTypes([
   AST_NODE_TYPES.DoWhileStatement,
