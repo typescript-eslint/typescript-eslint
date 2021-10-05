@@ -64,3 +64,9 @@ In addition, each of the following properties may be provided, and default to `t
 ## Related To
 
 - TSLint: [promise-function-async](https://palantir.github.io/tslint/rules/promise-function-async)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

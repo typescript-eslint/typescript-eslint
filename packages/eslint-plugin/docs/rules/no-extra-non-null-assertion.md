@@ -47,3 +47,9 @@ function foo(bar?: { n: number }) {
   "@typescript-eslint/no-extra-non-null-assertion": ["error"]
 }
 ```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

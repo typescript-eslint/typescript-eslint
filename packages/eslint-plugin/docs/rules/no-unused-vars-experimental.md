@@ -113,3 +113,9 @@ class Foo {
   }
 }
 ```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

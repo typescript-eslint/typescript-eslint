@@ -42,3 +42,9 @@ If you want to iterate through a loop using the indices in an array as strings, 
 ## Related to
 
 - TSLint: ['no-for-in-array'](https://palantir.github.io/tslint/rules/no-for-in-array/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

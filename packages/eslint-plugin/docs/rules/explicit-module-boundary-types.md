@@ -267,3 +267,9 @@ If you wish to make sure all functions have explicit return types, as opposed to
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

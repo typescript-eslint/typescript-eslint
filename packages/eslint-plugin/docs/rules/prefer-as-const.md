@@ -26,3 +26,9 @@ let foo = { bar: 'baz' };
 ## When Not To Use It
 
 If you are using TypeScript < 3.4
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

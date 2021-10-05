@@ -78,3 +78,9 @@ team or if you use classes as namespaces.
 ## Compatibility
 
 [`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

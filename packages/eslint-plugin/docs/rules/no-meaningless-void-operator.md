@@ -48,3 +48,9 @@ This rule accepts a single object option with the following default configuratio
 ```
 
 - `checkNever: true` will suggest removing `void` when the argument has type `never`.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

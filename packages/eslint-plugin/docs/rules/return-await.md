@@ -206,3 +206,9 @@ async function validNever3() {
   return 'value';
 }
 ```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

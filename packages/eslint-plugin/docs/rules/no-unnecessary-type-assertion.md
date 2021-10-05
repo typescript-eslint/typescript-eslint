@@ -71,3 +71,9 @@ If you don't care about having no-op type assertions in your code, then you can 
 ## Related to
 
 - TSLint: [`no-unnecessary-type-assertion`](https://palantir.github.io/tslint/rules/no-unnecessary-type-assertion/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

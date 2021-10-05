@@ -306,3 +306,9 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 ## Compatibility
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information
