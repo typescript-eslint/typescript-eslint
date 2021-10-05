@@ -255,7 +255,7 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function isExternalDeclerationMerging(
+    function isExternalDeclarationMerging(
       scope: TSESLint.Scope.Scope,
       variable: TSESLint.Scope.Variable,
       shadowed: TSESLint.Scope.Variable,
@@ -456,7 +456,7 @@ export default util.createRule<Options, MessageIds>({
           continue;
         }
 
-        if (isExternalDeclerationMerging(scope, variable, shadowed)) {
+        if (isExternalDeclarationMerging(scope, variable, shadowed)) {
           continue;
         }
 
