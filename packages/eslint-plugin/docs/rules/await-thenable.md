@@ -34,6 +34,6 @@ This is generally not preferred, but can sometimes be useful for visual consiste
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

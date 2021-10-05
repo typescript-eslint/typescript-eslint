@@ -90,4 +90,4 @@ If you don't mind `"[object Object]"` in your strings, then you will not need th
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

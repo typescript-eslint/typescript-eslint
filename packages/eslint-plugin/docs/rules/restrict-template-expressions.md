@@ -103,6 +103,6 @@ const msg1 = `arg = ${arg}`;
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

@@ -118,5 +118,5 @@ This matrix lists all possible option combinations and their expected results fo
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

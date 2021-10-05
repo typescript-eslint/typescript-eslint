@@ -260,4 +260,4 @@ function foo(arg: MyType) {}
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

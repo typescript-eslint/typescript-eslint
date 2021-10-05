@@ -23,6 +23,6 @@ See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-va
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

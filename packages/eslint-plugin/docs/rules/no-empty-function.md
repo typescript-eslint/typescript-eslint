@@ -91,6 +91,6 @@ class Foo {
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

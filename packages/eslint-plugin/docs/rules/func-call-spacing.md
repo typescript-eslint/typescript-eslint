@@ -24,5 +24,5 @@ See [`eslint/func-call-spacing` options](https://eslint.org/docs/rules/func-call
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

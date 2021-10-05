@@ -42,6 +42,6 @@ interface I {
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

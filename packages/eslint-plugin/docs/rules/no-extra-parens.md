@@ -24,5 +24,5 @@ See [`eslint/no-extra-parens` options](https://eslint.org/docs/rules/no-extra-pa
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -149,5 +149,5 @@ The ordering of groups is determined by this option.
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

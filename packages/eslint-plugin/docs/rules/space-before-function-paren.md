@@ -24,5 +24,5 @@ See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

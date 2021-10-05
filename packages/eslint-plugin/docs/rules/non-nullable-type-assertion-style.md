@@ -29,5 +29,5 @@ If you don't mind having unnecessarily verbose type casts, you can avoid this ru
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

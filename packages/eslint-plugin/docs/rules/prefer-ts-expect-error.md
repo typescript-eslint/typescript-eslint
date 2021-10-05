@@ -67,5 +67,5 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

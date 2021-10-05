@@ -81,5 +81,5 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -116,6 +116,6 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

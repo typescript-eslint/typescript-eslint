@@ -50,6 +50,6 @@ function foo(bar?: { n: number }) {
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

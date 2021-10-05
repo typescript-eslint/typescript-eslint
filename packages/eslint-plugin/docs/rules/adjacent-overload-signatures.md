@@ -90,6 +90,6 @@ If you don't care about the general structure of the code, then you will not nee
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

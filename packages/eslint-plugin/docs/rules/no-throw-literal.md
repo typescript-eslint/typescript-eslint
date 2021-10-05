@@ -97,4 +97,4 @@ throw new CustomError();
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

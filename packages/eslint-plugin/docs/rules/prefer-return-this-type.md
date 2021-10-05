@@ -92,5 +92,5 @@ If you don't use method chaining or explicit return values, you can safely turn 
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

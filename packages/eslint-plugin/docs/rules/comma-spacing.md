@@ -24,5 +24,5 @@ See [`eslint/comma-spacing` options](https://eslint.org/docs/rules/comma-spacing
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

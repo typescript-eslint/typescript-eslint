@@ -44,6 +44,6 @@ See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-arr
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

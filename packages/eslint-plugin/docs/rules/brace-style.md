@@ -24,5 +24,5 @@ See [`eslint/brace-style` options](https://eslint.org/docs/rules/brace-style#opt
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

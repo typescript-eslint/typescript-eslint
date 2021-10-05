@@ -144,4 +144,4 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

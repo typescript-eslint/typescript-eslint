@@ -133,6 +133,6 @@ If you want to use all of the TypeScript directives.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

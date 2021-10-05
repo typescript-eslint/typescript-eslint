@@ -106,4 +106,4 @@ If program doesn't have union types with many parts. Downside of this rule is th
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

@@ -33,6 +33,6 @@ See [`eslint/require-await` options](https://eslint.org/docs/rules/require-await
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

@@ -26,5 +26,5 @@ See [`eslint/indent` options](https://eslint.org/docs/rules/indent#options).
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

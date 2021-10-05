@@ -48,5 +48,5 @@ If you don't care about this confusion, then you will not need this rule.
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -74,6 +74,6 @@ If you don't care about having no-op type assertions in your code, then you can 
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

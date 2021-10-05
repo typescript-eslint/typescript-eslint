@@ -50,5 +50,5 @@ See [`eslint/padding-line-between-statements` options](https://eslint.org/docs/r
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

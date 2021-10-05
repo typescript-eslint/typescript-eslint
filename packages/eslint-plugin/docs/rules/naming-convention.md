@@ -699,4 +699,4 @@ If you do not want to enforce naming conventions for anything.
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

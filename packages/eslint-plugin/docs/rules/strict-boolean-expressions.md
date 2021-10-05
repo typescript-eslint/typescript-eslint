@@ -196,5 +196,5 @@ This rule provides following fixes and suggestions for particular types in boole
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

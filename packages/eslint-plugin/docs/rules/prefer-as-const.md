@@ -29,6 +29,6 @@ If you are using TypeScript < 3.4
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

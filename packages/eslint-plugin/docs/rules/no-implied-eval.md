@@ -106,6 +106,6 @@ If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setIm
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

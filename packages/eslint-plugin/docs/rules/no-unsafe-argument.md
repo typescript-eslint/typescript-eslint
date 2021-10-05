@@ -72,4 +72,4 @@ foo(1 as any, new Set<any>(), [] as any[]);
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

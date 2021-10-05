@@ -49,6 +49,6 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

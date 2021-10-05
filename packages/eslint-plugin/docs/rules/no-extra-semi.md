@@ -23,6 +23,6 @@ See [`eslint/no-extra-semi` options](https://eslint.org/docs/rules/no-extra-semi
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

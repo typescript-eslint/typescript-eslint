@@ -57,6 +57,6 @@ If you want to use all flavors of triple slash reference directives.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -56,5 +56,5 @@ If you don't want to use typechecking in your linting, you can't use this rule.
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

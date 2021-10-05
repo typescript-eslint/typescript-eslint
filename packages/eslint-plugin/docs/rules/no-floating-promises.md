@@ -105,6 +105,6 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

@@ -61,6 +61,6 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -28,5 +28,5 @@ See [`eslint/space-infix-ops` options](https://eslint.org/docs/rules/space-infix
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

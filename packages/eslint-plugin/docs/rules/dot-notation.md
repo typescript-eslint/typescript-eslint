@@ -85,5 +85,5 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

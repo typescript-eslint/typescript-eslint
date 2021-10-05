@@ -51,5 +51,5 @@ Even repeated minor performance slowdowns likely do not significantly affect you
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

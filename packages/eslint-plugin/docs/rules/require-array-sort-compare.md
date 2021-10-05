@@ -88,4 +88,4 @@ If you understand the language specification enough, you can turn this rule off 
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

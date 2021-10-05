@@ -24,5 +24,5 @@ See [`eslint/object-curly-spacing` options](https://eslint.org/docs/rules/object
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

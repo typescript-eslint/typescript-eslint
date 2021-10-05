@@ -24,5 +24,5 @@ See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spa
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

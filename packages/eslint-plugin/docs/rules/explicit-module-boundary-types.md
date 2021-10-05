@@ -270,6 +270,6 @@ If you wish to make sure all functions have explicit return types, as opposed to
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -45,6 +45,6 @@ If you want to iterate through a loop using the indices in an array as strings, 
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+- [x] 💭 Requires type information

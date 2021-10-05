@@ -28,5 +28,5 @@ See [`eslint/semi` options](https://eslint.org/docs/rules/semi#options).
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

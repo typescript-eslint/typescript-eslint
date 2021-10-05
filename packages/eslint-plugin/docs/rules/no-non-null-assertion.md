@@ -36,6 +36,6 @@ If you don't care about strict null-checking, then you will not need this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

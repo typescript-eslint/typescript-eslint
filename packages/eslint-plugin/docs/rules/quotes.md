@@ -24,5 +24,5 @@ See [`eslint/quotes` options](https://eslint.org/docs/rules/quotes#options).
 ## Attributes
 
 - [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information

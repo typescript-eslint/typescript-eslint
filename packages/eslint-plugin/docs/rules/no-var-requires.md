@@ -30,6 +30,6 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

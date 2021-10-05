@@ -65,6 +65,6 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
 - [ ] 💭 Requires type information
