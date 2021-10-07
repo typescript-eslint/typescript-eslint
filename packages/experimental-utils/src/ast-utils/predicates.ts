@@ -6,6 +6,7 @@ const isNodeOfType =
     node: TSESTree.Node | null | undefined,
   ): node is TSESTree.Node & { type: NodeType } =>
     node?.type === nodeType;
+
 const isNodeOfTypes =
   <NodeTypes extends readonly AST_NODE_TYPES[]>(nodeTypes: NodeTypes) =>
   (
@@ -85,17 +86,10 @@ const isLogicalOrOperator = isNodeOfTypeWithConditions(
  * <foo>x
  * ```
  */
-function isTypeAssertion(
-  node: TSESTree.Node | undefined | null,
-): node is TSESTree.TSAsExpression | TSESTree.TSTypeAssertion {
-  if (!node) {
-    return false;
-  }
-  return (
-    node.type === AST_NODE_TYPES.TSAsExpression ||
-    node.type === AST_NODE_TYPES.TSTypeAssertion
-  );
-}
+const isTypeAssertion = isNodeOfTypes([
+  AST_NODE_TYPES.TSAsExpression,
+  AST_NODE_TYPES.TSTypeAssertion,
+] as const);
 
 const isVariableDeclarator = isNodeOfType(AST_NODE_TYPES.VariableDeclarator);
 
