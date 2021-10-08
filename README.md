@@ -40,9 +40,7 @@ The documentation below will give you an overview of what this project is, why i
 
 **It is crucial that you are familiar with these concepts before reporting issues**, so it is a good idea to read them before raising issues.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -58,9 +56,7 @@ The documentation below will give you an overview of what this project is, why i
 
 They sound similar, right? They are! Both projects are ultimately striving to help you write the best JavaScript code you possibly can.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -76,9 +72,7 @@ This project, `typescript-eslint`, exists primarily because of this major differ
 
 `typescript-eslint` exists so that you can use ESLint and TypeScript together, without needing to worry about implementation detail differences wherever possible.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -100,9 +94,7 @@ You can look at [`the plugin ROADMAP.md`](./packages/eslint-plugin/ROADMAP.md) f
 
 There is also the ultimate fallback option of using both linters together for a while during your transition if you absolutely have to by using TSLint _within_ ESLint. For this option, check out [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint/).
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -146,9 +138,7 @@ The flow and transformations that happen look a little something like this:
 
 That just about covers the parsing piece! But what about the rules? This is where our plugins come into play.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -167,9 +157,7 @@ However, it is super important to be mindful of all of the things we have covere
 - TypeScript is a superset of JavaScript
   - Even with the AST conversion in place in the parser, there can be things in the final AST which ESLint does not natively understand. If ESLint rules have been written in such a way that they make particular assumptions about ASTs, this can sometimes result in rules crashing. This can be mitigated in several ways - we can work with rule authors to make their code more robust, or we can provide alternative rules via our own [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/).
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -183,9 +171,7 @@ When the transformation steps outlined above take place, we keep references to t
 
 We already do this in numerous rules within [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/), for example, `no-unnecessary-type-assertion` and `no-inferrable-types`.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -199,9 +185,7 @@ Because they are separate projects powered by different underlying tooling, they
 
 Some of the people involved in `typescript-eslint` are also involved in Babel and `@babel/eslint-parser`, and in this project, we are working hard to align on the AST format for non-standard JavaScript syntax. This is an ongoing effort.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -225,9 +209,7 @@ There are also financial ways to contribute, please see [Financial Contributors]
 
 All positive contributions are welcome here!
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -245,9 +227,7 @@ Please follow the links below for the packages you care about.
 
 - [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint) - An ESLint-specific plugin that runs an instance of TSLint within your ESLint setup to allow for users to more easily migrate from TSLint to ESLint.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -269,9 +249,7 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 (Note: The only exception to the automated publishes described above is when we are in the final phases of creating the next major version of the libraries - e.g. going from `1.x.x` to `2.x.x`. During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.)
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -289,9 +267,7 @@ If you use a non-supported version of TypeScript, the parser will log a warning 
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -307,9 +283,7 @@ This project makes an effort to support Active LTS and Maintenance LTS release s
 
 TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
 
 <br>
 
@@ -354,6 +328,4 @@ Support this project with your organization. Your logo will show up here with a 
 
 [See the contributing guide here](./CONTRIBUTING.md)
 
-<div align="right">
-  <b><a href="#table-of-contents">↥ Back to top</a></b>
-</div>
+[↥ Back to top](#table-of-contents)
