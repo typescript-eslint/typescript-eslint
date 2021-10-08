@@ -112,11 +112,16 @@ interface RuleFixer {
   replaceTextRange(range: AST.Range, text: string): RuleFix;
 }
 
+interface SuggestionReportDescriptor<TMessageIds extends string>
+  extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
+  readonly fix: ReportFixFunction;
+}
+
 type ReportFixFunction = (
   fixer: RuleFixer,
 ) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
-  ReportDescriptorBase<TMessageIds>[];
+  SuggestionReportDescriptor<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -229,6 +234,13 @@ interface RuleContext<
    * Returns the filename associated with the source.
    */
   getFilename(): string;
+
+  /**
+   * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
+   * This was added in v7.28.0
+   * @since 7.28.0
+   */
+  getPhysicalFilename?(): string;
 
   /**
    * Returns the scope of the currently-traversed node.

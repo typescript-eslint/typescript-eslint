@@ -268,6 +268,11 @@ export default util.createRule<Options, MessageId>({
         }
       }
 
+      if (parent.type === AST_NODE_TYPES.ChainExpression) {
+        // e.g. `console?.log('foo')`
+        return findInvalidAncestor(parent);
+      }
+
       // any other parent is invalid
       return parent;
     }

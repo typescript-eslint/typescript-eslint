@@ -233,5 +233,32 @@ function test(pattern: string) {
 }
       `,
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3941
+      code: `
+function temp(text: string): void {
+  text.match(new RegExp(\`\${'hello'}\`));
+  text.match(new RegExp(\`\${'hello'.toString()}\`));
+}
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 8,
+        },
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 8,
+        },
+      ],
+      output: `
+function temp(text: string): void {
+  new RegExp(\`\${'hello'}\`).exec(text);
+  new RegExp(\`\${'hello'.toString()}\`).exec(text);
+}
+      `,
+    },
   ],
 });

@@ -5084,13 +5084,11 @@ declare namespace Types {
     [key: string]: string;
   }
 }
-
       `,
       options: [
         { blankLine: 'always', prev: '*', next: ['interface', 'type'] },
       ],
       errors: [
-        { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },

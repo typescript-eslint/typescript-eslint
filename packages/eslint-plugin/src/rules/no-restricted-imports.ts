@@ -1,14 +1,14 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import baseRule, {
-  ArrayOfStringOrObjectPatterns,
   ArrayOfStringOrObject,
+  ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
 import ignore, { Ignore } from 'ignore';
 import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule,
   createRule,
   deepMerge,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
@@ -118,6 +118,10 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
     const { options } = context;
+
+    if (options.length === 0) {
+      return {};
+    }
 
     const restrictedPaths = getRestrictedPaths(options);
     const allowedTypeImportPathNameSet: Set<string> = new Set();

@@ -54,6 +54,13 @@ const y = x as NonNullable<T>;
     `
 const foo = [] as const;
     `,
+    `
+const x = 1 as 1;
+    `,
+    `
+declare function foo<T = any>(): T;
+const bar = foo() as number;
+    `,
   ],
 
   invalid: [

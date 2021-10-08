@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [lines-between-class-members] fix `exceptAfterOverload` for abstract methods ([#3943](https://github.com/typescript-eslint/typescript-eslint/issues/3943)) ([240fc65](https://github.com/typescript-eslint/typescript-eslint/commit/240fc65c307769eae9b35e611fca74ba4c35a025))
+* **eslint-plugin:** [no-confusing-void-expression] support optional chaining ([#3937](https://github.com/typescript-eslint/typescript-eslint/issues/3937)) ([c40dd13](https://github.com/typescript-eslint/typescript-eslint/commit/c40dd13df76b77052c85254622df5533307dc07e))
+* **eslint-plugin:** [no-restricted-imports] fix crash when no options given ([#3947](https://github.com/typescript-eslint/typescript-eslint/issues/3947)) ([edaa3c1](https://github.com/typescript-eslint/typescript-eslint/commit/edaa3c10eb67bb89f9c6a78bd1ed593925c33f16))
+* **eslint-plugin:** [non-nullable-type-assertion-style] false-positive with non-nullish `as` assertions and types ([#3940](https://github.com/typescript-eslint/typescript-eslint/issues/3940)) ([40760f9](https://github.com/typescript-eslint/typescript-eslint/commit/40760f98da0d23c7bce3da04cf37a56c10447bde))
+* **eslint-plugin:** [padding-line-between-statements] TSModuleBlock should change scope ([#3944](https://github.com/typescript-eslint/typescript-eslint/issues/3944)) ([f8f534e](https://github.com/typescript-eslint/typescript-eslint/commit/f8f534e42b0ec517274442422c37ab019cf3c200))
+* **eslint-plugin:** [prefer-regexp-exec] check `RegExp` without flags ([#3946](https://github.com/typescript-eslint/typescript-eslint/issues/3946)) ([0868725](https://github.com/typescript-eslint/typescript-eslint/commit/0868725713e8102e8932303d4c680340688e1fa9))
+
+
+
+
+
 # [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
 
 

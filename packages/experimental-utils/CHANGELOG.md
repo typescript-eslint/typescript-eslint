@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add `getPhysicalFilename()` to `RuleContext` ([#3934](https://github.com/typescript-eslint/typescript-eslint/issues/3934)) ([ee5dfd4](https://github.com/typescript-eslint/typescript-eslint/commit/ee5dfd4989ab465d65ba3424e36b7f0964558191))
+* **experimental-utils:** require fix in suggestions ([#3949](https://github.com/typescript-eslint/typescript-eslint/issues/3949)) ([f022fb1](https://github.com/typescript-eslint/typescript-eslint/commit/f022fb14c71dad25be2314252eb751964f34fcb8))
+
+
+### Features
+
+* **experimental-utils:** extract `isNodeOfTypeWithConditions` out of `ast-utils`' `predicates` ([#3837](https://github.com/typescript-eslint/typescript-eslint/issues/3837)) ([214f898](https://github.com/typescript-eslint/typescript-eslint/commit/214f898178ba593146d06a444487d32ec3363854))
+
+
+
+
+
 # [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
 
 

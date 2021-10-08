@@ -8,6 +8,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-restricted-imports', rule, {
   valid: [
+    "import foo from 'foo';",
     {
       code: "import foo from 'foo';",
       options: ['import1', 'import2'],
