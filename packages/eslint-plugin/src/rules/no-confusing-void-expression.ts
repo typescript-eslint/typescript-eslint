@@ -57,7 +57,7 @@ export default util.createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
@@ -266,6 +266,11 @@ export default util.createRule<Options, MessageId>({
             return null;
           }
         }
+      }
+
+      if (parent.type === AST_NODE_TYPES.ChainExpression) {
+        // e.g. `console?.log('foo')`
+        return findInvalidAncestor(parent);
       }
 
       // any other parent is invalid

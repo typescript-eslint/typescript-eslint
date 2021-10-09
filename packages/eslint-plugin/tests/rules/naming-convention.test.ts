@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/naming-convention';
 import {
   PredefinedFormatsString,
-  selectorTypeToMessageString,
   Selector,
+  selectorTypeToMessageString,
 } from '../../src/rules/naming-convention-utils';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1314,7 +1315,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
 
         export const used_var = 1;
@@ -1328,7 +1329,7 @@ ruleTester.run('naming-convention', rule, {
         export interface used_interface {}
         export type used_type<
           // this line is intentionally broken out
-          used_typeparam
+          used_typeparam,
         > = used_typeparam;
       `,
       options: [
@@ -2157,7 +2158,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
       `,
       options: [

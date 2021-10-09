@@ -141,6 +141,8 @@ declare function Foo(props: { a: string }): never;
     'const x: unknown = y as any;',
     'const x: unknown[] = y as any[];',
     'const x: Set<unknown> = y as Set<any>;',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    'const x: Map<string, string> = new Map();',
   ],
   invalid: [
     ...batchedSingleLineTests({

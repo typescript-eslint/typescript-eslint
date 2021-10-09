@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-regexp-exec';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -32,6 +32,47 @@ a.match(/thing/);
 function f(s: string | string[]) {
   s.match(/e/);
 }
+    `,
+    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
+    "'212'.match(2);",
+    "'212'.match(+2);",
+    "'oNaNo'.match(NaN);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+    "'void and null'.match(null);",
+    `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(RegExp(pattern, 'g'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+const matchCount = (str: string, re: RegExp) => {
+  return (str.match(re) || []).length;
+};
     `,
   ],
   invalid: [
@@ -96,79 +137,6 @@ RegExp(search).exec(text);
       `,
     },
     {
-      code: "'212'.match(2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'212'.match(+2);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: "'oNaNo'.match(NaN);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 9,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code:
-        "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 60,
-        },
-      ],
-    },
-    {
-      code: "'void and null'.match(null);",
-      errors: [
-        {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
-          column: 17,
-        },
-      ],
-    },
-    {
       code: `
 function f(s: 'a' | 'b') {
   s.match('a');
@@ -224,6 +192,71 @@ function f<T extends 'a' | 'b'>(s: T) {
       output: `
 function f<T extends 'a' | 'b'>(s: T) {
   /thing/.exec(s);
+}
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+const search = new RegExp('test', '');
+text.match(search);
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 6,
+        },
+      ],
+      output: `
+const text = 'something';
+const search = new RegExp('test', '');
+search.exec(text);
+      `,
+    },
+    {
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern, undefined));
+}
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 11,
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern, undefined).exec('check');
+}
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3941
+      code: `
+function temp(text: string): void {
+  text.match(new RegExp(\`\${'hello'}\`));
+  text.match(new RegExp(\`\${'hello'.toString()}\`));
+}
+      `,
+      errors: [
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 3,
+          column: 8,
+        },
+        {
+          messageId: 'regExpExecOverStringMatch',
+          line: 4,
+          column: 8,
+        },
+      ],
+      output: `
+function temp(text: string): void {
+  new RegExp(\`\${'hello'}\`).exec(text);
+  new RegExp(\`\${'hello'.toString()}\`).exec(text);
 }
       `,
     },

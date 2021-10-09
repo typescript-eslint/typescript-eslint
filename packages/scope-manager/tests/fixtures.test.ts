@@ -124,7 +124,7 @@ function nestDescribe(
           throw new Error(
             `Expected value for ${key} to be one of (${Array.from(type[1]).join(
               ' | ',
-            )}), but got ${value}`,
+            )}), but got ${value as string}`,
           );
         }
 
@@ -139,7 +139,10 @@ function nestDescribe(
 
       try {
         makeDir.sync(fixture.snapshotPath);
-      } catch (e) {
+      } catch (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        e: any
+      ) {
         if ('code' in e && e.code === 'EEXIST') {
           // already exists - ignored
         } else {

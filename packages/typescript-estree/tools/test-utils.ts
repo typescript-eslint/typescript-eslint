@@ -41,7 +41,7 @@ export function createSnapshotTestBlock(
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
       if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
-        throw new Error(error);
+        throw error;
       }
       expect(parse).toThrowErrorMatchingSnapshot();
     }

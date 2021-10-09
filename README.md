@@ -233,7 +233,7 @@ The latest version under the `canary` tag **(latest commit to master)** is:
 
 ## Supported TypeScript Version
 
-**The version range of TypeScript currently supported by this parser is `>=3.3.1 <4.3.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.3.1 <4.5.0`.**
 
 These versions are what we test against.
 

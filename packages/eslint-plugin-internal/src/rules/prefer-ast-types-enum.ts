@@ -3,6 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { createRule } from '../util';
 
 const isStringLiteral = (
@@ -17,7 +18,7 @@ export default createRule({
       category: 'Best Practices',
       recommended: 'error',
       description:
-        'Ensures consistent usage of AST_NODE_TYPES & AST_TOKEN_TYPES enums.',
+        'Ensures consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums.',
     },
     messages: {
       preferEnum: 'Prefer {{ enumName }}.{{ literal }} over raw literal',
@@ -28,7 +29,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const report = (
-      enumName: 'AST_NODE_TYPES' | 'AST_TOKEN_TYPES',
+      enumName: 'AST_NODE_TYPES' | 'AST_TOKEN_TYPES' | 'DefinitionType',
       literal: TSESTree.StringLiteral,
     ): void =>
       context.report({
@@ -44,7 +45,7 @@ export default createRule({
         if (
           node.parent?.type === AST_NODE_TYPES.TSEnumMember &&
           node.parent.parent?.type === AST_NODE_TYPES.TSEnumDeclaration &&
-          ['AST_NODE_TYPES', 'AST_TOKEN_TYPES'].includes(
+          ['AST_NODE_TYPES', 'AST_TOKEN_TYPES', 'DefinitionType'].includes(
             node.parent.parent.id.name,
           )
         ) {
@@ -63,6 +64,10 @@ export default createRule({
 
         if (Object.prototype.hasOwnProperty.call(AST_TOKEN_TYPES, value)) {
           report('AST_TOKEN_TYPES', node);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(DefinitionType, value)) {
+          report('DefinitionType', node);
         }
       },
     };

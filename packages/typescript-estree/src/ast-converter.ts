@@ -15,9 +15,7 @@ export function astConverter(
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
    */
-  // internal typescript api...
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parseDiagnostics = (ast as any).parseDiagnostics;
+  const { parseDiagnostics } = ast;
   if (parseDiagnostics.length) {
     throw convertError(parseDiagnostics[0]);
   }

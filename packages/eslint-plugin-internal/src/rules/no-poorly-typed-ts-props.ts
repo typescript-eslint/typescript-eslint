@@ -1,7 +1,7 @@
 import {
-  TSESTree,
   ESLintUtils,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { createRule } from '../util';
 
@@ -24,6 +24,7 @@ const BANNED_PROPERTIES = [
     fixWith: 'getDeclarations()',
   },
   {
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
     type: 'Type',
     property: 'symbol',
     fixWith: 'getSymbol()',
@@ -53,9 +54,8 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = ESLintUtils.getParserServices(
-      context,
-    );
+    const { program, esTreeNodeToTSNodeMap } =
+      ESLintUtils.getParserServices(context);
     const checker = program.getTypeChecker();
 
     return {

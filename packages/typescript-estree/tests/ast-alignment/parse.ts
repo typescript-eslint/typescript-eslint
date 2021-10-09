@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 
 import type babelParser from '@babel/parser';
 import { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
+import type { File } from '@babel/types';
 import * as parser from '../../src/parser';
+import { TSESTree } from '@typescript-eslint/types';
 
 function createError(
   message: string,
@@ -19,11 +21,12 @@ function createError(
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx = true): any {
-  const babel: typeof babelParser = require('@babel/parser');
+function parseWithBabelParser(text: string, jsx = true): File {
+  const babel = require('@babel/parser') as typeof babelParser;
   const plugins: ParserPlugin[] = [
     'classProperties',
     'decorators-legacy',
+    'classStaticBlock',
     'estree',
     'typescript',
   ];
@@ -59,7 +62,7 @@ function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
       jsx,
     });
     return result.ast;
-  } catch (e) {
+  } catch (e: any) {
     throw createError(e.message, e.lineNumber, e.column);
   }
 }
@@ -95,8 +98,8 @@ export function parse(
           'Please provide a valid parser: either "typescript-estree" or "@babel/parser"',
         );
     }
-  } catch (error) {
-    const loc = error.loc;
+  } catch (error: any) {
+    const loc = error.loc as TSESTree.LineAndColumnData | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
         text,
@@ -112,6 +115,7 @@ export function parse(
       );
       error.message += `\n${error.codeFrame}`;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result.parseError = error;
   }
 

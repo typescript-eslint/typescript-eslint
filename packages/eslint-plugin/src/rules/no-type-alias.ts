@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
@@ -27,6 +28,7 @@ type Options = [
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
+    allowGenerics?: 'always' | 'never';
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -79,6 +81,9 @@ export default util.createRule<Options, MessageIds>({
           allowTupleTypes: {
             enum: enumValues,
           },
+          allowGenerics: {
+            enum: ['always', 'never'],
+          },
         },
         additionalProperties: false,
       },
@@ -93,6 +98,7 @@ export default util.createRule<Options, MessageIds>({
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
+      allowGenerics: 'never',
     },
   ],
   create(
@@ -106,6 +112,7 @@ export default util.createRule<Options, MessageIds>({
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
+        allowGenerics,
       },
     ],
   ) {
@@ -122,6 +129,7 @@ export default util.createRule<Options, MessageIds>({
     ];
     const aliasTypes = new Set([
       AST_NODE_TYPES.TSArrayType,
+      AST_NODE_TYPES.TSImportType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTypeQuery,
@@ -202,6 +210,13 @@ export default util.createRule<Options, MessageIds>({
       return false;
     };
 
+    const isValidGeneric = (type: TypeWithLabel): boolean => {
+      return (
+        type.node.type === AST_NODE_TYPES.TSTypeReference &&
+        type.node.typeParameters !== undefined
+      );
+    };
+
     const checkAndReport = (
       optionValue: Values,
       isTopLevel: boolean,
@@ -259,9 +274,12 @@ export default util.createRule<Options, MessageIds>({
       } else if (isValidTupleType(type)) {
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
+      } else if (isValidGeneric(type)) {
+        if (allowGenerics === 'never') {
+          reportError(type.node, type.compositionType, isTopLevel, 'Generics');
+        }
       } else if (
-        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        type.node.type.endsWith('Keyword') ||
+        type.node.type.endsWith(AST_TOKEN_TYPES.Keyword) ||
         aliasTypes.has(type.node.type) ||
         (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
           (type.node.operator === 'keyof' ||

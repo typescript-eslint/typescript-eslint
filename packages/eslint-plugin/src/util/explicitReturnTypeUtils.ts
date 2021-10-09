@@ -225,15 +225,11 @@ function isValidFunctionExpressionReturnType(
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
-  if (
-    options.allowDirectConstAssertionInArrowFunctions &&
+  return (
+    options.allowDirectConstAssertionInArrowFunctions === true &&
     node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     returnsConstAssertionDirectly(node)
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -250,11 +246,11 @@ function isValidFunctionReturnType(
     return true;
   }
 
-  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
-    return true;
-  }
-
-  return false;
+  return (
+    node.returnType != null ||
+    isConstructor(node.parent) ||
+    isSetter(node.parent)
+  );
 }
 
 /**

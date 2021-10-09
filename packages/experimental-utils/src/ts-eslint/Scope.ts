@@ -19,7 +19,8 @@ namespace Scope {
     export type CatchClauseDefinition = scopeManager.CatchClauseDefinition;
     export type ClassNameDefinition = scopeManager.ClassNameDefinition;
     export type FunctionNameDefinition = scopeManager.FunctionNameDefinition;
-    export type ImplicitGlobalVariableDefinition = scopeManager.ImplicitGlobalVariableDefinition;
+    export type ImplicitGlobalVariableDefinition =
+      scopeManager.ImplicitGlobalVariableDefinition;
     export type ImportBindingDefinition = scopeManager.ImportBindingDefinition;
     export type ParameterDefinition = scopeManager.ParameterDefinition;
     export type TSEnumMemberDefinition = scopeManager.TSEnumMemberDefinition;
@@ -34,7 +35,8 @@ namespace Scope {
     export type ClassScope = scopeManager.ClassScope;
     export type ConditionalTypeScope = scopeManager.ConditionalTypeScope;
     export type ForScope = scopeManager.ForScope;
-    export type FunctionExpressionNameScope = scopeManager.FunctionExpressionNameScope;
+    export type FunctionExpressionNameScope =
+      scopeManager.FunctionExpressionNameScope;
     export type FunctionScope = scopeManager.FunctionScope;
     export type FunctionTypeScope = scopeManager.FunctionTypeScope;
     export type GlobalScope = scopeManager.GlobalScope;

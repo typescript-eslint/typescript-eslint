@@ -135,6 +135,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ReturnStatement]: ts.ReturnStatement;
   [AST_NODE_TYPES.SequenceExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.SpreadElement]: ts.SpreadElement | ts.SpreadAssignment;
+  [AST_NODE_TYPES.StaticBlock]: ts.ClassStaticBlockDeclaration;
   [AST_NODE_TYPES.Super]: ts.SuperExpression;
   [AST_NODE_TYPES.SwitchCase]: ts.CaseClause | ts.DefaultClause;
   [AST_NODE_TYPES.SwitchStatement]: ts.SwitchStatement;
@@ -180,7 +181,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
-  [AST_NODE_TYPES.TSMethodSignature]: ts.MethodSignature;
+  [AST_NODE_TYPES.TSMethodSignature]:
+    | ts.MethodSignature
+    | ts.GetAccessorDeclaration
+    | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSModuleBlock]: ts.ModuleBlock;
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
   [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;

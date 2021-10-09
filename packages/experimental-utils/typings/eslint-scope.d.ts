@@ -57,7 +57,6 @@ declare module 'eslint-scope/lib/scope-manager' {
   export = ScopeManager;
 }
 declare module 'eslint-scope' {
-  const version: string;
-  const analyze: unknown;
-  export { analyze, version };
+  export const version: string;
+  export const analyze: unknown;
 }

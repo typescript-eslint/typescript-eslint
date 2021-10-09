@@ -4,14 +4,16 @@ on:
   push:
     branches:
       - master
-      # TODO - delete this before merging v4 into master
-      - v4
   pull_request:
     branches:
       - '**'
 
 env:
   PRIMARY_NODE_VERSION: 12
+  NX_BRANCH: ${{ github.event.number }}
+  NX_RUN_GROUP: ${{ github.run_id }}
+  # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+  NX_CLOUD_ENV_NAME: "Node 12.x -"
 
 jobs:
   typecheck:
@@ -32,7 +34,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -43,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
@@ -74,7 +76,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -85,57 +87,49 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: yarn test
-        working-directory: packages/typescript-estree
+        run: npx nx test @typescript-eslint/typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: yarn test
-        working-directory: packages/visitor-keys
+        run: npx nx test @typescript-eslint/visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: yarn test
-        working-directory: packages/scope-manager
+        run: npx nx test @typescript-eslint/scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: yarn test
-        working-directory: packages/experimental-utils
+        run: npx nx test @typescript-eslint/experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: yarn test
-        working-directory: packages/parser
+        run: npx nx test @typescript-eslint/parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: yarn test
-        working-directory: packages/eslint-plugin
+        run: npx nx test @typescript-eslint/eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: yarn test
-        working-directory: packages/eslint-plugin-tslint
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-internal
-        run: yarn test
-        working-directory: packages/eslint-plugin-internal
+        run: npx nx test @typescript-eslint/eslint-plugin-internal
         env:
           CI: true
 
@@ -160,7 +154,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -171,23 +165,23 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Check code formatting
-        run: yarn check:format
+        run: yarn check-format
 
       - name: Lint code
         run: yarn lint
 
       - name: Lint markdown
-        run: yarn lint:markdown
+        run: yarn lint-markdown
 
       - name: Check spelling
-        run: yarn check:spelling
+        run: yarn check-spelling
 
   integration_tests:
     name: Run integration tests on primary Node.js version
@@ -203,7 +197,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -214,14 +208,14 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run integrations tests
-        run: yarn test:integration
+        run: yarn test-integration
         env:
           CI: true
 
@@ -231,6 +225,9 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 14.x]
+    env:
+      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+      NX_CLOUD_ENV_NAME: "Node ${{ matrix.node-version }} -"
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -242,7 +239,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -253,51 +250,44 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |
           yarn build
 
       - name: Run unit tests for typescript-estree
-        run: yarn test
-        working-directory: packages/typescript-estree
+        run: npx nx test @typescript-eslint/typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: yarn test
-        working-directory: packages/visitor-keys
+        run: npx nx test @typescript-eslint/visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: yarn test
-        working-directory: packages/scope-manager
+        run: npx nx test @typescript-eslint/scope-manager
         env:
           CI: true
 
       - name: Run unit tests for experimental-utils
-        run: yarn test
-        working-directory: packages/experimental-utils
+        run: npx nx test @typescript-eslint/experimental-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: yarn test
-        working-directory: packages/parser
+        run: npx nx test @typescript-eslint/parser
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: yarn test
-        working-directory: packages/eslint-plugin
+        run: npx nx test @typescript-eslint/eslint-plugin
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: yarn test
-        working-directory: packages/eslint-plugin-tslint
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint
         env:
           CI: true
 
@@ -307,7 +297,7 @@ jobs:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
     needs: [typecheck, test_on_primary_node_version, unit_tests_on_other_node_versions, linting_and_style, integration_tests]
-    if: github.ref == 'refs/heads/master'
+    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       # Fetch all history for all tags and branches in this job because lerna needs it
@@ -324,7 +314,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -335,7 +325,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check:clean-workspace-after-install
+          yarn check-clean-workspace-after-install
 
       - name: Build
         run: |

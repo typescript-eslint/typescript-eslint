@@ -3,24 +3,10 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { TYPE_VALUE, TYPE } from './base-config';
 
 export const esnext_promise = {
-  AggregateError: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'AggregateError',
-  },
-  AggregateErrorConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AggregateErrorConstructor',
-  },
-  PromiseConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'PromiseConstructor',
-  },
+  AggregateError: TYPE_VALUE,
+  AggregateErrorConstructor: TYPE,
+  PromiseConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

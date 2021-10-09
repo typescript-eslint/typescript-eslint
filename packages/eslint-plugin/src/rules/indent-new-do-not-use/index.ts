@@ -9,7 +9,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
-import { TokenOrComment } from './BinarySearchTree';
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';
 import {
@@ -474,7 +473,7 @@ export default createRule<Options, MessageIds>({
      * @param token Token violating the indent rule
      * @param neededIndent Expected indentation string
      */
-    function report(token: TokenOrComment, neededIndent: string): void {
+    function report(token: TSESTree.Token, neededIndent: string): void {
       const actualIndent = Array.from(tokenInfo.getTokenIndent(token));
       const numSpaces = actualIndent.filter(char => char === ' ').length;
       const numTabs = actualIndent.filter(char => char === '\t').length;
@@ -503,7 +502,7 @@ export default createRule<Options, MessageIds>({
      * @returns `true` if the token's indentation is correct
      */
     function validateTokenIndent(
-      token: TokenOrComment,
+      token: TSESTree.Token,
       desiredIndent: string,
     ): boolean {
       const indentation = tokenInfo.getTokenIndent(token);
@@ -1016,9 +1015,8 @@ export default createRule<Options, MessageIds>({
               token.type === AST_TOKEN_TYPES.Punctuator && token.value === ':',
           )!;
 
-          const firstConsequentToken = sourceCode.getTokenAfter(
-            questionMarkToken,
-          )!;
+          const firstConsequentToken =
+            sourceCode.getTokenAfter(questionMarkToken)!;
           const lastConsequentToken = sourceCode.getTokenBefore(colonToken)!;
           const firstAlternateToken = sourceCode.getTokenAfter(colonToken)!;
 
@@ -1208,9 +1206,8 @@ export default createRule<Options, MessageIds>({
           node.property,
           isNotClosingParenToken,
         )!;
-        const secondNonObjectToken = sourceCode.getTokenAfter(
-          firstNonObjectToken,
-        )!;
+        const secondNonObjectToken =
+          sourceCode.getTokenAfter(firstNonObjectToken)!;
 
         const objectParenCount = sourceCode.getTokensBetween(
           object,
@@ -1653,23 +1650,21 @@ export default createRule<Options, MessageIds>({
         addParensIndent(sourceCode.ast.tokens);
 
         /*
-         * Create a Map from (tokenOrComment) => (precedingToken).
+         * Create a Map from (token) => (precedingToken).
          * This is necessary because sourceCode.getTokenBefore does not handle a comment as an argument correctly.
          */
         const precedingTokens = sourceCode.ast.comments.reduce(
           (commentMap, comment) => {
-            const tokenOrCommentBefore = sourceCode.getTokenBefore(comment, {
+            const tokenBefore = sourceCode.getTokenBefore(comment, {
               includeComments: true,
             })!;
 
             return commentMap.set(
               comment,
-              commentMap.has(tokenOrCommentBefore)
-                ? commentMap.get(tokenOrCommentBefore)
-                : tokenOrCommentBefore,
+              commentMap.get(tokenBefore) ?? tokenBefore,
             );
           },
-          new WeakMap(),
+          new WeakMap<TSESTree.Token, TSESTree.Token>(),
         );
 
         sourceCode.lines.forEach((_, lineIndex) => {
@@ -1680,9 +1675,8 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const firstTokenOfLine = tokenInfo.firstTokensByLineNumber.get(
-            lineNumber,
-          )!;
+          const firstTokenOfLine =
+            tokenInfo.firstTokensByLineNumber.get(lineNumber)!;
 
           if (firstTokenOfLine.loc.start.line !== lineNumber) {
             // Don't check the indentation of multi-line tokens (e.g. template literals or block comments) twice.
@@ -1700,7 +1694,7 @@ export default createRule<Options, MessageIds>({
           }
 
           if (isCommentToken(firstTokenOfLine)) {
-            const tokenBefore = precedingTokens.get(firstTokenOfLine);
+            const tokenBefore = precedingTokens.get(firstTokenOfLine)!;
             const tokenAfter = tokenBefore
               ? sourceCode.getTokenAfter(tokenBefore)!
               : sourceCode.ast.tokens[0];

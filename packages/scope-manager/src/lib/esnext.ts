@@ -3,16 +3,10 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
-import { es2020 } from './es2020';
+import { es2021 } from './es2021';
 import { esnext_intl } from './esnext.intl';
-import { esnext_string } from './esnext.string';
-import { esnext_promise } from './esnext.promise';
-import { esnext_weakref } from './esnext.weakref';
 
 export const esnext = {
-  ...es2020,
+  ...es2021,
   ...esnext_intl,
-  ...esnext_string,
-  ...esnext_promise,
-  ...esnext_weakref,
 } as Record<string, ImplicitLibVariableOptions>;

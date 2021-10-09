@@ -31,13 +31,13 @@ interface ReportValueImport {
 }
 
 function isImportToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.KeywordToken & { value: 'import' } {
   return token.type === AST_TOKEN_TYPES.Keyword && token.value === 'import';
 }
 
 function isTypeToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.IdentifierToken & { value: 'type' } {
   return token.type === AST_TOKEN_TYPES.Identifier && token.value === 'type';
 }
@@ -61,13 +61,14 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`',
-      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as types',
-      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types',
+        'All imports in the declaration are only used as types. Use `import type`.',
+      someImportsAreOnlyTypes:
+        'Imports {{typeImports}} are only used as types.',
+      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types.',
       someImportsInDecoMeta:
-        'Type imports {{typeImports}} are used by decorator metadata',
+        'Type imports {{typeImports}} are used by decorator metadata.',
       aImportInDecoMeta:
-        'Type import {{typeImports}} is used by decorator metadata',
+        'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },
@@ -254,9 +255,10 @@ export default util.createRule<Options, MessageIds>({
                     const isTypeImport = report.node.importKind === 'type';
 
                     // we have a mixed type/value import, so we need to split them out into multiple exports
-                    const importNames = (isTypeImport
-                      ? report.valueSpecifiers
-                      : report.typeSpecifiers
+                    const importNames = (
+                      isTypeImport
+                        ? report.valueSpecifiers
+                        : report.typeSpecifiers
                     ).map(specifier => `"${specifier.local.name}"`);
 
                     const message = ((): {
@@ -342,9 +344,7 @@ export default util.createRule<Options, MessageIds>({
         : {}),
     };
 
-    function classifySpecifier(
-      node: TSESTree.ImportDeclaration,
-    ): {
+    function classifySpecifier(node: TSESTree.ImportDeclaration): {
       defaultSpecifier: TSESTree.ImportDefaultSpecifier | null;
       namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null;
       namedSpecifiers: TSESTree.ImportSpecifier[];
@@ -358,10 +358,11 @@ export default util.createRule<Options, MessageIds>({
           (specifier): specifier is TSESTree.ImportNamespaceSpecifier =>
             specifier.type === AST_NODE_TYPES.ImportNamespaceSpecifier,
         ) ?? null;
-      const namedSpecifiers: TSESTree.ImportSpecifier[] = node.specifiers.filter(
-        (specifier): specifier is TSESTree.ImportSpecifier =>
-          specifier.type === AST_NODE_TYPES.ImportSpecifier,
-      );
+      const namedSpecifiers: TSESTree.ImportSpecifier[] =
+        node.specifiers.filter(
+          (specifier): specifier is TSESTree.ImportSpecifier =>
+            specifier.type === AST_NODE_TYPES.ImportSpecifier,
+        );
       return {
         defaultSpecifier,
         namespaceSpecifier,
@@ -526,11 +527,8 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier && !defaultSpecifier) {
         // e.g.
@@ -737,11 +735,8 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier) {
         // e.g.
