@@ -779,6 +779,7 @@ export default util.createRule<Options, MessageId>({
                 ts.TypeFlags.StringLike |
                 ts.TypeFlags.NumberLike |
                 ts.TypeFlags.BigIntLike |
+                ts.TypeFlags.TypeParameter |
                 ts.TypeFlags.Any |
                 ts.TypeFlags.Unknown |
                 ts.TypeFlags.Never,
@@ -789,8 +790,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
-        types.some(
-          type => util.isTypeAnyType(type) || util.isTypeUnknownType(type),
+        types.some(type =>
+          util.isTypeFlagSet(
+            type,
+            ts.TypeFlags.TypeParameter |
+              ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown,
+          ),
         )
       ) {
         variantTypes.add('any');
