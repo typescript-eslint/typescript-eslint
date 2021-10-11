@@ -30,6 +30,11 @@ import { ClassDecoratorFactory } from 'decorators';
 export class Foo {}
     `,
     `
+import { ClassDecoratorFactory } from 'decorators';
+@ClassDecoratorFactory()
+class Foo {}
+    `,
+    `
 import { ClassDecorator } from 'decorators';
 @ClassDecorator
 export class Foo {}
