@@ -1,15 +1,18 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import baseRule, {
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
 import ignore, { Ignore } from 'ignore';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
   deepMerge,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
+const baseRule = getESLintCoreRule('no-restricted-imports');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -106,7 +109,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow specified modules when loaded by `import`',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -155,9 +157,6 @@ export default createRule<Options, MessageIds>({
 
     return {
       ImportDeclaration(node): void {
-        if (typeof node.source.value !== 'string') {
-          return;
-        }
         if (node.importKind === 'type') {
           const importSource = node.source.value.trim();
           if (
@@ -170,13 +169,11 @@ export default createRule<Options, MessageIds>({
           return rules.ImportDeclaration(node);
         }
       },
-      ExportNamedDeclaration(node): void {
-        if (
-          node.source?.type !== AST_NODE_TYPES.Literal ||
-          typeof node.source.value !== 'string'
-        ) {
-          return;
-        }
+      'ExportNamedDeclaration[source]'(
+        node: TSESTree.ExportNamedDeclaration & {
+          source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
+        },
+      ): void {
         if (node.exportKind === 'type') {
           const importSource = node.source.value.trim();
           if (

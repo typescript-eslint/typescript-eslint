@@ -34,7 +34,7 @@ function batchedSingleLineTests<
 >(
   options: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
-  // eslint counts lines from 1
+  // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
   const output =
     'output' in options && options.output

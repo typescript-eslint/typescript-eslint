@@ -31,7 +31,7 @@ export function getFunctionHeadLoc(
   node: FunctionNode,
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
-  function getLocStart(): TSESTree.LineAndColumnData {
+  function getLocStart(): TSESTree.Position {
     if (node.parent && node.parent.type === AST_NODE_TYPES.MethodDefinition) {
       // return the start location for class method
 
@@ -58,7 +58,7 @@ export function getFunctionHeadLoc(
     return node.loc.start;
   }
 
-  function getLocEnd(): TSESTree.LineAndColumnData {
+  function getLocEnd(): TSESTree.Position {
     if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
       // find the end location for arrow function expression
       return sourceCode.getTokenBefore(

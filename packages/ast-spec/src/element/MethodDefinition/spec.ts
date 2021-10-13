@@ -1,7 +1,7 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type {
+  ClassMethodDefinitionNonComputedNameBase,
   MethodDefinitionComputedNameBase,
-  MethodDefinitionNonComputedNameBase,
 } from '../../base/MethodDefinitionBase';
 
 export interface MethodDefinitionComputedName
@@ -10,7 +10,7 @@ export interface MethodDefinitionComputedName
 }
 
 export interface MethodDefinitionNonComputedName
-  extends MethodDefinitionNonComputedNameBase {
+  extends ClassMethodDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.MethodDefinition;
 }
 

@@ -29,8 +29,7 @@ export default createRule({
     docs: {
       description:
         'Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided',
-      category: 'Best Practices',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {

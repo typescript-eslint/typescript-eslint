@@ -486,7 +486,9 @@ const cases: Cases = [
       'interface Ignored { %: string }',
       'type Ignored = { %: string }',
       'class Ignored { private % = 1 }',
+      'class Ignored { #% = 1 }',
       'class Ignored { constructor(private %) {} }',
+      'class Ignored { #%() {} }',
       'class Ignored { private %() {} }',
       'const ignored = { %() {} };',
       'class Ignored { private get %() {} }',
@@ -562,6 +564,8 @@ const cases: Cases = [
       'class Ignored { private static readonly % = 1 }',
       'class Ignored { abstract % = 1 }',
       'class Ignored { declare % }',
+      'class Ignored { #% }',
+      'class Ignored { static #% }',
     ],
     options: {
       selector: 'classProperty',
@@ -617,6 +621,8 @@ const cases: Cases = [
       'class Ignored { private % = () => {} }',
       'class Ignored { abstract %() }',
       'class Ignored { declare %() }',
+      'class Ignored { #%() }',
+      'class Ignored { static #%() }',
     ],
     options: {
       selector: 'classMethod',
@@ -653,6 +659,7 @@ const cases: Cases = [
       'class Ignored { private get %() {} }',
       'class Ignored { private set "%"(ignored) {} }',
       'class Ignored { private static get %() {} }',
+      'class Ignored { static get #%() {} }',
     ],
     options: {
       selector: 'accessor',

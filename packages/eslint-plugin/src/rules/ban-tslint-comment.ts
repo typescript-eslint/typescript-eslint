@@ -20,7 +20,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Bans `// tslint:<rule-flag>` comments from being used',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {

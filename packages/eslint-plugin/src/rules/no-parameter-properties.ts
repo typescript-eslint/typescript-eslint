@@ -26,7 +26,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow the use of parameter properties in class constructors',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },

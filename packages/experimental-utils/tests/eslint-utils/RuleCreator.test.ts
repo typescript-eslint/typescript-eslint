@@ -13,7 +13,6 @@ describe('RuleCreator', () => {
       meta: {
         docs: {
           description: 'some description',
-          category: 'Best Practices',
           recommended: 'error',
           requiresTypeChecking: true,
         },
@@ -31,7 +30,6 @@ describe('RuleCreator', () => {
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
-        category: 'Best Practices',
         url: 'test/test',
         recommended: 'error',
         requiresTypeChecking: true,

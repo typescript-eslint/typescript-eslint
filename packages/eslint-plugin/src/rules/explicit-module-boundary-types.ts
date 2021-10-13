@@ -37,8 +37,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      category: 'Stylistic Issues',
-      recommended: 'warn',
+      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -337,8 +336,7 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.ClassProperty:
-        case AST_NODE_TYPES.TSAbstractClassProperty:
+        case AST_NODE_TYPES.PropertyDefinition:
           if (node.accessibility === 'private') {
             return;
           }

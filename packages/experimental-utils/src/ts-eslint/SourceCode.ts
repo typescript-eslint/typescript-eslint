@@ -246,20 +246,11 @@ declare class SourceCodeBase extends TokenStore {
    */
   getAllComments(): TSESTree.Comment[];
   /**
-   * Gets all comments for the given node.
-   * @param node The AST node to get the comments for.
-   * @returns An object containing a leading and trailing array of comments indexed by their position.
-   */
-  getComments(node: TSESTree.Node): {
-    leading: TSESTree.Comment[];
-    trailing: TSESTree.Comment[];
-  };
-  /**
    * Converts a (line, column) pair into a range index.
    * @param loc A line/column location
    * @returns The range index of the location in the file.
    */
-  getIndexFromLoc(location: TSESTree.LineAndColumnData): number;
+  getIndexFromLoc(location: TSESTree.Position): number;
   /**
    * Gets the entire source text split into an array of lines.
    * @returns The source text as an array of lines.
@@ -270,7 +261,7 @@ declare class SourceCodeBase extends TokenStore {
    * @param index The index of a character in a file
    * @returns A {line, column} location object with a 0-indexed column
    */
-  getLocFromIndex(index: number): TSESTree.LineAndColumnData;
+  getLocFromIndex(index: number): TSESTree.Position;
   /**
    * Gets the deepest node containing a range index.
    * @param index Range index of the desired node.

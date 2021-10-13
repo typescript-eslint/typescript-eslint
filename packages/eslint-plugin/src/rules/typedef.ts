@@ -24,7 +24,6 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     docs: {
       description: 'Requires type annotations to exist',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
@@ -160,7 +159,7 @@ export default util.createRule<[Options], MessageIds>({
           checkParameters(node.params);
         }
       },
-      ClassProperty(node): void {
+      PropertyDefinition(node): void {
         if (node.value && isVariableDeclarationIgnoreFunction(node.value)) {
           return;
         }

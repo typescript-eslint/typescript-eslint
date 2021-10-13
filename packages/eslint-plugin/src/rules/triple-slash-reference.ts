@@ -21,7 +21,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Sets preference level for triple slash directives versus ES6-style import declarations',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {

@@ -375,7 +375,7 @@ async function foo() {
   for await (x of xs);
 }
     `,
-    // global await
+    // -- global await
     {
       code: 'await foo();',
     },

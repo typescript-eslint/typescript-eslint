@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Features
+
+* support `PrivateIdentifier` ([#3808](https://github.com/typescript-eslint/typescript-eslint/issues/3808)) ([0eefe5e](https://github.com/typescript-eslint/typescript-eslint/commit/0eefe5e49d21af3f1e3e2d9a90c2e49929863ac2)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#2933](https://github.com/typescript-eslint/typescript-eslint/issues/2933)
+
+
+
+
+
 # [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
 
 **Note:** Version bump only for package @typescript-eslint/types

@@ -57,7 +57,6 @@ export default util.createRule({
     docs: {
       description:
         'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
-      category: 'Variables',
       // too opinionated to be recommended
       recommended: false,
     },

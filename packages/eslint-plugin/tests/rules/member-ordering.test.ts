@@ -1311,7 +1311,7 @@ abstract class Foo {
     private D: string;
     protected static F(): {};
     public E(): {};
-    public abstract A = () => {};
+    public abstract A(): void;
     protected abstract G(): void;
 }
     `,
@@ -3618,7 +3618,7 @@ type Foo = {
     {
       code: `
 abstract class Foo {
-    abstract A = () => {};
+    abstract A(): void;
     B: string;
 }
           `,
@@ -3628,6 +3628,25 @@ abstract class Foo {
           data: {
             name: 'B',
             rank: 'public abstract method',
+          },
+          line: 4,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+    abstract A: () => {};
+    B: string;
+}
+          `,
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
           },
           line: 4,
           column: 5,
@@ -3650,27 +3669,6 @@ abstract class Foo {
           data: {
             name: 'B',
             rank: 'public abstract field',
-          },
-          line: 4,
-          column: 5,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-    B: string;
-    abstract C = () => {};
-    abstract A: () => {};
-}
-          `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'field',
           },
           line: 4,
           column: 5,
@@ -3997,6 +3995,20 @@ class Foo {
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + private identifiers
+    {
+      code: `
+class Foo {
+  #a = 1;
+  #b = 2;
+  #c = 3;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
     },
   ],
   invalid: [
@@ -5282,6 +5294,61 @@ class Foo {
           { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
         ],
       },
+
+      // default option + class + defaultOrder + alphabetically
+      {
+        code: `
+class Foo {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  constructor() {}
+
+  get h() {}
+
+  set g() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
+
+      // default option + class + custom + alphabetically
+      {
+        code: `
+class Foo {
+  get a() {}
+
+  @Bar
+  get b() {}
+
+  set c() {}
+
+  @Bar
+  set d() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
+
       // default option + class + decorators + default order + alphabetically
       {
         code: `
@@ -5377,6 +5444,130 @@ const foo = class Foo {
       },
     ],
     invalid: [
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  get h() {}
+
+  set g() {}
+
+  constructor() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'constructor',
+              rank: 'public instance get',
+            },
+          },
+        ],
+      },
+
+      // default option + class + custom + alphabetically
+      {
+        code: `
+class Foo {
+  @Bar
+  get a() {}
+
+  get b() {}
+
+  @Bar
+  set c() {}
+
+  set d() {}
+}
+                  `,
+        options: [
+          {
+            default: {
+              memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'b',
+              rank: 'decorated get',
+            },
+          },
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'd',
+              rank: 'decorated set',
+            },
+          },
+        ],
+      },
+
+      // default option + class + wrong order within group and wrong group order + alphabetically
+      {
+        code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = "";
+  private static c: string = "";
+
+  public d: string = "";
+  protected e: string = "";
+  private f: string = "";
+
+  set g() {}
+
+  constructor() {}
+
+  get h() {}
+}
+            `,
+        options: [
+          {
+            default: {
+              memberTypes: defaultOrder,
+              order: 'alphabetically',
+            },
+          },
+        ],
+        errors: [
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'constructor',
+              rank: 'public instance set',
+            },
+          },
+          {
+            messageId: 'incorrectGroupOrder',
+            data: {
+              name: 'h',
+              rank: 'public instance set',
+            },
+          },
+        ],
+      },
+
       // default option + interface + wrong order within group and wrong group order + alphabetically
       {
         code: `
@@ -6169,6 +6360,32 @@ type Foo = {
             name: 'new',
             rank: 'method',
           },
+        },
+      ],
+    },
+
+    // default option + private identifiers
+    {
+      code: `
+class Foo {
+  #c = 3;
+  #b = 2;
+  #a = 1;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectOrder',
+          line: 5,
+          column: 3,
         },
       ],
     },

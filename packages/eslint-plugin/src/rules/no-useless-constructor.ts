@@ -2,8 +2,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-useless-constructor';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-useless-constructor');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -49,11 +51,12 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       noUselessConstructor: 'Useless constructor.',
     },

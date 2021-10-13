@@ -15,7 +15,6 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallows calling an any type value',
-      category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },

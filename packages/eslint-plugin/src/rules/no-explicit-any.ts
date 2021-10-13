@@ -19,11 +19,11 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the `any` type',
-      category: 'Best Practices',
       recommended: 'warn',
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
       suggestUnknown:
