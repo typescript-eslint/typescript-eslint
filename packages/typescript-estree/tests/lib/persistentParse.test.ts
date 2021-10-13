@@ -193,7 +193,7 @@ function baseTests(
     writeFile(PROJECT_DIR, 'bar');
 
     // make sure that file is correctly created
-    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+    expect(existsSync('bar', PROJECT_DIR)).toBe(true);
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
@@ -213,8 +213,8 @@ function baseTests(
     writeFile(PROJECT_DIR, 'bar');
 
     // make sure that file is correctly created
-    expect(existsSync('bar')).toEqual(true);
-    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+    expect(existsSync('bar')).toBe(true);
+    expect(existsSync('bar', PROJECT_DIR)).toBe(true);
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR, true, true)).not.toThrow();

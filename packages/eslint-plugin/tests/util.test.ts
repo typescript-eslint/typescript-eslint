@@ -18,7 +18,7 @@ describe('isDefinitionFile', () => {
     ];
 
     invalid.forEach(f => {
-      expect(util.isDefinitionFile(f)).toStrictEqual(false);
+      expect(util.isDefinitionFile(f)).toBe(false);
     });
   });
 
@@ -26,13 +26,13 @@ describe('isDefinitionFile', () => {
     const valid = ['test.d.ts', 'test.d.tsx', 'test.D.TS', 'test.D.TSX'];
 
     valid.forEach(f => {
-      expect(util.isDefinitionFile(f)).toStrictEqual(true);
+      expect(util.isDefinitionFile(f)).toBe(true);
     });
   });
 });
 
 describe('upperCaseFirst', () => {
   it('upper cases first', () => {
-    expect(util.upperCaseFirst('hello')).toStrictEqual('Hello');
+    expect(util.upperCaseFirst('hello')).toBe('Hello');
   });
 });
