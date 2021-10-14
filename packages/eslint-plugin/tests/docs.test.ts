@@ -79,7 +79,9 @@ describe('Validating rule docs', () => {
       });
 
       // Verify attributes header exists
-      const attributesHeaderIndex = tokens.findIndex(token => token.type === "heading" && token.text === "Attributes");
+      const attributesHeaderIndex = tokens.findIndex(
+        token => token.type === 'heading' && token.text === 'Attributes',
+      );
       expect(attributesHeaderIndex).toBeGreaterThan(-1);
 
       // Verify attributes content
@@ -89,8 +91,10 @@ describe('Validating rule docs', () => {
       const fixable = attributesList.items[1];
       expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
       const requiresTypeChecking = attributesList.items[2];
-      expect(rule.meta.docs.requiresTypeChecking === true).toBe(requiresTypeChecking.checked);
-    })
+      expect(rule.meta.docs.requiresTypeChecking === true).toBe(
+        requiresTypeChecking.checked,
+      );
+    });
   }
 });
 
