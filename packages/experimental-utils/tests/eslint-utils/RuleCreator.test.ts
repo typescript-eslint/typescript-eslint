@@ -4,7 +4,7 @@ describe('RuleCreator', () => {
   const createRule = ESLintUtils.RuleCreator(name => `test/${name}`);
 
   it('createRule should be a function', () => {
-    expect(typeof createRule).toEqual('function');
+    expect(typeof createRule).toBe('function');
   });
 
   it('should create rule correctly', () => {

@@ -54,7 +54,7 @@ describe('parseWithNodeMaps()', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         err: any
       ) {
-        expect(err.column).toEqual(16);
+        expect(err.column).toBe(16);
       }
     });
   });
