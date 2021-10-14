@@ -11,11 +11,11 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Prefer usage of `as const` over literal type',
-      category: 'Best Practices',
       recommended: 'error',
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       preferConstAssertion:
         'Expected a `const` instead of a literal type assertion.',

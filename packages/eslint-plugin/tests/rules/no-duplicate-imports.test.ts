@@ -171,14 +171,6 @@ ruleTester.run('no-duplicate-imports', rule, {
     {
       code: `
         import foo from 'foo';
-        export * from 'foo';
-      `,
-      options: [{ includeExports: true }],
-      errors: [{ messageId: 'exportAs' }],
-    },
-    {
-      code: `
-        import foo from 'foo';
         export { foo } from 'foo';
       `,
       options: [{ includeExports: true }],

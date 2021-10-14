@@ -23,12 +23,12 @@ export default util.createRule<
     docs: {
       description:
         'Disallow the `void` operator except when used to discard a value',
-      category: 'Best Practices',
       recommended: false,
       suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       meaninglessVoidOperator:
         "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",

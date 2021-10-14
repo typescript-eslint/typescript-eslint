@@ -2,8 +2,10 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/space-infix-ops';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('space-infix-ops');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -17,14 +19,16 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'This rule is aimed at ensuring there are spaces around infix operators.',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
+    messages: {
+      // @ts-expect-error -- we report on this messageId so we need to ensure it's there in case ESLint changes in future
       missingSpace: "Operator '{{operator}}' must be spaced.",
+      ...baseRule.meta.messages,
     },
   },
   defaultOptions: [
@@ -118,8 +122,8 @@ export default util.createRule<Options, MessageIds>({
      * Check if it has an assignment char and report if it's faulty
      * @param node The node to report
      */
-    function checkForClassPropertyAssignmentSpace(
-      node: TSESTree.ClassProperty,
+    function checkForPropertyDefinitionAssignmentSpace(
+      node: TSESTree.PropertyDefinition,
     ): void {
       const leftNode = sourceCode.getTokenByRangeStart(
         node.typeAnnotation?.range[0] ?? node.range[0],
@@ -175,7 +179,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
-      ClassProperty: checkForClassPropertyAssignmentSpace,
+      PropertyDefinition: checkForPropertyDefinitionAssignmentSpace,
       TSTypeAliasDeclaration: checkForTypeAliasAssignment,
       TSUnionType: checkForTypeAnnotationSpace,
       TSIntersectionType: checkForTypeAnnotationSpace,

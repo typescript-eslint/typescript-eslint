@@ -1,11 +1,15 @@
-import * as parser from '../src';
-import { TSESTreeOptions } from '../src/parser-options';
+import type {
+  TSESTree,
+  TSESTreeOptions,
+  ParseAndGenerateServicesResult,
+} from '../src';
+import { parse as parserParse, parseAndGenerateServices } from '../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
-): parser.ParseAndGenerateServicesResult<parser.TSESTreeOptions> {
-  return parser.parseAndGenerateServices(code, config);
+): ParseAndGenerateServicesResult<TSESTreeOptions> {
+  return parseAndGenerateServices(code, config);
 }
 
 /**
@@ -24,10 +28,10 @@ export function createSnapshotTestBlock(
   /**
    * @returns the AST object
    */
-  function parse(): parser.TSESTree.Program {
+  function parse(): TSESTree.Program {
     const ast = generateServices
-      ? parser.parseAndGenerateServices(code, config).ast
-      : parser.parse(code, config);
+      ? parseAndGenerateServices(code, config).ast
+      : parserParse(code, config);
     return deeplyCopy(ast);
   }
 
@@ -127,7 +131,7 @@ export function omitDeep<T = UnknownObject>(
           continue;
         }
 
-        const child = node[prop];
+        const child = node[prop] as UnknownObject | UnknownObject[];
         if (Array.isArray(child)) {
           const value = [];
           for (const el of child) {

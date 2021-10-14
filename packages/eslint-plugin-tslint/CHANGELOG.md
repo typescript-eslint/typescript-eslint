@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Features
+
+* remove `meta.docs.category` from rules ([#3800](https://github.com/typescript-eslint/typescript-eslint/issues/3800)) ([71c9370](https://github.com/typescript-eslint/typescript-eslint/commit/71c93706e55f5f92a1285102b93c6ab1950c6df4))
+* support ESLint v8 ([#3737](https://github.com/typescript-eslint/typescript-eslint/issues/3737)) ([4ca62ae](https://github.com/typescript-eslint/typescript-eslint/commit/4ca62aee6681d706e762a8db727541ca204364f2))
+
+
+
+
+
 # [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint

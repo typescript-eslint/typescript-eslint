@@ -1,8 +1,8 @@
 import {
   AST_NODE_TYPES,
-  TSESTree,
   AST_TOKEN_TYPES,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -36,7 +36,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -97,13 +96,13 @@ export default util.createRule<Options, MessageIds>({
       fix: TSESLint.ReportFixFunction | null = null,
     ): void {
       context.report({
-        node: node,
-        messageId: messageId,
+        node,
+        messageId,
         data: {
           type: nodeType,
           name: nodeName,
         },
-        fix: fix,
+        fix,
       });
     }
 
@@ -114,6 +113,10 @@ export default util.createRule<Options, MessageIds>({
     function checkMethodAccessibilityModifier(
       methodDefinition: TSESTree.MethodDefinition,
     ): void {
+      if (methodDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return;
+      }
+
       let nodeType = 'method definition';
       let check = baseCheck;
       switch (methodDefinition.kind) {
@@ -130,7 +133,10 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
+      const { name: methodName } = util.getNameFromMember(
+        methodDefinition,
+        sourceCode,
+      );
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -163,7 +169,9 @@ export default util.createRule<Options, MessageIds>({
     function getUnwantedPublicAccessibilityFixer(
       node:
         | TSESTree.MethodDefinition
-        | TSESTree.ClassProperty
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
@@ -199,30 +207,38 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks if property has an accessibility modifier.
-     * @param classProperty The node representing a ClassProperty.
+     * @param propertyDefinition The node representing a PropertyDefinition.
      */
     function checkPropertyAccessibilityModifier(
-      classProperty: TSESTree.ClassProperty,
+      propertyDefinition:
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
     ): void {
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromMember(classProperty, sourceCode);
+      const { name: propertyName } = util.getNameFromMember(
+        propertyDefinition,
+        sourceCode,
+      );
       if (
         propCheck === 'no-public' &&
-        classProperty.accessibility === 'public'
+        propertyDefinition.accessibility === 'public'
       ) {
         reportIssue(
           'unwantedPublicAccessibility',
           nodeType,
-          classProperty,
+          propertyDefinition,
           propertyName,
-          getUnwantedPublicAccessibilityFixer(classProperty),
+          getUnwantedPublicAccessibilityFixer(propertyDefinition),
         );
-      } else if (propCheck === 'explicit' && !classProperty.accessibility) {
+      } else if (
+        propCheck === 'explicit' &&
+        !propertyDefinition.accessibility
+      ) {
         reportIssue(
           'missingAccessibility',
           nodeType,
-          classProperty,
+          propertyDefinition,
           propertyName,
         );
       }
@@ -273,9 +289,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      'MethodDefinition, TSAbstractMethodDefinition':
+        checkMethodAccessibilityModifier,
+      'PropertyDefinition, TSAbstractPropertyDefinition':
+        checkPropertyAccessibilityModifier,
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
-      ClassProperty: checkPropertyAccessibilityModifier,
-      MethodDefinition: checkMethodAccessibilityModifier,
     };
   },
 });

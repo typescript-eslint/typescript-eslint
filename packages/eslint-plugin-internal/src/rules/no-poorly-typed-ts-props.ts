@@ -38,12 +38,12 @@ export default createRule({
     docs: {
       description:
         "Enforces rules don't use TS API properties with known bad type definitions",
-      category: 'Possible Errors',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     schema: [],
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',

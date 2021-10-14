@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Bug Fixes
+
+* **typescript-estree:** change `source` of ExportNamedDeclaration to Literal from Expression ([#3763](https://github.com/typescript-eslint/typescript-eslint/issues/3763)) ([dc5a0f5](https://github.com/typescript-eslint/typescript-eslint/commit/dc5a0f5104b400f4422b8d67ecfc6cc7a32613a2))
+
+
+### Features
+
+* **ast-spec:** bring `Node` objects in line with ESTree ([#3771](https://github.com/typescript-eslint/typescript-eslint/issues/3771)) ([dd14064](https://github.com/typescript-eslint/typescript-eslint/commit/dd140643b457aa515cc21fcda2b3cd4acc2a1c5c))
+* align class property representation with ESTree ([#3806](https://github.com/typescript-eslint/typescript-eslint/issues/3806)) ([22fa5c0](https://github.com/typescript-eslint/typescript-eslint/commit/22fa5c0c4705ed2898f00b7cacc5dd642d859275)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#3077](https://github.com/typescript-eslint/typescript-eslint/issues/3077)
+* remove `TSParenthesizedType` ([#3340](https://github.com/typescript-eslint/typescript-eslint/issues/3340)) ([c8ee432](https://github.com/typescript-eslint/typescript-eslint/commit/c8ee43269faea4c04ec02eaa2b81a0aa6eec5d3e)), closes [#3136](https://github.com/typescript-eslint/typescript-eslint/issues/3136)
+* support `PrivateIdentifier` ([#3808](https://github.com/typescript-eslint/typescript-eslint/issues/3808)) ([0eefe5e](https://github.com/typescript-eslint/typescript-eslint/commit/0eefe5e49d21af3f1e3e2d9a90c2e49929863ac2)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#2933](https://github.com/typescript-eslint/typescript-eslint/issues/2933)
+* **eslint-plugin:** removed value from abstract property nodes ([#3765](https://github.com/typescript-eslint/typescript-eslint/issues/3765)) ([5823524](https://github.com/typescript-eslint/typescript-eslint/commit/58235241714596b641a1e8b39c569e561e0039b4)), closes [#3748](https://github.com/typescript-eslint/typescript-eslint/issues/3748)
+
+
+
+
+
 # [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec
