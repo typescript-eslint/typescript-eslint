@@ -85,13 +85,15 @@ describe('Validating rule docs', () => {
       expect(attributesHeaderIndex).toBeGreaterThan(-1);
 
       // Verify attributes content
-      const attributesList = tokens[attributesHeaderIndex + 1];
+      const attributesList = tokens[
+        attributesHeaderIndex + 1
+      ] as marked.Tokens.List;
       const recommended = attributesList.items[0];
-      expect(rule.meta.docs.recommended !== false).toBe(recommended.checked);
+      expect(rule.meta.docs?.recommended !== false).toBe(recommended.checked);
       const fixable = attributesList.items[1];
       expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
       const requiresTypeChecking = attributesList.items[2];
-      expect(rule.meta.docs.requiresTypeChecking === true).toBe(
+      expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
         requiresTypeChecking.checked,
       );
     });
