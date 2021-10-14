@@ -89,7 +89,7 @@ describe('Validating rule docs', () => {
       const fixable = attributesList.items[1];
       expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
       const requiresTypeChecking = attributesList.items[2];
-      expect(rule.meta.docs.requiresTypeChecking).toBe(requiresTypeChecking.checked);
+      expect(rule.meta.docs.requiresTypeChecking === true).toBe(requiresTypeChecking.checked);
     })
   }
 });
