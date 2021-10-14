@@ -82,11 +82,165 @@ Object {
             },
             "value": null,
           },
+          Object {
+            "computed": false,
+            "declare": false,
+            "key": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 24,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 3,
+                },
+              },
+              "name": "propExplicitWithValue",
+              "range": Array [
+                32,
+                54,
+              ],
+              "type": "PrivateIdentifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 39,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 3,
+              },
+            },
+            "optional": true,
+            "override": false,
+            "range": Array [
+              32,
+              69,
+            ],
+            "readonly": undefined,
+            "static": false,
+            "type": "PropertyDefinition",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 33,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 25,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                55,
+                63,
+              ],
+              "type": "TSTypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 33,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 27,
+                    "line": 3,
+                  },
+                },
+                "range": Array [
+                  57,
+                  63,
+                ],
+                "type": "TSStringKeyword",
+              },
+            },
+            "value": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 38,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 36,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                66,
+                68,
+              ],
+              "raw": "''",
+              "type": "Literal",
+              "value": "",
+            },
+          },
+          Object {
+            "computed": false,
+            "declare": false,
+            "key": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 24,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 2,
+                  "line": 4,
+                },
+              },
+              "name": "propImplicitWithValue",
+              "range": Array [
+                72,
+                94,
+              ],
+              "type": "PrivateIdentifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 31,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 2,
+                "line": 4,
+              },
+            },
+            "optional": true,
+            "override": false,
+            "range": Array [
+              72,
+              101,
+            ],
+            "readonly": undefined,
+            "static": false,
+            "type": "PropertyDefinition",
+            "value": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 30,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 28,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                98,
+                100,
+              ],
+              "raw": "''",
+              "type": "Literal",
+              "value": "",
+            },
+          },
         ],
         "loc": Object {
           "end": Object {
             "column": 1,
-            "line": 3,
+            "line": 5,
           },
           "start": Object {
             "column": 10,
@@ -95,7 +249,7 @@ Object {
         },
         "range": Array [
           10,
-          31,
+          103,
         ],
         "type": "ClassBody",
       },
@@ -120,7 +274,7 @@ Object {
       "loc": Object {
         "end": Object {
           "column": 1,
-          "line": 3,
+          "line": 5,
         },
         "start": Object {
           "column": 0,
@@ -129,7 +283,7 @@ Object {
       },
       "range": Array [
         0,
-        31,
+        103,
       ],
       "superClass": null,
       "type": "ClassDeclaration",
@@ -139,7 +293,7 @@ Object {
   "loc": Object {
     "end": Object {
       "column": 0,
-      "line": 4,
+      "line": 6,
     },
     "start": Object {
       "column": 0,
@@ -148,7 +302,7 @@ Object {
   },
   "range": Array [
     0,
-    32,
+    104,
   ],
   "sourceType": "script",
   "tokens": Array [
@@ -299,17 +453,233 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 1,
+          "column": 24,
           "line": 3,
         },
         "start": Object {
-          "column": 0,
+          "column": 2,
           "line": 3,
         },
       },
       "range": Array [
-        30,
-        31,
+        32,
+        54,
+      ],
+      "type": "Identifier",
+      "value": "#propExplicitWithValue",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        54,
+        55,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 26,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 25,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        55,
+        56,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 33,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        57,
+        63,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 34,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        64,
+        65,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 36,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        66,
+        68,
+      ],
+      "type": "String",
+      "value": "''",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 38,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        68,
+        69,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 2,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        72,
+        94,
+      ],
+      "type": "Identifier",
+      "value": "#propImplicitWithValue",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        94,
+        95,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 27,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 26,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        96,
+        97,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 28,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        98,
+        100,
+      ],
+      "type": "String",
+      "value": "''",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        100,
+        101,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        102,
+        103,
       ],
       "type": "Punctuator",
       "value": "}",
