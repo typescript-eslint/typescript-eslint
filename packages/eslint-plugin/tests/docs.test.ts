@@ -85,7 +85,7 @@ describe('Validating rule docs', () => {
       // Verify attributes content
       const attributesList = tokens[attributesHeaderIndex + 1];
       const recommended = attributesList.items[0];
-      expect(rule.meta.docs.recommended).toBe(recommended.checked);
+      expect(rule.meta.docs.recommended !== false).toBe(recommended.checked);
       const fixable = attributesList.items[1];
       expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
       const requiresTypeChecking = attributesList.items[2];
