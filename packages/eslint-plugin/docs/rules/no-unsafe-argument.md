@@ -70,6 +70,6 @@ foo(1 as any, new Set<any>(), [] as any[]);
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -52,6 +52,6 @@ If you prefer consistent use of `String#match` for both, with `g` flag and witho
 
 ## Attributes
 
-- [x] ✅ Recommended
+- [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
