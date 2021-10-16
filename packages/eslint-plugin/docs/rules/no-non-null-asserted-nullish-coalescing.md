@@ -34,7 +34,7 @@ foo!.bazz ?? bar;
 foo!.bazz ?? bar!;
 foo() ?? bar;
 
-// This is considered correct code because because there's no way for the user to satisfy it.
+// This is considered correct code because there's no way for the user to satisfy it.
 let x: string;
 x! ?? '';
 ```
