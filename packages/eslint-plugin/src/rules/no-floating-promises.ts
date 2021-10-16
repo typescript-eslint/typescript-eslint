@@ -29,9 +29,9 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     messages: {
       floating:
-        'Expressions of type Promise must end with a call to .catch or a call to .then with a rejection handler.',
+        'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
       floatingVoid:
-        'Expressions of type Promise must end with a call to .catch or a call to .then with a rejection handler' +
+        'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler' +
         ' or be explicitly marked as ignored with the `void` operator.',
       floatingFixVoid: 'Add void operator to ignore.',
     },
