@@ -181,6 +181,12 @@ tester.addFixturePatternConfig('javascript/classes', {
      * TS3.6 made computed constructors parse as actual constructors.
      */
     'class-two-methods-computed-constructor',
+    /**
+     * Babel emits a `PrivateName` instead of `PrivateIdentifier`
+     */
+    'class-private-identifier-accessor',
+    'class-private-identifier-method',
+    'class-private-identifier-field',
   ],
 });
 
@@ -386,6 +392,15 @@ tester.addFixturePatternConfig('typescript/basics', {
      * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * TODO: enforce that accessibility is not allowed on a private identifier
+     */
+    'class-private-identifier-field-with-accessibility-error',
+    /**
+     * Babel emits a `PrivateName` instead of `PrivateIdentifier`
+     */
+    'class-private-identifier-field-with-annotation',
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
      * TypeScript 4.4 new feature

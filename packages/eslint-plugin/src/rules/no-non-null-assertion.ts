@@ -13,10 +13,10 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description:
         'Disallows non-null assertions using the `!` postfix operator',
-      category: 'Stylistic Issues',
       recommended: 'warn',
       suggestion: true,
     },
+    hasSuggestions: true,
     messages: {
       noNonNull: 'Forbidden non-null assertion.',
       suggestOptionalChain:

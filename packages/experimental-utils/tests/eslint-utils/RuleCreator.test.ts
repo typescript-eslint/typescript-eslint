@@ -4,7 +4,7 @@ describe('RuleCreator', () => {
   const createRule = ESLintUtils.RuleCreator(name => `test/${name}`);
 
   it('createRule should be a function', () => {
-    expect(typeof createRule).toEqual('function');
+    expect(typeof createRule).toBe('function');
   });
 
   it('should create rule correctly', () => {
@@ -13,7 +13,6 @@ describe('RuleCreator', () => {
       meta: {
         docs: {
           description: 'some description',
-          category: 'Best Practices',
           recommended: 'error',
           requiresTypeChecking: true,
         },
@@ -31,7 +30,6 @@ describe('RuleCreator', () => {
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
-        category: 'Best Practices',
         url: 'test/test',
         recommended: 'error',
         requiresTypeChecking: true,

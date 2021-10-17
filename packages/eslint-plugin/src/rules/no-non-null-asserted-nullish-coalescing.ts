@@ -39,9 +39,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallows using a non-null assertion in the left operand of the nullish coalescing operator',
-      category: 'Possible Errors',
       recommended: false,
-      suggestion: true,
     },
     messages: {
       noNonNullAssertedNullishCoalescing:
@@ -49,6 +47,7 @@ export default util.createRule({
       suggestRemovingNonNull: 'Remove the non-null assertion.',
     },
     schema: [],
+    hasSuggestions: true,
   },
   defaultOptions: [],
   create(context) {

@@ -47,7 +47,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the use of type aliases',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -310,9 +309,6 @@ export default util.createRule<Options, MessageIds>({
           acc.push(...getTypes(type, node.type));
           return acc;
         }, []);
-      }
-      if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
-        return getTypes(node.typeAnnotation, compositionType);
       }
       return [{ node, compositionType }];
     }

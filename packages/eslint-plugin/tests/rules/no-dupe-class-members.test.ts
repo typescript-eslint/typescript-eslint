@@ -172,5 +172,27 @@ class A {
         { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
       ],
     },
+    {
+      code: `
+class A {
+  foo;
+  foo = 42;
+}
+      `,
+      errors: [
+        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo;
+  foo() {}
+}
+      `,
+      errors: [
+        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+      ],
+    },
   ],
 });

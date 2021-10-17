@@ -22,7 +22,6 @@ export default createRule({
     docs: {
       description:
         'Enforce that `this` is used when only `this` type is returned',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -155,7 +154,9 @@ export default createRule({
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
         checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
       },
-      'ClassBody > ClassProperty'(node: TSESTree.ClassProperty): void {
+      'ClassBody > PropertyDefinition'(
+        node: TSESTree.PropertyDefinition,
+      ): void {
         if (
           !(
             node.value?.type === AST_NODE_TYPES.FunctionExpression ||

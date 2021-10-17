@@ -1664,7 +1664,7 @@ interface FooInterface {
   ],
 });
 
-// eslint rule tester is not working with multi-pass
+// -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
   const linter = new TSESLint.Linter();

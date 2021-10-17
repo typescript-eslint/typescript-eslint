@@ -32,10 +32,12 @@ function isVariableDeclaratorWithTypeAnnotation(
  * public x: Foo = ...
  * ```
  */
-function isClassPropertyWithTypeAnnotation(
+function isPropertyDefinitionWithTypeAnnotation(
   node: TSESTree.Node,
-): node is TSESTree.ClassProperty {
-  return node.type === AST_NODE_TYPES.ClassProperty && !!node.typeAnnotation;
+): node is TSESTree.PropertyDefinition {
+  return (
+    node.type === AST_NODE_TYPES.PropertyDefinition && !!node.typeAnnotation
+  );
 }
 
 /**
@@ -81,7 +83,7 @@ function isPropertyOfObjectWithType(
 
   return (
     isTypeAssertion(parent) ||
-    isClassPropertyWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
     isFunctionArgument(parent) ||
     isPropertyOfObjectWithType(parent)
@@ -194,7 +196,7 @@ function isTypedFunctionExpression(
   return (
     isTypeAssertion(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isClassPropertyWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
     isPropertyOfObjectWithType(parent) ||
     isFunctionArgument(parent, node) ||
     isConstructorArgument(parent)
@@ -219,7 +221,7 @@ function isValidFunctionExpressionReturnType(
     parent.type !== AST_NODE_TYPES.VariableDeclarator &&
     parent.type !== AST_NODE_TYPES.MethodDefinition &&
     parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-    parent.type !== AST_NODE_TYPES.ClassProperty
+    parent.type !== AST_NODE_TYPES.PropertyDefinition
   ) {
     return true;
   }

@@ -93,6 +93,64 @@ export const defaultOrder = [
 
   'constructor',
 
+  // Getters
+  'public-static-get',
+  'protected-static-get',
+  'private-static-get',
+
+  'public-decorated-get',
+  'protected-decorated-get',
+  'private-decorated-get',
+
+  'public-instance-get',
+  'protected-instance-get',
+  'private-instance-get',
+
+  'public-abstract-get',
+  'protected-abstract-get',
+  'private-abstract-get',
+
+  'public-get',
+  'protected-get',
+  'private-get',
+
+  'static-get',
+  'instance-get',
+  'abstract-get',
+
+  'decorated-get',
+
+  'get',
+
+  // Setters
+  'public-static-set',
+  'protected-static-set',
+  'private-static-set',
+
+  'public-decorated-set',
+  'protected-decorated-set',
+  'private-decorated-set',
+
+  'public-instance-set',
+  'protected-instance-set',
+  'private-instance-set',
+
+  'public-abstract-set',
+  'protected-abstract-set',
+  'private-abstract-set',
+
+  'public-set',
+  'protected-set',
+  'private-set',
+
+  'static-set',
+  'instance-set',
+  'abstract-set',
+
+  'decorated-set',
+
+  'set',
+
   // Methods
   'public-static-method',
   'protected-static-method',
@@ -129,6 +187,8 @@ const allMemberTypes = [
   'method',
   'call-signature',
   'constructor',
+  'get',
+  'set',
 ].reduce<string[]>((all, type) => {
   all.push(type);
 
@@ -137,8 +197,13 @@ const allMemberTypes = [
       all.push(`${accessibility}-${type}`); // e.g. `public-field`
     }
 
-    // Only class instance fields and methods can have decorators attached to them
-    if (type === 'field' || type === 'method') {
+    // Only class instance fields, methods, get and set can have decorators attached to them
+    if (
+      type === 'field' ||
+      type === 'method' ||
+      type === 'get' ||
+      type === 'set'
+    ) {
       const decoratedMemberType = `${accessibility}-decorated-${type}`;
       const decoratedMemberTypeNoAccessibility = `decorated-${type}`;
       if (!all.includes(decoratedMemberType)) {
@@ -185,8 +250,9 @@ function getNodeType(node: Member): string | null {
       return 'call-signature';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
-    case AST_NODE_TYPES.TSAbstractClassProperty:
-    case AST_NODE_TYPES.ClassProperty:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+      return 'field';
+    case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : 'field';
@@ -212,14 +278,14 @@ function getMemberName(
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
-    case AST_NODE_TYPES.TSAbstractClassProperty:
-    case AST_NODE_TYPES.ClassProperty:
-      return util.getNameFromMember(node, sourceCode);
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.PropertyDefinition:
+      return util.getNameFromMember(node, sourceCode).name;
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind === 'constructor'
         ? 'constructor'
-        : util.getNameFromMember(node, sourceCode);
+        : util.getNameFromMember(node, sourceCode).name;
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'new';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
@@ -273,7 +339,7 @@ function getRank(
   }
 
   const abstract =
-    node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+    node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
     node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
   const scope =
@@ -292,7 +358,13 @@ function getRank(
 
   if (supportsModifiers) {
     const decorated = 'decorators' in node && node.decorators!.length > 0;
-    if (decorated && (type === 'field' || type === 'method')) {
+    if (
+      decorated &&
+      (type === 'field' ||
+        type === 'method' ||
+        type === 'get' ||
+        type === 'set')
+    ) {
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
     }
@@ -352,12 +424,11 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
       incorrectOrder:
-        'Member "{{member}}" should be declared before member "{{beforeMember}}".',
+        'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
     },

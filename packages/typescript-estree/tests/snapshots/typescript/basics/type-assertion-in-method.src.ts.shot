@@ -195,7 +195,7 @@ Object {
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "async": false,
               "body": Object {

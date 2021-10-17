@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Bug Fixes
+
+* **experimental-utils:** fix `isSetter`'s return type ([#3975](https://github.com/typescript-eslint/typescript-eslint/issues/3975)) ([d256856](https://github.com/typescript-eslint/typescript-eslint/commit/d2568561d0417fdfbdfd964ad942f9d00434af73))
+
+
+### Features
+
+* **ast-spec:** bring `Node` objects in line with ESTree ([#3771](https://github.com/typescript-eslint/typescript-eslint/issues/3771)) ([dd14064](https://github.com/typescript-eslint/typescript-eslint/commit/dd140643b457aa515cc21fcda2b3cd4acc2a1c5c))
+* align class property representation with ESTree ([#3806](https://github.com/typescript-eslint/typescript-eslint/issues/3806)) ([22fa5c0](https://github.com/typescript-eslint/typescript-eslint/commit/22fa5c0c4705ed2898f00b7cacc5dd642d859275)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#3077](https://github.com/typescript-eslint/typescript-eslint/issues/3077)
+* remove `meta.docs.category` from rules ([#3800](https://github.com/typescript-eslint/typescript-eslint/issues/3800)) ([71c9370](https://github.com/typescript-eslint/typescript-eslint/commit/71c93706e55f5f92a1285102b93c6ab1950c6df4))
+* remove `TSParenthesizedType` ([#3340](https://github.com/typescript-eslint/typescript-eslint/issues/3340)) ([c8ee432](https://github.com/typescript-eslint/typescript-eslint/commit/c8ee43269faea4c04ec02eaa2b81a0aa6eec5d3e)), closes [#3136](https://github.com/typescript-eslint/typescript-eslint/issues/3136)
+* support ESLint v8 ([#3737](https://github.com/typescript-eslint/typescript-eslint/issues/3737)) ([4ca62ae](https://github.com/typescript-eslint/typescript-eslint/commit/4ca62aee6681d706e762a8db727541ca204364f2))
+* **experimental-utils:** extract `isNodeOfTypes` out of `ast-utils`' `predicates` ([#3836](https://github.com/typescript-eslint/typescript-eslint/issues/3836)) ([0cc509b](https://github.com/typescript-eslint/typescript-eslint/commit/0cc509b61df248cfb4b42fe64ec800f3cac69c69))
+* **experimental-utils:** remove `getComments` from `ESLint` `SourceCode` types ([#3766](https://github.com/typescript-eslint/typescript-eslint/issues/3766)) ([165a507](https://github.com/typescript-eslint/typescript-eslint/commit/165a507970d8e4a0ed12abdd5f0d892f7de83ffe))
+
+
+
+
+
 # [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
 
 

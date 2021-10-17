@@ -55,7 +55,6 @@ export default util.createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
     docs: {
-      category: 'Variables',
       description:
         'Enforces naming conventions for everything across a codebase',
       recommended: false,
@@ -103,8 +102,8 @@ export default util.createRule<Options, MessageIds>({
       validator: ValidatorFunction | null,
       node:
         | TSESTree.PropertyNonComputedName
-        | TSESTree.ClassPropertyNonComputedName
-        | TSESTree.TSAbstractClassPropertyNonComputedName
+        | TSESTree.PropertyDefinitionNonComputedName
+        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.TSPropertySignatureNonComputedName
         | TSESTree.MethodDefinitionNonComputedName
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
@@ -125,8 +124,8 @@ export default util.createRule<Options, MessageIds>({
 
     function getMemberModifiers(
       node:
-        | TSESTree.ClassProperty
-        | TSESTree.TSAbstractClassProperty
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.MethodDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSParameterProperty,
@@ -144,7 +143,7 @@ export default util.createRule<Options, MessageIds>({
         modifiers.add(Modifiers.readonly);
       }
       if (
-        node.type === AST_NODE_TYPES.TSAbstractClassProperty ||
+        node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
       ) {
         modifiers.add(Modifiers.abstract);
@@ -331,10 +330,10 @@ export default util.createRule<Options, MessageIds>({
         handleMember(validators.objectLiteralProperty, node, modifiers);
       },
 
-      ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
+      ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]'(
         node:
-          | TSESTree.ClassPropertyNonComputedName
-          | TSESTree.TSAbstractClassPropertyNonComputedName,
+          | TSESTree.PropertyDefinitionNonComputedName
+          | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
         handleMember(validators.classProperty, node, modifiers);
@@ -369,14 +368,14 @@ export default util.createRule<Options, MessageIds>({
       },
 
       [[
-        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "ArrowFunctionExpression"]',
-        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "FunctionExpression"]',
-        ':matches(ClassProperty, TSAbstractClassProperty)[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "ArrowFunctionExpression"]',
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "FunctionExpression"]',
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
         ':matches(MethodDefinition, TSAbstractMethodDefinition)[computed = false][kind = "method"]',
       ].join(', ')](
         node:
-          | TSESTree.ClassPropertyNonComputedName
-          | TSESTree.TSAbstractClassPropertyNonComputedName
+          | TSESTree.PropertyDefinitionNonComputedName
+          | TSESTree.TSAbstractPropertyDefinitionNonComputedName
           | TSESTree.MethodDefinitionNonComputedName
           | TSESTree.TSAbstractMethodDefinitionNonComputedName,
       ): void {
@@ -621,11 +620,14 @@ function isGlobal(scope: TSESLint.Scope.Scope | null): boolean {
 }
 
 function requiresQuoting(
-  node: TSESTree.Identifier | TSESTree.Literal,
+  node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
   target: ScriptTarget | undefined,
 ): boolean {
   const name =
-    node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+      ? node.name
+      : `${node.value}`;
   return util.requiresQuoting(name, target);
 }
 

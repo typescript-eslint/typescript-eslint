@@ -1,39 +1,10 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
-const isNodeOfType =
-  <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
-  (
-    node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeType } =>
-    node?.type === nodeType;
-const isNodeOfTypes =
-  <NodeTypes extends readonly AST_NODE_TYPES[]>(nodeTypes: NodeTypes) =>
-  (
-    node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeTypes[number] } =>
-    !!node && nodeTypes.includes(node.type);
-
-type ObjectEntry<BaseType> = [keyof BaseType, BaseType[keyof BaseType]];
-type ObjectEntries<BaseType> = Array<ObjectEntry<BaseType>>;
-const isNodeOfTypeWithConditions = <
-  NodeType extends AST_NODE_TYPES,
-  Conditions extends Partial<TSESTree.Node & { type: NodeType }>,
->(
-  nodeType: NodeType,
-  conditions: Conditions,
-): ((
-  node: TSESTree.Node | null | undefined,
-) => node is TSESTree.Node & { type: NodeType } & Conditions) => {
-  const entries = Object.entries(conditions) as ObjectEntries<
-    TSESTree.Node & { type: NodeType }
-  >;
-
-  return (
-    node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeType } & Conditions =>
-    node?.type === nodeType &&
-    entries.every(([key, value]) => node[key] === value);
-};
+import {
+  isNodeOfType,
+  isNodeOfTypes,
+  isNodeOfTypeWithConditions,
+} from './helpers';
 
 function isOptionalChainPunctuator(
   token: TSESTree.Token,
@@ -85,17 +56,10 @@ const isLogicalOrOperator = isNodeOfTypeWithConditions(
  * <foo>x
  * ```
  */
-function isTypeAssertion(
-  node: TSESTree.Node | undefined | null,
-): node is TSESTree.TSAsExpression | TSESTree.TSTypeAssertion {
-  if (!node) {
-    return false;
-  }
-  return (
-    node.type === AST_NODE_TYPES.TSAsExpression ||
-    node.type === AST_NODE_TYPES.TSTypeAssertion
-  );
-}
+const isTypeAssertion = isNodeOfTypes([
+  AST_NODE_TYPES.TSAsExpression,
+  AST_NODE_TYPES.TSTypeAssertion,
+] as const);
 
 const isVariableDeclarator = isNodeOfType(AST_NODE_TYPES.VariableDeclarator);
 
@@ -127,10 +91,10 @@ const isTSConstructorType = isNodeOfType(AST_NODE_TYPES.TSConstructorType);
 
 const isClassOrTypeElement = isNodeOfTypes([
   // ClassElement
-  AST_NODE_TYPES.ClassProperty,
+  AST_NODE_TYPES.PropertyDefinition,
   AST_NODE_TYPES.FunctionExpression,
   AST_NODE_TYPES.MethodDefinition,
-  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
   AST_NODE_TYPES.TSIndexSignature,
@@ -155,7 +119,7 @@ const isConstructor = isNodeOfTypeWithConditions(
  */
 function isSetter(
   node: TSESTree.Node | undefined,
-): node is TSESTree.MethodDefinition | TSESTree.Property {
+): node is (TSESTree.MethodDefinition | TSESTree.Property) & { kind: 'set' } {
   return (
     !!node &&
     (node.type === AST_NODE_TYPES.MethodDefinition ||

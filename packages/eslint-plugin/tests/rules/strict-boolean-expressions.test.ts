@@ -298,6 +298,8 @@ if (y) {
         declare const x: null; if (x) {}
         (x: undefined) => !x;
         <T extends null | undefined>(x: T) => x ? 1 : 0;
+        <T extends null>(x: T) => x ? 1 : 0;
+        <T extends undefined>(x: T) => x ? 1 : 0;
       `,
       errors: [
         { messageId: 'conditionErrorNullish', line: 2, column: 1 },
@@ -305,6 +307,8 @@ if (y) {
         { messageId: 'conditionErrorNullish', line: 4, column: 36 },
         { messageId: 'conditionErrorNullish', line: 5, column: 28 },
         { messageId: 'conditionErrorNullish', line: 6, column: 47 },
+        { messageId: 'conditionErrorNullish', line: 7, column: 35 },
+        { messageId: 'conditionErrorNullish', line: 8, column: 40 },
       ],
     }),
 
@@ -316,6 +320,9 @@ if (y) {
         declare const x: symbol; if (x) {}
         (x: () => void) => !x;
         <T extends object>(x: T) => x ? 1 : 0;
+        <T extends Object | Function>(x: T) => x ? 1 : 0;
+        <T extends { a: number }>(x: T) => x ? 1 : 0;
+        <T extends () => void>(x: T) => x ? 1 : 0;
       `,
       errors: [
         { messageId: 'conditionErrorObject', line: 2, column: 1 },
@@ -323,6 +330,9 @@ if (y) {
         { messageId: 'conditionErrorObject', line: 4, column: 38 },
         { messageId: 'conditionErrorObject', line: 5, column: 29 },
         { messageId: 'conditionErrorObject', line: 6, column: 37 },
+        { messageId: 'conditionErrorObject', line: 7, column: 48 },
+        { messageId: 'conditionErrorObject', line: 8, column: 44 },
+        { messageId: 'conditionErrorObject', line: 9, column: 41 },
       ],
     }),
 
@@ -843,12 +853,12 @@ if (y) {
     }),
 
     // any in boolean context
-    // TODO: when `T` is not `extends any` then the error is `conditionErrorObject` (says it's always truthy, which is false)
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`
         if (x) {}
         x => !x;
         <T extends any>(x: T) => x ? 1 : 0;
+        <T>(x: T) => x ? 1 : 0;
       `,
       errors: [
         {
@@ -881,6 +891,17 @@ if (y) {
             {
               messageId: 'conditionFixCastBoolean',
               output: '        <T extends any>(x: T) => (Boolean(x)) ? 1 : 0;',
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorAny',
+          line: 5,
+          column: 22,
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '        <T>(x: T) => (Boolean(x)) ? 1 : 0;',
             },
           ],
         },
