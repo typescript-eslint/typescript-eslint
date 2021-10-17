@@ -237,8 +237,7 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.Node | null,
     ): node is TSESTree.StringLiteral {
       return (
-        !!node &&
-        node.type === AST_NODE_TYPES.Literal &&
+        node?.type === AST_NODE_TYPES.Literal &&
         typeof node.value === 'string'
       );
     }
@@ -266,7 +265,6 @@ export default util.createRule<Options, MessageIds>({
       return (
         isTypeImport(firstDefinition) &&
         isImportDeclaration(firstDefinition.parent) &&
-        isStringLiteral(firstDefinition.parent.source) &&
         isExternalModuleDeclarationWithName(
           scope,
           firstDefinition.parent.source.value,
