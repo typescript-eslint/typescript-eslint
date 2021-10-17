@@ -31,7 +31,7 @@ export default util.createRule<Options, MessageId>({
       floating:
         'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
       floatingVoid:
-        'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler' +
+        'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
         ' or be explicitly marked as ignored with the `void` operator.',
       floatingFixVoid: 'Add void operator to ignore.',
     },
