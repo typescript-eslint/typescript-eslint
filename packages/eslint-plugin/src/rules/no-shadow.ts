@@ -233,15 +233,6 @@ export default util.createRule<Options, MessageIds>({
       return definition.type === AST_NODE_TYPES.ImportDeclaration;
     }
 
-    function isStringLiteral(
-      node: TSESTree.Node | null,
-    ): node is TSESTree.StringLiteral {
-      return (
-        node?.type === AST_NODE_TYPES.Literal &&
-        typeof node.value === 'string'
-      );
-    }
-
     function isExternalModuleDeclarationWithName(
       scope: TSESLint.Scope.Scope,
       name: string,
