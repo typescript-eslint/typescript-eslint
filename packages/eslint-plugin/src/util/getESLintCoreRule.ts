@@ -1,6 +1,6 @@
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import { version } from 'eslint/package.json';
 import * as semver from 'semver';
-import { nullThrows } from './nullThrows';
 
 const isESLintV8 = semver.major(version) >= 8;
 
@@ -42,7 +42,7 @@ type RuleId = keyof RuleMap;
 export const getESLintCoreRule: <R extends RuleId>(ruleId: R) => RuleMap[R] =
   isESLintV8
     ? <R extends RuleId>(ruleId: R): RuleMap[R] =>
-        nullThrows(
+        ESLintUtils.nullThrows(
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
           require('eslint/use-at-your-own-risk').builtinRules.get(
             ruleId,

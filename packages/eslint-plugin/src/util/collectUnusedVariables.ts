@@ -3,10 +3,10 @@ import {
   TSESLint,
   ASTUtils,
   TSESTree,
+  ESLintUtils,
 } from '@typescript-eslint/experimental-utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
-import { nullThrows } from './nullThrows';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
@@ -25,7 +25,7 @@ class UnusedVarsVisitor<
       visitChildrenEvenIfSelectorExists: true,
     });
 
-    this.#scopeManager = nullThrows(
+    this.#scopeManager = ESLintUtils.nullThrows(
       context.getSourceCode().scopeManager,
       'Missing required scope manager',
     );

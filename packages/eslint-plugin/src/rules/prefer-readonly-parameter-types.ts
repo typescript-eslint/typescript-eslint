@@ -2,13 +2,14 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { ESLintTypeUtils } from '@typescript-eslint/type-utils';
 import * as util from '../util';
 
 type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
-  } & util.ReadonlynessOptions,
+  } & ESLintTypeUtils.ReadonlynessOptions,
 ];
 type MessageIds = 'shouldBeReadonly';
 
@@ -33,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
-          ...util.readonlynessOptionsSchema.properties,
+          ...ESLintTypeUtils.readonlynessOptionsSchema.properties,
         },
       },
     ],
@@ -45,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      ...util.readonlynessOptionsDefaults,
+      ...ESLintTypeUtils.readonlynessOptionsDefaults,
     },
   ],
   create(
@@ -97,7 +98,7 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
-          const isReadOnly = util.isTypeReadonly(checker, type, {
+          const isReadOnly = ESLintTypeUtils.isTypeReadonly(checker, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
           });
 
