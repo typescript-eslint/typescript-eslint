@@ -43,9 +43,9 @@
   "dependencies": {
     "@typescript-eslint/types": "5.0.0",
     "@typescript-eslint/visitor-keys": "5.0.0",
-    "debug": "^4.3.1",
-    "globby": "^11.0.3",
-    "is-glob": "^4.0.1",
+    "debug": "^4.3.2",
+    "globby": "^11.0.4",
+    "is-glob": "^4.0.3",
     "semver": "^7.3.5",
     "tsutils": "^3.21.0"
   },

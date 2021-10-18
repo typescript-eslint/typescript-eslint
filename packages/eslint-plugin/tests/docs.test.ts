@@ -149,27 +149,27 @@ describe('Validating README.md', () => {
       }
 
       it('Link column should be correct', () => {
-        expect(ruleRow[0]).toEqual(createRuleLink(ruleName));
+        expect(ruleRow[0]).toBe(createRuleLink(ruleName));
       });
 
       it('Description column should be correct', () => {
-        expect(ruleRow[1]).toEqual(rule.meta.docs?.description);
+        expect(ruleRow[1]).toBe(rule.meta.docs?.description);
       });
 
       it('Recommended column should be correct', () => {
-        expect(ruleRow[2]).toEqual(
+        expect(ruleRow[2]).toBe(
           rule.meta.docs?.recommended ? ':white_check_mark:' : '',
         );
       });
 
       it('Fixable column should be correct', () => {
-        expect(ruleRow[3]).toEqual(
+        expect(ruleRow[3]).toBe(
           rule.meta.fixable !== undefined ? ':wrench:' : '',
         );
       });
 
       it('Requiring type information column should be correct', () => {
-        expect(ruleRow[4]).toEqual(
+        expect(ruleRow[4]).toBe(
           rule.meta.docs?.requiresTypeChecking === true
             ? ':thought_balloon:'
             : '',
