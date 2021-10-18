@@ -196,20 +196,20 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      'ArrowFunctionExpression[async = false]'(
-        node: TSESTree.ArrowFunctionExpression,
-      ): void {
-        if (checkArrowFunctions) {
+      ...(checkArrowFunctions && {
+        'ArrowFunctionExpression[async = false]'(
+          node: TSESTree.ArrowFunctionExpression,
+        ): void {
           validateNode(node);
-        }
-      },
-      'FunctionDeclaration[async = false]'(
-        node: TSESTree.FunctionDeclaration,
-      ): void {
-        if (checkFunctionDeclarations) {
+        },
+      }),
+      ...(checkFunctionDeclarations && {
+        'FunctionDeclaration[async = false]'(
+          node: TSESTree.FunctionDeclaration,
+        ): void {
           validateNode(node);
-        }
-      },
+        },
+      }),
       'FunctionExpression[async = false]'(
         node: TSESTree.FunctionExpression,
       ): void {

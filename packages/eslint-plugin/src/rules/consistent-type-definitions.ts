@@ -47,10 +47,10 @@ export default util.createRule({
     }
 
     return {
-      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
-        node: TSESTree.TSTypeAliasDeclaration,
-      ): void {
-        if (option === 'interface') {
+      ...(option === 'interface' && {
+        "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
+          node: TSESTree.TSTypeAliasDeclaration,
+        ): void {
           context.report({
             node: node.id,
             messageId: 'interfaceOverType',
@@ -81,10 +81,10 @@ export default util.createRule({
               return fixes;
             },
           });
-        }
-      },
-      TSInterfaceDeclaration(node): void {
-        if (option === 'type') {
+        },
+      }),
+      ...(option === 'type' && {
+        TSInterfaceDeclaration(node): void {
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
@@ -137,8 +137,8 @@ export default util.createRule({
                   return fixes;
                 },
           });
-        }
-      },
+        },
+      }),
     };
   },
 });
