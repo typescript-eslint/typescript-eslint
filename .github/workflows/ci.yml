@@ -48,10 +48,6 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
-
       - name: Build
         run: |
           yarn build
@@ -93,10 +89,6 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
-
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
 
       - name: Build
         run: |
@@ -176,10 +168,6 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
-
       - name: Build
         run: |
           yarn build
@@ -223,10 +211,6 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
-
       - name: Build
         run: |
           yarn build
@@ -268,10 +252,6 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
-
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
 
       - name: Build
         run: |
@@ -355,10 +335,6 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
-
       - name: Build
         run: |
           yarn build
@@ -401,10 +377,6 @@ jobs:
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
-
-      - name: Patch Dependencies
-        run: |
-          yarn patch-package
 
       - name: Build
         run: |

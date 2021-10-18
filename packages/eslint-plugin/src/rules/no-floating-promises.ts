@@ -28,10 +28,11 @@ export default util.createRule<Options, MessageId>({
     },
     hasSuggestions: true,
     messages: {
-      floating: 'Promises must be handled appropriately.',
+      floating:
+        'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
       floatingVoid:
-        'Promises must be handled appropriately' +
-        ' or explicitly marked as ignored with the `void` operator.',
+        'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
+        ' or be explicitly marked as ignored with the `void` operator.',
       floatingFixVoid: 'Add void operator to ignore.',
     },
     schema: [
