@@ -54,3 +54,9 @@ class Foo {
 See [`eslint/default-param-last` options](https://eslint.org/docs/rules/default-param-last#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/default-param-last.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

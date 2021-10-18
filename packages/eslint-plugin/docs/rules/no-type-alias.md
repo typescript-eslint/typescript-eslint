@@ -594,3 +594,9 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Related to
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

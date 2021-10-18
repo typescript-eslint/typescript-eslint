@@ -71,3 +71,9 @@ There are no options.
 ## When Not To Use It
 
 If you don't want to suggest `includes`, you can safely turn this rule off.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

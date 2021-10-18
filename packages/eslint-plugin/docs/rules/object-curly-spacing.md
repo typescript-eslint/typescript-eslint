@@ -20,3 +20,9 @@ It adds support for TypeScript's object types.
 See [`eslint/object-curly-spacing` options](https://eslint.org/docs/rules/object-curly-spacing#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/object-curly-spacing.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

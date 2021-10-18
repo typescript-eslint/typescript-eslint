@@ -53,3 +53,9 @@ function Quuz<T>() {}
 ## When Not To Use It
 
 If you don't care about the specific styles of your type constraints, or never use them in the first place, then you will not need this rule.
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

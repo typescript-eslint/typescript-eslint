@@ -87,3 +87,9 @@ If you don't care about the general structure of the code, then you will not nee
 ## Compatibility
 
 - TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -68,3 +68,9 @@ enum Color {
 ## When Not To Use It
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

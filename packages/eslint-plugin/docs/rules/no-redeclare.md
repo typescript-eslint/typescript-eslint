@@ -78,3 +78,9 @@ const something = 2;
 ```
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

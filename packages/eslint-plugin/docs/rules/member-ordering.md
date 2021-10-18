@@ -1024,3 +1024,9 @@ If you don't care about the general structure of your classes and interfaces, th
 ## Compatibility
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

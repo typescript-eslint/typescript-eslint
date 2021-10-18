@@ -199,3 +199,9 @@ type FooBar = { name: string; greet(): string }
 ## When Not To Use It
 
 If you don't care about enforcing a consistent member delimiter in interfaces and type literals, then you will not need this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information
