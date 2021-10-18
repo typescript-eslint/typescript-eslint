@@ -535,5 +535,19 @@ ruleTester.run('no-restricted-imports', rule, {
         },
       ],
     },
+    {
+      code: "import type { InvalidTestCase } from '@typescript-eslint/experimental-utils/dist/ts-eslint';",
+      options: [
+        {
+          patterns: ['@typescript-eslint/experimental-utils/dist/*'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'patterns',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
   ],
 });
