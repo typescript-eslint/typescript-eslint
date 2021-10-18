@@ -14,7 +14,6 @@ export enum AST_NODE_TYPES {
   ClassBody = 'ClassBody',
   ClassDeclaration = 'ClassDeclaration',
   ClassExpression = 'ClassExpression',
-  ClassProperty = 'ClassProperty',
   ConditionalExpression = 'ConditionalExpression',
   ContinueStatement = 'ContinueStatement',
   DebuggerStatement = 'DebuggerStatement',
@@ -62,8 +61,10 @@ export enum AST_NODE_TYPES {
   NewExpression = 'NewExpression',
   ObjectExpression = 'ObjectExpression',
   ObjectPattern = 'ObjectPattern',
+  PrivateIdentifier = 'PrivateIdentifier',
   Program = 'Program',
   Property = 'Property',
+  PropertyDefinition = 'PropertyDefinition',
   RestElement = 'RestElement',
   ReturnStatement = 'ReturnStatement',
   SequenceExpression = 'SequenceExpression',
@@ -88,9 +89,9 @@ export enum AST_NODE_TYPES {
   /**
    * TS-prefixed nodes
    */
-  TSAbstractClassProperty = 'TSAbstractClassProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
+  TSAbstractPropertyDefinition = 'TSAbstractPropertyDefinition',
   TSAnyKeyword = 'TSAnyKeyword',
   TSArrayType = 'TSArrayType',
   TSAsExpression = 'TSAsExpression',
@@ -135,7 +136,6 @@ export enum AST_NODE_TYPES {
   TSObjectKeyword = 'TSObjectKeyword',
   TSOptionalType = 'TSOptionalType',
   TSParameterProperty = 'TSParameterProperty',
-  TSParenthesizedType = 'TSParenthesizedType',
   TSPrivateKeyword = 'TSPrivateKeyword',
   TSPropertySignature = 'TSPropertySignature',
   TSProtectedKeyword = 'TSProtectedKeyword',

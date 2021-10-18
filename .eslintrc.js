@@ -59,13 +59,21 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true,
+        allowBoolean: true,
+        allowAny: true,
+        allowNullish: true,
+        allowRegExp: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
 
-    // TODO - enable these new recommended rules
-    '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
 
@@ -78,7 +86,7 @@ module.exports = {
     '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
-    // eslint base
+    // eslint-base
     //
 
     curly: ['error', 'all'],
@@ -185,8 +193,7 @@ module.exports = {
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
-        'jest/prefer-to-be-null': 'warn',
-        'jest/prefer-to-be-undefined': 'warn',
+        'jest/prefer-to-be': 'warn',
         'jest/prefer-to-contain': 'warn',
         'jest/prefer-to-have-length': 'warn',
         'jest/prefer-spy-on': 'error',

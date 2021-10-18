@@ -113,7 +113,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.ImportNamespaceSpecifier,
 
   // Class properties aren't yet supported by eslint...
-  AST_NODE_TYPES.ClassProperty,
+  AST_NODE_TYPES.PropertyDefinition,
 
   // ts keywords
   AST_NODE_TYPES.TSAbstractKeyword,
@@ -129,7 +129,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSNullKeyword,
 
   // ts specific nodes we want to support
-  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
   AST_NODE_TYPES.TSAsExpression,
@@ -161,7 +161,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSNonNullExpression,
   AST_NODE_TYPES.TSParameterProperty,
-  AST_NODE_TYPES.TSParenthesizedType,
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
@@ -258,7 +257,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation.',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     fixable: 'whitespace',

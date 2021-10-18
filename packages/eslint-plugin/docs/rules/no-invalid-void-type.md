@@ -124,3 +124,9 @@ or in invalid places, then you don't need this rule.
 ## Compatibility
 
 - TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

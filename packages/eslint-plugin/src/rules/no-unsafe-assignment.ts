@@ -22,7 +22,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallows assigning any to variables and properties',
-      category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -337,7 +336,9 @@ export default util.createRule({
           checkObjectDestructureHelper(node.id, init);
         }
       },
-      'ClassProperty[value != null]'(node: TSESTree.ClassProperty): void {
+      'PropertyDefinition[value != null]'(
+        node: TSESTree.PropertyDefinition,
+      ): void {
         checkAssignment(
           node.key,
           node.value!,

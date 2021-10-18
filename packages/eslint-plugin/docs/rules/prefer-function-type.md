@@ -79,3 +79,9 @@ If you specifically want to use an interface or type literal with a single call 
 ## Further Reading
 
 - TSLint: [`callable-types`](https://palantir.github.io/tslint/rules/callable-types/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

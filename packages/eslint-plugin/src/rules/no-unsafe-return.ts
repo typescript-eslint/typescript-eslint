@@ -12,7 +12,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallows returning any from a function',
-      category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },

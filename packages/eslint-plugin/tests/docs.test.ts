@@ -70,6 +70,33 @@ describe('Validating rule docs', () => {
         text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,
       });
     });
+
+    it('Attributes in the docs must match the metadata', () => {
+      const file = fs.readFileSync(filePath, 'utf-8');
+      const tokens = marked.lexer(file, {
+        gfm: true,
+        silent: false,
+      });
+
+      // Verify attributes header exists
+      const attributesHeaderIndex = tokens.findIndex(
+        token => token.type === 'heading' && token.text === 'Attributes',
+      );
+      expect(attributesHeaderIndex).toBeGreaterThan(-1);
+
+      // Verify attributes content
+      const attributesList = tokens[
+        attributesHeaderIndex + 1
+      ] as marked.Tokens.List;
+      const recommended = attributesList.items[0];
+      expect(rule.meta.docs?.recommended !== false).toBe(recommended.checked);
+      const fixable = attributesList.items[1];
+      expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
+      const requiresTypeChecking = attributesList.items[2];
+      expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
+        requiresTypeChecking.checked,
+      );
+    });
   }
 });
 
@@ -149,27 +176,27 @@ describe('Validating README.md', () => {
       }
 
       it('Link column should be correct', () => {
-        expect(ruleRow[0]).toEqual(createRuleLink(ruleName));
+        expect(ruleRow[0]).toBe(createRuleLink(ruleName));
       });
 
       it('Description column should be correct', () => {
-        expect(ruleRow[1]).toEqual(rule.meta.docs?.description);
+        expect(ruleRow[1]).toBe(rule.meta.docs?.description);
       });
 
       it('Recommended column should be correct', () => {
-        expect(ruleRow[2]).toEqual(
+        expect(ruleRow[2]).toBe(
           rule.meta.docs?.recommended ? ':white_check_mark:' : '',
         );
       });
 
       it('Fixable column should be correct', () => {
-        expect(ruleRow[3]).toEqual(
+        expect(ruleRow[3]).toBe(
           rule.meta.fixable !== undefined ? ':wrench:' : '',
         );
       });
 
       it('Requiring type information column should be correct', () => {
-        expect(ruleRow[4]).toEqual(
+        expect(ruleRow[4]).toBe(
           rule.meta.docs?.requiresTypeChecking === true
             ? ':thought_balloon:'
             : '',

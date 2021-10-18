@@ -1,12 +1,12 @@
-import type { LineAndColumnData } from './LineAndColumnData';
+import type { Position } from './Position';
 
 export interface SourceLocation {
   /**
    * The position of the first character of the parsed source region
    */
-  start: LineAndColumnData;
+  start: Position;
   /**
    * The position of the first character after the parsed source region
    */
-  end: LineAndColumnData;
+  end: Position;
 }

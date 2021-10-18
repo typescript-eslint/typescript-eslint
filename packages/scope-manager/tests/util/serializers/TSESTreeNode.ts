@@ -14,6 +14,7 @@ const EXCLUDED_KEYS = new Set([
 
 const generator = createIdGenerator();
 type Node = Record<string, unknown> & { type: AST_NODE_TYPES };
+type Identifier = Node & { name: string; type: AST_NODE_TYPES.Identifier };
 const SEEN_NODES = new Map<Node, number>();
 
 const serializer: NewPlugin = {
@@ -29,7 +30,7 @@ const serializer: NewPlugin = {
   },
   serialize(node: Node): string {
     if (node.type === AST_NODE_TYPES.Identifier) {
-      return `Identifier<"${node.name}">`;
+      return `Identifier<"${(node as Identifier).name}">`;
     }
 
     const keys = Object.keys(node).filter(k => !EXCLUDED_KEYS.has(k));

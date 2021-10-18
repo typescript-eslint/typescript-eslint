@@ -3,6 +3,7 @@ import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFun
 import type { Decorator } from '../special/Decorator/spec';
 import type { TSTypeParameterDeclaration } from '../special/TSTypeParameterDeclaration/spec';
 import type {
+  ClassPropertyNameNonComputed,
   PropertyName,
   PropertyNameComputed,
   PropertyNameNonComputed,
@@ -32,5 +33,11 @@ export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {
 export interface MethodDefinitionNonComputedNameBase
   extends MethodDefinitionBase {
   key: PropertyNameNonComputed;
+  computed: false;
+}
+
+export interface ClassMethodDefinitionNonComputedNameBase
+  extends MethodDefinitionBase {
+  key: ClassPropertyNameNonComputed;
   computed: false;
 }

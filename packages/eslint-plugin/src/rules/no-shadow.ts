@@ -1,9 +1,15 @@
 import {
-  TSESTree,
-  TSESLint,
+  ASTUtils,
   AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { ScopeType } from '@typescript-eslint/scope-manager';
+import {
+  Definition,
+  DefinitionType,
+  ImportBindingDefinition,
+  ScopeType,
+} from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 type MessageIds = 'noShadow';
@@ -24,7 +30,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      category: 'Variables',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -82,7 +87,19 @@ export default util.createRule<Options, MessageIds>({
      * Check if variable is a `this` parameter.
      */
     function isThisParam(variable: TSESLint.Scope.Variable): boolean {
-      return variable.defs[0].type === 'Parameter' && variable.name === 'this';
+      return (
+        variable.defs[0].type === DefinitionType.Parameter &&
+        variable.name === 'this'
+      );
+    }
+
+    function isTypeImport(
+      definition: Definition,
+    ): definition is ImportBindingDefinition {
+      return (
+        definition.type === DefinitionType.ImportBinding &&
+        definition.parent.importKind === 'type'
+      );
     }
 
     function isTypeValueShadow(
@@ -98,8 +115,11 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
+      const [firstDefinition] = shadowed.defs;
       const isShadowedValue =
-        'isValueVariable' in shadowed ? shadowed.isValueVariable : true;
+        !('isValueVariable' in shadowed) ||
+        !firstDefinition ||
+        (!isTypeImport(firstDefinition) && shadowed.isValueVariable);
       return variable.isValueVariable !== isShadowedValue;
     }
 
@@ -276,7 +296,7 @@ export default util.createRule<Options, MessageIds>({
         inner &&
         outer[0] < inner[0] &&
         inner[1] < outer[1] &&
-        ((innerDef.type === 'FunctionName' &&
+        ((innerDef.type === DefinitionType.FunctionName &&
           innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
           innerDef.node.type === AST_NODE_TYPES.ClassExpression) &&
         outerScope === innerScope.upper
@@ -321,31 +341,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Finds the variable by a given name in a given scope and its upper scopes.
-     * @param initScope A scope to start find.
-     * @param name A variable name to find.
-     * @returns A found variable or `null`.
-     */
-    function getVariableByName(
-      initScope: TSESLint.Scope.Scope | null,
-      name: string,
-    ): TSESLint.Scope.Variable | null {
-      let scope = initScope;
-
-      while (scope) {
-        const variable = scope.set.get(name);
-
-        if (variable) {
-          return variable;
-        }
-
-        scope = scope.upper;
-      }
-
-      return null;
-    }
-
-    /**
      * Checks the current context for shadowed variables.
      * @param {Scope} scope Fixme
      */
@@ -384,7 +379,9 @@ export default util.createRule<Options, MessageIds>({
         }
 
         // Gets shadowed variable.
-        const shadowed = getVariableByName(scope.upper, variable.name);
+        const shadowed = scope.upper
+          ? ASTUtils.findVariable(scope.upper, variable.name)
+          : null;
         if (!shadowed) {
           continue;
         }

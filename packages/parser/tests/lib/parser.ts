@@ -18,6 +18,11 @@ describe('parser', () => {
     expect(() => parseForESLint(code, null)).not.toThrow();
   });
 
+  it("parseForESLint() should work if options.ecmaVersion is `'latest'`", () => {
+    const code = 'const valid = true;';
+    expect(() => parseForESLint(code, { ecmaVersion: 'latest' })).not.toThrow();
+  });
+
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');

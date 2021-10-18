@@ -1,11 +1,10 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
-const isNodeOfType =
-  <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
-  (
-    node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeType } =>
-    node?.type === nodeType;
+import {
+  isNodeOfType,
+  isNodeOfTypes,
+  isNodeOfTypeWithConditions,
+} from './helpers';
 
 function isOptionalChainPunctuator(
   token: TSESTree.Token,
@@ -35,27 +34,20 @@ function isNotNonNullAssertionPunctuator(
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
  */
-function isOptionalCallExpression(
-  node: TSESTree.Node,
-): node is TSESTree.CallExpression & { optional: true } {
-  return (
-    node.type === AST_NODE_TYPES.CallExpression &&
-    // this flag means the call expression itself is option
-    // i.e. it is foo.bar?.() and not foo?.bar()
-    node.optional
-  );
-}
+const isOptionalCallExpression = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.CallExpression,
+  // this flag means the call expression itself is option
+  // i.e. it is foo.bar?.() and not foo?.bar()
+  { optional: true },
+);
 
 /**
  * Returns true if and only if the node represents logical OR
  */
-function isLogicalOrOperator(
-  node: TSESTree.Node,
-): node is TSESTree.LogicalExpression & { operator: '||' } {
-  return (
-    node.type === AST_NODE_TYPES.LogicalExpression && node.operator === '||'
-  );
-}
+const isLogicalOrOperator = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.LogicalExpression,
+  { operator: '||' },
+);
 
 /**
  * Checks if a node is a type assertion:
@@ -64,122 +56,70 @@ function isLogicalOrOperator(
  * <foo>x
  * ```
  */
-function isTypeAssertion(
-  node: TSESTree.Node | undefined | null,
-): node is TSESTree.TSAsExpression | TSESTree.TSTypeAssertion {
-  if (!node) {
-    return false;
-  }
-  return (
-    node.type === AST_NODE_TYPES.TSAsExpression ||
-    node.type === AST_NODE_TYPES.TSTypeAssertion
-  );
-}
+const isTypeAssertion = isNodeOfTypes([
+  AST_NODE_TYPES.TSAsExpression,
+  AST_NODE_TYPES.TSTypeAssertion,
+] as const);
 
 const isVariableDeclarator = isNodeOfType(AST_NODE_TYPES.VariableDeclarator);
 
-function isFunction(
-  node: TSESTree.Node | undefined,
-): node is
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression {
-  if (!node) {
-    return false;
-  }
+const functionTypes = [
+  AST_NODE_TYPES.ArrowFunctionExpression,
+  AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.FunctionExpression,
+] as const;
+const isFunction = isNodeOfTypes(functionTypes);
 
-  return [
-    AST_NODE_TYPES.ArrowFunctionExpression,
-    AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.FunctionExpression,
-  ].includes(node.type);
-}
+const functionTypeTypes = [
+  AST_NODE_TYPES.TSCallSignatureDeclaration,
+  AST_NODE_TYPES.TSConstructorType,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSFunctionType,
+  AST_NODE_TYPES.TSMethodSignature,
+] as const;
+const isFunctionType = isNodeOfTypes(functionTypeTypes);
 
-function isFunctionType(
-  node: TSESTree.Node | undefined,
-): node is
-  | TSESTree.TSCallSignatureDeclaration
-  | TSESTree.TSConstructorType
-  | TSESTree.TSConstructSignatureDeclaration
-  | TSESTree.TSEmptyBodyFunctionExpression
-  | TSESTree.TSFunctionType
-  | TSESTree.TSMethodSignature {
-  if (!node) {
-    return false;
-  }
-
-  return [
-    AST_NODE_TYPES.TSCallSignatureDeclaration,
-    AST_NODE_TYPES.TSConstructorType,
-    AST_NODE_TYPES.TSConstructSignatureDeclaration,
-    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
-    AST_NODE_TYPES.TSFunctionType,
-    AST_NODE_TYPES.TSMethodSignature,
-  ].includes(node.type);
-}
-
-function isFunctionOrFunctionType(
-  node: TSESTree.Node | undefined,
-): node is
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.TSCallSignatureDeclaration
-  | TSESTree.TSConstructorType
-  | TSESTree.TSConstructSignatureDeclaration
-  | TSESTree.TSEmptyBodyFunctionExpression
-  | TSESTree.TSFunctionType
-  | TSESTree.TSMethodSignature {
-  return isFunction(node) || isFunctionType(node);
-}
+const isFunctionOrFunctionType = isNodeOfTypes([
+  ...functionTypes,
+  ...functionTypeTypes,
+] as const);
 
 const isTSFunctionType = isNodeOfType(AST_NODE_TYPES.TSFunctionType);
 
 const isTSConstructorType = isNodeOfType(AST_NODE_TYPES.TSConstructorType);
 
-function isClassOrTypeElement(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.ClassElement | TSESTree.TypeElement {
-  if (!node) {
-    return false;
-  }
-
-  return [
-    // ClassElement
-    AST_NODE_TYPES.ClassProperty,
-    AST_NODE_TYPES.FunctionExpression,
-    AST_NODE_TYPES.MethodDefinition,
-    AST_NODE_TYPES.TSAbstractClassProperty,
-    AST_NODE_TYPES.TSAbstractMethodDefinition,
-    AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
-    AST_NODE_TYPES.TSIndexSignature,
-    // TypeElement
-    AST_NODE_TYPES.TSCallSignatureDeclaration,
-    AST_NODE_TYPES.TSConstructSignatureDeclaration,
-    // AST_NODE_TYPES.TSIndexSignature,
-    AST_NODE_TYPES.TSMethodSignature,
-    AST_NODE_TYPES.TSPropertySignature,
-  ].includes(node.type);
-}
+const isClassOrTypeElement = isNodeOfTypes([
+  // ClassElement
+  AST_NODE_TYPES.PropertyDefinition,
+  AST_NODE_TYPES.FunctionExpression,
+  AST_NODE_TYPES.MethodDefinition,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
+  AST_NODE_TYPES.TSAbstractMethodDefinition,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSIndexSignature,
+  // TypeElement
+  AST_NODE_TYPES.TSCallSignatureDeclaration,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  // AST_NODE_TYPES.TSIndexSignature,
+  AST_NODE_TYPES.TSMethodSignature,
+  AST_NODE_TYPES.TSPropertySignature,
+] as const);
 
 /**
  * Checks if a node is a constructor method.
  */
-function isConstructor(
-  node: TSESTree.Node | undefined,
-): node is TSESTree.MethodDefinition {
-  return (
-    node?.type === AST_NODE_TYPES.MethodDefinition &&
-    node.kind === 'constructor'
-  );
-}
+const isConstructor = isNodeOfTypeWithConditions(
+  AST_NODE_TYPES.MethodDefinition,
+  { kind: 'constructor' },
+);
 
 /**
  * Checks if a node is a setter method.
  */
 function isSetter(
   node: TSESTree.Node | undefined,
-): node is TSESTree.MethodDefinition | TSESTree.Property {
+): node is (TSESTree.MethodDefinition | TSESTree.Property) & { kind: 'set' } {
   return (
     !!node &&
     (node.type === AST_NODE_TYPES.MethodDefinition ||
@@ -204,26 +144,13 @@ function isAwaitKeyword(
   return node?.type === AST_TOKEN_TYPES.Identifier && node.value === 'await';
 }
 
-function isLoop(
-  node: TSESTree.Node | undefined | null,
-): node is
-  | TSESTree.DoWhileStatement
-  | TSESTree.ForStatement
-  | TSESTree.ForInStatement
-  | TSESTree.ForOfStatement
-  | TSESTree.WhileStatement {
-  if (!node) {
-    return false;
-  }
-
-  return (
-    node.type === AST_NODE_TYPES.DoWhileStatement ||
-    node.type === AST_NODE_TYPES.ForStatement ||
-    node.type === AST_NODE_TYPES.ForInStatement ||
-    node.type === AST_NODE_TYPES.ForOfStatement ||
-    node.type === AST_NODE_TYPES.WhileStatement
-  );
-}
+const isLoop = isNodeOfTypes([
+  AST_NODE_TYPES.DoWhileStatement,
+  AST_NODE_TYPES.ForStatement,
+  AST_NODE_TYPES.ForInStatement,
+  AST_NODE_TYPES.ForOfStatement,
+  AST_NODE_TYPES.WhileStatement,
+] as const);
 
 export {
   isAwaitExpression,

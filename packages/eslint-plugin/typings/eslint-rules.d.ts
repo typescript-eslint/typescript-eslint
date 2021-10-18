@@ -230,7 +230,12 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
       Program(): void;
       ClassBody(): void;
       'ClassBody:exit'(): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      ) => void;
     }
   >;
   export = rule;
@@ -520,11 +525,11 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       ClassExpression(node: TSESTree.ClassExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       DoWhileStatement(node: TSESTree.DoWhileStatement): void;
-      // eslint < 7.19.0
+      // -- eslint < 7.19.0
       'ForInStatement, ForOfStatement'(
         node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
       ): void;
-      // eslint >= 7.19.0
+      // -- eslint >= 7.19.0
       ForInStatement(node: TSESTree.ForInStatement): void;
       ForOfStatement(node: TSESTree.ForOfStatement): void;
       ForStatement(node: TSESTree.ForStatement): void;
@@ -637,7 +642,12 @@ declare module 'eslint/lib/rules/no-extra-semi' {
     {
       EmptyStatement(node: TSESTree.EmptyStatement): void;
       ClassBody(node: TSESTree.ClassBody): void;
-      MethodDefinition(node: TSESTree.MethodDefinition): void;
+      // for ESLint <= v7
+      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
+      // for ESLint v8
+      'MethodDefinition, PropertyDefinition'?: (
+        node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      ) => void;
     }
   >;
   export = rule;
@@ -856,6 +866,54 @@ declare module 'eslint/lib/rules/object-curly-spacing' {
       ObjectExpression(node: TSESTree.ObjectExpression): void;
       ImportDeclaration(node: TSESTree.ImportDeclaration): void;
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/no-restricted-imports' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+  namespace rule {
+    export type ArrayOfStringOrObject = (
+      | string
+      | {
+          name: string;
+          message?: string;
+          importNames?: string[];
+          // extended
+          allowTypeImports?: boolean;
+        }
+    )[];
+    export type ArrayOfStringOrObjectPatterns =
+      | string[]
+      | {
+          group: string[];
+          message?: string;
+          // extended
+          allowTypeImports?: boolean;
+        }[];
+  }
+
+  interface ObjectOfPathsAndPatterns {
+    paths?: rule.ArrayOfStringOrObject;
+    patterns?: rule.ArrayOfStringOrObjectPatterns;
+  }
+
+  const rule: TSESLint.RuleModule<
+    | 'path'
+    | 'pathWithCustomMessage'
+    | 'patterns'
+    | 'patternWithCustomMessage'
+    | 'everything'
+    | 'everythingWithCustomMessage'
+    | 'importName'
+    | 'importNameWithCustomMessage',
+    rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
+    {
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
     }
   >;
   export = rule;

@@ -113,3 +113,9 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 ## Compatibility
 
 - TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

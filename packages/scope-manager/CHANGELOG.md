@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Features
+
+* align class property representation with ESTree ([#3806](https://github.com/typescript-eslint/typescript-eslint/issues/3806)) ([22fa5c0](https://github.com/typescript-eslint/typescript-eslint/commit/22fa5c0c4705ed2898f00b7cacc5dd642d859275)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#3077](https://github.com/typescript-eslint/typescript-eslint/issues/3077)
+* support `PrivateIdentifier` ([#3808](https://github.com/typescript-eslint/typescript-eslint/issues/3808)) ([0eefe5e](https://github.com/typescript-eslint/typescript-eslint/commit/0eefe5e49d21af3f1e3e2d9a90c2e49929863ac2)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#2933](https://github.com/typescript-eslint/typescript-eslint/issues/2933)
+* **eslint-plugin:** removed value from abstract property nodes ([#3765](https://github.com/typescript-eslint/typescript-eslint/issues/3765)) ([5823524](https://github.com/typescript-eslint/typescript-eslint/commit/58235241714596b641a1e8b39c569e561e0039b4)), closes [#3748](https://github.com/typescript-eslint/typescript-eslint/issues/3748)
+
+
+
+
+
+# [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Features
+
+* **eslint-plugin-internal:** [prefer-ast-types-enum] add `DefinitionType` enum ([#3916](https://github.com/typescript-eslint/typescript-eslint/issues/3916)) ([13b7de5](https://github.com/typescript-eslint/typescript-eslint/commit/13b7de508e0f8eac492879ff9ab99acd8d3e977e))
+* Support `'latest'` as `ecmaVersion` ([#3873](https://github.com/typescript-eslint/typescript-eslint/issues/3873)) ([25a42c0](https://github.com/typescript-eslint/typescript-eslint/commit/25a42c0bbe92d1ecbc2e8ff9ef3a3ef413f728b0))
+
+
+
+
+
+## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 ## [4.31.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.0...v4.31.1) (2021-09-13)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

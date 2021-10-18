@@ -3,8 +3,10 @@ import {
   TSESLint,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/semi';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('semi');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -15,13 +17,14 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow semicolons instead of ASI',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       missingSemi: 'Missing semicolon.',
       extraSemi: 'Extra semicolon.',
@@ -48,8 +51,8 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSPropertySignature,
     */
     const nodesToCheck = [
-      AST_NODE_TYPES.ClassProperty,
-      AST_NODE_TYPES.TSAbstractClassProperty,
+      AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.TSAbstractPropertyDefinition,
       AST_NODE_TYPES.TSAbstractMethodDefinition,
       AST_NODE_TYPES.TSDeclareFunction,
       AST_NODE_TYPES.TSExportAssignment,

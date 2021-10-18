@@ -132,5 +132,24 @@ ruleTester.run('no-var-requires', rule, {
         },
       ],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3883
+      code: `
+const configValidator = new Validator(require('./a.json'));
+configValidator.addSchema(require('./a.json'));
+      `,
+      errors: [
+        {
+          messageId: 'noVarReqs',
+          line: 2,
+          column: 39,
+        },
+        {
+          messageId: 'noVarReqs',
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
   ],
 });

@@ -2,6 +2,7 @@ import type { Decorator } from '../special/Decorator/spec';
 import type { TSTypeAnnotation } from '../special/TSTypeAnnotation/spec';
 import type { Expression } from '../unions/Expression';
 import type {
+  ClassPropertyNameNonComputed,
   PropertyName,
   PropertyNameComputed,
   PropertyNameNonComputed,
@@ -9,7 +10,7 @@ import type {
 import type { Accessibility } from './Accessibility';
 import type { BaseNode } from './BaseNode';
 
-interface ClassPropertyBase extends BaseNode {
+interface PropertyDefinitionBase extends BaseNode {
   key: PropertyName;
   value: Expression | null;
   computed: boolean;
@@ -24,12 +25,20 @@ interface ClassPropertyBase extends BaseNode {
   override?: boolean;
 }
 
-export interface ClassPropertyComputedNameBase extends ClassPropertyBase {
+export interface PropertyDefinitionComputedNameBase
+  extends PropertyDefinitionBase {
   key: PropertyNameComputed;
   computed: true;
 }
 
-export interface ClassPropertyNonComputedNameBase extends ClassPropertyBase {
+export interface PropertyDefinitionNonComputedNameBase
+  extends PropertyDefinitionBase {
   key: PropertyNameNonComputed;
+  computed: false;
+}
+
+export interface ClassPropertyDefinitionNonComputedNameBase
+  extends PropertyDefinitionBase {
+  key: ClassPropertyNameNonComputed;
   computed: false;
 }
