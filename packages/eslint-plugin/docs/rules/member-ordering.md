@@ -26,10 +26,10 @@ These options allow to specify how to group the members and sort their groups.
 type TypeOptions<T> =
   | {
     memberTypes: Array<T> | 'never',
-    order?: 'alphabetically' | 'alphabetically-ci' | 'as-written',
+    order?: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
   }
   | {
-    order: 'alphabetically' | 'alphabetically-ci' | 'as-written',
+    order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
   };
 
 {
@@ -862,7 +862,7 @@ Note: Wrong alphabetic order `b(): void` should come after `a: b`.
 
 It is possible to sort all members within a group alphabetically with case insensitivity.
 
-#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically-ci" } }`
+#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically-case-insensitive" } }`
 
 This will apply the default order (see above) and enforce an alphabetic case-insensitive order within each group.
 
@@ -908,7 +908,7 @@ interface Foo {
 
 It is also possible to sort all members with case insensitivity and ignore the member groups completely.
 
-#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically-ci" } }`
+#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically-case-insensitive" } }`
 
 ##### Incorrect example
 

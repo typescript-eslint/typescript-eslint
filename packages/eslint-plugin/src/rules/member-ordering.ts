@@ -8,7 +8,10 @@ import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
 
-type Order = 'alphabetically' | 'alphabetically-ci' | 'as-written';
+type Order =
+  | 'alphabetically'
+  | 'alphabetically-case-insensitive'
+  | 'as-written';
 
 interface SortedOrderConfig {
   memberTypes?: string[] | 'never';
@@ -48,7 +51,7 @@ const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'alphabetically-ci', 'as-written'],
+      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
     },
   },
   additionalProperties: false,
@@ -539,7 +542,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const hasAlphaSort = order?.startsWith('alphabetically');
-      const alphaSortIsCaseSensitive = order !== 'alphabetically-ci';
+      const alphaSortIsCaseSensitive =
+        order !== 'alphabetically-case-insensitive';
 
       // Check order
       if (Array.isArray(memberTypes)) {
