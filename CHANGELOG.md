@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-restricted-imports]: report type-only imports properly ([#3996](https://github.com/typescript-eslint/typescript-eslint/issues/3996)) ([283cdf2](https://github.com/typescript-eslint/typescript-eslint/commit/283cdf26e6b32985531ff6416cd13ef4cb0a3c8c))
+* **eslint-plugin:** [strict-bool-expr] treat unconstrained generic as any ([#3981](https://github.com/typescript-eslint/typescript-eslint/issues/3981)) ([9b29ca7](https://github.com/typescript-eslint/typescript-eslint/commit/9b29ca751f496c25240c0c14b8fa432bf4443d39))
+* **typescript-estree:** support private optional property definition ([#3997](https://github.com/typescript-eslint/typescript-eslint/issues/3997)) ([8605e08](https://github.com/typescript-eslint/typescript-eslint/commit/8605e080a4dac4a277e6108cd9ed1e5a707302fa))
+
+
+### Features
+
+* **experimental-utils:** extract `ast-utils`' `predicates`' helpers ([#3976](https://github.com/typescript-eslint/typescript-eslint/issues/3976)) ([154ec9a](https://github.com/typescript-eslint/typescript-eslint/commit/154ec9aea8e81732cafe36af97c4822f1591b077))
+
+
+
+
+
 # [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
 
 
