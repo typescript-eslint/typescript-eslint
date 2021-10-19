@@ -365,3 +365,9 @@ If you don't care about the using parameter properties in constructors, then you
 ## Compatibility
 
 - TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

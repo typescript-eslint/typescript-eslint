@@ -4,13 +4,13 @@ import {
   ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
 import ignore, { Ignore } from 'ignore';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
   deepMerge,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');
 
@@ -150,9 +150,12 @@ export default createRule<Options, MessageIds>({
       }
     }
     function isAllowedTypeImportPattern(importSource: string): boolean {
-      return allowedImportTypeMatchers.every(matcher => {
-        return matcher.ignores(importSource);
-      });
+      return (
+        allowedImportTypeMatchers.length > 0 &&
+        allowedImportTypeMatchers.every(matcher => {
+          return matcher.ignores(importSource);
+        })
+      );
     }
 
     return {

@@ -130,3 +130,9 @@ If you want to use all of the TypeScript directives.
 ## Compatibility
 
 - TSLint: [ban-ts-ignore](https://palantir.github.io/tslint/rules/ban-ts-ignore/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

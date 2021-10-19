@@ -145,3 +145,9 @@ The ordering of groups is determined by this option.
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
 - `nullish` - `null` and `undefined`
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

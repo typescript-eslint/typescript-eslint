@@ -94,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
         caughtErrors: 'none',
       };
 
-      const firstOption = context.options[0];
+      const [firstOption] = context.options;
 
       if (firstOption) {
         if (typeof firstOption === 'string') {

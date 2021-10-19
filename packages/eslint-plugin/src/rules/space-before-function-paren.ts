@@ -58,12 +58,10 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['always'],
 
-  create(context) {
+  create(context, [firstOption]) {
     const sourceCode = context.getSourceCode();
-    const baseConfig =
-      typeof context.options[0] === 'string' ? context.options[0] : 'always';
-    const overrideConfig =
-      typeof context.options[0] === 'object' ? context.options[0] : {};
+    const baseConfig = typeof firstOption === 'string' ? firstOption : 'always';
+    const overrideConfig = typeof firstOption === 'object' ? firstOption : {};
 
     /**
      * Determines whether a function has a name.

@@ -34,9 +34,8 @@ export default util.createRule<Options, MessageIds>({
       includeExports: false,
     },
   ],
-  create(context, [option]) {
+  create(context, [{ includeExports }]) {
     const rules = baseRule.create(context);
-    const includeExports = option.includeExports;
     const typeMemberImports = new Set();
     const typeDefaultImports = new Set();
     const typeExports = new Set();

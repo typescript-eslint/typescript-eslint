@@ -102,3 +102,9 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 ## Related to
 
 - TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

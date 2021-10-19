@@ -20,3 +20,9 @@ It adds support for TypeScript features which allow quoted names, but not backti
 See [`eslint/quotes` options](https://eslint.org/docs/rules/quotes#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/quotes.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

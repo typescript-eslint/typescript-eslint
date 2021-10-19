@@ -406,8 +406,9 @@ type Foo<T, U> =
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -419,8 +420,9 @@ type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -452,8 +454,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 Examples of **correct** code for the `{ "allowMappedTypes": "in-intersections" }` option:
 
 ```ts
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -475,8 +478,9 @@ type Foo<T, U> =
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -590,3 +594,9 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Related to
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

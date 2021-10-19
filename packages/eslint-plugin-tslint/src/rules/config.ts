@@ -104,11 +104,9 @@ export default createRule<Options, MessageIds>({
     /**
      * The TSLint rules configuration passed in by the user
      */
-    const {
-      rules: tslintRules,
-      rulesDirectory: tslintRulesDirectory,
-      lintFile,
-    } = context.options[0];
+    const [
+      { rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile },
+    ] = context.options;
 
     const program = parserServices.program;
 

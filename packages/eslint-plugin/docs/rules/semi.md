@@ -24,3 +24,9 @@ See also the [`@typescript-eslint/member-delimiter-style`](member-delimiter-styl
 See [`eslint/semi` options](https://eslint.org/docs/rules/semi#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/semi.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

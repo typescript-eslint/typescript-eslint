@@ -129,7 +129,6 @@ export default util.createRule<Options, MessageIds>({
       TSExportAssignment(node): void {
         checkNode(node.expression);
       },
-
       'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
         node: FunctionNode,
       ): void {

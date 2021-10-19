@@ -1,9 +1,9 @@
-import { createRule } from '../util';
 import {
   AST_NODE_TYPES,
-  TSESTree,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { createRule } from '../util';
 
 type MessageIds = 'preferRecord' | 'preferIndexSignature';
 type Options = ['record' | 'index-signature'];
@@ -29,37 +29,8 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: ['record'],
-  create(context) {
+  create(context, [mode]) {
     const sourceCode = context.getSourceCode();
-
-    if (context.options[0] === 'index-signature') {
-      return {
-        TSTypeReference(node): void {
-          const typeName = node.typeName;
-          if (typeName.type !== AST_NODE_TYPES.Identifier) {
-            return;
-          }
-          if (typeName.name !== 'Record') {
-            return;
-          }
-
-          const params = node.typeParameters?.params;
-          if (params?.length !== 2) {
-            return;
-          }
-
-          context.report({
-            node,
-            messageId: 'preferIndexSignature',
-            fix(fixer) {
-              const key = sourceCode.getText(params[0]);
-              const type = sourceCode.getText(params[1]);
-              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-            },
-          });
-        },
-      };
-    }
 
     function checkMembers(
       members: TSESTree.TypeElement[],
@@ -113,27 +84,54 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeLiteral(node): void {
-        checkMembers(node.members, node, '', '');
-      },
+      ...(mode === 'index-signature' && {
+        TSTypeReference(node): void {
+          const typeName = node.typeName;
+          if (typeName.type !== AST_NODE_TYPES.Identifier) {
+            return;
+          }
+          if (typeName.name !== 'Record') {
+            return;
+          }
 
-      TSInterfaceDeclaration(node): void {
-        let genericTypes = '';
+          const params = node.typeParameters?.params;
+          if (params?.length !== 2) {
+            return;
+          }
 
-        if ((node.typeParameters?.params ?? []).length > 0) {
-          genericTypes = `<${node.typeParameters?.params
-            .map(p => p.name.name)
-            .join(', ')}>`;
-        }
+          context.report({
+            node,
+            messageId: 'preferIndexSignature',
+            fix(fixer) {
+              const key = sourceCode.getText(params[0]);
+              const type = sourceCode.getText(params[1]);
+              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
+            },
+          });
+        },
+      }),
+      ...(mode === 'record' && {
+        TSTypeLiteral(node): void {
+          checkMembers(node.members, node, '', '');
+        },
+        TSInterfaceDeclaration(node): void {
+          let genericTypes = '';
 
-        checkMembers(
-          node.body.body,
-          node,
-          `type ${node.id.name}${genericTypes} = `,
-          ';',
-          !node.extends?.length,
-        );
-      },
+          if ((node.typeParameters?.params ?? []).length > 0) {
+            genericTypes = `<${node.typeParameters?.params
+              .map(p => p.name.name)
+              .join(', ')}>`;
+          }
+
+          checkMembers(
+            node.body.body,
+            node,
+            `type ${node.id.name}${genericTypes} = `,
+            ';',
+            !node.extends?.length,
+          );
+        },
+      }),
     };
   },
 });
