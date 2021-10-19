@@ -7,7 +7,7 @@ transpilers to drop exports without knowing the types of the dependencies.
 
 ## Rule Details
 
-This rule aims to standardize the use of type exports style across the codebase.
+This rule aims to standardize the use of type exports style across a codebase.
 
 Given a class `Button`, and an interface `ButtonProps`, examples of **correct** code:
 
@@ -19,9 +19,10 @@ export type { ButtonProps } from 'some-library';
 Examples of **incorrect** code:
 
 ```ts
-import { Button, ButtonProps } from 'some-library';
+export { Button, ButtonProps } from 'some-library';
 ```
 
 ## When Not To Use It
 
-- If you are not using TypeScript 3.8 (or greater), then you will not be able to use this rule, as type-only imports are not allowed.
+- If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
+- If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.

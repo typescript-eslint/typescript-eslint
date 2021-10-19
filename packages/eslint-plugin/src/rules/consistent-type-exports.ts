@@ -70,8 +70,8 @@ export default util.createRule<Options, MessageIds>({
 
   create(context) {
     const sourceCode = context.getSourceCode();
-    // const sourceCode = context.getSourceCode();
     const sourceExportsMap: { [key: string]: SourceExports } = {};
+    const parserServices = util.getParserServices(context);
 
     return {
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
@@ -85,7 +85,6 @@ export default util.createRule<Options, MessageIds>({
           typeOnlyNamedExport: null,
           valueOnlyNamedExport: null,
         });
-        const parserServices = util.getParserServices(context);
 
         // Cache the first encountered exports for the package. We will need to come
         // back to these later when fixing the problems.
