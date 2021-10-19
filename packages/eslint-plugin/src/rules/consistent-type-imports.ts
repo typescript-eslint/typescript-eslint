@@ -264,8 +264,9 @@ export default util.createRule<Options, MessageIds>({
                       messageId: MessageIds;
                       data: Record<string, unknown>;
                     } => {
+                      const typeImports = util.formatWordList(importNames);
+
                       if (importNames.length === 1) {
-                        const typeImports = importNames[0];
                         if (isTypeImport) {
                           return {
                             messageId: 'aImportInDecoMeta',
@@ -278,10 +279,6 @@ export default util.createRule<Options, MessageIds>({
                           };
                         }
                       } else {
-                        const typeImports = [
-                          importNames.slice(0, -1).join(', '),
-                          importNames.slice(-1)[0],
-                        ].join(' and ');
                         if (isTypeImport) {
                           return {
                             messageId: 'someImportsInDecoMeta',

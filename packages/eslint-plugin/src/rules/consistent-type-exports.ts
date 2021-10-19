@@ -18,7 +18,7 @@ interface SourceExports {
 
 interface ReportValueExport {
   node: TSESTree.ExportNamedDeclaration;
-  typeSpecifiers: TSESTree.ExportSpecifier[]; // It has at least one element.
+  typeSpecifiers: TSESTree.ExportSpecifier[];
   valueSpecifiers: TSESTree.ExportSpecifier[];
 }
 
@@ -76,9 +76,7 @@ export default util.createRule<Options, MessageIds>({
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
         const source = getSourceFromExport(node) ?? 'undefined';
-        const sourceExports = (sourceExportsMap[source] = sourceExportsMap[
-          source
-        ] || {
+        const sourceExports = (sourceExportsMap[source] ||= {
           source,
           reportValueExports: [],
           typeOnlyNamedExport: null,
@@ -172,10 +170,7 @@ export default util.createRule<Options, MessageIds>({
                   },
                 });
               } else {
-                const exportNames = [
-                  allExportNames.slice(0, -1).join(', '),
-                  allExportNames.slice(-1)[0],
-                ].join(' and ');
+                const exportNames = util.formatWordList(allExportNames);
 
                 context.report({
                   node: report.node,
