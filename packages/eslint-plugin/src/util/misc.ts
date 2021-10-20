@@ -140,7 +140,7 @@ function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
  * Example: ['foo', 'bar', 'baz' ] returns the string "foo, bar, and baz".
  */
 function formatWordList(words: string[]): string {
-  if (!words || !words.length) {
+  if (!words?.length) {
     return '';
   }
 
