@@ -175,8 +175,7 @@ export default util.createRule<[Options], MessageIds>({
       ...(memberVariableDeclaration && {
         PropertyDefinition(node): void {
           if (
-            !node.value ||
-            !isVariableDeclarationIgnoreFunction(node.value) ||
+            !(node.value && isVariableDeclarationIgnoreFunction(node.value)) &&
             !node.typeAnnotation
           ) {
             report(
