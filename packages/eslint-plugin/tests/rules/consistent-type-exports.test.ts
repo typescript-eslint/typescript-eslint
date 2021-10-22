@@ -18,6 +18,7 @@ ruleTester.run('consistent-type-exports', rule, {
     "export { Foo } from 'foo';",
     "export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
     "export { BlockScope } from '@typescript-eslint/experimental-utils';",
+    "export type { BlockScope } from '@typescript-eslint/experimental-utils';",
     `
 const variable = 1;
 class Class {}
@@ -38,6 +39,10 @@ namespace TypeNS {
 
 export type { Alias, IFace, TypeNS };
     `,
+    `
+const foo = 1;
+export type { foo };
+    `,
   ],
   invalid: [
     {
@@ -47,17 +52,6 @@ export type { Alias, IFace, TypeNS };
       errors: [
         {
           messageId: 'typeOverValue',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: "export type { BlockScope } from '@typescript-eslint/scope-manager';",
-      output: "export { BlockScope } from '@typescript-eslint/scope-manager';",
-      errors: [
-        {
-          messageId: 'valueOverType',
           line: 1,
           column: 1,
         },
@@ -113,68 +107,6 @@ export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
       errors: [
         {
           messageId: 'multipleExportsAreTypes',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-export type {
-  AnalyzeOptions,
-  BlockScope,
-} from '@typescript-eslint/scope-manager';
-      `,
-      output: `
-export { BlockScope } from '@typescript-eslint/scope-manager';
-export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';
-      `,
-      errors: [
-        {
-          messageId: 'singleExportIsValue',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-export type {
-  AnalyzeOptions,
-  BlockScope,
-  Definition,
-} from '@typescript-eslint/scope-manager';
-      `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: `
-export { BlockScope } from '@typescript-eslint/scope-manager';
-export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';
-      `,
-      errors: [
-        {
-          messageId: 'singleExportIsValue',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-export type {
-  AnalyzeOptions,
-  BlockScope,
-  Definition,
-  CatchScope,
-} from '@typescript-eslint/scope-manager';
-      `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: `
-export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
-export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';
-      `,
-      errors: [
-        {
-          messageId: 'multipleExportsAreValues',
           line: 2,
           column: 1,
         },
@@ -263,51 +195,6 @@ export { CatchScope };
         {
           messageId: 'singleExportIsType',
           line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-const variable = 1;
-class Class {}
-enum Enum {}
-function Func() {}
-namespace ValueNS {
-  export const x = 1;
-}
-
-export type {
-  // type-export the values
-  variable,
-  Class,
-  Enum,
-  Func,
-  ValueNS,
-};
-      `,
-      output: `
-const variable = 1;
-class Class {}
-enum Enum {}
-function Func() {}
-namespace ValueNS {
-  export const x = 1;
-}
-
-export {
-  // type-export the values
-  variable,
-  Class,
-  Enum,
-  Func,
-  ValueNS,
-};
-      `,
-      errors: [
-        {
-          messageId: 'valueOverType',
-          line: 10,
           column: 1,
         },
       ],

@@ -24,11 +24,8 @@ interface ReportValueExport {
 
 type MessageIds =
   | 'typeOverValue'
-  | 'valueOverType'
   | 'singleExportIsType'
-  | 'multipleExportsAreTypes'
-  | 'singleExportIsValue'
-  | 'multipleExportsAreValues';
+  | 'multipleExportsAreTypes';
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
@@ -43,15 +40,11 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       typeOverValue:
         'All exports in the declaration are only used as types. Use `export type`.',
-      valueOverType: 'Use an `export` instead of an `export type`.',
+
       singleExportIsType:
         'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
-      singleExportIsValue:
-        'Value export {{exportNames}} is exported as a type only and should be exported using `export`.',
-      multipleExportsAreValues:
-        'Value exports {{exportNames}} are exported as types only and should be exported using `export`.',
     },
     schema: [],
     fixable: 'code',
@@ -85,18 +78,22 @@ export default util.createRule<Options, MessageIds>({
           sourceExports.valueOnlyNamedExport = node;
         }
 
-        // Next for the current import, we will separate type/value specifiers.
+        // Next for the current export, we will separate type/value specifiers.
         const typeSpecifiers: TSESTree.ExportSpecifier[] = [];
         const valueSpecifiers: TSESTree.ExportSpecifier[] = [];
 
-        for (const specifier of node.specifiers) {
-          const isTypeBased = isSpecifierTypeBased(parserServices, specifier);
+        // Note: it is valid to export values as types. We will avoid reporting errors
+        // when this is encountered.
+        if (node.exportKind !== 'type') {
+          for (const specifier of node.specifiers) {
+            const isTypeBased = isSpecifierTypeBased(parserServices, specifier);
 
-          if (isTypeBased === true) {
-            typeSpecifiers.push(specifier);
-          } else if (isTypeBased === false) {
-            // undefined means we don't know.
-            valueSpecifiers.push(specifier);
+            if (isTypeBased === true) {
+              typeSpecifiers.push(specifier);
+            } else if (isTypeBased === false) {
+              // When isTypeBased is undefined, we should avoid reporting them.
+              valueSpecifiers.push(specifier);
+            }
           }
         }
 
@@ -121,7 +118,7 @@ export default util.createRule<Options, MessageIds>({
 
           for (const report of sourceExports.reportValueExports) {
             if (!report.valueSpecifiers.length) {
-              // export is all type-only; convert the entire export to `export type`
+              // Export is all type-only; convert the entire export to `export type`.
               context.report({
                 node: report.node,
                 messageId: 'typeOverValue',
@@ -129,31 +126,18 @@ export default util.createRule<Options, MessageIds>({
                   yield* fixExportInsertType(fixer, sourceCode, report.node);
                 },
               });
-            } else if (!report.typeSpecifiers.length) {
-              // we only have value violations; remove the `type` from the export
-              // TODO: remove the `type` from the export
-              context.report({
-                node: report.node,
-                messageId: 'valueOverType',
-                *fix(fixer) {
-                  yield* fixExportRemoveType(fixer, sourceCode, report.node);
-                },
-              });
             } else {
               // We have both type and value violations.
-              const isTypeExport = report.node.exportKind === 'type';
-              const allExportNames = (
-                isTypeExport ? report.valueSpecifiers : report.typeSpecifiers
-              ).map(specifier => `${specifier.local.name}`);
+              const allExportNames = report.typeSpecifiers.map(
+                specifier => `${specifier.local.name}`,
+              );
 
               if (allExportNames.length === 1) {
                 const exportNames = allExportNames[0];
 
                 context.report({
                   node: report.node,
-                  messageId: isTypeExport
-                    ? 'singleExportIsValue'
-                    : 'singleExportIsType',
+                  messageId: 'singleExportIsType',
                   data: { exportNames },
                   *fix(fixer) {
                     yield* fixSeparateNamedExports(fixer, sourceCode, report);
@@ -164,9 +148,7 @@ export default util.createRule<Options, MessageIds>({
 
                 context.report({
                   node: report.node,
-                  messageId: isTypeExport
-                    ? 'multipleExportsAreValues'
-                    : 'multipleExportsAreTypes',
+                  messageId: 'multipleExportsAreTypes',
                   data: { exportNames },
                   *fix(fixer) {
                     yield* fixSeparateNamedExports(fixer, sourceCode, report);
@@ -223,32 +205,6 @@ function* fixExportInsertType(
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
-}
-
-/**
- * Removes "type" from an export.
- *
- * Example:
- *
- * export type { Foo } from 'foo';
- *        ^^^^
- */
-function* fixExportRemoveType(
-  fixer: TSESLint.RuleFixer,
-  sourceCode: Readonly<TSESLint.SourceCode>,
-  node: TSESTree.ExportNamedDeclaration,
-): IterableIterator<TSESLint.RuleFix> {
-  const exportToken = util.nullThrows(
-    sourceCode.getFirstToken(node),
-    util.NullThrowsReasons.MissingToken('export', node.type),
-  );
-
-  const typeToken = util.nullThrows(
-    sourceCode.getTokenAfter(exportToken),
-    util.NullThrowsReasons.MissingToken('type', node.type),
-  );
-
-  yield fixer.removeRange([exportToken.range[1], typeToken.range[1]]);
 }
 
 /**
@@ -318,6 +274,10 @@ function getSourceFromExport(
   return undefined;
 }
 
+/**
+ * Returns the specifier text for the export. If it is aliased, we take care to return
+ * the proper formatting.
+ */
 function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {
   return `${specifier.local.name}${
     specifier.exported.name !== specifier.local.name
