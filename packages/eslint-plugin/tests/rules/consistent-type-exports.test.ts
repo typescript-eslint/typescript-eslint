@@ -43,6 +43,13 @@ export type { Alias, IFace, TypeNS };
 const foo = 1;
 export type { foo };
     `,
+    `
+namespace NonTypeNS {
+  export const x = 1;
+}
+
+export { NonTypeNS };
+    `,
   ],
   invalid: [
     {
@@ -205,6 +212,7 @@ type Alias = 1;
 interface IFace {}
 namespace TypeNS {
   export type x = 1;
+  export const f = 1;
 }
 
 export { Alias, IFace, TypeNS };
@@ -214,14 +222,39 @@ type Alias = 1;
 interface IFace {}
 namespace TypeNS {
   export type x = 1;
+  export const f = 1;
 }
 
-export type { Alias, IFace, TypeNS };
+export type { Alias, IFace };
+export { TypeNS };
+      `,
+      errors: [
+        {
+          messageId: 'multipleExportsAreTypes',
+          line: 9,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+namespace TypeNS {
+  export interface Foo {}
+}
+
+export { TypeNS };
+      `,
+      output: `
+namespace TypeNS {
+  export interface Foo {}
+}
+
+export type { TypeNS };
       `,
       errors: [
         {
           messageId: 'typeOverValue',
-          line: 8,
+          line: 6,
           column: 1,
         },
       ],
