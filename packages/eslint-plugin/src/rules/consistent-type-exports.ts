@@ -53,17 +53,7 @@ export default util.createRule<Options, MessageIds>({
       multipleExportsAreValues:
         'Value exports {{exportNames}} are exported as types only and should be exported using `export`.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          prefer: {
-            enum: ['type-exports', 'no-type-exports'],
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
     fixable: 'code',
   },
 

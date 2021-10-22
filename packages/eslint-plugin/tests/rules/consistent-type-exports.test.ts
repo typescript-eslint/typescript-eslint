@@ -18,6 +18,26 @@ ruleTester.run('consistent-type-exports', rule, {
     "export { Foo } from 'foo';",
     "export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
     "export { BlockScope } from '@typescript-eslint/experimental-utils';",
+    `
+const variable = 1;
+class Class {}
+enum Enum {}
+function Func() {}
+namespace ValueNS {
+  export const x = 1;
+}
+
+export { variable, Class, Enum, Func, ValueNS };
+    `,
+    `
+type Alias = 1;
+interface IFace {}
+namespace TypeNS {
+  export type x = 1;
+}
+
+export type { Alias, IFace, TypeNS };
+    `,
   ],
   invalid: [
     {
@@ -243,6 +263,78 @@ export { CatchScope };
         {
           messageId: 'singleExportIsType',
           line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+const variable = 1;
+class Class {}
+enum Enum {}
+function Func() {}
+namespace ValueNS {
+  export const x = 1;
+}
+
+export type {
+  // type-export the values
+  variable,
+  Class,
+  Enum,
+  Func,
+  ValueNS,
+};
+      `,
+      output: `
+const variable = 1;
+class Class {}
+enum Enum {}
+function Func() {}
+namespace ValueNS {
+  export const x = 1;
+}
+
+export {
+  // type-export the values
+  variable,
+  Class,
+  Enum,
+  Func,
+  ValueNS,
+};
+      `,
+      errors: [
+        {
+          messageId: 'valueOverType',
+          line: 10,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+type Alias = 1;
+interface IFace {}
+namespace TypeNS {
+  export type x = 1;
+}
+
+export { Alias, IFace, TypeNS };
+      `,
+      output: `
+type Alias = 1;
+interface IFace {}
+namespace TypeNS {
+  export type x = 1;
+}
+
+export type { Alias, IFace, TypeNS };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 8,
           column: 1,
         },
       ],
