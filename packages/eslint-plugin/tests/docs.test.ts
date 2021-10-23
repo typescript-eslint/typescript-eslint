@@ -147,7 +147,7 @@ describe('Validating README.md', () => {
       .sort()
       .map(createRuleLink);
 
-    expect(rulesTables.base.cells.map(row => row[0])).toStrictEqual(
+    expect(rulesTables.base.rows.map(row => row[0].text)).toStrictEqual(
       baseRuleNames,
     );
   });
@@ -157,7 +157,7 @@ describe('Validating README.md', () => {
       .sort()
       .map(createRuleLink);
 
-    expect(rulesTables.extension.cells.map(row => row[0])).toStrictEqual(
+    expect(rulesTables.extension.rows.map(row => row[0].text)).toStrictEqual(
       extensionRuleNames,
     );
   });
@@ -166,9 +166,11 @@ describe('Validating README.md', () => {
     describe(`Checking rule ${ruleName}`, () => {
       const ruleRow: string[] | undefined = (
         rule.meta.docs?.extendsBaseRule
-          ? rulesTables.extension.cells
-          : rulesTables.base.cells
-      ).find(row => row[0].includes(`/${ruleName}.md`));
+          ? rulesTables.extension.rows
+          : rulesTables.base.rows
+      )
+        .find(row => row[0].text.includes(`/${ruleName}.md`))
+        ?.map(cell => cell.text);
       if (!ruleRow) {
         // rule is in the wrong table, the first two tests will catch this, so no point in creating noise;
         // these tests will ofc fail in that case
