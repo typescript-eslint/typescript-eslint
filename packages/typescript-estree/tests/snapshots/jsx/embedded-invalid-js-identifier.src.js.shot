@@ -79,7 +79,7 @@ Object {
               35,
             ],
             "raw": "7x invalid-js-identifier",
-            "type": "Literal",
+            "type": "JSXText",
             "value": "7x invalid-js-identifier",
           },
         ],

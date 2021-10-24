@@ -63,8 +63,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
-      // @ts-expect-error - We know this is a one off special category for this plugin
-      category: 'TSLint',
       recommended: false,
     },
     fixable: 'code',
@@ -106,11 +104,9 @@ export default createRule<Options, MessageIds>({
     /**
      * The TSLint rules configuration passed in by the user
      */
-    const {
-      rules: tslintRules,
-      rulesDirectory: tslintRulesDirectory,
-      lintFile,
-    } = context.options[0];
+    const [
+      { rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile },
+    ] = context.options;
 
     const program = parserServices.program;
 

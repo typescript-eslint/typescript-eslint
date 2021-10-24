@@ -1,7 +1,12 @@
 import fs from 'fs';
+import type { File } from '@babel/types';
 import { fixturesToTest } from './fixtures-to-test';
 import { parse } from './parse';
-import * as parseUtils from './utils';
+import {
+  preprocessBabylonAST,
+  preprocessTypescriptAST,
+  removeLocationDataAndSourceTypeFromProgramNode,
+} from './utils';
 
 fixturesToTest.forEach(fixture => {
   const filename = fixture.filename;
@@ -43,7 +48,7 @@ fixturesToTest.forEach(fixture => {
      * E.g. Both must be a SyntaxError, or both must be a RangeError etc.
      */
     it(`[Both parsers error as expected] - ${filename}`, () => {
-      expect(babelParserResult.parseError.name).toEqual(
+      expect(babelParserResult.parseError.name).toBe(
         typeScriptESTreeResult.parseError.name,
       );
     });
@@ -72,13 +77,13 @@ fixturesToTest.forEach(fixture => {
      * Perform some extra formatting steps on the babel AST before comparing
      */
     expect(
-      parseUtils.removeLocationDataAndSourceTypeFromProgramNode(
-        parseUtils.preprocessBabylonAST(babelParserResult.ast),
+      removeLocationDataAndSourceTypeFromProgramNode(
+        preprocessBabylonAST(babelParserResult.ast as File),
         fixture.ignoreSourceType,
       ),
     ).toEqual(
-      parseUtils.removeLocationDataAndSourceTypeFromProgramNode(
-        parseUtils.preprocessTypescriptAST(typeScriptESTreeResult.ast),
+      removeLocationDataAndSourceTypeFromProgramNode(
+        preprocessTypescriptAST(typeScriptESTreeResult.ast),
         fixture.ignoreSourceType,
       ),
     );

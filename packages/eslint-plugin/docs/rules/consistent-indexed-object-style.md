@@ -65,3 +65,9 @@ type Foo = {
   [key: string]: unknown;
 };
 ```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

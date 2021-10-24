@@ -1,7 +1,7 @@
 import {
-  TSESTree,
   ESLintUtils,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { createRule } from '../util';
 
@@ -24,6 +24,7 @@ const BANNED_PROPERTIES = [
     fixWith: 'getDeclarations()',
   },
   {
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
     type: 'Type',
     property: 'symbol',
     fixWith: 'getSymbol()',
@@ -37,12 +38,12 @@ export default createRule({
     docs: {
       description:
         "Enforces rules don't use TS API properties with known bad type definitions",
-      category: 'Possible Errors',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     schema: [],
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',

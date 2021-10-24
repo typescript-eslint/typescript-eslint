@@ -32,9 +32,8 @@ export default util.createRule({
   name: 'no-unnecessary-type-constraint',
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallows unnecessary constraints on generic types',
-      recommended: false,
+      recommended: 'error',
       suggestion: true,
     },
     fixable: 'code',

@@ -8,7 +8,6 @@ export default createRule({
     docs: {
       description:
         'Require that all enum members be literal values to prevent unintended enum member name shadow issues',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: false,
     },

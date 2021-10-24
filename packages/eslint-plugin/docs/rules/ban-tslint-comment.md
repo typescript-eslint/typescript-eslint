@@ -27,3 +27,9 @@ Examples of **correct** code for this rule:
 ## When Not To Use It
 
 If you are still using TSLint.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as util from '../util';
 
@@ -19,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Requires that function parameters are typed as readonly to prevent accidental mutation of inputs',
-      category: 'Possible Errors',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -49,10 +48,10 @@ export default util.createRule<Options, MessageIds>({
       ...util.readonlynessOptionsDefaults,
     },
   ],
-  create(context, options) {
-    const [
-      { checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly },
-    ] = options;
+  create(
+    context,
+    [{ checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly }],
+  ) {
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 

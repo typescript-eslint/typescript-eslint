@@ -161,7 +161,7 @@ export function getBinaryExpressionType<T extends ts.SyntaxKind>(
 export function getLineAndCharacterFor(
   pos: number,
   ast: ts.SourceFile,
-): TSESTree.LineAndColumnData {
+): TSESTree.Position {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
     line: loc.line + 1,

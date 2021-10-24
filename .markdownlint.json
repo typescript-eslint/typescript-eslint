@@ -92,7 +92,13 @@
   "MD043": false,
   // MD044/proper-names - Proper names should have the correct capitalization
   "MD044": {
-    "names": ["JavaScript", "TypeScript", "TSLint", "ESLint"],
+    "names": [
+      "JavaScript",
+      "TypeScript",
+      "TSLint",
+      "ESLint",
+      "typescript-eslint"
+    ],
     "code_blocks": false
   },
   // MD045/no-alt-text - Images should have alternate text (alt text)

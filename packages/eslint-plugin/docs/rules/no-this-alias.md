@@ -58,3 +58,9 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 ## Related to
 
 - TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

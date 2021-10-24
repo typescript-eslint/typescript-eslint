@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-definitions';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -278,6 +278,30 @@ declare global {
           messageId: 'typeOverInterface',
           line: 4,
           column: 15,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3894
+      code: `
+export default interface Test {
+  bar(): string;
+  foo(): number;
+}
+      `,
+      output: noFormat`
+type Test = {
+  bar(): string;
+  foo(): number;
+}
+export default Test
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 2,
+          column: 26,
         },
       ],
     },

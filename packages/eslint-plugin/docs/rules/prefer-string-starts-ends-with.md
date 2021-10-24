@@ -52,3 +52,9 @@ There are no options.
 ## When Not To Use It
 
 If you don't mind that style, you can turn this rule off safely.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

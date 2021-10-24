@@ -2,8 +2,10 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-duplicate-imports';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-duplicate-imports');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -14,10 +16,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow duplicate imports',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: {
       ...baseRule.meta.messages,
@@ -32,9 +34,8 @@ export default util.createRule<Options, MessageIds>({
       includeExports: false,
     },
   ],
-  create(context, [option]) {
+  create(context, [{ includeExports }]) {
     const rules = baseRule.create(context);
-    const includeExports = option.includeExports;
     const typeMemberImports = new Set();
     const typeDefaultImports = new Set();
     const typeExports = new Set();

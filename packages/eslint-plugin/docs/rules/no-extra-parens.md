@@ -20,3 +20,9 @@ It adds support for TypeScript type assertions.
 See [`eslint/no-extra-parens` options](https://eslint.org/docs/rules/no-extra-parens#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-extra-parens.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -56,7 +56,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces consistent usage of type imports',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
@@ -108,7 +107,7 @@ export default util.createRule<Options, MessageIds>({
         ? {
             // prefer type imports
             ImportDeclaration(node: TSESTree.ImportDeclaration): void {
-              const source = node.source.value as string;
+              const source = node.source.value;
               const sourceImports =
                 sourceImportsMap[source] ??
                 (sourceImportsMap[source] = {
@@ -265,8 +264,9 @@ export default util.createRule<Options, MessageIds>({
                       messageId: MessageIds;
                       data: Record<string, unknown>;
                     } => {
+                      const typeImports = util.formatWordList(importNames);
+
                       if (importNames.length === 1) {
-                        const typeImports = importNames[0];
                         if (isTypeImport) {
                           return {
                             messageId: 'aImportInDecoMeta',
@@ -279,10 +279,6 @@ export default util.createRule<Options, MessageIds>({
                           };
                         }
                       } else {
-                        const typeImports = [
-                          importNames.slice(0, -1).join(', '),
-                          importNames.slice(-1)[0],
-                        ].join(' and ');
                         if (isTypeImport) {
                           return {
                             messageId: 'someImportsInDecoMeta',

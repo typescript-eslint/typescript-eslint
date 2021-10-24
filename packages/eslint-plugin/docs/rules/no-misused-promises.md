@@ -23,6 +23,25 @@ while (promise) {
 }
 ```
 
+Examples of **correct** code with `checksConditionals: true`:
+
+```ts
+const promise = Promise.resolve('value');
+
+// Always `await` the Promise in a conditional
+if (await promise) {
+  // Do something
+}
+
+const val = (await promise) ? 123 : 456;
+
+while (await promise) {
+  // Do something
+}
+```
+
+---
+
 Examples of **incorrect** code for this rule with `checksVoidReturn: true`:
 
 ```ts
@@ -37,37 +56,51 @@ new Promise(async (resolve, reject) => {
 
 const eventEmitter = new EventEmitter();
 eventEmitter.on('some-event', async () => {
+  synchronousCall();
   await doSomething();
+  otherSynchronousCall();
 });
 ```
 
-Examples of **correct** code for this rule:
+Examples of **correct** code with `checksVoidReturn: true`:
 
 ```ts
-const promise = Promise.resolve('value');
-
-if (await promise) {
-  // Do something
-}
-
-const val = (await promise) ? 123 : 456;
-
-while (await promise) {
-  // Do something
-}
-
+// for-of puts `await` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
 }
 
+// If outer context is not `async`, handle error explicitly
+Promise.all(
+  [1, 2, 3].map(async value => {
+    await doSomething(value);
+  }),
+).catch(handleError);
+
+// Use an async IIFE wrapper
 new Promise((resolve, reject) => {
-  // Do something
-  resolve();
+  // combine with `void` keyword to tell `no-floating-promises` rule to ignore unhandled rejection
+  void (async () => {
+    await doSomething();
+    resolve();
+  })();
 });
 
+// Name the async wrapper to call it later
 const eventEmitter = new EventEmitter();
 eventEmitter.on('some-event', () => {
-  doSomething();
+  const handler = async () => {
+    await doSomething();
+    otherSynchronousCall();
+  };
+
+  try {
+    synchronousCall();
+  } catch (err) {
+    handleSpecificError(err);
+  }
+
+  handler().catch(handleError);
 });
 ```
 
@@ -117,3 +150,9 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Further Reading
 
 - [TypeScript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

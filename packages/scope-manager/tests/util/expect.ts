@@ -14,6 +14,7 @@ import {
   BlockScope,
   CatchScope,
   ClassScope,
+  ClassFieldInitializerScope,
   ForScope,
   FunctionExpressionNameScope,
   FunctionScope,
@@ -34,6 +35,11 @@ function expectToBeBlockScope(scope: Scope): asserts scope is BlockScope {
 }
 function expectToBeCatchScope(scope: Scope): asserts scope is CatchScope {
   expect(scope.type).toBe(ScopeType.catch);
+}
+function expectToBeClassFieldInitializerScope(
+  scope: Scope,
+): asserts scope is ClassFieldInitializerScope {
+  expect(scope.type).toBe(ScopeType.classFieldInitializer);
 }
 function expectToBeClassScope(scope: Scope): asserts scope is ClassScope {
   expect(scope.type).toBe(ScopeType.class);
@@ -65,6 +71,7 @@ function expectToBeWithScope(scope: Scope): asserts scope is WithScope {
 export {
   expectToBeBlockScope,
   expectToBeCatchScope,
+  expectToBeClassFieldInitializerScope,
   expectToBeClassScope,
   expectToBeForScope,
   expectToBeFunctionExpressionNameScope,

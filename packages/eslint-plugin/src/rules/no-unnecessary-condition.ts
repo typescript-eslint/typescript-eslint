@@ -90,7 +90,6 @@ export default createRule<Options, MessageId>({
     docs: {
       description:
         'Prevents conditionals where the type is always truthy or always falsy',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -261,12 +260,6 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      // Since typescript array index signature types don't represent the
-      //  possibility of out-of-bounds access, if we're indexing into an array
-      //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(node)) {
-        return;
-      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -277,7 +270,19 @@ export default createRule<Options, MessageId>({
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
       } else if (!isPossiblyNullish(type)) {
-        messageId = 'neverNullish';
+        // Since typescript array index signature types don't represent the
+        //  possibility of out-of-bounds access, if we're indexing into an array
+        //  just skip the check, to avoid false positives
+        if (
+          !isArrayIndexExpression(node) &&
+          !(
+            node.type === AST_NODE_TYPES.ChainExpression &&
+            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+            optionChainContainsOptionArrayIndex(node.expression)
+          )
+        ) {
+          messageId = 'neverNullish';
+        }
       } else if (isAlwaysNullish(type)) {
         messageId = 'alwaysNullish';
       }
@@ -477,19 +482,19 @@ export default createRule<Options, MessageId>({
     //    ?.x // type is {y: "z"}
     //    ?.y // This access is considered "unnecessary" according to the types
     //  ```
-    function optionChainContainsArrayIndex(
+    function optionChainContainsOptionArrayIndex(
       node: TSESTree.MemberExpression | TSESTree.CallExpression,
     ): boolean {
       const lhsNode =
         node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
-      if (isArrayIndexExpression(lhsNode)) {
+      if (node.optional && isArrayIndexExpression(lhsNode)) {
         return true;
       }
       if (
         lhsNode.type === AST_NODE_TYPES.MemberExpression ||
         lhsNode.type === AST_NODE_TYPES.CallExpression
       ) {
-        return optionChainContainsArrayIndex(lhsNode);
+        return optionChainContainsOptionArrayIndex(lhsNode);
       }
       return false;
     }
@@ -584,7 +589,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsArrayIndex(node)) {
+      if (optionChainContainsOptionArrayIndex(node)) {
         return;
       }
 

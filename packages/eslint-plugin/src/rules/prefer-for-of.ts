@@ -12,7 +12,6 @@ export default util.createRule({
     docs: {
       description:
         'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
@@ -43,7 +42,7 @@ export default util.createRule({
     }
 
     function isMatchingIdentifier(
-      node: TSESTree.Expression,
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
       name: string,
     ): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;

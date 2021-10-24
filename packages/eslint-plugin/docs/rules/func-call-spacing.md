@@ -20,3 +20,9 @@ It adds support for generic type parameters on function calls.
 See [`eslint/func-call-spacing` options](https://eslint.org/docs/rules/func-call-spacing#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/func-call-spacing.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

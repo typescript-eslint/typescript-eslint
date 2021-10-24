@@ -1,8 +1,8 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
+import type { File, Program } from '@babel/types';
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
-import * as BabelTypes from '@babel/types';
 
 /**
  * Common predicates for Babylon AST preprocessing
@@ -18,8 +18,8 @@ const ifNumber = (val: unknown): boolean => typeof val === 'number';
  * @param ast raw babylon AST
  * @returns processed babylon AST
  */
-export function preprocessBabylonAST(ast: BabelTypes.File): any {
-  return omitDeep<any>(
+export function preprocessBabylonAST(ast: File): any {
+  return omitDeep<Program>(
     ast.program,
     [
       {
@@ -168,14 +168,17 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.override = false;
         }
       },
-      ClassProperty(node) {
+      PropertyDefinition(node) {
+        // babel does not
+        // node.type = AST_NODE_TYPES.PropertyDefinition;
         /**
          * Babel: ClassProperty + abstract: true
          * ts-estree: TSAbstractClassProperty
          */
         if (node.abstract) {
-          node.type = AST_NODE_TYPES.TSAbstractClassProperty;
+          node.type = AST_NODE_TYPES.TSAbstractPropertyDefinition;
           delete node.abstract;
+          node.value = null;
         }
         /**
          * TS 3.7: declare class properties
@@ -251,14 +254,14 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * Babel adds a `static` property to the StaticBlock when the
-       * `typescript` plugin and the `classStaticBlock` plugin are enabled.
-       * @see https://github.com/babel/babel/issues/13674
+       * Remove TSParenthesizedType from babel AST. Babel 8 will stop generating the TSParenthesizedType.
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/12608
        */
-      StaticBlock(node: any) {
-        if (node.static != null) {
-          delete node.static;
-        }
+      TSParenthesizedType(node) {
+        const { typeAnnotation } = node;
+        Object.keys(node).forEach(key => delete node[key]);
+        Object.assign(node, typeAnnotation);
       },
     },
   );

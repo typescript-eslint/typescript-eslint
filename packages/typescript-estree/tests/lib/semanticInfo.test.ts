@@ -28,7 +28,6 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
     tokens: true,
     comment: true,
     jsx: false,
-    useJSXTextNode: false,
     errorOnUnknownASTType: true,
     filePath: fileName,
     tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
@@ -162,7 +161,7 @@ describe('semanticInfo', () => {
 
     const computedPropertyString = (
       (parseResult.ast.body[1] as TSESTree.ClassDeclaration).body
-        .body[0] as TSESTree.ClassProperty
+        .body[0] as TSESTree.PropertyDefinition
     ).key;
     const tsComputedPropertyString =
       parseResult.services.esTreeNodeToTSNodeMap.get(computedPropertyString);

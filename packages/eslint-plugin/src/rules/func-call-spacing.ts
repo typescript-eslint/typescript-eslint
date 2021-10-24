@@ -19,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow spacing between function identifiers and their invocations',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
