@@ -280,12 +280,22 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     `, // TSMethodSignature
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1665
-    // directly recursive
+    // directly recursive interface
     `
       interface Foo {
         readonly prop: Foo;
       }
       function foo(arg: Foo) {}
+    `,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3396
+    // directly recursive union type
+    `
+      type MyType = string | readonly MyType[];
+
+      function foo<A extends MyType[]>(a: A): MyType[] {
+        return [];
+      }
     `,
     // indirectly recursive
     `
