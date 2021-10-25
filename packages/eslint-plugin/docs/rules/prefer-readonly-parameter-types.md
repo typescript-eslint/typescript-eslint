@@ -125,11 +125,13 @@ interface Foo {
 interface Options {
   checkParameterProperties?: boolean;
   ignoreInferredTypes?: boolean;
+  utilityTypeSufficient?: boolean;
 }
 
 const defaultOptions: Options = {
   checkParameterProperties: true,
   ignoreInferredTypes: false,
+  utilityTypeSufficient: false,
   treatMethodsAsReadonly: false,
 };
 ```
@@ -215,6 +217,30 @@ export const acceptsCallback: AcceptsCallback;
 ```
 
 </details>
+
+### `utilityTypeSufficient`
+
+This option makes it so that any parameter using the utility type `Readonly<>` passes the this rule. Beware that this does not guarantee deep immutability, however, it simplifies the usage of this rule.
+
+Examples of **incorrect** code for this rule with `{utilityTypeSufficient: true}`:
+
+```ts
+interface T {
+  prop: { subProp: string };
+}
+
+function foo(arg: T): void {}
+```
+
+Examples of **correct** code for this rule with `{utilityTypeSufficient: true}`:
+
+```ts
+interface T {
+  prop: { subProp: string };
+}
+
+function foo(arg: Readonly<T>): void {}
+```
 
 ### `treatMethodsAsReadonly`
 
