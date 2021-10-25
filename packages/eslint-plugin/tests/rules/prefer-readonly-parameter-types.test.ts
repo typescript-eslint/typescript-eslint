@@ -333,6 +333,16 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    {
+      code: `
+        function foo(arg: Readonly<Element>) {}
+      `,
+      options: [
+        {
+          utilityTypeSufficient: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -780,6 +790,42 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 10,
           column: 43,
           endColumn: 67,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: Readonly<Element>) {}
+      `,
+      options: [
+        {
+          utilityTypeSufficient: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 27,
+          endColumn: 44,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: Element) {}
+      `,
+      options: [
+        {
+          utilityTypeSufficient: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 27,
+          endColumn: 34,
         },
       ],
     },
