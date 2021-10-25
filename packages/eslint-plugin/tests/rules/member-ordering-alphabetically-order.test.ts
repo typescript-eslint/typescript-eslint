@@ -50,6 +50,18 @@ interface Foo {
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
+    // default option + interface + literal properties
+    {
+      code: `
+interface Foo {
+  a : Foo;
+  'b.c' : Foo;
+  "b.d" : Foo;
+}
+            `,
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
     // default option + type literal + multiple types
     {
       code: `
@@ -84,6 +96,18 @@ type Foo = {
 }
             `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + type + literal properties
+    {
+      code: `
+type Foo = {
+  a : Foo;
+  'b.c' : Foo;
+  "b.d" : Foo;
+}
+            `,
+      options: [{ default: { order: 'alphabetically' } }],
     },
 
     // default option + class + multiple types
@@ -221,6 +245,34 @@ interface Foo {
       ],
     },
 
+    // default option + interface + literal properties
+    {
+      code: `
+interface Foo {
+  "b.d" : Foo;
+  'b.c' : Foo;
+  a : Foo;
+}
+            `,
+      options: [{ default: { order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b.c',
+            beforeMember: 'b.d',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b.c',
+          },
+        },
+      ],
+    },
+
     // default option + interface + wrong order (multiple)
     {
       code: `
@@ -274,6 +326,34 @@ type Foo = {
           data: {
             member: 'call',
             beforeMember: 'new',
+          },
+        },
+      ],
+    },
+
+    // default option + type + literal properties
+    {
+      code: `
+type Foo = {
+  "b.d" : Foo;
+  'b.c' : Foo;
+  a : Foo;
+}
+            `,
+      options: [{ default: { order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b.c',
+            beforeMember: 'b.d',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b.c',
           },
         },
       ],

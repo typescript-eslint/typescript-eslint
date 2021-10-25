@@ -271,6 +271,31 @@ function getNodeType(node: Member): string | null {
 }
 
 /**
+ * Gets the raw string value of a member's name
+ */
+function getMemberRawName(
+  member:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSMethodSignature
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractPropertyDefinition
+    | TSESTree.Property
+    | TSESTree.TSPropertySignature,
+  sourceCode: TSESLint.SourceCode,
+): string {
+  const { name, type } = util.getNameFromMember(member, sourceCode);
+
+  if (type === util.MemberNameType.Quoted) {
+    return name.substr(1, name.length - 2);
+  }
+  if (type === util.MemberNameType.Private) {
+    return name.substr(1);
+  }
+  return name;
+}
+
+/**
  * Gets the member name based on the member type.
  *
  * @param node the node to be evaluated.
@@ -285,12 +310,12 @@ function getMemberName(
     case AST_NODE_TYPES.TSMethodSignature:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
     case AST_NODE_TYPES.PropertyDefinition:
-      return util.getNameFromMember(node, sourceCode).name;
+      return getMemberRawName(node, sourceCode);
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.kind === 'constructor'
         ? 'constructor'
-        : util.getNameFromMember(node, sourceCode).name;
+        : getMemberRawName(node, sourceCode);
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'new';
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
