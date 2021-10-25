@@ -8,6 +8,7 @@ type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
+    utilityTypeSufficient?: boolean;
   } & util.ReadonlynessOptions,
 ];
 type MessageIds = 'shouldBeReadonly';
@@ -33,6 +34,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
+          utilityTypeSufficient: {
+            type: 'boolean',
+          },
           ...util.readonlynessOptionsSchema.properties,
         },
       },
@@ -45,12 +49,20 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
+      utilityTypeSufficient: false,
       ...util.readonlynessOptionsDefaults,
     },
   ],
   create(
     context,
-    [{ checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly }],
+    [
+      {
+        checkParameterProperties,
+        ignoreInferredTypes,
+        utilityTypeSufficient,
+        treatMethodsAsReadonly,
+      },
+    ],
   ) {
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
@@ -97,6 +109,12 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
+          if (
+            utilityTypeSufficient &&
+            type.aliasSymbol?.escapedName === 'Readonly'
+          ) {
+            return;
+          }
           const isReadOnly = util.isTypeReadonly(checker, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
           });

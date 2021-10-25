@@ -814,7 +814,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         {
           messageId: 'shouldBeReadonly',
           line: 6,
-          column: 27,
+          column: 22,
           endColumn: 38,
         },
       ],
@@ -836,8 +836,8 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         {
           messageId: 'shouldBeReadonly',
           line: 6,
-          column: 27,
-          endColumn: 38,
+          column: 22,
+          endColumn: 28,
         },
       ],
     },
