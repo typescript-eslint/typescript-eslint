@@ -335,7 +335,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       code: `
-        function foo(arg: Readonly<Element>) {}
+        interface T {
+          prop: { subProp: string };
+        }
+
+        function foo(arg: Readonly<T>): void {}
       `,
       options: [
         {
@@ -795,7 +799,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       code: `
-        function foo(arg: Readonly<Element>) {}
+        interface T {
+          prop: { subProp: string };
+        }
+
+        function foo(arg: Readonly<T>): void {}
       `,
       options: [
         {
@@ -805,15 +813,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          line: 2,
+          line: 6,
           column: 27,
-          endColumn: 44,
+          endColumn: 38,
         },
       ],
     },
     {
       code: `
-        function foo(arg: Element) {}
+        interface T {
+          prop: { subProp: string };
+        }
+
+        function foo(arg: T): void {}
       `,
       options: [
         {
@@ -823,9 +835,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       errors: [
         {
           messageId: 'shouldBeReadonly',
-          line: 2,
+          line: 6,
           column: 27,
-          endColumn: 34,
+          endColumn: 38,
         },
       ],
     },
