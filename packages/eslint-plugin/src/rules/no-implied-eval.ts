@@ -156,7 +156,11 @@ export default util.createRule({
       }
 
       const [handler] = node.arguments;
-      if (EVAL_LIKE_METHODS.has(calleeName) && !isFunction(handler)) {
+      if (
+        EVAL_LIKE_METHODS.has(calleeName) &&
+        !isFunction(handler) &&
+        !context.getScope().variables.some(v => v.name === calleeName)
+      ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }
     }

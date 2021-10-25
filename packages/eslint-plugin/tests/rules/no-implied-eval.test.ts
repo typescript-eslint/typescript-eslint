@@ -278,6 +278,20 @@ class Foo {
   }
 }
     `,
+    `
+function setTimeout(input: string, value: number) {}
+
+setTimeout('', 0);
+    `,
+    `
+declare module 'my-timers-promises' {
+  export function setTimeout(ms: number): void;
+}
+
+import { setTimeout } from 'my-timers-promises';
+
+setTimeout(1000);
+    `,
   ],
 
   invalid: [
