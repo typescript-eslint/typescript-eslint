@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [typedef] fix regression with class properties ([#4034](https://github.com/typescript-eslint/typescript-eslint/issues/4034)) ([fe53d22](https://github.com/typescript-eslint/typescript-eslint/commit/fe53d22f57ad418397fb31fa89c97db0ab4cd6c0)), closes [#4033](https://github.com/typescript-eslint/typescript-eslint/issues/4033)
+
+
+### Features
+
+* **eslint-plugin:** adding `consistent-type-exports` rule ([#3936](https://github.com/typescript-eslint/typescript-eslint/issues/3936)) ([1971a3f](https://github.com/typescript-eslint/typescript-eslint/commit/1971a3f8027416cd1fb33b1d50faa035599917de))
+
+
+
+
+
 # [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
 
 
