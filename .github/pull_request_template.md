@@ -1,11 +1,3 @@
----
-name: 'Standard'
-about: Standard Pull Request Template
-title: ''
-labels: ''
-assignees: ''
----
-
 <!--
 👋 Hi, thanks for sending a PR to typescript-eslint! 💖
 Please fill out all fields below -- otherwise we may not be able to review your PR.
