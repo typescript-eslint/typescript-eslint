@@ -7,7 +7,16 @@ import { ASTAndProgram, getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 
-const DEFAULT_EXTRA_FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
+const DEFAULT_EXTRA_FILE_EXTENSIONS = [
+  '.ts',
+  '.mts',
+  '.cts',
+  '.tsx',
+  '.js',
+  '.mjs',
+  '.cjs',
+  '.jsx',
+];
 
 /**
  * @param code The code of the file being linted
