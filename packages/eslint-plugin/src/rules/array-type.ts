@@ -80,9 +80,13 @@ type Options = [
 ];
 type MessageIds =
   | 'errorStringGeneric'
-  | 'errorStringGenericSimple'
+  | 'errorStringReadonlyGeneric'
   | 'errorStringArray'
-  | 'errorStringArraySimple';
+  | 'errorStringReadonlyArray'
+  | 'errorStringArraySimple'
+  | 'errorStringGenericSimple'
+  | 'errorStringReadonlyArraySimple'
+  | 'errorStringReadonlyGenericSimple';
 
 const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
 
@@ -99,12 +103,20 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       errorStringGeneric:
         "Array type using '{{type}}[]' is forbidden. Use 'Array<{{type}}>' instead.",
-      errorStringGenericSimple:
-        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
+      errorStringReadonlyGeneric:
+        "Array type using 'readonly {{type}}[]' is forbidden. Use 'ReadonlyArray<{{type}}>' instead.",
       errorStringArray:
         "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
+      errorStringReadonlyArray:
+        "Array type using 'ReadonlyArray<{{type}}>' is forbidden. Use 'readonly {{type}}[]' instead.",
       errorStringArraySimple:
         "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+      errorStringReadonlyArraySimple:
+        "Array type using 'ReadonlyArray<{{type}}>' is forbidden for simple types. Use 'readonly {{type}}[]' instead.",
+      errorStringGenericSimple:
+        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
+      errorStringReadonlyGenericSimple:
+        "Array type using 'readonly {{type}}[]' is forbidden for non-simple types. Use 'ReadonlyArray<{{type}}>' instead.",
     },
     schema: [
       {
@@ -155,7 +167,11 @@ export default util.createRule<Options, MessageIds>({
 
         const messageId =
           currentOption === 'generic'
-            ? 'errorStringGeneric'
+            ? isReadonly
+              ? 'errorStringReadonlyGeneric'
+              : 'errorStringGeneric'
+            : isReadonly
+            ? 'errorStringReadonlyGenericSimple'
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent! : node;
 
@@ -207,7 +223,11 @@ export default util.createRule<Options, MessageIds>({
         const typeParams = node.typeParameters?.params;
         const messageId =
           currentOption === 'array'
-            ? 'errorStringArray'
+            ? isReadonlyArrayType
+              ? 'errorStringReadonlyArray'
+              : 'errorStringArray'
+            : isReadonlyArrayType
+            ? 'errorStringReadonlyArraySimple'
             : 'errorStringArraySimple';
 
         if (!typeParams || typeParams.length === 0) {
