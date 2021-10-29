@@ -4,6 +4,7 @@ exports[`typescript basics export-declare-const-named-enum.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "const": true,
         "declare": true,

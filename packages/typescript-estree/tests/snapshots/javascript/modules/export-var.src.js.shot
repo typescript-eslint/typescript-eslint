@@ -4,6 +4,7 @@ exports[`javascript modules export-var.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "declarations": Array [
           Object {
