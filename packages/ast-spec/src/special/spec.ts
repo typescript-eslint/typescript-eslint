@@ -3,6 +3,7 @@ export * from './ClassBody/spec';
 export * from './Decorator/spec';
 export * from './EmptyStatement/spec';
 export * from './ExportSpecifier/spec';
+export * from './ImportAttribute/spec';
 export * from './ImportDefaultSpecifier/spec';
 export * from './ImportNamespaceSpecifier/spec';
 export * from './ImportSpecifier/spec';
