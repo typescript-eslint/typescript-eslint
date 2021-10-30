@@ -193,7 +193,6 @@ export class Converter {
           source: null,
           exportKind: isType || isDeclare ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
-          // TODO: fix
           assertions: [],
         });
       }
