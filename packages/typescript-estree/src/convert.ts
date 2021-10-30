@@ -2001,7 +2001,7 @@ export class Converter {
 
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
-          if (node.arguments.length > 2) {
+          if (node.arguments.length !== 1 && node.arguments.length !== 2) {
             throw createError(
               this.ast,
               node.arguments.pos,
