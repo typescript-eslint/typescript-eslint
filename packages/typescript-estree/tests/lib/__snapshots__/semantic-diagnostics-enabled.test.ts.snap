@@ -598,7 +598,7 @@ TSError {
   "column": 7,
   "index": 7,
   "lineNumber": 1,
-  "message": "Dynamic import must have one specifier as an argument.",
+  "message": "Dynamic import requires exactly one or two arguments.",
 }
 `;
 
