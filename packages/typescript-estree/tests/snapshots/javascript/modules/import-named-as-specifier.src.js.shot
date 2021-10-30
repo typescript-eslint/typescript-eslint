@@ -41,6 +41,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
