@@ -22,8 +22,8 @@ module.exports = {
     sourceType: 'module',
     project: [
       './tsconfig.eslint.json',
-      './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
+      './tests/integration/tsconfig.json',
     ],
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
@@ -175,12 +175,16 @@ module.exports = {
         'packages/*/tests/**/spec.ts',
         'packages/*/tests/**/test.ts',
         'packages/parser/tests/**/*.ts',
+        'tests/integration/**/*.test.ts',
+        'tests/integration/integration-test-base.ts',
+        'tests/integration/pack-packages.ts',
       ],
       env: {
         'jest/globals': true,
       },
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/no-identical-tests': 'error',

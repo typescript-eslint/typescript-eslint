@@ -63,7 +63,7 @@
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
-    "tmp": "^0.2.1",
+    "tmp": "*",
     "typescript": "*"
   },
   "peerDependenciesMeta": {
