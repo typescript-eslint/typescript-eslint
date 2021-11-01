@@ -88,3 +88,9 @@ class Derived extends Base {
 ## When Not To Use It
 
 If you don't use method chaining or explicit return values, you can safely turn this rule off.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

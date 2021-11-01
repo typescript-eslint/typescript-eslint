@@ -55,9 +55,9 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
-    if (style === 'fields') {
-      return {
-        MethodDefinition(node: TSESTree.MethodDefinition): void {
+    return {
+      ...(style === 'fields' && {
+        MethodDefinition(node): void {
           if (
             node.kind !== 'get' ||
             !node.value.body ||
@@ -95,38 +95,37 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         },
-      };
-    }
+      }),
+      ...(style === 'getters' && {
+        PropertyDefinition(node): void {
+          if (!node.readonly || node.declare) {
+            return;
+          }
 
-    return {
-      PropertyDefinition(node: TSESTree.PropertyDefinition): void {
-        if (!node.readonly || node.declare) {
-          return;
-        }
+          const { value } = node;
 
-        const { value } = node;
+          if (!value || !isSupportedLiteral(value)) {
+            return;
+          }
 
-        if (!value || !isSupportedLiteral(value)) {
-          return;
-        }
+          context.report({
+            node: node.key,
+            messageId: 'preferGetterStyle',
+            fix(fixer) {
+              const sourceCode = context.getSourceCode();
+              const name = sourceCode.getText(node.key);
 
-        context.report({
-          node: node.key,
-          messageId: 'preferGetterStyle',
-          fix(fixer) {
-            const sourceCode = context.getSourceCode();
-            const name = sourceCode.getText(node.key);
+              let text = '';
 
-            let text = '';
+              text += printNodeModifiers(node, 'get');
+              text += node.computed ? `[${name}]` : name;
+              text += `() { return ${sourceCode.getText(value)}; }`;
 
-            text += printNodeModifiers(node, 'get');
-            text += node.computed ? `[${name}]` : name;
-            text += `() { return ${sourceCode.getText(value)}; }`;
-
-            return fixer.replaceText(node, text);
-          },
-        });
-      },
+              return fixer.replaceText(node, text);
+            },
+          });
+        },
+      }),
     };
   },
 });

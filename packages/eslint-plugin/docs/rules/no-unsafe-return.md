@@ -87,3 +87,9 @@ function foo2(): unknown[] {
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

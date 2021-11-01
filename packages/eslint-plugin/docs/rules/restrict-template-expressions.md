@@ -100,3 +100,9 @@ const msg1 = `arg = ${arg}`;
 const arg = /foo/;
 const msg1 = `arg = ${arg}`;
 ```
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

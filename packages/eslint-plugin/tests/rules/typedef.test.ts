@@ -442,6 +442,24 @@ class Foo {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/4033
+    {
+      code: `
+class ClassName {
+  public str: string = 'str';
+  #num: number = 13;
+
+  func: () => void = (): void => {
+    console.log(this.str);
+  };
+}
+      `,
+      options: [
+        {
+          memberVariableDeclaration: true,
+        },
+      ],
+    },
   ],
   invalid: [
     // Array destructuring

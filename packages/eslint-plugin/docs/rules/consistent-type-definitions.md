@@ -72,3 +72,9 @@ If you specifically want to use an interface or type literal for stylistic reaso
 ## Compatibility
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

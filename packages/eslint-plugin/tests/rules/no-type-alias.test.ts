@@ -341,10 +341,9 @@ type Foo<T> =
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'always' }],
     },
@@ -352,10 +351,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
     },
@@ -363,10 +361,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
@@ -2968,10 +2965,9 @@ type Foo<T> =
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       errors: [
         {
@@ -2989,8 +2985,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },
@@ -2998,10 +2994,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'never' }],
       errors: [
@@ -3020,8 +3015,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },
@@ -3029,10 +3024,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-unions' }],
       errors: [
@@ -3051,8 +3045,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },

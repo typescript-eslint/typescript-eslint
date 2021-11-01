@@ -67,3 +67,9 @@ foo(1 as any, new Set<any>(), [] as any[]);
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

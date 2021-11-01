@@ -11,6 +11,7 @@ import commaSpacing from './comma-spacing';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
+import consistentTypeExports from './consistent-type-exports';
 import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
 import dotNotation from './dot-notation';
@@ -133,6 +134,7 @@ export default {
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
+  'consistent-type-exports': consistentTypeExports,
   'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
   'dot-notation': dotNotation,

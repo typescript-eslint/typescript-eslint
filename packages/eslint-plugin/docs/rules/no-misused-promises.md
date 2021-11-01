@@ -150,3 +150,9 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Further Reading
 
 - [TypeScript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -25,3 +25,9 @@ const alsoDefinitely = maybe!;
 ## When Not To Use It
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

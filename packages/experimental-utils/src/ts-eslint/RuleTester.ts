@@ -10,6 +10,10 @@ import {
 
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
+   * Name for the test case.
+   */
+  readonly name?: string;
+  /**
    * Code for the test case.
    */
   readonly code: string;

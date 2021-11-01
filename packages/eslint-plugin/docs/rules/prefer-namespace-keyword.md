@@ -20,3 +20,9 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 ## Compatibility
 
 - TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

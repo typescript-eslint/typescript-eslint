@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  // Local version of @typescript-eslint/parser
   parser: '@typescript-eslint/parser',
   env: {
     es6: true,
@@ -13,13 +12,10 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: [
-    'markdown',
-    // Local version of @typescript-eslint/eslint-plugin
-    '@typescript-eslint',
-  ],
+  plugins: ['markdown', '@typescript-eslint'],
   overrides: [
     {
+      // this will also ensure that eslint will force lint the markdown files
       files: ['**/*.md'],
       processor: 'markdown/markdown',
     },

@@ -94,3 +94,9 @@ class Mx {
 
 When you have no strong preference, or do not wish to enforce a particular style
 for how literal values are exposed by your classes.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

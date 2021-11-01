@@ -74,3 +74,9 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 ## Further Reading
 
 - [TypeScript 4.0 Beta Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/#unknown-on-catch)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

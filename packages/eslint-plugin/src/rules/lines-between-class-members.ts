@@ -43,10 +43,10 @@ export default util.createRule<Options, MessageIds>({
       exceptAfterSingleLine: false,
     },
   ],
-  create(context, options) {
+  create(context, [firstOption, secondOption]) {
     const rules = baseRule.create(context);
     const exceptAfterOverload =
-      options[1]?.exceptAfterOverload && options[0] === 'always';
+      secondOption?.exceptAfterOverload && firstOption === 'always';
 
     function isOverload(node: TSESTree.Node): boolean {
       return (

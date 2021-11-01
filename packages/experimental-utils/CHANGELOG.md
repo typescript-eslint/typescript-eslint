@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
+
+
+### Features
+
+* **experimental-utils:** extract `ast-utils`' `predicates`' helpers ([#3976](https://github.com/typescript-eslint/typescript-eslint/issues/3976)) ([154ec9a](https://github.com/typescript-eslint/typescript-eslint/commit/154ec9aea8e81732cafe36af97c4822f1591b077))
+
+
+
+
+
 # [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
 
 

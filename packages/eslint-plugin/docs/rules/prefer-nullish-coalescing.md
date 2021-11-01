@@ -139,3 +139,9 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Operator Proposal](https://github.com/tc39/proposal-nullish-coalescing/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

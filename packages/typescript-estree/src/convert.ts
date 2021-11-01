@@ -1149,7 +1149,8 @@ export class Converter {
 
         if (
           (node.name.kind === SyntaxKind.Identifier ||
-            node.name.kind === SyntaxKind.ComputedPropertyName) &&
+            node.name.kind === SyntaxKind.ComputedPropertyName ||
+            node.name.kind === SyntaxKind.PrivateIdentifier) &&
           node.questionToken
         ) {
           result.optional = true;

@@ -241,16 +241,16 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSIntersectionType(node): void {
-        if (checkIntersections === true) {
+      ...(checkIntersections && {
+        TSIntersectionType(node): void {
           checkSorting(node);
-        }
-      },
-      TSUnionType(node): void {
-        if (checkUnions === true) {
+        },
+      }),
+      ...(checkUnions && {
+        TSUnionType(node): void {
           checkSorting(node);
-        }
-      },
+        },
+      }),
     };
   },
 });
