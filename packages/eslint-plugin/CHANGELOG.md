@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.2.0...v5.3.0) (2021-11-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** ignore private identifiers in explicit-module-boundary-types ([#4046](https://github.com/typescript-eslint/typescript-eslint/issues/4046)) ([80b853d](https://github.com/typescript-eslint/typescript-eslint/commit/80b853db90ae3d4e32c4b7ec9d45a5c41dc459c9))
+* **eslint-plugin:** skip seenTypes for unions in isTypeReadonly ([#4043](https://github.com/typescript-eslint/typescript-eslint/issues/4043)) ([6af7ca7](https://github.com/typescript-eslint/typescript-eslint/commit/6af7ca7d9fde230342d27ad5a75a09a58c022974))
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] exclude external type declaration merging ([#3959](https://github.com/typescript-eslint/typescript-eslint/issues/3959)) ([a93cebf](https://github.com/typescript-eslint/typescript-eslint/commit/a93cebfc0f2026c50972bcb110bcd3295ba9a44d))
+
+
+
+
+
 # [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
 
 

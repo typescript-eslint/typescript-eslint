@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.2.0...v5.3.0) (2021-11-01)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add `name` property to test case interface ([#4067](https://github.com/typescript-eslint/typescript-eslint/issues/4067)) ([f3021c9](https://github.com/typescript-eslint/typescript-eslint/commit/f3021c94460e8d06e4169335bcc1a23854531f2a))
+
+
+### Features
+
+* **experimental-utils:** extract `isTokenOfTypeWithConditions` out of `ast-utils`' `predicates` ([#3977](https://github.com/typescript-eslint/typescript-eslint/issues/3977)) ([5229597](https://github.com/typescript-eslint/typescript-eslint/commit/5229597d9bfc998852c4b4fb421859e8f3d3d688))
+
+
+
+
+
 # [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
