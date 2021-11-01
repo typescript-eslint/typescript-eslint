@@ -53,6 +53,15 @@ interface Foo {
   prop2: string;
 }
     `,
+    `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+    `,
     // type value shadowing
     `
 const x = 1;
@@ -1439,6 +1448,84 @@ function doThing(foo: number, bar: number) {}
           type: AST_NODE_TYPES.Identifier,
           line: 3,
           column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {}
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
         },
       ],
     },
