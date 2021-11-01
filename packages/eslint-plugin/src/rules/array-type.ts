@@ -80,13 +80,9 @@ type Options = [
 ];
 type MessageIds =
   | 'errorStringGeneric'
-  | 'errorStringReadonlyGeneric'
   | 'errorStringArray'
-  | 'errorStringReadonlyArray'
   | 'errorStringArraySimple'
-  | 'errorStringGenericSimple'
-  | 'errorStringReadonlyArraySimple'
-  | 'errorStringReadonlyGenericSimple';
+  | 'errorStringGenericSimple';
 
 const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
 
@@ -102,21 +98,13 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       errorStringGeneric:
-        "Array type using '{{type}}[]' is forbidden. Use 'Array<{{type}}>' instead.",
-      errorStringReadonlyGeneric:
-        "Array type using 'readonly {{type}}[]' is forbidden. Use 'ReadonlyArray<{{type}}>' instead.",
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
       errorStringArray:
-        "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
-      errorStringReadonlyArray:
-        "Array type using 'ReadonlyArray<{{type}}>' is forbidden. Use 'readonly {{type}}[]' instead.",
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
-      errorStringReadonlyArraySimple:
-        "Array type using 'ReadonlyArray<{{type}}>' is forbidden for simple types. Use 'readonly {{type}}[]' instead.",
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
       errorStringGenericSimple:
-        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
-      errorStringReadonlyGenericSimple:
-        "Array type using 'readonly {{type}}[]' is forbidden for non-simple types. Use 'ReadonlyArray<{{type}}>' instead.",
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
     schema: [
       {
@@ -167,11 +155,7 @@ export default util.createRule<Options, MessageIds>({
 
         const messageId =
           currentOption === 'generic'
-            ? isReadonly
-              ? 'errorStringReadonlyGeneric'
-              : 'errorStringGeneric'
-            : isReadonly
-            ? 'errorStringReadonlyGenericSimple'
+            ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent! : node;
 
@@ -179,6 +163,8 @@ export default util.createRule<Options, MessageIds>({
           node: errorNode,
           messageId,
           data: {
+            className: isReadonly ? 'ReadonlyArray' : 'Array',
+            readonlyPrefix: isReadonly ? 'readonly ' : '',
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
@@ -223,11 +209,7 @@ export default util.createRule<Options, MessageIds>({
         const typeParams = node.typeParameters?.params;
         const messageId =
           currentOption === 'array'
-            ? isReadonlyArrayType
-              ? 'errorStringReadonlyArray'
-              : 'errorStringArray'
-            : isReadonlyArrayType
-            ? 'errorStringReadonlyArraySimple'
+            ? 'errorStringArray'
             : 'errorStringArraySimple';
 
         if (!typeParams || typeParams.length === 0) {
@@ -236,6 +218,8 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId,
             data: {
+              className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
+              readonlyPrefix,
               type: 'any',
             },
             fix(fixer) {
@@ -270,6 +254,8 @@ export default util.createRule<Options, MessageIds>({
           node,
           messageId,
           data: {
+            className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
+            readonlyPrefix,
             type: getMessageType(type),
           },
           fix(fixer) {
