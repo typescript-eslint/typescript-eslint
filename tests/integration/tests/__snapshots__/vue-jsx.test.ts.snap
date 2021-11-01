@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`it should produce the expected lint ouput 1`] = `
+exports[`vue-jsx should lint successfully 1`] = `
 Array [
   Object {
     "errorCount": 1,
     "fatalErrorCount": 0,
-    "filePath": "/usr/linked/Jsx.vue",
+    "filePath": "<root>/Jsx.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [
