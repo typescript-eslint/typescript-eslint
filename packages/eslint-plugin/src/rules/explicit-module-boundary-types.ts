@@ -336,7 +336,10 @@ export default util.createRule<Options, MessageIds>({
           return;
 
         case AST_NODE_TYPES.PropertyDefinition:
-          if (node.accessibility === 'private') {
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);
@@ -353,7 +356,10 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (node.accessibility === 'private') {
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);

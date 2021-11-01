@@ -30,6 +30,8 @@ Please refrain from commenting on `master` commits. Commit comments are not sear
 
 ## Pull Requests
 
+> With the exception of extremely minor documentation typos, **only send pull requests that resolve open issues**.
+
 Anyone is free to help us build and maintain this project. If you see an issue that needs working on because it's important to you, comment on the issue to help make sure that nobody else works on it at the same time, and then start working.
 
 Developing in this repo is easy:
