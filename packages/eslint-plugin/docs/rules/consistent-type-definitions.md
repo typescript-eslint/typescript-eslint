@@ -59,7 +59,7 @@ interface T {
 }
 ```
 
-Examples of **correct** code with `interface` option.
+Examples of **correct** code with `type` option.
 
 ```ts
 type T = { x: number };

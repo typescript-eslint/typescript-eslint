@@ -82,6 +82,16 @@ export class Test {
 }
       `,
     },
+    `
+export class PrivateProperty {
+  #property = () => null;
+}
+    `,
+    `
+export class PrivateMethod {
+  #method() {}
+}
+    `,
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/2150
       code: `

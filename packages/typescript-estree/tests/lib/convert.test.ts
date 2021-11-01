@@ -1,5 +1,5 @@
 // deeplyCopy is private internal
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as ts from 'typescript';
 import type { TSNode } from '../../src';
 import { Converter } from '../../src/convert';
