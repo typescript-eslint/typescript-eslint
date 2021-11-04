@@ -37,7 +37,7 @@ describe('ES6 default parameters:', () => {
         expect(reference.from).toBe(scope);
         expect(reference.identifier.name).toBe('b');
         expect(reference.resolved).toBe(variables[numVars - 1]);
-        expect(reference.writeExpr).not.toBeUndefined();
+        expect(reference.writeExpr).toBeDefined();
         expect(reference.isWrite()).toBeTruthy();
         expect(reference.isRead()).toBeFalsy();
       });

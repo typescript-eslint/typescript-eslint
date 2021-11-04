@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/no-undef';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 import { RuleTester } from '../RuleTester';
+
+const rule = getESLintCoreRule('no-undef');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -139,6 +141,13 @@ function predicate(arg: any): asserts arg is T {
     throw 'oops';
   }
 }
+    `,
+    `
+interface ITest {
+  attr: string;
+}
+let test: unknown;
+(test as ITest) = { attr: '' };
     `,
     {
       code: `

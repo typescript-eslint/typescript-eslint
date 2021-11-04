@@ -23,7 +23,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforces consistent spacing before and after commas',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -108,8 +107,8 @@ export default createRule<Options, MessageIds>({
      */
     function validateCommaSpacing(
       commaToken: TSESTree.PunctuatorToken,
-      prevToken: TSESTree.Token | TSESTree.Comment | null,
-      nextToken: TSESTree.Token | TSESTree.Comment | null,
+      prevToken: TSESTree.Token | null,
+      nextToken: TSESTree.Token | null,
     ): void {
       if (
         prevToken &&

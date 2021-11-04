@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unused-vars
----
-
 # Disallow unused variables (`no-unused-vars`)
 
 ## Rule Details
@@ -24,8 +19,10 @@ It adds support for TypeScript features, such as types.
 
 See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-vars#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-vars.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-vars.md)
+## Attributes
 
-:::
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

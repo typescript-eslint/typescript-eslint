@@ -344,13 +344,14 @@ Object {
                 "line": 7,
               },
             },
+            "override": false,
             "range": Array [
               68,
               79,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {

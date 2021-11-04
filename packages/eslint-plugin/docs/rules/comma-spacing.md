@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: comma-spacing
----
-
 # Enforces consistent spacing before and after commas (`comma-spacing`)
 
 ## Rule Details
@@ -12,7 +7,7 @@ It adds support for trailing comma in a types parameters list.
 
 ## How to use
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "comma-spacing": "off",
@@ -24,8 +19,10 @@ It adds support for trailing comma in a types parameters list.
 
 See [`eslint/comma-spacing` options](https://eslint.org/docs/rules/comma-spacing#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-spacing.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-spacing.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

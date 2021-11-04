@@ -57,7 +57,6 @@ export default util.createRule({
     docs: {
       description:
         'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
-      category: 'Variables',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -471,7 +470,7 @@ export default util.createRule({
 
     const scopes: Scope[] = [];
     let currentScope: Scope = {
-      overloads: new Map(),
+      overloads: new Map<string, OverloadNode[]>(),
     };
 
     function createScope(
@@ -480,7 +479,7 @@ export default util.createRule({
     ): void {
       currentScope && scopes.push(currentScope);
       currentScope = {
-        overloads: new Map(),
+        overloads: new Map<string, OverloadNode[]>(),
         parent,
         typeParameters,
       };

@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-useless-constructor
----
-
 # Disallow unnecessary constructors (`no-useless-constructor`)
 
 ## Rule Details
@@ -28,8 +23,10 @@ It adds support for:
 
 See [`eslint/no-useless-constructor` options](https://eslint.org/docs/rules/no-useless-constructor#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-useless-constructor.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-useless-constructor.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

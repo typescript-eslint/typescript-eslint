@@ -16,11 +16,11 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Exhaustiveness checking in switch with union type',
-      category: 'Best Practices',
       recommended: false,
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       switchIsNotExhaustive:
@@ -144,7 +144,7 @@ export default createRule({
             missingBranches: missingBranchTypes
               .map(missingType =>
                 isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName}`
+                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
                   : checker.typeToString(missingType),
               )
               .join(' | '),

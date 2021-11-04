@@ -40,13 +40,14 @@ Object {
               },
             },
             "optional": true,
+            "override": false,
             "range": Array [
               14,
               43,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {

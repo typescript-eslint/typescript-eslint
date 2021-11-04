@@ -240,7 +240,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-banned-terms`                     | 🌟  | [`no-caller`][no-caller] & [`no-eval`][no-eval]                        |
 | `no-constant-condition`               | 🌟  | [`no-constant-condition`][no-constant-condition]                       |
 | `no-control-regex`                    | 🌟  | [`no-control-regex`][no-control-regex]                                 |
-| `no-delete-expression`                | 🌓  | [`no-delete-var`][no-delete-var]                                       |
+| `no-delete-expression`                | ✅  | [`@typescript-eslint/no-dynamic-delete`]                               |
 | `no-empty-line-after-opening-brace`   | 🌟  | [`padded-blocks`][padded-blocks] <sup>[1]</sup> or [Prettier]          |
 | `no-for-in`                           | 🌟  | [`no-restricted-syntax`][no-restricted-syntax] <sup>[2]</sup>          |
 | `no-function-expression`              | 🌟  | [`func-style`][func-style] <sup>[3]</sup>                              |
@@ -299,7 +299,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
 | `no-jquery-raw-elements`            | 🛑  | N/A                                                |
-| `no-unsupported-browser-code`       | 🔌  | [`eslint-plugin-compat`][plugin:compat]            |
+| `no-unsupported-browser-code`       | 🛑  | N/A                                                |
 | `react-this-binding-issue`          | 🛑  | N/A                                                |
 | `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
 | `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
@@ -315,7 +315,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-image-button-has-alt`         | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-img-has-alt`                  | 🔌  | [`jsx-a11y/alt-text`]                                      |
 | `react-a11y-input-elements`               | 🛑  | N/A                                                        |
-| `react-a11y-lang`                         | 🔌  | [`jsx-a11y/html-has-lang`] & [`jsx-a11y/lang`]             |
+| `react-a11y-lang`                         | 🔌  | [`jsx-a11y/lang`]                                          |
 | `react-a11y-meta`                         | 🛑  | N/A                                                        |
 | `react-a11y-no-onchange`                  | 🔌  | [`jsx-a11y/no-onchange`]                                   |
 | `react-a11y-props`                        | 🔌  | [`jsx-a11y/aria-props`]                                    |
@@ -583,7 +583,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-invalid-regexp]: https://eslint.org/docs/rules/no-invalid-regexp
 [no-regex-spaces]: https://eslint.org/docs/rules/no-regex-spaces
 [no-new-func]: https://eslint.org/docs/rules/no-new-func
-[no-delete-var]: https://eslint.org/docs/rules/no-delete-var
 [padded-blocks]: https://eslint.org/docs/rules/padded-blocks
 [func-style]: https://eslint.org/docs/rules/func-style
 [no-multi-str]: https://eslint.org/docs/rules/no-multi-str

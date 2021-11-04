@@ -1,9 +1,9 @@
-import { SourceFile } from 'typescript';
+import type { SourceFile } from 'typescript';
 import { convertError, Converter, ASTMaps } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
-import { Extra } from './parser-options';
-import { TSESTree } from './ts-estree';
+import type { Extra } from './parser-options';
+import type { TSESTree } from './ts-estree';
 import { simpleTraverse } from './simple-traverse';
 
 export function astConverter(
@@ -15,9 +15,7 @@ export function astConverter(
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
    */
-  // internal typescript api...
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parseDiagnostics = (ast as any).parseDiagnostics;
+  const { parseDiagnostics } = ast;
   if (parseDiagnostics.length) {
     throw convertError(parseDiagnostics[0]);
   }
@@ -27,7 +25,6 @@ export function astConverter(
    */
   const instance = new Converter(ast, {
     errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
-    useJSXTextNode: extra.useJSXTextNode || false,
     shouldPreserveNodeMaps,
   });
 

@@ -13,20 +13,20 @@ export default util.createRule({
     docs: {
       description:
         'Disallow non-null assertion in locations that may be confusing',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       confusingEqual:
-        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b"',
+        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
       confusingAssign:
-        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b"',
-      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test',
+        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
+      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
       notNeedInAssign:
-        'Unnecessary non-null assertion (!) in assignment left hand',
+        'Unnecessary non-null assertion (!) in assignment left hand.',
       wrapUpLeft:
-        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together',
+        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
     },
     schema: [],
   },

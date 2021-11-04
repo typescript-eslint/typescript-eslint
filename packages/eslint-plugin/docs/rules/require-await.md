@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: require-await
----
-
 # Disallow async functions which have no `await` expression (`require-await`)
 
 ## Rule Details
@@ -34,8 +29,10 @@ const returnsPromise2 = () => returnsPromise1();
 
 See [`eslint/require-await` options](https://eslint.org/docs/rules/require-await#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/require-await.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/require-await.md)
+## Attributes
 
-:::
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

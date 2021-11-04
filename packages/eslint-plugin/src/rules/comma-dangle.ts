@@ -1,9 +1,11 @@
 import * as util from '../util';
-import baseRule from 'eslint/lib/rules/comma-dangle';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+
+const baseRule = getESLintCoreRule('comma-dangle');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -43,7 +45,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing comma',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -80,8 +81,10 @@ export default util.createRule<Options, MessageIds>({
           ],
         },
       ],
+      additionalProperties: false,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['never'],

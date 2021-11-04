@@ -93,13 +93,14 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               26,
               40,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": null,
           },
           Object {
@@ -189,13 +190,14 @@ Object {
                 "line": 3,
               },
             },
+            "override": false,
             "range": Array [
               45,
               86,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "arguments": Array [],
               "callee": Object {

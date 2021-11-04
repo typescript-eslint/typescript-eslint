@@ -3,12 +3,8 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { TYPE_VALUE } from './base-config';
 
 export const es2015_reflect = {
-  Reflect: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Reflect',
-  },
+  Reflect: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;

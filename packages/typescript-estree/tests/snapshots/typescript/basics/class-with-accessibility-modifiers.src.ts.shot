@@ -38,13 +38,14 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               14,
               35,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -113,13 +114,14 @@ Object {
                 "line": 3,
               },
             },
+            "override": false,
             "range": Array [
               38,
               65,
             ],
             "readonly": undefined,
             "static": true,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -188,6 +190,7 @@ Object {
                 "line": 4,
               },
             },
+            "override": false,
             "range": Array [
               68,
               111,
@@ -339,6 +342,7 @@ Object {
                 "line": 7,
               },
             },
+            "override": false,
             "range": Array [
               114,
               171,

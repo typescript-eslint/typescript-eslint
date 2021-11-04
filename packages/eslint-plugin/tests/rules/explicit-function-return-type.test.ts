@@ -271,7 +271,8 @@ function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          (): number => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          (): number =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -836,7 +837,8 @@ function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          () => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          () =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };

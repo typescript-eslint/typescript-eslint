@@ -37,13 +37,14 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               26,
               75,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {

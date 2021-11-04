@@ -21,7 +21,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Sets preference level for triple slash directives versus ES6-style import declarations',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
@@ -94,7 +93,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         programNode = node;
-        const referenceRegExp = /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
+        const referenceRegExp =
+          /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
         const commentsBefore = sourceCode.getCommentsBefore(programNode);
 
         commentsBefore.forEach(comment => {

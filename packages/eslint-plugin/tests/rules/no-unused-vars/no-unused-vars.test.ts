@@ -559,11 +559,8 @@ export interface IFoo {
     `
 import * as fastify from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({});
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({});
 server.get('/ping');
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/61
@@ -1566,6 +1563,33 @@ export const ComponentFoo = () => {
           jsx: true,
         },
         jsxPragma: 'h',
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          data: {
+            varName: 'React',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3303
+    {
+      code: `
+import React from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: null,
       },
       errors: [
         {

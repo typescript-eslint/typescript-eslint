@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-magic-numbers
----
-
 # Disallow magic numbers (`no-magic-numbers`)
 
 ## Rule Details
@@ -121,8 +116,10 @@ class Foo {
 }
 ```
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-magic-numbers.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-magic-numbers.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

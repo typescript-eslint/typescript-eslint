@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-throw-literal
----
-
 # Disallow throwing literals as exceptions (`no-throw-literal`)
 
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
@@ -96,8 +91,10 @@ throw new CustomError();
 
 ---
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-throw-literal.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-throw-literal.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

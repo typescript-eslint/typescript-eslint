@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-array-constructor
----
-
 # Disallow generic `Array` constructors (`no-array-constructor`)
 
 ## Rule Details
@@ -45,8 +40,10 @@ new Array(someOtherArray.length);
 
 See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-array-constructor#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-array-constructor.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-array-constructor.md)
+## Attributes
 
-:::
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

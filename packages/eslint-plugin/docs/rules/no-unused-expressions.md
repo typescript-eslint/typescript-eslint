@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unused-expressions
----
-
 # Disallow unused expressions (`no-unused-expressions`)
 
 ## Rule Details
@@ -24,8 +19,10 @@ It adds support for optional call expressions `x?.()`, and directive in module d
 
 See [`eslint/no-unused-expressions` options](https://eslint.org/docs/rules/no-unused-expressions#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-expressions.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-expressions.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

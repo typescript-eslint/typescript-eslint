@@ -37,13 +37,14 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               14,
               20,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -95,13 +96,14 @@ Object {
                 "line": 3,
               },
             },
+            "override": false,
             "range": Array [
               23,
               30,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -152,13 +154,14 @@ Object {
                 "line": 4,
               },
             },
+            "override": false,
             "range": Array [
               33,
               40,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "elements": Array [],
               "loc": Object {
@@ -209,13 +212,14 @@ Object {
                 "line": 5,
               },
             },
+            "override": false,
             "range": Array [
               43,
               50,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -267,13 +271,14 @@ Object {
                 "line": 6,
               },
             },
+            "override": false,
             "range": Array [
               53,
               80,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "arguments": Array [
                 Object {

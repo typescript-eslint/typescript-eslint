@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: keyword-spacing
----
-
 # Enforce consistent spacing before and after keywords (`keyword-spacing`)
 
 ## Rule Details
@@ -24,8 +19,10 @@ This version adds support for generic type parameters on function calls.
 
 See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spacing#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/keyword-spacing.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/keyword-spacing.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

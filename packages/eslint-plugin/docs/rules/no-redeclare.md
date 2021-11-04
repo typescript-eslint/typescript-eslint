@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-redeclare
----
-
 # Disallow variable redeclaration (`no-redeclare`)
 
 ## Rule Details
@@ -46,6 +41,7 @@ When set to `true`, the rule will ignore declaration merges between the followin
 - class + namespace
 - class + interface + namespace
 - function + namespace
+- enum + namespace
 
 Examples of **correct** code with `{ ignoreDeclarationMerge: true }`:
 
@@ -81,8 +77,10 @@ type something = string;
 const something = 2;
 ```
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

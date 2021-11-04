@@ -25,7 +25,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Warns if a type assertion does not change the type of an expression',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -137,19 +136,24 @@ export default util.createRule<Options, MessageIds>({
       TSNonNullExpression(node): void {
         if (
           node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
-          node.parent?.operator === '=' &&
-          node.parent.left === node
+          node.parent.operator === '='
         ) {
-          context.report({
-            node,
-            messageId: 'contextuallyUnnecessary',
-            fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
-            },
-          });
+          if (node.parent.left === node) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix(fixer) {
+                return fixer.removeRange([
+                  node.expression.range[1],
+                  node.range[1],
+                ]);
+              },
+            });
+          }
+          // for all other = assignments we ignore non-null checks
+          // this is because non-null assertions can change the type-flow of the code
+          // so whilst they might be unnecessary for the assignment - they are necessary
+          // for following code
           return;
         }
 
@@ -258,15 +262,21 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return originalNode.kind === ts.SyntaxKind.TypeAssertionExpression
-                ? fixer.removeRange([
-                    node.range[0],
-                    node.expression.range[0] - 1,
-                  ])
-                : fixer.removeRange([
-                    node.expression.range[1] + 1,
-                    node.range[1],
-                  ]);
+              if (originalNode.kind === ts.SyntaxKind.TypeAssertionExpression) {
+                const closingAngleBracket = sourceCode.getTokenAfter(
+                  node.typeAnnotation,
+                );
+                return closingAngleBracket?.value === '>'
+                  ? fixer.removeRange([
+                      node.range[0],
+                      closingAngleBracket.range[1],
+                    ])
+                  : null;
+              }
+              return fixer.removeRange([
+                node.expression.range[1] + 1,
+                node.range[1],
+              ]);
             },
           });
         }

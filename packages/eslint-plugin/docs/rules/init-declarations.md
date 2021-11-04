@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: init-declarations
----
-
 # require or disallow initialization in variable declarations (`init-declarations`)
 
 ## Rule Details
@@ -24,8 +19,10 @@ It adds support for TypeScript's `declare` variables.
 
 See [`eslint/init-declarations` options](https://eslint.org/docs/rules/init-declarations#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/init-declarations.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/init-declarations.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

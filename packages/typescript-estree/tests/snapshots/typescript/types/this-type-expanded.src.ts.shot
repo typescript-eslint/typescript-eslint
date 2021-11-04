@@ -38,13 +38,14 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               12,
               29,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
@@ -113,6 +114,7 @@ Object {
                 "line": 4,
               },
             },
+            "override": false,
             "range": Array [
               33,
               91,
@@ -351,6 +353,7 @@ Object {
                 "line": 8,
               },
             },
+            "override": false,
             "range": Array [
               95,
               149,
@@ -608,6 +611,7 @@ Object {
                 "line": 12,
               },
             },
+            "override": false,
             "range": Array [
               153,
               237,
@@ -960,6 +964,7 @@ Object {
                 "line": 17,
               },
             },
+            "override": false,
             "range": Array [
               241,
               322,
@@ -1330,6 +1335,7 @@ Object {
                 "line": 22,
               },
             },
+            "override": false,
             "range": Array [
               326,
               387,
@@ -1586,6 +1592,7 @@ Object {
                 "line": 26,
               },
             },
+            "override": false,
             "range": Array [
               391,
               449,

@@ -1,0 +1,5 @@
+{
+  "root": "packages/parser",
+  "type": "library",
+  "implicitDependencies": []
+}

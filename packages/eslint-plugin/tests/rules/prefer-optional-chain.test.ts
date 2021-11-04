@@ -70,8 +70,7 @@ const baseCases = [
     output: 'foo?.bar?.baz?.buzz()',
   },
   {
-    code:
-      'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
+    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
     output: 'foo?.bar?.baz?.buzz?.()',
   },
   {
@@ -94,8 +93,7 @@ const baseCases = [
   },
   {
     // case with a call expr inside the chain for some inefficient reason
-    code:
-      'foo && foo.bar() && foo.bar().baz && foo.bar().baz.buzz && foo.bar().baz.buzz()',
+    code: 'foo && foo.bar() && foo.bar().baz && foo.bar().baz.buzz && foo.bar().baz.buzz()',
     output: 'foo?.bar()?.baz?.buzz?.()',
   },
   // chained calls with element access
@@ -104,14 +102,12 @@ const baseCases = [
     output: 'foo?.bar?.baz?.[buzz]()',
   },
   {
-    code:
-      'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz] && foo.bar.baz[buzz]()',
+    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz] && foo.bar.baz[buzz]()',
     output: 'foo?.bar?.baz?.[buzz]?.()',
   },
   // (partially) pre-optional chained
   {
-    code:
-      'foo && foo?.bar && foo?.bar.baz && foo?.bar.baz[buzz] && foo?.bar.baz[buzz]()',
+    code: 'foo && foo?.bar && foo?.bar.baz && foo?.bar.baz[buzz] && foo?.bar.baz[buzz]()',
     output: 'foo?.bar?.baz?.[buzz]?.()',
   },
   {
@@ -254,8 +250,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     },
     // case with inconsistent checks
     {
-      code:
-        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+      code: 'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
       output: null,
       errors: [
         {
@@ -468,8 +463,7 @@ foo?.bar(/* comment */a,
     },
     // using suggestion instead of autofix
     {
-      code:
-        'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+      code: 'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
       output: null,
       errors: [
         {

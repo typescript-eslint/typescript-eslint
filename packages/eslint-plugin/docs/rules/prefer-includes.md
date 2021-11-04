@@ -27,6 +27,7 @@ let str: string;
 let array: any[];
 let readonlyArray: ReadonlyArray<any>;
 let typedArray: UInt8Array;
+let maybe: string;
 let userDefined: {
   indexOf(x: any): number;
   includes(x: any): boolean;
@@ -36,6 +37,7 @@ str.indexOf(value) !== -1;
 array.indexOf(value) !== -1;
 readonlyArray.indexOf(value) === -1;
 typedArray.indexOf(value) > -1;
+maybe?.indexOf('') !== -1;
 userDefined.indexOf(value) >= 0;
 
 // simple RegExp test
@@ -74,3 +76,9 @@ There are no options.
 ## When Not To Use It
 
 If you don't want to suggest `includes`, you can safely turn this rule off.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

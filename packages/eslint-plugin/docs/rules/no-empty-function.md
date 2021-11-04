@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-empty-function
----
-
 # Disallow empty functions (`no-empty-function`)
 
 ## Rule Details
@@ -92,8 +87,10 @@ class Foo {
 
 ---
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md)
+## Attributes
 
-:::
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

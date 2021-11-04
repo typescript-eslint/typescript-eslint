@@ -6,7 +6,7 @@ sidebar_label: no-unsafe-return
 # Disallows returning any from a function (`no-unsafe-return`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Returned `any` typed values not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
 
 ## Rule Details
 
@@ -92,3 +92,9 @@ function foo2(): unknown[] {
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

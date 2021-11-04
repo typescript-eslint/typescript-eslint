@@ -149,3 +149,9 @@ TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inferen
 ## Compatibility
 
 TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferrable-types/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

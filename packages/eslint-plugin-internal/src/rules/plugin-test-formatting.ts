@@ -108,7 +108,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: `Enforces that eslint-plugin test snippets are correctly formatted`,
-      category: 'Stylistic Issues',
       recommended: 'error',
     },
     fixable: 'code',
@@ -408,7 +407,9 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isNoFormatTemplateTag(tag: TSESTree.Expression): boolean {
+    function isNoFormatTemplateTag(
+      tag: TSESTree.LeftHandSideExpression,
+    ): boolean {
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 
@@ -488,7 +489,8 @@ export default createRule<Options, MessageIds>({
 
     return {
       // valid
-      'CallExpression > ObjectExpression > Property[key.name = "valid"] > ArrayExpression': checkValidTest,
+      'CallExpression > ObjectExpression > Property[key.name = "valid"] > ArrayExpression':
+        checkValidTest,
       // invalid - errors
       [invalidTestsSelectorPath.join(' > ')]: checkInvalidTest,
       // invalid - suggestions
@@ -502,7 +504,8 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ObjectExpression,
       ].join(' > ')]: checkInvalidTest,
       // special case for our batchedSingleLineTests utility
-      'CallExpression[callee.name = "batchedSingleLineTests"] > ObjectExpression': checkInvalidTest,
+      'CallExpression[callee.name = "batchedSingleLineTests"] > ObjectExpression':
+        checkInvalidTest,
     };
   },
 });

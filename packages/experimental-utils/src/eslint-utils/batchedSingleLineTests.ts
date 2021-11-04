@@ -24,17 +24,17 @@ function batchedSingleLineTests<TOptions extends Readonly<unknown[]>>(
  */
 function batchedSingleLineTests<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   test: InvalidTestCase<TMessageIds, TOptions>,
 ): InvalidTestCase<TMessageIds, TOptions>[];
 function batchedSingleLineTests<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   options: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
-  // eslint counts lines from 1
+  // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
   const output =
     'output' in options && options.output

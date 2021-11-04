@@ -25,7 +25,9 @@ function createValidator(
   type: SelectorsString,
   context: Context,
   allConfigs: NormalizedSelector[],
-): (node: TSESTree.Identifier | TSESTree.Literal) => void {
+): (
+  node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+) => void {
   // make sure the "highest priority" configs are checked first
   const selectorType = Selectors[type];
   const configs = allConfigs
@@ -70,11 +72,14 @@ function createValidator(
     });
 
   return (
-    node: TSESTree.Identifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     modifiers: Set<Modifiers> = new Set<Modifiers>(),
   ): void => {
     const originalName =
-      node.type === AST_NODE_TYPES.Identifier ? node.name : `${node.value}`;
+      node.type === AST_NODE_TYPES.Identifier ||
+      node.type === AST_NODE_TYPES.PrivateIdentifier
+        ? node.name
+        : `${node.value}`;
 
     // return will break the loop and stop checking configs
     // it is only used when the name is known to have failed or succeeded a config.
@@ -178,7 +183,7 @@ function createValidator(
     position: 'leading' | 'trailing',
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
   ): string | null {
     const option =
@@ -299,7 +304,7 @@ function createValidator(
     position: 'prefix' | 'suffix',
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
   ): string | null {
     const affixes = config[position];
@@ -339,7 +344,7 @@ function createValidator(
   function validateCustom(
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
   ): boolean {
     const custom = config.custom;
@@ -372,7 +377,7 @@ function createValidator(
   function validatePredefinedFormat(
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
   ): boolean {
     const formats = config.format;

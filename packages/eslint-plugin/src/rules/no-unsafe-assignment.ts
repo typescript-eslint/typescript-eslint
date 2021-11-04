@@ -2,8 +2,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
+import { getThisExpression } from '../util';
 
 const enum ComparisonType {
   /** Do no assignment comparison */
@@ -20,18 +22,21 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallows assigning any to variables and properties',
-      category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an any value.',
-      unsafeArrayPattern: 'Unsafe array destructuring of an any array value.',
+      anyAssignment: 'Unsafe assignment of an `any` value.',
+      anyAssignmentThis: [
+        'Unsafe assignment of an `any` value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+      unsafeArrayPattern: 'Unsafe array destructuring of an `any` array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an any value.',
+        'Unsafe array destructuring of a tuple element with an `any` value.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an any value in an array.',
+      unsafeArraySpread: 'Unsafe spread of an `any` value in an array.',
     },
     schema: [],
   },
@@ -39,6 +44,11 @@ export default util.createRule({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+    const compilerOptions = program.getCompilerOptions();
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'noImplicitThis',
+    );
 
     // returns true if the assignment reported
     function checkArrayDestructureHelper(
@@ -243,9 +253,27 @@ export default util.createRule({
           return false;
         }
 
+        let messageId: 'anyAssignment' | 'anyAssignmentThis' = 'anyAssignment';
+
+        if (!isNoImplicitThis) {
+          // `var foo = this`
+          const thisExpression = getThisExpression(senderNode);
+          if (
+            thisExpression &&
+            util.isTypeAnyType(
+              util.getConstrainedTypeAtLocation(
+                checker,
+                esTreeNodeToTSNodeMap.get(thisExpression),
+              ),
+            )
+          ) {
+            messageId = 'anyAssignmentThis';
+          }
+        }
+
         context.report({
           node: reportingNode,
-          messageId: 'anyAssignment',
+          messageId,
         });
         return true;
       }
@@ -254,7 +282,12 @@ export default util.createRule({
         return false;
       }
 
-      const result = util.isUnsafeAssignment(senderType, receiverType, checker);
+      const result = util.isUnsafeAssignment(
+        senderType,
+        receiverType,
+        checker,
+        senderNode,
+      );
       if (!result) {
         return false;
       }
@@ -303,7 +336,9 @@ export default util.createRule({
           checkObjectDestructureHelper(node.id, init);
         }
       },
-      'ClassProperty[value != null]'(node: TSESTree.ClassProperty): void {
+      'PropertyDefinition[value != null]'(
+        node: TSESTree.PropertyDefinition,
+      ): void {
         checkAssignment(
           node.key,
           node.value!,

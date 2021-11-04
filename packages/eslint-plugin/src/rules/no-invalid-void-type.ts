@@ -23,19 +23,18 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallows usage of `void` type outside of generic or return types',
-      category: 'Best Practices',
       recommended: false,
     },
     messages: {
       invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type variable',
+        '{{ generic }} may not have void as a type variable.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable',
-      invalidVoidNotReturn: 'void is only valid as a return type',
+        'void is only valid as a return type or generic type variable.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of `this` parameter',
+        'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type variable or the type of a `this` parameter',
+        'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
     },
     schema: [
       {
@@ -69,7 +68,7 @@ export default util.createRule<[Options], MessageIds>({
     const invalidGrandParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.CallExpression,
-      AST_NODE_TYPES.ClassProperty,
+      AST_NODE_TYPES.PropertyDefinition,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [

@@ -1,7 +1,8 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 import {
   checkFunctionExpressionReturnType,
@@ -36,8 +37,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      category: 'Stylistic Issues',
-      recommended: 'warn',
+      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -129,7 +129,6 @@ export default util.createRule<Options, MessageIds>({
       TSExportAssignment(node): void {
         checkNode(node.expression);
       },
-
       'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
         node: FunctionNode,
       ): void {
@@ -294,11 +293,12 @@ export default util.createRule<Options, MessageIds>({
       for (const definition of variable.defs) {
         // cases we don't care about in this rule
         if (
-          definition.type === 'ImplicitGlobalVariable' ||
-          definition.type === 'ImportBinding' ||
-          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-          definition.type === 'CatchClause' ||
-          definition.type === 'Parameter'
+          [
+            DefinitionType.ImplicitGlobalVariable,
+            DefinitionType.ImportBinding,
+            DefinitionType.CatchClause,
+            DefinitionType.Parameter,
+          ].includes(definition.type)
         ) {
           continue;
         }
@@ -335,9 +335,11 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.ClassProperty:
-        case AST_NODE_TYPES.TSAbstractClassProperty:
-          if (node.accessibility === 'private') {
+        case AST_NODE_TYPES.PropertyDefinition:
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);
@@ -354,7 +356,10 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (node.accessibility === 'private') {
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);

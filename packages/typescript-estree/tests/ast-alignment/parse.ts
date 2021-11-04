@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 import type babelParser from '@babel/parser';
-import { ParserPlugin } from '@babel/parser';
+import type { ParserPlugin } from '@babel/parser';
 import { codeFrameColumns } from '@babel/code-frame';
-import * as parser from '../../src/parser';
+import type { File } from '@babel/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST, parseAndGenerateServices } from '../../src/parser';
+import type { TSError } from '../../src/node-utils';
 
 function createError(
   message: string,
@@ -19,12 +21,18 @@ function createError(
   return error;
 }
 
-function parseWithBabelParser(text: string, jsx = true): any {
-  const babel: typeof babelParser = require('@babel/parser');
+function parseWithBabelParser(text: string, jsx = true): File {
+  const babel = require('@babel/parser') as typeof babelParser;
   const plugins: ParserPlugin[] = [
-    'classProperties',
+    [
+      'estree',
+      {
+        // @ts-expect-error -- this isn't exposed in the types yet
+        classFeatures: true,
+      },
+    ],
     'decorators-legacy',
-    'estree',
+    'classStaticBlock',
     'typescript',
   ];
   if (jsx) {
@@ -40,14 +48,13 @@ function parseWithBabelParser(text: string, jsx = true): any {
   });
 }
 
-function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
+function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
   try {
-    const result = parser.parseAndGenerateServices(text, {
+    const result = parseAndGenerateServices(text, {
       loc: true,
       range: true,
       tokens: false,
       comment: false,
-      useJSXTextNode: true,
       errorOnUnknownASTType: true,
       /**
        * Babel will always throw on these types of issues, so we enable
@@ -59,8 +66,10 @@ function parseWithTypeScriptESTree(text: string, jsx = true): parser.AST<any> {
       jsx,
     });
     return result.ast;
-  } catch (e) {
-    throw createError(e.message, e.lineNumber, e.column);
+  } catch (e: unknown) {
+    const error = e as TSError;
+
+    throw createError(error.message, error.lineNumber, error.column);
   }
 }
 
@@ -95,8 +104,8 @@ export function parse(
           'Please provide a valid parser: either "typescript-estree" or "@babel/parser"',
         );
     }
-  } catch (error) {
-    const loc = error.loc;
+  } catch (error: any) {
+    const loc = error.loc as TSESTree.Position | undefined;
     if (loc) {
       error.codeFrame = codeFrameColumns(
         text,
@@ -112,6 +121,7 @@ export function parse(
       );
       error.message += `\n${error.codeFrame}`;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result.parseError = error;
   }
 

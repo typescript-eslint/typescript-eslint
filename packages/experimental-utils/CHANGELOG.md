@@ -3,6 +3,333 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.2.0...v5.3.0) (2021-11-01)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add `name` property to test case interface ([#4067](https://github.com/typescript-eslint/typescript-eslint/issues/4067)) ([f3021c9](https://github.com/typescript-eslint/typescript-eslint/commit/f3021c94460e8d06e4169335bcc1a23854531f2a))
+
+
+### Features
+
+* **experimental-utils:** extract `isTokenOfTypeWithConditions` out of `ast-utils`' `predicates` ([#3977](https://github.com/typescript-eslint/typescript-eslint/issues/3977)) ([5229597](https://github.com/typescript-eslint/typescript-eslint/commit/5229597d9bfc998852c4b4fb421859e8f3d3d688))
+
+
+
+
+
+# [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
+
+
+### Features
+
+* **experimental-utils:** extract `ast-utils`' `predicates`' helpers ([#3976](https://github.com/typescript-eslint/typescript-eslint/issues/3976)) ([154ec9a](https://github.com/typescript-eslint/typescript-eslint/commit/154ec9aea8e81732cafe36af97c4822f1591b077))
+
+
+
+
+
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Bug Fixes
+
+* **experimental-utils:** fix `isSetter`'s return type ([#3975](https://github.com/typescript-eslint/typescript-eslint/issues/3975)) ([d256856](https://github.com/typescript-eslint/typescript-eslint/commit/d2568561d0417fdfbdfd964ad942f9d00434af73))
+
+
+### Features
+
+* **ast-spec:** bring `Node` objects in line with ESTree ([#3771](https://github.com/typescript-eslint/typescript-eslint/issues/3771)) ([dd14064](https://github.com/typescript-eslint/typescript-eslint/commit/dd140643b457aa515cc21fcda2b3cd4acc2a1c5c))
+* align class property representation with ESTree ([#3806](https://github.com/typescript-eslint/typescript-eslint/issues/3806)) ([22fa5c0](https://github.com/typescript-eslint/typescript-eslint/commit/22fa5c0c4705ed2898f00b7cacc5dd642d859275)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#3077](https://github.com/typescript-eslint/typescript-eslint/issues/3077)
+* remove `meta.docs.category` from rules ([#3800](https://github.com/typescript-eslint/typescript-eslint/issues/3800)) ([71c9370](https://github.com/typescript-eslint/typescript-eslint/commit/71c93706e55f5f92a1285102b93c6ab1950c6df4))
+* remove `TSParenthesizedType` ([#3340](https://github.com/typescript-eslint/typescript-eslint/issues/3340)) ([c8ee432](https://github.com/typescript-eslint/typescript-eslint/commit/c8ee43269faea4c04ec02eaa2b81a0aa6eec5d3e)), closes [#3136](https://github.com/typescript-eslint/typescript-eslint/issues/3136)
+* support ESLint v8 ([#3737](https://github.com/typescript-eslint/typescript-eslint/issues/3737)) ([4ca62ae](https://github.com/typescript-eslint/typescript-eslint/commit/4ca62aee6681d706e762a8db727541ca204364f2))
+* **experimental-utils:** extract `isNodeOfTypes` out of `ast-utils`' `predicates` ([#3836](https://github.com/typescript-eslint/typescript-eslint/issues/3836)) ([0cc509b](https://github.com/typescript-eslint/typescript-eslint/commit/0cc509b61df248cfb4b42fe64ec800f3cac69c69))
+* **experimental-utils:** remove `getComments` from `ESLint` `SourceCode` types ([#3766](https://github.com/typescript-eslint/typescript-eslint/issues/3766)) ([165a507](https://github.com/typescript-eslint/typescript-eslint/commit/165a507970d8e4a0ed12abdd5f0d892f7de83ffe))
+
+
+
+
+
+# [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add `getPhysicalFilename()` to `RuleContext` ([#3934](https://github.com/typescript-eslint/typescript-eslint/issues/3934)) ([ee5dfd4](https://github.com/typescript-eslint/typescript-eslint/commit/ee5dfd4989ab465d65ba3424e36b7f0964558191))
+* **experimental-utils:** require fix in suggestions ([#3949](https://github.com/typescript-eslint/typescript-eslint/issues/3949)) ([f022fb1](https://github.com/typescript-eslint/typescript-eslint/commit/f022fb14c71dad25be2314252eb751964f34fcb8))
+
+
+### Features
+
+* **experimental-utils:** extract `isNodeOfTypeWithConditions` out of `ast-utils`' `predicates` ([#3837](https://github.com/typescript-eslint/typescript-eslint/issues/3837)) ([214f898](https://github.com/typescript-eslint/typescript-eslint/commit/214f898178ba593146d06a444487d32ec3363854))
+
+
+
+
+
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Bug Fixes
+
+* **experimental-utils:** add missing signature for `isParenthesized` ([#3887](https://github.com/typescript-eslint/typescript-eslint/issues/3887)) ([806eaac](https://github.com/typescript-eslint/typescript-eslint/commit/806eaac6af5325664634690e9ebd7ffaed276549))
+
+
+
+
+
+## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.31.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.0...v4.31.1) (2021-09-13)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.30.0...v4.31.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* **utils:** support immutable arrays in `ReportFixFunction` ([#3830](https://github.com/typescript-eslint/typescript-eslint/issues/3830)) ([8218055](https://github.com/typescript-eslint/typescript-eslint/commit/8218055d6dfd94c9e6c8645848f981d9d51ce08c))
+
+
+### Features
+
+* **experimental-utils:** extract `isNodeOfType` out of `ast-utils`' `predicates` ([#3677](https://github.com/typescript-eslint/typescript-eslint/issues/3677)) ([4bfa437](https://github.com/typescript-eslint/typescript-eslint/commit/4bfa4375aff8f65057d4aa116e435803cbc6b464))
+
+
+
+
+
+# [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
+
+
+### Features
+
+* **experimental-utils:** add literal types to `global` option ([#3634](https://github.com/typescript-eslint/typescript-eslint/issues/3634)) ([820965c](https://github.com/typescript-eslint/typescript-eslint/commit/820965c41c58be918770ff6bbae313c0cfc75d3c))
+
+
+
+
+
+## [4.29.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.2...v4.29.3) (2021-08-23)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.29.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.1...v4.29.2) (2021-08-16)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.29.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.0...v4.29.1) (2021-08-09)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Bug Fixes
+
+* **experimental-utils:** simplify `eslint-utils`' `findVariable`'s signature in `ast-utils` ([#3574](https://github.com/typescript-eslint/typescript-eslint/issues/3574)) ([3ef5267](https://github.com/typescript-eslint/typescript-eslint/commit/3ef5267b850e1ffb7115e263e89a98c455fd2532))
+
+
+### Features
+
+* **ast-spec:** make `BaseNode` & `BaseToken` more type-safe ([#3560](https://github.com/typescript-eslint/typescript-eslint/issues/3560)) ([a6c5604](https://github.com/typescript-eslint/typescript-eslint/commit/a6c5604b65b6330d047aa016fc46b8a597a6ae58))
+
+
+
+
+
+## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.28.4](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.3...v4.28.4) (2021-07-19)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.28.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.2...v4.28.3) (2021-07-12)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.28.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.1...v4.28.2) (2021-07-05)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+## [4.28.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.0...v4.28.1) (2021-06-28)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.27.0...v4.28.0) (2021-06-21)
+
+
+### Bug Fixes
+
+* **experimental-utils:** expand `RuleTester` config properties ([#3557](https://github.com/typescript-eslint/typescript-eslint/issues/3557)) ([ffbb3cf](https://github.com/typescript-eslint/typescript-eslint/commit/ffbb3cff18bc78467e70e794f9b1f0e79be4aff7))
+* **experimental-utils:** fix `eslint-utils`' negative predicates' return types ([#3462](https://github.com/typescript-eslint/typescript-eslint/issues/3462)) ([1e6016b](https://github.com/typescript-eslint/typescript-eslint/commit/1e6016b356ae40e4636a3cbe41fa02b6a61403ee))
+* **experimental-utils:** fix `eslint-utils`' negative predicates' return types in `ast-utils` ([#3461](https://github.com/typescript-eslint/typescript-eslint/issues/3461)) ([614b0a3](https://github.com/typescript-eslint/typescript-eslint/commit/614b0a38b4163eb4667cce7a415d534222d15dd3))
+* **experimental-utils:** make keys for `ReferenceTracker` options optional ([#3531](https://github.com/typescript-eslint/typescript-eslint/issues/3531)) ([a7fd7bb](https://github.com/typescript-eslint/typescript-eslint/commit/a7fd7bb25584cb3f72f0339025dc76efa6cccceb))
+
+
+### Features
+
+* **experimental-utils:** add `only` property to `RuleTester` types ([#3555](https://github.com/typescript-eslint/typescript-eslint/issues/3555)) ([2a36e3e](https://github.com/typescript-eslint/typescript-eslint/commit/2a36e3e737f935cc6b967befb022d10a83c8bc9b))
+* **experimental-utils:** expose ReferenceTracker.ESM ([#3532](https://github.com/typescript-eslint/typescript-eslint/issues/3532)) ([4ac67c4](https://github.com/typescript-eslint/typescript-eslint/commit/4ac67c4c9401c5ce0e947a6409efbc11afe1eb3b))
+* **experimental-utils:** use mergable interface for `settings` property ([#3556](https://github.com/typescript-eslint/typescript-eslint/issues/3556)) ([abfc19b](https://github.com/typescript-eslint/typescript-eslint/commit/abfc19bf9364d881bdf594ee166a1deb23240630))
+
+
+
+
+
+# [4.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.1...v4.27.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* **typescript-estree:** allow providing more one than one existing program in config ([#3508](https://github.com/typescript-eslint/typescript-eslint/issues/3508)) ([4f1806e](https://github.com/typescript-eslint/typescript-eslint/commit/4f1806e548affb7265da360d1fc8d033e25de325))
+
+
+
+
+
+## [4.26.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.26.0...v4.26.1) (2021-06-07)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.25.0...v4.26.0) (2021-05-31)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.24.0...v4.25.0) (2021-05-24)
+
+
+### Bug Fixes
+
+* **experimental-utils:** fix `isAwaitKeyword` predicate in ast-utils ([#3290](https://github.com/typescript-eslint/typescript-eslint/issues/3290)) ([c15da67](https://github.com/typescript-eslint/typescript-eslint/commit/c15da67b939b615ed063291cde12c55c0d6d236e))
+
+
+
+
+
+# [4.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.23.0...v4.24.0) (2021-05-17)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.22.1...v4.23.0) (2021-05-10)
+
+
+### Features
+
+* **experimental-utils:** Include `getCwd()` in `RuleContext` type ([#3308](https://github.com/typescript-eslint/typescript-eslint/issues/3308)) ([2b75c11](https://github.com/typescript-eslint/typescript-eslint/commit/2b75c11d69bee88ca0cb77d7efd32b8d0387e6b3))
+* refactor to split AST specification out as its own module ([#2911](https://github.com/typescript-eslint/typescript-eslint/issues/2911)) ([25ea953](https://github.com/typescript-eslint/typescript-eslint/commit/25ea953cc60b118bd385c71e0a9b61c286c26fcf))
+
+
+
+
+
+## [4.22.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.22.0...v4.22.1) (2021-05-04)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.21.0...v4.22.0) (2021-04-12)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.20.0...v4.21.0) (2021-04-05)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.19.0...v4.20.0) (2021-03-29)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
+# [4.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.18.0...v4.19.0) (2021-03-22)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+
+
+
+
 # [4.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.17.0...v4.18.0) (2021-03-15)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

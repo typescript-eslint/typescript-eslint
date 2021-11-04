@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: default-param-last
----
-
 # Enforce default parameters to be last (`default-param-last`)
 
 ## Rule Details
@@ -58,8 +53,10 @@ class Foo {
 
 See [`eslint/default-param-last` options](https://eslint.org/docs/rules/default-param-last#options).
 
-:::note
+<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/default-param-last.md)</sup>
 
-Taken with ❤ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/default-param-last.md)
+## Attributes
 
-:::
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

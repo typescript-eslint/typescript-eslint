@@ -7,7 +7,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallows awaiting a value that is not a Thenable',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },

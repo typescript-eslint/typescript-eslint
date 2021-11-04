@@ -1,0 +1,5 @@
+{
+  "root": "packages/eslint-plugin-internal",
+  "type": "library",
+  "implicitDependencies": []
+}

@@ -119,3 +119,9 @@ This matrix lists all possible option combinations and their expected results fo
 ## Related to
 
 - TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

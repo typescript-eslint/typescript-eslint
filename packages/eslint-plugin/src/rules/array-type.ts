@@ -92,7 +92,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -132,13 +131,8 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getMessageType(node: TSESTree.Node): string {
-      if (node) {
-        if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
-          return getMessageType(node.typeAnnotation);
-        }
-        if (isSimpleType(node)) {
-          return sourceCode.getText(node);
-        }
+      if (node && isSimpleType(node)) {
+        return sourceCode.getText(node);
       }
       return 'T';
     }
@@ -172,11 +166,7 @@ export default util.createRule<Options, MessageIds>({
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
-            const typeNode =
-              node.elementType.type === AST_NODE_TYPES.TSParenthesizedType
-                ? node.elementType.typeAnnotation
-                : node.elementType;
-
+            const typeNode = node.elementType;
             const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
 
             return [
@@ -244,9 +234,12 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const typeParens = typeNeedsParentheses(type);
+        const typeParens =
+          !util.isParenthesized(type, sourceCode) && typeNeedsParentheses(type);
         const parentParens =
-          readonlyPrefix && node.parent?.type === AST_NODE_TYPES.TSArrayType;
+          readonlyPrefix &&
+          node.parent?.type === AST_NODE_TYPES.TSArrayType &&
+          !util.isParenthesized(node.parent.elementType, sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

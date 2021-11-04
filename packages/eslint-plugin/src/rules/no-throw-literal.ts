@@ -11,7 +11,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow throwing literals as exceptions',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
       requiresTypeChecking: true,

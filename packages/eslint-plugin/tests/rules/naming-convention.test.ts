@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule, { MessageIds, Options } from '../../src/rules/naming-convention';
 import {
   PredefinedFormatsString,
-  selectorTypeToMessageString,
   Selector,
+  selectorTypeToMessageString,
 } from '../../src/rules/naming-convention-utils';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -485,7 +486,9 @@ const cases: Cases = [
       'interface Ignored { %: string }',
       'type Ignored = { %: string }',
       'class Ignored { private % = 1 }',
+      'class Ignored { #% = 1 }',
       'class Ignored { constructor(private %) {} }',
+      'class Ignored { #%() {} }',
       'class Ignored { private %() {} }',
       'const ignored = { %() {} };',
       'class Ignored { private get %() {} }',
@@ -561,6 +564,8 @@ const cases: Cases = [
       'class Ignored { private static readonly % = 1 }',
       'class Ignored { abstract % = 1 }',
       'class Ignored { declare % }',
+      'class Ignored { #% }',
+      'class Ignored { static #% }',
     ],
     options: {
       selector: 'classProperty',
@@ -616,6 +621,8 @@ const cases: Cases = [
       'class Ignored { private % = () => {} }',
       'class Ignored { abstract %() }',
       'class Ignored { declare %() }',
+      'class Ignored { #%() }',
+      'class Ignored { static #%() }',
     ],
     options: {
       selector: 'classMethod',
@@ -652,6 +659,7 @@ const cases: Cases = [
       'class Ignored { private get %() {} }',
       'class Ignored { private set "%"(ignored) {} }',
       'class Ignored { private static get %() {} }',
+      'class Ignored { static get #%() {} }',
     ],
     options: {
       selector: 'accessor',
@@ -1314,7 +1322,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
 
         export const used_var = 1;
@@ -1328,7 +1336,7 @@ ruleTester.run('naming-convention', rule, {
         export interface used_interface {}
         export type used_type<
           // this line is intentionally broken out
-          used_typeparam
+          used_typeparam,
         > = used_typeparam;
       `,
       options: [
@@ -2157,7 +2165,7 @@ ruleTester.run('naming-convention', rule, {
         interface UnusedInterface {}
         type UnusedType<
           // this line is intentionally broken out
-          UnusedTypeParam
+          UnusedTypeParam,
         > = {};
       `,
       options: [

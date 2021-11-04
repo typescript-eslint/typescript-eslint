@@ -4,25 +4,11 @@
 
 import { ImplicitLibVariableOptions } from '../variable';
 import { es2018_asynciterable } from './es2018.asynciterable';
+import { TYPE } from './base-config';
 
 export const es2018_asyncgenerator = {
   ...es2018_asynciterable,
-  AsyncGenerator: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncGenerator',
-  },
-  AsyncGeneratorFunction: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncGeneratorFunction',
-  },
-  AsyncGeneratorFunctionConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'AsyncGeneratorFunctionConstructor',
-  },
+  AsyncGenerator: TYPE,
+  AsyncGeneratorFunction: TYPE,
+  AsyncGeneratorFunctionConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
