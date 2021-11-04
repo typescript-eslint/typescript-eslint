@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unsafe-member-access
----
-
 # Disallows member access on any typed variables (`no-unsafe-member-access`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.

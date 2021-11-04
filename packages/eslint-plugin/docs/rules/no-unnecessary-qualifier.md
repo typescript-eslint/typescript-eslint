@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unnecessary-qualifier
----
-
 # Warns when a namespace qualifier is unnecessary (`no-unnecessary-qualifier`)
 
 ## Rule Details

@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: naming-convention
----
-
 # Enforces naming conventions for everything across a codebase (`naming-convention`)
 
 Enforcing naming conventions helps keep the codebase consistent, and reduces overhead when thinking about how to name a variable.

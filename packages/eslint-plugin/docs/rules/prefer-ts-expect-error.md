@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: prefer-ts-expect-error
----
-
 # Recommends using `@ts-expect-error` over `@ts-ignore` (`prefer-ts-expect-error`)
 
 TypeScript allows you to suppress all errors on a line by placing a single-line comment or a comment block line starting with `@ts-ignore` immediately before the erroring line.

@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: explicit-module-boundary-types
----
-
 # Require explicit return and argument types on exported functions' and classes' public class methods (`explicit-module-boundary-types`)
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.

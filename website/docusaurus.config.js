@@ -1,3 +1,9 @@
+// @ts-check
+// Note: type annotations allow type checking and IDEs autocompletion
+
+const lightCodeTheme = require('prism-react-renderer/themes/github');
+const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+
 const sponsors = require('./data/sponsors.json');
 
 const remarkPlugins = [
@@ -6,7 +12,8 @@ const remarkPlugins = [
 
 const githubUrl = 'https://github.com/armano2/typescript-eslint';
 
-module.exports = {
+/** @type {import('@docusaurus/types').Config} */
+const config = {
   title: 'TypeScript ESLint ',
   tagline: 'Tooling which enables ESLint to support TypeScript',
   url: 'https://typescript-eslint.io',
@@ -52,58 +59,60 @@ module.exports = {
       },
     ],
   ],
-  themeConfig: {
-    // sidebarCollapsible: false,
-    navbar: {
-      title: 'TypeScript ESLint',
-      // hideOnScroll: true,
-      logo: {
-        alt: 'TypeScript ESLint',
-        src: 'img/logo.svg',
-        // srcDark: 'img/logo-dark.svg',
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // sidebarCollapsible: false,
+      navbar: {
+        title: 'TypeScript ESLint',
+        // hideOnScroll: true,
+        logo: {
+          alt: 'TypeScript ESLint',
+          src: 'img/logo.svg',
+          // srcDark: 'img/logo-dark.svg',
+        },
+        // style: 'primary',
+        items: [
+          {
+            to: 'docs/',
+            activeBasePath: 'docs',
+            label: 'Getting started',
+            position: 'left',
+          },
+          {
+            to: 'rules/ban-types',
+            activeBasePath: 'rules',
+            label: 'Rules',
+            position: 'left',
+          },
+          {
+            to: 'repl',
+            activeBasePath: 'repl',
+            position: 'right',
+            label: 'Playground',
+          },
+          {
+            href: githubUrl,
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          },
+        ],
       },
-      // style: 'primary',
-      items: [
-        {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Getting started',
-          position: 'left',
+      footer: {
+        logo: {
+          alt: 'Deploys by Netlify',
+          src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
+          href: 'https://www.netlify.com',
         },
-        {
-          to: 'rules/ban-types',
-          activeBasePath: 'rules',
-          label: 'Rules',
-          position: 'left',
-        },
-        {
-          to: 'repl',
-          activeBasePath: 'repl',
-          position: 'right',
-          label: 'Playground',
-        },
-        {
-          href: githubUrl,
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
-        },
-      ],
-    },
-    footer: {
-      logo: {
-        alt: 'Deploys by Netlify',
-        src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
-        href: 'https://www.netlify.com',
+        // style: 'primary',
+        copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
       },
-      // style: 'primary',
-      copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
-    },
-    prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/dracula'),
-    },
-  },
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+      },
+    }),
 };
 
 /*
@@ -114,3 +123,5 @@ module.exports = {
 <meta name="msapplication-TileColor" content="#443fd4">
 <meta name="theme-color" content="#443fd4">
 */
+
+module.exports = config;

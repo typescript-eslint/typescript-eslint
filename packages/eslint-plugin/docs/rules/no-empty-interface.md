@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-empty-interface
----
-
 # Disallow the declaration of empty interfaces (`no-empty-interface`)
 
 An empty interface is equivalent to its supertype. If the interface does not implement a supertype, then

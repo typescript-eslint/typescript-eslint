@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: method-signature-style
----
-
 # Enforces using a particular method signature syntax. (`method-signature-style`)
 
 There are two ways to define an object/interface function property.

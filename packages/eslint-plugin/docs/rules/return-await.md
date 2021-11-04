@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: return-await
----
-
 # Enforces consistent returning of awaited values (`return-await`)
 
 Returning an awaited promise can make sense for better stack trace information as well as for consistent error handling (returned promises will not be caught in an async function try/catch).

@@ -1,5 +1,5 @@
 import type { ParserOptions } from '@typescript-eslint/types';
-import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
+import type { TSESLint } from '@typescript-eslint/experimental-utils';
 import type {
   RuleCreateFunction,
   RuleModule,
@@ -10,22 +10,25 @@ const PARSER_NAME = '@typescript-eslint/parser';
 
 export interface WebLinter {
   ruleNames: string[];
+
   getAst(): ParseForESLintResult['ast'];
+
   lint(
     code: string,
     parserOptions: ParserOptions,
-    rules?: Linter.RulesRecord,
-  ): Linter.LintMessage[];
+    rules?: TSESLint.Linter.RulesRecord,
+  ): TSESLint.Linter.LintMessage[];
 }
 
 export async function loadLinter(): Promise<WebLinter> {
-  const rules: Record<
+  const rules = (await import('@typescript-eslint/eslint-plugin/dist/rules'))
+    .default as Record<
     string,
     RuleCreateFunction | RuleModule<string, unknown[]>
-  > = (await import('@typescript-eslint/eslint-plugin/dist/rules')).default;
+  >;
   const { parseForESLint } = await import(`./parser`);
-  const { Linter } = await import('eslint/lib/linter/linter');
-  const linter: Linter = new Linter();
+  const { Linter } = await import('eslint');
+  const linter = new Linter() as unknown as TSESLint.Linter;
   let storedAST: ParseForESLintResult['ast'];
 
   linter.defineParser(PARSER_NAME, {
@@ -50,14 +53,14 @@ export async function loadLinter(): Promise<WebLinter> {
 
   return {
     ruleNames,
-    getAst(): Linter.ESLintParseResult['ast'] {
+    getAst(): TSESLint.Linter.ESLintParseResult['ast'] {
       return storedAST;
     },
     lint(
       code: string,
       parserOptions: ParserOptions,
-      rules?: Linter.RulesRecord,
-    ): Linter.LintMessage[] {
+      rules?: TSESLint.Linter.RulesRecord,
+    ): TSESLint.Linter.LintMessage[] {
       return linter.verify(code, {
         parser: PARSER_NAME,
         parserOptions,

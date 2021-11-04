@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: promise-function-async
----
-
 # Requires any function or method that returns a Promise to be marked async (`promise-function-async`)
 
 Requires any function or method that returns a Promise to be marked async.

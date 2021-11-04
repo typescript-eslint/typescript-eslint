@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: prefer-for-of
----
-
 # Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated (`prefer-for-of`)
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.

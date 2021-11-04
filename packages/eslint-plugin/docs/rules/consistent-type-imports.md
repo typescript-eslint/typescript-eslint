@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: consistent-type-imports
----
-
 # Enforces consistent usage of type imports (`consistent-type-imports`)
 
 TypeScript 3.8 added support for type-only imports.

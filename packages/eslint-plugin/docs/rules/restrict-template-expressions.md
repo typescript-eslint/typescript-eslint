@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: restrict-template-expressions
----
-
 # Enforce template literal expressions to be of string type (`restrict-template-expressions`)
 
 Examples of **correct** code:

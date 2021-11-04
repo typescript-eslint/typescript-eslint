@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: explicit-member-accessibility
----
-
 # Require explicit accessibility modifiers on class properties and methods (`explicit-member-accessibility`)
 
 Leaving off accessibility modifier and making everything public can make

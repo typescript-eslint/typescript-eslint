@@ -1,6 +1,6 @@
-import 'isomorphic-fetch';
-import { writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import * as fs from 'fs';
+import fetch from 'node-fetch';
+import * as path from 'path';
 
 const getFileAndStoreLocally = async (
   url: string,
@@ -9,18 +9,18 @@ const getFileAndStoreLocally = async (
 ): Promise<void> => {
   const packageJSON = await fetch(url);
   const contents = await packageJSON.text();
-  writeFileSync(path, editFunc(contents), 'utf8');
+  fs.writeFileSync(path, editFunc(contents), 'utf8');
 };
 
 async function run(): Promise<void> {
-  const vendor = join(__dirname, '..', 'website', 'src', 'vendor');
-  const ds = join(vendor, 'ds');
+  const vendor = path.join(__dirname, '..', 'website', 'src', 'vendor');
+  const ds = path.join(vendor, 'ds');
 
-  if (!existsSync(vendor)) {
-    mkdirSync(vendor);
+  if (!fs.existsSync(vendor)) {
+    fs.mkdirSync(vendor);
   }
-  if (!existsSync(ds)) {
-    mkdirSync(ds);
+  if (!fs.existsSync(ds)) {
+    fs.mkdirSync(ds);
   }
 
   const host = 'https://www.staging-typescript.org';
@@ -28,13 +28,13 @@ async function run(): Promise<void> {
   // The API for the monaco typescript worker
   await getFileAndStoreLocally(
     host + '/js/sandbox/tsWorker.d.ts',
-    join(vendor, 'tsWorker.d.ts'),
+    path.join(vendor, 'tsWorker.d.ts'),
   );
 
   // The Design System DTS
   await getFileAndStoreLocally(
     host + '/js/playground/ds/createDesignSystem.d.ts',
-    join(ds, 'createDesignSystem.d.ts'),
+    path.join(ds, 'createDesignSystem.d.ts'),
     text => {
       return text.replace('typescriptlang-org/static/js/sandbox', '../sandbox');
     },
@@ -43,7 +43,7 @@ async function run(): Promise<void> {
   // Util funcs
   await getFileAndStoreLocally(
     host + '/js/playground/pluginUtils.d.ts',
-    join(vendor, 'pluginUtils.d.ts'),
+    path.join(vendor, 'pluginUtils.d.ts'),
     text => {
       return text.replace('from "@typescript/sandbox"', 'from "./sandbox"');
     },
@@ -52,7 +52,7 @@ async function run(): Promise<void> {
   // TS-VFS
   await getFileAndStoreLocally(
     host + '/js/sandbox/vendor/typescript-vfs.d.ts',
-    join(vendor, 'typescript-vfs.d.ts'),
+    path.join(vendor, 'typescript-vfs.d.ts'),
     text => {
       const removeImports = text.replace(
         '/// <reference types="lz-string" />',
@@ -65,7 +65,7 @@ async function run(): Promise<void> {
   // Sandbox
   await getFileAndStoreLocally(
     host + '/js/sandbox/index.d.ts',
-    join(vendor, 'sandbox.d.ts'),
+    path.join(vendor, 'sandbox.d.ts'),
     text => {
       const removeImports = text
         .replace(/^import/g, '// import')
@@ -85,7 +85,7 @@ async function run(): Promise<void> {
   // Playground
   await getFileAndStoreLocally(
     host + '/js/playground/index.d.ts',
-    join(vendor, '/playground.d.ts'),
+    path.join(vendor, '/playground.d.ts'),
     text => {
       const replaceSandbox = text.replace(/@typescript\/sandbox/g, './sandbox');
       const replaceTSVFS = replaceSandbox.replace(

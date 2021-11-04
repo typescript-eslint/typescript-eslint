@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import 'isomorphic-fetch';
+import fetch from 'node-fetch';
 import * as path from 'path';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';

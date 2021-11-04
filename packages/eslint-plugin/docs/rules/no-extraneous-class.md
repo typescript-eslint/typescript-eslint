@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-extraneous-class
----
-
 # Forbids the use of classes as namespaces (`no-extraneous-class`)
 
 This rule warns when a class is accidentally used as a namespace.

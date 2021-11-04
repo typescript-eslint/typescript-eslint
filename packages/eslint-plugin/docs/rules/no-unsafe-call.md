@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unsafe-call
----
-
 # Disallows calling an any type value (`no-unsafe-call`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.

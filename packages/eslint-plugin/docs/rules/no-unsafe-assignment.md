@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unsafe-assignment
----
-
 # Disallows assigning any to variables and properties (`no-unsafe-assignment`)
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.

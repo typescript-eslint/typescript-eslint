@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: prefer-readonly
----
-
 # Requires that private members are marked as `readonly` if they're never modified outside of the constructor (`prefer-readonly`)
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.

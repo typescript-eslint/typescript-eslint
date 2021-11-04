@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: typedef
----
-
 # Requires type annotations to exist (`typedef`)
 
 TypeScript cannot always infer types for all places in code.

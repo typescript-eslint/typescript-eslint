@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: prefer-readonly-parameter-types
----
-
 # Requires that function parameters are typed as readonly to prevent accidental mutation of inputs (`prefer-readonly-parameter-types`)
 
 Mutating function arguments can lead to confusing, hard to debug behavior.

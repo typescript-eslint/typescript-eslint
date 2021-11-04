@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "website"
     ],
     "nohoist": [
       "**/html-minifier-terser"
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel",
-    "build:website": "lerna run build:website",
+    "build:website": "nx run website:build-website",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --all --parallel",
     "check-docs": "nx run-many --target=check-docs --all --parallel",
@@ -33,8 +34,8 @@
     "cz": "git-cz",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
-    "generate:sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
-    "generate:website-dts": "yarn ts-node --transpile-only ./tools/generate-website-dts.ts",
+    "generate-sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
+    "generate-website-dts": "yarn ts-node --transpile-only ./tools/generate-website-dts.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",

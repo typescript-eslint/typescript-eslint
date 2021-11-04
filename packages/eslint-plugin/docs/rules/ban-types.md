@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: ban-types
----
-
 # Bans specific types from being used (`ban-types`)
 
 Some builtin types have aliases, some types are considered dangerous or harmful.

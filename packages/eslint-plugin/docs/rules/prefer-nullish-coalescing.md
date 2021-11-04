@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: prefer-nullish-coalescing
----
-
 # Enforce the usage of the nullish coalescing operator instead of logical chaining (`prefer-nullish-coalescing`)
 
 TypeScript 3.7 added support for the nullish coalescing operator.

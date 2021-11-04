@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-namespace
----
-
 # Disallow the use of custom TypeScript modules and namespaces (`no-namespace`)
 
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated

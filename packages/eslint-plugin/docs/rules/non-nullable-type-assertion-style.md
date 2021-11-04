@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: non-nullable-type-assertion-style
----
-
 # Prefers a non-null assertion over explicit type cast when possible (`non-nullable-type-assertion-style`)
 
 This rule detects when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.

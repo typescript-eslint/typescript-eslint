@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: consistent-type-definitions
----
-
 # Consistent with type definition either `interface` or `type` (`consistent-type-definitions`)
 
 There are two ways to define a type.

@@ -25,6 +25,7 @@ module.exports = {
       './packages/*/tsconfig.json',
       './tests/integration/tsconfig.json',
       './website/tsconfig.json',
+      './tests/integration/tsconfig.json',
     ],
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,

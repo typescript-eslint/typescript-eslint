@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-explicit-any
----
-
 # Disallow usage of the `any` type (`no-explicit-any`)
 
 Using the `any` type defeats the purpose of using TypeScript.

@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unnecessary-type-constraint
----
-
 # Disallows unnecessary constraints on generic types (`no-unnecessary-type-constraint`)
 
 ## Rule Details

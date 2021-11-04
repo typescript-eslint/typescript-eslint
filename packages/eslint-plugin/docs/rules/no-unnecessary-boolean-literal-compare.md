@@ -1,8 +1,3 @@
----
-hide_title: true
-sidebar_label: no-unnecessary-boolean-literal-compare
----
-
 # Flags unnecessary equality comparisons against boolean literals (`no-unnecessary-boolean-literal-compare`)
 
 Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
