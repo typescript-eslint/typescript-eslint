@@ -292,6 +292,13 @@ import { setTimeout } from 'my-timers-promises';
 
 setTimeout(1000);
     `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout();
+}
+    `,
   ],
 
   invalid: [
