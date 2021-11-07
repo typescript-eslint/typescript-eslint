@@ -8,12 +8,77 @@ import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
 
+const classBasicMemberTypes = ['signature', 'call-signature', 'constructor'];
+const modifyableMemberTypes = ['field', 'method', 'get', 'set'];
+const baseMemberTypes = [
+  ...classBasicMemberTypes,
+  ...modifyableMemberTypes,
+] as const;
+type BaseMemberType = typeof baseMemberTypes[number];
+
+const accessabilityTypes = ['public', 'protected', 'private'] as const;
+const scopeTypes = ['static', 'instance', 'abstract'] as const;
+
+const allBasicMemberTypes = [
+  'signature',
+  ...['call-signature', 'constructor'].reduce(
+    (accessibleBaseTypes: string[], baseMemberType) => [
+      ...accessibleBaseTypes,
+      baseMemberType,
+      ...accessabilityTypes.map(
+        accessability => `${accessability}-${baseMemberType}`,
+      ),
+    ],
+    [],
+  ),
+  ...scopeTypes.map(scope => `${scope}-call-signature`),
+  ...accessabilityTypes.reduce(
+    (accessibleCallSigs: string[], accessability) => [
+      ...accessibleCallSigs,
+      ...scopeTypes.reduce(
+        (accessibleScopeCallSigs: string[], scope) => [
+          ...accessibleScopeCallSigs,
+          `${accessability}-${scope}-call-signature`,
+        ],
+        [],
+      ),
+    ],
+    [],
+  ),
+];
+const allModifiableMemberTypes = [
+  ...modifyableMemberTypes.reduce(
+    (accessibleMemberTypes: string[], memberType) => [
+      ...accessibleMemberTypes,
+      memberType,
+      `decorated-${memberType}`,
+      ...scopeTypes.map(scope => `${scope}-${memberType}`),
+      ...accessabilityTypes.reduce(
+        (acessibleScopedMemberTypes: string[], accesability) => [
+          ...acessibleScopedMemberTypes,
+          `${accesability}-${memberType}`,
+          `${accesability}-decorated-${memberType}`,
+          ...scopeTypes.map(scope => `${accesability}-${scope}-${memberType}`),
+        ],
+        [],
+      ),
+    ],
+    [],
+  ),
+];
+const allMemberTypes = [...allBasicMemberTypes, ...allModifiableMemberTypes];
+
+const allMemberTypesConst = [
+  ...allBasicMemberTypes,
+  ...allModifiableMemberTypes,
+] as const;
+type MemberType = typeof allMemberTypesConst[number];
 interface SortedOrderConfig {
-  memberTypes?: string[] | 'never';
+  memberTypes?: MemberType[] | 'never';
   order: 'alphabetically' | 'as-written';
 }
 
-type OrderConfig = string[] | SortedOrderConfig | 'never';
+type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
 export type Options = [
@@ -31,14 +96,14 @@ const neverConfig: JSONSchema.JSONSchema4 = {
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
+const arrayConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   type: 'array',
   items: {
     enum: memberTypes,
   },
 });
 
-const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
+const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {
@@ -52,7 +117,7 @@ const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
   additionalProperties: false,
 });
 
-export const defaultOrder = [
+export const defaultOrder: MemberType[] = [
   // Index signature
   'signature',
   'call-signature',
@@ -181,54 +246,6 @@ export const defaultOrder = [
   'method',
 ];
 
-const allMemberTypes = [
-  'signature',
-  'field',
-  'method',
-  'call-signature',
-  'constructor',
-  'get',
-  'set',
-].reduce<string[]>((all, type) => {
-  all.push(type);
-
-  ['public', 'protected', 'private'].forEach(accessibility => {
-    if (type !== 'signature') {
-      all.push(`${accessibility}-${type}`); // e.g. `public-field`
-    }
-
-    // Only class instance fields, methods, get and set can have decorators attached to them
-    if (
-      type === 'field' ||
-      type === 'method' ||
-      type === 'get' ||
-      type === 'set'
-    ) {
-      const decoratedMemberType = `${accessibility}-decorated-${type}`;
-      const decoratedMemberTypeNoAccessibility = `decorated-${type}`;
-      if (!all.includes(decoratedMemberType)) {
-        all.push(decoratedMemberType);
-      }
-      if (!all.includes(decoratedMemberTypeNoAccessibility)) {
-        all.push(decoratedMemberTypeNoAccessibility);
-      }
-    }
-
-    if (type !== 'constructor' && type !== 'signature') {
-      // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-      ['static', 'instance', 'abstract'].forEach(scope => {
-        if (!all.includes(`${scope}-${type}`)) {
-          all.push(`${scope}-${type}`);
-        }
-
-        all.push(`${accessibility}-${scope}-${type}`);
-      });
-    }
-  });
-
-  return all;
-}, []);
-
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
   AST_NODE_TYPES.ArrowFunctionExpression,
@@ -239,7 +256,7 @@ const functionExpressions = [
  *
  * @param node the node to be evaluated.
  */
-function getNodeType(node: Member): string | null {
+function getNodeType(node: Member): BaseMemberType | null {
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -309,7 +326,10 @@ function getMemberName(
  *
  * @return Index of the matching member type in the order configuration.
  */
-function getRankOrder(memberGroups: string[], orderConfig: string[]): number {
+function getRankOrder(
+  memberGroups: MemberType[],
+  orderConfig: MemberType[],
+): number {
   let rank = -1;
   const stack = memberGroups.slice(); // Get a copy of the member groups
 
@@ -328,7 +348,7 @@ function getRankOrder(memberGroups: string[], orderConfig: string[]): number {
  */
 function getRank(
   node: Member,
-  orderConfig: string[],
+  orderConfig: MemberType[],
   supportsModifiers: boolean,
 ): number {
   const type = getNodeType(node);
@@ -405,7 +425,7 @@ function getRank(
 function getLowestRank(
   ranks: number[],
   target: number,
-  order: string[],
+  order: MemberType[],
 ): string {
   let lowest = ranks[ranks.length - 1];
 
@@ -493,7 +513,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkGroupSort(
       members: Member[],
-      groupOrder: string[],
+      groupOrder: MemberType[],
       supportsModifiers: boolean,
     ): Array<Member[]> | null {
       const previousRanks: number[] = [];
