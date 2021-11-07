@@ -39,3 +39,9 @@ interface I {
 ## Compatibility
 
 - TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -22,7 +22,6 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description:
         'Enforces that type arguments will not be used if not required',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -118,7 +117,7 @@ function getTypeParametersFromType(
   }
 
   return findFirstResult(declarations, decl =>
-    tsutils.isClassLikeDeclaration(decl) ||
+    ts.isClassLike(decl) ||
     ts.isTypeAliasDeclaration(decl) ||
     ts.isInterfaceDeclaration(decl)
       ? decl.typeParameters

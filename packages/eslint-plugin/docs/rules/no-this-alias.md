@@ -44,7 +44,7 @@ You can pass an object option:
   "@typescript-eslint/no-this-alias": [
     "error",
     {
-      "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
+      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
       "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
     }
   ]
@@ -58,3 +58,9 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 ## Related to
 
 - TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

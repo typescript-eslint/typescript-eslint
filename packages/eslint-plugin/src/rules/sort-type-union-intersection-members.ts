@@ -23,9 +23,6 @@ enum Group {
 
 function getGroup(node: TSESTree.TypeNode): Group {
   switch (node.type) {
-    case AST_NODE_TYPES.TSParenthesizedType:
-      return getGroup(node.typeAnnotation);
-
     case AST_NODE_TYPES.TSConditionalType:
       return Group.conditional;
 
@@ -82,7 +79,6 @@ function getGroup(node: TSESTree.TypeNode): Group {
       return Group.union;
 
     // These types should never occur as part of a union/intersection
-    case AST_NODE_TYPES.TSInterfaceHeritage:
     case AST_NODE_TYPES.TSNamedTupleMember:
     case AST_NODE_TYPES.TSOptionalType:
     case AST_NODE_TYPES.TSRestType:
@@ -90,6 +86,10 @@ function getGroup(node: TSESTree.TypeNode): Group {
       /* istanbul ignore next */
       throw new Error(`Unexpected Type ${node.type}`);
   }
+}
+
+function requiresParentheses(node: TSESTree.TypeNode): boolean {
+  return node.type === AST_NODE_TYPES.TSFunctionType;
 }
 
 export type Options = [
@@ -108,10 +108,10 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforces that members of a type union/intersection are sorted alphabetically',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type members must be sorted.',
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
@@ -212,7 +212,7 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => t.text)
+              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );
@@ -241,16 +241,16 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSIntersectionType(node): void {
-        if (checkIntersections === true) {
+      ...(checkIntersections && {
+        TSIntersectionType(node): void {
           checkSorting(node);
-        }
-      },
-      TSUnionType(node): void {
-        if (checkUnions === true) {
+        },
+      }),
+      ...(checkUnions && {
+        TSUnionType(node): void {
           checkSorting(node);
-        }
-      },
+        },
+      }),
     };
   },
 });

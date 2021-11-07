@@ -41,6 +41,7 @@ When set to `true`, the rule will ignore declaration merges between the followin
 - class + namespace
 - class + interface + namespace
 - function + namespace
+- enum + namespace
 
 Examples of **correct** code with `{ ignoreDeclarationMerge: true }`:
 
@@ -77,3 +78,9 @@ const something = 2;
 ```
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

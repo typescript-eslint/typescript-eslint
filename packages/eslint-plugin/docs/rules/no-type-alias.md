@@ -89,6 +89,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
+- `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
 
 ### `allowAliases`
 
@@ -405,8 +406,9 @@ type Foo<T, U> =
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -418,8 +420,9 @@ type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -451,8 +454,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 Examples of **correct** code for the `{ "allowMappedTypes": "in-intersections" }` option:
 
 ```ts
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -474,8 +478,9 @@ type Foo<T, U> =
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
-type Foo<T, U> = { readonly [P in keyof T]: T[P] } &
-  { readonly [P in keyof U]: U[P] };
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
 
 type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 ```
@@ -555,6 +560,28 @@ type Foo = [number] & [number, number];
 type Foo = [string] | [number];
 ```
 
+### `allowGenerics`
+
+This applies to generic types, including TypeScript provided global utility types (`type Foo = Record<string, number>`).
+
+The setting accepts the following options:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+
+Examples of **correct** code for the `{ "allowGenerics": "always" }` options:
+
+```ts
+type Foo = Bar<string>;
+
+type Foo = Record<string, number>;
+
+type Foo = Readonly<Bar>;
+
+type Foo = Partial<Bar>;
+
+type Foo = Omit<Bar, 'a' | 'b'>;
+```
+
 ## When Not To Use It
 
 When you can't express some shape with an interface or you need to use a union, tuple type,
@@ -567,3 +594,9 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Related to
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

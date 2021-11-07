@@ -3,7 +3,8 @@ import * as util from '../util';
 
 // tslint regex
 // https://github.com/palantir/tslint/blob/95d9d958833fd9dc0002d18cbe34db20d0fbf437/src/enableDisableRules.ts#L32
-const ENABLE_DISABLE_REGEX = /^\s*tslint:(enable|disable)(?:-(line|next-line))?(:|\s|$)/;
+const ENABLE_DISABLE_REGEX =
+  /^\s*tslint:(enable|disable)(?:-(line|next-line))?(:|\s|$)/;
 
 const toText = (
   text: string,
@@ -19,7 +20,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Bans `// tslint:<rule-flag>` comments from being used',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {

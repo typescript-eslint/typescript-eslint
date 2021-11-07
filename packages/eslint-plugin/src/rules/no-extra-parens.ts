@@ -1,13 +1,15 @@
 // any is required to work around manipulating the AST in weird ways
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
 import {
   AST_NODE_TYPES,
   TSESTree,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-extra-parens';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-extra-parens');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -18,11 +20,11 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Disallow unnecessary parentheses',
-      category: 'Possible Errors',
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
@@ -81,9 +83,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.arguments.length === 1 &&
         node.typeParameters?.params.some(
-          param =>
-            param.type === AST_NODE_TYPES.TSParenthesizedType ||
-            param.type === AST_NODE_TYPES.TSImportType,
+          param => param.type === AST_NODE_TYPES.TSImportType,
         )
       ) {
         return rule({

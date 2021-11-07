@@ -6,6 +6,8 @@ declare module 'typescript' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface NamedTupleMember extends ts.Node {}
   export interface TemplateLiteralTypeNode extends ts.Node {}
+  export interface PrivateIdentifier extends ts.Node {}
+  export interface ClassStaticBlockDeclaration extends ts.Node {}
   /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 
@@ -14,6 +16,7 @@ export type TSToken = ts.Token<ts.SyntaxKind>;
 export type TSNode =
   | ts.Modifier
   | ts.Identifier
+  | ts.PrivateIdentifier
   | ts.QualifiedName
   | ts.ComputedPropertyName
   | ts.Decorator
@@ -43,6 +46,7 @@ export type TSNode =
   | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
   | ts.ImportTypeNode
   | ts.ThisTypeNode
+  | ts.ClassStaticBlockDeclaration
   // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
   | ts.ConstructorTypeNode
   | ts.FunctionTypeNode

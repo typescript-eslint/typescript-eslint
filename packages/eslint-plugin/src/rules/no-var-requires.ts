@@ -14,7 +14,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallows the use of require statements except in import statements',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
@@ -25,20 +24,24 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node: TSESTree.CallExpression): void {
+      'CallExpression[callee.name="require"]'(
+        node: TSESTree.CallExpression,
+      ): void {
         const parent =
           node.parent?.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
+
         if (
-          node.callee.type === AST_NODE_TYPES.Identifier &&
-          node.callee.name === 'require' &&
           parent &&
-          (parent.type === AST_NODE_TYPES.VariableDeclarator ||
-            parent.type === AST_NODE_TYPES.CallExpression ||
-            parent.type === AST_NODE_TYPES.TSAsExpression ||
-            parent.type === AST_NODE_TYPES.TSTypeAssertion ||
-            parent.type === AST_NODE_TYPES.MemberExpression)
+          [
+            AST_NODE_TYPES.CallExpression,
+            AST_NODE_TYPES.MemberExpression,
+            AST_NODE_TYPES.NewExpression,
+            AST_NODE_TYPES.TSAsExpression,
+            AST_NODE_TYPES.TSTypeAssertion,
+            AST_NODE_TYPES.VariableDeclarator,
+          ].includes(parent.type)
         ) {
           context.report({
             node,

@@ -58,7 +58,10 @@ function nestDescribe(
 
       try {
         makeDir.sync(fixture.snapshotPath);
-      } catch (e) {
+      } catch (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        e: any
+      ) {
         if ('code' in e && e.code === 'EEXIST') {
           // already exists - ignored
         } else {

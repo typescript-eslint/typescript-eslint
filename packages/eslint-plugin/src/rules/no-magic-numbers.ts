@@ -2,8 +2,10 @@ import {
   TSESTree,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-magic-numbers';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+
+const baseRule = getESLintCoreRule('no-magic-numbers');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -18,10 +20,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow magic numbers',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     // Extend base schema with additional property to ignore TS numeric literal types
     schema: [
       {
@@ -40,10 +42,7 @@ export default util.createRule<Options, MessageIds>({
         },
       },
     ],
-    messages: baseRule.meta.messages ?? {
-      useConst: "Number constants declarations must use 'const'.",
-      noMagic: 'No magic number: {{raw}}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
@@ -78,15 +77,14 @@ export default util.createRule<Options, MessageIds>({
         // Check if the node is a readonly class property
         if (
           typeof node.value === 'number' &&
-          isParentTSReadonlyClassProperty(node)
+          isParentTSReadonlyPropertyDefinition(node)
         ) {
           if (options.ignoreReadonlyClassProperties) {
             return;
           }
 
-          let fullNumberNode:
-            | TSESTree.Literal
-            | TSESTree.UnaryExpression = node;
+          let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
+            node;
           let raw = node.raw;
 
           if (
@@ -213,10 +211,10 @@ function isTSNumericLiteralType(node: TSESTree.Node): boolean {
  * @returns true if the node parent is a readonly class property
  * @private
  */
-function isParentTSReadonlyClassProperty(node: TSESTree.Literal): boolean {
+function isParentTSReadonlyPropertyDefinition(node: TSESTree.Literal): boolean {
   const parent = getLiteralParent(node);
 
-  if (parent?.type === AST_NODE_TYPES.ClassProperty && parent.readonly) {
+  if (parent?.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly) {
     return true;
   }
 

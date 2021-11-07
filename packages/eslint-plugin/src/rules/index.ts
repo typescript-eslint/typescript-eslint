@@ -11,6 +11,7 @@ import commaSpacing from './comma-spacing';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
+import consistentTypeExports from './consistent-type-exports';
 import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
 import dotNotation from './dot-notation';
@@ -50,14 +51,17 @@ import noInvalidVoidType from './no-invalid-void-type';
 import noLoopFunc from './no-loop-func';
 import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
+import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noNamespace from './no-namespace';
+import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRedeclare from './no-redeclare';
 import noRequireImports from './no-require-imports';
+import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
@@ -68,18 +72,19 @@ import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
-import noUnusedVarsExperimental from './no-unused-vars-experimental';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
+import paddingLineBetweenStatements from './padding-line-between-statements';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -93,6 +98,7 @@ import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
+import preferReturnThisType from './prefer-return-this-type';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
@@ -128,6 +134,7 @@ export default {
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
+  'consistent-type-exports': consistentTypeExports,
   'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
   'dot-notation': dotNotation,
@@ -167,14 +174,17 @@ export default {
   'no-loop-func': noLoopFunc,
   'no-loss-of-precision': noLossOfPrecision,
   'no-magic-numbers': noMagicNumbers,
+  'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-namespace': noNamespace,
+  'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
   'no-require-imports': noRequireImports,
+  'no-restricted-imports': noRestrictedImports,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
@@ -185,18 +195,19 @@ export default {
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
-  'no-unused-vars-experimental': noUnusedVarsExperimental,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
+  'padding-line-between-statements': paddingLineBetweenStatements,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
@@ -210,6 +221,7 @@ export default {
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
+  'prefer-return-this-type': preferReturnThisType,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,

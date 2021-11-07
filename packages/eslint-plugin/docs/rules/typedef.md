@@ -114,7 +114,7 @@ const mapper = {
 Examples of **correct** code with `{ "arrowParameter": true }`:
 
 ```ts
-const logsSize = (size: number) => console.log(text);
+const logsSize = (size: number) => console.log(size);
 
 ['hello', 'world'].map((text: string) => text.length);
 
@@ -306,3 +306,9 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 ## Compatibility
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

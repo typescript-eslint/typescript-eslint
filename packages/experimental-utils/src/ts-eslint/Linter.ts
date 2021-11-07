@@ -3,7 +3,12 @@
 import { Linter as ESLintLinter } from 'eslint';
 import { TSESTree, ParserServices } from '../ts-estree';
 import { ParserOptions as TSParserOptions } from './ParserOptions';
-import { RuleCreateFunction, RuleFix, RuleModule } from './Rule';
+import {
+  RuleCreateFunction,
+  RuleFix,
+  RuleModule,
+  SharedConfigurationSettings,
+} from './Rule';
 import { Scope } from './Scope';
 import { SourceCode } from './SourceCode';
 
@@ -114,6 +119,8 @@ namespace Linter {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
+  export type GlobalVariableOption = 'readonly' | 'writable' | 'off' | boolean;
+
   // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
   interface BaseConfig {
     $schema?: string;
@@ -128,7 +135,7 @@ namespace Linter {
     /**
      * The global variable settings.
      */
-    globals?: { [name: string]: boolean };
+    globals?: { [name: string]: GlobalVariableOption };
     /**
      * The flag that disables directive comments.
      */
@@ -164,7 +171,7 @@ namespace Linter {
     /**
      * The shared settings.
      */
-    settings?: { [name: string]: unknown };
+    settings?: SharedConfigurationSettings;
   }
 
   export interface ConfigOverride extends BaseConfig {

@@ -3,12 +3,12 @@ import * as ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
 import {
-  TSESTree,
+  ASTUtils,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
-
 type Options = [
   {
     onlyInlineLambdas?: boolean;
@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -135,15 +134,6 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function isConstructor(
-      node: TSESTree.Node,
-    ): node is TSESTree.MethodDefinition {
-      return (
-        node.type === AST_NODE_TYPES.MethodDefinition &&
-        node.kind === 'constructor'
-      );
-    }
-
     function isFunctionScopeBoundaryInStack(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -200,9 +190,8 @@ export default util.createRule<Options, MessageIds>({
         const sourceCode = context.getSourceCode();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
-          const { esNode, nameNode } = getEsNodesFromViolatingNode(
-            violatingNode,
-          );
+          const { esNode, nameNode } =
+            getEsNodesFromViolatingNode(violatingNode);
           context.report({
             data: {
               name: sourceCode.getText(nameNode),
@@ -232,7 +221,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
             parserServices.esTreeNodeToTSNodeMap.get(node),
           );
@@ -247,7 +236,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].exitConstructor();
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].exitNonConstructor();

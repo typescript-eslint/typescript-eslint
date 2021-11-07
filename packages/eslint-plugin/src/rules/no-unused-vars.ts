@@ -37,7 +37,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      category: 'Variables',
       recommended: 'warn',
       extendsBaseRule: true,
     },
@@ -95,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
         caughtErrors: 'none',
       };
 
-      const firstOption = context.options[0];
+      const [firstOption] = context.options;
 
       if (firstOption) {
         if (typeof firstOption === 'string') {

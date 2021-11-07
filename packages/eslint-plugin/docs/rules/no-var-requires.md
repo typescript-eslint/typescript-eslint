@@ -27,3 +27,9 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 ## Compatibility
 
 - TSLint: [no-var-requires](https://palantir.github.io/tslint/rules/no-var-requires/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

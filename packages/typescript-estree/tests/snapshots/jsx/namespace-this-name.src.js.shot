@@ -163,7 +163,7 @@ Object {
         1,
         9,
       ],
-      "type": "Keyword",
+      "type": "JSXIdentifier",
       "value": "this:bar",
     },
     Object {

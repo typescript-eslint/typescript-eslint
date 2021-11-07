@@ -24,3 +24,9 @@ It adds support for:
 See [`eslint/no-useless-constructor` options](https://eslint.org/docs/rules/no-useless-constructor#options).
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-useless-constructor.md)</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -130,6 +130,7 @@ interface Options {
 const defaultOptions: Options = {
   checkParameterProperties: true,
   ignoreInferredTypes: false,
+  treatMethodsAsReadonly: false,
 };
 ```
 
@@ -214,3 +215,49 @@ export const acceptsCallback: AcceptsCallback;
 ```
 
 </details>
+
+### `treatMethodsAsReadonly`
+
+This option allows you to treat all mutable methods as though they were readonly. This may be desirable in when you are never reassigning methods.
+
+Examples of **incorrect** code for this rule with `{treatMethodsAsReadonly: false}`:
+
+```ts
+type MyType = {
+  readonly prop: string;
+  method(): string; // note: this method is mutable
+};
+function foo(arg: MyType) {}
+```
+
+Examples of **correct** code for this rule with `{treatMethodsAsReadonly: false}`:
+
+```ts
+type MyType = Readonly<{
+  prop: string;
+  method(): string;
+}>;
+function foo(arg: MyType) {}
+
+type MyOtherType = {
+  readonly prop: string;
+  readonly method: () => string;
+};
+function bar(arg: MyOtherType) {}
+```
+
+Examples of **correct** code for this rule with `{treatMethodsAsReadonly: true}`:
+
+```ts
+type MyType = {
+  readonly prop: string;
+  method(): string; // note: this method is mutable
+};
+function foo(arg: MyType) {}
+```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

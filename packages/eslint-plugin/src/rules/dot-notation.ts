@@ -1,12 +1,15 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
-import baseRule from 'eslint/lib/rules/dot-notation';
+import * as tsutils from 'tsutils';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
-  InferOptionsTypeFromRule,
-  InferMessageIdsTypeFromRule,
   createRule,
   getParserServices,
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
+
+const baseRule = getESLintCoreRule('dot-notation');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -17,7 +20,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'enforce dot notation whenever possible',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
       requiresTypeChecking: true,
@@ -42,44 +44,59 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             default: false,
           },
+          allowIndexSignaturePropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
     ],
     fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
       allowPrivateClassPropertyAccess: false,
       allowProtectedClassPropertyAccess: false,
+      allowIndexSignaturePropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
     },
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
+
+    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const typeChecker = program.getTypeChecker();
+
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
     const allowProtectedClassPropertyAccess =
       options.allowProtectedClassPropertyAccess;
-
-    const parserServices = getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
+    const allowIndexSignaturePropertyAccess =
+      (options.allowIndexSignaturePropertyAccess ?? false) ||
+      tsutils.isCompilerOptionEnabled(
+        program.getCompilerOptions(),
+        // @ts-expect-error - TS is refining the type to never for some reason
+        'noPropertyAccessFromIndexSignature',
+      );
 
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
         if (
           (allowPrivateClassPropertyAccess ||
-            allowProtectedClassPropertyAccess) &&
+            allowProtectedClassPropertyAccess ||
+            allowIndexSignaturePropertyAccess) &&
           node.computed
         ) {
-          // for perf reasons - only fetch the symbol if we have to
-          const objectSymbol = typeChecker.getSymbolAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(node.property),
+          // for perf reasons - only fetch symbols if we have to
+          const propertySymbol = typeChecker.getSymbolAtLocation(
+            esTreeNodeToTSNodeMap.get(node.property),
           );
-          const modifierKind = objectSymbol?.getDeclarations()?.[0]
-            ?.modifiers?.[0].kind;
+          const modifierKind =
+            propertySymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
               modifierKind == ts.SyntaxKind.PrivateKeyword) ||
@@ -87,6 +104,20 @@ export default createRule<Options, MessageIds>({
               modifierKind == ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
+          }
+          if (
+            propertySymbol === undefined &&
+            allowIndexSignaturePropertyAccess
+          ) {
+            const objectType = typeChecker.getTypeAtLocation(
+              esTreeNodeToTSNodeMap.get(node.object),
+            );
+            const indexType = objectType
+              .getNonNullableType()
+              .getStringIndexType();
+            if (indexType != undefined) {
+              return;
+            }
           }
         }
         rules.MemberExpression(node);

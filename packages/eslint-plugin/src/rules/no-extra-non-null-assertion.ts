@@ -7,7 +7,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow extra non-null assertion',
-      category: 'Stylistic Issues',
       recommended: 'error',
     },
     fixable: 'code',
@@ -32,8 +31,10 @@ export default util.createRule({
 
     return {
       'TSNonNullExpression > TSNonNullExpression': checkExtraNonNullAssertion,
-      'MemberExpression[optional = true] > TSNonNullExpression.object': checkExtraNonNullAssertion,
-      'CallExpression[optional = true] > TSNonNullExpression.callee': checkExtraNonNullAssertion,
+      'MemberExpression[optional = true] > TSNonNullExpression.object':
+        checkExtraNonNullAssertion,
+      'CallExpression[optional = true] > TSNonNullExpression.callee':
+        checkExtraNonNullAssertion,
     };
   },
 });

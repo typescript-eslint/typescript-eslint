@@ -1,6 +1,12 @@
-import * as ts from 'typescript';
+import type {
+  Diagnostic,
+  DiagnosticWithLocation,
+  Program,
+  SourceFile,
+} from 'typescript';
+import { flattenDiagnosticMessageText, sys } from 'typescript';
 
-interface SemanticOrSyntacticError extends ts.Diagnostic {
+export interface SemanticOrSyntacticError extends Diagnostic {
   message: string;
 }
 
@@ -12,8 +18,8 @@ interface SemanticOrSyntacticError extends ts.Diagnostic {
  * the user opts in to throwing errors on semantic issues.
  */
 export function getFirstSemanticOrSyntacticError(
-  program: ts.Program,
-  ast: ts.SourceFile,
+  program: Program,
+  ast: SourceFile,
 ): SemanticOrSyntacticError | undefined {
   try {
     const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
@@ -45,15 +51,15 @@ export function getFirstSemanticOrSyntacticError(
      * and log a a warning.
      */
     /* istanbul ignore next */
-    console.warn(`Warning From TSC: "${e.message}`); // eslint-disable-line no-console
+    console.warn(`Warning From TSC: "${(e as Error).message}`); // eslint-disable-line no-console
     /* istanbul ignore next */
     return undefined;
   }
 }
 
 function whitelistSupportedDiagnostics(
-  diagnostics: readonly (ts.DiagnosticWithLocation | ts.Diagnostic)[],
-): readonly (ts.DiagnosticWithLocation | ts.Diagnostic)[] {
+  diagnostics: readonly (DiagnosticWithLocation | Diagnostic)[],
+): readonly (DiagnosticWithLocation | Diagnostic)[] {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1013: // "A rest parameter or binding pattern may not have a trailing comma."
@@ -103,13 +109,10 @@ function whitelistSupportedDiagnostics(
 }
 
 function convertDiagnosticToSemanticOrSyntacticError(
-  diagnostic: ts.Diagnostic,
+  diagnostic: Diagnostic,
 ): SemanticOrSyntacticError {
   return {
     ...diagnostic,
-    message: ts.flattenDiagnosticMessageText(
-      diagnostic.messageText,
-      ts.sys.newLine,
-    ),
+    message: flattenDiagnosticMessageText(diagnostic.messageText, sys.newLine),
   };
 }

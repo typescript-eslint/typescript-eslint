@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -19,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      category: 'Best Practices',
       recommended: 'error',
     },
     fixable: 'code',
@@ -129,7 +129,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSBooleanKeyword:
           return (
             hasUnaryPrefix(init, '!') ||
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'Boolean') ||
             isLiteral(init, 'boolean')
           );
@@ -151,7 +150,6 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             isFunctionCall(init, 'String') ||
             isLiteral(init, 'string') ||
             init.type === AST_NODE_TYPES.TemplateLiteral
@@ -196,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
       node:
         | TSESTree.VariableDeclarator
         | TSESTree.Parameter
-        | TSESTree.ClassProperty,
+        | TSESTree.PropertyDefinition,
       typeNode: TSESTree.TSTypeAnnotation | undefined,
       initNode: TSESTree.Expression | null | undefined,
     ): void {
@@ -242,17 +240,21 @@ export default util.createRule<Options, MessageIds>({
       if (ignoreParameters || !node.params) {
         return;
       }
-      (node.params.filter(
-        param =>
-          param.type === AST_NODE_TYPES.AssignmentPattern &&
-          param.left &&
-          param.right,
-      ) as TSESTree.AssignmentPattern[]).forEach(param => {
+      (
+        node.params.filter(
+          param =>
+            param.type === AST_NODE_TYPES.AssignmentPattern &&
+            param.left &&
+            param.right,
+        ) as TSESTree.AssignmentPattern[]
+      ).forEach(param => {
         reportInferrableType(param, param.left.typeAnnotation, param.right);
       });
     }
 
-    function inferrablePropertyVisitor(node: TSESTree.ClassProperty): void {
+    function inferrablePropertyVisitor(
+      node: TSESTree.PropertyDefinition,
+    ): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
       // will result in its value being the type, leading to
@@ -268,7 +270,7 @@ export default util.createRule<Options, MessageIds>({
       FunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
-      ClassProperty: inferrablePropertyVisitor,
+      PropertyDefinition: inferrablePropertyVisitor,
     };
   },
 });

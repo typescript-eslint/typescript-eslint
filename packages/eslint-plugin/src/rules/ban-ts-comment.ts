@@ -22,7 +22,6 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description:
         'Bans `@ts-<directive>` comments from being used or requires descriptions after directive',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
@@ -102,8 +101,10 @@ export default util.createRule<[Options], MessageIds>({
       The regex used are taken from the ones used in the official TypeScript repo -
       https://github.com/microsoft/TypeScript/blob/master/src/compiler/scanner.ts#L281-L289
     */
-    const commentDirectiveRegExSingleLine = /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
-    const commentDirectiveRegExMultiLine = /^\s*(?:\/|\*)*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
+    const commentDirectiveRegExSingleLine =
+      /^\/*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
+    const commentDirectiveRegExMultiLine =
+      /^\s*(?:\/|\*)*\s*@ts-(expect-error|ignore|check|nocheck)(.*)/;
     const sourceCode = context.getSourceCode();
 
     return {

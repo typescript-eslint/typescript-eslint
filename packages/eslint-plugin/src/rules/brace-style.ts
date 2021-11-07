@@ -1,11 +1,13 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/brace-style';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   InferOptionsTypeFromRule,
   InferMessageIdsTypeFromRule,
   createRule,
   isTokenOnSameLine,
 } from '../util';
+
+const baseRule = getESLintCoreRule('brace-style');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -16,20 +18,18 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent brace style for blocks',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
     fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
   },
   defaultOptions: ['1tbs'],
   create(context) {
-    const [
-      style,
-      { allowSingleLine } = { allowSingleLine: false },
-    ] = context.options;
+    const [style, { allowSingleLine } = { allowSingleLine: false }] =
+      context.options;
 
     const isAllmanStyle = style === 'allman';
     const sourceCode = context.getSourceCode();
@@ -49,15 +49,12 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const tokenBeforeOpeningCurly = sourceCode.getTokenBefore(
-        openingCurlyToken,
-      )!;
-      const tokenBeforeClosingCurly = sourceCode.getTokenBefore(
-        closingCurlyToken,
-      )!;
-      const tokenAfterOpeningCurly = sourceCode.getTokenAfter(
-        openingCurlyToken,
-      )!;
+      const tokenBeforeOpeningCurly =
+        sourceCode.getTokenBefore(openingCurlyToken)!;
+      const tokenBeforeClosingCurly =
+        sourceCode.getTokenBefore(closingCurlyToken)!;
+      const tokenAfterOpeningCurly =
+        sourceCode.getTokenAfter(openingCurlyToken)!;
 
       if (
         !isAllmanStyle &&

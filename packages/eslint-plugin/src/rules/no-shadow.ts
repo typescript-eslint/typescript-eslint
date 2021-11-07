@@ -1,9 +1,15 @@
 import {
-  TSESTree,
-  TSESLint,
+  ASTUtils,
   AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { ScopeType } from '@typescript-eslint/scope-manager';
+import {
+  Definition,
+  DefinitionType,
+  ImportBindingDefinition,
+  ScopeType,
+} from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 type MessageIds = 'noShadow';
@@ -24,7 +30,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      category: 'Variables',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -82,7 +87,19 @@ export default util.createRule<Options, MessageIds>({
      * Check if variable is a `this` parameter.
      */
     function isThisParam(variable: TSESLint.Scope.Variable): boolean {
-      return variable.defs[0].type === 'Parameter' && variable.name === 'this';
+      return (
+        variable.defs[0].type === DefinitionType.Parameter &&
+        variable.name === 'this'
+      );
+    }
+
+    function isTypeImport(
+      definition?: Definition,
+    ): definition is ImportBindingDefinition {
+      return (
+        definition?.type === DefinitionType.ImportBinding &&
+        definition.parent.importKind === 'type'
+      );
     }
 
     function isTypeValueShadow(
@@ -98,8 +115,11 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
+      const [firstDefinition] = shadowed.defs;
       const isShadowedValue =
-        'isValueVariable' in shadowed ? shadowed.isValueVariable : true;
+        !('isValueVariable' in shadowed) ||
+        !firstDefinition ||
+        (!isTypeImport(firstDefinition) && shadowed.isValueVariable);
       return variable.isValueVariable !== isShadowedValue;
     }
 
@@ -124,6 +144,125 @@ export default util.createRule<Options, MessageIds>({
 
       const id = variable.identifiers[0];
       return util.isFunctionType(id.parent);
+    }
+
+    function isGenericOfStaticMethod(
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      if (!('isTypeVariable' in variable)) {
+        // this shouldn't happen...
+        return false;
+      }
+
+      if (!variable.isTypeVariable) {
+        return false;
+      }
+
+      if (variable.identifiers.length === 0) {
+        return false;
+      }
+
+      const typeParameter = variable.identifiers[0].parent;
+      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+        return false;
+      }
+      const typeParameterDecl = typeParameter.parent;
+      if (
+        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+      ) {
+        return false;
+      }
+      const functionExpr = typeParameterDecl.parent;
+      if (
+        !functionExpr ||
+        (functionExpr.type !== AST_NODE_TYPES.FunctionExpression &&
+          functionExpr.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression)
+      ) {
+        return false;
+      }
+      const methodDefinition = functionExpr.parent;
+      if (methodDefinition?.type !== AST_NODE_TYPES.MethodDefinition) {
+        return false;
+      }
+      return methodDefinition.static;
+    }
+
+    function isGenericOfClassDecl(variable: TSESLint.Scope.Variable): boolean {
+      if (!('isTypeVariable' in variable)) {
+        // this shouldn't happen...
+        return false;
+      }
+
+      if (!variable.isTypeVariable) {
+        return false;
+      }
+
+      if (variable.identifiers.length === 0) {
+        return false;
+      }
+
+      const typeParameter = variable.identifiers[0].parent;
+      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+        return false;
+      }
+      const typeParameterDecl = typeParameter.parent;
+      if (
+        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+      ) {
+        return false;
+      }
+      const classDecl = typeParameterDecl.parent;
+      return classDecl?.type === AST_NODE_TYPES.ClassDeclaration;
+    }
+
+    function isGenericOfAStaticMethodShadow(
+      variable: TSESLint.Scope.Variable,
+      shadowed: TSESLint.Scope.Variable,
+    ): boolean {
+      return (
+        isGenericOfStaticMethod(variable) && isGenericOfClassDecl(shadowed)
+      );
+    }
+
+    function isImportDeclaration(
+      definition:
+        | TSESTree.ImportDeclaration
+        | TSESTree.TSImportEqualsDeclaration,
+    ): definition is TSESTree.ImportDeclaration {
+      return definition.type === AST_NODE_TYPES.ImportDeclaration;
+    }
+
+    function isExternalModuleDeclarationWithName(
+      scope: TSESLint.Scope.Scope,
+      name: string,
+    ): boolean {
+      return (
+        scope.type === ScopeType.tsModule &&
+        scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
+        scope.block.id.type === AST_NODE_TYPES.Literal &&
+        scope.block.id.value === name
+      );
+    }
+
+    function isExternalDeclarationMerging(
+      scope: TSESLint.Scope.Scope,
+      variable: TSESLint.Scope.Variable,
+      shadowed: TSESLint.Scope.Variable,
+    ): boolean {
+      const [firstDefinition] = shadowed.defs;
+      const [secondDefinition] = variable.defs;
+
+      return (
+        isTypeImport(firstDefinition) &&
+        isImportDeclaration(firstDefinition.parent) &&
+        isExternalModuleDeclarationWithName(
+          scope,
+          firstDefinition.parent.source.value,
+        ) &&
+        secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
+        secondDefinition.node.parent?.type ===
+          AST_NODE_TYPES.ExportNamedDeclaration
+      );
     }
 
     /**
@@ -198,7 +337,7 @@ export default util.createRule<Options, MessageIds>({
         inner &&
         outer[0] < inner[0] &&
         inner[1] < outer[1] &&
-        ((innerDef.type === 'FunctionName' &&
+        ((innerDef.type === DefinitionType.FunctionName &&
           innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
           innerDef.node.type === AST_NODE_TYPES.ClassExpression) &&
         outerScope === innerScope.upper
@@ -243,31 +382,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Finds the variable by a given name in a given scope and its upper scopes.
-     * @param initScope A scope to start find.
-     * @param name A variable name to find.
-     * @returns A found variable or `null`.
-     */
-    function getVariableByName(
-      initScope: TSESLint.Scope.Scope | null,
-      name: string,
-    ): TSESLint.Scope.Variable | null {
-      let scope = initScope;
-
-      while (scope) {
-        const variable = scope.set.get(name);
-
-        if (variable) {
-          return variable;
-        }
-
-        scope = scope.upper;
-      }
-
-      return null;
-    }
-
-    /**
      * Checks the current context for shadowed variables.
      * @param {Scope} scope Fixme
      */
@@ -306,7 +420,9 @@ export default util.createRule<Options, MessageIds>({
         }
 
         // Gets shadowed variable.
-        const shadowed = getVariableByName(scope.upper, variable.name);
+        const shadowed = scope.upper
+          ? ASTUtils.findVariable(scope.upper, variable.name)
+          : null;
         if (!shadowed) {
           continue;
         }
@@ -318,6 +434,17 @@ export default util.createRule<Options, MessageIds>({
 
         // ignore function type parameter name shadowing if configured
         if (isFunctionTypeParameterNameValueShadow(variable, shadowed)) {
+          continue;
+        }
+
+        // ignore static class method generic shadowing class generic
+        // this is impossible for the scope analyser to understand
+        // so we have to handle this manually in this rule
+        if (isGenericOfAStaticMethodShadow(variable, shadowed)) {
+          continue;
+        }
+
+        if (isExternalDeclarationMerging(scope, variable, shadowed)) {
           continue;
         }
 

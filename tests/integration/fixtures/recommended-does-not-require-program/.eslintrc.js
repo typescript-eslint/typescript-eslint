@@ -4,15 +4,11 @@
 // more expensive checks.
 module.exports = {
   root: true,
-  // Local version of @typescript-eslint/parser
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  plugins: [
-    // Local version of @typescript-eslint/eslint-plugin
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint'],
 };

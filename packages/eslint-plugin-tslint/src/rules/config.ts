@@ -4,7 +4,8 @@ import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-const version = require('../../package.json').version;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const version: string = require('../../package.json');
 
 const createRule = ESLintUtils.RuleCreator(
   () =>
@@ -62,8 +63,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint',
-      // one off special category for this plugin
-      category: 'TSLint' as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       recommended: false,
     },
     fixable: 'code',
@@ -105,11 +104,9 @@ export default createRule<Options, MessageIds>({
     /**
      * The TSLint rules configuration passed in by the user
      */
-    const {
-      rules: tslintRules,
-      rulesDirectory: tslintRulesDirectory,
-      lintFile,
-    } = context.options[0];
+    const [
+      { rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile },
+    ] = context.options;
 
     const program = parserServices.program;
 

@@ -10,7 +10,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      category: 'Stylistic Issues',
       recommended: 'error',
       extendsBaseRule: true,
     },

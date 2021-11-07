@@ -21,11 +21,11 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce the usage of the nullish coalescing operator instead of logical chaining',
-      category: 'Best Practices',
       recommended: false,
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       preferNullish:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',

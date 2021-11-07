@@ -1286,12 +1286,13 @@ Object {
                 "line": 4,
               },
             },
+            "override": false,
             "range": Array [
               39,
               56,
             ],
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {

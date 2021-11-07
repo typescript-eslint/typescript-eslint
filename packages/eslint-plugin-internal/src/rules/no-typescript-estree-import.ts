@@ -16,7 +16,6 @@ export default createRule({
     type: 'problem',
     docs: {
       description: `Enforces that eslint-plugin rules don't require anything from ${TSESTREE_NAME} or ${TYPES_NAME}`,
-      category: 'Possible Errors',
       recommended: 'error',
     },
     fixable: 'code',
