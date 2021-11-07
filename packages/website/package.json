@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build-website": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
     "serve": "docusaurus serve",
