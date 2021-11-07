@@ -35,7 +35,6 @@
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
     "generate-sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
-    "generate-website-dts": "yarn ts-node --transpile-only ./tools/generate-website-dts.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",

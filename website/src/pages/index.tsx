@@ -171,12 +171,6 @@ function Home(): JSX.Element {
             <Link className="button button--primary" to={useBaseUrl('docs/')}>
               Get Started
             </Link>
-            <Link
-              className="button button--secondary button--outline"
-              to={useBaseUrl('repl/')}
-            >
-              Playground
-            </Link>
           </div>
         </div>
       </header>

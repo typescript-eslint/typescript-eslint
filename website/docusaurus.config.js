@@ -86,12 +86,6 @@ const config = {
             position: 'left',
           },
           {
-            to: 'repl',
-            activeBasePath: 'repl',
-            position: 'right',
-            label: 'Playground',
-          },
-          {
             href: githubUrl,
             position: 'right',
             className: 'header-github-link',
