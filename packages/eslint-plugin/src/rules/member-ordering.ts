@@ -17,7 +17,9 @@ const baseMemberTypes = [
 type BaseMemberType = typeof baseMemberTypes[number];
 
 const accessabilityTypes = ['public', 'protected', 'private'] as const;
+type AccessabilityType = typeof accessabilityTypes[number];
 const scopeTypes = ['static', 'instance', 'abstract'] as const;
+type ScopeType = typeof scopeTypes[number];
 
 const allBasicMemberTypes = [
   'signature',
@@ -246,10 +248,80 @@ function getRankOrder(
 }
 
 /**
+ * Weather node is abstract
+ * @param node the node to be evaluated.
+ * @returns true if node is abstract
+ */
+const isAbstract = (node: Member): boolean =>
+  [
+    AST_NODE_TYPES.TSAbstractPropertyDefinition,
+    AST_NODE_TYPES.TSAbstractMethodDefinition,
+  ].includes(node.type);
+
+/**
+ * Weather node has a decorator
+ * @param node the node to be evaluated.
+ * @returns true if node has decorator
+ */
+const isDecorated = (node: Member): boolean =>
+  'decorators' in node && node.decorators!.length > 0;
+
+/**
+ * Extract member nodes scope
+ * @param node the node to be evaluated.
+ * @returns the nodes scope type
+ */
+const getNodeScope = (node: Member): ScopeType => {
+  if ('static' in node && node.static) {
+    return 'static';
+  }
+  return isAbstract(node) ? 'abstract' : 'instance';
+};
+
+/**
+ * Extract accessability of member
+ * @param node the node to be evaluated.
+ * @returns the nodes accessability.
+ */
+const getNodeAccessability = (node: Member): AccessabilityType =>
+  'accessibility' in node && node.accessibility ? node.accessibility : 'public';
+
+/**
+ * Extract member type groups from node that supports modifiers
+ * @param node the node to be evaluated.
+ * @param type the nodes base member type
+ * @returns the member nodes accessability, scope and decorated MemberTypes
+ */
+const getNodeMemberGroups = (
+  node: Member,
+  type: BaseMemberType,
+): MemberType[] => {
+  const accessibility = getNodeAccessability(node);
+  const scope = getNodeScope(node);
+
+  const decoratedGroups = (): MemberType[] =>
+    isDecorated(node) && modifyableMemberTypes.includes(type)
+      ? [`${accessibility}-decorated-${type}`, `decorated-${type}`]
+      : [];
+  const scopeGroups = (): MemberType[] =>
+    type === 'constructor'
+      ? []
+      : [`${accessibility}-${scope}-${type}`, `${scope}-${type}`];
+
+  return [
+    ...decoratedGroups(),
+    ...scopeGroups(),
+    `${accessibility}-${type}`,
+    type,
+  ];
+};
+
+/**
  * Gets the rank of the node given the order.
  * @param node the node to be evaluated.
  * @param orderConfig the current order to be validated.
  * @param supportsModifiers a flag indicating whether the type supports modifiers (scope or accessibility) or not.
+ * @returns Index of the matching member type in the order configuration.
  */
 function getRank(
   node: Member,
@@ -257,54 +329,13 @@ function getRank(
   supportsModifiers: boolean,
 ): number {
   const type = getNodeType(node);
-
   if (type === null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
   }
-
-  const abstract =
-    node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
-    node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
-
-  const scope =
-    'static' in node && node.static
-      ? 'static'
-      : abstract
-      ? 'abstract'
-      : 'instance';
-  const accessibility =
-    'accessibility' in node && node.accessibility
-      ? node.accessibility
-      : 'public';
-
-  // Collect all existing member groups (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)
-  const memberGroups = [];
-
-  if (supportsModifiers) {
-    const decorated = 'decorators' in node && node.decorators!.length > 0;
-    if (
-      decorated &&
-      (type === 'field' ||
-        type === 'method' ||
-        type === 'get' ||
-        type === 'set')
-    ) {
-      memberGroups.push(`${accessibility}-decorated-${type}`);
-      memberGroups.push(`decorated-${type}`);
-    }
-
-    if (type !== 'constructor') {
-      // Constructors have no scope
-      memberGroups.push(`${accessibility}-${scope}-${type}`);
-      memberGroups.push(`${scope}-${type}`);
-    }
-
-    memberGroups.push(`${accessibility}-${type}`);
-  }
-
-  memberGroups.push(type);
-
+  const memberGroups = supportsModifiers
+    ? getNodeMemberGroups(node, type)
+    : [type];
   return getRankOrder(memberGroups, orderConfig);
 }
 
