@@ -43,7 +43,10 @@ async function fetchSponsors(): Promise<void> {
       description: node.fromAccount.description,
     }));
 
-  const rcPath = path.resolve(__dirname, '../website/data/sponsors.json');
+  const rcPath = path.resolve(
+    __dirname,
+    '../packages/website/data/sponsors.json',
+  );
   fs.writeFileSync(rcPath, JSON.stringify(allSponsorsConfig, null, 2));
 }
 

@@ -6,15 +6,6 @@ shared-fixtures
 coverage
 __snapshots__
 
-website/build
-website/.docusaurus
-website/sidebars
-website/webpack.plugin.js
-website/babel.config.js
-website/docusaurus.config.js
-website/src/modules
-website/src/vendor
-
 packages/eslint-plugin-tslint/tests
 
 # Files copied as part of the build

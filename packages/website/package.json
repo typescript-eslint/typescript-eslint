@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start-website": "docusaurus start",
-    "build-website": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "serve-website": "docusaurus serve",
+    "build": "docusaurus build",
     "clear": "docusaurus clear",
-    "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore"
+    "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "serve": "docusaurus serve",
+    "start": "docusaurus start",
+    "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
     "@babel/runtime": "7.16.0",
@@ -29,7 +29,7 @@
     "eslint": "*",
     "react-dom": "^17.0.2",
     "react": "^17.0.2",
-    "typescript": "*",
+    "typescript": "*"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.0.0-beta.9",

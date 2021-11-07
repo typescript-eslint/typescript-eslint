@@ -6,8 +6,7 @@ module.exports = function (/*context, options*/) {
   return {
     name: 'webpack-custom-plugin',
     configureWebpack(cfg, isServer) {
-      return {
-      };
+      return {};
     },
   };
 };

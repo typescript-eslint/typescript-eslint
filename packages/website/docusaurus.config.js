@@ -40,7 +40,7 @@ const config = {
       '@docusaurus/plugin-content-docs',
       {
         id: 'rules-docs',
-        path: '../packages/eslint-plugin/docs/rules',
+        path: '../eslint-plugin/docs/rules',
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
         editUrl: `${githubUrl}/edit/master/docs/`,
@@ -51,7 +51,7 @@ const config = {
       '@docusaurus/plugin-content-docs',
       {
         id: 'base-docs',
-        path: '../docs',
+        path: '../../docs',
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
         editUrl: `${githubUrl}/edit/master/docs/`,

@@ -12,6 +12,6 @@
     "@typescript-eslint/types": "packages/types",
     "@typescript-eslint/typescript-estree": "packages/typescript-estree",
     "@typescript-eslint/visitor-keys": "packages/visitor-keys",
-    "website": "website"
+    "website": "packages/website"
   }
 }

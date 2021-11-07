@@ -21,10 +21,8 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
     project: [
-      './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
-      './tests/integration/tsconfig.json',
-      './website/tsconfig.json',
+      './tsconfig.eslint.json',
       './tests/integration/tsconfig.json',
     ],
     allowAutomaticSingleRunInference: true,

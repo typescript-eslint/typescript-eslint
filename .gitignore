@@ -6,9 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # Website
-website/.docusaurus
-website/.cache-loader
-website/build
+packages/website/.docusaurus
+packages/website/.cache-loader
+packages/website/build
 
 # Runtime data
 pids
