@@ -71,9 +71,9 @@
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.14.5",
-    "@babel/parser": "^7.15.7",
-    "@babel/types": "^7.15.6",
+    "@babel/code-frame": "^7.16.0",
+    "@babel/parser": "^7.16.2",
+    "@babel/types": "^7.16.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@commitlint/config-lerna-scopes": "^13.1.0",
