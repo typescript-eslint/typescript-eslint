@@ -11,8 +11,6 @@ declare module 'eslint' {
   const SourceCode: unknown;
   const CLIEngine: unknown;
   const ESLint: unknown;
-  const Scope: unknown;
-  const Rule: unknown;
 
-  export { Linter, RuleTester, SourceCode, CLIEngine, ESLint, Scope, Rule };
+  export { Linter, RuleTester, SourceCode, CLIEngine, ESLint };
 }

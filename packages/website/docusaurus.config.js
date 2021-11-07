@@ -27,7 +27,6 @@ const config = {
     sponsors,
   },
   plugins: [
-    require.resolve('./webpack.plugin'),
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',

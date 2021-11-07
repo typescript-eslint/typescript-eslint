@@ -21,8 +21,8 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
     project: [
-      './packages/*/tsconfig.json',
       './tsconfig.eslint.json',
+      './packages/*/tsconfig.json',
       './tests/integration/tsconfig.json',
     ],
     allowAutomaticSingleRunInference: true,
@@ -305,7 +305,7 @@ module.exports = {
       },
     },
     {
-      files: ['website/src/**/*.ts', 'website/src/**/*.tsx'],
+      files: ['packages/website/src/**/*.{ts,tsx}'],
       rules: {
         'import/no-default-export': 'off',
         'no-console': 'off',

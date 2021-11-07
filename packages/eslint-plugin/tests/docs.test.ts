@@ -57,23 +57,14 @@ describe('Validating rule docs', () => {
     it(`Description of ${ruleName}.md must match`, () => {
       // validate if description of rule is same as in docs
       const file = fs.readFileSync(filePath, 'utf-8');
-
-      // TODO: replace this parser as it does not support ---
       const tokens = marked.lexer(file, {
         gfm: true,
         silent: false,
       });
 
-      expect(tokens[0]).toMatchObject({ type: 'hr', raw: '---\n' });
-      expect(tokens[1]).toMatchObject({
-        text: `hide_title: true\nsidebar_label: ${ruleName}`,
-        type: 'paragraph',
-      });
-      expect(tokens[2]).toMatchObject({ type: 'hr', raw: '---\n\n' });
-
       // Rule title not found.
       // Rule title does not match the rule metadata.
-      expect(tokens[3]).toMatchObject({
+      expect(tokens[0]).toMatchObject({
         type: 'heading',
         depth: 1,
         text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,
