@@ -10,7 +10,7 @@ const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
 
-const githubUrl = 'https://github.com/armano2/typescript-eslint';
+const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
