@@ -18,6 +18,7 @@ CHANGELOG.md
 
 packages/website/.docusaurus
 packages/website/build
+packages/website/src/vendor
 
 # TODO - remove this once prettier supports TS4.1
 packages/scope-manager/tests/fixtures/type-declaration/literal-type1.ts

@@ -27,6 +27,7 @@ const config = {
     sponsors,
   },
   plugins: [
+    require.resolve('./webpack.plugin'),
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',
@@ -83,6 +84,12 @@ const config = {
             activeBasePath: 'rules',
             label: 'Rules',
             position: 'left',
+          },
+          {
+            to: 'repl',
+            activeBasePath: 'repl',
+            position: 'right',
+            label: 'Playground',
           },
           {
             href: githubUrl,

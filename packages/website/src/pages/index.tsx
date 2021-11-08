@@ -129,6 +129,15 @@ function Feature({ imageUrl, title, description }: FeatureItem): JSX.Element {
   );
 }
 
+interface SponsorsModel {
+  tier: string;
+  name: string;
+  slug: string;
+  website: string;
+  image: string;
+  description: string;
+}
+
 function Sponsors(props: {
   tier: string;
   title: string;
@@ -136,9 +145,9 @@ function Sponsors(props: {
 }): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
-  const tierSponsors = siteConfig.customFields.sponsors.filter(
-    sponsor => sponsor.tier === props.tier,
-  );
+  const tierSponsors = (
+    siteConfig.customFields!.sponsors as SponsorsModel[]
+  ).filter(sponsor => sponsor.tier === props.tier);
   return (
     <div className={props.className}>
       <ul className={clsx(styles[`tier-${props.tier}`], styles.sponsorsTier)}>
@@ -170,6 +179,12 @@ function Home(): JSX.Element {
           <div className={styles.buttons}>
             <Link className="button button--primary" to={useBaseUrl('docs/')}>
               Get Started
+            </Link>
+            <Link
+              className="button button--secondary button--outline"
+              to={useBaseUrl('repl/')}
+            >
+              Playground
             </Link>
           </div>
         </div>
