@@ -16,6 +16,9 @@ CONTRIBUTORS.md
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
+packages/website/.docusaurus
+packages/website/build
+
 # TODO - remove this once prettier supports TS4.1
 packages/scope-manager/tests/fixtures/type-declaration/literal-type1.ts
 packages/scope-manager/tests/fixtures/type-declaration/literal-type2.ts

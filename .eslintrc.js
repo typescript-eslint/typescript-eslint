@@ -304,5 +304,12 @@ module.exports = {
         'import/no-default-export': 'off',
       },
     },
+    {
+      files: ['packages/website/src/**/*.{ts,tsx}'],
+      rules: {
+        'import/no-default-export': 'off',
+        'no-console': 'off',
+      },
+    },
   ],
 };

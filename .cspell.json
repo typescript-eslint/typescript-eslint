@@ -2,18 +2,20 @@
   "version": "0.1",
   "language": "en",
   "ignorePaths": [
-    "**/coverage/**",
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/fixtures/**",
+    ".cspell.json",
+    ".github/workflows/**",
+    ".vscode/*.json",
+    "**/*.{json,snap}",
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/ROADMAP.md",
-    "**/*.{json,snap}",
-    ".cspell.json",
-    "yarn.lock",
-    ".github/workflows/**",
-    ".vscode/*.json"
+    "**/coverage/**",
+    "**/dist/**",
+    "**/fixtures/**",
+    "**/node_modules/**",
+    "packages/website/.docusaurus/**",
+    "packages/website/build/**",
+    "yarn.lock"
   ],
   "dictionaries": [
     "typescript",
@@ -104,7 +106,7 @@
   ],
   "overrides": [
     {
-      "filename": "**/*.{ts,js}",
+      "filename": "**/*.{ts,js,tsx,jsx}",
       "ignoreRegExpList": ["/@[a-z]+/", "/#(end)?region/"],
       "includeRegExpList": [
         "/\\/\\*[\\s\\S]*?\\*\\/|([^\\\\:]|^)\\/\\/.*$/",

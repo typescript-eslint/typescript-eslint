@@ -8,5 +8,8 @@ __snapshots__
 
 packages/eslint-plugin-tslint/tests
 
+packages/website/**/*.js
+packages/website/**/*.d.ts
+
 # Files copied as part of the build
 packages/types/src/ast-spec.ts

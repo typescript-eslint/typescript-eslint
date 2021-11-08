@@ -1,9 +1,14 @@
 {
   "name": "@typescript-eslint/typescript-eslint",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/html-minifier-terser"
+    ]
+  },
   "contributors": [
     "James Henry <typescript-eslint@jameshenry.blog>",
     "Nicholas C. Zakas",
@@ -21,12 +26,13 @@
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --all --parallel",
     "check-docs": "nx run-many --target=check-docs --all --parallel",
-    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
-    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
+    "check-format": "prettier --list-different \"./**/*.{md,mdx,ts,js,tsx,jsx}\"",
+    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,js,tsx,jsx}\"",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
+    "generate-sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
@@ -34,6 +40,7 @@
     "postinstall": "yarn husky install && yarn build",
     "pre-commit": "yarn lint-staged",
     "pre-push": "yarn check-format",
+    "start": "nx run website:start",
     "test": "nx run-many --target=test --all --parallel",
     "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
     "test-kill-integration-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
