@@ -373,4 +373,4 @@ jobs:
 
       - name: Build Website
         run: |
-          yarn build-website
+          yarn nx run website:build-website
