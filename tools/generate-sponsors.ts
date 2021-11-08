@@ -24,23 +24,47 @@ const graphqlQuery = `{
   }
 }`;
 
-async function fetchSponsors(): Promise<void> {
+interface SponsorsData {
+  data: {
+    account: {
+      orders: {
+        nodes: SponsorNode[];
+      };
+    };
+  };
+}
+
+interface SponsorNode {
+  fromAccount: {
+    description: string;
+    imageUrl: string;
+    name: string;
+    slug: string;
+    twitterHandle: string;
+    website: string;
+  };
+  tier?: {
+    slug: string;
+  };
+}
+
+async function main(): Promise<void> {
   const response = await fetch(graphqlEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: graphqlQuery }),
   });
-  const data = await response.json();
+  const data = (await response.json()) as SponsorsData;
   const allSponsorsConfig = data.data.account.orders.nodes
     .filter(node => !!node.tier)
     .map(node => ({
-      tier: node.tier.slug,
+      description: node.fromAccount.description,
+      image: node.fromAccount.imageUrl,
       name: node.fromAccount.name,
       slug: node.fromAccount.slug,
-      website: node.fromAccount.website,
-      image: node.fromAccount.imageUrl,
+      tier: node.tier.slug,
       twitterHandle: node.fromAccount.twitterHandle,
-      description: node.fromAccount.description,
+      website: node.fromAccount.website,
     }));
 
   const rcPath = path.resolve(
@@ -50,4 +74,7 @@ async function fetchSponsors(): Promise<void> {
   fs.writeFileSync(rcPath, JSON.stringify(allSponsorsConfig, null, 2));
 }
 
-fetchSponsors();
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
