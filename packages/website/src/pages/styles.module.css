@@ -16,13 +16,16 @@
   text-align: center;
 }
 
+.hero__subtitle {
+  margin-bottom: 24px;
+}
+
 .buttons {
   --ifm-button-size-multiplier: 1.6;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-top: 24px;
 }
 
 .buttons a {

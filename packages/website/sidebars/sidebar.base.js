@@ -11,6 +11,7 @@ module.exports = {
           'getting-started/linting/type-linting',
           'getting-started/linting/monorepo',
           'getting-started/linting/troubleshooting',
+          'getting-started/linting/architecture',
           'getting-started/linting/tslint',
         ],
       },
