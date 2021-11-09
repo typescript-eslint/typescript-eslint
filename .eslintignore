@@ -8,14 +8,8 @@ __snapshots__
 
 packages/eslint-plugin-tslint/tests
 
-packages/website/build
-packages/website/.docusaurus
-packages/website/sidebars
-packages/website/webpack.plugin.js
-packages/website/babel.config.js
-packages/website/docusaurus.config.js
-packages/website/src/modules
-packages/website/src/vendor
+packages/website/**/*.js
+packages/website/**/*.d.ts
 
 # Files copied as part of the build
 packages/types/src/ast-spec.ts

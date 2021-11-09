@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { ParserOptions } from '@typescript-eslint/parser';
+import type { ParserOptions } from '@typescript-eslint/parser';
 import { debounce } from './debounce';
 import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
 

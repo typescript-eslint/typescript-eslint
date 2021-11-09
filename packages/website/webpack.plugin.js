@@ -5,17 +5,57 @@ module.exports = function (/*context, options*/) {
   return {
     name: 'webpack-custom-plugin',
     configureWebpack(cfg, isServer) {
+      const emptyModules = [
+        // TODO; verify wy this is not working, we don't want to import those files at all in build
+        '@typescript-eslint/experimental-utils/dist/ts-eslint/index.js',
+        '@typescript-eslint/typescript-estree/dist/create-program/createWatchProgram.js',
+        '@typescript-eslint/typescript-estree/dist/create-program/createProjectProgram.js',
+        '@typescript-eslint/typescript-estree/dist/create-program/createIsolatedProgram.js',
+        '@typescript-eslint/experimental-utils/dist/eslint-utils/RuleTester.js',
+
+        'eslint/lib/cli.js',
+        'eslint/lib/eslint',
+        'eslint/lib/eslint/index.js',
+        'eslint/lib/eslint/eslint.js',
+        'eslint/lib/cli-engine/cli-engine.js',
+        'eslint/lib/cli-engine/load-rules.js',
+        'eslint/lib/rule-tester/index.js',
+        'eslint/lib/rule-tester/rule-tester.js',
+        'eslint/lib/shared/ajv.js',
+        'eslint/lib/shared/runtime-info.js',
+        'eslint/lib/init/autoconfig.js',
+        'eslint/lib/init/config-file.js',
+        'eslint/lib/init/config-initializer.js',
+        'eslint/lib/init/config-rule.js',
+        'eslint/lib/init/npm-utils.js',
+        'eslint/lib/init/source-code-utils.js',
+      ];
+
+      const modules = {
+        getESLintCoreRule: 'src/modules/getESLintCoreRule.js',
+        globby: 'src/modules/globby.js',
+        'resolve-from': 'src/modules/resolve-from.js',
+        'import-fresh': 'src/modules/import-fresh.js',
+        semver: 'src/modules/semver.js',
+        'is-glob': 'src/modules/is-glob.js',
+      };
+
       return {
         module: {
           rules: [
             {
-              test: /\.js$/,
+              test: /\.[tj]sx?$/,
               loader: 'string-replace-loader',
+              include: [
+                path.resolve('src'),
+                path.resolve('../../node_modules'),
+              ],
+              enforce: 'pre',
               options: {
                 multiple: [
                   {
-                    search: '__importStar(require("typescript"))',
-                    replace: 'window.ts',
+                    search: 'semver.major(package_json_1.version) >= 8',
+                    replace: 'true',
                   },
                 ],
               },
@@ -23,37 +63,12 @@ module.exports = function (/*context, options*/) {
           ],
         },
         resolve: {
-          exportsFields: [],
-          alias: {
-            '@typescript-eslint/experimental-utils/dist/ts-eslint/index.js': false,
-            '@typescript-eslint/typescript-estree/dist/create-program/createWatchProgram.js': false,
-            '@typescript-eslint/typescript-estree/dist/create-program/createProjectProgram.js': false,
-            '@typescript-eslint/typescript-estree/dist/create-program/createIsolatedProgram.js': false,
-            '@typescript-eslint/experimental-utils/dist/eslint-utils/RuleTester.js': false,
-
-            'eslint/lib/cli-engine/cli-engine': false,
-            'eslint/lib/cli.js': false,
-            'eslint/lib/eslint': false,
-            'eslint/lib/eslint/index.js': false,
-            'eslint/lib/eslint/eslint.js': false,
-            'eslint/lib/cli-engine/cli-engine.js': false,
-            'eslint/lib/cli-engine/load-rules.js': false,
-            'eslint/lib/rule-tester/index.js': false,
-            'eslint/lib/rule-tester/rule-tester.js': false,
-            'eslint/lib/shared/ajv.js': false,
-            'eslint/lib/shared/runtime-info.js': false,
-            'eslint/lib/init/autoconfig.js': false,
-            'eslint/lib/init/config-file.js': false,
-            'eslint/lib/init/config-initializer.js': false,
-            'eslint/lib/init/config-rule.js': false,
-            'eslint/lib/init/npm-utils.js': false,
-            'eslint/lib/init/source-code-utils.js': false,
-          },
           fallback: {
             assert: require.resolve('assert'),
             fs: false,
             os: require.resolve('os-browserify/browser'),
             tty: false,
+            module: false,
             path: require.resolve('path-browserify'),
             util: require.resolve('util'),
             crypto: false,
@@ -78,37 +93,22 @@ module.exports = function (/*context, options*/) {
               ),
             },
           }),
-          new webpack.NormalModuleReplacementPlugin(
-            /globby/,
-            path.resolve(__dirname, 'src/modules/globby.js'),
+          ...emptyModules.map(
+            item =>
+              new webpack.NormalModuleReplacementPlugin(
+                new RegExp(item),
+                path.resolve(
+                  __dirname,
+                  path.resolve(__dirname, 'src/modules/empty.js'),
+                ),
+              ),
           ),
-          new webpack.NormalModuleReplacementPlugin(
-            /resolve-from/,
-            path.resolve(__dirname, 'src/modules/resolve-from.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /eslint$/,
-            path.resolve(__dirname, 'src/modules/eslint.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /eslint\/use-at-your-own-risk$/,
-            path.resolve(__dirname, 'src/modules/eslint-rules.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /@eslint\/eslintrc\/universal$/,
-            path.resolve(__dirname, 'src/modules/eslintrc.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /esquery/,
-            require.resolve('esquery/dist/esquery.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /semver/,
-            path.resolve(__dirname, 'src/modules/semver.js'),
-          ),
-          new webpack.NormalModuleReplacementPlugin(
-            /is-glob/,
-            path.resolve(__dirname, 'src/modules/is-glob.js'),
+          ...Object.entries(modules).map(
+            item =>
+              new webpack.NormalModuleReplacementPlugin(
+                new RegExp('(.*)' + item[0]),
+                path.resolve(__dirname, path.resolve(__dirname, item[1])),
+              ),
           ),
         ],
       };

@@ -41,7 +41,7 @@
     "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.3.2",
     "globby": "^11.0.4",
-    "monaco-editor": "^0.29.1",
+    "monaco-editor": "^0.30.0",
     "string-replace-loader": "^3.0.3",
     "webpack": "^5.61.0"
   },
