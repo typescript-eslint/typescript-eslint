@@ -52,7 +52,7 @@ const returnEmojiIfTrue = <TKey extends keyof typeof emojiKey>(
 ): typeof emojiKey[TKey] | '' => (obj[key] ? emojiKey[key] : '');
 
 const createRuleLink = (ruleName: string, basePath: string): string =>
-  `[\`@typescript-eslint/${ruleName}\`](${basePath}/${ruleName}.md)`;
+  `[\`@typescript-eslint/${ruleName}\`](${basePath}${ruleName}.md)`;
 
 const buildRuleRow = (rule: RuleDetails, basePath: string): RuleColumn => [
   createRuleLink(rule.name, basePath),
@@ -139,5 +139,5 @@ function updateFile(file: string, basePath: string): void {
   fs.writeFileSync(file, readme, 'utf8');
 }
 
-updateFile(path.resolve(__dirname, '../README.md'), './docs/rules');
+updateFile(path.resolve(__dirname, '../README.md'), './docs/rules/');
 updateFile(path.resolve(__dirname, '../docs/rules/README.md'), './');
