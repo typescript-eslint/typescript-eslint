@@ -8,8 +8,6 @@ It adds support for optional parameters.
 Examples of **incorrect** code for this rule:
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: ["error"] */
-
 function f(a = 0, b: number) {}
 function f(a: number, b = 0, c: number) {}
 function f(a: number, b?: number, c: number) {}
@@ -24,8 +22,6 @@ class Foo {
 Examples of **correct** code for this rule:
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: ["error"] */
-
 function f(a = 0) {}
 function f(a: number, b = 0) {}
 function f(a: number, b?: number) {}

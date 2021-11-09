@@ -95,7 +95,7 @@ There are many configuration packages in the ecosystem - these packages that exi
 
 To use one of these complete config packages, you would replace the `extends` with one of these, for example:
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
@@ -118,7 +118,7 @@ Using this config is as simple as adding it to the end of your `extends`:
 
 > Note: [Since version `8.0.0` of `eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier/blob/main/CHANGELOG.md#version-800-2021-02-21), all you need to extend is `'prettier'`. That includes all plugins. Otherwise for `<8.0.0`, you need include `'prettier/@typescript-eslint'`.
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
@@ -145,7 +145,7 @@ There are many plugins, each covering a different slice of the JS development wo
 
 Every plugin that is out there includes documentation on the various rules they offer, as well as recommended their own recommended configurations (just like we provide). You can add a plugin and a recommended config as follows:
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
