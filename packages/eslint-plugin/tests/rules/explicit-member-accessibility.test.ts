@@ -342,7 +342,7 @@ class Test {
   #bar() {}
 }
       `,
-      options: [{ accessibility: 'no-public' }],
+      options: [{ accessibility: 'explicit' }],
     },
   ],
   invalid: [
