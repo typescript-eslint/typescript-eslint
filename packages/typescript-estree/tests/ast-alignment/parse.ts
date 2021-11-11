@@ -33,6 +33,7 @@ function parseWithBabelParser(text: string, jsx = true): File {
     ],
     'decorators-legacy',
     'classStaticBlock',
+    'importAssertions',
     'typescript',
   ];
   if (jsx) {

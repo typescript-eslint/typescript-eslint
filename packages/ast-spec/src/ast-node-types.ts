@@ -32,6 +32,7 @@ export enum AST_NODE_TYPES {
   FunctionExpression = 'FunctionExpression',
   Identifier = 'Identifier',
   IfStatement = 'IfStatement',
+  ImportAttribute = 'ImportAttribute',
   ImportDeclaration = 'ImportDeclaration',
   ImportDefaultSpecifier = 'ImportDefaultSpecifier',
   ImportExpression = 'ImportExpression',

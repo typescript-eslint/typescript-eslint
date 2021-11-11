@@ -4,6 +4,7 @@ exports[`typescript basics abstract-class-with-abstract-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "abstract": true,
         "body": Object {

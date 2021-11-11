@@ -79,6 +79,7 @@ import type { ClassBody } from '../special/ClassBody/spec';
 import type { Decorator } from '../special/Decorator/spec';
 import type { EmptyStatement } from '../special/EmptyStatement/spec';
 import type { ExportSpecifier } from '../special/ExportSpecifier/spec';
+import type { ImportAttribute } from '../special/ImportAttribute/spec';
 import type { ImportDefaultSpecifier } from '../special/ImportDefaultSpecifier/spec';
 import type { ImportNamespaceSpecifier } from '../special/ImportNamespaceSpecifier/spec';
 import type { ImportSpecifier } from '../special/ImportSpecifier/spec';
@@ -200,6 +201,7 @@ export type Node =
   | FunctionExpression
   | Identifier
   | IfStatement
+  | ImportAttribute
   | ImportDeclaration
   | ImportDefaultSpecifier
   | ImportExpression

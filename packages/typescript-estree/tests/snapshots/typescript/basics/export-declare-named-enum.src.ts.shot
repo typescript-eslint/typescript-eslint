@@ -4,6 +4,7 @@ exports[`typescript basics export-declare-named-enum.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "declare": true,
         "id": Object {
