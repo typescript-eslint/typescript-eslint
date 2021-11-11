@@ -14,7 +14,7 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'TypeScript ESLint ',
+  title: 'TypeScript ESLint',
   tagline: 'Tooling which enables ESLint to support TypeScript',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
