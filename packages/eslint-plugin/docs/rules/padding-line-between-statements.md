@@ -43,7 +43,9 @@ This rule extends the base [`eslint/padding-line-between-statements`](https://es
 
 See [`eslint/padding-line-between-statements` options](https://eslint.org/docs/rules/padding-line-between-statements#options).
 
-**Note** - In addition to options provided by ESLint, we have also added options for `interface` and `type`.
+In addition to options provided by ESLint, `interface` and `type` can be used as statement types.
+
+**Note:** ESLint `cjs-export` and `cjs-import` statement types are renamed to `exports` and `require` respectively.
 
 <sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/padding-line-between-statements.md)</sup>
 

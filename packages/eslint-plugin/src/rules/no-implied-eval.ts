@@ -123,6 +123,15 @@ export default util.createRule({
       }
     }
 
+    function isReferenceToGlobalFunction(calleeName: string): boolean {
+      const ref = context
+        .getScope()
+        .references.find(ref => ref.identifier.name === calleeName);
+
+      // ensure it's the "global" version
+      return !ref?.resolved || ref.resolved.defs.length === 0;
+    }
+
     function checkImpliedEval(
       node: TSESTree.NewExpression | TSESTree.CallExpression,
     ): void {
@@ -156,7 +165,11 @@ export default util.createRule({
       }
 
       const [handler] = node.arguments;
-      if (EVAL_LIKE_METHODS.has(calleeName) && !isFunction(handler)) {
+      if (
+        EVAL_LIKE_METHODS.has(calleeName) &&
+        !isFunction(handler) &&
+        isReferenceToGlobalFunction(calleeName)
+      ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }
     }

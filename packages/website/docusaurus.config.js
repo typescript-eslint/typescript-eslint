@@ -14,7 +14,7 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'TypeScript ESLint ',
+  title: 'TypeScript ESLint',
   tagline: 'Tooling which enables ESLint to support TypeScript',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
@@ -42,7 +42,7 @@ const config = {
         path: '../eslint-plugin/docs/rules',
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
-        editUrl: `${githubUrl}/edit/master/docs/`,
+        editUrl: `${githubUrl}/edit/master/packages/website/`,
         remarkPlugins,
       },
     ],
@@ -53,7 +53,7 @@ const config = {
         path: '../../docs',
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
-        editUrl: `${githubUrl}/edit/master/docs/`,
+        editUrl: `${githubUrl}/edit/master/packages/website/`,
         remarkPlugins,
       },
     ],
