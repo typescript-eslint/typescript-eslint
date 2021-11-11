@@ -51,29 +51,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional",
-      "@commitlint/config-lerna-scopes"
-    ],
-    "rules": {
-      "body-max-length": [
-        0
-      ],
-      "body-max-line-length": [
-        0
-      ],
-      "footer-max-length": [
-        0
-      ],
-      "footer-max-line-length": [
-        0
-      ],
-      "header-max-length": [
-        0
-      ]
-    }
-  },
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
@@ -81,9 +58,9 @@
     "@babel/code-frame": "^7.16.0",
     "@babel/parser": "^7.16.2",
     "@babel/types": "^7.16.0",
-    "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^13.1.0",
-    "@commitlint/config-lerna-scopes": "^13.1.0",
+    "@commitlint/cli": "^14.1.0",
+    "@commitlint/config-conventional": "^14.1.0",
+    "@commitlint/config-lerna-scopes": "^14.0.0",
     "@nrwl/cli": "13.0.2",
     "@nrwl/nx-cloud": "12.5.1",
     "@nrwl/tao": "13.0.2",
@@ -118,7 +95,7 @@
     "husky": "^7.0.4",
     "jest": "^27.3.1",
     "jest-specific-snapshot": "^5.0.0",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^11.1.2",
     "make-dir": "^3.1.0",
     "markdownlint-cli": "^0.29.0",
