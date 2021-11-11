@@ -4,11 +4,9 @@ title: Linting with Type Information
 sidebar_label: Linting with Type Information
 ---
 
-The parser you configured earlier has a little secret. Under the hood, it actually just uses TypeScript's compiler APIs to parse the files. This means that we can provide lint rules with access to all of the type information that TypeScript knows about your codebase.
+Under the hood, the typescript-eslint parser uses TypeScript's compiler APIs to parse the files. This means that we can provide lint rules with access to all of the type information that TypeScript knows about your codebase.
 
-This provides a lot of additional power, unlocking many possibilities for static analysis.
-
-How can we tap into this? There are two small changes you need to make to your config file:
+To tap into TypeScript's additional powers, there are two small changes you need to make to your config file:
 
 ```diff title=".eslintrc.js"
  module.exports = {
@@ -27,16 +25,19 @@ How can we tap into this? There are two small changes you need to make to your c
  };
 ```
 
-The first change is adding the `parserOptions` configuration:
+In more detail:
 
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
 - `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./MONOREPO.md).
 - `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
 
-With that done, simply run the same lint command you ran before. You will see new rules reporting errors based on type information!
+With that done, run the same lint command you ran before.
+You will see new rules reporting errors based on type information!
 
-## Performance
+## FAQs
+
+### How is performance?
 
 _But wait_ - I hear you exclaim - _why would you ever not want type-aware rules?_
 
@@ -45,13 +46,14 @@ Well (for full disclosure) there is a catch; by including `parserOptions.project
 Most of our users are fine with this, as they think the power of type-aware static analysis is worth it.
 Additionally, most users primarily consume lint errors via IDE plugins which, through some caching magic, do not suffer the same penalties. This means that generally they usually only run a complete lint before a push, or via their CI, where the extra time really doesn't matter.
 
-We strongly recommend you do use it, but the above information is included so that you can make your own, informed decision.
+**We strongly recommend you do use type-aware linting**, but the above information is included so that you can make your own, informed decision.
 
-## I get errors telling me "The file must be included in at least one of the projects provided"
+### I get errors telling me "The file must be included in at least one of the projects provided"
 
-This error means that the file that's being linted is not included in any of the tsconfig files you provided us. A lot of the time this happens when users have test files or similar that are not included in their normal tsconfigs.
+This error means that the file that's being linted is not included in any of the tsconfig files you provided us.
+A lot of the time this happens when users have test files or similar that are not included in their normal tsconfigs.
 
-There are a couple of solutions to this, depending on what you want to achieve.
+Depending on what you want to achieve:
 
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, like a `.eslintignore` file, or `ignorePatterns` config.
@@ -64,6 +66,6 @@ There are a couple of solutions to this, depending on what you want to achieve.
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/tsconfig.eslint.json)
       - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/.eslintrc.js)
 
-## FAQ
+## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./FAQ.md).
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./TROUBLESHOOTING.md).
