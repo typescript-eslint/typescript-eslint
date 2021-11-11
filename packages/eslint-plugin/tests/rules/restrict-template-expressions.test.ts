@@ -377,7 +377,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [
         {
           messageId: 'invalidType',
-          data: { type: 'T' },
+          data: { type: 'any' },
           line: 3,
           column: 27,
         },
