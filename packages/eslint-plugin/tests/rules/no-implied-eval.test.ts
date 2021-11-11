@@ -296,7 +296,14 @@ setTimeout(1000);
 function setTimeout() {}
 
 {
-  setTimeout();
+  setTimeout(100);
+}
+    `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout("alert('evil!')");
 }
     `,
   ],
