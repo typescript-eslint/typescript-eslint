@@ -162,7 +162,7 @@ function Sponsors(props: {
 function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title={`${siteConfig.title}`} description={`${siteConfig.tagline}`}>
+    <Layout description={`${siteConfig.tagline}`}>
       <header className={clsx('hero hero--dark', styles.hero)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
