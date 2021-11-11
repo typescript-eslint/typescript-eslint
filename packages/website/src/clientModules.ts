@@ -1,5 +1,3 @@
-import * as konamimojisplosion from 'konamimojisplosion';
+import { initializeKonamimojisplosion } from 'konamimojisplosion';
 
-console.log({ konamimojisplosion });
-
-konamimojisplosion.initializeKonamimojisplosion();
+initializeKonamimojisplosion();
