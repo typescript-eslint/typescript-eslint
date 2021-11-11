@@ -11,7 +11,7 @@ module.exports = {
     freeze: false,
     file: 'dist/index.js',
   },
-  external: ['typescript'],
+  external: ['typescript', 'semver'],
   plugins: [
     replace({
       // verbose: true,
@@ -42,6 +42,10 @@ module.exports = {
         {
           match: /^util$/u,
           target: './src/mock/util.js',
+        },
+        {
+          match: /^semver$/u,
+          target: './src/mock/semver.js',
         },
       ],
       replace: [

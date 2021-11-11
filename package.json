@@ -128,6 +128,7 @@
     "prettier": "2.4.1",
     "pretty-format": "^27.3.1",
     "rimraf": "^3.0.2",
+    "semver": "^7.3.5",
     "tmp": "^0.2.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.4.0",

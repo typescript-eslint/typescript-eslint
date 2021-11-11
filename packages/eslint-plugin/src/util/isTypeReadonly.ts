@@ -7,7 +7,8 @@ import {
   isSymbolFlagSet,
 } from 'tsutils';
 import * as ts from 'typescript';
-import { getTypeOfPropertyOfType, nullThrows, NullThrowsReasons } from '.';
+import { nullThrows, NullThrowsReasons } from './nullThrows';
+import { getTypeOfPropertyOfType } from './propertyTypes';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */

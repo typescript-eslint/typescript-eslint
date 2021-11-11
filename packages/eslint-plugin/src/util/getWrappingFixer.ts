@@ -1,10 +1,10 @@
 import {
   AST_NODE_TYPES,
   TSESLint,
+  ASTUtils,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { SourceCode } from '@typescript-eslint/experimental-utils/src/ts-eslint';
-import * as util from '../util';
 
 interface WrappingFixerParams {
   /** Source code. */
@@ -57,7 +57,7 @@ export function getWrappingFixer(
     if (isWeakPrecedenceParent(node)) {
       // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
       // let's wrap the whole expression in parens just in case
-      if (!util.isParenthesized(node, sourceCode)) {
+      if (!ASTUtils.isParenthesized(node, sourceCode)) {
         code = `(${code})`;
       }
     }
