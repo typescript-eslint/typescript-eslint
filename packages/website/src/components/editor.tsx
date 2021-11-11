@@ -3,16 +3,28 @@ import type {
   createTypeScriptSandbox,
   PlaygroundConfig,
 } from '../vendor/sandbox';
-import type { TSESTree } from '@typescript-eslint/types';
 import type Monaco from 'monaco-editor';
 
+import type { TSESTree, ParserOptions } from '@typescript-eslint/types';
+import type { TSESLint } from '@typescript-eslint/experimental-utils';
+
 import { sandboxSingleton } from './lib/load-sandbox';
-import { loadLinter, WebLinter } from './linter/linter';
 import { createProvideCodeActions } from './lib/action';
 import { createURI, messageToMarker } from './lib/utils';
 import { debounce } from './lib/debounce';
 import { HashStateOptions } from './lib/use-hash-state';
-import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
+
+export interface WebLinter {
+  ruleNames: string[];
+
+  getAst(): TSESLint.Linter.ESLintParseResult['ast'];
+
+  lint(
+    code: string,
+    parserOptions: ParserOptions,
+    rules?: TSESLint.Linter.RulesRecord,
+  ): TSESLint.Linter.LintMessage[];
+}
 
 interface EditorProps extends HashStateOptions {
   darkTheme: boolean;
@@ -40,7 +52,7 @@ class Editor extends React.Component<EditorProps> {
   private _codeIsUpdating: boolean;
   private _decorations: string[];
 
-  private readonly fixes: Map<string, Linter.LintMessage>;
+  private readonly fixes: Map<string, TSESLint.Linter.LintMessage>;
 
   constructor(props: EditorProps) {
     super(props);
@@ -153,7 +165,9 @@ class Editor extends React.Component<EditorProps> {
     );
     this.updateTheme();
     this.updateCode();
-    this.linter = await loadLinter();
+    this.linter = (
+      await import('@typescript-eslint/website-eslint')
+    ).loadLinter();
     if (this.props.onLoadRule) {
       this.props.onLoadRule(this.linter.ruleNames);
     }

@@ -19,21 +19,13 @@
     "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.9",
     "@docusaurus/theme-classic": "^2.0.0-beta.9",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/eslint-plugin": "5.3.1",
-    "@typescript-eslint/parser": "5.3.1",
-    "@typescript-eslint/scope-manager": "5.3.1",
-    "@typescript-eslint/types": "5.3.1",
-    "@typescript-eslint/typescript-estree": "5.3.1",
-    "@typescript-eslint/visitor-keys": "5.3.1",
+    "@typescript-eslint/experimental-utils": "5.3.1",
+    "@typescript-eslint/website-eslint": "5.3.1",
     "clsx": "^1.1.1",
     "eslint": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "*",
-    "path-browserify": "1.0.1",
-    "os-browserify": "0.3.0",
-    "util": "0.12.4",
-    "assert": "2.0.0"
+    "typescript": "*"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.0.0-beta.9",
@@ -42,7 +34,6 @@
     "@types/react-router-dom": "^5.3.2",
     "globby": "^11.0.4",
     "monaco-editor": "^0.30.0",
-    "string-replace-loader": "^3.0.3",
     "webpack": "^5.61.0"
   },
   "browserslist": {

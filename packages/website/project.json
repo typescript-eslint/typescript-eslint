@@ -1,5 +1,5 @@
 {
   "root": "packages/website",
-  "type": "library",
+  "type": "application",
   "implicitDependencies": []
 }

@@ -47,7 +47,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
           // @ts-ignore
           const isOK = main && window.ts && sandboxFactory;
           // @ts-ignore
-          window.ts.__esModule = true;
+          // window.ts.__esModule = true;
           // window.ts.SyntaxKind;
           if (isOK) {
             resolve({

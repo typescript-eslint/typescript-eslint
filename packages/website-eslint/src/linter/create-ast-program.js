@@ -1,5 +1,3 @@
-import type { SourceFile, Program } from 'typescript';
-import type { ParserOptions } from '@typescript-eslint/types';
 import {
   createProgram,
   createSourceFile,
@@ -10,18 +8,12 @@ import {
 } from 'typescript';
 import { CompilerHost } from './CompilerHost';
 
-interface ASTAndProgram {
-  ast?: SourceFile;
-  program: Program;
-}
-
-export function createASTProgram(
-  code: string,
-  parserOptions: ParserOptions,
-): ASTAndProgram {
+export function createASTProgram(code, parserOptions) {
   const isJsx = !!parserOptions?.ecmaFeatures?.jsx;
   const fileName = isJsx ? '/demo.tsx' : '/demo.ts';
-  const files = { [fileName]: code };
+  const files = {
+    [fileName]: code,
+  };
   const sourceFiles = {
     [fileName]: createSourceFile(
       fileName,
@@ -31,7 +23,6 @@ export function createASTProgram(
       isJsx ? ScriptKind.TSX : ScriptKind.TS,
     ),
   };
-
   const compilerHost = new CompilerHost(files, sourceFiles);
   const compilerOptions = {
     noResolve: true,
@@ -46,5 +37,8 @@ export function createASTProgram(
     compilerHost,
   );
   const ast = program.getSourceFile(fileName);
-  return { ast, program };
+  return {
+    ast,
+    program,
+  };
 }
