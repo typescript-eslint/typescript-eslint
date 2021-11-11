@@ -4,6 +4,7 @@ exports[`javascript modules export-named-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": null,
       "exportKind": "value",
       "loc": Object {

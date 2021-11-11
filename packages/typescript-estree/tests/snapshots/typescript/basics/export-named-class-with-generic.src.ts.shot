@@ -4,6 +4,7 @@ exports[`typescript basics export-named-class-with-generic.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "body": Object {
           "body": Array [],
