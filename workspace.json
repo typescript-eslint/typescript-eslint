@@ -11,6 +11,7 @@
     "@typescript-eslint/shared-fixtures": "packages/shared-fixtures",
     "@typescript-eslint/types": "packages/types",
     "@typescript-eslint/typescript-estree": "packages/typescript-estree",
-    "@typescript-eslint/visitor-keys": "packages/visitor-keys"
+    "@typescript-eslint/visitor-keys": "packages/visitor-keys",
+    "website": "packages/website"
   }
 }

@@ -1,4 +1,8 @@
-# Getting Started - Linting your TypeScript Codebase
+---
+id: linting
+title: Linting your TypeScript Codebase
+sidebar_label: Linting your TypeScript Codebase
+---
 
 Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
@@ -6,9 +10,8 @@ Whether you're adding linting to a new TypeScript codebase, adding TypeScript to
 
 First step is to make sure you've got the required packages installed:
 
-```bash
-$ yarn add -D eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
-$ npm i --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```bash npm2yarn
+npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 ## Configuration
@@ -16,7 +19,7 @@ $ npm i --save-dev eslint typescript @typescript-eslint/parser @typescript-eslin
 Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
 
 <!-- prettier-ignore -->
-```js
+```js title=".eslintrc.js"
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -56,27 +59,19 @@ This file will tell ESLint which files and folders it should never lint.
 
 Add the following lines to the file:
 
-```ignore
+```ignore title=".eslintignore"
 # don't ever lint node_modules
 node_modules
 # don't lint build output (make sure it's set to your correct build folder name)
 dist
-# don't lint nyc coverage output
-coverage
 ```
 
 ## Running the lint
 
 With that configured, open a terminal to the root of your project, and run the following command
 
-```bash
-$ yarn eslint . --ext .js,.jsx,.ts,.tsx
-```
-
-or with NPM:
-
-```bash
-$ npx eslint . --ext .js,.jsx,.ts,.tsx
+```bash npm2yarn
+npm run eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.

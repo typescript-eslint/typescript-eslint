@@ -214,6 +214,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractPropertyDefinition,
     ): void {
+      if (propertyDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return;
+      }
+
       const nodeType = 'class property';
 
       const { name: propertyName } = util.getNameFromMember(

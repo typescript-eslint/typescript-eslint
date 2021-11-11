@@ -185,8 +185,10 @@ function isTypeReadonlyRecurser(
 
   if (isUnionType(type)) {
     // all types in the union must be readonly
-    const result = unionTypeParts(type).every(t =>
-      isTypeReadonlyRecurser(checker, t, options, seenTypes),
+    const result = unionTypeParts(type).every(
+      t =>
+        seenTypes.has(t) ||
+        isTypeReadonlyRecurser(checker, t, options, seenTypes),
     );
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;

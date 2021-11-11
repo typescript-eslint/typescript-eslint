@@ -237,7 +237,7 @@ export function preprocessBabylonAST(ast: File): any {
       /**
        * Template strings seem to also be affected by the difference in opinion between different parsers in
        * @see https://github.com/babel/babel/issues/6681
-       * @see https://github.com/babel/babel/blob/main/eslint/babel-eslint-parser/src/convert/convertAST.js#L64-L80
+       * @see https://github.com/babel/babel/blob/381277a/eslint/babel-eslint-parser/src/convert/convertAST.cjs#L81-L102
        */
       TemplateLiteral(node: any) {
         for (let j = 0; j < node.quasis.length; j++) {
@@ -262,6 +262,18 @@ export function preprocessBabylonAST(ast: File): any {
         const { typeAnnotation } = node;
         Object.keys(node).forEach(key => delete node[key]);
         Object.assign(node, typeAnnotation);
+      },
+      /**
+       * @see https://github.com/babel/babel/pull/13802
+       */
+      ImportSpecifier(node) {
+        delete node.importKind;
+      },
+      /**
+       * @see https://github.com/babel/babel/pull/13802
+       */
+      ExportSpecifier(node) {
+        delete node.exportKind;
       },
     },
   );

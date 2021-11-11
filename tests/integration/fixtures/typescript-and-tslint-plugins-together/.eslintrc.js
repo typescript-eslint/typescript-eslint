@@ -1,13 +1,7 @@
 module.exports = {
   root: true,
-  // Local version of @typescript-eslint/parser
   parser: '@typescript-eslint/parser',
-  plugins: [
-    // Local version of @typescript-eslint/eslint-plugin
-    '@typescript-eslint',
-    // Local version of @typescript-eslint/eslint-plugin-tslint
-    '@typescript-eslint/tslint',
-  ],
+  plugins: ['@typescript-eslint', '@typescript-eslint/tslint'],
   env: {
     es6: true,
     node: true,

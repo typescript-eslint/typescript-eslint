@@ -20,9 +20,12 @@ type Foo = Record<string, unknown>;
 
 For example:
 
-```CJSON
+```json
 {
-    "@typescript-eslint/consistent-indexed-object-style": ["error", "index-signature"]
+  "@typescript-eslint/consistent-indexed-object-style": [
+    "error",
+    "index-signature"
+  ]
 }
 ```
 

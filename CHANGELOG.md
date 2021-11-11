@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.0...v5.3.1) (2021-11-08)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-eslint
+
+
+
+
+
+# [5.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.2.0...v5.3.0) (2021-11-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** ignore private identifiers in explicit-module-boundary-types ([#4046](https://github.com/typescript-eslint/typescript-eslint/issues/4046)) ([80b853d](https://github.com/typescript-eslint/typescript-eslint/commit/80b853db90ae3d4e32c4b7ec9d45a5c41dc459c9))
+* **eslint-plugin:** skip seenTypes for unions in isTypeReadonly ([#4043](https://github.com/typescript-eslint/typescript-eslint/issues/4043)) ([6af7ca7](https://github.com/typescript-eslint/typescript-eslint/commit/6af7ca7d9fde230342d27ad5a75a09a58c022974))
+* **experimental-utils:** add `name` property to test case interface ([#4067](https://github.com/typescript-eslint/typescript-eslint/issues/4067)) ([f3021c9](https://github.com/typescript-eslint/typescript-eslint/commit/f3021c94460e8d06e4169335bcc1a23854531f2a))
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] exclude external type declaration merging ([#3959](https://github.com/typescript-eslint/typescript-eslint/issues/3959)) ([a93cebf](https://github.com/typescript-eslint/typescript-eslint/commit/a93cebfc0f2026c50972bcb110bcd3295ba9a44d))
+* **experimental-utils:** extract `isTokenOfTypeWithConditions` out of `ast-utils`' `predicates` ([#3977](https://github.com/typescript-eslint/typescript-eslint/issues/3977)) ([5229597](https://github.com/typescript-eslint/typescript-eslint/commit/5229597d9bfc998852c4b4fb421859e8f3d3d688))
+
+
+
+
+
+# [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [typedef] fix regression with class properties ([#4034](https://github.com/typescript-eslint/typescript-eslint/issues/4034)) ([fe53d22](https://github.com/typescript-eslint/typescript-eslint/commit/fe53d22f57ad418397fb31fa89c97db0ab4cd6c0)), closes [#4033](https://github.com/typescript-eslint/typescript-eslint/issues/4033)
+
+
+### Features
+
+* **eslint-plugin:** adding `consistent-type-exports` rule ([#3936](https://github.com/typescript-eslint/typescript-eslint/issues/3936)) ([1971a3f](https://github.com/typescript-eslint/typescript-eslint/commit/1971a3f8027416cd1fb33b1d50faa035599917de))
+
+
+
+
+
 # [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
 
 
