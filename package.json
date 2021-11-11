@@ -22,7 +22,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel",
+    "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel --exclude website",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --all --parallel",
     "check-docs": "nx run-many --target=check-docs --all --parallel",
