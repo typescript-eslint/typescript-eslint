@@ -65,7 +65,13 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
-        if (isUnhandledPromise(checker, node.expression)) {
+        let expression = node.expression;
+
+        if (expression.type === AST_NODE_TYPES.ChainExpression) {
+          expression = expression.expression;
+        }
+
+        if (isUnhandledPromise(checker, expression)) {
           if (options.ignoreVoid) {
             context.report({
               node,
