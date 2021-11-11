@@ -16,9 +16,9 @@ module.exports = {
     {
       type: 'category',
       label: 'Development',
+      collapsed: false,
       items: [
         {
-          collapsed: false,
           label: 'Architecture',
           type: 'category',
           items: [

@@ -109,6 +109,7 @@ The biggest addition typescript-eslint brings to ESLint rules is the ability to 
 `@typescript-eslint/experimental-utils` exports an `ESLintUtils` namespace containing a `getParserServices` function that takes in an ESLint context and returns a `parserServices` object.
 
 That `parserServices` object contains:
+
 - `program`: A full TypeScript `ts.Program` object
 - `esTreeNodeToTSNodeMap`: Map of `@typescript-eslint/estree` `TSESTree.Node` nodes to their TypeScript `ts.Node` equivalents
 - `tsNodeToESTreeNodeMap`: Map of TypeScript `ts.Node` nodes to their `@typescript-eslint/estree` `TSESTree.Node` equivalents
