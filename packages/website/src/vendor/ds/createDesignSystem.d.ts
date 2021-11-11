@@ -13,11 +13,14 @@ export declare type OptionsListConfig = {
   style: 'separated' | 'rows';
   requireRestart?: true;
 };
-export declare const createDesignSystem: (
-  sandbox: Sandbox,
-) => (
+export declare type DesignSystem = ReturnType<
+  ReturnType<typeof createDesignSystem>
+>;
+export declare const createDesignSystem: (sandbox: Sandbox) => (
   container: Element,
 ) => {
+  /** The element of the design system */
+  container: Element;
   /** Clear the sidebar */
   clear: () => void;
   /** Present code in a pre > code  */
@@ -38,6 +41,8 @@ export declare const createDesignSystem: (
     model: import('monaco-editor').editor.ITextModel,
     diags: DiagnosticRelatedInformation[],
   ) => HTMLUListElement;
+  /** Lets you remove the hovers from listDiags etc */
+  clearDeltaDecorators: (force?: true | undefined) => void;
   /** Shows a single option in local storage (adds an li to the container BTW) */
   localStorageOption: (setting: LocalStorageOption) => HTMLLIElement;
   /** Uses localStorageOption to create a list of options */
@@ -56,7 +61,14 @@ export declare const createDesignSystem: (
     isEnabled?: ((input: HTMLInputElement) => boolean) | undefined;
   }) => HTMLFormElement;
   /** Renders an AST tree */
-  createASTTree: (node: Node) => HTMLDivElement;
+  createASTTree: (
+    node: Node,
+    settings?:
+      | {
+          closedByDefault?: true | undefined;
+        }
+      | undefined,
+  ) => HTMLDivElement;
   /** Creates an input button */
   button: (settings: {
     label: string;
@@ -68,4 +80,8 @@ export declare const createDesignSystem: (
   createTabButton: (text: string) => HTMLButtonElement;
   /** A general "restart your browser" message  */
   declareRestartRequired: (i?: ((key: string) => string) | undefined) => void;
+  /** Create a new Design System instance and add it to the container. You'll need to cast
+   * this after usage, because otherwise the type-system circularly references itself
+   */
+  createSubDesignSystem: () => any;
 };

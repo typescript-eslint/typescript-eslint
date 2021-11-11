@@ -2,6 +2,7 @@ declare type Sandbox = import('./sandbox').Sandbox;
 declare type Monaco = typeof import('monaco-editor');
 import { PluginUtils } from './pluginUtils';
 import type React from 'react';
+
 export { PluginUtils } from './pluginUtils';
 export declare type PluginFactory = {
   (
@@ -9,6 +10,7 @@ export declare type PluginFactory = {
     utils: PluginUtils,
   ): PlaygroundPlugin;
 };
+
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
   /** Not public facing, but used by the playground to uniquely identify plugins */
@@ -40,6 +42,7 @@ export interface PlaygroundPlugin {
   /** An object you can use to keep data around in the scope of your plugin object */
   data?: any;
 }
+
 interface PlaygroundConfig {
   /** Language like "en" / "ja" etc */
   lang: string;
@@ -50,6 +53,7 @@ interface PlaygroundConfig {
   /** Should this playground load up custom plugins from localStorage? */
   supportCustomPlugins: boolean;
 }
+
 export declare const setupPlayground: (
   sandbox: Sandbox,
   monaco: Monaco,
@@ -89,9 +93,8 @@ export declare const setupPlayground: (
     el: (str: string, elementType: string, container: Element) => HTMLElement;
     requireURL: (path: string) => string;
     react: typeof React;
-    createDesignSystem: (
-      container: Element,
-    ) => {
+    createDesignSystem: (container: Element) => {
+      container: Element;
       clear: () => void;
       code: (code: string) => HTMLElement;
       title: (title: string) => HTMLElement;
@@ -102,6 +105,7 @@ export declare const setupPlayground: (
         model: import('monaco-editor').editor.ITextModel,
         diags: import('typescript').DiagnosticRelatedInformation[],
       ) => HTMLUListElement;
+      clearDeltaDecorators: (force?: true | undefined) => void;
       localStorageOption: (
         setting: import('./ds/createDesignSystem').LocalStorageOption,
       ) => HTMLLIElement;
@@ -120,7 +124,14 @@ export declare const setupPlayground: (
         keepValueAcrossReloads?: true | undefined;
         isEnabled?: ((input: HTMLInputElement) => boolean) | undefined;
       }) => HTMLFormElement;
-      createASTTree: (node: import('typescript').Node) => HTMLDivElement;
+      createASTTree: (
+        node: import('typescript').Node,
+        settings?:
+          | {
+              closedByDefault?: true | undefined;
+            }
+          | undefined,
+      ) => HTMLDivElement;
       button: (settings: {
         label: string;
         onclick?: ((ev: MouseEvent) => void) | undefined;
@@ -130,6 +141,7 @@ export declare const setupPlayground: (
       declareRestartRequired: (
         i?: ((key: string) => string) | undefined,
       ) => void;
+      createSubDesignSystem: () => any;
     };
     flashHTMLElement: (element: HTMLElement) => void;
     setNotifications: (pluginID: string, amount: number) => void;

@@ -1,4 +1,5 @@
 import type React from 'react';
+
 /** Creates a set of util functions which is exposed to Plugins to make it easier to build consistent UIs */
 export declare const createUtils: (
   sb: any,
@@ -14,9 +15,8 @@ export declare const createUtils: (
    * The playground plugin design system. Calling any of the functions will append the
    * element to the container you pass into the first param, and return the HTMLElement
    */
-  createDesignSystem: (
-    container: Element,
-  ) => {
+  createDesignSystem: (container: Element) => {
+    container: Element;
     clear: () => void;
     code: (code: string) => HTMLElement;
     title: (title: string) => HTMLElement;
@@ -27,6 +27,7 @@ export declare const createUtils: (
       model: import('monaco-editor').editor.ITextModel,
       diags: import('typescript').DiagnosticRelatedInformation[],
     ) => HTMLUListElement;
+    clearDeltaDecorators: (force?: true | undefined) => void;
     localStorageOption: (
       setting: import('./ds/createDesignSystem').LocalStorageOption,
     ) => HTMLLIElement;
@@ -43,7 +44,14 @@ export declare const createUtils: (
       keepValueAcrossReloads?: true | undefined;
       isEnabled?: ((input: HTMLInputElement) => boolean) | undefined;
     }) => HTMLFormElement;
-    createASTTree: (node: import('typescript').Node) => HTMLDivElement;
+    createASTTree: (
+      node: import('typescript').Node,
+      settings?:
+        | {
+            closedByDefault?: true | undefined;
+          }
+        | undefined,
+    ) => HTMLDivElement;
     button: (settings: {
       label: string;
       onclick?: ((ev: MouseEvent) => void) | undefined;
@@ -51,6 +59,7 @@ export declare const createUtils: (
     createTabBar: () => HTMLDivElement;
     createTabButton: (text: string) => HTMLButtonElement;
     declareRestartRequired: (i?: ((key: string) => string) | undefined) => void;
+    createSubDesignSystem: () => any;
   };
   /** Flashes a HTML Element */
   flashHTMLElement: (element: HTMLElement) => void;
