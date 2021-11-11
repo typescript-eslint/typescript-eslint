@@ -1071,7 +1071,7 @@
   dependencies:
     conventional-changelog-conventionalcommits "^4.3.1"
 
-"@commitlint/config-lerna-scopes@^14.1.0":
+"@commitlint/config-lerna-scopes@^14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-14.0.0.tgz#9eb922d96c04276491507dd52b41e01b2c58d35d"
   integrity sha512-hW/PagT//s/XAhFyCCWmWSfQX79ciJjmL3n1F6N2i2R/BjewEGnXyNCI3nV3pQfJYm/b7BJkGygz4hl0ESe0bA==
