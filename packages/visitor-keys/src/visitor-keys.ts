@@ -16,6 +16,9 @@ type AdditionalKeys = {
 };
 
 const additionalKeys: AdditionalKeys = {
+  // Stage 3 Import Assertions
+  ImportAttribute: ['key', 'value'],
+
   // ES2020
   ImportExpression: ['source'],
 

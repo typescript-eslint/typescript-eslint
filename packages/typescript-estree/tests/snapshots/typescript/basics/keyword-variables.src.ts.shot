@@ -2317,6 +2317,7 @@ Object {
       "type": "BlockStatement",
     },
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {

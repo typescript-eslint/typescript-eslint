@@ -193,6 +193,7 @@ export class Converter {
           source: null,
           exportKind: isType || isDeclare ? 'type' : 'value',
           range: [exportKeyword.getStart(this.ast), result.range[1]],
+          assertions: [],
         });
       }
     }
@@ -661,6 +662,14 @@ export class Converter {
     }
 
     return result;
+  }
+
+  private convertAssertClasue(
+    node: ts.AssertClause | undefined,
+  ): TSESTree.ImportAttribute[] {
+    return node === undefined
+      ? []
+      : node.elements.map(element => this.convertChild(element));
   }
 
   /**
@@ -1737,6 +1746,7 @@ export class Converter {
           source: this.convertChild(node.moduleSpecifier),
           specifiers: [],
           importKind: 'value',
+          assertions: this.convertAssertClasue(node.assertClause),
         });
 
         if (node.importClause) {
@@ -1805,6 +1815,7 @@ export class Converter {
             ),
             exportKind: node.isTypeOnly ? 'type' : 'value',
             declaration: null,
+            assertions: this.convertAssertClasue(node.assertClause),
           });
         } else {
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
@@ -1820,6 +1831,7 @@ export class Converter {
               node.exportClause.kind === SyntaxKind.NamespaceExport
                 ? this.convertChild(node.exportClause.name)
                 : null,
+            assertions: this.convertAssertClasue(node.assertClause),
           });
         }
       }
@@ -1989,16 +2001,19 @@ export class Converter {
 
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
-          if (node.arguments.length !== 1) {
+          if (node.arguments.length !== 1 && node.arguments.length !== 2) {
             throw createError(
               this.ast,
               node.arguments.pos,
-              'Dynamic import must have one specifier as an argument.',
+              'Dynamic import requires exactly one or two arguments.',
             );
           }
           return this.createNode<TSESTree.ImportExpression>(node, {
             type: AST_NODE_TYPES.ImportExpression,
             source: this.convertChild(node.arguments[0]),
+            attributes: node.arguments[1]
+              ? this.convertChild(node.arguments[1])
+              : null,
           });
         }
 
@@ -2868,6 +2883,14 @@ export class Converter {
         return this.createNode<TSESTree.StaticBlock>(node, {
           type: AST_NODE_TYPES.StaticBlock,
           body: this.convertBodyExpressions(node.body.statements, node),
+        });
+      }
+
+      case SyntaxKind.AssertEntry: {
+        return this.createNode<TSESTree.ImportAttribute>(node, {
+          type: AST_NODE_TYPES.ImportAttribute,
+          key: this.convertChild(node.name),
+          value: this.convertChild(node.value),
         });
       }
 

@@ -778,6 +778,10 @@ class Referencer extends Visitor {
 
     this.close(node);
   }
+
+  protected ImportAttribute(): void {
+    // import assertions are module metadata and thus have no variables to reference
+  }
 }
 
 export { Referencer, ReferencerOptions };

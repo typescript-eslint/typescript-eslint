@@ -4,6 +4,7 @@ exports[`javascript modules export-named-class.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "body": Object {
           "body": Array [],

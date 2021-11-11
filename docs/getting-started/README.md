@@ -4,9 +4,7 @@ sidebar_label: Getting Started
 slug: /
 ---
 
-Approaching a monorepo project like this can be pretty daunting and hard to navigate for a new user.
-
-The goal of these docs are to give you a quick overview of the project and all of its the pieces, as well as provide guides to help you get setup.
+These docs will give you a quick overview of the project and all of its the pieces, as well as provide guides to help you get set up.
 
 The docs are broken down into the following categories:
 

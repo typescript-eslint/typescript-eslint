@@ -11,7 +11,7 @@
 ## Getting Started
 
 - **[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
-- **[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/FAQ.md)**
+- **[You can find our FAQ / Troubleshooting docs here](../../docs/getting-started/linting/TROUBLESHOOTING.md)**
 
 These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
 
@@ -73,7 +73,7 @@ You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set
 
 As of version 2 of this plugin, _by design_, none of the rules in the main `recommended` config require type-checking in order to run. This means that they are more lightweight and faster to run.
 
-Some highly valuable rules simply require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
+Some highly valuable rules require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
 
 ```json
 {

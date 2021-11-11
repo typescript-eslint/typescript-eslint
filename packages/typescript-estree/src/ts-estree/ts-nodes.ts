@@ -14,6 +14,8 @@ declare module 'typescript' {
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
+  | ts.AssertClause
+  | ts.AssertEntry
   | ts.Modifier
   | ts.Identifier
   | ts.PrivateIdentifier

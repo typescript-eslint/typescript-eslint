@@ -4,6 +4,7 @@ exports[`javascript modules invalid-export-named-default.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": null,
       "exportKind": "value",
       "loc": Object {
