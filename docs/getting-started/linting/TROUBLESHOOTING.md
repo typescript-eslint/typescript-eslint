@@ -32,7 +32,7 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
 This error means that the file that's being linted is not included in any of the tsconfig files you provided us.
-This happens when users have test files or similar that are not included.
+This happens when users have test files, config files or similar that are not included.
 
 There are a couple of solutions to this, depending on what you want to achieve.
 
@@ -178,7 +178,7 @@ This means that each file will be parsed twice - once by ESLint, and once by Pre
 This can add up for large codebases.
 
 Instead of using this plugin, we recommend using prettier's `--list-different` flag to detect if a file has not been correctly formatted.
-For example, our CI is setup to run the following command automatically, which blocks diffs that have not been formatted:
+For example, our CI is setup to run the following command automatically, which blocks PRs that have not been formatted:
 
 ```bash npm2yarn
 npm run prettier --list-different \"./**/*.{ts,js,json,md}\"

@@ -113,7 +113,7 @@ Using this config by adding it to the end of your `extends`:
 
 ### Community Configs
 
-Configuration exist solely to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup.
+Configurations exist solely to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup.
 Many configuration packages exist in the ESLint ecosystem.
 A few popular all-in-one configs are:
 
