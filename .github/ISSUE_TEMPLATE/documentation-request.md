@@ -1,7 +1,7 @@
 ---
-name: 'Documentation Request'
+name: 'Documentation request'
 about: Request a change in documentation
-title: '[Docs] '
+title: 'Docs: '
 labels: 'documentation, triage'
 assignees: ''
 ---
