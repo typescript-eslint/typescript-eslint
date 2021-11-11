@@ -50,7 +50,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       # Note that this command *also* type checks tests/tools,
       # whereas the build only checks src files
@@ -92,7 +93,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       - name: Run unit tests for typescript-estree
         run: npx nx test @typescript-eslint/typescript-estree
@@ -170,7 +172,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       - name: Check code formatting
         run: yarn check-format
@@ -213,7 +216,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       - name: Run integrations tests
         run: yarn test-integration
@@ -255,7 +259,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       - name: Run unit tests for typescript-estree
         run: npx nx test @typescript-eslint/typescript-estree
@@ -337,7 +342,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          # Website will be built by the Netlify GitHub App
+          yarn build --exclude website
 
       - name: Publish all packages to npm
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes

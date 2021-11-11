@@ -195,7 +195,7 @@ describe('semanticInfo - singleRun', () => {
      * Single run because of process.argv
      */
     const originalProcessArgv = process.argv;
-    process.argv = ['', 'node_modules/.bin/eslint', ''];
+    process.argv = ['', path.normalize('node_modules/.bin/eslint'), ''];
 
     const resultProgram = parseAndGenerateServices(code, options).services
       .program;

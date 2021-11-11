@@ -1,0 +1,110 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #1d68e1;
+  --ifm-color-primary-darker: #1b62d4;
+  --ifm-color-primary-darkest: #1751af;
+  --ifm-color-primary-light: #4e89e8;
+  --ifm-color-primary-lighter: #5a91ea;
+  --ifm-color-primary-lightest: #80aaef;
+  --ifm-code-font-size: 95%;
+
+  --code-line-decoration: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme='dark'] {
+  --ifm-color-feedback-background: #f0f8ff;
+  --ifm-color-primary: #4e89e8;
+  --ifm-color-primary-dark: #3377e4;
+  --ifm-color-primary-darker: #256ee3;
+  --ifm-color-primary-darkest: #1959c0;
+  --ifm-color-primary-light: #699bec;
+  --ifm-color-primary-lighter: #77a4ed;
+  --ifm-color-primary-lightest: #a0c0f3;
+
+  --ifm-code-background: rgb(40, 42, 54);
+  --ifm-code-color: rgb(248, 248, 242);
+
+  --code-line-decoration: rgba(255, 255, 255, 0.1);
+
+  scrollbar-color: #454a4d #202324;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url('/img/github.svg') no-repeat;
+}
+
+html[data-theme='dark'] .header-github-link:before {
+  background: url('/img/github-dark.svg') no-repeat;
+}
+
+.menu > .menu__list > .menu__list-item > .menu__link {
+  font-size: 1rem;
+  font-weight: var(--ifm-font-weight-bold);
+}
+
+.menu
+  > .menu__list
+  > .menu__list-item
+  > .menu__list
+  > .menu__list-item
+  > .menu__link {
+  font-size: 0.9rem;
+}
+
+.menu
+  > .menu__list
+  > .menu__list-item
+  > .menu__list
+  > .menu__list-item
+  > .menu__list
+  > .menu__list-item
+  .menu__link {
+  font-size: 0.8rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+html[data-theme='dark'] .alert--secondary {
+  --ra-admonition-icon-color: var(--ifm-color-emphasis-800);
+  --ifm-alert-color: var(--ifm-color-emphasis-800);
+  --ifm-alert-background-color: var(--ifm-color-emphasis-100);
+  --ifm-alert-border-color: var(--ifm-color-emphasis-100);
+}
+
+.myLineDecoration {
+  background-color: var(--code-line-decoration);
+}

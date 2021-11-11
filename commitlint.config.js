@@ -2,7 +2,7 @@ const path = require('path');
 const config = require('./package.json');
 const globby = require('globby');
 
-const workspaces = config.workspaces.map(ws =>
+const workspaces = config.workspaces.packages.map(ws =>
   path.posix.join(ws, 'package.json'),
 );
 

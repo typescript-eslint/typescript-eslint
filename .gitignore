@@ -5,6 +5,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Website
+packages/website/.docusaurus
+packages/website/.cache-loader
+packages/website/build
+
 # Runtime data
 pids
 *.pid
@@ -56,7 +61,6 @@ jspm_packages/
 
 # next.js build output
 .next
-
 
 # Editor-specific metadata folders
 .vs
