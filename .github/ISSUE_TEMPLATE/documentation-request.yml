@@ -1,7 +1,7 @@
 name: Documentation request
 description: Request a change in documentation
 title: "Docs: "
-labels
+labels:
   - documentation
   - triage
 body:
