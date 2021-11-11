@@ -10,4 +10,4 @@ The docs are broken down into the following categories:
 
 - [I want to lint my TypeScript codebase.](./linting/README.md)
 
-- [(TODO) I want to write an ESLint plugin in TypeScript.](./plugin-development/README.md)
+- [I want to development an ESLint plugin in TypeScript.](./plugins/README.md)
