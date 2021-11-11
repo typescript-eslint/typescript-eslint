@@ -518,23 +518,29 @@ describe('parseAndGenerateServices', () => {
 
     describe('project includes', () => {
       it("doesn't error for matched files", () => {
-        expect(testParse('ts/included.ts')).not.toThrow();
-        expect(testParse('ts/included.tsx')).not.toThrow();
-        expect(testParse('js/included.js')).not.toThrow();
-        expect(testParse('js/included.jsx')).not.toThrow();
+        expect(testParse('ts/included01.ts')).not.toThrow();
+        expect(testParse('ts/included02.tsx')).not.toThrow();
+        expect(testParse('js/included01.js')).not.toThrow();
+        expect(testParse('js/included02.jsx')).not.toThrow();
       });
 
       it('errors for not included files', () => {
-        expect(testParse('ts/notIncluded.ts')).toThrowErrorMatchingSnapshot();
-        expect(testParse('ts/notIncluded.tsx')).toThrowErrorMatchingSnapshot();
-        expect(testParse('js/notIncluded.js')).toThrowErrorMatchingSnapshot();
-        expect(testParse('js/notIncluded.jsx')).toThrowErrorMatchingSnapshot();
+        expect(
+          testParse('ts/notIncluded0j1.ts'),
+        ).toThrowErrorMatchingSnapshot();
+        expect(
+          testParse('ts/notIncluded02.tsx'),
+        ).toThrowErrorMatchingSnapshot();
+        expect(testParse('js/notIncluded01.js')).toThrowErrorMatchingSnapshot();
+        expect(
+          testParse('js/notIncluded02.jsx'),
+        ).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('"parserOptions.extraFileExtensions" is empty', () => {
       it('should not error', () => {
-        expect(testParse('ts/included.ts', [])).not.toThrow();
+        expect(testParse('ts/included01.ts', [])).not.toThrow();
       });
 
       it('the extension does not match', () => {
