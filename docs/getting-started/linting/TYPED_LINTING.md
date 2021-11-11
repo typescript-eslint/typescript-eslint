@@ -68,4 +68,4 @@ Depending on what you want to achieve:
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./FAQ.md).
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./TROUBLESHOOTING.md).

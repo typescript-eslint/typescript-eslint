@@ -77,4 +77,4 @@ Ensure you update your `.eslintrc.js` to point at this new config file.
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./FAQ.md).
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./TROUBLESHOOTING.md).

@@ -72,7 +72,7 @@ See more on https://eslint.org/docs/user-guide/configuring/plugins#specifying-pa
 You can select the `@typescript-eslint/parser` on the top-middle ⚙ dropdown in [astexplorer.net] that defaults to Acorn.
 :::
 
-## `@typescript-eslint/typescript-estree`
+### `@typescript-eslint/typescript-estree`
 
 [`@typescript-eslint/typescript-estree`] is the utility package used by `@typescript-eslint/parser` to take TypeScript source code and produce the equivalent ESTree AST.
 It works by:
@@ -85,7 +85,15 @@ It works by:
 > requirements to ESLint.
 > It is therefore also used to power the amazing opinionated code formatter [Prettier](https://prettier.io)'s TypeScript support.
 
+### `@typescript-eslint/scope-manager`
+
+`@typescript-eslint/scope-manager` is a fork of [`eslint-scope`](https://github.com/eslint/eslint-scope), enhanced to support TypeScript functionality.
+
+A "scope analyser" traverses an AST and builds a model of how variables (and in our case, types) are defined and consumed by the source code.
+This form of static analysis allows you to understand and trace variables throughout the program, allowing you to access powerful information about a program without needing to drop into the much, much heavier type information.
+
 [`@typescript-eslint/parser`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser
+[`@typescript-eslint/scope-manager`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/scope-manager
 [`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree
 [astexplorer.net]: https://astexplorer.net
 [`espree`]: https://github.com/eslint/espree

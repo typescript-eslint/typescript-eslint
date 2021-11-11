@@ -109,8 +109,6 @@ Using this config by adding it to the end of your `extends`:
   };
 ```
 
-> Note: [Since version `8.0.0` of `eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier/blob/main/CHANGELOG.md#version-800-2021-02-21), all you need to extend is `'prettier'`. That includes all plugins. Otherwise for `<8.0.0`, you need include `'prettier/@typescript-eslint'`.
-
 ### Community Configs
 
 Configurations exist solely to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup.
