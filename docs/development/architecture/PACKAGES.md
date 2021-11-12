@@ -25,8 +25,9 @@ let x: number = 1;
 
 ESLint's native Espree parser would raise an error attempting to parse it.
 
-Additionally, because TypeScript is developed separately from ESLint, ESTree, and Espree, its AST also represents nodes differently in many cases.
-Many nodes have different names or different member structures.
+Additionally, because TypeScript is developed separately and with different goals from ESLint, ESTree, and Espree, its AST also represents nodes differently in many cases.
+TS's AST is optimized for its use case of parsing incomplete code and typechecking.
+ESTree is unoptimized and intended for "general purpose" use-cases of traversing the AST.
 
 See more on configuring custom parsers with ESLint on [ESLint's User Guide > Configuring > Plugins](https://eslint.org/docs/user-guide/configuring/plugins#specifying-parser).
 

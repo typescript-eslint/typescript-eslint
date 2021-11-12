@@ -20,9 +20,16 @@
 👆
 </p>
 
----
+## Packages included in this project
 
-See https://typescript-eslint.io/docs/development/architecture/packages for details on packages included in this monorepo.
+See https://typescript-eslint.io/docs/development/architecture/packages for more details.
+
+- [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin)
+- [`@typescript-eslint/parser`](./packages/parser)
+- [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint)
+- [`@typescript-eslint/experimental-utils`](./packages/experimental-utils)
+- [`@typescript-eslint/typescript-estree`](./packages/typescript-estree)
+- [`@typescript-eslint/scope-manager`](./packages/scope-manager)
 
 ## Versioning
 

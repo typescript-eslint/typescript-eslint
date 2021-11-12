@@ -27,7 +27,7 @@ export const rule = {
   create(context) {
     return {
       TSInterfaceDeclaration(node) {
-        if (/\p{Lu}/.test(node.id.name[0])) {
+        if (/[a-z]/.test(node.id.name[0])) {
           context.report({
             messageId: 'uppercase',
             node: node.id,
@@ -50,16 +50,68 @@ export const rule = {
 };
 ```
 
-### Node Types
+### Writing Rules in TypeScript
+
+The `@typescript-eslint/experimental-utils` package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
+
+:::caution
+`@types/eslint` types are based on `@types/estree` and do not recognize typescript-eslint nodes and properties.
+You should generally not need to import from `eslint` when writing custom typescript-eslint rules in TypeScript.
+:::
+
+#### Rule Types
+
+`@typescript-eslint/experimental-utils` exports a `RuleModule` interface that allows specifying generics for:
+
+- `MessageIds`: a union of string literal message IDs that may be reported
+- `Options`: what options users may configure for the rule
+
+```ts
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+
+export const rule: TSESLint.RuleModule<'uppercase', []> = {
+  create(context /* : Readonly<RuleContext<TMessageIds, TOptions>> */) {
+    // ...
+  },
+};
+```
+
+For groups of rules that share a common documentation URL, a `RuleCreator` function is exported.
+It takes in a function that transforms a rule name into its documentation URL, then returns a function that takes in a rule module object.
+The returned function is able to infer message IDs from `meta.messages`.
+
+```ts
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+
+const createRule = ESLintUtils.RuleCreator(
+  name => `https://example.com/rule/${name}`,
+);
+
+// Type: const rule: RuleModule<"uppercase", ...>
+export const rule = createRule({
+  create(context) {
+    // ...
+  },
+  meta: {
+    messages: {
+      uppercase: 'Start this name with an upper-case letter.',
+    },
+    // ...
+  },
+});
+```
+
+#### Node Types
 
 TypeScript types for nodes exist in a `TSESTree` namespace exported by `@typescript-eslint/experimental-utils`.
 The above rule body could be better written in TypeScript with a type annotation on the `node`:
 
 ```ts
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import * as eslint from 'eslint';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-export const rule: eslint.Rule.RuleModule = {
+// ...
+
+export const rule = createRule({
   create(context) {
     return {
       TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
@@ -67,10 +119,8 @@ export const rule: eslint.Rule.RuleModule = {
       },
     };
   },
-  meta: {
-    // ...
-  },
-};
+  // ...
+});
 ```
 
 An `AST_NODE_TYPES` enum is exported as well to hold the values for AST node `type` properties.
@@ -163,8 +213,10 @@ export const rule: eslint.Rule.RuleModule = {
 
 ## Testing
 
-`@typescript-eslint/experimental-utils` exports its own `RuleTester` with a similar API to the built-in [ESLint `RuleTester`](https://eslint.org/docs/developer-guide/nodejs-api#ruletester).
+`@typescript-eslint/experimental-utils` exports a `RuleTester` with a similar API to the built-in [ESLint `RuleTester`](https://eslint.org/docs/developer-guide/nodejs-api#ruletester).
 It should be provided with the same `parser` and `parserOptions` you would use in your ESLint configuration.
+
+### Testing Untyped Rules
 
 For rules that don't need type information, passing just the `parser` will do:
 
@@ -179,7 +231,7 @@ const ruleTester = new ESLintUtils.RuleTester({
 ruleTester.run('my-rule', rule {
   valid: [/* ... */],
   invalid: [/* ... */],
-})
+});
 ```
 
 ### Testing Typed Rules
@@ -202,5 +254,15 @@ const ruleTester = new ESLintUtils.RuleTester({
 ruleTester.run('my-typed-rule', rule {
   valid: [/* ... */],
   invalid: [/* ... */],
-})
+});
 ```
+
+:::note
+For now, `ESLintUtils.RuleTester` requires the following physical files be present on disk for typed rules:
+
+- `tsconfig.json`: tsconfig used as the test "project"
+- One of the following two files:
+  - `file.ts`: blank test file used for normal TS tests
+  - `file.tsx`: blank test file used for tests with `parserOptions: { ecmaFeatures: { jsx: true } }`
+
+:::
