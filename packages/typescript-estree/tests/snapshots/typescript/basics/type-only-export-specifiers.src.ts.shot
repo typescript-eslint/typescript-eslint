@@ -4,6 +4,7 @@ exports[`typescript basics type-only-export-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": null,
       "exportKind": "value",
       "loc": Object {
