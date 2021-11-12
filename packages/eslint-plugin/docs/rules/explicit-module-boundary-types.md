@@ -8,7 +8,7 @@ This rule aims to ensure that the values returned from a module are of the expec
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -36,7 +36,7 @@ export class Test {
 }
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 // Function is not exported

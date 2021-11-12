@@ -10,7 +10,7 @@ Consider using a `Map` or `Set` if you’re storing collections of objects.
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 // Can be replaced with the constant equivalents, such as container.aaa
@@ -23,7 +23,7 @@ delete container[name];
 delete container[name.toUpperCase()];
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 const container: { [i: string]: number } = {

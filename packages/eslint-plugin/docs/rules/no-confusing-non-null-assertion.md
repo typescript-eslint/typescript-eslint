@@ -12,7 +12,7 @@ a! === b; // a non-null assertions(`!`) and an triple equals test(`===`)
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 interface Foo {
@@ -25,7 +25,7 @@ const isEqualsBar = foo.bar! == 'hello';
 const isEqualsNum = 1 + foo.num! == 2;
 ```
 
-#### Correct code
+### Correct code
 
 <!-- prettier-ignore -->
 ```ts

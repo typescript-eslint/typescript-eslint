@@ -7,7 +7,7 @@ It adds support for the generically typed `Array` constructor (`new Array<Foo>()
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 /*eslint no-array-constructor: "error"*/
@@ -16,7 +16,7 @@ Array(0, 1, 2);
 new Array(0, 1, 2);
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 /*eslint no-array-constructor: "error"*/

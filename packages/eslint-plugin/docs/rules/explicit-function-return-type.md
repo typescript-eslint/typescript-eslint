@@ -11,7 +11,7 @@ This rule aims to ensure that the values returned from functions are of the expe
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -35,7 +35,7 @@ class Test {
 }
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 // No return value should be expected (void)

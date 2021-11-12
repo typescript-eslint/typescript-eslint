@@ -8,7 +8,7 @@ This rule aims to standardize the way overloaded members are organized.
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 declare namespace Foo {
@@ -45,7 +45,7 @@ export function bar(): void;
 export function foo(sn: string | number): void;
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 declare namespace Foo {

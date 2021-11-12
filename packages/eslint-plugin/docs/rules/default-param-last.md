@@ -7,7 +7,7 @@ It adds support for optional parameters.
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */
@@ -23,7 +23,7 @@ class Foo {
 }
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */

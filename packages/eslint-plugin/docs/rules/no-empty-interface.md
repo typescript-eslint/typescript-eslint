@@ -9,7 +9,7 @@ This rule aims to ensure that only meaningful interfaces are declared in the cod
 
 <!--tabs-->
 
-#### Incorrect code
+### Incorrect code
 
 ```ts
 // an empty interface
@@ -22,7 +22,7 @@ interface Bar extends Foo {}
 interface Baz {}
 ```
 
-#### Correct code
+### Correct code
 
 ```ts
 // an interface with any number of members
