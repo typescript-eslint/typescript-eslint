@@ -21,7 +21,7 @@ type Options = [
 ];
 
 interface BooleanComparison {
-  expression: TSESTree.Expression;
+  expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
   literalBooleanInComparison: boolean;
   forTruthy: boolean;
   negated: boolean;
