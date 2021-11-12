@@ -5,7 +5,9 @@
 This rule extends the base [`eslint/no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor) rule.
 It adds support for the generically typed `Array` constructor (`new Array<Foo>()`).
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+#### Incorrect code
 
 ```ts
 /*eslint no-array-constructor: "error"*/
@@ -14,7 +16,7 @@ Array(0, 1, 2);
 new Array(0, 1, 2);
 ```
 
-Examples of **correct** code for this rule:
+#### Correct code
 
 ```ts
 /*eslint no-array-constructor: "error"*/

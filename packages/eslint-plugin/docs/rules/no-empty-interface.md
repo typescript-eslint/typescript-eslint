@@ -7,7 +7,9 @@ the interface is equivalent to an empty object (`{}`). In both cases it can be o
 
 This rule aims to ensure that only meaningful interfaces are declared in the code.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+#### Incorrect code
 
 ```ts
 // an empty interface
@@ -20,7 +22,7 @@ interface Bar extends Foo {}
 interface Baz {}
 ```
 
-The following patterns are not warnings:
+#### Correct code
 
 ```ts
 // an interface with any number of members

@@ -8,6 +8,7 @@ const sponsors = require('./data/sponsors.json');
 
 const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
+  [require('./src/remark/tabs'), {}],
 ];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';

@@ -50,7 +50,11 @@ The const assertion `const x = { foo: 1 } as const`, introduced in TypeScript 3.
 
 Assertions to `any` are also ignored by this option.
 
-Examples of **incorrect** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }` (and for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`)
+#### Examples of **incorrect** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`
+
+<!--tabs-->
+
+##### Incorrect code
 
 ```ts
 const x = { ... } as T;
@@ -60,7 +64,7 @@ function foo() {
 }
 ```
 
-Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`.
+##### Correct code
 
 ```ts
 const x: T = { ... };
@@ -72,7 +76,21 @@ function foo(): T {
 }
 ```
 
-Examples of **correct** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`.
+#### Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`
+
+<!--tabs-->
+
+##### Incorrect code
+
+```ts
+const x = { ... } as T;
+
+function foo() {
+  return { ... } as T;
+}
+```
+
+##### Correct code
 
 ```tsx
 const x: T = { ... };
