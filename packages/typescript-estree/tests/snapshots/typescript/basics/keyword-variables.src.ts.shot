@@ -2354,6 +2354,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2407,6 +2408,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2460,6 +2462,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2513,6 +2516,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2566,6 +2570,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2619,6 +2624,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2672,6 +2678,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2725,6 +2732,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2778,6 +2786,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2831,6 +2840,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2884,6 +2894,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2937,6 +2948,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -2990,6 +3002,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3043,6 +3056,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3096,6 +3110,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3149,6 +3164,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3202,6 +3218,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3255,6 +3272,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3308,6 +3326,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3361,6 +3380,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3414,6 +3434,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3467,6 +3488,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3520,6 +3542,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3573,6 +3596,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3626,6 +3650,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3679,6 +3704,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3732,6 +3758,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3785,6 +3812,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3838,6 +3866,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3891,6 +3920,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -3944,6 +3974,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
