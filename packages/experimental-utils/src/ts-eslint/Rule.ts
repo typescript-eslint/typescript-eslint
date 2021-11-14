@@ -429,7 +429,7 @@ interface RuleListener {
 
 interface RuleModule<
   TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] = [],
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener,
 > {
