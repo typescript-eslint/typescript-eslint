@@ -42,6 +42,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "exportKind": "value",
           "exported": Object {
             "loc": Object {
               "end": Object {

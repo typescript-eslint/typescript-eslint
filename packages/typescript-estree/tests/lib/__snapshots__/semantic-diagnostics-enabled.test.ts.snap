@@ -2126,6 +2126,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-import-type-with-type-parameters-in-type-reference.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-only-export-specifiers.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-only-import-specifiers.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-parameters-comments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/basics/type-parameters-comments-heritage.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;

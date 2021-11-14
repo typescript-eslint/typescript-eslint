@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`javascript modules export-named-specifiers.src 1`] = `
+exports[`typescript basics type-only-export-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
@@ -9,7 +9,7 @@ Object {
       "exportKind": "value",
       "loc": Object {
         "end": Object {
-          "column": 18,
+          "column": 37,
           "line": 1,
         },
         "start": Object {
@@ -19,115 +19,133 @@ Object {
       },
       "range": Array [
         0,
-        18,
+        37,
       ],
-      "source": null,
+      "source": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 36,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 31,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          31,
+          36,
+        ],
+        "raw": "\\"mod\\"",
+        "type": "Literal",
+        "value": "mod",
+      },
       "specifiers": Array [
         Object {
-          "exportKind": "value",
+          "exportKind": "type",
           "exported": Object {
             "loc": Object {
               "end": Object {
-                "column": 11,
+                "column": 15,
                 "line": 1,
               },
               "start": Object {
-                "column": 8,
+                "column": 14,
                 "line": 1,
               },
             },
-            "name": "foo",
+            "name": "A",
             "range": Array [
-              8,
-              11,
+              14,
+              15,
             ],
             "type": "Identifier",
           },
           "loc": Object {
             "end": Object {
-              "column": 11,
+              "column": 15,
               "line": 1,
             },
             "start": Object {
-              "column": 8,
+              "column": 9,
               "line": 1,
             },
           },
           "local": Object {
             "loc": Object {
               "end": Object {
-                "column": 11,
+                "column": 15,
                 "line": 1,
               },
               "start": Object {
-                "column": 8,
+                "column": 14,
                 "line": 1,
               },
             },
-            "name": "foo",
+            "name": "A",
             "range": Array [
-              8,
-              11,
+              14,
+              15,
             ],
             "type": "Identifier",
           },
           "range": Array [
-            8,
-            11,
+            9,
+            15,
           ],
           "type": "ExportSpecifier",
         },
         Object {
-          "exportKind": "value",
+          "exportKind": "type",
           "exported": Object {
             "loc": Object {
               "end": Object {
-                "column": 16,
+                "column": 23,
                 "line": 1,
               },
               "start": Object {
-                "column": 13,
+                "column": 22,
                 "line": 1,
               },
             },
-            "name": "bar",
+            "name": "B",
             "range": Array [
-              13,
-              16,
+              22,
+              23,
             ],
             "type": "Identifier",
           },
           "loc": Object {
             "end": Object {
-              "column": 16,
+              "column": 23,
               "line": 1,
             },
             "start": Object {
-              "column": 13,
+              "column": 17,
               "line": 1,
             },
           },
           "local": Object {
             "loc": Object {
               "end": Object {
-                "column": 16,
+                "column": 23,
                 "line": 1,
               },
               "start": Object {
-                "column": 13,
+                "column": 22,
                 "line": 1,
               },
             },
-            "name": "bar",
+            "name": "B",
             "range": Array [
-              13,
-              16,
+              22,
+              23,
             ],
             "type": "Identifier",
           },
           "range": Array [
-            13,
-            16,
+            17,
+            23,
           ],
           "type": "ExportSpecifier",
         },
@@ -148,7 +166,7 @@ Object {
   },
   "range": Array [
     0,
-    19,
+    38,
   ],
   "sourceType": "module",
   "tokens": Array [
@@ -191,35 +209,53 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 11,
+          "column": 13,
           "line": 1,
         },
         "start": Object {
-          "column": 8,
+          "column": 9,
           "line": 1,
         },
       },
       "range": Array [
-        8,
-        11,
+        9,
+        13,
       ],
       "type": "Identifier",
-      "value": "foo",
+      "value": "type",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 12,
+          "column": 15,
           "line": 1,
         },
         "start": Object {
-          "column": 11,
+          "column": 14,
           "line": 1,
         },
       },
       "range": Array [
-        11,
-        12,
+        14,
+        15,
+      ],
+      "type": "Identifier",
+      "value": "A",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        16,
       ],
       "type": "Punctuator",
       "value": ",",
@@ -227,35 +263,53 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 16,
+          "column": 21,
           "line": 1,
         },
         "start": Object {
-          "column": 13,
+          "column": 17,
           "line": 1,
         },
       },
       "range": Array [
-        13,
-        16,
+        17,
+        21,
       ],
       "type": "Identifier",
-      "value": "bar",
+      "value": "type",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 17,
+          "column": 23,
           "line": 1,
         },
         "start": Object {
-          "column": 16,
+          "column": 22,
           "line": 1,
         },
       },
       "range": Array [
-        16,
-        17,
+        22,
+        23,
+      ],
+      "type": "Identifier",
+      "value": "B",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 25,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        24,
+        25,
       ],
       "type": "Punctuator",
       "value": "}",
@@ -263,17 +317,53 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 18,
+          "column": 30,
           "line": 1,
         },
         "start": Object {
-          "column": 17,
+          "column": 26,
           "line": 1,
         },
       },
       "range": Array [
-        17,
-        18,
+        26,
+        30,
+      ],
+      "type": "Identifier",
+      "value": "from",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 31,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        31,
+        36,
+      ],
+      "type": "String",
+      "value": "\\"mod\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 37,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 36,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        36,
+        37,
       ],
       "type": "Punctuator",
       "value": ";",
