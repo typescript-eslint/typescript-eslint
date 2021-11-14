@@ -1,8 +1,6 @@
 /*
  * original code https://github.com/mccleanp/remark-docusaurus-tabs
  *
- * this code has been updated to properly escape values
- *
  * MIT License
  *
  * Copyright (c) 2020 Paul McClean
@@ -27,10 +25,6 @@
  */
 function tabs() {
   function renderTabs(tabs, nodes) {
-    function getId(tab) {
-      return nodes[tab.start].data.id;
-    }
-
     function getLabel(root) {
       return root.children
         .map(item => {
@@ -39,6 +33,8 @@ function tabs() {
             case 'inlineCode':
               return item.value;
             case 'strong':
+            case 'emphasis':
+            case 'delete':
               return getLabel(item);
             default:
               console.error(item);
@@ -53,20 +49,17 @@ function tabs() {
 
     tabNodes.push({
       type: 'jsx',
-      value: `<Tabs defaultValue="${getId(tabs[0])}" values={[${tabs
-        .map(tab =>
-          JSON.stringify({
-            label: getLabel(nodes[tab.start]),
-            value: getId(tab),
-          }),
-        )
-        .join(',')}]}>`,
+      value: `<Tabs>`,
     });
 
     tabs.forEach(tab => {
+      const node = nodes[tab.start];
+      const label = getLabel(node);
+      const id = node.data.id;
+
       tabNodes.push({
         type: 'jsx',
-        value: `<TabItem value="${getId(tab)}">`,
+        value: `<TabItem label="${label}" value="${id}">`,
       });
 
       tabNodes.push(...nodes.slice(tab.start + 1, tab.end));
