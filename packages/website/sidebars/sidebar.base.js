@@ -1,26 +1,33 @@
 module.exports = {
-  docs: {
-    Guides: [
-      'getting-started/README',
-      {
-        type: 'category',
-        label: 'Linting',
-        collapsed: false,
-        items: [
-          'getting-started/linting/linting',
-          'getting-started/linting/type-linting',
-          'getting-started/linting/monorepo',
-          'getting-started/linting/troubleshooting',
-          'getting-started/linting/architecture',
-          'getting-started/linting/tslint',
-        ],
-      },
-      {
-        type: 'category',
-        label: 'Plugins',
-        collapsed: false,
-        items: ['getting-started/plugin-development/plugins'],
-      },
-    ],
-  },
+  docs: [
+    'README',
+    {
+      type: 'category',
+      label: 'Linting',
+      collapsed: false,
+      items: [
+        'linting/linting',
+        'linting/type-linting',
+        'linting/monorepo',
+        'linting/troubleshooting',
+        'linting/tslint',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Development',
+      collapsed: false,
+      items: [
+        {
+          label: 'Architecture',
+          type: 'category',
+          items: [
+            'development/architecture/asts',
+            'development/architecture/packages',
+          ],
+        },
+        'development/custom-rules',
+      ],
+    },
+  ],
 };
