@@ -23,131 +23,118 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-function tabs() {
-  function renderTabs(tabs, nodes) {
-    function getLabel(root) {
-      return root.children
-        .map(item => {
-          switch (item.type) {
-            case 'text':
-            case 'inlineCode':
-              return item.value;
-            case 'strong':
-            case 'emphasis':
-            case 'delete':
-              return getLabel(item);
-            default:
-              console.error(item);
-              throw new Error(`[TABS] unsupported type ${item.type}`);
-          }
-        })
-        .join('')
-        .trim();
-    }
+const toString = require('mdast-util-to-string');
+const Slugger = require('github-slugger');
+const visit = require('unist-util-visit');
 
-    let tabNodes = [];
+const slugs = new Slugger();
+
+function renderTabs(tabs, nodes) {
+  let tabNodes = [];
+
+  tabNodes.push({
+    type: 'jsx',
+    value: `<Tabs>`,
+  });
+
+  tabs.forEach(tab => {
+    const node = nodes[tab.start];
+    const label = toString(node);
+    const id = slugs.slug(label);
 
     tabNodes.push({
       type: 'jsx',
-      value: `<Tabs>`,
+      value: `<TabItem label="${label}" value="${id}">`,
     });
 
-    tabs.forEach(tab => {
-      const node = nodes[tab.start];
-      const label = getLabel(node);
-      const id = node.data.id;
-
-      tabNodes.push({
-        type: 'jsx',
-        value: `<TabItem label="${label}" value="${id}">`,
-      });
-
-      tabNodes.push(...nodes.slice(tab.start + 1, tab.end));
-
-      tabNodes.push({
-        type: 'jsx',
-        value: `</TabItem>`,
-      });
-    });
+    tabNodes.push(...nodes.slice(tab.start + 1, tab.end));
 
     tabNodes.push({
       type: 'jsx',
-      value: `</Tabs>`,
+      value: `</TabItem>`,
     });
+  });
 
-    return tabNodes;
-  }
+  tabNodes.push({
+    type: 'jsx',
+    value: `</Tabs>`,
+  });
 
-  function findTabs(node, index, parent) {
-    const tabs = [];
+  return tabNodes;
+}
 
-    let depth;
+function findTabs(node, index, parent) {
+  const tabs = [];
 
-    let tab;
-    const { children } = parent;
+  let depth = null;
 
-    while (++index < children.length) {
-      const child = children[index];
+  let tab;
+  const { children } = parent;
 
-      if (child.type === 'heading') {
-        if (depth == null) {
-          depth = child.depth;
-        }
+  while (++index < children.length) {
+    const child = children[index];
 
-        if (child.depth < depth) {
-          tab.end = index;
-          break;
-        }
-
-        if (child.depth === depth) {
-          if (tab) {
-            tab.end = index;
-          }
-
-          tab = {};
-          tab.start = index;
-          tab.end = children.length;
-          tabs.push(tab);
-        }
+    if (child.type === 'heading') {
+      if (depth == null) {
+        depth = child.depth;
       }
 
-      if (child.type === 'comment' && child.value.trim() === '/tabs') {
+      if (child.depth < depth) {
         tab.end = index;
         break;
       }
-    }
 
-    return tabs;
-  }
-
-  return tree => {
-    let foundTabs = false;
-
-    const { children } = tree;
-    let index = -1;
-    while (++index < children.length) {
-      const child = children[index];
-      if (child.type === 'comment' && child.value.trim() === 'tabs') {
-        const tabs = findTabs(child, index, tree);
-        const start = tabs[0].start;
-        const end = tabs[tabs.length - 1].end;
-
-        if (tabs.length > 0) {
-          foundTabs = true;
-          const nodes = renderTabs(tabs, children);
-          children.splice(start, end - start, ...nodes);
-          index += nodes.length;
+      if (child.depth === depth) {
+        if (tab) {
+          tab.end = index;
         }
+
+        tab = {};
+        tab.start = index;
+        tab.end = children.length;
+        tabs.push(tab);
       }
     }
 
+    if (child.type === 'comment' && child.value.trim() === '/tabs') {
+      tab.end = index;
+      break;
+    }
+  }
+
+  return tabs;
+}
+
+function validator(node) {
+  return node.type === 'comment' && node.value.trim() === 'tabs';
+}
+
+function tabs() {
+  return root => {
+    slugs.reset();
+    let foundTabs = false;
+
+    visit(root, validator, (node, index, parent) => {
+      const tabs = findTabs(node, index, parent);
+      const start = tabs[0].start;
+      const end = tabs[tabs.length - 1].end;
+
+      if (tabs.length > 0) {
+        foundTabs = true;
+        const newChildren = renderTabs(tabs, parent.children);
+        parent.children.splice(start, end - start, ...newChildren);
+
+        return index + newChildren.length;
+      }
+    });
+
     if (foundTabs) {
-      children.unshift({
+      root.children.unshift({
         type: 'import',
         value: "import TabItem from '@theme/TabItem';",
       });
 
-      children.unshift({
+      root.children.unshift({
         type: 'import',
         value: "import Tabs from '@theme/Tabs';",
       });

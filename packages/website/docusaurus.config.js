@@ -8,8 +8,9 @@ const sponsors = require('./data/sponsors.json');
 
 const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
-  [require('./src/remark/tabs'), {}],
 ];
+
+const beforeDefaultRemarkPlugins = [[require('./src/remark/tabs'), {}]];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
@@ -44,6 +45,7 @@ const config = {
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
         editUrl: `${githubUrl}/edit/master/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],
@@ -55,6 +57,7 @@ const config = {
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
         editUrl: `${githubUrl}/edit/master/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],

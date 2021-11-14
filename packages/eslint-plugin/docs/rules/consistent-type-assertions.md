@@ -50,11 +50,11 @@ The const assertion `const x = { foo: 1 } as const`, introduced in TypeScript 3.
 
 Assertions to `any` are also ignored by this option.
 
-#### Examples of **incorrect** code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`
+Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`
 
 <!--tabs-->
 
-##### ❌ Incorrect
+#### ❌ Incorrect
 
 ```ts
 const x = { ... } as T;
@@ -64,7 +64,7 @@ function foo() {
 }
 ```
 
-##### ✅ Correct
+#### ✅ Correct
 
 ```ts
 const x: T = { ... };
@@ -76,11 +76,13 @@ function foo(): T {
 }
 ```
 
-#### Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`
+<!--/tabs-->
+
+Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`
 
 <!--tabs-->
 
-##### ❌ Incorrect
+#### ❌ Incorrect
 
 ```ts
 const x = { ... } as T;
@@ -90,7 +92,7 @@ function foo() {
 }
 ```
 
-##### ✅ Correct
+#### ✅ Correct
 
 ```tsx
 const x: T = { ... };
@@ -101,6 +103,8 @@ new Clazz({ ... } as T);
 function foo() { throw { bar: 5 } as Foo }
 const foo = <Foo props={{ ... } as Bar}/>;
 ```
+
+<!--/tabs-->
 
 ## When Not To Use It
 
