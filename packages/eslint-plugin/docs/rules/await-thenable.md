@@ -5,7 +5,7 @@ While it is valid JavaScript to await a non-`Promise`-like value (it will resolv
 
 ## Rule Details
 
-### Example
+Examples of code for this rule:
 
 <!--tabs-->
 
