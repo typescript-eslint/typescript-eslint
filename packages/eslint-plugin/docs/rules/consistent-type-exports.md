@@ -13,14 +13,14 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 export { Button } from 'some-library';
 export type { ButtonProps } from 'some-library';
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 export { Button, ButtonProps } from 'some-library';

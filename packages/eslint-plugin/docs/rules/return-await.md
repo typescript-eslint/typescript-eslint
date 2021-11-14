@@ -39,7 +39,7 @@ Examples of code with `in-try-catch`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 async function invalidInTryCatch1() {
@@ -85,7 +85,7 @@ async function invalidInTryCatch6() {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 async function validInTryCatch1() {
@@ -139,7 +139,7 @@ Examples of code with `always`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 async function invalidAlways1() {
@@ -157,7 +157,7 @@ async function invalidAlways3() {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 async function validAlways1() {
@@ -183,7 +183,7 @@ Examples of code with `never`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 async function invalidNever1() {
@@ -201,7 +201,7 @@ async function invalidNever3() {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 async function validNever1() {

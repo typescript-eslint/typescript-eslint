@@ -23,7 +23,11 @@ The best practice is to avoid using `new Function()` or `execScript()` and alway
 
 This rule aims to eliminate implied `eval()` through the use of `new Function()`, `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
@@ -51,7 +55,7 @@ setTimeout(fn(), 100);
 const fn = new Function('a', 'b', 'return a + b');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */

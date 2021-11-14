@@ -43,7 +43,7 @@ A value of `true` for a particular directive means that this rule will report if
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -58,7 +58,7 @@ if (false) {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 if (false) {
@@ -75,7 +75,7 @@ For example, with `{ 'ts-expect-error': 'allow-with-description' }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -88,7 +88,7 @@ if (false) {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 if (false) {
@@ -111,7 +111,7 @@ For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescrip
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -120,7 +120,7 @@ if (false) {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 if (false) {

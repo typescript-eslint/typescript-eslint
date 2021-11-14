@@ -39,7 +39,7 @@ Examples of code with `record` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -51,7 +51,7 @@ type Foo = {
 };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 type Foo = Record<string, unknown>;
@@ -63,13 +63,13 @@ Examples of code with `index-signature` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 interface Foo {

@@ -11,7 +11,7 @@ This rule aims to ensure that the values returned from functions are of the expe
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -35,7 +35,7 @@ class Test {
 }
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 // No return value should be expected (void)
@@ -114,7 +114,7 @@ Examples of code for this rule with `{ allowExpressions: true }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 function test() {}
@@ -124,7 +124,7 @@ const fn = () => {};
 export default () => {};
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 node.addEventListener('click', () => {});
@@ -140,7 +140,7 @@ Examples of code for this rule with `{ allowTypedFunctionExpressions: true }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 let arrowFn = () => 'test';
@@ -154,7 +154,7 @@ let objectProp = {
 };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 type FuncType = () => string;
@@ -198,7 +198,7 @@ Examples of code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 var arrowFn = () => () => {};
@@ -208,7 +208,7 @@ function fn() {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 var arrowFn = () => (): void => {};
@@ -224,14 +224,14 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 const func = (value: number) => ({ type: 'X', value } as any);
 const func = (value: number) => ({ type: 'X', value } as Action);
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 const func = (value: number) => ({ foo: 'bar', value } as const);
@@ -244,7 +244,7 @@ Examples of code for this rule with `{ allowConciseArrowFunctionExpressionsStart
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 var join = (a: string, b: string) => `${a}${b}`;
@@ -254,7 +254,7 @@ const log = (message: string) => {
 };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 var log = (message: string) => void console.log(message);

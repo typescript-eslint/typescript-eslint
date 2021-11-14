@@ -13,7 +13,7 @@ an `any` type from being implied by the compiler, but doesn't prevent
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 const age: any = 'seventeen';
@@ -51,7 +51,7 @@ function greet(param: Array<any>): string {}
 function greet(param: Array<any>): Array<any> {}
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 const age: number = 17;

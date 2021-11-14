@@ -38,13 +38,13 @@ Examples of code with `interface` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 type T = { x: number };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 type T = string;
@@ -61,7 +61,7 @@ Examples of code with `type` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 interface T {
@@ -69,7 +69,7 @@ interface T {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 type T = { x: number };

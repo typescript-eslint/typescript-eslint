@@ -35,14 +35,14 @@ Always use `T[]` or `readonly T[]` for all array types.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 const x: string[] = ['a', 'b'];
@@ -55,14 +55,14 @@ Always use `Array<T>` or `ReadonlyArray<T>` for all array types.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 const x: string[] = ['a', 'b'];
 const y: readonly string[] = ['a', 'b'];
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 const x: Array<string> = ['a', 'b'];
@@ -76,7 +76,7 @@ Use `Array<T>` or `ReadonlyArray<T>` for all other types (union types, intersect
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 const a: (string | number)[] = ['a', 'b'];
@@ -87,7 +87,7 @@ const e: Array<string> = ['a', 'b'];
 const f: ReadonlyArray<string> = ['a', 'b'];
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 const a: Array<string | number> = ['a', 'b'];

@@ -135,7 +135,7 @@ Examples of code with the default options:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 // use lower-case primitives for consistency
@@ -155,7 +155,7 @@ const curly1: {} = 1;
 const curly2: {} = { a: 'string' };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 // use lower-case primitives for consistency

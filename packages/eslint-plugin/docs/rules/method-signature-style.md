@@ -38,7 +38,7 @@ Examples of code with `property` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -54,7 +54,7 @@ interface T3 {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 interface T1 {
@@ -77,7 +77,7 @@ Examples of code with `method` option.
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -88,7 +88,7 @@ type T2 = {
 };
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 interface T1 {

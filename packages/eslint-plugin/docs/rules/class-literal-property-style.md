@@ -19,7 +19,7 @@ Examples of code with the `fields` style:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
@@ -35,7 +35,7 @@ class Mx {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
@@ -64,7 +64,7 @@ Examples of code with the `getters` style:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
@@ -76,7 +76,7 @@ class Mx {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */

@@ -15,7 +15,7 @@ This rule prevents accidentally defaulting to the base Object `.toString()` meth
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 // Passing an object or class instance to string concatenation:
@@ -30,7 +30,7 @@ value + '';
 ({}.toString());
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 // These types all have useful .toString()s

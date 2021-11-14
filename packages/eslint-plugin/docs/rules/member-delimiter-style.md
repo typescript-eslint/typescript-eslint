@@ -146,7 +146,11 @@ For example, to require commas for `type`s, and semicolons for multiline `interf
 
 ## Examples
 
-Examples of **incorrect** code for this rule with the default config:
+Examples of code for this rule with the default config:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -175,7 +179,7 @@ type FooBar = { name: string, greet(): string }
 type FooBar = { name: string; greet(): string; }
 ```
 
-Examples of **correct** code for this rule with the default config:
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts

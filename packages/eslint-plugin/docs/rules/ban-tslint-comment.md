@@ -8,7 +8,7 @@ All TSLint [rule flags](https://palantir.github.io/tslint/usage/rule-flags/)
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```js
 /* tslint:disable */
@@ -20,7 +20,7 @@ someCode(); // tslint:disable-line
 // tslint:disable-next-line:rule1 rule2 rule3...
 ```
 
-### Correct code
+### ✅ Correct
 
 ```js
 // This is a comment that just happens to mention tslint

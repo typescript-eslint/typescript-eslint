@@ -8,7 +8,7 @@ This rule aims to ensure that the values returned from a module are of the expec
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -36,7 +36,7 @@ export class Test {
 }
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 // Function is not exported
@@ -134,13 +134,13 @@ Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 export const func = (value: any): number => value + 1;
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 export const func = (value: number): number => value + 1;
@@ -152,7 +152,7 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
@@ -163,7 +163,7 @@ export const foo = () =>
 export const bar = () => 1;
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value } as const);
@@ -195,7 +195,7 @@ Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 export const arrowFn = () => () => {};
@@ -209,7 +209,7 @@ export function foo(outer: string) {
 }
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 export const arrowFn = () => (): void => {};
@@ -229,7 +229,7 @@ Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
 
 <!--tabs-->
 
-#### Incorrect code
+#### ❌ Incorrect
 
 ```ts
 export let arrowFn = () => 'test';
@@ -245,7 +245,7 @@ export let objectProp = {
 export const foo = bar => {};
 ```
 
-#### Correct code
+#### ✅ Correct
 
 ```ts
 type FuncType = () => string;

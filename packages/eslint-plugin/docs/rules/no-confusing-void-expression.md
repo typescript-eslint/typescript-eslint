@@ -11,7 +11,7 @@ This rule provides automatic fixes for most common cases.
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 // somebody forgot that `alert` doesn't return anything
@@ -31,7 +31,7 @@ function doSomething() {
 }
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 // just a regular void function in a statement position

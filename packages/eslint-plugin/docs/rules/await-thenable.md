@@ -9,7 +9,7 @@ While it is valid JavaScript to await a non-`Promise`-like value (it will resolv
 
 <!--tabs-->
 
-### Incorrect code
+### ❌ Incorrect
 
 ```ts
 await 'value';
@@ -18,7 +18,7 @@ const createValue = () => 'value';
 await createValue();
 ```
 
-### Correct code
+### ✅ Correct
 
 ```ts
 await Promise.resolve('value');

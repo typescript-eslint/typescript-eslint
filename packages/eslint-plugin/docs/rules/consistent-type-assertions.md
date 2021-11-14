@@ -54,7 +54,7 @@ Assertions to `any` are also ignored by this option.
 
 <!--tabs-->
 
-##### Incorrect code
+##### ❌ Incorrect
 
 ```ts
 const x = { ... } as T;
@@ -64,7 +64,7 @@ function foo() {
 }
 ```
 
-##### Correct code
+##### ✅ Correct
 
 ```ts
 const x: T = { ... };
@@ -80,7 +80,7 @@ function foo(): T {
 
 <!--tabs-->
 
-##### Incorrect code
+##### ❌ Incorrect
 
 ```ts
 const x = { ... } as T;
@@ -90,7 +90,7 @@ function foo() {
 }
 ```
 
-##### Correct code
+##### ✅ Correct
 
 ```tsx
 const x: T = { ... };
