@@ -93,7 +93,9 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      * @param node the node to be evaluated.
      */
-    function getNodeType(node: TSESTree.Expression): BaseLiteral {
+    function getNodeType(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 

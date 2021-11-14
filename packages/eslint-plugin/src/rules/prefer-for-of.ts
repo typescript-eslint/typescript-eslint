@@ -33,7 +33,10 @@ export default util.createRule({
       );
     }
 
-    function isLiteral(node: TSESTree.Expression, value: number): boolean {
+    function isLiteral(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      value: number,
+    ): boolean {
       return node.type === AST_NODE_TYPES.Literal && node.value === value;
     }
 
