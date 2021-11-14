@@ -23,6 +23,7 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
+  clientModules: [require.resolve('./src/clientModules.js')],
   customFields: {
     sponsors,
   },
