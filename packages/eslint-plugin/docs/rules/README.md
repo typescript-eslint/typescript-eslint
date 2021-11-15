@@ -8,8 +8,10 @@ slug: /
 
 `@typescript-eslint/eslint-plugin` comes with two rulesets you can extend from to pull in the recommended starting rules:
 
-* `'plugin:@typescript-eslint/recommended'`: unopinionated rules for code correctness you can drop in without additional configuration. See [Linting](../../linting/README.md) for more details.
-* `'plugin:@typescript-eslint/recommended-requiring-type-checking'` additional recommended rules that require type information. See [Linting](../../linting/TYPED_LINTING.md) for more details.
+- `'plugin:@typescript-eslint/recommended'`: unopinionated rules for code correctness you can drop in without additional configuration.
+  See [Linting](/docs/linting/linting) for more details.
+- `'plugin:@typescript-eslint/recommended-requiring-type-checking'` additional recommended rules that require type information.
+  See [Linting](/docs/linting/type-linting) for more details.
 
 ## Supported Rules
 
