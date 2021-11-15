@@ -9,6 +9,11 @@
     "lib": ["DOM"],
     "noEmit": true,
     "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"]
+    },
     "types": ["node", "@docusaurus/module-type-aliases"]
   },
   "include": ["src/"]
