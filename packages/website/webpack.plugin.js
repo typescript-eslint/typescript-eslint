@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = function (/*context, options*/) {
   return {
@@ -20,6 +21,14 @@ module.exports = function (/*context, options*/) {
             'process.env.TS_ESLINT_VERSION': JSON.stringify(
               require('@typescript-eslint/eslint-plugin/package.json').version,
             ),
+          }),
+          new CopyPlugin({
+            patterns: [
+              {
+                from: require.resolve('@typescript-eslint/website-eslint'),
+                to: './sandbox/index.js',
+              },
+            ],
           }),
         ],
       };

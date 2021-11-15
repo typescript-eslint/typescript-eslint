@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "private": true,
   "description": "ESLint which works in browsers.",
   "engines": {

@@ -1,3 +1,4 @@
+import 'vs/language/typescript/tsWorker';
 import { parseForESLint } from './parser';
 import { Linter } from 'eslint';
 import rules from '@typescript-eslint/eslint-plugin/dist/rules';

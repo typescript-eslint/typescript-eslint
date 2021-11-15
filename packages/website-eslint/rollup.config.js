@@ -6,12 +6,12 @@ const replace = require('./rollup-plugin/replace');
 module.exports = {
   input: 'src/linter/linter.js',
   output: {
-    format: 'module',
+    format: 'amd',
     interop: 'auto',
     freeze: false,
     file: 'dist/index.js',
   },
-  external: ['typescript', 'semver'],
+  external: ['vs/language/typescript/tsWorker'],
   plugins: [
     replace({
       // verbose: true,
@@ -23,13 +23,18 @@ module.exports = {
             /experimental-utils\/dist\/eslint-utils\/RuleTester\.js$/,
             /experimental-utils\/dist\/ts-eslint\/CLIEngine\.js$/,
             /experimental-utils\/dist\/ts-eslint\/RuleTester\.js$/,
-            // 'typescript-estree/dist/create-program/createWatchProgram.js',
-            // 'typescript-estree/dist/create-program/createProjectProgram.js',
-            // 'typescript-estree/dist/create-program/createIsolatedProgram.js',
+            /typescript-estree\/dist\/create-program\/createWatchProgram\.js/,
+            /typescript-estree\/dist\/create-program\/createProjectProgram\.js/,
+            /typescript-estree\/dist\/create-program\/createIsolatedProgram\.js/,
+            /experimental-utils\/dist\/ts-eslint\/ESLint\.js/,
             // 'eslint/lib/shared/ajv.js',
             // 'eslint/lib/shared/runtime-info.js',
           ],
           target: './src/mock/empty.js',
+        },
+        {
+          match: /typescript$/u,
+          target: './src/mock/typescript.js',
         },
         {
           match: /^assert$/u,
@@ -44,7 +49,7 @@ module.exports = {
           target: './src/mock/util.js',
         },
         {
-          match: /^semver$/u,
+          match: /semver$/u,
           target: './src/mock/semver.js',
         },
       ],

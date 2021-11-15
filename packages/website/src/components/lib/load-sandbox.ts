@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
+import { WebLinter } from '../editor';
 
 export type Monaco = typeof import('monaco-editor');
 export type TS = typeof import('typescript');
@@ -13,6 +14,9 @@ export interface SandboxModel {
   tsWorker: typeof TsWorker;
   sandboxFactory: typeof SandboxFactory;
   ts: TS;
+  linter: {
+    loadLinter(): WebLinter;
+  };
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {
@@ -28,8 +32,8 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       window.require.config({
         paths: {
           vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
-          // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@4.2.2/min/vs',
           sandbox: 'https://www.typescriptlang.org/js/sandbox',
+          linter: '/sandbox',
         },
         // This is something you need for monaco to work
         ignoreDuplicateModules: ['vs/editor/editor.main'],
@@ -41,9 +45,10 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
           'vs/editor/editor.main',
           'vs/language/typescript/tsWorker',
           'sandbox/index',
+          'linter/index',
         ],
         // @ts-ignore
-        (main, tsWorker, sandboxFactory) => {
+        (main, tsWorker, sandboxFactory, linter) => {
           // @ts-ignore
           const isOK = main && window.ts && sandboxFactory;
           // @ts-ignore
@@ -56,6 +61,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
               sandboxFactory,
               // @ts-ignore
               ts: window.ts,
+              linter,
             });
           } else {
             reject(

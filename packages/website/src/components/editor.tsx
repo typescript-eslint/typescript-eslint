@@ -1,8 +1,5 @@
 import React from 'react';
-import type {
-  createTypeScriptSandbox,
-  PlaygroundConfig,
-} from '../vendor/sandbox';
+import type { createTypeScriptSandbox, SandboxConfig } from '../vendor/sandbox';
 import type Monaco from 'monaco-editor';
 
 import type { TSESTree, ParserOptions } from '@typescript-eslint/types';
@@ -139,7 +136,7 @@ class Editor extends React.Component<EditorProps> {
   }
 
   async loadEditor(): Promise<void> {
-    const sandboxConfig: Partial<PlaygroundConfig> = {
+    const sandboxConfig: Partial<SandboxConfig> = {
       text: '',
       monacoSettings: {
         minimap: { enabled: false },
@@ -157,7 +154,9 @@ class Editor extends React.Component<EditorProps> {
       },
       domID: 'monaco-editor-embed',
     };
-    const { main, sandboxFactory, ts } = await sandboxSingleton(this.props.ts);
+    const { main, sandboxFactory, ts, linter } = await sandboxSingleton(
+      this.props.ts,
+    );
     this.sandboxInstance = sandboxFactory.createTypeScriptSandbox(
       sandboxConfig,
       main,
@@ -165,9 +164,7 @@ class Editor extends React.Component<EditorProps> {
     );
     this.updateTheme();
     this.updateCode();
-    this.linter = (
-      await import('@typescript-eslint/website-eslint')
-    ).loadLinter();
+    this.linter = linter.loadLinter();
     if (this.props.onLoadRule) {
       this.props.onLoadRule(this.linter.ruleNames);
     }
