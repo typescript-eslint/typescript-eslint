@@ -166,7 +166,10 @@ export default util.createRule<Options, MessageIds>({
 
         if (util.getTypeName(typeChecker, leftType) === 'string') {
           checkExpression(node.right, rightType);
-        } else if (util.getTypeName(typeChecker, rightType) === 'string') {
+        } else if (
+          util.getTypeName(typeChecker, rightType) === 'string' &&
+          node.left.type !== AST_NODE_TYPES.PrivateIdentifier
+        ) {
           checkExpression(node.left, leftType);
         }
       },

@@ -285,7 +285,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@*", "@babel/parser@^7.1.0", "@babel/parser@^7.12.16", "@babel/parser@^7.12.7", "@babel/parser@^7.16.0", "@babel/parser@^7.16.2", "@babel/parser@^7.7.2":
+"@babel/parser@*", "@babel/parser@^7.1.0", "@babel/parser@^7.16.0", "@babel/parser@^7.7.2":
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.16.0.tgz#cf147d7ada0a3655e79bf4b08ee846f00a00a295"
+  integrity sha512-TEHWXf0xxpi9wKVyBCmRcSSDjbJ/cl6LUdlbYUHEaNQUJGhreJbZrXT6sR4+fZLxVUJqNRB4KyOvjuy/D9009A==
+
+"@babel/parser@^7.12.16", "@babel/parser@^7.12.7", "@babel/parser@^7.16.2":
   version "7.16.2"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.16.2.tgz#3723cd5c8d8773eef96ce57ea1d9b7faaccd12ac"
   integrity sha512-RUVpT0G2h6rOZwqLDTrKk7ksNv7YpAilTnYe1/Q+eDjxEceRMKVWbCsX7t8h6C1qCFi/1Y8WZjcEPBAFG27GPw==
@@ -6201,6 +6206,11 @@ emojis-list@^3.0.0:
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
+emojisplosion@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/emojisplosion/-/emojisplosion-2.6.1.tgz#1e00c316f06469489cb34fe65746d7c91ed48196"
+  integrity sha512-a+yvHzHHP9R8qvt7ZeZS8yReuHjwXvbBbSxJHVMMWs4+sf0eOE/v/+Iz6fQq0CdF8G04jsJMF1MNDlrIBCC1pw==
+
 emoticon@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/emoticon/-/emoticon-3.2.0.tgz#c008ca7d7620fac742fe1bf4af8ff8fed154ae7f"
@@ -9212,6 +9222,19 @@ klona@^2.0.4:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
+
+konami-code-js@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/konami-code-js/-/konami-code-js-0.8.1.tgz#b970ee1aaa7e4136b484d36a2c4e528414feb4de"
+  integrity sha512-bJ0tuWYLYiUueIVTpA0MV4h4Gz1X16uuJggh5TpIWXOQoLv0238SU7Im23z2wYKCCBsOfk5j4HKWB/pqdCgu5Q==
+
+konamimojisplosion@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/konamimojisplosion/-/konamimojisplosion-0.4.3.tgz#8944e0b4fc6853e052d140679c0da4de1fcd94fa"
+  integrity sha512-+lnI57Gisva7z4QJYhzVfOzQhwuCku/UHvjlumG2QAbktUcYHHypaWpsyMvC+RT9YO9uiVDrZ8CuXCzn1fTimA==
+  dependencies:
+    emojisplosion "^2.6.1"
+    konami-code-js "^0.8.1"
 
 latest-version@^5.1.0:
   version "5.1.0"

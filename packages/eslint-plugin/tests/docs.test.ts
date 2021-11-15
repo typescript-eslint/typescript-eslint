@@ -111,7 +111,7 @@ describe('Validating rule metadata', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url
         expect(
-          rule.meta.docs?.url.endsWith(`rules/${ruleName}.md`),
+          rule.meta.docs?.url?.endsWith(`rules/${ruleName}.md`),
         ).toBeTruthy();
       });
 

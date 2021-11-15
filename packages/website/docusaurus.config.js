@@ -23,6 +23,7 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
+  clientModules: [require.resolve('./src/clientModules.js')],
   customFields: {
     sponsors,
   },
@@ -111,6 +112,10 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      tableOfContents: {
+        maxHeadingLevel: 4,
+        minHeadingLevel: 2,
       },
     }),
 };

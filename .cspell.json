@@ -105,6 +105,7 @@
     "typedef",
     "typedefs",
     "unfixable",
+    "unoptimized",
     "unprefixed",
     "Zacher"
   ],

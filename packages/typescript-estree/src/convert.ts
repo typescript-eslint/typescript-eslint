@@ -1793,6 +1793,7 @@ export class Converter {
           type: AST_NODE_TYPES.ImportSpecifier,
           local: this.convertChild(node.name),
           imported: this.convertChild(node.propertyName ?? node.name),
+          importKind: node.isTypeOnly ? 'type' : 'value',
         });
 
       case SyntaxKind.ImportClause: {
@@ -1841,6 +1842,7 @@ export class Converter {
           type: AST_NODE_TYPES.ExportSpecifier,
           local: this.convertChild(node.propertyName ?? node.name),
           exported: this.convertChild(node.name),
+          exportKind: node.isTypeOnly ? 'type' : 'value',
         });
 
       case SyntaxKind.ExportAssignment:

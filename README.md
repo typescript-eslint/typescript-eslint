@@ -20,21 +20,16 @@
 👆
 </p>
 
----
-
 ## Packages included in this project
 
-- [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin/) - An ESLint-plugin with many lint rules for TypeScript features, as well as type-aware lint rules.
+See https://typescript-eslint.io/docs/development/architecture/packages for more details.
 
-- [`@typescript-eslint/parser`](./packages/parser/) - A ESLint-parser which enables ESLint to be able to understand TypeScript syntax. It's powered by our `typescript-estree` package.
-
-- [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint) - An ESLint-plugin that allows you to bridge ESLint and TSLint to help you migrate from TSLint to ESLint.
-
-- [`@typescript-eslint/experimental-utils`](./packages/experimental-utils) - Public utilities for working ESLint and for writing ESLint-plugins in TypeScript.
-
-- [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/) - A parser which takes TypeScript source code and produces an [ESTree](https://github.com/estree/estree)-compatible AST.
-
-- [`@typescript-eslint/scope-manager`](./packages/scope-manager) - An [`eslint-scope`](https://github.com/eslint/eslint-scope)-compatible scope analyser that can understand TypeScript language features such as types, enums and namespaces.
+- [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin)
+- [`@typescript-eslint/parser`](./packages/parser)
+- [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint)
+- [`@typescript-eslint/experimental-utils`](./packages/experimental-utils)
+- [`@typescript-eslint/typescript-estree`](./packages/typescript-estree)
+- [`@typescript-eslint/scope-manager`](./packages/scope-manager)
 
 ## Versioning
 

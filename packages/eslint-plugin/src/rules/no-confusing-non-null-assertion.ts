@@ -38,7 +38,7 @@ export default util.createRule({
         node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
       ): void {
         function isLeftHandPrimaryExpression(
-          node: TSESTree.Expression,
+          node: TSESTree.Expression | TSESTree.PrivateIdentifier,
         ): boolean {
           return node.type === AST_NODE_TYPES.TSNonNullExpression;
         }
