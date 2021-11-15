@@ -104,6 +104,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['ignore'],
       },
       tableOfContents: {
         maxHeadingLevel: 4,
