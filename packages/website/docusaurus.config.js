@@ -80,7 +80,7 @@ const config = {
             position: 'left',
           },
           {
-            to: 'rules/ban-types',
+            to: 'rules/',
             activeBasePath: 'rules',
             label: 'Rules',
             position: 'left',

@@ -43,9 +43,9 @@ foo.endsWith('bar');
 
 There are no options.
 
-```JSON
+```json
 {
-    "@typescript-eslint/prefer-string-starts-ends-with": "error"
+  "@typescript-eslint/prefer-string-starts-ends-with": "error"
 }
 ```
 

@@ -44,7 +44,7 @@ describe('Validating rule docs', () => {
     const files = fs
       .readdirSync(docsRoot)
       // this rule doc was left behind on purpose for legacy reasons
-      .filter(rule => rule !== 'camelcase.md');
+      .filter(rule => rule !== 'camelcase.md' && rule !== 'README.md');
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();
