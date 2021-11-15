@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import {
+import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
