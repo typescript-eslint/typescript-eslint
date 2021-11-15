@@ -58,7 +58,7 @@
     "@types/marked": "*",
     "@types/prettier": "*",
     "chalk": "^4.1.2",
-    "marked": "^3.0.7",
+    "marked": "^4.0.3",
     "prettier": "*",
     "typescript": "*"
   },
