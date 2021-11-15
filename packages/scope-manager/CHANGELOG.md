@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
+
+
+### Bug Fixes
+
+* correct issues with circular imports ([#4140](https://github.com/typescript-eslint/typescript-eslint/issues/4140)) ([4c87b24](https://github.com/typescript-eslint/typescript-eslint/commit/4c87b2486a9c90794d972a4d093c1dc22ffb418b))
+
+
+### Features
+
+* **typescript-estree:** support Import Assertions ([#4074](https://github.com/typescript-eslint/typescript-eslint/issues/4074)) ([ae0fb5a](https://github.com/typescript-eslint/typescript-eslint/commit/ae0fb5a591958216b7df656e66b1dfe464898167))
+
+
+
+
+
 ## [5.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.0...v5.3.1) (2021-11-08)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

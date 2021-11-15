@@ -51,33 +51,41 @@ const returnEmojiIfTrue = <TKey extends keyof typeof emojiKey>(
   obj: { [K in TKey]?: unknown },
 ): typeof emojiKey[TKey] | '' => (obj[key] ? emojiKey[key] : '');
 
-const createRuleLink = (ruleName: string): string =>
-  `[\`@typescript-eslint/${ruleName}\`](./docs/rules/${ruleName}.md)`;
+const createRuleLink = (ruleName: string, basePath: string): string =>
+  `[\`@typescript-eslint/${ruleName}\`](${basePath}${ruleName}.md)`;
 
-const buildRuleRow = (rule: RuleDetails): RuleColumn => [
-  createRuleLink(rule.name),
+const buildRuleRow = (rule: RuleDetails, basePath: string): RuleColumn => [
+  createRuleLink(rule.name, basePath),
   rule.description,
   returnEmojiIfTrue('recommended', rule),
   returnEmojiIfTrue('fixable', rule),
   returnEmojiIfTrue('requiresTypeChecking', rule),
 ];
 
-const buildRulesTable = (rules: RuleDetails[]): string[][] => [
+const buildRulesTable = (
+  rules: RuleDetails[],
+  basePath: string,
+): string[][] => [
   staticElements.listHeaderRow,
   staticElements.listSpacerRow,
   ...rules
     .sort(({ name: ruleNameA }, { name: ruleNameB }) =>
       ruleNameA.localeCompare(ruleNameB),
     )
-    .map(buildRuleRow),
+    .map(item => buildRuleRow(item, basePath)),
 ];
 
-const generateRulesListMarkdown = (rules: RuleDetails[]): string =>
+const generateRulesListMarkdown = (
+  rules: RuleDetails[],
+  basePath: string,
+): string =>
   [
     '',
     staticElements.rulesListKey,
     '',
-    ...buildRulesTable(rules).map(column => [...column, ' '].join('|')),
+    ...buildRulesTable(rules, basePath).map(column =>
+      [...column, ' '].join('|'),
+    ),
     '',
   ].join('\n');
 
@@ -85,6 +93,7 @@ const updateRulesList = (
   listName: 'base' | 'extension',
   rules: RuleDetails[],
   markdown: string,
+  basePath: string,
 ): string => {
   const listBeginMarker = `<!-- begin ${listName} rule list -->`;
   const listEndMarker = `<!-- end ${listName} rule list -->`;
@@ -100,7 +109,7 @@ const updateRulesList = (
     markdown.substring(0, listStartIndex - 1),
     listBeginMarker,
     '',
-    generateRulesListMarkdown(rules), //
+    generateRulesListMarkdown(rules, basePath), //
     markdown.substring(listEndIndex),
   ].join('\n');
 };
@@ -119,11 +128,16 @@ const rulesDetails: RuleDetails[] = Object.entries(rules)
 const baseRules = rulesDetails.filter(rule => !rule.extendsBaseRule);
 const extensionRules = rulesDetails.filter(rule => rule.extendsBaseRule);
 
-let readme = fs.readFileSync(path.resolve(__dirname, '../README.md'), 'utf8');
+function updateFile(file: string, basePath: string): void {
+  let readme = fs.readFileSync(file, 'utf8');
 
-readme = updateRulesList('base', baseRules, readme);
-readme = updateRulesList('extension', extensionRules, readme);
+  readme = updateRulesList('base', baseRules, readme, basePath);
+  readme = updateRulesList('extension', extensionRules, readme, basePath);
 
-readme = prettier.format(readme, { parser: 'markdown' });
+  readme = prettier.format(readme, { parser: 'markdown' });
 
-fs.writeFileSync(path.resolve(__dirname, '../README.md'), readme, 'utf8');
+  fs.writeFileSync(file, readme, 'utf8');
+}
+
+updateFile(path.resolve(__dirname, '../README.md'), './docs/rules/');
+updateFile(path.resolve(__dirname, '../docs/rules/README.md'), './');

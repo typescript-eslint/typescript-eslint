@@ -9,7 +9,7 @@ See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for m
 
 ## Rule Changes
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "comma-dangle": "off",
