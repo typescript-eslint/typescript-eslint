@@ -4,6 +4,7 @@ exports[`javascript modules import-null-as-nil.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {
@@ -40,6 +41,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {

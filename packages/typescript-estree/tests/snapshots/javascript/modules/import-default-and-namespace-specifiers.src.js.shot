@@ -4,6 +4,7 @@ exports[`javascript modules import-default-and-namespace-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {

@@ -286,7 +286,9 @@ export default createRule({
       return { isEndsWith, isStartsWith, text };
     }
 
-    function getLeftNode(node: TSESTree.Expression): TSESTree.MemberExpression {
+    function getLeftNode(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): TSESTree.MemberExpression {
       if (node.type === AST_NODE_TYPES.ChainExpression) {
         return getLeftNode(node.expression);
       }

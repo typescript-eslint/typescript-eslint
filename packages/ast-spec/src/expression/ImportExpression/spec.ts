@@ -5,4 +5,5 @@ import type { Expression } from '../../unions/Expression';
 export interface ImportExpression extends BaseNode {
   type: AST_NODE_TYPES.ImportExpression;
   source: Expression;
+  attributes: Expression | null;
 }
