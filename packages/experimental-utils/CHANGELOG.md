@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
+
+
+### Features
+
+* add RuleCreator.withoutDocs ([#4136](https://github.com/typescript-eslint/typescript-eslint/issues/4136)) ([87cfc6a](https://github.com/typescript-eslint/typescript-eslint/commit/87cfc6ad3e3312d7b6f98a592fb37e69d5d6880a))
+* **experimental-utils:** add default [] for RuleModule TOptions generic ([#4135](https://github.com/typescript-eslint/typescript-eslint/issues/4135)) ([62b8098](https://github.com/typescript-eslint/typescript-eslint/commit/62b8098fa7d361954c170ee6c190e47e95194b13))
+
+
+
+
+
 ## [5.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.0...v5.3.1) (2021-11-08)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
