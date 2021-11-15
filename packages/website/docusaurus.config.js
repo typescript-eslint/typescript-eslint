@@ -55,7 +55,7 @@ const config = {
     ],
   ],
   themeConfig:
-    /** @type {import('@docusaurus/theme-classic').ThemeConfig} */
+    /** @type {import('@docusaurus/theme-common').UserThemeConfig} */
     ({
       // sidebarCollapsible: false,
       metadatas: [
