@@ -205,7 +205,7 @@ module.exports = {
         'jest/no-deprecated-functions': 'error',
       },
     },
-    // test utility scripts
+    // test utility scripts and website js files
     {
       files: ['tests/**/*.js'],
       rules: {

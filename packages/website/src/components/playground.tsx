@@ -6,9 +6,10 @@ import styles from './playground.module.css';
 import Loader from './loader';
 
 import useHashState from './lib/use-hash-state';
-
-import type { ParseForESLintResult } from './linter/parser';
-import type { TSESTree } from '@typescript-eslint/types';
+import type {
+  ParseForESLintResult,
+  TSESTree,
+} from '@typescript-eslint/website-eslint';
 import type Monaco from 'monaco-editor';
 import OptionsSelector from './options-selector';
 import ASTViewer from './ast-viewer';

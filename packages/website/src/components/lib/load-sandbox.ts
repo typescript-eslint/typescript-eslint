@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
-import { WebLinter } from '../editor';
+import type { WebLinter } from '@typescript-eslint/website-eslint';
 
 export type Monaco = typeof import('monaco-editor');
 export type TS = typeof import('typescript');

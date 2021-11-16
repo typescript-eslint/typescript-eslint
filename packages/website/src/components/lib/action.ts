@@ -1,6 +1,6 @@
 import type { languages, editor } from 'monaco-editor';
-import type { Linter } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Linter';
-import type { RuleFix } from '@typescript-eslint/experimental-utils/dist/ts-eslint/Rule';
+import type { LintMessage, RuleFix } from '@typescript-eslint/website-eslint';
+
 import { createURI } from './utils';
 
 export function createQuickfixCodeAction(
@@ -35,7 +35,7 @@ export function createQuickfixCodeAction(
 }
 
 export function createProvideCodeActions(
-  fixes: Map<string, Linter.LintMessage>,
+  fixes: Map<string, LintMessage>,
 ): languages.CodeActionProvider {
   return {
     provideCodeActions(

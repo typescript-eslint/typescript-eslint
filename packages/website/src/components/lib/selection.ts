@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/website-eslint';
 
 export const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
 

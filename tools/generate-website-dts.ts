@@ -17,7 +17,7 @@ async function getFileAndStoreLocally(
   fs.writeFileSync(path, editFunc(contents), 'utf8');
 }
 
-async function run(): Promise<void> {
+async function main(): Promise<void> {
   const vendor = path.join(
     __dirname,
     '..',
@@ -115,4 +115,7 @@ async function run(): Promise<void> {
   );
 }
 
-run();
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});

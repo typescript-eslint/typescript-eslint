@@ -1,5 +1,5 @@
 import type { editor } from 'monaco-editor';
-import type { TSESLint } from '@typescript-eslint/experimental-utils';
+import type { LintMessage } from '@typescript-eslint/website-eslint';
 
 const ensurePositiveInt = (
   value: number | undefined,
@@ -8,9 +8,7 @@ const ensurePositiveInt = (
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
 };
 
-export function messageToMarker(
-  message: TSESLint.Linter.LintMessage,
-): editor.IMarkerData {
+export function messageToMarker(message: LintMessage): editor.IMarkerData {
   const startLineNumber = ensurePositiveInt(message.line, 1);
   const startColumn = ensurePositiveInt(message.column, 1);
   return {

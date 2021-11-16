@@ -119,15 +119,6 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   );
 }
 
-interface SponsorsModel {
-  tier: string;
-  name: string;
-  slug: string;
-  website: string;
-  image: string;
-  description: string;
-}
-
 function Sponsors(props: {
   tier: string;
   title: string;
@@ -135,9 +126,9 @@ function Sponsors(props: {
 }): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
-  const tierSponsors = (
-    siteConfig.customFields!.sponsors as SponsorsModel[]
-  ).filter(sponsor => sponsor.tier === props.tier);
+  const tierSponsors = siteConfig.customFields.sponsors.filter(
+    sponsor => sponsor.tier === props.tier,
+  );
   return (
     <div className={props.className}>
       <ul className={clsx(styles[`tier-${props.tier}`], styles.sponsorsTier)}>

@@ -6,6 +6,7 @@
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
+  "types": "types/index.d.ts",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -14,7 +15,8 @@
     "build": "rollup --config=rollup.config.js"
   },
   "dependencies": {
-    "eslint": "*"
+    "@typescript-eslint/experimental-utils": "^5.4.0",
+    "@typescript-eslint/types": "^5.4.0"
   },
   "devDependencies": {
     "eslint": "*",
