@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@babel/code-frame": "^7.16.0",
-    "@babel/parser": "^7.16.2",
+    "@babel/parser": "^7.16.4",
     "@babel/types": "^7.16.0",
     "@commitlint/cli": "^14.1.0",
     "@commitlint/config-conventional": "^14.1.0",

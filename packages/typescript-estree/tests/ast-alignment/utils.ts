@@ -263,24 +263,6 @@ export function preprocessBabylonAST(ast: File): any {
         Object.keys(node).forEach(key => delete node[key]);
         Object.assign(node, typeAnnotation);
       },
-      /*
-       * Babel's AST has no `assertions` property if there are no assertions.
-       */
-      ImportDeclaration(node) {
-        if (!node.assertions) {
-          node.assertions = [];
-        }
-      },
-      ExportNamedDeclaration(node) {
-        if (!node.assertions) {
-          node.assertions = [];
-        }
-      },
-      ExportAllDeclaration(node) {
-        if (!node.assertions) {
-          node.assertions = [];
-        }
-      },
     },
   );
 }
