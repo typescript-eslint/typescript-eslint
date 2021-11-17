@@ -185,6 +185,11 @@ for (let i = 0; i < test.length; ++i) {
   this[i];
 }
     `,
+    `
+for (let i = 0; i < this.length; ++i) {
+  yield this[i];
+}
+    `,
   ],
   invalid: [
     {
@@ -374,6 +379,18 @@ for (let i = 0; i < arr.length; i++) {
       code: `
 for (let i = 0; i < this.item.length; ++i) {
   this.item[i];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.array.length; ++i) {
+  yield this.array[i];
 }
       `,
       errors: [

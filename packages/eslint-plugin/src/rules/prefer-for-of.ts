@@ -120,15 +120,6 @@ export default util.createRule({
         return true;
       }
 
-      // this[i]
-      if (
-        parent.type === AST_NODE_TYPES.MemberExpression &&
-        parent.object.type === AST_NODE_TYPES.ThisExpression &&
-        parent.property === node
-      ) {
-        return true;
-      }
-
       // delete a[i]
       if (
         parent.type === AST_NODE_TYPES.UnaryExpression &&
@@ -183,6 +174,7 @@ export default util.createRule({
           !contains(body, id) ||
           (node !== undefined &&
             node.type === AST_NODE_TYPES.MemberExpression &&
+            node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))
