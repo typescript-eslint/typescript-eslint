@@ -19,7 +19,11 @@ It adds support for TypeScript's `declare` variables.
 
 See [`eslint/init-declarations` options](https://eslint.org/docs/rules/init-declarations#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/init-declarations.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/init-declarations.md)
+
+</sup>
 
 ## Attributes
 

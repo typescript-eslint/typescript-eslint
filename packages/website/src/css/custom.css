@@ -64,28 +64,19 @@ html[data-theme='dark'] .header-github-link:before {
   background: url('/img/github-dark.svg') no-repeat;
 }
 
-.menu > .menu__list > .menu__list-item > .menu__link {
+.theme-doc-sidebar-item-link-level-1 > a,
+.theme-doc-sidebar-item-category-level-1 > a {
   font-size: 1rem;
   font-weight: var(--ifm-font-weight-bold);
 }
 
-.menu
-  > .menu__list
-  > .menu__list-item
-  > .menu__list
-  > .menu__list-item
-  > .menu__link {
+.theme-doc-sidebar-item-link-level-2 > a,
+.theme-doc-sidebar-item-category-level-2 > a {
   font-size: 0.9rem;
 }
 
-.menu
-  > .menu__list
-  > .menu__list-item
-  > .menu__list
-  > .menu__list-item
-  > .menu__list
-  > .menu__list-item
-  .menu__link {
+.theme-doc-sidebar-item-link-level-3 > a,
+.theme-doc-sidebar-item-category-level-3 > a {
   font-size: 0.8rem;
 }
 

@@ -6,6 +6,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
+import sponsors from '@site/data/sponsors.json';
+
 interface FeatureItem {
   title: string;
   description: JSX.Element;
@@ -124,18 +126,16 @@ function Sponsors(props: {
   title: string;
   className?: string;
 }): JSX.Element {
-  const { siteConfig } = useDocusaurusContext();
-
-  const tierSponsors = siteConfig.customFields.sponsors.filter(
-    sponsor => sponsor.tier === props.tier,
-  );
+  // TODO this seems like a ts-eslint problem: JSON types are not resolved
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+  const tierSponsors = sponsors.filter(sponsor => sponsor.tier === props.tier);
   return (
     <div className={props.className}>
       <ul className={clsx(styles[`tier-${props.tier}`], styles.sponsorsTier)}>
         {tierSponsors.map((sponsor, i) => (
           <li key={i}>
             <a
-              href={sponsor.website}
+              href={sponsor.website ?? undefined}
               title={sponsor.name}
               target="_blank"
               rel="noopener sponsored"
@@ -147,6 +147,7 @@ function Sponsors(props: {
       </ul>
     </div>
   );
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 }
 
 function Home(): JSX.Element {

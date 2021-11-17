@@ -4,8 +4,6 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
-const sponsors = require('./data/sponsors.json');
-
 const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
@@ -24,9 +22,6 @@ const config = {
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
-  customFields: {
-    sponsors,
-  },
   plugins: [
     '@docusaurus/plugin-debug',
     [
@@ -60,9 +55,13 @@ const config = {
     ],
   ],
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    /** @type {import('@docusaurus/theme-common').UserThemeConfig} */
     ({
       // sidebarCollapsible: false,
+      metadatas: [
+        { name: 'msapplication-TileColor', content: '#443fd4' },
+        { name: 'theme-color', content: '#443fd4' },
+      ],
       navbar: {
         title: 'TypeScript ESLint',
         // hideOnScroll: true,
@@ -105,21 +104,37 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['ignore'],
       },
       tableOfContents: {
         maxHeadingLevel: 4,
         minHeadingLevel: 2,
       },
     }),
+  // Misleading API name, but these are just <link> tags
+  stylesheets: [
+    {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      href: '/img/favicon/apple-touch-icon.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      href: '/img/favicon/favicon-32x32.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      href: '/img/favicon/favicon-16x16.png',
+    },
+    {
+      rel: 'manifest',
+      href: '/img/favicon/site.webmanifest',
+    },
+  ],
 };
-
-/*
-<link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
-<link rel="manifest" href="img/favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#443fd4">
-<meta name="theme-color" content="#443fd4">
-*/
 
 module.exports = config;
