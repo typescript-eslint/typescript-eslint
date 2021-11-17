@@ -10,7 +10,9 @@ a !== b; // not equals test(`!==`)
 a! === b; // a non-null assertions(`!`) and an triple equals test(`===`)
 ```
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -23,7 +25,7 @@ const isEqualsBar = foo.bar! == 'hello';
 const isEqualsNum = 1 + foo.num! == 2;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts

@@ -33,7 +33,13 @@ For example:
 
 This rule enforces a consistent way to define records.
 
-Examples of **incorrect** code with `record` option.
+### `record`
+
+Examples of code with `record` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -45,19 +51,25 @@ type Foo = {
 };
 ```
 
-Examples of **correct** code with `record` option.
+#### ✅ Correct
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **incorrect** code with `index-signature` option.
+### `index-signature`
+
+Examples of code with `index-signature` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **correct** code with `index-signature` option.
+#### ✅ Correct
 
 ```ts
 interface Foo {

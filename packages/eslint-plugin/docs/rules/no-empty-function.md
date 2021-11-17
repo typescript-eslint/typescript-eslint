@@ -85,8 +85,6 @@ class Foo {
 }
 ```
 
----
-
 <sup>
 
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md)

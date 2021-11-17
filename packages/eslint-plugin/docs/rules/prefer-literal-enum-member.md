@@ -25,7 +25,11 @@ This rule is meant to prevent unexpected results in code by requiring the use of
 
 - `allowBitwiseExpressions` set to `true` will allow you to use bitwise expressions in enum initializer (Default: `false`).
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const str = 'Test';
@@ -38,7 +42,7 @@ enum Invalid {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 enum Valid {
@@ -50,9 +54,15 @@ enum Valid {
 }
 ```
 
+<!--/tabs-->
+
 ### `allowBitwiseExpressions`
 
-Examples of **incorrect** code for the `{ "allowBitwiseExpressions": true }` option:
+Examples of code for the `{ "allowBitwiseExpressions": true }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const x = 1;
@@ -67,7 +77,7 @@ enum Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allowBitwiseExpressions": true }` option:
+#### ✅ Correct
 
 ```ts
 enum Foo {

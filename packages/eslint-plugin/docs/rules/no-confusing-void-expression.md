@@ -9,7 +9,9 @@ This rule provides automatic fixes for most common cases.
 
 ## Examples
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // somebody forgot that `alert` doesn't return anything
@@ -29,7 +31,7 @@ function doSomething() {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 // just a regular void function in a statement position

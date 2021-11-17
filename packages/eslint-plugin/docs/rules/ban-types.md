@@ -131,7 +131,11 @@ const defaultTypes = {
 
 ### Examples
 
-Examples of **incorrect** code with the default options:
+Examples of code with the default options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 // use lower-case primitives for consistency
@@ -151,7 +155,7 @@ const curly1: {} = 1;
 const curly2: {} = { a: 'string' };
 ```
 
-Examples of **correct** code with the default options:
+#### ✅ Correct
 
 ```ts
 // use lower-case primitives for consistency

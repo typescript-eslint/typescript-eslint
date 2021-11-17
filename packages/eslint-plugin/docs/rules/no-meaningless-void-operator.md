@@ -8,7 +8,11 @@ The `void` operator is a useful tool to convey the programmer's intent to discar
 
 This rule helps an author catch API changes where previously a value was being discarded at a call site, but the callee changed so it no longer returns a value. When combined with [no-unused-expressions](https://eslint.org/docs/rules/no-unused-expressions), it also helps _readers_ of the code by ensuring consistency: a statement that looks like `void foo();` is **always** discarding a return value, and a statement that looks like `foo();` is **never** discarding a return value.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 void (() => {})();
@@ -17,7 +21,7 @@ function foo() {}
 void foo();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 (() => {})();
@@ -32,7 +36,7 @@ function bar(x: number) {
 void bar(); // discarding a number
 ```
 
-### Options
+## Options
 
 This rule accepts a single object option with the following default configuration:
 

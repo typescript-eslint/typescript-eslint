@@ -10,7 +10,11 @@ When not provided, type parameters happen to default to:
 
 It is therefore redundant to `extend` from these types in later versions of TypeScript.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 interface FooAny<T extends any> {}
@@ -34,7 +38,7 @@ function QuuzAny<T extends any>() {}
 function QuuzUnknown<T extends unknown>() {}
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 interface Foo<T> {}

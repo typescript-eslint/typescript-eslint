@@ -8,6 +8,8 @@ const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
 
+const beforeDefaultRemarkPlugins = [[require('./src/remark/tabs'), {}]];
+
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 /** @type {import('@docusaurus/types').Config} */
@@ -30,7 +32,13 @@ const config = {
         customCss: require.resolve('./src/css/custom.css'),
       },
     ],
-    ['@docusaurus/plugin-content-pages', { remarkPlugins }],
+    [
+      '@docusaurus/plugin-content-pages',
+      {
+        beforeDefaultRemarkPlugins,
+        remarkPlugins,
+      },
+    ],
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -39,6 +47,7 @@ const config = {
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
         editUrl: `${githubUrl}/edit/master/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],
@@ -50,6 +59,7 @@ const config = {
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
         editUrl: `${githubUrl}/edit/master/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],

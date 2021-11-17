@@ -4,7 +4,11 @@ Prefer the newer ES6-style imports over `require()`.
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 var lib = require('lib');
@@ -14,7 +18,7 @@ var lib5 = require('lib5'),
 import lib8 = require('lib8');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 import { l } from 'lib';
