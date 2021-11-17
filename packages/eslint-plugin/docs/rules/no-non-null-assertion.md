@@ -4,7 +4,11 @@
 
 Using non-null assertions cancels the benefits of the strict null-checking mode.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -15,7 +19,7 @@ const foo: Foo = getFoo();
 const includesBaz: boolean = foo.bar!.includes('baz');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 interface Foo {

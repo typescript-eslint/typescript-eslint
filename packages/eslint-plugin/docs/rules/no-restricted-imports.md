@@ -41,7 +41,21 @@ You can specify this option for a specific path or pattern as follows:
 
 When set to `true`, the rule will allow [Type-Only Imports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export).
 
-Examples of **correct** code with the above config:
+Examples of code with the above config:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+import foo from 'import-foo';
+export { Foo } from 'import-foo';
+
+import baz from 'import-baz';
+export { Baz } from 'import-baz';
+```
+
+#### ✅ Correct
 
 ```ts
 import { foo } from 'other-module';
@@ -51,16 +65,6 @@ export type { Foo } from 'import-foo';
 
 import type baz from 'import-baz';
 export type { Baz } from 'import-baz';
-```
-
-Example of **incorrect** code with the above config:
-
-```ts
-import foo from 'import-foo';
-export { Foo } from 'import-foo';
-
-import baz from 'import-baz';
-export { Baz } from 'import-baz';
 ```
 
 ## Attributes

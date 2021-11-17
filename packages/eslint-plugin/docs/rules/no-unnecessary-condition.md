@@ -8,7 +8,13 @@ The following expressions are checked:
 - Conditions for `if`, `for`, `while`, and `do-while` statements
 - Base values of optional chain expressions
 
-Examples of **incorrect** code for this rule:
+## Rule Details
+
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 function head<T>(items: T[]) {
@@ -36,7 +42,7 @@ function bar<T>(arg: string) {
 ].filter(t => t); // number[] is always truthy
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 function head<T>(items: T[]) {

@@ -23,7 +23,11 @@ https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 
 This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const array: any[];
@@ -35,7 +39,7 @@ array.sort();
 stringArray.sort();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const array: any[];
@@ -66,7 +70,11 @@ const defaults = {
 
 ### `ignoreStringArrays`
 
-Examples of **incorrect** code for this rule with `{ ignoreStringArrays: true }`:
+Examples of code for this rule with `{ ignoreStringArrays: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const one = 1;
@@ -75,7 +83,7 @@ const three = 3;
 [one, two, three].sort();
 ```
 
-Examples of **correct** code for this rule with `{ ignoreStringArrays: true }`:
+#### ✅ Correct
 
 ```ts
 const one = '1';

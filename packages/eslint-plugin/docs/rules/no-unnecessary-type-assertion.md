@@ -6,7 +6,11 @@ This rule prohibits using a type assertion that does not change the type of an e
 
 This rule aims to prevent unnecessary type assertions.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const foo = 3;
@@ -33,7 +37,7 @@ function foo(x: number): number {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const foo = <number>3;
@@ -53,7 +57,7 @@ function foo(x: number | undefined): number {
 }
 ```
 
-### Options
+## Options
 
 This rule optionally takes an object with a single property `typesToIgnore`, which can be set to a list of type names to ignore.
 

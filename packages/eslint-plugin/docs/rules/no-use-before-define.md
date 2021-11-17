@@ -40,7 +40,11 @@ const defaultOptions: Options = {
 If this is `true`, this rule warns every reference to a enum before the enum declaration.
 If this is `false`, this rule will ignore references to enums, when the reference is in a child scope.
 
-Examples of **incorrect** code for the `{ "enums": true }` option:
+Examples of code for the `{ "enums": true }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 /*eslint no-use-before-define: ["error", { "enums": true }]*/
@@ -52,7 +56,7 @@ enum Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "enums": false }` option:
+#### ✅ Correct
 
 ```ts
 /*eslint no-use-before-define: ["error", { "enums": false }]*/

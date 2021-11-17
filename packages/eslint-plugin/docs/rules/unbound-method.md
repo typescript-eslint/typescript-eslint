@@ -10,7 +10,11 @@ If you're working with `jest`, you can use [`eslint-plugin-jest`'s version of th
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule
+Examples of code for this rule
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 class MyClass {
@@ -37,7 +41,7 @@ const arith = {
 const { double } = arith;
 ```
 
-Examples of **correct** code for this rule
+### ✅ Correct
 
 ```ts
 class MyClass {

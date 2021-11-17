@@ -32,7 +32,13 @@ const config = {
         customCss: require.resolve('./src/css/custom.css'),
       },
     ],
-    ['@docusaurus/plugin-content-pages', { remarkPlugins }],
+    [
+      '@docusaurus/plugin-content-pages',
+      {
+        beforeDefaultRemarkPlugins,
+        remarkPlugins,
+      },
+    ],
     [
       '@docusaurus/plugin-content-docs',
       {

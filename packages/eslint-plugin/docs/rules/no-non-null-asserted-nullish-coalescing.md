@@ -5,7 +5,11 @@
 The nullish coalescing operator is designed to provide a default value when dealing with `null` or `undefined`.
 Using non-null assertions in the left operand of the nullish coalescing operator is redundant.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/no-non-null-asserted-nullish-coalescing: "error" */
@@ -23,7 +27,7 @@ x = foo();
 x! ?? '';
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/no-non-null-asserted-nullish-coalescing: "error" */
