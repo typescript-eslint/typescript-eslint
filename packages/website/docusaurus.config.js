@@ -67,8 +67,9 @@ const config = {
         // hideOnScroll: true,
         logo: {
           alt: 'TypeScript ESLint',
+          height: '2rem',
           src: 'img/logo.svg',
-          // srcDark: 'img/logo-dark.svg',
+          width: '2rem',
         },
         // style: 'primary',
         items: [
