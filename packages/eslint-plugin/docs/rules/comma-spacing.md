@@ -21,7 +21,7 @@ See [`eslint/comma-spacing` options](https://eslint.org/docs/rules/comma-spacing
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-spacing.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/comma-spacing.md)
 
 </sup>
 

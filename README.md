@@ -35,7 +35,7 @@ See https://typescript-eslint.io/docs/development/architecture/packages for more
 
 All of the packages are published with the same version number to make it easier to coordinate both releases and installations.
 
-We publish a canary release on every successful merge to master, so **you never need to wait for a new stable version to make use of any updates**.
+We publish a canary release on every successful merge to `main`, so **you never need to wait for a new stable version to make use of any updates**.
 
 Additionally, we promote the to the `latest` tag on NPM once per week, **on Mondays at 1 pm Eastern**.
 
@@ -43,7 +43,7 @@ The latest version under the `latest` tag is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
 
-The latest version under the `canary` tag **(latest commit to master)** is:
+The latest version under the `canary` tag **(latest commit to `main`)** is:
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
 

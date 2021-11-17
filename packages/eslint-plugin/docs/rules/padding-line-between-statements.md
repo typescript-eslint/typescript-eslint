@@ -49,7 +49,7 @@ In addition to options provided by ESLint, `interface` and `type` can be used as
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/padding-line-between-statements.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/padding-line-between-statements.md)
 
 </sup>
 

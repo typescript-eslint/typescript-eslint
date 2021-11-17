@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
       - v5
   pull_request:
     branches:
@@ -310,7 +310,7 @@ jobs:
         linting_and_style,
         integration_tests,
       ]
-    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/master'
+    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
       # Fetch all history for all tags and branches in this job because lerna needs it

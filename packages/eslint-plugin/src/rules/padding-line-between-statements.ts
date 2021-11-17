@@ -16,7 +16,7 @@ import * as util from '../util';
  * We have tried to keep the implementation as close as possible to the eslint implementation, to make
  * patching easier for future contributors.
  *
- * Reference rule - https://github.com/eslint/eslint/blob/master/lib/rules/padding-line-between-statements.js
+ * Reference rule - https://github.com/eslint/eslint/blob/main/lib/rules/padding-line-between-statements.js
  */
 
 type NodeTest = (

@@ -21,7 +21,7 @@ See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/space-before-function-paren.md)
 
 </sup>
 
