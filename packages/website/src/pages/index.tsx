@@ -28,9 +28,9 @@ const features: FeatureItem[] = [
             />
           </div>
           <div className="col col--8">
-            <h4 className="text--justify">
+            <h3 className="text--justify">
               <b>ESLint</b> is an awesome linter for JavaScript code.
-            </h4>
+            </h3>
             <p className="text--justify">
               ESLint statically analyzes your code to quickly find problems. It
               allows creating a series of assertions called lint rules around
@@ -49,10 +49,10 @@ const features: FeatureItem[] = [
             />
           </div>
           <div className="col col--8">
-            <h4 className="text--justify">
+            <h3 className="text--justify">
               <b>TypeScript</b> is a strongly typed programming language that
               builds on JavaScript.
-            </h4>
+            </h3>
             <p className="text--justify">
               TypeScript adds additional syntax to JavaScript that allows you to
               declare the shapes of objects and functions in code. It provides a
