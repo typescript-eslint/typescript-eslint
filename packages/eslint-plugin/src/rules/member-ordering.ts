@@ -8,9 +8,14 @@ import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
 
+type Order =
+  | 'alphabetically'
+  | 'alphabetically-case-insensitive'
+  | 'as-written';
+
 interface SortedOrderConfig {
   memberTypes?: string[] | 'never';
-  order: 'alphabetically' | 'as-written';
+  order: Order;
 }
 
 type OrderConfig = string[] | SortedOrderConfig | 'never';
@@ -46,7 +51,7 @@ const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'as-written'],
+      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
     },
   },
   additionalProperties: false,
@@ -539,10 +544,14 @@ export default util.createRule<Options, MessageIds>({
      * Checks if the members are alphabetically sorted.
      *
      * @param members Members to be validated.
+     * @param caseSensitive indicates if the alpha ordering is case sensitive or not.
      *
      * @return True if all members are correctly sorted.
      */
-    function checkAlphaSort(members: Member[]): boolean {
+    function checkAlphaSort(
+      members: Member[],
+      caseSensitive: boolean,
+    ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
 
@@ -552,7 +561,11 @@ export default util.createRule<Options, MessageIds>({
 
         // Note: Not all members have names
         if (name) {
-          if (name < previousName) {
+          if (
+            caseSensitive
+              ? name < previousName
+              : name.toLowerCase() < previousName.toLowerCase()
+          ) {
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -589,7 +602,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Standardize config
-      let order = null;
+      let order: Order | null = null;
       let memberTypes;
 
       if (Array.isArray(orderConfig)) {
@@ -599,6 +612,10 @@ export default util.createRule<Options, MessageIds>({
         memberTypes = orderConfig.memberTypes;
       }
 
+      const hasAlphaSort = order?.startsWith('alphabetically');
+      const alphaSortIsCaseSensitive =
+        order !== 'alphabetically-case-insensitive';
+
       // Check order
       if (Array.isArray(memberTypes)) {
         const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
@@ -607,11 +624,14 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (order === 'alphabetically') {
-          grouped.some(groupMember => !checkAlphaSort(groupMember));
+        if (hasAlphaSort) {
+          grouped.some(
+            groupMember =>
+              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
+          );
         }
-      } else if (order === 'alphabetically') {
-        checkAlphaSort(members);
+      } else if (hasAlphaSort) {
+        checkAlphaSort(members, alphaSortIsCaseSensitive);
       }
     }
 
