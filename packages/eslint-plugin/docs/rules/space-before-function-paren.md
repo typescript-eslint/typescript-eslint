@@ -19,7 +19,11 @@ It adds support for generic type parameters on function calls.
 
 See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules/space-before-function-paren#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-function-paren.md)
+
+</sup>
 
 ## Attributes
 

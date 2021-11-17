@@ -115,16 +115,22 @@ export default util.createRule({
       if (node?.argument?.type === AST_NODE_TYPES.Literal) {
         // making this `false` as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
-        scopeInfo.isAsyncYield = false;
+        scopeInfo.isAsyncYield ||= false;
       }
 
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node?.argument);
       const type = checker.getTypeAtLocation(tsNode);
-      const symbol = type.getSymbol();
-
-      // async function* test1() {yield* asyncGenerator() }
-      if (symbol?.getName() === 'AsyncGenerator') {
-        scopeInfo.isAsyncYield = true;
+      const typesToCheck = expandUnionOrIntersectionType(type);
+      for (const type of typesToCheck) {
+        const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
+          type,
+          'asyncIterator',
+          checker,
+        );
+        if (asyncIterator !== undefined) {
+          scopeInfo.isAsyncYield = true;
+          break;
+        }
       }
     }
 
@@ -229,4 +235,11 @@ function getFunctionHeadLoc(
     start,
     end,
   };
+}
+
+function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
+  if (type.isUnionOrIntersection()) {
+    return type.types.flatMap(expandUnionOrIntersectionType);
+  }
+  return [type];
 }

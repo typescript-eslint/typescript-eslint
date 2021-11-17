@@ -19,7 +19,11 @@ It adds support for TypeScript's method overload definitions.
 
 See [`eslint/no-dupe-class-members` options](https://eslint.org/docs/rules/no-dupe-class-members#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-dupe-class-members.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-dupe-class-members.md)
+
+</sup>
 
 ## Attributes
 
