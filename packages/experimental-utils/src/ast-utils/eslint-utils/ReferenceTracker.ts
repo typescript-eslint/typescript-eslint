@@ -83,7 +83,7 @@ namespace ReferenceTracker {
     node: TSESTree.Node;
     path: readonly string[];
     type: ReferenceType;
-    entry: T;
+    info: T;
   }
 }
 
