@@ -122,8 +122,9 @@ export default util.createRule({
 
       // this[i]
       if (
-        node.type === AST_NODE_TYPES.MemberExpression &&
-        node.object.type === AST_NODE_TYPES.ThisExpression
+        parent.type === AST_NODE_TYPES.MemberExpression &&
+        parent.object.type === AST_NODE_TYPES.ThisExpression &&
+        parent.property === node
       ) {
         return true;
       }

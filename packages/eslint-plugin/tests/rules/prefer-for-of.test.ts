@@ -370,5 +370,17 @@ for (let i = 0; i < arr.length; i++) {
         },
       ],
     },
+    {
+      code: `
+for (let i = 0; i < this.item.length; ++i) {
+  this.item[i];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
   ],
 });
