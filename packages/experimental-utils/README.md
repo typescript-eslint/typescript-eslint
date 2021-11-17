@@ -16,7 +16,7 @@ i.e. treat it as a `0.x.y` package.
 
 Feel free to use it now, and let us know what utilities you need or send us PRs with utilities you build on top of it.
 
-Once it is stable, it will be renamed to `@typescript-eslint/util` for a `4.0.0` release.
+Once it is stable, it will be renamed to `@typescript-eslint/util` for a `6.0.0` release.
 
 ## Exports
 

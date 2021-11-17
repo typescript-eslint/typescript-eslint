@@ -94,7 +94,7 @@ If you use [`prettier`](https://www.npmjs.com/package/prettier), there is also a
 
 Using this config by adding it to the end of your `extends`:
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
@@ -121,7 +121,7 @@ A few popular all-in-one configs are:
 To use one of these complete config packages, you would replace the `extends` with the package name.
 For example:
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
@@ -154,7 +154,7 @@ Below are just a few examples:
 Every plugin that is out there includes documentation on the various configurations and rules they offer.
 A typical plugin might be used like:
 
-```diff
+```diff title=".eslintrc.js"
   module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',

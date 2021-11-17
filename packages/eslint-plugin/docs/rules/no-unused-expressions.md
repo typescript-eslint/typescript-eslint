@@ -19,7 +19,11 @@ It adds support for optional call expressions `x?.()`, and directive in module d
 
 See [`eslint/no-unused-expressions` options](https://eslint.org/docs/rules/no-unused-expressions#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-expressions.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-expressions.md)
+
+</sup>
 
 ## Attributes
 

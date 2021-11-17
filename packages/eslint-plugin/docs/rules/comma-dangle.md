@@ -9,7 +9,7 @@ See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for m
 
 ## Rule Changes
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "comma-dangle": "off",
@@ -31,7 +31,11 @@ This rule has a string option and an object option.
 
 - [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md#options)
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md)
+
+</sup>
 
 ## Attributes
 

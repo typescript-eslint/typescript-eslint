@@ -22,10 +22,10 @@ interface Options {
 
 The default options are:
 
-```JSON
+```json
 {
   "ignoreParameters": false,
-  "ignoreProperties": false,
+  "ignoreProperties": false
 }
 ```
 

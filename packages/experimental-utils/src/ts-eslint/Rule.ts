@@ -19,7 +19,7 @@ interface RuleMetaDataDocs {
   /**
    * The URL of the rule's docs
    */
-  url: string;
+  url?: string;
   /**
    * Specifies whether the rule can return suggestions.
    */

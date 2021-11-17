@@ -19,7 +19,11 @@ It adds support for trailing comma in a types parameters list.
 
 See [`eslint/comma-spacing` options](https://eslint.org/docs/rules/comma-spacing#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-spacing.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-spacing.md)
+
+</sup>
 
 ## Attributes
 
