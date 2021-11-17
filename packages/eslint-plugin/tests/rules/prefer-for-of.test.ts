@@ -180,6 +180,11 @@ for (var c = 0; c < arr.length; c++) {
     `
 for (var d = 0; d < arr.length; d++) doMath?.(d);
     `,
+    `
+for (let i = 0; i < test.length; ++i) {
+  this[i];
+}
+    `,
   ],
   invalid: [
     {

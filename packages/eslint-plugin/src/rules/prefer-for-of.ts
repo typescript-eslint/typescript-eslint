@@ -120,6 +120,14 @@ export default util.createRule({
         return true;
       }
 
+      // this[i]
+      if (
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        node.object.type === AST_NODE_TYPES.ThisExpression
+      ) {
+        return true;
+      }
+
       // delete a[i]
       if (
         parent.type === AST_NODE_TYPES.UnaryExpression &&
