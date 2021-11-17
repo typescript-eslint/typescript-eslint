@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
+
+
+### Bug Fixes
+
+* correct issues with circular imports ([#4140](https://github.com/typescript-eslint/typescript-eslint/issues/4140)) ([4c87b24](https://github.com/typescript-eslint/typescript-eslint/commit/4c87b2486a9c90794d972a4d093c1dc22ffb418b))
+* **eslint-plugin:** [explicit-member-accessibility] private fields cannot have accessibility modifiers ([#4117](https://github.com/typescript-eslint/typescript-eslint/issues/4117)) ([81b25c1](https://github.com/typescript-eslint/typescript-eslint/commit/81b25c12eceae89e181a7bdb3c8298d820cfe3e3))
+* **eslint-plugin:** [no-implied-eval] ignore locally declared functions ([#4049](https://github.com/typescript-eslint/typescript-eslint/issues/4049)) ([d97140e](https://github.com/typescript-eslint/typescript-eslint/commit/d97140ecf4aeb0a1f8b391f46a31881f21ad93c3))
+* **eslint-plugin:** check optional chaining for floating promises ([#4096](https://github.com/typescript-eslint/typescript-eslint/issues/4096)) ([d724777](https://github.com/typescript-eslint/typescript-eslint/commit/d7247770886c619263482c3e083bed9f97b22688))
+* landing page title duplication ([#4123](https://github.com/typescript-eslint/typescript-eslint/issues/4123)) ([844c25e](https://github.com/typescript-eslint/typescript-eslint/commit/844c25e7b6ef9d79aec99d538252e82557f012d3))
+
+
+### Features
+
+* add RuleCreator.withoutDocs ([#4136](https://github.com/typescript-eslint/typescript-eslint/issues/4136)) ([87cfc6a](https://github.com/typescript-eslint/typescript-eslint/commit/87cfc6ad3e3312d7b6f98a592fb37e69d5d6880a))
+* **experimental-utils:** add default [] for RuleModule TOptions generic ([#4135](https://github.com/typescript-eslint/typescript-eslint/issues/4135)) ([62b8098](https://github.com/typescript-eslint/typescript-eslint/commit/62b8098fa7d361954c170ee6c190e47e95194b13))
+* **typescript-estree:** support Import Assertions ([#4074](https://github.com/typescript-eslint/typescript-eslint/issues/4074)) ([ae0fb5a](https://github.com/typescript-eslint/typescript-eslint/commit/ae0fb5a591958216b7df656e66b1dfe464898167))
+* **typescript-estree:** support private fields in-in syntax ([#4075](https://github.com/typescript-eslint/typescript-eslint/issues/4075)) ([939d8ea](https://github.com/typescript-eslint/typescript-eslint/commit/939d8eac547fb1734aa00f1ea01cc6eae0b4280a))
+* **typescript-estree:** support type-only module specifiers ([#4076](https://github.com/typescript-eslint/typescript-eslint/issues/4076)) ([77baa92](https://github.com/typescript-eslint/typescript-eslint/commit/77baa9203638e888a76e21003a278a8da386e133))
+
+
+
+
+
 ## [5.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.0...v5.3.1) (2021-11-08)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-eslint

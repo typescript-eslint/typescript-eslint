@@ -44,7 +44,7 @@ describe('Validating rule docs', () => {
     const files = fs
       .readdirSync(docsRoot)
       // this rule doc was left behind on purpose for legacy reasons
-      .filter(rule => rule !== 'camelcase.md');
+      .filter(rule => rule !== 'camelcase.md' && rule !== 'README.md');
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();
@@ -111,7 +111,7 @@ describe('Validating rule metadata', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url
         expect(
-          rule.meta.docs?.url.endsWith(`rules/${ruleName}.md`),
+          rule.meta.docs?.url?.endsWith(`rules/${ruleName}.md`),
         ).toBeTruthy();
       });
 
