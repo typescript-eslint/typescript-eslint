@@ -1,72 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import clsx from 'clsx';
-import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
+import type { RulesRecord } from '@typescript-eslint/website-eslint';
 
 import useFocus from '../hooks/useFocus';
+import reducerRules, { RuleModel } from '../hooks/reducerRules';
 
 import Modal from './Modal';
 import Checkbox from '../inputs/Checkbox';
 
 import styles from './ModalEslint.module.css';
+import reducerConfig, {
+  buildRulesRecord,
+} from '@site/src/components/hooks/reducerConfig';
 
-interface ModalEslintProps {
+export interface ModalEslintProps {
   readonly isOpen: boolean;
   readonly onClose: (rules: RulesRecord) => void;
   readonly ruleOptions: string[];
   readonly rules: RulesRecord;
-}
-
-interface RuleModel {
-  name: string;
-  isEnabled: boolean;
-  isCustom: boolean;
-  value: RuleEntry;
-}
-
-function mapRecords(rules: RulesRecord): RuleModel[] {
-  return Object.entries(rules).map<RuleModel>(item => {
-    const value = item[1]!;
-    return {
-      name: item[0],
-      isEnabled:
-        value !== 0 &&
-        value !== 'off' &&
-        !(Array.isArray(value) && (value[0] === 'off' || value[0] === 0)),
-      isCustom: value === 1 || (Array.isArray(value) && value.length > 1),
-      value: value,
-    };
-  });
-}
-
-function buildRules(rules: RulesRecord, ruleOptions: string[]): RuleModel[] {
-  return mapRecords({
-    ...ruleOptions.reduce<RulesRecord>((acc, item) => {
-      acc[item] = 0;
-      return acc;
-    }, {}),
-    ...rules,
-  }).sort((a, b) => {
-    return a.name.localeCompare(b.name);
-  });
-}
-
-function buildRulesRecord(rules: RuleModel[], short = true): RulesRecord {
-  const ruleError = short ? 2 : 'error';
-  const ruleOff = short ? 0 : 'off';
-  return rules
-    .filter(item => item.isEnabled || item.isCustom)
-    .reduce((acc, item) => {
-      acc[item.name] = item.isCustom
-        ? item.value
-        : item.isEnabled
-        ? ruleError
-        : ruleOff;
-      return acc;
-    }, {});
-}
-
-function isRecord(data: unknown): data is Record<string, unknown> {
-  return Boolean(data && typeof data === 'object');
 }
 
 function filterRules(rules: RuleModel[], name: string): RuleModel[] {
@@ -76,12 +27,16 @@ function filterRules(rules: RuleModel[], name: string): RuleModel[] {
 function ModalEslint(props: ModalEslintProps): JSX.Element {
   const [filter, setFilter] = useState<string>('');
   const [editJson, setEditJson] = useState<boolean>(false);
-  const [rules, setRules] = useState<RuleModel[]>([]);
-  const [rulesCode, setRulesCode] = useState<string>('');
+  const [rules, updateRules] = useReducer(reducerRules, []);
+  const [rulesCode, setRulesCode] = useReducer(reducerConfig, '');
   const [filterInput, setFocus] = useFocus();
 
   useEffect(() => {
-    setRules(buildRules(props.rules ?? {}, props.ruleOptions ?? []));
+    updateRules({
+      type: 'init',
+      rules: props.rules,
+      ruleOptions: props.ruleOptions,
+    });
   }, [props.rules, props.ruleOptions]);
 
   useEffect(() => {
@@ -90,44 +45,16 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
     }
   }, [editJson, props.isOpen]);
 
-  const updateRule = useCallback(
-    (checked: boolean, name: string) => {
-      setRules(
-        rules.map(item => {
-          if (item.name === name) {
-            item.isEnabled = checked;
-            item.isCustom = false;
-          }
-          return item;
-        }),
-      );
-    },
-    [rules],
-  );
-
   const changeEditType = useCallback(() => {
     if (editJson) {
-      try {
-        const data: unknown = JSON.parse(rulesCode);
-        if (isRecord(data) && 'rules' in data && isRecord(data.rules)) {
-          // @ts-expect-error: unsafe code
-          const parsed = buildRules(data.rules, props.ruleOptions ?? []);
-          setRules(parsed);
-        }
-      } catch {
-        console.error('ERROR parsing json');
-      }
+      updateRules({
+        type: 'json',
+        code: rulesCode,
+        ruleOptions: props.ruleOptions,
+      });
     } else {
       setFocus();
-      setRulesCode(
-        JSON.stringify(
-          {
-            rules: buildRulesRecord(rules, false),
-          },
-          null,
-          2,
-        ),
-      );
+      setRulesCode(rules);
     }
     setEditJson(!editJson);
   }, [editJson, rules, rulesCode]);
@@ -175,7 +102,9 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
                   value={item.name}
                   indeterminate={item.isCustom}
                   checked={item.isEnabled}
-                  onChange={updateRule}
+                  onChange={(checked, name): void =>
+                    updateRules({ type: 'toggle', checked, name })
+                  }
                 />
               </label>
             ))}
