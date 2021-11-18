@@ -1,6 +1,6 @@
 import React, { SyntheticEvent } from 'react';
 import clsx from 'clsx';
-import styles from './ast-viewer.module.css';
+import styles from './ASTViewer.module.css';
 
 export default function PropertyName(props: {
   name?: string;

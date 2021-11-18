@@ -5,7 +5,7 @@ import Layout from '@theme/Layout';
  * we do not want to load playground for ssr
  */
 const Playground = !process.env.IS_SERVER
-  ? lazy(() => import('../components/playground'))
+  ? lazy(() => import('../components/Playground'))
   : (): JSX.Element => <div />;
 
 /**

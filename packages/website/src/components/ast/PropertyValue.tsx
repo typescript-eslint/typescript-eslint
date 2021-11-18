@@ -1,5 +1,5 @@
-import styles from './ast-viewer.module.css';
 import React from 'react';
+import styles from './ASTViewer.module.css';
 
 export default function PropertyValue(props: { value: unknown }): JSX.Element {
   if (typeof props.value === 'string') {

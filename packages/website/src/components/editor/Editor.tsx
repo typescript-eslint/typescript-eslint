@@ -1,5 +1,8 @@
 import React from 'react';
-import type { createTypeScriptSandbox, SandboxConfig } from '../vendor/sandbox';
+import type {
+  createTypeScriptSandbox,
+  SandboxConfig,
+} from '../../vendor/sandbox';
 import type Monaco from 'monaco-editor';
 
 import type {
@@ -8,11 +11,11 @@ import type {
   TSESTree,
 } from '@typescript-eslint/website-eslint';
 
-import { sandboxSingleton } from './lib/load-sandbox';
-import { createProvideCodeActions } from './lib/action';
-import { createURI, messageToMarker } from './lib/utils';
-import { debounce } from './lib/debounce';
-import { HashStateOptions } from './lib/use-hash-state';
+import { sandboxSingleton } from '../lib/load-sandbox';
+import { createProvideCodeActions } from '../lib/action';
+import { createURI, messageToMarker } from '../lib/utils';
+import { debounce } from '../lib/debounce';
+import type { HashStateOptions } from '@site/src/components/hooks/useHashState';
 
 interface EditorProps extends HashStateOptions {
   darkTheme: boolean;

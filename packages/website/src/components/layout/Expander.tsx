@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import styles from './expander.module.css';
-import { ArrowIcon } from './icons';
+import styles from './Expander.module.css';
+
+import ArrowIcon from '../icons/ArrowIcon';
 
 interface MyProps {
   children?: React.ReactNode;

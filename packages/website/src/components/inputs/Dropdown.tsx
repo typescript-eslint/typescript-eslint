@@ -1,8 +1,8 @@
-import styles from './options-selector.module.css';
 import React from 'react';
+import styles from '../OptionsSelector.module.css';
 import clsx from 'clsx';
 
-interface DropdownProps {
+export interface DropdownProps {
   readonly onChange: (value: string) => void;
   readonly options: string[];
   readonly value: string | undefined;

@@ -4,7 +4,7 @@ import type {
   RulesRecord,
   RuleEntry,
 } from '@typescript-eslint/website-eslint';
-import { debounce } from './debounce';
+import { debounce } from '../lib/debounce';
 
 export interface HashStateOptions {
   jsx?: boolean;

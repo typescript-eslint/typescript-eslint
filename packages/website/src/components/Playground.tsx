@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import useThemeContext from '@theme/hooks/useThemeContext';
-import styles from './playground.module.css';
-import Loader from './loader';
+import styles from './Playground.module.css';
+import Loader from './layout/Loader';
 
-import useHashState from './lib/use-hash-state';
+import useHashState from './hooks/useHashState';
 import type {
   ParseForESLintResult,
   TSESTree,
 } from '@typescript-eslint/website-eslint';
 import type Monaco from 'monaco-editor';
-import OptionsSelector from './options-selector';
-import ASTViewer from './ast/ast-viewer';
+import OptionsSelector from './OptionsSelector';
+import ASTViewer from './ast/ASTViewer';
 import clsx from 'clsx';
-import Editor from './editor';
+import Editor from './editor/Editor';
 import { findNode } from './lib/selection';
 
 function Playground(): JSX.Element {

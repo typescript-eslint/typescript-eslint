@@ -1,5 +1,5 @@
-import Modal from './modal';
 import React from 'react';
+import Modal from './Modal';
 
 interface ModalTypeScriptProps {
   isOpen: boolean;

@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
-import Modal from './modal';
-import Checkbox from '../checkbox';
+import useFocus from '../hooks/useFocus';
 
-import styles from './modal-eslint.module.css';
+import Modal from './Modal';
+import Checkbox from '../inputs/Checkbox';
+
+import styles from './ModalEslint.module.css';
 
 interface ModalEslintProps {
   isOpen: boolean;
@@ -69,14 +71,6 @@ function isRecord(data: unknown): data is Record<string, unknown> {
 
 function filterRules(rules: RuleModel[], name: string): RuleModel[] {
   return rules.filter(item => item.name.includes(name));
-}
-
-function useFocus<T = HTMLInputElement>(): [React.RefObject<T>, () => void] {
-  const htmlElRef = useRef<T>(null);
-  const setFocus = (): void => {
-    htmlElRef.current?.focus();
-  };
-  return [htmlElRef, setFocus];
 }
 
 function ModalEslint(props: ModalEslintProps): JSX.Element {

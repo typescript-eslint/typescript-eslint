@@ -1,6 +1,6 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import styles from './loader.module.css';
+import styles from './Loader.module.css';
 
 function Loader(): JSX.Element {
   return (

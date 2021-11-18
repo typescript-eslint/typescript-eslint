@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import styles from './ast-viewer.module.css';
+import styles from './ASTViewer.module.css';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import clsx from 'clsx';
 import { scrollIntoViewIfNeeded } from '../lib/scroll-into';

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { createRef, useEffect } from 'react';
 
-interface CheckboxProps {
+export interface CheckboxProps {
   name: string;
   value: string;
   onChange: (checked: boolean, value: string) => void;
@@ -10,7 +10,7 @@ interface CheckboxProps {
 }
 
 function Checkbox(props: CheckboxProps): JSX.Element {
-  const checkboxRef = useRef<HTMLInputElement>();
+  const checkboxRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
     if (!checkboxRef.current) {

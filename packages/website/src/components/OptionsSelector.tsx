@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import type { RulesRecord } from '@typescript-eslint/website-eslint';
 
-import ModalEslint from './modals/modal-eslint';
-import ModalTypeScript from './modals/modal-typescript';
-import Expander from './expander';
-import Dropdown from './dropdown';
-import { EditIcon } from './icons';
-import { HashStateOptions } from './lib/use-hash-state';
+import ModalEslint from './modals/ModalEslint';
+import ModalTypeScript from './modals/ModalTypeScript';
+import Expander from './layout/Expander';
+import Dropdown from './inputs/Dropdown';
+import type { HashStateOptions } from './hooks/useHashState';
 
-import styles from './options-selector.module.css';
+import styles from './OptionsSelector.module.css';
+import EditIcon from './icons/EditIcon';
 
 type SourceType = HashStateOptions['sourceType'];
 
