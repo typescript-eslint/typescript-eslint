@@ -7,7 +7,11 @@ Member access on `any` typed variables is not checked at all by TypeScript, so i
 
 This rule disallows member access on any variable that is typed as `any`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare const anyVar: any;
@@ -30,7 +34,7 @@ arr[anyVar];
 nestedAny[anyVar];
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 declare const properlyTyped: { prop: { a: string } };

@@ -4,7 +4,11 @@ This rule detects when an `as` cast is doing the same job as a `!` would, and su
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const maybe = Math.random() > 0.5 ? '' : undefined;
@@ -13,7 +17,7 @@ const definitely = maybe as string;
 const alsoDefinitely = <string>maybe;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const maybe = Math.random() > 0.5 ? '' : undefined;

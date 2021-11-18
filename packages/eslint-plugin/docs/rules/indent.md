@@ -21,7 +21,11 @@ It adds support for TypeScript nodes.
 
 See [`eslint/indent` options](https://eslint.org/docs/rules/indent#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/indent.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/indent.md)
+
+</sup>
 
 ## Attributes
 

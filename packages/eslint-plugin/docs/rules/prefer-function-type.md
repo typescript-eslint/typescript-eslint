@@ -4,7 +4,11 @@
 
 This rule suggests using a function type instead of an interface or object type literal with a single call signature.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -31,7 +35,7 @@ interface MixinMethod {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 interface Foo {

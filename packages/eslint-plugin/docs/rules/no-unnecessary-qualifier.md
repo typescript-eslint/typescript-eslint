@@ -5,7 +5,11 @@
 This rule aims to let users know when a namespace or enum qualifier is unnecessary,
 whether used for a type or for a value.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 namespace A {
@@ -37,7 +41,7 @@ namespace A {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 namespace X {

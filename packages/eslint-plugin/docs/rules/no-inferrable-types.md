@@ -29,7 +29,11 @@ The default options are:
 }
 ```
 
-With these options, the following patterns are valid:
+With these options, the following patterns are:
+
+<!--tabs-->
+
+#### ❌ Correct
 
 ```ts
 const a = 10n;
@@ -72,7 +76,7 @@ function fn(a = 5, b = true) {}
 function fn(a: number, b: boolean, c: string) {}
 ```
 
-The following are invalid:
+#### ❌ Incorrect
 
 ```ts
 const a: bigint = 10n;
@@ -112,6 +116,8 @@ class Foo {
 
 function fn(a: number = 5, b: boolean = true) {}
 ```
+
+<!--/tabs-->
 
 ### `ignoreParameters`
 

@@ -32,9 +32,13 @@ This rule accepts one string option:
 
 The default is `"property"`.
 
-## Rule Details
+### `property`
 
-Examples of **incorrect** code with `property` option.
+Examples of code with `property` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -50,7 +54,7 @@ interface T3 {
 }
 ```
 
-Examples of **correct** code with `property` option.
+#### ✅ Correct
 
 ```ts
 interface T1 {
@@ -67,7 +71,13 @@ interface T3 {
 }
 ```
 
-Examples of **incorrect** code with `method` option.
+### `method`
+
+Examples of code with `method` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -78,7 +88,7 @@ type T2 = {
 };
 ```
 
-Examples of **correct** code with `method` option.
+#### ✅ Correct
 
 ```ts
 interface T1 {

@@ -1,3 +1,3 @@
-if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
+if (typeof window !== 'undefined') {
   require('konamimojisplosion').initializeKonamimojisplosion();
 }

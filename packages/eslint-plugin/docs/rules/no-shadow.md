@@ -84,7 +84,11 @@ const test = 1;
 type Func = (test: string) => typeof test;
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)
+
+</sup>
 
 ## Attributes
 

@@ -41,7 +41,9 @@ const defaultOptions: Options = {
 
 A value of `true` for a particular directive means that this rule will report if it finds any usage of said directive.
 
-For example, with the defaults above the following patterns are considered warnings for single line or comment block lines:
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -56,7 +58,7 @@ if (false) {
 }
 ```
 
-The following patterns are not warnings:
+#### ✅ Correct
 
 ```ts
 if (false) {
@@ -69,7 +71,11 @@ if (false) {
 
 A value of `'allow-with-description'` for a particular directive means that this rule will report if it finds a directive that does not have a description following the directive (on the same line).
 
-For example, with `{ 'ts-expect-error': 'allow-with-description' }` the following patterns are considered a warning:
+For example, with `{ 'ts-expect-error': 'allow-with-description' }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -82,7 +88,7 @@ if (false) {
 }
 ```
 
-The following patterns are not a warning:
+#### ✅ Correct
 
 ```ts
 if (false) {
@@ -101,7 +107,11 @@ if (false) {
 
 Use `minimumDescriptionLength` to set a minimum length for descriptions when using the `allow-with-description` option for a directive.
 
-For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescriptionLength: 10 }` the following pattern is considered a warning:
+For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescriptionLength: 10 }` the following pattern is:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 if (false) {
@@ -110,7 +120,7 @@ if (false) {
 }
 ```
 
-The following pattern is not a warning:
+#### ✅ Correct
 
 ```ts
 if (false) {

@@ -9,7 +9,11 @@ This rule disallows calling a function with `any` in its arguments, and it will 
 This rule also disallows spreading a tuple type with one of its elements typed as `any`.
 This rule also compares the argument's type to the variable's type to ensure you don't pass an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to an argument declared as `Set<string>`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare function foo(arg1: string, arg2: number, arg2: string): void;
@@ -36,7 +40,7 @@ declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
 foo(new Set<any>(), new Map<any, string>());
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 declare function foo(arg1: string, arg2: number, arg2: string): void;
@@ -53,6 +57,8 @@ bar('a', 1, ...array);
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
 foo(new Set<string>(), new Map<string, string>());
 ```
+
+<!--/tabs-->
 
 There are cases where the rule allows passing an argument of `any` to `unknown`.
 

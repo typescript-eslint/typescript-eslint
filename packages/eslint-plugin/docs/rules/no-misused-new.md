@@ -4,7 +4,11 @@ Warns on apparent attempts to define constructors for interfaces or `new` for cl
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule.
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 class C {
@@ -17,7 +21,7 @@ interface I {
 }
 ```
 
-Examples of **correct** code for this rule.
+### ✅ Correct
 
 ```ts
 class C {

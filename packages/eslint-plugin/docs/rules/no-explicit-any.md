@@ -11,7 +11,9 @@ TypeScript has a compiler flag for `--noImplicitAny` that will prevent
 an `any` type from being implied by the compiler, but doesn't prevent
 `any` from being explicitly used.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const age: any = 'seventeen';
@@ -49,7 +51,7 @@ function greet(param: Array<any>): string {}
 function greet(param: Array<any>): Array<any> {}
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 const age: number = 17;

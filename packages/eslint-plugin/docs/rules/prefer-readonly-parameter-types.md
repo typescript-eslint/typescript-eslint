@@ -15,7 +15,11 @@ A type is considered readonly if:
 - it is a readonly tuple type whose elements are all considered readonly.
 - it is an object type whose properties are all marked as readonly, and whose values are all considered readonly.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 function array1(arg: string[]) {} // array is not readonly
@@ -57,7 +61,7 @@ interface Foo {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 function array1(arg: readonly string[]) {}
@@ -139,7 +143,11 @@ const defaultOptions: Options = {
 This option allows you to enable or disable the checking of parameter properties.
 Because parameter properties create properties on the class, it may be undesirable to force them to be readonly.
 
-Examples of **incorrect** code for this rule with `{checkParameterProperties: true}`:
+Examples of code for this rule with `{checkParameterProperties: true}`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -147,13 +155,15 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule with `{checkParameterProperties: true}`:
+#### ✅ Correct
 
 ```ts
 class Foo {
   constructor(private paramProp: readonly string[]) {}
 }
 ```
+
+<!--/tabs-->
 
 Examples of **correct** code for this rule with `{checkParameterProperties: false}`:
 
@@ -170,7 +180,11 @@ class Foo {
 
 This option allows you to ignore parameters which don't explicitly specify a type. This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
 
-Examples of **incorrect** code for this rule with `{ignoreInferredTypes: true}`:
+Examples of code for this rule with `{ignoreInferredTypes: true}`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
@@ -193,7 +207,7 @@ export const acceptsCallback: AcceptsCallback;
 
 </details>
 
-Examples of **correct** code for this rule with `{ignoreInferredTypes: true}`:
+#### ✅ Correct
 
 ```ts
 import { acceptsCallback } from 'external-dependency';
@@ -220,7 +234,11 @@ export const acceptsCallback: AcceptsCallback;
 
 This option allows you to treat all mutable methods as though they were readonly. This may be desirable in when you are never reassigning methods.
 
-Examples of **incorrect** code for this rule with `{treatMethodsAsReadonly: false}`:
+Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type MyType = {
@@ -230,7 +248,7 @@ type MyType = {
 function foo(arg: MyType) {}
 ```
 
-Examples of **correct** code for this rule with `{treatMethodsAsReadonly: false}`:
+#### ✅ Correct
 
 ```ts
 type MyType = Readonly<{
@@ -245,6 +263,8 @@ type MyOtherType = {
 };
 function bar(arg: MyOtherType) {}
 ```
+
+<!--/tabs-->
 
 Examples of **correct** code for this rule with `{treatMethodsAsReadonly: true}`:
 
