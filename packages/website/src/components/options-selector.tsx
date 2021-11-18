@@ -1,22 +1,21 @@
-import Expander from './expander';
 import React, { useCallback, useState } from 'react';
-import styles from './options-selector.module.css';
-import { DeleteIcon, AddIcon } from './icons';
-import { HashStateOptions } from './lib/use-hash-state';
-import clsx from 'clsx';
+import type { RulesRecord } from '@typescript-eslint/website-eslint';
 
-function computeRuleOptions(
-  rules: Record<string, unknown>,
-  ruleNames: string[],
-): string[] {
-  const keys = Object.keys(rules);
-  return ruleNames.filter(name => !keys.includes(name));
-}
+import ModalEslint from './modals/modal-eslint';
+import ModalTypeScript from './modals/modal-typescript';
+import Expander from './expander';
+import Dropdown from './dropdown';
+import { EditIcon } from './icons';
+import { HashStateOptions } from './lib/use-hash-state';
+
+import styles from './options-selector.module.css';
+
+type SourceType = HashStateOptions['sourceType'];
 
 interface OptionsSelectorParams<T = HashStateOptions> {
   ruleOptions: string[];
   state: T;
-  setState: (key: keyof T, value: unknown) => void;
+  setState: <X extends keyof T>(key: X, value: T[X]) => void;
   tsVersions: readonly string[];
 }
 
@@ -26,56 +25,46 @@ function OptionsSelector({
   setState,
   tsVersions,
 }: OptionsSelectorParams): JSX.Element {
-  const [ruleName, setRuleName] = useState<string>('');
-
-  const removeRule = useCallback(
-    (item: string) => {
-      const { [item]: _, ...newRules } = state.rules ?? {};
-      setState('rules', newRules);
-    },
-    [state],
-  );
-
-  const computedRules = computeRuleOptions(state.rules ?? {}, ruleOptions);
-
-  const addRule = useCallback(() => {
-    if (computedRules.length) {
-      const newRules = {
-        ...state.rules,
-        [ruleName || computedRules[0]]: ['error'],
-      };
-      setState('rules', newRules);
-      setRuleName('');
-    }
-  }, [state, ruleName]);
+  const [eslintModal, setEslintModal] = useState<boolean>(false);
+  const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
 
   const updateTS = useCallback((version: string) => {
     setState('ts', version);
   }, []);
 
+  const updateRules = useCallback((rules: RulesRecord) => {
+    setState('rules', rules);
+    setEslintModal(false);
+  }, []);
+
   return (
     <>
+      {state.rules && ruleOptions.length > 0 && (
+        <ModalEslint
+          key="modal-eslint"
+          isOpen={eslintModal}
+          ruleOptions={ruleOptions}
+          rules={state.rules}
+          onClose={updateRules}
+        />
+      )}
+      <ModalTypeScript
+        key="modal-typescript"
+        isOpen={typeScriptModal}
+        onClose={(): void => setTypeScriptModal(false)}
+      />
       <Expander label="Info">
         <label className={styles.optionLabel}>
           TypeScript
-          <select
+          <Dropdown
             name="ts"
+            className="text--right"
             value={state.ts}
-            className={clsx(styles.optionSelect, 'text--right')}
-            onChange={(e): void => {
-              updateTS(e.target.value);
-            }}
-          >
-            {((tsVersions.length && tsVersions) || [state.ts])
-              .filter(item => parseFloat(item) >= 3.3)
-              .map(item => {
-                return (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                );
-              })}
-          </select>
+            onChange={updateTS}
+            options={((tsVersions.length && tsVersions) || [state.ts]).filter(
+              item => parseFloat(item) >= 3.3,
+            )}
+          />
         </label>
         <label className={styles.optionLabel}>
           Eslint
@@ -91,9 +80,7 @@ function OptionsSelector({
           Enable jsx
           <input
             checked={state.jsx}
-            onChange={(e): void => {
-              setState('jsx', e.target.checked ?? false);
-            }}
+            onChange={(e): void => setState('jsx', e.target.checked ?? false)}
             name="jsx"
             className={styles.optionCheckbox}
             type="checkbox"
@@ -103,9 +90,9 @@ function OptionsSelector({
           Show AST
           <input
             checked={state.showAST}
-            onChange={(e): void => {
-              setState('showAST', e.target.checked ?? false);
-            }}
+            onChange={(e): void =>
+              setState('showAST', e.target.checked ?? false)
+            }
             name="ast"
             className={styles.optionCheckbox}
             type="checkbox"
@@ -113,55 +100,27 @@ function OptionsSelector({
         </label>
         <label className={styles.optionLabel}>
           Source type
-          <select
+          <Dropdown
             name="sourceType"
             value={state.sourceType}
-            className={styles.optionSelect}
-            onChange={(e): void => {
-              setState('sourceType', e.target.value as 'script' | 'module');
-            }}
-          >
-            <option value="script">script</option>
-            <option value="module">module</option>
-          </select>
+            onChange={(e): void => setState('sourceType', e as SourceType)}
+            options={['script', 'module']}
+          />
         </label>
-      </Expander>
-      <Expander label="Rules">
-        {Object.entries(state.rules ?? {}).map(([rule]) => (
-          <label className={styles.optionItem} key={'rules' + rule}>
-            {rule}
-            <DeleteIcon
-              className={styles.clickableIcon}
-              onClick={(): void => removeRule(rule)}
-            />
-          </label>
-        ))}
-        <div>
-          <label className={styles.optionItem}>Add rule</label>
-          {computedRules.length ? (
-            <div className={styles.optionItem}>
-              <select
-                value={ruleName}
-                name="ruleName"
-                onChange={(e): void => {
-                  setRuleName(e.target.value);
-                }}
-                className={styles.optionInput}
-              >
-                {computedRules.map(item => {
-                  return (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-              <AddIcon className={styles.clickableIcon} onClick={addRule} />
-            </div>
-          ) : (
-            <div />
-          )}
-        </div>
+        <label
+          className={styles.optionLabel}
+          onClick={(): void => setEslintModal(true)}
+        >
+          Eslint Config
+          <EditIcon className={styles.clickableIcon} />
+        </label>
+        <label
+          className={styles.optionLabel}
+          onClick={(): void => setTypeScriptModal(true)}
+        >
+          TypeScript Config
+          <EditIcon className={styles.clickableIcon} />
+        </label>
       </Expander>
     </>
   );

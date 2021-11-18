@@ -21,7 +21,7 @@
   width: calc(100vw - 20rem);
 }
 
-.astViewer {
+.astViewer, .config {
   height: 100%;
   width: 50%;
   border: 1px solid var(--ifm-color-emphasis-100);

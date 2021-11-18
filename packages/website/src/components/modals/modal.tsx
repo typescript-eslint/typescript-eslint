@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './modal.module.css';
-import { CloseIcon } from './icons';
+import { CloseIcon } from '../icons';
 
 interface ModalProps {
   header: string;
@@ -19,7 +19,6 @@ function Modal(props: ModalProps): JSX.Element {
       <div
         className={clsx(styles.modalContent, 'item shadow--md')}
         onClick={(e): void => {
-          e.preventDefault();
           e.stopPropagation();
         }}
       >

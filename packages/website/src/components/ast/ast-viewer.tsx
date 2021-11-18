@@ -8,61 +8,16 @@ import React, {
 import styles from './ast-viewer.module.css';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import clsx from 'clsx';
-import { scrollIntoViewIfNeeded } from './lib/scroll-into';
-import { filterRecord } from './lib/selection';
+import { scrollIntoViewIfNeeded } from '../lib/scroll-into';
+import { filterRecord } from '../lib/selection';
 
-interface GenericParams<V> {
-  propName?: string;
-  name?: string;
-  value: V;
-  level: string;
-  selection?: TSESTree.Node | null;
-  onSelectNode: (node: TSESTree.Node | null) => void;
-}
+import type { GenericParams } from './types';
 
-const PropertyName = React.memo(function PropertyName(props: {
-  name?: string;
-  propName?: string;
-  onClick?: (e: SyntheticEvent) => void;
-  onMouseEnter?: (e: SyntheticEvent) => void;
-}) {
-  return (
-    <span onClick={props.onClick} onMouseEnter={props.onMouseEnter}>
-      {props.propName && (
-        <span className={clsx(styles.propName, styles.clickable)}>
-          {props.propName}
-        </span>
-      )}
-      {props.propName && <span>: </span>}
-      {props.name && (
-        <span className={clsx(styles.tokenName, styles.clickable)}>
-          {props.name}
-        </span>
-      )}
-    </span>
-  );
-});
+import PropertyNameComp from './PropertyName';
+import PropertyValueComp from './PropertyValue';
 
-const PropertyValue = React.memo(function PropertyValue(props: {
-  value: unknown;
-}) {
-  if (typeof props.value === 'string') {
-    return (
-      <span className={styles.propString}>{JSON.stringify(props.value)}</span>
-    );
-  } else if (typeof props.value === 'number') {
-    return <span className={styles.propNumber}>{props.value}</span>;
-  } else if (typeof props.value === 'bigint') {
-    return <span className={styles.propNumber}>{String(props.value)}n</span>;
-  } else if (typeof props.value === 'boolean') {
-    return (
-      <span className={styles.propBoolean}>
-        {props.value ? 'true' : 'false'}
-      </span>
-    );
-  }
-  return <span>{String(props.value)}</span>;
-});
+const PropertyName = React.memo(PropertyNameComp);
+const PropertyValue = React.memo(PropertyValueComp);
 
 function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
   const isComplex = props.value.some(

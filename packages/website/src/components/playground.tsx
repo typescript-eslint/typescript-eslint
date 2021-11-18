@@ -1,6 +1,4 @@
 import React, { useCallback, useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import useThemeContext from '@theme/hooks/useThemeContext';
 import styles from './playground.module.css';
 import Loader from './loader';
@@ -12,7 +10,7 @@ import type {
 } from '@typescript-eslint/website-eslint';
 import type Monaco from 'monaco-editor';
 import OptionsSelector from './options-selector';
-import ASTViewer from './ast-viewer';
+import ASTViewer from './ast/ast-viewer';
 import clsx from 'clsx';
 import Editor from './editor';
 import { findNode } from './lib/selection';
@@ -26,7 +24,6 @@ function Playground(): JSX.Element {
     ts: process.env.TS_VERSION,
     rules: {},
   });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
   const { isDarkTheme } = useThemeContext();
   const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
   const [ruleNames, setRuleNames] = useState<string[]>([]);

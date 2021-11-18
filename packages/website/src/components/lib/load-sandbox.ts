@@ -1,13 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
 import type { WebLinter } from '@typescript-eslint/website-eslint';
 
 export type Monaco = typeof import('monaco-editor');
 export type TS = typeof import('typescript');
+
+declare global {
+  type WindowRequireCb = (
+    main: Monaco,
+    tsWorker: typeof TsWorker,
+    sandboxFactory: typeof SandboxFactory,
+    linter: {
+      loadLinter(): WebLinter;
+    },
+  ) => void;
+  interface WindowRequire {
+    (files: string[], cb: WindowRequireCb): void;
+    config: (arg: {
+      paths?: Record<string, string>;
+      ignoreDuplicateModules?: string[];
+    }) => void;
+  }
+
+  interface Window {
+    ts: TS;
+    require: WindowRequire;
+  }
+}
 
 export interface SandboxModel {
   main: Monaco;
@@ -28,7 +47,6 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       // For the monaco version you can use unpkg or the TypeScript web infra CDN
       // You can see the available releases for TypeScript here:
       // https://typescript.azureedge.net/indexes/releases.json
-      // @ts-ignore
       window.require.config({
         paths: {
           vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
@@ -47,19 +65,13 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
           'sandbox/index',
           'linter/index',
         ],
-        // @ts-ignore
         (main, tsWorker, sandboxFactory, linter) => {
-          // @ts-ignore
           const isOK = main && window.ts && sandboxFactory;
-          // @ts-ignore
-          // window.ts.__esModule = true;
-          // window.ts.SyntaxKind;
           if (isOK) {
             resolve({
               main,
               tsWorker,
               sandboxFactory,
-              // @ts-ignore
               ts: window.ts,
               linter,
             });
@@ -77,7 +89,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
   });
 }
 
-let instance;
+let instance: Promise<SandboxModel> | undefined;
 
 export const sandboxSingleton = (version: string): Promise<SandboxModel> => {
   if (instance) {
