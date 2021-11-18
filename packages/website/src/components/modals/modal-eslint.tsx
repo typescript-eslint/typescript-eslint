@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
@@ -67,15 +67,34 @@ function isRecord(data: unknown): data is Record<string, unknown> {
   return Boolean(data && typeof data === 'object');
 }
 
+function filterRules(rules: RuleModel[], name: string): RuleModel[] {
+  return rules.filter(item => item.name.includes(name));
+}
+
+function useFocus<T = HTMLInputElement>(): [React.RefObject<T>, () => void] {
+  const htmlElRef = useRef<T>(null);
+  const setFocus = (): void => {
+    htmlElRef.current?.focus();
+  };
+  return [htmlElRef, setFocus];
+}
+
 function ModalEslint(props: ModalEslintProps): JSX.Element {
   const [filter, setFilter] = useState<string>('');
   const [editJson, setEditJson] = useState<boolean>(false);
   const [rules, setRules] = useState<RuleModel[]>([]);
   const [rulesCode, setRulesCode] = useState<string>('');
+  const [filterInput, setFocus] = useFocus();
 
   useEffect(() => {
     setRules(buildRules(props.rules ?? {}, props.ruleOptions ?? []));
   }, [props.rules, props.ruleOptions]);
+
+  useEffect(() => {
+    if (!editJson && props.isOpen) {
+      setFocus();
+    }
+  }, [editJson, props.isOpen]);
 
   const updateRule = useCallback(
     (checked: boolean, name: string) => {
@@ -87,18 +106,11 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
           }
           return item;
         }),
-        // TODO: do we want sorting here?
-        // .sort((a, b) => {
-        //   return a.isEnabled === b.isEnabled
-        //     ? a.name.localeCompare(b.name)
-        //     : a.isEnabled
-        //       ? 1
-        //       : -1;
-        // })
       );
     },
     [rules],
   );
+
   const changeEditType = useCallback(() => {
     if (editJson) {
       try {
@@ -112,6 +124,7 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
         console.error('ERROR parsing json');
       }
     } else {
+      setFocus();
       setRulesCode(
         JSON.stringify(
           {
@@ -135,6 +148,7 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
         <div className={styles.topBar}>
           {!editJson && (
             <input
+              ref={filterInput}
               type="text"
               key="eslint-filter"
               className={styles.search}
@@ -158,18 +172,9 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
           />
         )}
         {!editJson && (
-          <div
-            className={clsx('thin-scrollbar', styles.searchResultContainer)}
-            style={{ overflow: 'auto', height: '50vh' }}
-          >
-            {rules.map((item, index) => (
-              <label
-                style={{
-                  display: !item.name.includes(filter) ? 'none' : undefined,
-                }}
-                className={styles.searchResult}
-                key={item.name}
-              >
+          <div className={clsx('thin-scrollbar', styles.searchResultContainer)}>
+            {filterRules(rules, filter).map((item, index) => (
+              <label className={styles.searchResult} key={item.name}>
                 {item.name}
                 <Checkbox
                   name={`eslint_rule_${index}`}
