@@ -16,10 +16,34 @@ declare global {
   }
 }
 
+export interface CompilerFlags {
+  isolatedModules?: boolean;
+  allowSyntheticDefaultImports?: boolean;
+  esModuleInterop?: boolean;
+  strict?: boolean;
+  noImplicitAny?: boolean;
+  strictNullChecks?: boolean;
+  strictFunctionTypes?: boolean;
+  strictBindCallApply?: boolean;
+  strictPropertyInitialization?: boolean;
+  noImplicitThis?: boolean;
+  alwaysStrict?: boolean;
+  noUnusedLocals?: boolean;
+  noUnusedParameters?: boolean;
+  noImplicitReturns?: boolean;
+  noFallthroughCasesInSwitch?: boolean;
+  allowUnusedLabels?: boolean;
+  allowUnreachableCode?: boolean;
+  experimentalDecorators?: boolean;
+  emitDecoratorMetadata?: boolean;
+  noLib?: boolean;
+}
+
 export interface HashStateOptions {
   jsx?: boolean;
   sourceType?: ParserOptions['sourceType'];
   rules?: RulesRecord;
+  tsConfig?: CompilerFlags;
   code: string;
   ts: string;
   showAST?: boolean;
@@ -62,6 +86,11 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
             readQueryParam(searchParams.get('rules')!),
           ) as RulesRecord)
         : undefined,
+      tsConfig: searchParams.has('tsConfig')
+        ? (JSON.parse(
+            readQueryParam(searchParams.get('tsConfig')!),
+          ) as CompilerFlags)
+        : undefined,
     };
   } catch (e) {
     console.warn(e);
@@ -80,10 +109,13 @@ const writeStateToUrl = debounce(
         jsx: newState.jsx,
         sourceType: newState.sourceType,
         showAST: newState.showAST,
+        code: newState.code ? writeQueryParam(newState.code) : undefined,
         rules: newState.rules
           ? writeQueryParam(JSON.stringify(newState.rules))
           : undefined,
-        code: newState.code ? writeQueryParam(newState.code) : undefined,
+        tsConfig: newState.tsConfig
+          ? writeQueryParam(JSON.stringify(newState.tsConfig))
+          : undefined,
       })
         .filter(item => item[1])
         .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)

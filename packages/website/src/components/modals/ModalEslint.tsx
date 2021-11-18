@@ -8,10 +8,8 @@ import reducerRules, { RuleModel } from '../hooks/reducerRules';
 import Modal from './Modal';
 import Checkbox from '../inputs/Checkbox';
 
-import styles from './ModalEslint.module.css';
-import reducerConfig, {
-  buildRulesRecord,
-} from '@site/src/components/hooks/reducerConfig';
+import styles from './search.module.css';
+import reducerConfig, { buildRulesRecord } from '../hooks/reducerConfig';
 
 export interface ModalEslintProps {
   readonly isOpen: boolean;
@@ -64,19 +62,23 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
   }, [editJson, rules, rulesCode]);
 
   const onClose = useCallback(() => {
+    setEditJson(false);
+    setFilter('');
     props.onClose(buildRulesRecord(rules));
   }, [props, rules]);
 
   return (
     <Modal header="Eslint Config" isOpen={props.isOpen} onClose={onClose}>
       <>
-        <div className={styles.topBar}>
+        <div className={styles.searchBar}>
           {!editJson && (
             <input
               ref={filterInput}
               type="text"
               key="eslint-filter"
+              value={filter}
               className={styles.search}
+              // @ts-expect-error: Invalid ts types
               onInput={(e): void => setFilter(e.target.value)}
             />
           )}

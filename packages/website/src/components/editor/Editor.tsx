@@ -92,7 +92,10 @@ class Editor extends React.Component<EditorProps> {
     if (this.sandboxInstance) {
       const { editor } = this.sandboxInstance;
       let shouldLint = false;
-      if (this.props.jsx !== prevProps.jsx) {
+      if (
+        this.props.jsx !== prevProps.jsx ||
+        prevProps.tsConfig !== this.props.tsConfig
+      ) {
         this.updateConfig();
         shouldLint = true;
       }
@@ -113,6 +116,7 @@ class Editor extends React.Component<EditorProps> {
         this.updateCode();
         shouldLint = true;
       }
+
       if (this.props.decoration !== prevProps.decoration) {
         this.updateDecorations();
       }
@@ -156,6 +160,7 @@ class Editor extends React.Component<EditorProps> {
       main,
       ts,
     );
+
     this.updateTheme();
     this.updateCode();
     this.linter = linter.loadLinter();
@@ -291,8 +296,8 @@ class Editor extends React.Component<EditorProps> {
 
   private updateConfig(): void {
     if (this.sandboxInstance) {
-      // TODO: add more options
       this.sandboxInstance.setCompilerSettings({
+        ...this.props.tsConfig,
         jsx: this.props.jsx ? 2 : 0,
       });
     }

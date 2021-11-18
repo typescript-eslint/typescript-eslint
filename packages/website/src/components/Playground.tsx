@@ -23,6 +23,7 @@ function Playground(): JSX.Element {
     code: '',
     ts: process.env.TS_VERSION,
     rules: {},
+    tsConfig: {},
   });
   const { isDarkTheme } = useThemeContext();
   const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
@@ -108,6 +109,7 @@ function Playground(): JSX.Element {
             ts={state.ts}
             jsx={state.jsx}
             code={state.code}
+            tsConfig={state.tsConfig}
             darkTheme={isDarkTheme}
             sourceType={state.sourceType}
             rules={state.rules}

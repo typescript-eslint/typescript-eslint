@@ -6,6 +6,7 @@ import ModalTypeScript from './modals/ModalTypeScript';
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import type { HashStateOptions } from './hooks/useHashState';
+import type { CompilerFlags } from './hooks/useHashState';
 
 import styles from './OptionsSelector.module.css';
 import EditIcon from './icons/EditIcon';
@@ -37,6 +38,11 @@ function OptionsSelector({
     setEslintModal(false);
   }, []);
 
+  const updateTsConfig = useCallback((config: CompilerFlags) => {
+    setState('tsConfig', config);
+    setTypeScriptModal(false);
+  }, []);
+
   return (
     <>
       {state.rules && ruleOptions.length > 0 && (
@@ -51,7 +57,8 @@ function OptionsSelector({
       <ModalTypeScript
         key="modal-typescript"
         isOpen={typeScriptModal}
-        onClose={(): void => setTypeScriptModal(false)}
+        config={state.tsConfig}
+        onClose={updateTsConfig}
       />
       <Expander label="Info">
         <label className={styles.optionLabel}>
