@@ -1,10 +1,20 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import type {
   ParserOptions,
   RulesRecord,
-  RuleEntry,
 } from '@typescript-eslint/website-eslint';
 import { debounce } from '../lib/debounce';
+
+declare global {
+  interface Window {
+    LZString: {
+      compressToBase64: (input: string) => string;
+      decompressFromBase64: (input: string) => string;
+      compressToEncodedURIComponent: (input: string) => string;
+      decompressFromEncodedURIComponent: (input: string) => string;
+    };
+  }
+}
 
 export interface HashStateOptions {
   jsx?: boolean;
@@ -15,12 +25,12 @@ export interface HashStateOptions {
   showAST?: boolean;
 }
 
-function writeQueryParam(value?: unknown): string {
-  return btoa(encodeURIComponent(JSON.stringify(value)));
+function writeQueryParam(value: string): string {
+  return window.LZString.compressToEncodedURIComponent(value);
 }
 
-function readQueryParam(value: string): unknown {
-  return JSON.parse(decodeURIComponent(atob(value)));
+function readQueryParam(value: string): string {
+  return window.LZString.decompressFromEncodedURIComponent(value);
 }
 
 const parseStateFromUrl = (): HashStateOptions | undefined => {
@@ -45,13 +55,12 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
           ? 'script'
           : 'module',
       code: searchParams.has('code')
-        ? (readQueryParam(searchParams.get('code')!) as string)
+        ? readQueryParam(searchParams.get('code')!)
         : '',
       rules: searchParams.has('rules')
-        ? (readQueryParam(searchParams.get('rules')!) as Record<
-            string,
-            RuleEntry
-          >)
+        ? (JSON.parse(
+            readQueryParam(searchParams.get('rules')!),
+          ) as RulesRecord)
         : undefined,
     };
   } catch (e) {
@@ -70,7 +79,9 @@ const writeStateToUrl = debounce(
       jsx: newState.jsx,
       sourceType: newState.sourceType,
       showAST: newState.showAST,
-      rules: newState.rules ? writeQueryParam(newState.rules) : undefined,
+      rules: newState.rules
+        ? writeQueryParam(JSON.stringify(newState.rules))
+        : undefined,
       code: newState.code ? writeQueryParam(newState.code) : undefined,
     })
       .filter(item => item[1])
@@ -91,22 +102,39 @@ const writeStateToUrl = debounce(
   100,
 );
 
+type HashAction<T extends HashStateOptions> =
+  | { key: keyof T; value: T[keyof T] }
+  | T;
+
+function hashReducer(
+  prevState: HashStateOptions,
+  action: HashAction<HashStateOptions>,
+): HashStateOptions {
+  if ('key' in action && 'value' in action) {
+    const newState = { ...prevState, [action.key]: action.value };
+    writeStateToUrl(newState, action.key === 'ts');
+    return newState;
+  } else {
+    return action;
+  }
+}
+
 function useHashState(
   initialState: HashStateOptions,
-): [HashStateOptions, (key: keyof HashStateOptions, value: unknown) => void] {
-  const guard = useRef<boolean>(false);
+): [
+  HashStateOptions,
+  <X extends keyof HashStateOptions>(
+    key: X,
+    value: HashStateOptions[X],
+  ) => void,
+] {
+  const [state, setState] = useReducer(hashReducer, initialState, prevState => {
+    return {
+      ...prevState,
+      ...parseStateFromUrl(),
+    };
+  });
 
-  if (!guard.current) {
-    const parsedState = parseStateFromUrl();
-    if (parsedState) {
-      initialState = parsedState;
-    } else if (initialState) {
-      writeStateToUrl(initialState);
-    }
-    guard.current = true;
-  }
-
-  const [state, setState] = useState<HashStateOptions>(initialState);
   const onHashChange = (): void => {
     const parsedState = parseStateFromUrl();
     if (parsedState) {
@@ -121,16 +149,7 @@ function useHashState(
     };
   }, []);
 
-  return [
-    state,
-    (key: keyof HashStateOptions, value: unknown): void => {
-      setState(prevState => {
-        const newState = { ...prevState, [key]: value };
-        writeStateToUrl(newState, key === 'ts');
-        return newState;
-      });
-    },
-  ];
+  return [state, (key, value): void => setState({ key, value })];
 }
 
 export default useHashState;
