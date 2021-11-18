@@ -74,29 +74,33 @@ const writeStateToUrl = debounce(
     if (typeof window === 'undefined') {
       return;
     }
-    const json: string = Object.entries({
-      ts: newState.ts,
-      jsx: newState.jsx,
-      sourceType: newState.sourceType,
-      showAST: newState.showAST,
-      rules: newState.rules
-        ? writeQueryParam(JSON.stringify(newState.rules))
-        : undefined,
-      code: newState.code ? writeQueryParam(newState.code) : undefined,
-    })
-      .filter(item => item[1])
-      .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
-      .join('&');
+    try {
+      const json: string = Object.entries({
+        ts: newState.ts,
+        jsx: newState.jsx,
+        sourceType: newState.sourceType,
+        showAST: newState.showAST,
+        rules: newState.rules
+          ? writeQueryParam(JSON.stringify(newState.rules))
+          : undefined,
+        code: newState.code ? writeQueryParam(newState.code) : undefined,
+      })
+        .filter(item => item[1])
+        .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
+        .join('&');
 
-    if (refresh) {
-      window.location.replace(`${window.location.pathname}#${json}`);
-      window.location.reload();
-    } else {
-      window.history.pushState(
-        undefined,
-        document.title,
-        `${window.location.pathname}#${json}`,
-      );
+      if (refresh) {
+        window.location.replace(`${window.location.pathname}#${json}`);
+        window.location.reload();
+      } else {
+        window.history.pushState(
+          undefined,
+          document.title,
+          `${window.location.pathname}#${json}`,
+        );
+      }
+    } catch (e) {
+      console.warn(e);
     }
   },
   100,
@@ -119,21 +123,19 @@ function hashReducer(
   }
 }
 
+type Args<T = HashStateOptions, X extends keyof T = keyof T> =
+  | [T?]
+  | [key: X, value: T[X]];
+
+interface HashStateFn {
+  <X extends HashStateOptions>(value?: X): void;
+  <X extends keyof HashStateOptions>(key: X, value: HashStateOptions[X]): void;
+}
+
 function useHashState(
   initialState: HashStateOptions,
-): [
-  HashStateOptions,
-  <X extends keyof HashStateOptions>(
-    key: X,
-    value: HashStateOptions[X],
-  ) => void,
-] {
-  const [state, setState] = useReducer(hashReducer, initialState, prevState => {
-    return {
-      ...prevState,
-      ...parseStateFromUrl(),
-    };
-  });
+): [HashStateOptions, HashStateFn] {
+  const [state, setState] = useReducer(hashReducer, initialState);
 
   const onHashChange = (): void => {
     const parsedState = parseStateFromUrl();
@@ -149,7 +151,18 @@ function useHashState(
     };
   }, []);
 
-  return [state, (key, value): void => setState({ key, value })];
+  return [
+    state,
+    (...args: Args): void => {
+      if (args.length === 2) {
+        setState({ key: args[0], value: args[1] });
+      } else if (args[0]) {
+        setState(args[0]);
+      } else {
+        onHashChange();
+      }
+    },
+  ];
 }
 
 export default useHashState;

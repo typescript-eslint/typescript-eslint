@@ -119,6 +119,7 @@ function Playground(): JSX.Element {
             onLoaded={(tsVersions): void => {
               setTSVersion(tsVersions);
               setIsLoading(false);
+              setState();
             }}
             onSelect={updatePosition}
           />
