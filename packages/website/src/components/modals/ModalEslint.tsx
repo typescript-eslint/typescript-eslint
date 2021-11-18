@@ -29,7 +29,8 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
   const [editJson, setEditJson] = useState<boolean>(false);
   const [rules, updateRules] = useReducer(reducerRules, []);
   const [rulesCode, setRulesCode] = useReducer(reducerConfig, '');
-  const [filterInput, setFocus] = useFocus();
+  const [filterInput, setFilterFocus] = useFocus();
+  const [jsonInput, setJsonFocus] = useFocus();
 
   useEffect(() => {
     updateRules({
@@ -40,8 +41,12 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
   }, [props.rules, props.ruleOptions]);
 
   useEffect(() => {
-    if (!editJson && props.isOpen) {
-      setFocus();
+    if (props.isOpen) {
+      if (!editJson) {
+        setFilterFocus();
+      } else {
+        setJsonFocus();
+      }
     }
   }, [editJson, props.isOpen]);
 
@@ -53,7 +58,6 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
         ruleOptions: props.ruleOptions,
       });
     } else {
-      setFocus();
       setRulesCode(rules);
     }
     setEditJson(!editJson);
@@ -85,6 +89,7 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
         </div>
         {editJson && (
           <textarea
+            ref={jsonInput}
             name="eslint-edit-json"
             className={styles.textarea}
             value={rulesCode}
