@@ -1,9 +1,7 @@
 import { useEffect, useReducer } from 'react';
-import type {
-  ParserOptions,
-  RulesRecord,
-} from '@typescript-eslint/website-eslint';
 import { debounce } from '../lib/debounce';
+
+import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
 
 declare global {
   interface Window {
@@ -16,39 +14,6 @@ declare global {
   }
 }
 
-export interface CompilerFlags {
-  isolatedModules?: boolean;
-  allowSyntheticDefaultImports?: boolean;
-  esModuleInterop?: boolean;
-  strict?: boolean;
-  noImplicitAny?: boolean;
-  strictNullChecks?: boolean;
-  strictFunctionTypes?: boolean;
-  strictBindCallApply?: boolean;
-  strictPropertyInitialization?: boolean;
-  noImplicitThis?: boolean;
-  alwaysStrict?: boolean;
-  noUnusedLocals?: boolean;
-  noUnusedParameters?: boolean;
-  noImplicitReturns?: boolean;
-  noFallthroughCasesInSwitch?: boolean;
-  allowUnusedLabels?: boolean;
-  allowUnreachableCode?: boolean;
-  experimentalDecorators?: boolean;
-  emitDecoratorMetadata?: boolean;
-  noLib?: boolean;
-}
-
-export interface HashStateOptions {
-  jsx?: boolean;
-  sourceType?: ParserOptions['sourceType'];
-  rules?: RulesRecord;
-  tsConfig?: CompilerFlags;
-  code: string;
-  ts: string;
-  showAST?: boolean;
-}
-
 function writeQueryParam(value: string): string {
   return window.LZString.compressToEncodedURIComponent(value);
 }
@@ -57,7 +22,7 @@ function readQueryParam(value: string): string {
   return window.LZString.decompressFromEncodedURIComponent(value);
 }
 
-const parseStateFromUrl = (): HashStateOptions | undefined => {
+const parseStateFromUrl = (): ConfigModel | undefined => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -99,7 +64,7 @@ const parseStateFromUrl = (): HashStateOptions | undefined => {
 };
 
 const writeStateToUrl = debounce(
-  (newState: HashStateOptions, refresh = false): void => {
+  (newState: ConfigModel, refresh = false): void => {
     if (typeof window === 'undefined') {
       return;
     }
@@ -138,14 +103,14 @@ const writeStateToUrl = debounce(
   100,
 );
 
-type HashAction<T extends HashStateOptions> =
+type HashAction<T extends ConfigModel> =
   | { key: keyof T; value: T[keyof T] }
   | T;
 
 function hashReducer(
-  prevState: HashStateOptions,
-  action: HashAction<HashStateOptions>,
-): HashStateOptions {
+  prevState: ConfigModel,
+  action: HashAction<ConfigModel>,
+): ConfigModel {
   if ('key' in action && 'value' in action) {
     const newState = { ...prevState, [action.key]: action.value };
     writeStateToUrl(newState, action.key === 'ts');
@@ -155,18 +120,16 @@ function hashReducer(
   }
 }
 
-type Args<T = HashStateOptions, X extends keyof T = keyof T> =
+type Args<T = ConfigModel, X extends keyof T = keyof T> =
   | [T?]
   | [key: X, value: T[X]];
 
 interface HashStateFn {
-  <X extends HashStateOptions>(value?: X): void;
-  <X extends keyof HashStateOptions>(key: X, value: HashStateOptions[X]): void;
+  <X extends ConfigModel>(value?: X): void;
+  <X extends keyof ConfigModel>(key: X, value: ConfigModel[X]): void;
 }
 
-function useHashState(
-  initialState: HashStateOptions,
-): [HashStateOptions, HashStateFn] {
+function useHashState(initialState: ConfigModel): [ConfigModel, HashStateFn] {
   const [state, setState] = useReducer(hashReducer, initialState);
 
   const onHashChange = (): void => {

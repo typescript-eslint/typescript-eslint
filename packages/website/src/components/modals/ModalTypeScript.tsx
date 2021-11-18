@@ -3,35 +3,17 @@ import Modal from './Modal';
 import clsx from 'clsx';
 import styles from './search.module.css';
 import Checkbox from '../inputs/Checkbox';
+import Text from '../inputs/Text';
 import useFocus from '../hooks/useFocus';
 import tsConfigOptions, { TsConfigOptionsType } from './tsConfigOptions';
-import type { CompilerFlags } from '@site/src/components/hooks/useHashState';
+import reducerTsConfig from '../hooks/reducerTsConfig';
+
+import type { CompilerFlags } from '../types';
 
 interface ModalTypeScriptProps {
   isOpen: boolean;
   onClose: (config: CompilerFlags) => void;
   config?: CompilerFlags;
-}
-
-function reducerRules(
-  state: CompilerFlags,
-  action:
-    | { type: 'init'; config?: CompilerFlags }
-    | { type: 'toggle'; checked: boolean; name: string },
-): CompilerFlags {
-  switch (action.type) {
-    case 'toggle':
-      return {
-        ...state,
-        [action.name]: action.checked,
-      };
-    case 'init':
-      return {
-        ...action.config,
-      };
-  }
-  // @ts-expect-error: Safeguard
-  throw new Error();
 }
 
 function filterConfig(
@@ -47,7 +29,7 @@ function filterConfig(
 }
 
 function ModalTypeScript(props: ModalTypeScriptProps): JSX.Element {
-  const [config, updateConfig] = useReducer(reducerRules, {});
+  const [config, updateConfig] = useReducer(reducerTsConfig, {});
   const [filter, setFilter] = useState<string>('');
   const [filterInput, setFilterFocus] = useFocus();
 
@@ -73,14 +55,13 @@ function ModalTypeScript(props: ModalTypeScriptProps): JSX.Element {
     <Modal header="TypeScript Config" isOpen={props.isOpen} onClose={onClose}>
       <>
         <div className={styles.searchBar}>
-          <input
+          <Text
             ref={filterInput}
             type="text"
-            key="eslint-filter"
+            name="config-filter"
             value={filter}
             className={styles.search}
-            // @ts-expect-error: Invalid ts types
-            onInput={(e): void => setFilter(e.target.value)}
+            onChange={setFilter}
           />
         </div>
         <div className={clsx('thin-scrollbar', styles.searchResultContainer)}>

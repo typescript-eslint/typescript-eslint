@@ -2,10 +2,10 @@ import React, { createRef, useEffect } from 'react';
 
 export interface CheckboxProps {
   readonly name: string;
-  readonly value: string;
+  readonly value?: string;
   readonly onChange: (checked: boolean, value: string) => void;
   readonly indeterminate?: boolean;
-  readonly checked: boolean;
+  readonly checked: boolean | undefined;
   readonly className?: string;
 }
 
@@ -29,7 +29,9 @@ function Checkbox(props: CheckboxProps): JSX.Element {
       name={props.name}
       checked={props.checked && !props.indeterminate}
       type="checkbox"
-      onChange={(e): void => props.onChange(e.target.checked, props.value)}
+      onChange={(e): void =>
+        props.onChange(e.target.checked, props.value ?? '')
+      }
     />
   );
 }

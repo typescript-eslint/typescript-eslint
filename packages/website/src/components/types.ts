@@ -1,0 +1,41 @@
+import type {
+  ParserOptions,
+  RulesRecord,
+} from '@typescript-eslint/website-eslint';
+
+export interface CompilerFlags {
+  isolatedModules?: boolean;
+  allowSyntheticDefaultImports?: boolean;
+  esModuleInterop?: boolean;
+  strict?: boolean;
+  noImplicitAny?: boolean;
+  strictNullChecks?: boolean;
+  strictFunctionTypes?: boolean;
+  strictBindCallApply?: boolean;
+  strictPropertyInitialization?: boolean;
+  noImplicitThis?: boolean;
+  alwaysStrict?: boolean;
+  noUnusedLocals?: boolean;
+  noUnusedParameters?: boolean;
+  noImplicitReturns?: boolean;
+  noFallthroughCasesInSwitch?: boolean;
+  allowUnusedLabels?: boolean;
+  allowUnreachableCode?: boolean;
+  experimentalDecorators?: boolean;
+  emitDecoratorMetadata?: boolean;
+  noLib?: boolean;
+}
+
+export type SourceType = ParserOptions['sourceType'];
+
+export type { RulesRecord } from '@typescript-eslint/website-eslint';
+
+export interface ConfigModel {
+  jsx?: boolean;
+  sourceType?: SourceType;
+  rules?: RulesRecord;
+  tsConfig?: CompilerFlags;
+  code: string;
+  ts: string;
+  showAST?: boolean;
+}

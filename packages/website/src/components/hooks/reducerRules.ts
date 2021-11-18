@@ -1,5 +1,4 @@
-import type { RulesRecord } from '@typescript-eslint/website-eslint';
-import { RuleEntry } from '@typescript-eslint/website-eslint';
+import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
 export interface RuleModel {
   name: string;

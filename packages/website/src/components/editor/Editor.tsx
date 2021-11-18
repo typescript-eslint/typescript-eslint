@@ -1,23 +1,23 @@
 import React from 'react';
-import type {
-  createTypeScriptSandbox,
-  SandboxConfig,
-} from '../../vendor/sandbox';
-import type Monaco from 'monaco-editor';
-
-import type {
-  WebLinter,
-  LintMessage,
-  TSESTree,
-} from '@typescript-eslint/website-eslint';
 
 import { sandboxSingleton } from '../lib/load-sandbox';
 import { createProvideCodeActions } from '../lib/action';
 import { createURI, messageToMarker } from '../lib/utils';
 import { debounce } from '../lib/debounce';
-import type { HashStateOptions } from '@site/src/components/hooks/useHashState';
 
-interface EditorProps extends HashStateOptions {
+import type {
+  createTypeScriptSandbox,
+  SandboxConfig,
+} from '../../vendor/sandbox';
+import type Monaco from 'monaco-editor';
+import type {
+  WebLinter,
+  LintMessage,
+  TSESTree,
+} from '@typescript-eslint/website-eslint';
+import type { ConfigModel } from '../types';
+
+interface EditorProps extends ConfigModel {
   readonly darkTheme: boolean;
   readonly decoration?: TSESTree.Node | null;
   readonly onChange?: (

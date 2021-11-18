@@ -7,6 +7,7 @@ import reducerRules, { RuleModel } from '../hooks/reducerRules';
 
 import Modal from './Modal';
 import Checkbox from '../inputs/Checkbox';
+import Text from '../inputs/Text';
 
 import styles from './search.module.css';
 import reducerConfig, { buildRulesRecord } from '../hooks/reducerConfig';
@@ -72,14 +73,13 @@ function ModalEslint(props: ModalEslintProps): JSX.Element {
       <>
         <div className={styles.searchBar}>
           {!editJson && (
-            <input
+            <Text
               ref={filterInput}
               type="text"
-              key="eslint-filter"
+              name="config-filter"
               value={filter}
               className={styles.search}
-              // @ts-expect-error: Invalid ts types
-              onInput={(e): void => setFilter(e.target.value)}
+              onChange={setFilter}
             />
           )}
           <button

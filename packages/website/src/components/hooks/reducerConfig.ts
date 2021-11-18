@@ -1,5 +1,5 @@
 import type { RuleModel } from './reducerRules';
-import type { RulesRecord } from '@typescript-eslint/website-eslint';
+import type { RulesRecord } from '../types';
 
 export function buildRulesRecord(
   rules: RuleModel[],

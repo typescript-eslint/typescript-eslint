@@ -1,19 +1,22 @@
 import React, { useCallback, useState } from 'react';
-import type { RulesRecord } from '@typescript-eslint/website-eslint';
 
 import ModalEslint from './modals/ModalEslint';
 import ModalTypeScript from './modals/ModalTypeScript';
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
-import type { HashStateOptions } from './hooks/useHashState';
-import type { CompilerFlags } from './hooks/useHashState';
+import Checkbox from './inputs/Checkbox';
 
 import styles from './OptionsSelector.module.css';
 import EditIcon from './icons/EditIcon';
 
-type SourceType = HashStateOptions['sourceType'];
+import type {
+  CompilerFlags,
+  ConfigModel,
+  SourceType,
+  RulesRecord,
+} from './types';
 
-interface OptionsSelectorParams<T = HashStateOptions> {
+interface OptionsSelectorParams<T = ConfigModel> {
   readonly ruleOptions: string[];
   readonly state: T;
   readonly setState: <X extends keyof T>(key: X, value: T[X]) => void;
@@ -85,24 +88,20 @@ function OptionsSelector({
       <Expander label="Options">
         <label className={styles.optionLabel}>
           Enable jsx
-          <input
-            checked={state.jsx}
-            onChange={(e): void => setState('jsx', e.target.checked ?? false)}
+          <Checkbox
             name="jsx"
+            checked={state.jsx}
+            onChange={(e): void => setState('jsx', e)}
             className={styles.optionCheckbox}
-            type="checkbox"
           />
         </label>
         <label className={styles.optionLabel}>
           Show AST
-          <input
-            checked={state.showAST}
-            onChange={(e): void =>
-              setState('showAST', e.target.checked ?? false)
-            }
+          <Checkbox
             name="ast"
+            checked={state.showAST}
+            onChange={(e): void => setState('showAST', e)}
             className={styles.optionCheckbox}
-            type="checkbox"
           />
         </label>
         <label className={styles.optionLabel}>

@@ -1,4 +1,4 @@
-import type { CompilerFlags } from '../hooks/useHashState';
+import type { CompilerFlags } from '../types';
 
 export interface TsConfigOptionsField {
   key: keyof CompilerFlags;
