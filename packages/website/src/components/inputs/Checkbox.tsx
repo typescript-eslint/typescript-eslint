@@ -1,12 +1,12 @@
 import React, { createRef, useEffect } from 'react';
 
 export interface CheckboxProps {
-  name: string;
-  value: string;
-  onChange: (checked: boolean, value: string) => void;
-  indeterminate?: boolean;
-  checked: boolean;
-  className?: string;
+  readonly name: string;
+  readonly value: string;
+  readonly onChange: (checked: boolean, value: string) => void;
+  readonly indeterminate?: boolean;
+  readonly checked: boolean;
+  readonly className?: string;
 }
 
 function Checkbox(props: CheckboxProps): JSX.Element {

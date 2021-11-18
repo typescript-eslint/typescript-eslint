@@ -4,9 +4,9 @@ import styles from './Expander.module.css';
 import ArrowIcon from '../icons/ArrowIcon';
 
 interface MyProps {
-  children?: React.ReactNode;
-  className?: string;
-  label: string;
+  readonly children?: React.ReactNode;
+  readonly className?: string;
+  readonly label: string;
 }
 
 export default function Expander(props: MyProps): JSX.Element {

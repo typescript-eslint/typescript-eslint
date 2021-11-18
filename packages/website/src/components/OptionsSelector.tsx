@@ -13,10 +13,10 @@ import EditIcon from './icons/EditIcon';
 type SourceType = HashStateOptions['sourceType'];
 
 interface OptionsSelectorParams<T = HashStateOptions> {
-  ruleOptions: string[];
-  state: T;
-  setState: <X extends keyof T>(key: X, value: T[X]) => void;
-  tsVersions: readonly string[];
+  readonly ruleOptions: string[];
+  readonly state: T;
+  readonly setState: <X extends keyof T>(key: X, value: T[X]) => void;
+  readonly tsVersions: readonly string[];
 }
 
 function OptionsSelector({

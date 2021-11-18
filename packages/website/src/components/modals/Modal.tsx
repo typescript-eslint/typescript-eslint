@@ -4,10 +4,10 @@ import styles from './Modal.module.css';
 import CloseIcon from '../icons/CloseIcon';
 
 interface ModalProps {
-  header: string;
-  children: JSX.Element;
-  isOpen: boolean;
-  onClose: () => void;
+  readonly header: string;
+  readonly children: JSX.Element;
+  readonly isOpen: boolean;
+  readonly onClose: () => void;
 }
 
 function Modal(props: ModalProps): JSX.Element {

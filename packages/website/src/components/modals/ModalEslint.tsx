@@ -10,10 +10,10 @@ import Checkbox from '../inputs/Checkbox';
 import styles from './ModalEslint.module.css';
 
 interface ModalEslintProps {
-  isOpen: boolean;
-  onClose: (rules: RulesRecord) => void;
-  ruleOptions: string[];
-  rules: RulesRecord;
+  readonly isOpen: boolean;
+  readonly onClose: (rules: RulesRecord) => void;
+  readonly ruleOptions: string[];
+  readonly rules: RulesRecord;
 }
 
 interface RuleModel {

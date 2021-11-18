@@ -18,19 +18,19 @@ import { debounce } from '../lib/debounce';
 import type { HashStateOptions } from '@site/src/components/hooks/useHashState';
 
 interface EditorProps extends HashStateOptions {
-  darkTheme: boolean;
-  decoration?: TSESTree.Node | null;
-  onChange?: (
+  readonly darkTheme: boolean;
+  readonly decoration?: TSESTree.Node | null;
+  readonly onChange?: (
     value: string,
     event: Monaco.editor.IModelContentChangedEvent,
   ) => void;
-  onASTChange?: (
+  readonly onASTChange?: (
     value: string | TSESTree.Program,
     position: Monaco.Position | null,
   ) => void;
-  onLoadRule?: (value: string[]) => void;
-  onSelect?: (position: Monaco.Position) => void;
-  onLoaded?: (tsVersions: readonly string[]) => void;
+  readonly onLoadRule?: (value: string[]) => void;
+  readonly onSelect?: (position: Monaco.Position) => void;
+  readonly onLoaded?: (tsVersions: readonly string[]) => void;
 }
 
 class Editor extends React.Component<EditorProps> {

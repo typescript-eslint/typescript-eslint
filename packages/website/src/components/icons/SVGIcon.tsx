@@ -1,13 +1,13 @@
 import React, { MouseEvent } from 'react';
 
 export interface IconBaseProps {
-  className?: string;
-  pathClass?: string;
-  width?: number;
-  height?: number;
-  size?: number;
-  fill?: string;
-  onClick?(e: MouseEvent<SVGSVGElement>): void;
+  readonly className?: string;
+  readonly pathClass?: string;
+  readonly width?: number;
+  readonly height?: number;
+  readonly size?: number;
+  readonly fill?: string;
+  readonly onClick?: (e: MouseEvent<SVGSVGElement>) => void;
 }
 
 export interface IconSVGProps extends IconBaseProps {
