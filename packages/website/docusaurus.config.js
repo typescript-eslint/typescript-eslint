@@ -30,6 +30,7 @@ const config = {
         customCss: require.resolve('./src/css/custom.css'),
       },
     ],
+    '@docusaurus/theme-search-algolia',
     ['@docusaurus/plugin-content-pages', { remarkPlugins }],
     [
       '@docusaurus/plugin-content-docs',
