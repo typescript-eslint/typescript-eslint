@@ -7,7 +7,63 @@ functions are handled/awaited.
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule with `checksConditionals: true`:
+This rule accepts a single option which is an object with `checksConditionals`
+and `checksVoidReturn` properties indicating which types of misuse to flag.
+Both are enabled by default
+
+## Options
+
+```ts
+type Options = [
+  {
+    checksConditionals?: boolean;
+    checksVoidReturn?: boolean;
+  },
+];
+
+const defaultOptions: Options = [
+  {
+    checksConditionals: true,
+    checksVoidReturn: true,
+  },
+];
+```
+
+If you don't want functions that return promises where a void return is
+expected to be checked, your configuration will look like this:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": false
+    }
+  ]
+}
+```
+
+Likewise, if you don't want to check conditionals, you can configure the rule
+like this:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksConditionals": false
+    }
+  ]
+}
+```
+
+### `checksConditionals: true`
+
+Examples of code for this rule with `checksConditionals: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const promise = Promise.resolve('value');
@@ -23,7 +79,7 @@ while (promise) {
 }
 ```
 
-Examples of **correct** code with `checksConditionals: true`:
+#### ✅ Correct
 
 ```ts
 const promise = Promise.resolve('value');
@@ -40,9 +96,15 @@ while (await promise) {
 }
 ```
 
----
+<!--/tabs-->
 
-Examples of **incorrect** code for this rule with `checksVoidReturn: true`:
+### `checksVoidReturn: true`
+
+Examples of code for this rule with `checksVoidReturn: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 [1, 2, 3].forEach(async value => {
@@ -62,7 +124,7 @@ eventEmitter.on('some-event', async () => {
 });
 ```
 
-Examples of **correct** code with `checksVoidReturn: true`:
+#### ✅ Correct
 
 ```ts
 // for-of puts `await` in outer context
@@ -104,39 +166,7 @@ eventEmitter.on('some-event', () => {
 });
 ```
 
-## Options
-
-This rule accepts a single option which is an object with `checksConditionals`
-and `checksVoidReturn` properties indicating which types of misuse to flag.
-Both are enabled by default
-
-If you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksVoidReturn": false
-    }
-  ]
-}
-```
-
-Likewise, if you don't want to check conditionals, you can configure the rule
-like this:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksConditionals": false
-    }
-  ]
-}
-```
+<!--/tabs-->
 
 ## When Not To Use It
 

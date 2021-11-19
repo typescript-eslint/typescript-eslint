@@ -5,7 +5,9 @@
 This rule extends the base [`eslint/default-param-last`](https://eslint.org/docs/rules/default-param-last) rule.
 It adds support for optional parameters.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */
@@ -21,7 +23,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */

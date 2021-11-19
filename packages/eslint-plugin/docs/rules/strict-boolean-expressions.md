@@ -15,7 +15,11 @@ The following nodes are considered boolean expressions and their type is checked
 
 ## Examples
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // nullable numbers are considered unsafe by default
@@ -47,7 +51,7 @@ while (obj) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```tsx
 // Using logical operator short-circuiting is allowed

@@ -25,6 +25,7 @@ const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
     | TSESTree.FunctionDeclaration
     | TSESTree.FunctionExpression
     | TSESTree.ArrowFunctionExpression,
+  sourceCode?: TSESLint.SourceCode,
 ) => string;
 
 /**
@@ -38,7 +39,8 @@ const getPropertyName = eslintUtils.getPropertyName as (
   node:
     | TSESTree.MemberExpression
     | TSESTree.Property
-    | TSESTree.MethodDefinition,
+    | TSESTree.MethodDefinition
+    | TSESTree.PropertyDefinition,
   initialScope?: TSESLint.Scope.Scope,
 ) => string | null;
 

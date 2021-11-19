@@ -19,9 +19,6 @@ const additionalKeys: AdditionalKeys = {
   // Stage 3 Import Assertions
   ImportAttribute: ['key', 'value'],
 
-  // ES2020
-  ImportExpression: ['source'],
-
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: ['typeParameters', 'params', 'returnType', 'body'],
@@ -45,9 +42,13 @@ const additionalKeys: AdditionalKeys = {
     'implements',
     'body',
   ],
+  ExportAllDeclaration: ['exported', 'source', 'assertions'],
+  ExportNamedDeclaration: ['declaration', 'specifiers', 'source', 'assertions'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
+  ImportDeclaration: ['specifiers', 'source', 'assertions'],
+  ImportExpression: ['source', 'attributes'],
   MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],

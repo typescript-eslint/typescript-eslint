@@ -23,7 +23,11 @@ function compare(a, b) {
 
 In other words, the types are sorted alphabetically, case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 type T1 = B | A;
@@ -53,7 +57,7 @@ type T4 =
   | any;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 type T1 = A | B;

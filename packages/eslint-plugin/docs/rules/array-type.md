@@ -33,14 +33,16 @@ The default config will enforce that all mutable and readonly arrays use the `'a
 
 Always use `T[]` or `readonly T[]` for all array types.
 
-Incorrect code for `"array"`:
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
 ```
 
-Correct code for `"array"`:
+#### ✅ Correct
 
 ```ts
 const x: string[] = ['a', 'b'];
@@ -51,14 +53,16 @@ const y: readonly string[] = ['a', 'b'];
 
 Always use `Array<T>` or `ReadonlyArray<T>` for all array types.
 
-Incorrect code for `"generic"`:
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const x: string[] = ['a', 'b'];
 const y: readonly string[] = ['a', 'b'];
 ```
 
-Correct code for `"generic"`:
+#### ✅ Correct
 
 ```ts
 const x: Array<string> = ['a', 'b'];
@@ -70,7 +74,9 @@ const y: ReadonlyArray<string> = ['a', 'b'];
 Use `T[]` or `readonly T[]` for simple types (i.e. types which are just primitive names or type references).
 Use `Array<T>` or `ReadonlyArray<T>` for all other types (union types, intersection types, object types, function types, etc).
 
-Incorrect code for `"array-simple"`:
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const a: (string | number)[] = ['a', 'b'];
@@ -81,7 +87,7 @@ const e: Array<string> = ['a', 'b'];
 const f: ReadonlyArray<string> = ['a', 'b'];
 ```
 
-Correct code for `"array-simple"`:
+#### ✅ Correct
 
 ```ts
 const a: Array<string | number> = ['a', 'b'];
