@@ -25,6 +25,7 @@ export interface ConfigEditorProps {
   readonly options: ConfigOptionsType[];
   readonly values: ConfigEditorValues;
   readonly isOpen: boolean;
+  readonly header: string;
   readonly jsonField: string;
   readonly onClose: (config: ConfigEditorValues) => void;
 }
@@ -157,7 +158,7 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
   }, [editJson, config, jsonCode, props.jsonField]);
 
   return (
-    <Modal header="Eslint Config" isOpen={props.isOpen} onClose={onClose}>
+    <Modal header={props.header} isOpen={props.isOpen} onClose={onClose}>
       <div className={styles.searchBar}>
         {!editJson && (
           <Text
@@ -173,7 +174,7 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
           className={clsx('button button--info button--sm', styles.editJson)}
           onClick={changeEditType}
         >
-          {!editJson ? 'Edit JSON' : 'Edit Rules'}
+          {!editJson ? 'Edit JSON' : 'Edit Config'}
         </button>
       </div>
       {editJson && (

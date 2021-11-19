@@ -26,6 +26,7 @@ function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
 
   return (
     <ConfigEditor
+      header="TypeScript Config"
       options={tsConfigOptions}
       values={props.config ?? {}}
       jsonField="compilerOptions"

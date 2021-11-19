@@ -72,6 +72,7 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
 
   return (
     <ConfigEditor
+      header="Eslint Config"
       options={options}
       values={props.rules ?? {}}
       jsonField="rules"
