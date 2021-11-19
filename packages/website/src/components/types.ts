@@ -30,6 +30,11 @@ export type SourceType = ParserOptions['sourceType'];
 
 export type { RulesRecord } from '@typescript-eslint/website-eslint';
 
+export interface RuleDetails {
+  name: string;
+  description?: string;
+}
+
 export interface ConfigModel {
   jsx?: boolean;
   sourceType?: SourceType;

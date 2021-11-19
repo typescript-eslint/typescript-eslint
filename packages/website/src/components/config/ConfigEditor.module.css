@@ -55,6 +55,10 @@
   height: 50vh;
 }
 
+.searchResultName {
+  font-size: 1.2em;
+}
+
 .editJson {
   height: 2rem;
 }

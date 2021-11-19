@@ -11,6 +11,7 @@ import ASTViewer from './ast/ASTViewer';
 import clsx from 'clsx';
 import Editor from './editor/Editor';
 import { findNode } from './lib/selection';
+import type { RuleDetails } from './types';
 
 import type {
   ParseForESLintResult,
@@ -29,7 +30,7 @@ function Playground(): JSX.Element {
   });
   const { isDarkTheme } = useThemeContext();
   const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
-  const [ruleNames, setRuleNames] = useState<string[]>([]);
+  const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);

@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
+import { RuleDetails } from '../types';
 
 export interface ModalEslintProps {
   readonly isOpen: boolean;
   readonly onClose: (rules: RulesRecord) => void;
-  readonly ruleOptions: string[];
+  readonly ruleOptions: RuleDetails[];
   readonly rules: RulesRecord;
 }
 
@@ -31,10 +32,23 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
     updateOptions([
       {
         heading: 'Rules',
-        fields: props.ruleOptions.map(item => ({
-          key: item,
-          defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-        })),
+        fields: props.ruleOptions
+          .filter(item => item.name.startsWith('@typescript'))
+          .map(item => ({
+            key: item.name,
+            label: item.description,
+            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
+          })),
+      },
+      {
+        heading: 'Core rules',
+        fields: props.ruleOptions
+          .filter(item => !item.name.startsWith('@typescript'))
+          .map(item => ({
+            key: item.name,
+            label: item.description,
+            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
+          })),
       },
     ]);
   }, [props.ruleOptions]);

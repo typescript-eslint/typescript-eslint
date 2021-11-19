@@ -25,11 +25,15 @@ export function loadLinter() {
     linter.defineRule(`@typescript-eslint/${name}`, rules[name]);
   }
 
-  const ruleNames = Object.keys(rules).map(
-    name => `@typescript-eslint/${name}`,
-  );
+  const ruleNames = Array.from(linter.getRules()).map(value => {
+    return {
+      name: value[0],
+      description: value[1]?.meta?.docs?.description,
+    };
+  });
+
   return {
-    ruleNames,
+    ruleNames: ruleNames,
 
     getAst() {
       return storedAST;

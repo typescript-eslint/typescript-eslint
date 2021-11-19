@@ -6,6 +6,8 @@ import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
 
+import type { RuleDetails } from './types';
+
 import styles from './OptionsSelector.module.css';
 import EditIcon from './icons/EditIcon';
 
@@ -17,7 +19,7 @@ import type {
 } from './types';
 
 interface OptionsSelectorParams<T = ConfigModel> {
-  readonly ruleOptions: string[];
+  readonly ruleOptions: RuleDetails[];
   readonly state: T;
   readonly setState: <X extends keyof T>(key: X, value: T[X]) => void;
   readonly tsVersions: readonly string[];

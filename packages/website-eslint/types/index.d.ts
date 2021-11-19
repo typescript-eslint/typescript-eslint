@@ -9,7 +9,7 @@ export type ParseForESLintResult = TSESLint.Linter.ESLintParseResult;
 export type ESLintAST = ParseForESLintResult['ast'];
 
 export interface WebLinter {
-  ruleNames: string[];
+  ruleNames: { name: string; description?: string }[];
 
   getAst(): ESLintAST;
 

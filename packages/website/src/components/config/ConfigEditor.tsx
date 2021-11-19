@@ -196,7 +196,9 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
                 {group.fields.map(item => (
                   <label className={styles.searchResult} key={item.key}>
                     <span>
-                      <span>{item.key}</span>
+                      <span className={styles.searchResultName}>
+                        {item.key}
+                      </span>
                       {item.label && <br />}
                       {item.label && <span>{item.label}</span>}
                     </span>

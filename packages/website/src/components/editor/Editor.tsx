@@ -15,7 +15,7 @@ import type {
   LintMessage,
   TSESTree,
 } from '@typescript-eslint/website-eslint';
-import type { ConfigModel } from '../types';
+import type { ConfigModel, RuleDetails } from '../types';
 
 interface EditorProps extends ConfigModel {
   readonly darkTheme: boolean;
@@ -28,7 +28,7 @@ interface EditorProps extends ConfigModel {
     value: string | TSESTree.Program,
     position: Monaco.Position | null,
   ) => void;
-  readonly onLoadRule?: (value: string[]) => void;
+  readonly onLoadRule?: (value: RuleDetails[]) => void;
   readonly onSelect?: (position: Monaco.Position) => void;
   readonly onLoaded?: (tsVersions: readonly string[]) => void;
 }
