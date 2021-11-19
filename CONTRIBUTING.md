@@ -24,7 +24,7 @@ Please refrain from leaving useless comments on issues. Comments like "+1", or "
 
 Please refrain from commenting on old, closed issues and PRs. Your issue is rarely related enough to a closed issue to warrant "necroing" a dead thread - raising a new issue means you can fill in the template, and make it easier for us to help you. Often times if you comment on a closed issue, we will just ask you to open a new issue, so please save everyone's time, and **_help us to help you_**.
 
-Please refrain from commenting on `master` commits. Commit comments are not searchable, meaning that nobody else can discover your comments. Raise an issue and reference the commit instead so that everyone can see your comment, and you can fill out the template.
+Please refrain from commenting on `main` commits. Commit comments are not searchable, meaning that nobody else can discover your comments. Raise an issue and reference the commit instead so that everyone can see your comment, and you can fill out the template.
 
 ---
 
@@ -88,7 +88,7 @@ Within the body of your PR, make sure you reference the issue that you have work
 
 Make sure you use the "Fixes #xxx" format to reference issues, so that GitHub automatically closes the issues when we merge the PR. Also note that if you are fixing multiple issues at once, you can only reference one issue per line, and must put one "Fixes #xxx" per issue number.
 
-In terms of your commit history - we do not care about the number, or style of commits in your history, because we squash merge every PR into master. Feel free to commit in whatever style you feel comfortable with.
+In terms of your commit history - we do not care about the number, or style of commits in your history, because we squash merge every PR into `main`. Feel free to commit in whatever style you feel comfortable with.
 
 **_One thing we ask is to please avoid force pushing after you have raised a PR_**. GitHub is not able to track changes across force pushes, which makes it impossible to efficiently do incremental reviews. This slows us down, and means it will take longer for us to get your PR merged.
 
@@ -98,4 +98,4 @@ With your PR raised, and the CI showing green, your PR will [sit in the queue to
 
 Please note that as this project is maintained by volunteers, it may take a while for us to get around to your PR (sometimes a month or more). Be patient, we'll get to it. Please refrain from commenting asking for a review, or similar bump comments. **_These just create spam for maintainers, and does not push your PR higher in the queue_**.
 
-Once we have reviewed your PR, we will provide any feedback that needs addressing. If you feel a requested change is wrong, don't be afraid to discuss with us in the comments. Once the feedback is addressed, and the PR is reviewed, we'll ensure the branch is up to date with master, and merge it for you.
+Once we have reviewed your PR, we will provide any feedback that needs addressing. If you feel a requested change is wrong, don't be afraid to discuss with us in the comments. Once the feedback is addressed, and the PR is reviewed, we'll ensure the branch is up to date with `main`, and merge it for you.

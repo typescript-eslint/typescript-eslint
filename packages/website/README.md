@@ -26,4 +26,4 @@ This command generates static content into the `build` directory and can be serv
 
 ## Deployment
 
-The website is deployed automatically using Netlify. Each pull request into the master branch will have a unique preview deployment generated for it.
+The website is deployed automatically using Netlify. Each pull request into the `main` branch will have a unique preview deployment generated for it.

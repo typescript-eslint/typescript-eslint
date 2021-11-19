@@ -21,7 +21,7 @@ See [`eslint/no-duplicate-imports` options](https://eslint.org/docs/rules/no-dup
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-duplicate-imports.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-duplicate-imports.md)
 
 </sup>
 

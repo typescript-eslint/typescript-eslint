@@ -82,7 +82,7 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/dot-notation.md)
 
 </sup>
 

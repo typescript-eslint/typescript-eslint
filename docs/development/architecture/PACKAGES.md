@@ -69,10 +69,10 @@ Any custom rules you write generally will be as well.
 **TSLint is deprecated.** It is in your best interest to migrate off it entirely. See [Linting > TSLint](../../linting/TSLINT.md).
 :::
 
-[`@typescript-eslint/eslint-plugin-tslint`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin-tslint
-[`@typescript-eslint/eslint-plugin`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
-[`@typescript-eslint/experimental-utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/experimental-utils
-[`@typescript-eslint/parser`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser
-[`@typescript-eslint/scope-manager`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/scope-manager
-[`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree
-[`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree
+[`@typescript-eslint/eslint-plugin-tslint`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint
+[`@typescript-eslint/eslint-plugin`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin
+[`@typescript-eslint/experimental-utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/experimental-utils
+[`@typescript-eslint/parser`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser
+[`@typescript-eslint/scope-manager`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/scope-manager
+[`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree
+[`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree

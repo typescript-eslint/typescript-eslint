@@ -107,7 +107,7 @@ See [`eslint/no-use-before-define` options](https://eslint.org/docs/rules/no-use
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-use-before-define.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-use-before-define.md)
 
 </sup>
 

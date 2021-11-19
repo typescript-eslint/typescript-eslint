@@ -21,7 +21,7 @@ See [`eslint/func-call-spacing` options](https://eslint.org/docs/rules/func-call
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/func-call-spacing.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/func-call-spacing.md)
 
 </sup>
 
