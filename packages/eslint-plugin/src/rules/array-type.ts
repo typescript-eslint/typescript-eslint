@@ -98,13 +98,13 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       errorStringGeneric:
-        "Array type using '{{type}}[]' is forbidden. Use 'Array<{{type}}>' instead.",
+        "Array type using '{{type}}[]' is forbidden. Use '{{array}}<{{type}}>' instead.",
       errorStringGenericSimple:
-        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
+        "Array type using '{{type}}[]' is forbidden for non-simple types. Use '{{array}}<{{type}}>' instead.",
       errorStringArray:
-        "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
+        "Array type using '{{array}}<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+        "Array type using '{{array}}<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
     },
     schema: [
       {
@@ -159,16 +159,17 @@ export default util.createRule<Options, MessageIds>({
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent! : node;
 
+        const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+
         context.report({
           node: errorNode,
           messageId,
           data: {
+            array: arrayType,
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const typeNode = node.elementType;
-            const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
-
             return [
               fixer.replaceTextRange(
                 [errorNode.range[0], typeNode.range[0]],
@@ -217,6 +218,7 @@ export default util.createRule<Options, MessageIds>({
             messageId,
             data: {
               type: 'any',
+              array: node.typeName.name,
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -251,6 +253,7 @@ export default util.createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(type),
+            array: node.typeName.name,
           },
           fix(fixer) {
             return [
