@@ -82,7 +82,11 @@ type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringGenericSimple'
   | 'errorStringArray'
-  | 'errorStringArraySimple';
+  | 'errorStringArraySimple'
+  | 'errorStringGenericReadonly'
+  | 'errorStringGenericSimpleReadonly'
+  | 'errorStringArrayReadonly'
+  | 'errorStringArraySimpleReadonly';
 
 const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
 
@@ -98,13 +102,21 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       errorStringGeneric:
-        "Array type using '{{type}}[]' is forbidden. Use '{{array}}<{{type}}>' instead.",
+        "Array type using '{{type}}[]' is forbidden. Use 'Array<{{type}}>' instead.",
       errorStringGenericSimple:
-        "Array type using '{{type}}[]' is forbidden for non-simple types. Use '{{array}}<{{type}}>' instead.",
+        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
       errorStringArray:
-        "Array type using '{{array}}<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
+        "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using '{{array}}<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+      errorStringGenericReadonly:
+        "Array type using 'readonly {{type}}[]' is forbidden. Use 'ReadonlyArray<{{type}}>' instead.",
+      errorStringGenericSimpleReadonly:
+        "Array type using 'readonly {{type}}[]' is forbidden for non-simple types. Use 'ReadonlyArray<{{type}}>' instead.",
+      errorStringArrayReadonly:
+        "Array type using 'ReadonlyArray<{{type}}>' is forbidden. Use 'readonly {{type}}[]' instead.",
+      errorStringArraySimpleReadonly:
+        "Array type using 'ReadonlyArray<{{type}}>' is forbidden for simple types. Use 'readonly {{type}}[]' instead.",
     },
     schema: [
       {
@@ -155,20 +167,23 @@ export default util.createRule<Options, MessageIds>({
 
         const messageId =
           currentOption === 'generic'
-            ? 'errorStringGeneric'
+            ? isReadonly
+              ? 'errorStringGenericReadonly'
+              : 'errorStringGeneric'
+            : isReadonly
+            ? 'errorStringGenericSimpleReadonly'
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent! : node;
-
-        const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
 
         context.report({
           node: errorNode,
           messageId,
           data: {
-            array: arrayType,
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
+            const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+
             const typeNode = node.elementType;
             return [
               fixer.replaceTextRange(
@@ -206,9 +221,14 @@ export default util.createRule<Options, MessageIds>({
 
         const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
         const typeParams = node.typeParameters?.params;
+
         const messageId =
           currentOption === 'array'
-            ? 'errorStringArray'
+            ? isReadonlyArrayType
+              ? 'errorStringArrayReadonly'
+              : 'errorStringArray'
+            : isReadonlyArrayType
+            ? 'errorStringArraySimpleReadonly'
             : 'errorStringArraySimple';
 
         if (!typeParams || typeParams.length === 0) {
@@ -218,7 +238,6 @@ export default util.createRule<Options, MessageIds>({
             messageId,
             data: {
               type: 'any',
-              array: node.typeName.name,
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -253,7 +272,6 @@ export default util.createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(type),
-            array: node.typeName.name,
           },
           fix(fixer) {
             return [
