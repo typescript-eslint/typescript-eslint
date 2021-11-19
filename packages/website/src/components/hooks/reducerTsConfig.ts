@@ -7,11 +7,15 @@ function reducerTsConfig(
     | { type: 'toggle'; checked: boolean; name: string },
 ): CompilerFlags {
   switch (action.type) {
-    case 'toggle':
-      return {
-        ...state,
-        [action.name]: action.checked,
-      };
+    case 'toggle': {
+      const newState = { ...state };
+      if (action.checked) {
+        newState[action.name] = action.checked;
+      } else if (action.name in newState) {
+        delete newState[action.name];
+      }
+      return newState;
+    }
     case 'init':
       return {
         ...action.config,

@@ -26,6 +26,20 @@ function mapRecords(rules: RulesRecord): RuleModel[] {
   });
 }
 
+function checkSeverity(value: unknown): boolean {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return [0, 1, 2, 'off', 'warn', 'error'].includes(value);
+  }
+  return false;
+}
+
+function checkRule(rule: [string, unknown]): rule is [string, RuleEntry] {
+  if (Array.isArray(rule[1])) {
+    return rule[1].length > 0 && checkSeverity(rule[1][0]);
+  }
+  return checkSeverity(rule[1]);
+}
+
 function reducerRules(
   state: RuleModel[],
   action:
@@ -56,10 +70,10 @@ function reducerRules(
       try {
         const data: unknown = JSON.parse(action.code);
         if (isRecord(data) && 'rules' in data && isRecord(data.rules)) {
+          const newRules = Object.entries(data.rules).filter(checkRule);
           return reducerRules(state, {
             type: 'init',
-            // @ts-expect-error: unsafe code
-            rules: data.rules,
+            rules: Object.fromEntries(newRules),
             ruleOptions: action.ruleOptions,
           });
         }
