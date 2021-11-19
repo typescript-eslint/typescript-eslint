@@ -9,7 +9,11 @@ From TSLint’s docs:
 > Users who come from a Java-style OO language may wrap their utility functions in an extra class,
 > instead of putting them at the top level.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 class EmptyClass {}
@@ -29,7 +33,7 @@ class StaticOnly {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 class EmptyClass extends SuperClass {}
@@ -46,7 +50,7 @@ const StaticOnly = {
 };
 ```
 
-### Options
+## Options
 
 This rule accepts a single object option.
 

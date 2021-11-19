@@ -21,7 +21,7 @@ See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spa
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/keyword-spacing.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/keyword-spacing.md)
 
 </sup>
 

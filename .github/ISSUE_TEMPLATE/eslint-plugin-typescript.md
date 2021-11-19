@@ -22,13 +22,13 @@ Are you opening an issue because the rule you're trying to use is not found?
 1) Check the releases log: https://github.com/typescript-eslint/typescript-eslint/releases
     -  If the rule isn't listed there, then chances are it hasn't been released to the main npm tag yet.
 2) Try installing the `canary` tag: `npm i @typescript-eslint/eslint-plugin@canary`.
-    - The canary tag is built for every commit to master, so it contains the bleeding edge build.
+    - The canary tag is built for every commit to main, so it contains the bleeding edge build.
 3) If ESLint still can't find the rule, then consider reporting an issue.
 -->
 
 - [ ] I have tried restarting my IDE and the issue persists.
 - [ ] I have updated to the latest version of the packages.
-- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/TROUBLESHOOTING.md) and my problem is not listed.
+- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/getting-started/linting/TROUBLESHOOTING.md) and my problem is not listed.
 
 **Repro**
 

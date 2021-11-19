@@ -31,7 +31,7 @@ See [`eslint/require-await` options](https://eslint.org/docs/rules/require-await
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/require-await.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)
 
 </sup>
 

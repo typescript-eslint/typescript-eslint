@@ -21,7 +21,7 @@ See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-va
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-unused-vars.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-unused-vars.md)
 
 </sup>
 

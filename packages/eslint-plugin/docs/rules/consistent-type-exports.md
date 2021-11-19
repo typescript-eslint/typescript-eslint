@@ -9,14 +9,18 @@ transpilers to drop exports without knowing the types of the dependencies.
 
 This rule aims to standardize the use of type exports style across a codebase.
 
-Given a class `Button`, and an interface `ButtonProps`, examples of **correct** code:
+Given a class `Button`, and an interface `ButtonProps`, examples of code:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 export { Button } from 'some-library';
 export type { ButtonProps } from 'some-library';
 ```
 
-Examples of **incorrect** code:
+### ✅ Correct
 
 ```ts
 export { Button, ButtonProps } from 'some-library';

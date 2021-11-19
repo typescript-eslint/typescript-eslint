@@ -35,7 +35,7 @@ Examples of **correct** code for this rule:
 
 (see the rationale above)
 
-### Options
+## Options
 
 You can pass an object option:
 

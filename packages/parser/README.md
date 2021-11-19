@@ -1,6 +1,6 @@
 <h1 align="center">TypeScript ESLint Parser</h1>
 
-<p align="center">An ESLint parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
+<p align="center">An ESLint parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
 
 <p align="center">
     <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
@@ -41,7 +41,7 @@ The core rules built into ESLint, such as `indent` have no knowledge of such con
 
 Instead, you also need to make use of one more plugins which will add or extend rules with TypeScript-specific features.
 
-By far the most common case will be installing the [`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin) plugin, but there are also other relevant options available such a [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin-tslint).
+By far the most common case will be installing the [`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin) plugin, but there are also other relevant options available such a [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint).
 
 ## Configuration
 

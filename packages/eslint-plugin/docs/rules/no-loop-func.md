@@ -21,7 +21,7 @@ See [`eslint/no-loop-func` options](https://eslint.org/docs/rules/no-loop-func#o
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loop-func.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-loop-func.md)
 
 </sup>
 

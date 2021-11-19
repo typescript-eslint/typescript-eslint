@@ -45,7 +45,11 @@ This rule has an object option:
 
 ### defaults
 
-Examples of **incorrect** code for this rule with no options at all:
+Examples of code for this rule with no options at all:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -74,7 +78,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with no options at all:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -91,7 +95,11 @@ type Foo = () => {};
 
 ### after
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": true }`:
+Examples of code for this rule with `{ "before": false, "after": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -120,7 +128,7 @@ type Foo = () =>{};
 type Foo = () => {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": true }`:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -137,7 +145,11 @@ type Foo = ()=> {};
 
 ### before
 
-Examples of **incorrect** code for this rule with `{ "before": true, "after": true }` options:
+Examples of code for this rule with `{ "before": true, "after": true }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -166,7 +178,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": true, "after": true }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -183,7 +195,11 @@ type Foo = () => {};
 
 ### overrides - colon
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+Examples of code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -212,7 +228,7 @@ type Foo = ()=> {};
 type Foo = () => {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -233,7 +249,11 @@ type Foo = ()=>{};
 
 ### overrides - arrow
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+Examples of code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -262,7 +282,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts

@@ -1,6 +1,22 @@
 # Enforce template literal expressions to be of string type (`restrict-template-expressions`)
 
-Examples of **correct** code:
+## Rule Details
+
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+const arg1 = [1, 2];
+const msg1 = `arg1 = ${arg1}`;
+
+const arg2 = { name: 'Foo' };
+const msg2 = `arg2 = ${arg2 || null}`;
+```
+
+### ✅ Correct
 
 ```ts
 const arg = 'foo';
@@ -9,16 +25,6 @@ const msg2 = `arg = ${arg || 'default'}`;
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
-```
-
-Examples of **incorrect** code:
-
-```ts
-const arg1 = [1, 2];
-const msg1 = `arg1 = ${arg1}`;
-
-const arg2 = { name: 'Foo' };
-const msg2 = `arg2 = ${arg2 || null}`;
 ```
 
 ## Options

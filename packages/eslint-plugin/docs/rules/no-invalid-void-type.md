@@ -14,7 +14,11 @@ If you need this - use the `undefined` type instead.
 
 This rule aims to ensure that the `void` type is only used in valid places.
 
-The following patterns are considered warnings:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 type PossibleValues = string | number | void;
@@ -35,7 +39,7 @@ class MyClass {
 }
 ```
 
-The following patterns are not considered warnings:
+### ✅ Correct
 
 ```ts
 type NoOp = () => void;
@@ -49,7 +53,7 @@ async function promiseMeSomething(): Promise<void> {}
 type stillVoid = void | never;
 ```
 
-### Options
+## Options
 
 ```ts
 interface Options {
@@ -63,7 +67,7 @@ const defaultOptions: Options = {
 };
 ```
 
-#### `allowInGenericTypeArguments`
+### `allowInGenericTypeArguments`
 
 This option lets you control if `void` can be used as a valid value for generic type parameters.
 
@@ -99,7 +103,7 @@ type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 ```
 
-#### `allowAsThisParameter`
+### `allowAsThisParameter`
 
 This option allows specifying a `this` parameter of a function to be `void` when set to `true`.
 This pattern can be useful to explicitly label function types that do not use a `this` argument. [See the TypeScript docs for more information](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks).

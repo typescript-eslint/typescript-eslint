@@ -25,7 +25,7 @@ See [`eslint/no-useless-constructor` options](https://eslint.org/docs/rules/no-u
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-useless-constructor.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-useless-constructor.md)
 
 </sup>
 

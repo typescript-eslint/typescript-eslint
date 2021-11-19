@@ -21,7 +21,7 @@ See [`eslint/quotes` options](https://eslint.org/docs/rules/quotes#options).
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/quotes.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/quotes.md)
 
 </sup>
 

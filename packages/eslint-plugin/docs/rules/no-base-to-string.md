@@ -13,7 +13,9 @@ This rule has some overlap with [`restrict-plus-operands`](./restrict-plus-opera
 
 This rule prevents accidentally defaulting to the base Object `.toString()` method.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // Passing an object or class instance to string concatenation:
@@ -28,7 +30,7 @@ value + '';
 ({}.toString());
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 // These types all have useful .toString()s

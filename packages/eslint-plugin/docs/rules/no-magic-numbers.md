@@ -118,7 +118,7 @@ class Foo {
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-magic-numbers.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-magic-numbers.md)
 
 </sup>
 

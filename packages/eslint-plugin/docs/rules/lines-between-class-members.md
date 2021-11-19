@@ -30,7 +30,7 @@ This rule has a string option and an object option.
   - `"exceptAfterOverload": true` (default) - Skip checking empty lines after overload class members
   - `"exceptAfterOverload": false` - **do not** skip checking empty lines after overload class members
 
-- [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/lines-between-class-members.md#options)
+- [See the other options allowed](https://github.com/eslint/eslint/blob/main/docs/rules/lines-between-class-members.md#options)
 
 ### `exceptAfterOverload: true`
 
@@ -72,7 +72,7 @@ class foo {
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/lines-between-class-members.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/lines-between-class-members.md)
 
 </sup>
 

@@ -15,7 +15,27 @@ This is because these types can be mutated and carry with them more complex impl
 
 This style checks for any getter methods that return literal values, and requires them to be defined using fields with the `readonly` modifier instead.
 
-Examples of **correct** code with the `fields` style:
+Examples of code with the `fields` style:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
+
+class Mx {
+  public static get myField1() {
+    return 1;
+  }
+
+  private get ['myField2']() {
+    return 'hello world';
+  }
+}
+```
+
+#### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
@@ -34,29 +54,29 @@ class Mx {
 }
 ```
 
-Examples of **incorrect** code with the `fields` style:
-
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
-
-class Mx {
-  public static get myField1() {
-    return 1;
-  }
-
-  private get ['myField2']() {
-    return 'hello world';
-  }
-}
-```
-
 ### The `getters` style
 
 This style checks for any `readonly` fields that are assigned literal values, and requires them to be defined as getters instead.
 This style pairs well with the [`@typescript-eslint/prefer-readonly`](prefer-readonly.md) rule,
 as it will identify fields that can be `readonly`, and thus should be made into getters.
 
-Examples of **correct** code with the `getters` style:
+Examples of code with the `getters` style:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
+
+class Mx {
+  readonly myField1 = 1;
+  readonly myField2 = `hello world`;
+  private readonly myField3 = 'hello world';
+}
+```
+
+#### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
@@ -75,18 +95,6 @@ class Mx {
   private get ['myField4']() {
     return 'hello world';
   }
-}
-```
-
-Examples of **incorrect** code with the `getters` style:
-
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
-
-class Mx {
-  readonly myField1 = 1;
-  readonly myField2 = `hello world`;
-  private readonly myField3 = 'hello world';
 }
 ```
 

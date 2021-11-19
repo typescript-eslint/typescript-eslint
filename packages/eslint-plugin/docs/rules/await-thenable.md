@@ -5,7 +5,11 @@ While it is valid JavaScript to await a non-`Promise`-like value (it will resolv
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 await 'value';
@@ -14,7 +18,7 @@ const createValue = () => 'value';
 await createValue();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 await Promise.resolve('value');

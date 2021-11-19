@@ -8,6 +8,8 @@ const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
 
+const beforeDefaultRemarkPlugins = [[require('./src/remark/tabs'), {}]];
+
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 /** @type {import('@docusaurus/types').Config} */
@@ -31,7 +33,13 @@ const config = {
       },
     ],
     '@docusaurus/theme-search-algolia',
-    ['@docusaurus/plugin-content-pages', { remarkPlugins }],
+    [
+      '@docusaurus/plugin-content-pages',
+      {
+        beforeDefaultRemarkPlugins,
+        remarkPlugins,
+      },
+    ],
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -39,7 +47,8 @@ const config = {
         path: '../eslint-plugin/docs/rules',
         sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
         routeBasePath: 'rules',
-        editUrl: `${githubUrl}/edit/master/packages/website/`,
+        editUrl: `${githubUrl}/edit/main/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],
@@ -50,7 +59,8 @@ const config = {
         path: '../../docs',
         routeBasePath: 'docs',
         sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
-        editUrl: `${githubUrl}/edit/master/packages/website/`,
+        editUrl: `${githubUrl}/edit/main/packages/website/`,
+        beforeDefaultRemarkPlugins,
         remarkPlugins,
       },
     ],
@@ -72,8 +82,9 @@ const config = {
         // hideOnScroll: true,
         logo: {
           alt: 'TypeScript ESLint',
+          height: '32px',
           src: 'img/logo.svg',
-          // srcDark: 'img/logo-dark.svg',
+          width: '32px',
         },
         // style: 'primary',
         items: [

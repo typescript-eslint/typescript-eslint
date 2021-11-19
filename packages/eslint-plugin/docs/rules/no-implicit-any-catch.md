@@ -10,7 +10,11 @@ The `noImplicitAny` flag in TypeScript does not cover this for backwards compati
 
 This rule requires an explicit type to be declared on a catch clause variable.
 
-The following pattern is considered a warning:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 try {
@@ -20,7 +24,7 @@ try {
 }
 ```
 
-The following pattern is **_not_** considered a warning:
+### ✅ Correct
 
 <!-- TODO: prettier currently removes the type annotations, re-enable this once prettier is updated -->
 <!-- prettier-ignore-start -->
