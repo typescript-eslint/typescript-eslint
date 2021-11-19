@@ -5,7 +5,7 @@ import CloseIcon from '../icons/CloseIcon';
 
 interface ModalProps {
   readonly header: string;
-  readonly children: JSX.Element;
+  readonly children: JSX.Element | (JSX.Element | false)[];
   readonly isOpen: boolean;
   readonly onClose: () => void;
 }
@@ -30,7 +30,9 @@ function Modal(props: ModalProps): JSX.Element {
             size={22}
           />
         </div>
-        <div className={styles.modalBody}>{props.children}</div>
+        <div className={styles.modalBody}>
+          {React.Children.map(props.children, child => child)}
+        </div>
       </div>
     </div>
   );

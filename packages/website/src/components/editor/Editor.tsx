@@ -33,6 +33,26 @@ interface EditorProps extends ConfigModel {
   readonly onLoaded?: (tsVersions: readonly string[]) => void;
 }
 
+function shallowEqual(
+  object1: Record<string, unknown> | undefined,
+  object2: Record<string, unknown> | undefined,
+): boolean {
+  if (object1 === object2) {
+    return true;
+  }
+  const keys1 = Object.keys(object1 ?? {});
+  const keys2 = Object.keys(object2 ?? {});
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+  for (const key of keys1) {
+    if (object1![key] !== object2![key]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 class Editor extends React.Component<EditorProps> {
   private sandboxInstance?: ReturnType<typeof createTypeScriptSandbox>;
   private linter?: WebLinter;
@@ -94,7 +114,7 @@ class Editor extends React.Component<EditorProps> {
       let shouldLint = false;
       if (
         this.props.jsx !== prevProps.jsx ||
-        prevProps.tsConfig !== this.props.tsConfig
+        !shallowEqual(prevProps.tsConfig, this.props.tsConfig)
       ) {
         this.updateConfig();
         shouldLint = true;

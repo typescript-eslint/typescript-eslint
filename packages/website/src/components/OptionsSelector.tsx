@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
-import ModalEslint from './modals/ModalEslint';
-import ModalTypeScript from './modals/ModalTypeScript';
+import ConfigEslint from './config/ConfigEslint';
+import ConfigTypeScript from './config/ConfigTypeScript';
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
@@ -49,7 +49,7 @@ function OptionsSelector({
   return (
     <>
       {state.rules && ruleOptions.length > 0 && (
-        <ModalEslint
+        <ConfigEslint
           key="modal-eslint"
           isOpen={eslintModal}
           ruleOptions={ruleOptions}
@@ -57,7 +57,7 @@ function OptionsSelector({
           onClose={updateRules}
         />
       )}
-      <ModalTypeScript
+      <ConfigTypeScript
         key="modal-typescript"
         isOpen={typeScriptModal}
         config={state.tsConfig}

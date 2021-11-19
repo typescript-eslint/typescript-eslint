@@ -3,7 +3,7 @@ import type {
   RulesRecord,
 } from '@typescript-eslint/website-eslint';
 
-export interface CompilerFlags {
+export interface CompilerFlags extends Record<string, unknown> {
   isolatedModules?: boolean;
   allowSyntheticDefaultImports?: boolean;
   esModuleInterop?: boolean;
