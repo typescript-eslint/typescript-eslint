@@ -1230,7 +1230,7 @@ function barFunction(bar: Array<ArrayClass<String>>) {
       errors: [
         {
           messageId: 'errorStringArraySimple',
-          data: { type: 'fooName.BarType', array: 'Array' },
+          data: { type: 'fooName.BarType' },
           line: 1,
           column: 8,
         },

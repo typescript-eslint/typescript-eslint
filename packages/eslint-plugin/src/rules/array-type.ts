@@ -182,9 +182,9 @@ export default util.createRule<Options, MessageIds>({
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
+            const typeNode = node.elementType;
             const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
 
-            const typeNode = node.elementType;
             return [
               fixer.replaceTextRange(
                 [errorNode.range[0], typeNode.range[0]],
