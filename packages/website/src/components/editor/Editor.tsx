@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { sandboxSingleton } from '../lib/load-sandbox';
-import { createProvideCodeActions } from '../lib/action';
-import { createURI, messageToMarker } from '../lib/utils';
+import { sandboxSingleton } from './loadSandbox';
+import { createProvideCodeActions } from './action';
+import { createURI, messageToMarker } from './utils';
 import { debounce } from '../lib/debounce';
 
 import type {

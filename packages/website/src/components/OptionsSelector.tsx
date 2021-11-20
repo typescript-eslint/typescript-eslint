@@ -9,7 +9,7 @@ import Tooltip from './inputs/Tooltip';
 import EditIcon from './icons/EditIcon';
 import CopyIcon from './icons/CopyIcon';
 
-import { createMarkdown } from './markdown';
+import { createMarkdown } from './lib/markdown';
 
 import type { RuleDetails } from './types';
 

@@ -1,29 +1,41 @@
-import type { ConfigModel } from './types';
+import type { ConfigModel } from '../types';
 
 export function createSummary(
   value: string,
-  type: string,
-  length = 20,
+  title: string,
+  type: 'ts' | 'json',
+  length: number,
 ): string {
-  const code = `\`\`\`${type}\n${value}\n\`\`\``;
+  const code = `### ${title}\n\n\`\`\`${type}\n${value}\n\`\`\``;
   if ((code.match(/\n/g) ?? []).length > length) {
     return `<details>\n<summary>Expand</summary>\n\n${code}\n\n</details>`;
   }
   return code;
 }
 
+function createSummaryJson(
+  obj: ConfigModel['rules'] | ConfigModel['tsConfig'],
+  field: string,
+  title: string,
+): string {
+  if (obj && Object.keys(obj).length > 0) {
+    return createSummary(
+      JSON.stringify({ [field]: obj }, null, 2),
+      title,
+      'json',
+      10,
+    );
+  }
+  return '';
+}
+
 export function createMarkdown(state: ConfigModel): string {
-  const esConfig = { rules: state.rules };
-  const tsConfig = { compilerOptions: state.tsConfig };
   return [
     '## Repro',
     `[Playground](${document.location.toString()})`,
-    '### Code',
-    createSummary(state.code, 'ts', 30),
-    '### Eslint config',
-    createSummary(JSON.stringify(esConfig, null, 2), 'json'),
-    '### TypeScript config',
-    createSummary(JSON.stringify(tsConfig, null, 2), 'json'),
+    createSummary(state.code, 'Code', 'ts', 30),
+    createSummaryJson(state.rules, 'rules', 'Eslint config'),
+    createSummaryJson(state.tsConfig, 'compilerOptions', 'TypeScript config'),
     '## Expected Result\n',
     '## Actual Result\n',
     '## Additional Info\n',
