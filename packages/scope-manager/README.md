@@ -14,7 +14,7 @@ You probably don't want to use it directly.
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our Getting Started docs here](../../docs/linting/README.md)**
 
 ## Installation
 
