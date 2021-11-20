@@ -5,11 +5,15 @@ import ConfigTypeScript from './config/ConfigTypeScript';
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
+import Tooltip from './inputs/Tooltip';
+import EditIcon from './icons/EditIcon';
+import CopyIcon from './icons/CopyIcon';
+
+import { createMarkdown } from './markdown';
 
 import type { RuleDetails } from './types';
 
 import styles from './OptionsSelector.module.css';
-import EditIcon from './icons/EditIcon';
 
 import type {
   CompilerFlags,
@@ -23,6 +27,7 @@ interface OptionsSelectorParams<T = ConfigModel> {
   readonly state: T;
   readonly setState: <X extends keyof T>(key: X, value: T[X]) => void;
   readonly tsVersions: readonly string[];
+  readonly isLoading: boolean;
 }
 
 function OptionsSelector({
@@ -30,9 +35,12 @@ function OptionsSelector({
   state,
   setState,
   tsVersions,
+  isLoading,
 }: OptionsSelectorParams): JSX.Element {
   const [eslintModal, setEslintModal] = useState<boolean>(false);
   const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
+  const [copyLink, setCopyLink] = useState<boolean>(false);
+  const [copyMarkdown, setCopyMarkdown] = useState<boolean>(false);
 
   const updateTS = useCallback((version: string) => {
     setState('ts', version);
@@ -47,6 +55,36 @@ function OptionsSelector({
     setState('tsConfig', config);
     setTypeScriptModal(false);
   }, []);
+
+  const copyLinkToClipboard = useCallback(async () => {
+    if (isLoading) {
+      return;
+    }
+    await navigator.clipboard.writeText(document.location.toString());
+    setCopyLink(true);
+  }, []);
+
+  const copyMarkdownToClipboard = useCallback(async () => {
+    if (isLoading) {
+      return;
+    }
+    await navigator.clipboard.writeText(createMarkdown(state));
+    setCopyLink(true);
+  }, [state]);
+
+  const openIssue = useCallback(() => {
+    if (isLoading) {
+      return;
+    }
+    window
+      .open(
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?body=${encodeURIComponent(
+          createMarkdown(state),
+        )}`,
+        '_blank',
+      )
+      ?.focus();
+  }, [state]);
 
   return (
     <>
@@ -128,6 +166,24 @@ function OptionsSelector({
         >
           TypeScript Config
           <EditIcon className={styles.clickableIcon} />
+        </label>
+      </Expander>
+      <Expander label="Actions">
+        <label className={styles.optionLabel} onClick={copyLinkToClipboard}>
+          Copy Link
+          <Tooltip open={copyLink} text="Copied" close={setCopyLink}>
+            <CopyIcon className={styles.clickableIcon} />
+          </Tooltip>
+        </label>
+        <label className={styles.optionLabel} onClick={copyMarkdownToClipboard}>
+          Copy Markdown
+          <Tooltip open={copyMarkdown} text="Copied" close={setCopyMarkdown}>
+            <CopyIcon className={styles.clickableIcon} />
+          </Tooltip>
+        </label>
+        <label className={styles.optionLabel} onClick={openIssue}>
+          Report Issue
+          <CopyIcon className={styles.clickableIcon} />
         </label>
       </Expander>
     </>

@@ -94,6 +94,7 @@ function Playground(): JSX.Element {
     <div className={styles.codeContainer}>
       <div className={styles.options}>
         <OptionsSelector
+          isLoading={isLoading}
           state={state}
           tsVersions={tsVersions}
           setState={setState}
