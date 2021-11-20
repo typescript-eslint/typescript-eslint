@@ -14,7 +14,7 @@ The more relevant information you can include, the faster we can find the issue 
 -->
 
 - [ ] I have looked on [typescript-eslint.io](https://typescript-eslint.io).
-- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/getting-started/linting/FAQ.md) and my problem is not listed.
+- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md) and my problem is not listed.
 
 ## Suggested Changes
 

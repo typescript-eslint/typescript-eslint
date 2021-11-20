@@ -3,7 +3,7 @@ contact_links:
   -
     name: FAQ
     about: Please check out our FAQ before filing new issues
-    url: https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/getting-started/linting/TROUBLESHOOTING.md
+    url: https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md
   -
     name: Getting Started Guide
     about: If you're looking for help setting up check out our getting started guide
