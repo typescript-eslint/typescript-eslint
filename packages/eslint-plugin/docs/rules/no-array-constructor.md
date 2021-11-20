@@ -44,7 +44,7 @@ See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-arr
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-array-constructor.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-array-constructor.md)
 
 </sup>
 

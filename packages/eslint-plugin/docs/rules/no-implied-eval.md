@@ -108,7 +108,7 @@ If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setIm
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-implied-eval.md)
 
 </sup>
 

@@ -21,7 +21,7 @@ See [`eslint/init-declarations` options](https://eslint.org/docs/rules/init-decl
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/init-declarations.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/init-declarations.md)
 
 </sup>
 

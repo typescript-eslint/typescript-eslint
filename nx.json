@@ -8,7 +8,7 @@
     ".github/workflows/ci.yml": "*"
   },
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "workspaceLayout": {
     "libsDir": "packages"

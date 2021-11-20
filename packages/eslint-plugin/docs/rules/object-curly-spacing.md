@@ -21,7 +21,7 @@ See [`eslint/object-curly-spacing` options](https://eslint.org/docs/rules/object
 
 <sup>
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/object-curly-spacing.md)
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/object-curly-spacing.md)
 
 </sup>
 
