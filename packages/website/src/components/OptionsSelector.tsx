@@ -57,9 +57,6 @@ function OptionsSelector({
   }, []);
 
   const copyLinkToClipboard = useCallback(async () => {
-    if (isLoading) {
-      return;
-    }
     await navigator.clipboard.writeText(document.location.toString());
     setCopyLink(true);
   }, []);
@@ -69,8 +66,8 @@ function OptionsSelector({
       return;
     }
     await navigator.clipboard.writeText(createMarkdown(state));
-    setCopyLink(true);
-  }, [state]);
+    setCopyMarkdown(true);
+  }, [state, isLoading]);
 
   const openIssue = useCallback(() => {
     if (isLoading) {
@@ -84,7 +81,7 @@ function OptionsSelector({
         '_blank',
       )
       ?.focus();
-  }, [state]);
+  }, [state, isLoading]);
 
   return (
     <>
