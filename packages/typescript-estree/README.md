@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our Getting Started docs here](../../docs/linting/README.md)**
 
 ## About
 
