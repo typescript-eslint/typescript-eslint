@@ -36,7 +36,6 @@
   flex-direction: row;
   position: fixed;
   width: 100%;
-  height: 100%;
-  top: 0;
-  padding-top: 60px; /* navbar 60 + driver 52 */
+  height: calc(100% - var(--ifm-navbar-height));
+  top: var(--ifm-navbar-height);
 }

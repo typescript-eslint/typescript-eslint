@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import type Monaco from 'monaco-editor';
+import clsx from 'clsx';
 import useThemeContext from '@theme/hooks/useThemeContext';
 
 import styles from './Playground.module.css';
@@ -10,7 +11,6 @@ import OptionsSelector from './OptionsSelector';
 import ASTViewer from './ast/ASTViewer';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { EditorEmbed } from './editor/EditorEmbed';
-import clsx from 'clsx';
 import type { RuleDetails } from './types';
 
 import type {
@@ -53,7 +53,7 @@ function Playground(): JSX.Element {
 
   return (
     <div className={styles.codeContainer}>
-      <div className={styles.options}>
+      <div className={clsx(styles.options, 'thin-scrollbar')}>
         <OptionsSelector
           isLoading={isLoading}
           state={state}
