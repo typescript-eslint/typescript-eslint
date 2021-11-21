@@ -28,7 +28,7 @@ Are you opening an issue because the rule you're trying to use is not found?
 
 - [ ] I have tried restarting my IDE and the issue persists.
 - [ ] I have updated to the latest version of the packages.
-- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/getting-started/linting/TROUBLESHOOTING.md) and my problem is not listed.
+- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md) and my problem is not listed.
 
 **Repro**
 
