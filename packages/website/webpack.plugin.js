@@ -4,14 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = function (/*context, options*/) {
   return {
     name: 'webpack-custom-plugin',
-    configureWebpack(cfg, isServer) {
+    configureWebpack() {
       return {
         externals: {
           typescript: 'window.ts',
         },
         plugins: [
           new webpack.DefinePlugin({
-            'process.env.IS_SERVER': JSON.stringify(isServer),
             'process.env.TS_VERSION': JSON.stringify(
               require('typescript/package.json').version,
             ),
