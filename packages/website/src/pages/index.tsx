@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
@@ -108,6 +108,11 @@ const features: FeatureItem[] = [
 ];
 
 function Feature({ title, description }: FeatureItem): JSX.Element {
+  if (typeof description === 'string') {
+    useEffect(() => {
+      console.log({ title });
+    }, []);
+  }
   return (
     <div className="col col--12 padding-vert--lg">
       <h2 className="text--center">{title}</h2>

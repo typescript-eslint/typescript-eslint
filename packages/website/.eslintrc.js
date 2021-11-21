@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     'react/jsx-no-target-blank': 'off',
     'react/no-unescaped-entities': 'off',
+    'react-hooks/exhaustive-deps': 'error',
   },
   settings: {
     react: {
