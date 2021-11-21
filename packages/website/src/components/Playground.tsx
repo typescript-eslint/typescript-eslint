@@ -22,7 +22,7 @@ function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
     showAST: false,
-    sourceType: 'module' as 'script' | 'module',
+    sourceType: 'module',
     code: '',
     ts: process.env.TS_VERSION,
     rules: {},

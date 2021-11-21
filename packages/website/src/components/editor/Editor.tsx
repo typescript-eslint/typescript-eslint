@@ -12,15 +12,15 @@ import { action } from './action';
 
 interface EditorProps extends ConfigModel {
   readonly darkTheme: boolean;
-  readonly decoration?: TSESTree.Node | null;
-  readonly onChange?: (value: string) => void;
-  readonly onASTChange?: (
+  readonly decoration: TSESTree.Node | null;
+  readonly onChange: (value: string) => void;
+  readonly onASTChange: (
     value: string | TSESTree.Program,
     position: Monaco.Position | null,
   ) => void;
-  readonly onLoadRule?: (value: RuleDetails[]) => void;
-  readonly onSelect?: (position: Monaco.Position) => void;
-  readonly onLoaded?: (tsVersions: readonly string[]) => void;
+  readonly onLoadRule: (value: RuleDetails[]) => void;
+  readonly onSelect: (position: Monaco.Position) => void;
+  readonly onLoaded: (tsVersions: readonly string[]) => void;
 }
 
 function shallowEqual(
@@ -52,6 +52,8 @@ class Editor extends React.Component<EditorProps> {
   private readonly _lint: () => void;
   private _codeIsUpdating: boolean;
   private _decorations: string[];
+
+  static DOM_ID = 'monaco-editor-embed';
 
   private readonly fixes: Map<string, LintCodeAction>;
 
@@ -136,10 +138,13 @@ class Editor extends React.Component<EditorProps> {
   }
 
   render(): JSX.Element {
-    return <div id="monaco-editor-embed" style={{ height: '100%' }} />;
+    return <div id={Editor.DOM_ID} style={{ height: '100%' }} />;
   }
 
   async loadEditor(): Promise<void> {
+    const { main, sandboxFactory, ts, linter } = await sandboxSingleton(
+      this.props.ts,
+    );
     const sandboxConfig: Partial<SandboxConfig> = {
       text: '',
       monacoSettings: {
@@ -152,15 +157,14 @@ class Editor extends React.Component<EditorProps> {
       compilerOptions: {
         noResolve: true,
         strict: true,
-        target: 99,
-        jsx: this.props.jsx ? 2 : undefined,
-        module: 99,
+        target: main.languages.typescript.ScriptTarget.ESNext,
+        jsx: this.props.jsx
+          ? main.languages.typescript.JsxEmit.React
+          : undefined,
+        module: main.languages.typescript.ModuleKind.ESNext,
       },
-      domID: 'monaco-editor-embed',
+      domID: Editor.DOM_ID,
     };
-    const { main, sandboxFactory, ts, linter } = await sandboxSingleton(
-      this.props.ts,
-    );
     this.sandboxInstance = sandboxFactory.createTypeScriptSandbox(
       sandboxConfig,
       main,
@@ -170,9 +174,7 @@ class Editor extends React.Component<EditorProps> {
     this.updateTheme();
     this.updateCode();
     this.linter = linter.loadLinter();
-    if (this.props.onLoadRule) {
-      this.props.onLoadRule(this.linter.ruleNames);
-    }
+    this.props.onLoadRule(this.linter.ruleNames);
 
     this._subscriptions.push(
       main.languages.registerCodeActionProvider(
@@ -189,7 +191,7 @@ class Editor extends React.Component<EditorProps> {
       this.sandboxInstance.editor.onDidChangeModelContent(() => {
         if (this.sandboxInstance) {
           this._lint();
-          if (!this._codeIsUpdating && this.props.onChange) {
+          if (!this._codeIsUpdating) {
             const model = this.sandboxInstance.getModel().getValue();
             this.props.onChange(model);
           }
@@ -198,9 +200,7 @@ class Editor extends React.Component<EditorProps> {
     );
     this._lint();
     this.updateLayout();
-    if (this.props.onLoaded) {
-      this.props.onLoaded(this.sandboxInstance.supportedVersions);
-    }
+    this.props.onLoaded(this.sandboxInstance.supportedVersions);
   }
 
   private lintCode(): void {
@@ -221,21 +221,19 @@ class Editor extends React.Component<EditorProps> {
 
     this.setModelMarkers(markers);
 
-    if (this.props.onASTChange) {
-      if (fatalMessage) {
-        this.setDecorations([]);
-      }
-
-      this.props.onASTChange(
-        fatalMessage ?? this.linter.getAst(),
-        this.sandboxInstance.editor.getPosition(),
-      );
-      this.updateCursor();
+    if (fatalMessage) {
+      this.setDecorations([]);
     }
+
+    this.props.onASTChange(
+      fatalMessage ?? this.linter.getAst(),
+      this.sandboxInstance.editor.getPosition(),
+    );
+    this.updateCursor();
   }
 
   private updateCursor(): void {
-    if (this.props.onSelect && this.sandboxInstance) {
+    if (this.sandboxInstance) {
       const position = this.sandboxInstance.editor.getPosition();
       if (position) {
         this.props.onSelect(position);

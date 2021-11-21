@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import Loader from '@site/src/components/layout/Loader';
 
-function Repl(): JSX.Element {
+function Play(): JSX.Element {
   return (
     <Layout title="Playground" description="Playground" noFooter={true}>
       <BrowserOnly fallback={<Loader />}>
@@ -20,4 +20,4 @@ function Repl(): JSX.Element {
   );
 }
 
-export default Repl;
+export default Play;

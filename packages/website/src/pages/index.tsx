@@ -164,7 +164,7 @@ function Home(): JSX.Element {
             </Link>
             <Link
               className="button button--secondary button--outline"
-              to={useBaseUrl('repl/')}
+              to={useBaseUrl('play/')}
             >
               Playground
             </Link>

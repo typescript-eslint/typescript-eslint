@@ -97,8 +97,8 @@ const config = {
             position: 'left',
           },
           {
-            to: 'repl',
-            activeBasePath: 'repl',
+            to: 'play',
+            activeBasePath: 'play',
             position: 'right',
             label: 'Playground',
           },

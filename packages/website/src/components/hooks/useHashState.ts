@@ -23,10 +23,6 @@ function readQueryParam(value: string): string {
 }
 
 const parseStateFromUrl = (): ConfigModel | undefined => {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
   const hash = window.location.hash.slice(1);
   if (!hash) {
     return;
@@ -65,9 +61,6 @@ const parseStateFromUrl = (): ConfigModel | undefined => {
 
 const writeStateToUrl = debounce(
   (newState: ConfigModel, refresh = false): void => {
-    if (typeof window === 'undefined') {
-      return;
-    }
     try {
       const json: string = Object.entries({
         ts: newState.ts,

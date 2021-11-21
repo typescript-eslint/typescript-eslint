@@ -87,7 +87,6 @@ function OptionsSelector({
     <>
       {state.rules && ruleOptions.length > 0 && (
         <ConfigEslint
-          key="modal-eslint"
           isOpen={eslintModal}
           ruleOptions={ruleOptions}
           rules={state.rules}
@@ -95,7 +94,6 @@ function OptionsSelector({
         />
       )}
       <ConfigTypeScript
-        key="modal-typescript"
         isOpen={typeScriptModal}
         config={state.tsConfig}
         onClose={updateTsConfig}
