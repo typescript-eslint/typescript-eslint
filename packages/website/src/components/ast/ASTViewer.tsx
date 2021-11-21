@@ -9,12 +9,13 @@ import styles from './ASTViewer.module.css';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import clsx from 'clsx';
 import { scrollIntoViewIfNeeded } from '../lib/scroll-into';
-import { filterRecord } from '../lib/selection';
+import { filterRecord, findNode } from '../lib/selection';
 
 import type { GenericParams } from './types';
 
 import PropertyNameComp from './PropertyName';
 import PropertyValueComp from './PropertyValue';
+import Monaco from 'monaco-editor';
 
 const PropertyName = React.memo(PropertyNameComp);
 const PropertyValue = React.memo(PropertyValueComp);
@@ -175,9 +176,24 @@ function ElementItem(props: GenericParams<unknown>): JSX.Element {
 
 function ASTViewer(props: {
   ast: TSESTree.Node | string;
-  selection?: TSESTree.Node | null;
+  position?: Monaco.Position | null;
   onSelectNode: (node: TSESTree.Node | null) => void;
 }): JSX.Element {
+  const [selection, setSelection] = useState<TSESTree.Node | null>(null);
+
+  useEffect(() => {
+    if (props.ast && props.position && typeof props.ast === 'object') {
+      const node = findNode(
+        {
+          line: props.position.lineNumber,
+          column: props.position.column - 1,
+        },
+        props.ast,
+      );
+      setSelection(node && node.type !== 'Program' ? node : null);
+    }
+  }, [props.ast, props.position]);
+
   return typeof props.ast === 'string' ? (
     <div>{props.ast}</div>
   ) : (
@@ -185,7 +201,7 @@ function ASTViewer(props: {
       <ElementObject
         value={props.ast}
         level="ast"
-        selection={props.selection}
+        selection={selection}
         onSelectNode={props.onSelectNode}
       />
     </div>

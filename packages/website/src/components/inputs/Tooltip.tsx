@@ -13,7 +13,6 @@ function Tooltip(props: CopyProps): JSX.Element {
   useEffect(() => {
     if (props.open) {
       setTimeout(() => {
-        console.log('on close');
         props.close(false);
       }, 1000);
     }

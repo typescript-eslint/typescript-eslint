@@ -1,5 +1,4 @@
-import { useEffect, useReducer } from 'react';
-import { debounce } from '../lib/debounce';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
 
@@ -22,8 +21,7 @@ function readQueryParam(value: string): string {
   return window.LZString.decompressFromEncodedURIComponent(value);
 }
 
-const parseStateFromUrl = (): ConfigModel | undefined => {
-  const hash = window.location.hash.slice(1);
+const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   if (!hash) {
     return;
   }
@@ -59,77 +57,97 @@ const parseStateFromUrl = (): ConfigModel | undefined => {
   return undefined;
 };
 
-const writeStateToUrl = debounce(
-  (newState: ConfigModel, refresh = false): void => {
-    try {
-      const json: string = Object.entries({
-        ts: newState.ts,
-        jsx: newState.jsx,
-        sourceType: newState.sourceType,
-        showAST: newState.showAST,
-        code: newState.code ? writeQueryParam(newState.code) : undefined,
-        rules: newState.rules
-          ? writeQueryParam(JSON.stringify(newState.rules))
-          : undefined,
-        tsConfig: newState.tsConfig
-          ? writeQueryParam(JSON.stringify(newState.tsConfig))
-          : undefined,
-      })
-        .filter(item => item[1])
-        .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
-        .join('&');
+const writeStateToUrl = (newState: ConfigModel): string | undefined => {
+  try {
+    return Object.entries({
+      ts: newState.ts,
+      jsx: newState.jsx,
+      sourceType: newState.sourceType,
+      showAST: newState.showAST,
+      code: newState.code ? writeQueryParam(newState.code) : undefined,
+      rules: newState.rules
+        ? writeQueryParam(JSON.stringify(newState.rules))
+        : undefined,
+      tsConfig: newState.tsConfig
+        ? writeQueryParam(JSON.stringify(newState.tsConfig))
+        : undefined,
+    })
+      .filter(item => item[1])
+      .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
+      .join('&');
+  } catch (e) {
+    console.warn(e);
+  }
+  return undefined;
+};
 
-      if (refresh) {
-        window.location.replace(`${window.location.pathname}#${json}`);
+function shallowEqual(
+  object1: Record<string, unknown> | ConfigModel | undefined,
+  object2: Record<string, unknown> | ConfigModel | undefined,
+): boolean {
+  if (object1 === object2) {
+    return true;
+  }
+  const keys1 = Object.keys(object1 ?? {});
+  const keys2 = Object.keys(object2 ?? {});
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+  for (const key of keys1) {
+    if (object1![key] !== object2![key]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function useHashState(
+  initialState: ConfigModel,
+): [ConfigModel, (cfg?: Partial<ConfigModel>) => void] {
+  const [hash, setHash] = useState<string>();
+  const [state, setState] = useState<ConfigModel>(initialState);
+  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(initialState);
+
+  useEffect(() => {
+    if (window.LZString) {
+      const newHash = window.location.hash.slice(1);
+      if (newHash !== hash) {
+        const newState = parseStateFromUrl(newHash);
+        if (newState) {
+          setState(newState);
+          setTmpState(newState);
+        }
+      }
+    }
+  }, [hash]);
+
+  useEffect(() => {
+    const newState = { ...state, ...tmpState };
+    if (
+      !shallowEqual(newState, state) ||
+      !shallowEqual(newState.rules, state.rules) ||
+      !shallowEqual(newState.tsConfig, state.tsConfig)
+    ) {
+      const newHash = writeStateToUrl(newState);
+      setState(newState);
+      setHash(newHash);
+
+      if ('ts' in tmpState && tmpState.ts !== state.ts) {
+        window.location.replace(`${window.location.pathname}#${newHash}`);
         window.location.reload();
       } else {
         window.history.pushState(
           undefined,
           document.title,
-          `${window.location.pathname}#${json}`,
+          `${window.location.pathname}#${newHash}`,
         );
       }
-    } catch (e) {
-      console.warn(e);
     }
-  },
-  100,
-);
-
-type HashAction<T extends ConfigModel> =
-  | { key: keyof T; value: T[keyof T] }
-  | T;
-
-function hashReducer(
-  prevState: ConfigModel,
-  action: HashAction<ConfigModel>,
-): ConfigModel {
-  if ('key' in action && 'value' in action) {
-    const newState = { ...prevState, [action.key]: action.value };
-    writeStateToUrl(newState, action.key === 'ts');
-    return newState;
-  } else {
-    return action;
-  }
-}
-
-type Args<T = ConfigModel, X extends keyof T = keyof T> =
-  | [T?]
-  | [key: X, value: T[X]];
-
-interface HashStateFn {
-  <X extends ConfigModel>(value?: X): void;
-  <X extends keyof ConfigModel>(key: X, value: ConfigModel[X]): void;
-}
-
-function useHashState(initialState: ConfigModel): [ConfigModel, HashStateFn] {
-  const [state, setState] = useReducer(hashReducer, initialState);
+  }, [tmpState, state]);
 
   const onHashChange = (): void => {
-    const parsedState = parseStateFromUrl();
-    if (parsedState) {
-      setState(parsedState);
-    }
+    console.info('[State] hash change detected', window.location.hash);
+    setHash(window.location.hash);
   };
 
   useEffect(() => {
@@ -139,18 +157,21 @@ function useHashState(initialState: ConfigModel): [ConfigModel, HashStateFn] {
     };
   }, []);
 
-  return [
-    state,
-    (...args: Args): void => {
-      if (args.length === 2) {
-        setState({ key: args[0], value: args[1] });
-      } else if (args[0]) {
-        setState(args[0]);
-      } else {
-        onHashChange();
+  const _setState = useCallback((cfg?: Partial<ConfigModel>) => {
+    console.info('[State] updating config diff', cfg);
+    if (cfg) {
+      setTmpState(cfg);
+    } else {
+      const newHash = window.location.hash.slice(1);
+      const newState = parseStateFromUrl(newHash);
+      if (newState) {
+        setState(newState);
+        setTmpState(newState);
       }
-    },
-  ];
+    }
+  }, []);
+
+  return [state, _setState];
 }
 
 export default useHashState;

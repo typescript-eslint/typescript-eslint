@@ -28,14 +28,16 @@ declare global {
   }
 }
 
+export interface LinterLoader {
+  loadLinter(): WebLinter;
+}
+
 export interface SandboxModel {
   main: Monaco;
   tsWorker: typeof TsWorker;
   sandboxFactory: typeof SandboxFactory;
   ts: TS;
-  linter: {
-    loadLinter(): WebLinter;
-  };
+  linter: LinterLoader;
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {

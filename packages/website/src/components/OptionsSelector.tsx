@@ -22,10 +22,10 @@ import type {
   RulesRecord,
 } from './types';
 
-interface OptionsSelectorParams<T = ConfigModel> {
+interface OptionsSelectorParams {
   readonly ruleOptions: RuleDetails[];
-  readonly state: T;
-  readonly setState: <X extends keyof T>(key: X, value: T[X]) => void;
+  readonly state: ConfigModel;
+  readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
   readonly isLoading: boolean;
 }
@@ -43,16 +43,16 @@ function OptionsSelector({
   const [copyMarkdown, setCopyMarkdown] = useState<boolean>(false);
 
   const updateTS = useCallback((version: string) => {
-    setState('ts', version);
+    setState({ ts: version });
   }, []);
 
   const updateRules = useCallback((rules: RulesRecord) => {
-    setState('rules', rules);
+    setState({ rules: rules });
     setEslintModal(false);
   }, []);
 
   const updateTsConfig = useCallback((config: CompilerFlags) => {
-    setState('tsConfig', config);
+    setState({ tsConfig: config });
     setTypeScriptModal(false);
   }, []);
 
@@ -126,7 +126,7 @@ function OptionsSelector({
           <Checkbox
             name="jsx"
             checked={state.jsx}
-            onChange={(e): void => setState('jsx', e)}
+            onChange={(e): void => setState({ jsx: e })}
             className={styles.optionCheckbox}
           />
         </label>
@@ -135,7 +135,7 @@ function OptionsSelector({
           <Checkbox
             name="ast"
             checked={state.showAST}
-            onChange={(e): void => setState('showAST', e)}
+            onChange={(e): void => setState({ showAST: e })}
             className={styles.optionCheckbox}
           />
         </label>
@@ -144,7 +144,7 @@ function OptionsSelector({
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState('sourceType', e as SourceType)}
+            onChange={(e): void => setState({ sourceType: e as SourceType })}
             options={['script', 'module']}
           />
         </label>

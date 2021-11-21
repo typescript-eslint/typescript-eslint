@@ -2,7 +2,7 @@ import type Monaco from 'monaco-editor';
 import { createURI } from './utils';
 import type { LintCodeAction } from './lintCode';
 
-export function action(
+export function createProvideCodeActions(
   fixes: Map<string, LintCodeAction>,
 ): Monaco.languages.CodeActionProvider {
   return {

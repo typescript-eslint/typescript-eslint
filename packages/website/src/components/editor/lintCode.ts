@@ -43,8 +43,8 @@ export function lintCode(
     }
     const startLineNumber = ensurePositiveInt(message.line, 1);
     const startColumn = ensurePositiveInt(message.column, 1);
-    const endLineNumber = ensurePositiveInt(message.column, startLineNumber);
-    const endColumn = ensurePositiveInt(message.column, startColumn + 1);
+    const endLineNumber = ensurePositiveInt(message.endLine, startLineNumber);
+    const endColumn = ensurePositiveInt(message.endColumn, startColumn + 1);
 
     const marker: Monaco.editor.IMarkerData = {
       code: message.ruleId ?? 'FATAL',

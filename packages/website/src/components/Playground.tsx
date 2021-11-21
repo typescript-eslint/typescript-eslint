@@ -8,9 +8,9 @@ import Loader from './layout/Loader';
 import useHashState from './hooks/useHashState';
 import OptionsSelector from './OptionsSelector';
 import ASTViewer from './ast/ASTViewer';
+import { LoadingEditor } from './editor/LoadingEditor';
+import { EditorEmbed } from './editor/EditorEmbed';
 import clsx from 'clsx';
-import Editor from './editor/Editor';
-import { findNode } from './lib/selection';
 import type { RuleDetails } from './types';
 
 import type {
@@ -34,26 +34,7 @@ function Playground(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);
-  const [highlightedNode, setHighlightedNode] = useState<TSESTree.Node | null>(
-    null,
-  );
-
-  const updatePosition = useCallback(
-    (position: Monaco.Position | null) => {
-      if (typeof ast === 'object' && ast && position) {
-        setHighlightedNode(
-          findNode(
-            {
-              line: position.lineNumber,
-              column: position.column - 1,
-            },
-            ast,
-          ),
-        );
-      }
-    },
-    [ast],
-  );
+  const [position, setPosition] = useState<Monaco.Position | null>(null);
 
   const updateSelectedNode = useCallback(
     (node: TSESTree.Node | null) => {
@@ -68,26 +49,6 @@ function Playground(): JSX.Element {
       }
     },
     [selectedNode],
-  );
-
-  const updateAST = useCallback(
-    (value: string | TSESTree.Program, position: Monaco.Position | null) => {
-      if (typeof value === 'object' && value) {
-        setAST(value);
-        if (position) {
-          setHighlightedNode(
-            findNode(
-              {
-                line: position.lineNumber,
-                column: position.column - 1,
-              },
-              value,
-            ),
-          );
-        }
-      }
-    },
-    [],
   );
 
   return (
@@ -109,7 +70,8 @@ function Playground(): JSX.Element {
           )}
         >
           {isLoading && <Loader />}
-          <Editor
+          <EditorEmbed />
+          <LoadingEditor
             ts={state.ts}
             jsx={state.jsx}
             code={state.code}
@@ -118,16 +80,16 @@ function Playground(): JSX.Element {
             sourceType={state.sourceType}
             rules={state.rules}
             showAST={state.showAST}
-            onLoadRule={setRuleNames}
-            onASTChange={updateAST}
+            onASTChange={setAST}
             decoration={selectedNode}
-            onChange={(code): void => setState('code', code)}
-            onLoaded={(tsVersions): void => {
+            onChange={(code): void => setState({ code: code })}
+            onLoaded={(ruleNames, tsVersions): void => {
+              setRuleNames(ruleNames);
               setTSVersion(tsVersions);
               setIsLoading(false);
               setState();
             }}
-            onSelect={updatePosition}
+            onSelect={setPosition}
           />
         </div>
         {state.showAST && (
@@ -135,7 +97,7 @@ function Playground(): JSX.Element {
             {ast && (
               <ASTViewer
                 ast={ast}
-                selection={highlightedNode}
+                position={position}
                 onSelectNode={updateSelectedNode}
               />
             )}
