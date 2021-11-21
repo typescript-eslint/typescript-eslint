@@ -16,8 +16,7 @@ interface FeatureItem {
 
 const features: FeatureItem[] = [
   {
-    title:
-      'Hello world: What are ESLint and TypeScript, and how do they compare?',
+    title: 'What are ESLint and TypeScript, and how do they compare?',
     description: (
       <>
         <div className="row padding-vert--lg">
