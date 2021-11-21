@@ -2,8 +2,8 @@ import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
 import type { WebLinter } from '@typescript-eslint/website-eslint';
 
-export type Monaco = typeof import('monaco-editor');
-export type TS = typeof import('typescript');
+type Monaco = typeof import('monaco-editor');
+type TS = typeof import('typescript');
 
 declare global {
   type WindowRequireCb = (

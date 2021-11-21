@@ -1,29 +1,13 @@
-import type { editor } from 'monaco-editor';
-import type { LintMessage } from '@typescript-eslint/website-eslint';
+import type Monaco from 'monaco-editor';
 
-const ensurePositiveInt = (
+export function ensurePositiveInt(
   value: number | undefined,
   defaultValue: number,
-): number => {
+): number {
   return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
-};
-
-export function messageToMarker(message: LintMessage): editor.IMarkerData {
-  const startLineNumber = ensurePositiveInt(message.line, 1);
-  const startColumn = ensurePositiveInt(message.column, 1);
-  return {
-    code: message.ruleId ?? 'FATAL',
-    severity: 8, // MarkerSeverity.Error,
-    source: 'ESLint',
-    message: message.message,
-    startLineNumber,
-    startColumn,
-    endLineNumber: ensurePositiveInt(message.endLine, startLineNumber),
-    endColumn: ensurePositiveInt(message.endColumn, startColumn + 1),
-  };
 }
 
-export function createURI(marker: editor.IMarkerData): string {
+export function createURI(marker: Monaco.editor.IMarkerData): string {
   return `[${[
     marker.startLineNumber,
     marker.startColumn,

@@ -1,49 +1,17 @@
-import type { languages, editor } from 'monaco-editor';
-import type { LintMessage, RuleFix } from '@typescript-eslint/website-eslint';
-
+import type Monaco from 'monaco-editor';
 import { createURI } from './utils';
+import type { LintCodeAction } from './lintCode';
 
-export function createQuickfixCodeAction(
-  title: string,
-  marker: editor.IMarkerData,
-  model: editor.ITextModel,
-  fix: RuleFix,
-): languages.CodeAction {
-  const start = model.getPositionAt(fix.range[0]);
-  const end = model.getPositionAt(fix.range[1]);
-  return {
-    title,
-    diagnostics: [marker],
-    kind: 'quickfix',
-    edit: {
-      edits: [
-        {
-          resource: model.uri,
-          edit: {
-            range: {
-              startLineNumber: start.lineNumber,
-              startColumn: start.column,
-              endLineNumber: end.lineNumber,
-              endColumn: end.column,
-            },
-            text: fix.text,
-          },
-        },
-      ],
-    },
-  };
-}
-
-export function createProvideCodeActions(
-  fixes: Map<string, LintMessage>,
-): languages.CodeActionProvider {
+export function action(
+  fixes: Map<string, LintCodeAction>,
+): Monaco.languages.CodeActionProvider {
   return {
     provideCodeActions(
       model,
       _range,
       context,
       _token,
-    ): languages.ProviderResult<languages.CodeActionList> {
+    ): Monaco.languages.ProviderResult<Monaco.languages.CodeActionList> {
       if (context.only !== 'quickfix') {
         return {
           actions: [],
@@ -52,33 +20,33 @@ export function createProvideCodeActions(
           },
         };
       }
-      const actions: languages.CodeAction[] = [];
+      const actions: Monaco.languages.CodeAction[] = [];
       for (const marker of context.markers) {
         const message = fixes.get(createURI(marker));
-        if (!message) {
-          continue;
-        }
-        if (message.fix) {
-          actions.push(
-            createQuickfixCodeAction(
-              `Fix this ${message.ruleId ?? 'unknown'} problem`,
-              marker,
-              model,
-              message.fix,
-            ),
-          );
-        }
-        if (message.suggestions) {
-          for (const suggestion of message.suggestions) {
-            actions.push(
-              createQuickfixCodeAction(
-                `${suggestion.desc} (${message.ruleId ?? 'unknown'})`,
-                marker,
-                model,
-                suggestion.fix,
-              ),
-            );
-          }
+        if (message) {
+          const start = model.getPositionAt(message.fix.range[0]);
+          const end = model.getPositionAt(message.fix.range[1]);
+          actions.push({
+            title: message.message,
+            diagnostics: [marker],
+            kind: 'quickfix',
+            edit: {
+              edits: [
+                {
+                  resource: model.uri,
+                  edit: {
+                    range: {
+                      startLineNumber: start.lineNumber,
+                      startColumn: start.column,
+                      endLineNumber: end.lineNumber,
+                      endColumn: end.column,
+                    },
+                    text: message.fix.text,
+                  },
+                },
+              ],
+            },
+          });
         }
       }
       return {

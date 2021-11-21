@@ -1,29 +1,19 @@
 import React from 'react';
+import type Monaco from 'monaco-editor';
 
 import { sandboxSingleton } from './loadSandbox';
-import { createProvideCodeActions } from './action';
-import { createURI, messageToMarker } from './utils';
 import { debounce } from '../lib/debounce';
 
-import type {
-  createTypeScriptSandbox,
-  SandboxConfig,
-} from '../../vendor/sandbox';
-import type Monaco from 'monaco-editor';
-import type {
-  WebLinter,
-  LintMessage,
-  TSESTree,
-} from '@typescript-eslint/website-eslint';
+import type { Sandbox, SandboxConfig } from '../../vendor/sandbox';
+import type { WebLinter, TSESTree } from '@typescript-eslint/website-eslint';
 import type { ConfigModel, RuleDetails } from '../types';
+import { lintCode, LintCodeAction } from './lintCode';
+import { action } from './action';
 
 interface EditorProps extends ConfigModel {
   readonly darkTheme: boolean;
   readonly decoration?: TSESTree.Node | null;
-  readonly onChange?: (
-    value: string,
-    event: Monaco.editor.IModelContentChangedEvent,
-  ) => void;
+  readonly onChange?: (value: string) => void;
   readonly onASTChange?: (
     value: string | TSESTree.Program,
     position: Monaco.Position | null,
@@ -54,7 +44,7 @@ function shallowEqual(
 }
 
 class Editor extends React.Component<EditorProps> {
-  private sandboxInstance?: ReturnType<typeof createTypeScriptSandbox>;
+  private sandboxInstance?: Sandbox;
   private linter?: WebLinter;
 
   private _subscriptions: Monaco.IDisposable[];
@@ -63,7 +53,7 @@ class Editor extends React.Component<EditorProps> {
   private _codeIsUpdating: boolean;
   private _decorations: string[];
 
-  private readonly fixes: Map<string, LintMessage>;
+  private readonly fixes: Map<string, LintCodeAction>;
 
   constructor(props: EditorProps) {
     super(props);
@@ -91,11 +81,7 @@ class Editor extends React.Component<EditorProps> {
     this._subscriptions = [];
 
     if (this.sandboxInstance) {
-      this.sandboxInstance.monaco.editor.setModelMarkers(
-        this.sandboxInstance.editor.getModel()!,
-        this.sandboxInstance.editor.getId(),
-        [],
-      );
+      this.setModelMarkers([]);
       this.sandboxInstance.editor.dispose();
       const model = this.sandboxInstance.editor.getModel();
       if (model) {
@@ -122,7 +108,7 @@ class Editor extends React.Component<EditorProps> {
       if (this.props.sourceType !== prevProps.sourceType) {
         shouldLint = true;
       }
-      if (this.props.rules !== prevProps.rules) {
+      if (!shallowEqual(prevProps.rules, this.props.rules)) {
         shouldLint = true;
       }
       if (this.props.showAST !== prevProps.showAST) {
@@ -191,29 +177,21 @@ class Editor extends React.Component<EditorProps> {
     this._subscriptions.push(
       main.languages.registerCodeActionProvider(
         'typescript',
-        createProvideCodeActions(this.fixes),
+        action(this.fixes),
       ),
     );
     this._subscriptions.push(
-      this.sandboxInstance.editor.onMouseDown(() => {
+      this.sandboxInstance.editor.onDidChangeCursorPosition(() => {
         this.updateCursor();
       }),
     );
     this._subscriptions.push(
-      this.sandboxInstance.editor.onKeyUp(e => {
-        // console.log(e.keyCode);
-        if (e.keyCode >= 15 && e.keyCode <= 18) {
-          this.updateCursor();
-        }
-      }),
-    );
-    this._subscriptions.push(
-      this.sandboxInstance.editor.onDidChangeModelContent(event => {
-        if (this.sandboxInstance && this.props.onChange) {
+      this.sandboxInstance.editor.onDidChangeModelContent(() => {
+        if (this.sandboxInstance) {
           this._lint();
-          if (!this._codeIsUpdating) {
+          if (!this._codeIsUpdating && this.props.onChange) {
             const model = this.sandboxInstance.getModel().getValue();
-            this.props.onChange(model, event);
+            this.props.onChange(model);
           }
         }
       }),
@@ -229,41 +207,23 @@ class Editor extends React.Component<EditorProps> {
     if (!this.sandboxInstance || !this.linter) {
       return;
     }
-    const messages = this.linter.lint(
+    const [markers, fatalMessage, codeActions] = lintCode(
+      this.linter,
       this.props.code,
-      {
-        ecmaFeatures: {
-          jsx: this.props.jsx ?? false,
-          globalReturn: false,
-        },
-        ecmaVersion: 2020,
-        project: ['./tsconfig.json'],
-        sourceType: this.props.sourceType ?? 'module',
-      },
       this.props.rules,
+      this.props.jsx,
+      this.props.sourceType,
     );
-    const markers: Monaco.editor.IMarkerData[] = [];
     this.fixes.clear();
-    let fatalMessage: string | undefined = undefined;
-    for (const message of messages) {
-      if (!message.ruleId) {
-        fatalMessage = message.message;
-      }
-      const marker = messageToMarker(message);
-      markers.push(marker);
-      this.fixes.set(createURI(marker), message);
+    for (const codeAction of codeActions) {
+      this.fixes.set(codeAction[0], codeAction[1]);
     }
-    this.sandboxInstance.monaco.editor.setModelMarkers(
-      this.sandboxInstance.editor.getModel()!,
-      this.sandboxInstance.editor.getId(),
-      markers,
-    );
+
+    this.setModelMarkers(markers);
+
     if (this.props.onASTChange) {
       if (fatalMessage) {
-        this._decorations = this.sandboxInstance.editor.deltaDecorations(
-          this._decorations,
-          [],
-        );
+        this.setDecorations([]);
       }
 
       this.props.onASTChange(
@@ -275,7 +235,6 @@ class Editor extends React.Component<EditorProps> {
   }
 
   private updateCursor(): void {
-    // console.log('updateCursor');
     if (this.props.onSelect && this.sandboxInstance) {
       const position = this.sandboxInstance.editor.getPosition();
       if (position) {
@@ -327,29 +286,42 @@ class Editor extends React.Component<EditorProps> {
     if (this.sandboxInstance) {
       if (this.props.decoration && this.props.showAST) {
         const loc = this.props.decoration.loc;
-        this._decorations = this.sandboxInstance.editor.deltaDecorations(
-          this._decorations,
-          [
-            {
-              range: new this.sandboxInstance.monaco.Range(
-                loc.start.line,
-                loc.start.column + 1,
-                loc.end.line,
-                loc.end.column + 1,
-              ),
-              options: {
-                inlineClassName: 'myLineDecoration',
-                stickiness: 1,
-              },
+        this.setDecorations([
+          {
+            range: new this.sandboxInstance.monaco.Range(
+              loc.start.line,
+              loc.start.column + 1,
+              loc.end.line,
+              loc.end.column + 1,
+            ),
+            options: {
+              inlineClassName: 'myLineDecoration',
+              stickiness: 1,
             },
-          ],
-        );
+          },
+        ]);
       } else {
-        this._decorations = this.sandboxInstance.editor.deltaDecorations(
-          this._decorations,
-          [],
-        );
+        this.setDecorations([]);
       }
+    }
+  }
+
+  private setModelMarkers(markers: Monaco.editor.IMarkerData[]): void {
+    if (this.sandboxInstance) {
+      this.sandboxInstance.monaco.editor.setModelMarkers(
+        this.sandboxInstance.editor.getModel()!,
+        this.sandboxInstance.editor.getId(),
+        markers,
+      );
+    }
+  }
+
+  private setDecorations(value: Monaco.editor.IModelDeltaDecoration[]): void {
+    if (this.sandboxInstance) {
+      this._decorations = this.sandboxInstance.editor.deltaDecorations(
+        this._decorations,
+        value,
+      );
     }
   }
 }
