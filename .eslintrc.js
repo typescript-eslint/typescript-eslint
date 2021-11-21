@@ -8,6 +8,9 @@ module.exports = {
     'eslint-comments',
     '@typescript-eslint/internal',
     'simple-import-sort',
+    'jsx-a11y',
+    'react',
+    'react-hooks',
   ],
   env: {
     es6: true,
@@ -17,6 +20,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jsx-a11y/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
   ],
   parserOptions: {
     sourceType: 'module',
@@ -165,6 +171,16 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
+
+    //
+    // eslint-plugin-react
+    //
+    'react/no-unescaped-entities': 'off',
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
   },
   overrides: [
     // all test files
