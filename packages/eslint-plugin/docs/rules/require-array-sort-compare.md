@@ -96,6 +96,12 @@ const three = '3';
 
 If you understand the language specification enough, you can turn this rule off safely.
 
+## Source
+
+- Rule: [require-array-sort-compare.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/require-array-sort-compare.ts)
+- Documentation: [require-array-sort-compare.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/require-array-sort-compare.md)
+- Tests: [require-array-sort-compare.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/require-array-sort-compare.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

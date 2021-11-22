@@ -178,9 +178,15 @@ and you want to be able to specify `any`.
 
 - TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
 
-## Compatibility
+## Related To
 
 - TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
+
+## Source
+
+- Rule: [no-explicit-any.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-explicit-any.ts)
+- Documentation: [no-explicit-any.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.md)
+- Tests: [no-explicit-any.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-explicit-any.test.ts)
 
 ## Attributes
 

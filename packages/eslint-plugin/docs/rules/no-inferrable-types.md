@@ -147,9 +147,15 @@ If you do not want to enforce inferred types.
 
 TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferrable-types/)
+
+## Source
+
+- Rule: [no-implied-eval.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-implied-eval.ts)
+- Documentation: [no-implied-eval.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-implied-eval.md)
+- Tests: [no-implied-eval.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-implied-eval.test.ts)
 
 ## Attributes
 

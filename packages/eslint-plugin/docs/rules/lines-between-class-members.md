@@ -76,6 +76,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [lines-between-class-members.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/lines-between-class-members.ts)
+- Documentation: [ines-between-class-members.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ines-between-class-members.md)
+- Tests: [ines-between-class-members.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ines-between-class-members.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

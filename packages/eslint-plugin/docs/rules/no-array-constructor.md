@@ -48,6 +48,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-array-constructor.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-array-constructor.ts)
+- Documentation: [no-array-constructor.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-array-constructor.md)
+- Tests: [no-array-constructor.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-array-constructor.test.ts)
+
 ## Attributes
 
 - [x] ✅ Recommended

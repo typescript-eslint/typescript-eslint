@@ -25,6 +25,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-duplicate-imports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-duplicate-imports.ts)
+- Documentation: [no-duplicate-imports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-duplicate-imports.md)
+- Tests: [no-duplicate-imports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-duplicate-imports.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

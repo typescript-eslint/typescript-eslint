@@ -111,6 +111,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-use-before-define.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-use-before-define.ts)
+- Documentation: [no-use-before-define.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-use-before-define.md)
+- Tests: [no-use-before-define.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-use-before-define.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

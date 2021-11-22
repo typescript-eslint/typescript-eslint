@@ -25,6 +25,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [object-curly-spacing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/object-curly-spacing.ts)
+- Documentation: [object-curly-spacing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/object-curly-spacing.md)
+- Tests: [object-curly-spacing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/object-curly-spacing.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

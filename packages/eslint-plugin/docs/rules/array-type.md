@@ -117,9 +117,15 @@ This matrix lists all possible option combinations and their expected results fo
 | `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
 | `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
 
-## Related to
+## Related To
 
 - TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)
+
+## Source
+
+- Rule: [array-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/array-type.ts)
+- Documentation: [array-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/array-type.md)
+- Tests: [array-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/array-type.test.ts)
 
 ## Attributes
 

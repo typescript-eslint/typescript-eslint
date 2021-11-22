@@ -112,6 +112,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-implied-eval.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-implied-eval.ts)
+- Documentation: [no-implied-eval.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-implied-eval.md)
+- Tests: [no-implied-eval.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-implied-eval.test.ts)
+
 ## Attributes
 
 - [x] ✅ Recommended

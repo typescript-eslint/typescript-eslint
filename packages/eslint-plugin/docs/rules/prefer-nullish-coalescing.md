@@ -140,6 +140,12 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Operator Proposal](https://github.com/tc39/proposal-nullish-coalescing/)
 
+## Source
+
+- Rule: [prefer-nullish-coalescing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-nullish-coalescing.ts)
+- Documentation: [prefer-nullish-coalescing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-nullish-coalescing.md)
+- Tests: [prefer-nullish-coalescing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

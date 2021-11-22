@@ -17,9 +17,15 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
+
+## Source
+
+- Rule: [prefer-namespace-keyword.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-namespace-keyword.ts)
+- Documentation: [prefer-namespace-keyword.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md)
+- Tests: [prefer-namespace-keyword.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts)
 
 ## Attributes
 

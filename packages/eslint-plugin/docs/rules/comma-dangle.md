@@ -37,6 +37,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [comma-dangle.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/comma-dangle.ts)
+- Documentation: [comma-dangle.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/comma-dangle.md)
+- Tests: [comma-dangle.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/comma-dangle.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

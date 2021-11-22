@@ -53,6 +53,12 @@ This rule accepts a single object option with the following default configuratio
 
 - `checkNever: true` will suggest removing `void` when the argument has type `never`.
 
+## Source
+
+- Rule: [no-meaningless-void-operator.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-meaningless-void-operator.ts)
+- Documentation: [no-meaningless-void-operator.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-meaningless-void-operator.md)
+- Tests: [no-meaningless-void-operator.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-meaningless-void-operator.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

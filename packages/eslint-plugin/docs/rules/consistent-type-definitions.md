@@ -79,9 +79,15 @@ type T = { x: number };
 
 If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Source
+
+- Rule: [consistent-type-definitions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-type-definitions.ts)
+- Documentation: [consistent-type-definitions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-definitions.md)
+- Tests: [consistent-type-definitions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-type-definitions.test.ts)
 
 ## Attributes
 

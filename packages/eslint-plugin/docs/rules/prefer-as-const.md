@@ -33,6 +33,12 @@ let foo = { bar: 'baz' };
 
 If you are using TypeScript < 3.4
 
+## Source
+
+- Rule: [prefer-as-const.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-as-const.ts)
+- Documentation: [prefer-as-const.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-as-const.md)
+- Tests: [prefer-as-const.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-as-const.test.ts)
+
 ## Attributes
 
 - [x] ✅ Recommended

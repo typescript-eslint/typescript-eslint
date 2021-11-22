@@ -695,6 +695,12 @@ You can use the `destructured` modifier to match these names, and explicitly set
 
 If you do not want to enforce naming conventions for anything.
 
+## Source
+
+- Rule: [naming-convention.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/naming-convention.ts)
+- Documentation: [naming-convention.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/naming-convention.md)
+- Tests: [naming-convention.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/naming-convention.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

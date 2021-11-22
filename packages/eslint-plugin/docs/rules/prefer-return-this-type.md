@@ -95,6 +95,12 @@ class Derived extends Base {
 
 If you don't use method chaining or explicit return values, you can safely turn this rule off.
 
+## Source
+
+- Rule: [prefer-return-this-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-return-this-type.ts)
+- Documentation: [prefer-return-this-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-return-this-type.md)
+- Tests: [prefer-return-this-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-return-this-type.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

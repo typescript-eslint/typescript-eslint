@@ -69,6 +69,12 @@ In addition, each of the following properties may be provided, and default to `t
 
 - TSLint: [promise-function-async](https://palantir.github.io/tslint/rules/promise-function-async)
 
+## Source
+
+- Rule: [promise-function-async.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/promise-function-async.ts)
+- Documentation: [promise-function-async.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/promise-function-async.md)
+- Tests: [promise-function-async.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/promise-function-async.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

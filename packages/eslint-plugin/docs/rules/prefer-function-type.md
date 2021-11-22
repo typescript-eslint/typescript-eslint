@@ -84,6 +84,12 @@ If you specifically want to use an interface or type literal with a single call 
 
 - TSLint: [`callable-types`](https://palantir.github.io/tslint/rules/callable-types/)
 
+## Source
+
+- Rule: [prefer-function-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-function-type.ts)
+- Documentation: [prefer-function-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-function-type.md)
+- Tests: [prefer-function-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-function-type.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

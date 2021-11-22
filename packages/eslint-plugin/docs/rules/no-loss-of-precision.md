@@ -22,6 +22,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-loss-of-precision.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-loss-of-precision.ts)
+- Documentation: [no-loss-of-precision.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-loss-of-precision.md)
+- Tests: [no-loss-of-precision.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-loss-of-precision.test.ts)
+
 ## Attributes
 
 - [x] ✅ Recommended

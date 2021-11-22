@@ -335,9 +335,15 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
+
+## Source
+
+- Rule: [typedef.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/typedef.ts)
+- Documentation: [typedef.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/typedef.md)
+- Tests: [typedef.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/typedef.test.ts)
 
 ## Attributes
 

@@ -52,10 +52,16 @@ arr[idx];
 arr[idx++];
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Source
+
+- Rule: [no-unsafe-member-access.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unsafe-member-access.ts)
+- Documentation: [no-unsafe-member-access.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-member-access.md)
+- Tests: [no-unsafe-member-access.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unsafe-member-access.test.ts)
 
 ## Attributes
 

@@ -63,6 +63,12 @@ const x: import('Bar') = 1;
 - If you are not using TypeScript 3.8 (or greater), then you will not be able to use this rule, as type-only imports are not allowed.
 - If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.
 
+## Source
+
+- Rule: [consistent-type-imports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-type-imports.ts)
+- Documentation: [consistent-type-imports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-imports.md)
+- Tests: [consistent-type-imports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

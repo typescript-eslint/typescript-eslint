@@ -194,8 +194,13 @@ This rule provides following fixes and suggestions for particular types in boole
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
-
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions
+
+## Source
+
+- Rule: [strict-boolean-expressions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/strict-boolean-expressions.ts)
+- Documentation: [strict-boolean-expressions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md)
+- Tests: [strict-boolean-expressions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/strict-boolean-expressions.test.ts)
 
 ## Attributes
 

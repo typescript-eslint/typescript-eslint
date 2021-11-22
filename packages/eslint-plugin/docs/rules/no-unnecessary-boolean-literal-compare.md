@@ -145,9 +145,15 @@ if (!(someNullCondition ?? true)) {
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Related to
+## Related To
 
 - TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
+
+## Source
+
+- Rule: [no-unnecessary-boolean-literal-compare.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-boolean-literal-compare.ts)
+- Documentation: [no-unnecessary-boolean-literal-compare.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-boolean-literal-compare.md)
+- Tests: [no-unnecessary-boolean-literal-compare.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-boolean-literal-compare.test.ts)
 
 ## Attributes
 

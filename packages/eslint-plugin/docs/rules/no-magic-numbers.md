@@ -122,6 +122,12 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Source
+
+- Rule: [no-magic-numbers.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-magic-numbers.ts)
+- Documentation: [no-magic-numbers.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-magic-numbers.md)
+- Tests: [no-magic-numbers.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-magic-numbers.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

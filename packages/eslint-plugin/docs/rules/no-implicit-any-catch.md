@@ -77,7 +77,13 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 
 ## Further Reading
 
-- [TypeScript 4.0 Beta Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/#unknown-on-catch)
+- [TypeScript 4.0 Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#unknown-on-catch)
+
+## Source
+
+- Rule: [no-implicit-any-catch.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-implicit-any-catch.ts)
+- Documentation: [no-implicit-any-catch.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-implicit-any-catch.md)
+- Tests: [no-implicit-any-catch.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-implicit-any-catch.test.ts)
 
 ## Attributes
 

@@ -306,9 +306,15 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [`typedef-whitespace`](https://palantir.github.io/tslint/rules/typedef-whitespace/)
+
+## Source
+
+- Rule: [type-annotation-spacing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/type-annotation-spacing.ts)
+- Documentation: [type-annotation-spacing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/type-annotation-spacing.md)
+- Tests: [type-annotation-spacing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/type-annotation-spacing.test.ts)
 
 ## Attributes
 

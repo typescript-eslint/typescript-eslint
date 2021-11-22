@@ -51,6 +51,12 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
 
+## Source
+
+- Rule: [no-non-null-asserted-optional-chain.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-non-null-asserted-optional-chain.ts)
+- Documentation: [no-non-null-asserted-optional-chain.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-asserted-optional-chain.md)
+- Tests: [no-non-null-asserted-optional-chain.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-non-null-asserted-optional-chain.test.ts)
+
 ## Attributes
 
 - [x] ✅ Recommended

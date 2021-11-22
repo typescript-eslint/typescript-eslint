@@ -28,9 +28,15 @@ function f(x: number | string): void;
 function f(x?: ...number[]): void;
 ```
 
-## Related to
+## Related To
 
 - TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
+
+## Source
+
+- Rule: [unified-signatures.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/unified-signatures.ts)
+- Documentation: [unified-signatures.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/unified-signatures.md)
+- Tests: [unified-signatures.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/unified-signatures.test.ts)
 
 ## Attributes
 

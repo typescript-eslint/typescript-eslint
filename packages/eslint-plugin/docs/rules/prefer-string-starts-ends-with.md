@@ -57,6 +57,12 @@ There are no options.
 
 If you don't mind that style, you can turn this rule off safely.
 
+## Source
+
+- Rule: [prefer-string-starts-ends-with.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-string-starts-ends-with.ts)
+- Documentation: [prefer-string-starts-ends-with.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-string-starts-ends-with.md)
+- Tests: [prefer-string-starts-ends-with.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-string-starts-ends-with.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

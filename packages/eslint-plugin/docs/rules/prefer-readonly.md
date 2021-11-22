@@ -82,9 +82,15 @@ class Container {
 }
 ```
 
-## Related to
+## Related To
 
 - TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
+
+## Source
+
+- Rule: [prefer-readonly.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-readonly.ts)
+- Documentation: [prefer-readonly.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md)
+- Tests: [prefer-readonly.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-readonly.test.ts)
 
 ## Attributes
 

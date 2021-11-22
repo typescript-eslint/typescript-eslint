@@ -173,13 +173,19 @@ eventEmitter.on('some-event', () => {
 If you do not use Promises in your codebase or are not concerned with possible
 misuses of them outside of what the TypeScript compiler will check.
 
-## Related to
-
-- [`no-floating-promises`](./no-floating-promises.md)
-
 ## Further Reading
 
 - [TypeScript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
+## Related To
+
+- [`no-floating-promises`](./no-floating-promises.md)
+
+## Source
+
+- Rule: [no-misused-promises.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-misused-promises.ts)
+- Documentation: [no-misused-promises.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-promises.md)
+- Tests: [no-misused-promises.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-misused-promises.test.ts)
 
 ## Attributes
 

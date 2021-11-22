@@ -81,6 +81,12 @@ type Foo = {
 };
 ```
 
+## Source
+
+- Rule: [consistent-indexed-object-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-indexed-object-style.ts)
+- Documentation: [consistent-indexed-object-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-indexed-object-style.md)
+- Tests: [consistent-indexed-object-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

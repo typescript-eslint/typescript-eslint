@@ -52,9 +52,15 @@ interface I<T = number> {}
 class Impl implements I<string> {}
 ```
 
-## Related to
+## Related To
 
 - TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
+
+## Source
+
+- Rule: [no-unnecessary-type-arguments.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-type-arguments.ts)
+- Documentation: [no-unnecessary-type-arguments.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-arguments.md)
+- Tests: [no-unnecessary-type-arguments.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-type-arguments.test.ts)
 
 ## Attributes
 

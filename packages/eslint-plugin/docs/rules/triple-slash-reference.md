@@ -50,10 +50,16 @@ If you want to ban use of one or all of the triple slash reference directives, o
 
 If you want to use all flavors of triple slash reference directives.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
 - TSLint: [no-reference-import](https://palantir.github.io/tslint/rules/no-reference-import/)
+
+## Source
+
+- Rule: [triple-slash-reference.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/triple-slash-reference.ts)
+- Documentation: [triple-slash-reference.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/triple-slash-reference.md)
+- Tests: [triple-slash-reference.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/triple-slash-reference.test.ts)
 
 ## Attributes
 

@@ -67,6 +67,12 @@ import type baz from 'import-baz';
 export type { Baz } from 'import-baz';
 ```
 
+## Source
+
+- Rule: [no-restricted-imports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-restricted-imports.ts)
+- Documentation: [no-restricted-imports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-restricted-imports.md)
+- Tests: [no-restricted-imports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-restricted-imports.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

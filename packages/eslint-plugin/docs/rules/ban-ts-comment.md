@@ -137,9 +137,15 @@ If you want to use all of the TypeScript directives.
 
 - TypeScript [Type Checking JavaScript Files](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [ban-ts-ignore](https://palantir.github.io/tslint/rules/ban-ts-ignore/)
+
+## Source
+
+- Rule: [ban-ts-comment.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/ban-ts-comment.ts)
+- Documentation: [ban-ts-comment.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-ts-comment.md)
+- Tests: [ban-ts-comment.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ban-ts-comment.test.ts)
 
 ## Attributes
 

@@ -72,9 +72,15 @@ const foo: Foo = 3;
 
 If you don't care about having no-op type assertions in your code, then you can turn off this rule.
 
-## Related to
+## Related To
 
 - TSLint: [`no-unnecessary-type-assertion`](https://palantir.github.io/tslint/rules/no-unnecessary-type-assertion/)
+
+## Source
+
+- Rule: [no-unnecessary-type-assertion.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-type-assertion.ts)
+- Documentation: [no-unnecessary-type-assertion.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md)
+- Tests: [no-unnecessary-type-assertion.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-type-assertion.test.ts)
 
 ## Attributes
 

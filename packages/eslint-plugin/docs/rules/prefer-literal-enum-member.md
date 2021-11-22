@@ -95,6 +95,12 @@ enum Foo {
 
 If you want use anything other than simple literals as an enum value.
 
+## Source
+
+- Rule: [prefer-literal-enum-member.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-literal-enum-member.ts)
+- Documentation: [prefer-literal-enum-member.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-literal-enum-member.md)
+- Tests: [prefer-literal-enum-member.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-literal-enum-member.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

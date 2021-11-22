@@ -33,9 +33,15 @@ import lib10 from 'lib10';
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-require-imports](https://palantir.github.io/tslint/rules/no-require-imports/)
+
+## Source
+
+- Rule: [no-require-imports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-require-imports.ts)
+- Documentation: [no-require-imports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-require-imports.md)
+- Tests: [no-require-imports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-require-imports.test.ts)
 
 ## Attributes
 

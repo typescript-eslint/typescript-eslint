@@ -86,9 +86,15 @@ export function foo(sn: string | number): void;
 
 If you don't care about the general structure of the code, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
+
+## Source
+
+- Rule: [adjacent-overload-signatures.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/adjacent-overload-signatures.ts)
+- Documentation: [adjacent-overload-signatures.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md)
+- Tests: [adjacent-overload-signatures.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts)
 
 ## Attributes
 

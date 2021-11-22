@@ -76,6 +76,12 @@ There are no options.
 
 If you don't want to suggest `includes`, you can safely turn this rule off.
 
+## Source
+
+- Rule: [prefer-includes.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-includes.ts)
+- Documentation: [prefer-includes.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-includes.md)
+- Tests: [prefer-includes.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-includes.test.ts)
+
 ## Attributes
 
 - [ ] ✅ Recommended

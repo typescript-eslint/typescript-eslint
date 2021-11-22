@@ -40,9 +40,15 @@ interface I {
 }
 ```
 
-## Compatibility
+## Related To
 
 - TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
+
+## Source
+
+- Rule: [no-misused-new.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-misused-new.ts)
+- Documentation: [no-misused-new.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-new.md)
+- Tests: [no-misused-new.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-misused-new.test.ts)
 
 ## Attributes
 

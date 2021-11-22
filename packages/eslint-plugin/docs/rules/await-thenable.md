@@ -32,9 +32,15 @@ await createValue();
 If you want to allow code to `await` non-Promise values.
 This is generally not preferred, but can sometimes be useful for visual consistency.
 
-## Related to
+## Related To
 
 - TSLint: ['await-promise'](https://palantir.github.io/tslint/rules/await-promise)
+
+## Source
+
+- Rule: [await-thenable.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/await-thenable.ts)
+- Documentation: [await-thenable.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/await-thenable.md)
+- Tests: [await-thenable.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/await-thenable.test.ts)
 
 ## Attributes
 

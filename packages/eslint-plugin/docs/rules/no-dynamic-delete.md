@@ -46,9 +46,15 @@ Some environments such as older browsers might not support `Map` and `Set`.
 Do not consider this rule as performance advice before profiling your code's bottlenecks.
 Even repeated minor performance slowdowns likely do not significantly affect your application's general perceived speed.
 
-## Related to
+## Related To
 
 - TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)
+
+## Source
+
+- Rule: [no-dynamic-delete.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-dynamic-delete.ts)
+- Documentation: [no-dynamic-delete.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-dynamic-delete.md)
+- Tests: [no-dynamic-delete.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-dynamic-delete.test.ts)
 
 ## Attributes
 

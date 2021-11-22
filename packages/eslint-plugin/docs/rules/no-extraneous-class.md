@@ -79,9 +79,15 @@ const defaultOptions: Options = {
 You can disable this rule if you don’t have anyone who would make these kinds of mistakes on your
 team or if you use classes as namespaces.
 
-## Compatibility
+## Related To
 
 [`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint
+
+## Source
+
+- Rule: [no-extraneous-class.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-extraneous-class.ts)
+- Documentation: [no-extraneous-class.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extraneous-class.md)
+- Tests: [no-extraneous-class.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts)
 
 ## Attributes
 
