@@ -33,10 +33,18 @@ export const useSandboxServices = (
   props: SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
   const [services, setServices] = useState<Error | SandboxServices>();
+  const [loadedTs, setLoadedTs] = useState<string>(props.ts);
+
+  useEffect(() => {
+    if (props.ts !== loadedTs) {
+      window.location.reload();
+    }
+  }, [props.ts, loadedTs]);
 
   useEffect(() => {
     const fixes = new Map<string, LintMessage>();
     let sandboxInstance: SandboxInstance | undefined;
+    setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
       .then(({ main, sandboxFactory, ts, linter }) => {

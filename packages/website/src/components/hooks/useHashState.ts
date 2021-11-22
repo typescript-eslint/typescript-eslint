@@ -2,23 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
 
-declare global {
-  interface Window {
-    LZString: {
-      compressToBase64: (input: string) => string;
-      decompressFromBase64: (input: string) => string;
-      compressToEncodedURIComponent: (input: string) => string;
-      decompressFromEncodedURIComponent: (input: string) => string;
-    };
-  }
-}
+import * as lz from 'lzstring.ts';
 
 function writeQueryParam(value: string): string {
-  return window.LZString.compressToEncodedURIComponent(value);
+  return lz.LZString.compressToEncodedURIComponent(value);
 }
 
-function readQueryParam(value: string): string {
-  return window.LZString.decompressFromEncodedURIComponent(value);
+function readQueryParam(value: string | null, fallback: string): string {
+  return value
+    ? lz.LZString.decompressFromEncodedURIComponent(value) ?? fallback
+    : fallback;
 }
 
 const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
@@ -29,7 +22,7 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   try {
     const searchParams = new URLSearchParams(hash);
     return {
-      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
+      ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
       jsx: searchParams.has('jsx'),
       showAST: searchParams.has('showAST'),
       sourceType:
@@ -38,16 +31,16 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
           ? 'script'
           : 'module',
       code: searchParams.has('code')
-        ? readQueryParam(searchParams.get('code')!)
+        ? readQueryParam(searchParams.get('code'), '')
         : '',
       rules: searchParams.has('rules')
         ? (JSON.parse(
-            readQueryParam(searchParams.get('rules')!),
+            readQueryParam(searchParams.get('rules'), '{}'),
           ) as RulesRecord)
         : undefined,
       tsConfig: searchParams.has('tsConfig')
         ? (JSON.parse(
-            readQueryParam(searchParams.get('tsConfig')!),
+            readQueryParam(searchParams.get('tsConfig'), '{}'),
           ) as CompilerFlags)
         : undefined,
     };
@@ -57,10 +50,10 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   return undefined;
 };
 
-const writeStateToUrl = (newState: ConfigModel): string | undefined => {
+const writeStateToUrl = (newState: ConfigModel): string => {
   try {
     return Object.entries({
-      ts: newState.ts,
+      ts: newState.ts.trim(),
       jsx: newState.jsx,
       sourceType: newState.sourceType,
       showAST: newState.showAST,
@@ -78,7 +71,7 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
   } catch (e) {
     console.warn(e);
   }
-  return undefined;
+  return '';
 };
 
 function shallowEqual(
@@ -103,20 +96,24 @@ function shallowEqual(
 
 function useHashState(
   initialState: ConfigModel,
-): [ConfigModel, (cfg?: Partial<ConfigModel>) => void] {
-  const [hash, setHash] = useState<string>();
-  const [state, setState] = useState<ConfigModel>(initialState);
-  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(initialState);
+): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
+  const [hash, setHash] = useState<string>(window.location.hash.slice(1));
+  const [state, setState] = useState<ConfigModel>({
+    ...initialState,
+    ...parseStateFromUrl(window.location.hash.slice(1)),
+  });
+  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>({
+    ...initialState,
+    ...parseStateFromUrl(window.location.hash.slice(1)),
+  });
 
   useEffect(() => {
-    if (window.LZString) {
-      const newHash = window.location.hash.slice(1);
-      if (newHash !== hash) {
-        const newState = parseStateFromUrl(newHash);
-        if (newState) {
-          setState(newState);
-          setTmpState(newState);
-        }
+    const newHash = window.location.hash.slice(1);
+    if (newHash !== hash) {
+      const newState = parseStateFromUrl(newHash);
+      if (newState) {
+        setState(newState);
+        setTmpState(newState);
       }
     }
   }, [hash]);
@@ -132,10 +129,7 @@ function useHashState(
       setState(newState);
       setHash(newHash);
 
-      if ('ts' in tmpState && tmpState.ts !== state.ts) {
-        window.location.replace(`${window.location.pathname}#${newHash}`);
-        window.location.reload();
-      } else {
+      if (window.location.hash.slice(1) !== newHash) {
         window.history.pushState(
           undefined,
           document.title,
@@ -146,8 +140,9 @@ function useHashState(
   }, [tmpState, state]);
 
   const onHashChange = (): void => {
-    console.info('[State] hash change detected', window.location.hash);
-    setHash(window.location.hash);
+    const newHash = window.location.hash;
+    console.info('[State] hash change detected', newHash);
+    setHash(newHash);
   };
 
   useEffect(() => {
@@ -157,18 +152,9 @@ function useHashState(
     };
   }, []);
 
-  const _setState = useCallback((cfg?: Partial<ConfigModel>) => {
+  const _setState = useCallback((cfg: Partial<ConfigModel>) => {
     console.info('[State] updating config diff', cfg);
-    if (cfg) {
-      setTmpState(cfg);
-    } else {
-      const newHash = window.location.hash.slice(1);
-      const newState = parseStateFromUrl(newHash);
-      if (newState) {
-        setState(newState);
-        setTmpState(newState);
-      }
-    }
+    setTmpState(cfg);
   }, []);
 
   return [state, _setState];

@@ -9646,6 +9646,13 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+lzstring.ts@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/lzstring.ts/-/lzstring.ts-2.0.2.tgz#1d269bd6ab423713f31e614f67018110ed860129"
+  integrity sha512-SEDSYQ3gNrGOdqWcXDO6OU/j3E/ff0WfndKOED4WV0oxDzgf4vijuIwbEE/m0f1LGuTbwH3jVHcwrLdRbQqh3A==
+  dependencies:
+    tslib "^1.10.0"
+
 magic-string@^0.25.3, magic-string@^0.25.7:
   version "0.25.7"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
@@ -13527,7 +13534,7 @@ tsconfig-paths@^3.11.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
@@ -14221,7 +14228,7 @@ webpack-sources@^1.1.0, webpack-sources@^1.4.3:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack-sources@^3.2.0, webpack-sources@^3.2.2:
+webpack-sources@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.2.tgz#d88e3741833efec57c4c789b6010db9977545260"
   integrity sha512-cp5qdmHnu5T8wRg2G3vZZHoJPN14aqQ89SyQ11NpGH5zEMDCclt49rzo+MaRazk7/UeILhAI+/sEtcM+7Fr0nw==

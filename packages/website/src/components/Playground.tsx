@@ -87,7 +87,6 @@ function Playground(): JSX.Element {
               setRuleNames(ruleNames);
               setTSVersion(tsVersions);
               setIsLoading(false);
-              setState();
             }}
             onSelect={setPosition}
           />
