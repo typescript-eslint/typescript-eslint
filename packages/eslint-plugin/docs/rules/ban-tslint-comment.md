@@ -34,9 +34,12 @@ If you are still using TSLint.
 
 ## Source
 
+<!-- markdownlint-disable MD044 -->
+
 - Rule: [ban-tslint-comment.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/ban-tslint-comment.ts)
 - Documentation: [ban-tslint-comment.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-tslint-comment.md)
 - Tests: [ban-tslint-comment.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ban-tslint-comment.test.ts)
+<!-- markdownlint-enable MD044 -->
 
 ## Attributes
 
