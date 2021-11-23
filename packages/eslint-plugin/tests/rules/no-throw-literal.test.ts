@@ -438,7 +438,7 @@ throw foo as string;
 function fun(value: any) {
   throw value;
 }
-          `,
+      `,
       errors: [
         {
           messageId: 'object',
@@ -455,7 +455,7 @@ function fun(value: any) {
 function fun(value: unknown) {
   throw value;
 }
-          `,
+      `,
       errors: [
         {
           messageId: 'object',
