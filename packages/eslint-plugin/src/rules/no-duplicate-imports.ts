@@ -54,16 +54,6 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    function isStringLiteral(
-      node: TSESTree.Node | null,
-    ): node is TSESTree.StringLiteral {
-      return (
-        !!node &&
-        node.type === AST_NODE_TYPES.Literal &&
-        typeof node.value === 'string'
-      );
-    }
-
     function isAllMemberImport(node: TSESTree.ImportDeclaration): boolean {
       return node.specifiers.every(
         specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
@@ -71,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkTypeImport(node: TSESTree.ImportDeclaration): void {
-      if (isStringLiteral(node.source)) {
+      if (node.source) {
         const value = node.source.value;
         const isMemberImport = isAllMemberImport(node);
         if (
@@ -96,7 +86,7 @@ export default util.createRule<Options, MessageIds>({
     function checkTypeExport(
       node: TSESTree.ExportNamedDeclaration | TSESTree.ExportAllDeclaration,
     ): void {
-      if (isStringLiteral(node.source)) {
+      if (node.source) {
         const value = node.source.value;
         if (typeExports.has(value)) {
           report('exportType', node, value);
