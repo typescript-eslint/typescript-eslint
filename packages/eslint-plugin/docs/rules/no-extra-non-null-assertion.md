@@ -52,14 +52,14 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-## Source
-
-- Rule: [no-extra-non-null-assertion.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-extra-non-null-assertion.ts)
-- Documentation: [no-extra-non-null-assertion.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extra-non-null-assertion.md)
-- Tests: [no-extra-non-null-assertion.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-extra-non-null-assertion.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-extra-non-null-assertion.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-extra-non-null-assertion.ts)
+- Documentation: [no-extra-non-null-assertion.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extra-non-null-assertion.md)
+- Tests: [no-extra-non-null-assertion.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-extra-non-null-assertion.test.ts)

@@ -129,14 +129,14 @@ or in invalid places, then you don't need this rule.
 
 - TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)
 
-## Source
-
-- Rule: [no-invalid-void-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin)
-- Documentation: [no-invalid-void-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-invalid-void-type.md)
-- Tests: [no-invalid-void-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-invalid-void-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin)
+- Documentation: [no-invalid-void-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-invalid-void-type.md)
+- Tests: [no-invalid-void-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts)

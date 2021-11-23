@@ -85,14 +85,14 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
 
-## Source
-
-- Rule: [prefer-optional-chain.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-optional-chain.ts)
-- Documentation: [prefer-optional-chain.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-optional-chain.md)
-- Tests: [prefer-optional-chain.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-optional-chain.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [prefer-optional-chain.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-optional-chain.ts)
+- Documentation: [prefer-optional-chain.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-optional-chain.md)
+- Tests: [prefer-optional-chain.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-optional-chain.test.ts)

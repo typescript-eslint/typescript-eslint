@@ -347,14 +347,14 @@ If you think defaulting to public is a good default, then you should consider us
 
 - TSLint: [member-access](http://palantir.github.io/tslint/rules/member-access/)
 
-## Source
-
-- Rule: [explicit-member-accessibility.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/explicit-member-accessibility.ts)
-- Documentation: [explicit-member-accessibility.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md)
-- Tests: [explicit-member-accessibility.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/explicit-member-accessibility.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [explicit-member-accessibility.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/explicit-member-accessibility.ts)
+- Documentation: [explicit-member-accessibility.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md)
+- Tests: [explicit-member-accessibility.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/explicit-member-accessibility.test.ts)

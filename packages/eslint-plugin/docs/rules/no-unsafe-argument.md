@@ -74,14 +74,14 @@ foo(1 as any, new Set<any>(), [] as any[]);
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
 
-## Source
-
-- Rule: [no-unsafe-argument.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unsafe-argument.ts)
-- Documentation: [no-unsafe-argument.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-argument.md)
-- Tests: [no-unsafe-argument.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [no-unsafe-argument.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unsafe-argument.ts)
+- Documentation: [no-unsafe-argument.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-argument.md)
+- Tests: [no-unsafe-argument.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts)

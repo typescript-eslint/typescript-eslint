@@ -181,14 +181,14 @@ misuses of them outside of what the TypeScript compiler will check.
 
 - [`no-floating-promises`](./no-floating-promises.md)
 
-## Source
-
-- Rule: [no-misused-promises.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-misused-promises.ts)
-- Documentation: [no-misused-promises.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-promises.md)
-- Tests: [no-misused-promises.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-misused-promises.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [no-misused-promises.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-misused-promises.ts)
+- Documentation: [no-misused-promises.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-promises.md)
+- Tests: [no-misused-promises.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-misused-promises.test.ts)

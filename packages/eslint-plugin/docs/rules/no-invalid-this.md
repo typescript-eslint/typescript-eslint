@@ -29,14 +29,14 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
-## Source
-
-- Rule: [no-invalid-this.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-invalid-this.ts)
-- Documentation: [no-invalid-this.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-invalid-this.md)
-- Tests: [no-invalid-this.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-invalid-this.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-invalid-this.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-invalid-this.ts)
+- Documentation: [no-invalid-this.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-invalid-this.md)
+- Tests: [no-invalid-this.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-invalid-this.test.ts)

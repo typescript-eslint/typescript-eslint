@@ -117,14 +117,14 @@ If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you c
 
 - TSLint: [no-unbound-method](https://palantir.github.io/tslint/rules/no-unbound-method/)
 
-## Source
-
-- Rule: [unbound-method.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/unbound-method.ts)
-- Documentation: [unbound-method.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/unbound-method.md)
-- Tests: [unbound-method.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/unbound-method.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [unbound-method.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/unbound-method.ts)
+- Documentation: [unbound-method.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/unbound-method.md)
+- Tests: [unbound-method.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/unbound-method.test.ts)

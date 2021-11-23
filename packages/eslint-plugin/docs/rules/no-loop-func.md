@@ -25,14 +25,14 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
-## Source
-
-- Rule: [no-loop-func.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-loop-func.ts)
-- Documentation: [no-loop-func.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-loop-func.md)
-- Tests: [no-loop-func.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-loop-func.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-loop-func.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-loop-func.ts)
+- Documentation: [no-loop-func.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-loop-func.md)
+- Tests: [no-loop-func.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-loop-func.test.ts)

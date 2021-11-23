@@ -1092,14 +1092,14 @@ If you don't care about the general structure of your classes and interfaces, th
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
 
-## Source
-
-- Rule: [member-ordering.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/member-ordering.ts)
-- Documentation: [member-ordering.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-ordering.md)
-- Tests: [member-ordering.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/member-ordering.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [member-ordering.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/member-ordering.ts)
+- Documentation: [member-ordering.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-ordering.md)
+- Tests: [member-ordering.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/member-ordering.test.ts)

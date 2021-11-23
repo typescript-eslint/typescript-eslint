@@ -25,14 +25,14 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
-## Source
-
-- Rule: [space-before-function-paren.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/space-before-function-paren.ts)
-- Documentation: [space-before-function-paren.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/space-before-function-paren.md)
-- Tests: [space-before-function-paren.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/space-before-function-paren.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [space-before-function-paren.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/space-before-function-paren.ts)
+- Documentation: [space-before-function-paren.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/space-before-function-paren.md)
+- Tests: [space-before-function-paren.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/space-before-function-paren.test.ts)

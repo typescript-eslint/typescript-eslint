@@ -54,14 +54,14 @@ There are no options.
 
 If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
 
-## Source
-
-- Rule: [prefer-regexp-exec.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-regexp-exec.ts)
-- Documentation: [prefer-regexp-exec.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-regexp-exec.md)
-- Tests: [prefer-regexp-exec.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [prefer-regexp-exec.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-regexp-exec.ts)
+- Documentation: [prefer-regexp-exec.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-regexp-exec.md)
+- Tests: [prefer-regexp-exec.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts)

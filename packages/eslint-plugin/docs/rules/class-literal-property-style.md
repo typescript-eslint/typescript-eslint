@@ -103,14 +103,14 @@ class Mx {
 When you have no strong preference, or do not wish to enforce a particular style
 for how literal values are exposed by your classes.
 
-## Source
-
-- Rule: [class-literal-property-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/class-literal-property-style.ts)
-- Documentation: [class-literal-property-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/class-literal-property-style.md)
-- Tests: [class-literal-property-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [class-literal-property-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/class-literal-property-style.ts)
+- Documentation: [class-literal-property-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/class-literal-property-style.md)
+- Tests: [class-literal-property-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts)

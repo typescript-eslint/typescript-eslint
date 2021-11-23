@@ -25,14 +25,14 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
-## Source
-
-- Rule: [keyword-spacing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/keyword-spacing.ts)
-- Documentation: [keyword-spacing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/keyword-spacing.md)
-- Tests: [keyword-spacing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/keyword-spacing.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [keyword-spacing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/keyword-spacing.ts)
+- Documentation: [keyword-spacing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/keyword-spacing.md)
+- Tests: [keyword-spacing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/keyword-spacing.test.ts)

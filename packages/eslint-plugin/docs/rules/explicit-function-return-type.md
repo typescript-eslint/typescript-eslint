@@ -269,14 +269,14 @@ you will not need this rule.
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
 
-## Source
-
-- Rule: [explicit-function-return-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/explicit-function-return-type.ts)
-- Documentation: [explicit-function-return-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-function-return-type.md)
-- Tests: [explicit-function-return-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [explicit-function-return-type.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/explicit-function-return-type.ts)
+- Documentation: [explicit-function-return-type.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-function-return-type.md)
+- Tests: [explicit-function-return-type.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts)

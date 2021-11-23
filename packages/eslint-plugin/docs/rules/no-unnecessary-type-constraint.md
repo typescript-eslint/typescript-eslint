@@ -58,14 +58,14 @@ function Quuz<T>() {}
 
 If you don't care about the specific styles of your type constraints, or never use them in the first place, then you will not need this rule.
 
-## Source
-
-- Rule: [no-unnecessary-type-constraint.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-type-constraint.ts)
-- Documentation: [no-unnecessary-type-constraint.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-constraint.md)
-- Tests: [no-unnecessary-type-constraint.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-type-constraint.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-unnecessary-type-constraint.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-type-constraint.ts)
+- Documentation: [no-unnecessary-type-constraint.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-constraint.md)
+- Tests: [no-unnecessary-type-constraint.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-type-constraint.test.ts)

@@ -31,14 +31,14 @@ export { Button, ButtonProps } from 'some-library';
 - If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
 - If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
 
-## Source
-
-- Rule: [consistent-type-exports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-type-exports.ts)
-- Documentation: [consistent-type-exports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-exports.md)
-- Tests: [consistent-type-exports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-type-exports.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [consistent-type-exports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-type-exports.ts)
+- Documentation: [consistent-type-exports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-exports.md)
+- Tests: [consistent-type-exports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-type-exports.test.ts)

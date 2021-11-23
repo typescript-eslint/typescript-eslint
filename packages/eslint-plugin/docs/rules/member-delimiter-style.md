@@ -207,14 +207,14 @@ type FooBar = { name: string; greet(): string }
 
 If you don't care about enforcing a consistent member delimiter in interfaces and type literals, then you will not need this rule.
 
-## Source
-
-- Rule: [member-delimiter-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/member-delimiter-style.ts)
-- Documentation: [member-delimiter-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-delimiter-style.md)
-- Tests: [member-delimiter-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/member-delimiter-style.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [member-delimiter-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/member-delimiter-style.ts)
+- Documentation: [member-delimiter-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-delimiter-style.md)
+- Tests: [member-delimiter-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/member-delimiter-style.test.ts)

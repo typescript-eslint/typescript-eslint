@@ -32,14 +32,14 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 
 - TSLint: [no-var-requires](https://palantir.github.io/tslint/rules/no-var-requires/)
 
-## Source
-
-- Rule: [no-var-requires.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-var-requires.ts)
-- Documentation: [no-var-requires.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-var-requires.md)
-- Tests: [no-var-requires.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-var-requires.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-var-requires.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-var-requires.ts)
+- Documentation: [no-var-requires.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-var-requires.md)
+- Tests: [no-var-requires.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-var-requires.test.ts)

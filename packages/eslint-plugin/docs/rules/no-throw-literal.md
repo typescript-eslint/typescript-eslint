@@ -101,14 +101,14 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
-## Source
-
-- Rule: [no-throw-literal.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-throw-literal.ts)
-- Documentation: [no-throw-literal.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-throw-literal.md)
-- Tests: [no-throw-literal.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-throw-literal.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [no-throw-literal.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-throw-literal.ts)
+- Documentation: [no-throw-literal.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-throw-literal.md)
+- Tests: [no-throw-literal.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-throw-literal.test.ts)

@@ -59,14 +59,14 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 
 - TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
 
-## Source
-
-- Rule: [no-this-alias.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-this-alias.ts)
-- Documentation: [no-this-alias.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-this-alias.md)
-- Tests: [no-this-alias.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-this-alias.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-this-alias.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-this-alias.ts)
+- Documentation: [no-this-alias.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-this-alias.md)
+- Tests: [no-this-alias.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-this-alias.test.ts)

@@ -107,14 +107,14 @@ const arg = /foo/;
 const msg1 = `arg = ${arg}`;
 ```
 
-## Source
-
-- Rule: [restrict-template-expressions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/restrict-template-expressions.ts)
-- Documentation: [restrict-template-expressions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-template-expressions.md)
-- Tests: [restrict-template-expressions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/restrict-template-expressions.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [restrict-template-expressions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/restrict-template-expressions.ts)
+- Documentation: [restrict-template-expressions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-template-expressions.md)
+- Tests: [restrict-template-expressions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/restrict-template-expressions.test.ts)

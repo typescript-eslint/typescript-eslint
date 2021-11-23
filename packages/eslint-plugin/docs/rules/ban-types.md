@@ -181,14 +181,14 @@ const curly2: Record<'a', string> = { a: 'string' };
 
 - TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
 
-## Source
-
-- Rule: [ban-types.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/ban-types.ts)
-- Documentation: [ban-types.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-types.md)
-- Tests: [ban-types.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ban-types.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [ban-types.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/ban-types.ts)
+- Documentation: [ban-types.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-types.md)
+- Tests: [ban-types.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ban-types.test.ts)

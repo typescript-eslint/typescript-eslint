@@ -44,14 +44,14 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 
 - TSLint: ['prefer-for-of'](https://palantir.github.io/tslint/rules/prefer-for-of/)
 
-## Source
-
-- Rule: [prefer-for-of.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-for-of.ts)
-- Documentation: [prefer-for-of.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-for-of.md)
-- Tests: [prefer-for-of.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-for-of.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [prefer-for-of.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-for-of.ts)
+- Documentation: [prefer-for-of.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-for-of.md)
+- Tests: [prefer-for-of.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-for-of.test.ts)

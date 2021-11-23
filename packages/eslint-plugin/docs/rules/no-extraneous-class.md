@@ -83,14 +83,14 @@ team or if you use classes as namespaces.
 
 [`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint
 
-## Source
-
-- Rule: [no-extraneous-class.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-extraneous-class.ts)
-- Documentation: [no-extraneous-class.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extraneous-class.md)
-- Tests: [no-extraneous-class.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-extraneous-class.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-extraneous-class.ts)
+- Documentation: [no-extraneous-class.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extraneous-class.md)
+- Tests: [no-extraneous-class.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts)

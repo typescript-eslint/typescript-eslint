@@ -398,14 +398,14 @@ If you don't care about the using parameter properties in constructors, then you
 
 - TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
 
-## Source
-
-- Rule: [no-parameter-properties.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-parameter-properties.ts)
-- Documentation: [no-parameter-properties.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-parameter-properties.md)
-- Tests: [no-parameter-properties.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-parameter-properties.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-parameter-properties.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-parameter-properties.ts)
+- Documentation: [no-parameter-properties.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-parameter-properties.md)
+- Tests: [no-parameter-properties.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-parameter-properties.test.ts)

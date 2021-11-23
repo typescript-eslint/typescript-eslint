@@ -52,14 +52,14 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Proposal](https://github.com/tc39/proposal-nullish-coalescing)
 
-## Source
-
-- Rule: [no-non-null-asserted-nullish-coalescing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-non-null-asserted-nullish-coalescing.ts)
-- Documentation: [no-non-null-asserted-nullish-coalescing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-asserted-nullish-coalescing.md)
-- Tests: [no-non-null-asserted-nullish-coalescing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-non-null-asserted-nullish-coalescing.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-non-null-asserted-nullish-coalescing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-non-null-asserted-nullish-coalescing.ts)
+- Documentation: [no-non-null-asserted-nullish-coalescing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-asserted-nullish-coalescing.md)
+- Tests: [no-non-null-asserted-nullish-coalescing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-non-null-asserted-nullish-coalescing.test.ts)

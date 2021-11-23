@@ -134,14 +134,14 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 
 - TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)
 
-## Source
-
-- Rule: [no-namespace.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-namespace.ts)
-- Documentation: [no-namespace.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-namespace.md)
-- Tests: [no-namespace.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-namespace.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [no-namespace.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-namespace.ts)
+- Documentation: [no-namespace.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-namespace.md)
+- Tests: [no-namespace.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-namespace.test.ts)

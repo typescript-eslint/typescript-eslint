@@ -32,7 +32,13 @@ someCode(); // This is a comment that just happens to mention tslint
 
 If you are still using TSLint.
 
-## Source
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information
+
+### Source
 
 <!-- markdownlint-disable MD044 -->
 
@@ -40,9 +46,3 @@ If you are still using TSLint.
 - Documentation: [ban-tslint-comment.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-tslint-comment.md)
 - Tests: [ban-tslint-comment.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/ban-tslint-comment.test.ts)
 <!-- markdownlint-enable MD044 -->
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

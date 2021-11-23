@@ -73,14 +73,14 @@ enum Color {
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
 
-## Source
-
-- Rule: [prefer-enum-initializers.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-enum-initializers.ts)
-- Documentation: [prefer-enum-initializers.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-enum-initializers.md)
-- Tests: [prefer-enum-initializers.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [prefer-enum-initializers.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-enum-initializers.ts)
+- Documentation: [prefer-enum-initializers.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-enum-initializers.md)
+- Tests: [prefer-enum-initializers.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts)

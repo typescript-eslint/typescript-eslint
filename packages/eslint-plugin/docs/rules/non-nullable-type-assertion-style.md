@@ -30,14 +30,14 @@ const alsoDefinitely = maybe!;
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
 
-## Source
-
-- Rule: [non-nullable-type-assertion-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/non-nullable-type-assertion-style.ts)
-- Documentation: [non-nullable-type-assertion-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/non-nullable-type-assertion-style.md)
-- Tests: [non-nullable-type-assertion-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/non-nullable-type-assertion-style.test.ts)
-
 ## Attributes
 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
+
+### Source
+
+- Rule: [non-nullable-type-assertion-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/non-nullable-type-assertion-style.ts)
+- Documentation: [non-nullable-type-assertion-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/non-nullable-type-assertion-style.md)
+- Tests: [non-nullable-type-assertion-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/non-nullable-type-assertion-style.test.ts)

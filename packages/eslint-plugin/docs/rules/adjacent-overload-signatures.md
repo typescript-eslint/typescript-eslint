@@ -90,14 +90,14 @@ If you don't care about the general structure of the code, then you will not nee
 
 - TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
 
-## Source
-
-- Rule: [adjacent-overload-signatures.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/adjacent-overload-signatures.ts)
-- Documentation: [adjacent-overload-signatures.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md)
-- Tests: [adjacent-overload-signatures.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts)
-
 ## Attributes
 
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
+
+### Source
+
+- Rule: [adjacent-overload-signatures.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/adjacent-overload-signatures.ts)
+- Documentation: [adjacent-overload-signatures.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md)
+- Tests: [adjacent-overload-signatures.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts)
