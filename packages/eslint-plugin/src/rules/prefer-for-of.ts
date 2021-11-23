@@ -174,6 +174,7 @@ export default util.createRule({
           !contains(body, id) ||
           (node !== undefined &&
             node.type === AST_NODE_TYPES.MemberExpression &&
+            node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))
