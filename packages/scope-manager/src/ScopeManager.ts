@@ -20,6 +20,7 @@ import {
   WithScope,
 } from './scope';
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
+import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
 
 import { Variable } from './variable';
 
@@ -175,6 +176,15 @@ class ScopeManager {
     assert(this.currentScope);
     return this.nestScope(
       new ClassFieldInitializerScope(this, this.currentScope, node),
+    );
+  }
+
+  public nestClassStaticBlockScope(
+    node: ClassStaticBlockScope['block'],
+  ): ClassStaticBlockScope {
+    assert(this.currentScope);
+    return this.nestScope(
+      new ClassStaticBlockScope(this, this.currentScope, node),
     );
   }
 
