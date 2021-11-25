@@ -88,7 +88,7 @@ const [a] = [1];
 const [b, c] = [1, 2];
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 const [a]: number[] = [1];
@@ -119,7 +119,7 @@ const mapper = {
 };
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 const logsSize = (size: number) => console.log(size);
@@ -148,7 +148,7 @@ class ContainsText {
 }
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 class ContainsText {
@@ -172,7 +172,7 @@ const { length } = 'text';
 const [b, c] = Math.random() ? [1, 2] : [3, 4];
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 const { length }: { length: number } = 'text';
@@ -218,7 +218,7 @@ class Logger {
 }
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 function logsSize(size: number): void {
@@ -263,7 +263,7 @@ type Members = {
 };
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 type Members = {
@@ -288,7 +288,7 @@ let initialText = 'text';
 let delayedText;
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 const text: string = 'text';
@@ -310,7 +310,7 @@ Examples of code with `{ "variableDeclaration": true, "variableDeclarationIgnore
 const text = 'text';
 ```
 
-#### ❌ Correct
+#### ✅ Correct
 
 ```ts
 const a = (): void => {};

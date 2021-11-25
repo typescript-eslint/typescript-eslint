@@ -1,8 +1,5 @@
 const toString = require('mdast-util-to-string');
-const Slugger = require('github-slugger');
 const visit = require('unist-util-visit');
-
-const slugs = new Slugger();
 
 function renderTabs(tabs, nodes) {
   let tabNodes = [];
@@ -12,14 +9,13 @@ function renderTabs(tabs, nodes) {
     value: `<Tabs>`,
   });
 
-  tabs.forEach(tab => {
+  tabs.forEach((tab, id) => {
     const node = nodes[tab.start];
     const label = toString(node);
-    const id = slugs.slug(label);
 
     tabNodes.push({
       type: 'jsx',
-      value: `<TabItem label="${label}" value="${id}">`,
+      value: `<TabItem label="${label}" value="tab${id + 1}">`,
     });
 
     tabNodes.push(...nodes.slice(tab.start + 1, tab.end));
@@ -72,7 +68,9 @@ function findTabs(node, index, parent) {
     }
 
     if (child.type === 'comment' && child.value.trim() === '/tabs') {
-      tab.end = index;
+      if (tab) {
+        tab.end = index;
+      }
       break;
     }
   }
@@ -80,30 +78,35 @@ function findTabs(node, index, parent) {
   return tabs;
 }
 
-function validator(node) {
-  return node.type === 'comment' && node.value.trim() === 'tabs';
-}
-
 function tabs() {
   return root => {
-    slugs.reset();
     let foundTabs = false;
+    let alreadyImported = false;
 
-    visit(root, validator, (node, index, parent) => {
-      const tabs = findTabs(node, index, parent);
-      const start = tabs[0].start;
-      const end = tabs[tabs.length - 1].end;
+    visit(root, (node, index, parent) => {
+      if (node.type === 'import') {
+        if (node.value.includes('@theme/Tabs')) {
+          alreadyImported = true;
+        }
+      } else if (node.type === 'comment') {
+        if (node.value.trim() === 'tabs') {
+          const tabs = findTabs(node, index, parent);
 
-      if (tabs.length > 0) {
-        foundTabs = true;
-        const newChildren = renderTabs(tabs, parent.children);
-        parent.children.splice(start, end - start, ...newChildren);
+          if (tabs.length > 0) {
+            const start = tabs[0].start;
+            const end = tabs[tabs.length - 1].end;
 
-        return index + newChildren.length;
+            foundTabs = true;
+            const newChildren = renderTabs(tabs, parent.children);
+            parent.children.splice(start, end - start, ...newChildren);
+
+            return index + newChildren.length;
+          }
+        }
       }
     });
 
-    if (foundTabs) {
+    if (foundTabs && !alreadyImported) {
       root.children.unshift({
         type: 'import',
         value: "import TabItem from '@theme/TabItem';",

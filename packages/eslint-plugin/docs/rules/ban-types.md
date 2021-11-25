@@ -76,7 +76,11 @@ The default options provide a set of "best practices", intended to provide safet
   - This is a point of confusion for many developers, who think it means "any object type".
   - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
 
-**_Important note:_** the default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
+:::important
+
+The default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
+
+:::
 
 <details>
 <summary>Default Options</summary>
