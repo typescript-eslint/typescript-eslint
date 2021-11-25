@@ -1,4 +1,5 @@
 import {
+  ASTUtils,
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -32,6 +33,8 @@ export default util.createRule<Options, MessageIds>({
             ? node.parent.parent
             : node.parent;
 
+        const variable = ASTUtils.findVariable(context.getScope(), 'require');
+
         if (
           parent &&
           [
@@ -41,7 +44,8 @@ export default util.createRule<Options, MessageIds>({
             AST_NODE_TYPES.TSAsExpression,
             AST_NODE_TYPES.TSTypeAssertion,
             AST_NODE_TYPES.VariableDeclarator,
-          ].includes(parent.type)
+          ].includes(parent.type) &&
+          !variable?.identifiers.length
         ) {
           context.report({
             node,
