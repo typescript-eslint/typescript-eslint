@@ -12166,6 +12166,14 @@ remark-admonitions@^1.2.1:
     unified "^8.4.2"
     unist-util-visit "^2.0.1"
 
+remark-docusaurus-tabs@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/remark-docusaurus-tabs/-/remark-docusaurus-tabs-0.2.0.tgz#39e02b2e72a68458c1c11003e95ddb7d236e8006"
+  integrity sha512-Xl8FkeQAdDqlhf7EurBxCkT7cfA5QK2PN8eoFr94g1OOuc7XsgVk897zf8yhNNnpQYR8nd/XC6JaXTZxHxX4mA==
+  dependencies:
+    mdast-util-to-string "^2.0.0"
+    unist-util-visit "^2.0.3"
+
 remark-emoji@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/remark-emoji/-/remark-emoji-2.2.0.tgz#1c702090a1525da5b80e15a8f963ef2c8236cac7"
