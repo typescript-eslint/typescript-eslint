@@ -7,7 +7,7 @@ It adds support for handling TypeScript specific code that would otherwise trigg
 
 One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -75,7 +75,7 @@ class Foo {
 }
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

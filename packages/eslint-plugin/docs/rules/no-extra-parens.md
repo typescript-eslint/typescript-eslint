@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-extra-parens`](https://eslint.org/docs/rules/no-extra-parens) rule.
 It adds support for TypeScript type assertions.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

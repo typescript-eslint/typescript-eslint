@@ -41,7 +41,7 @@ class Foo {
 }
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

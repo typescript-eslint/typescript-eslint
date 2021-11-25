@@ -98,7 +98,7 @@ const e: string[] = ['a', 'b'];
 const f: readonly string[] = ['a', 'b'];
 ```
 
-## Combination matrix
+## Combination Matrix
 
 This matrix lists all possible option combinations and their expected results for different types of Arrays.
 

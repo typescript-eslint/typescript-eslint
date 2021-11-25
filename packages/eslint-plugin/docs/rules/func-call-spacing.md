@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/func-call-spacing`](https://eslint.org/docs/rules/func-call-spacing) rule.
 It adds support for generic type parameters on function calls.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

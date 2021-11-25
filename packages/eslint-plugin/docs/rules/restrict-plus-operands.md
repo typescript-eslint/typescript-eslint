@@ -57,7 +57,7 @@ let bar = '';
 bar += 'test';
 ```
 
-## How to use
+## How to Use
 
 ```json
 {

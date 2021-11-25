@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-invalid-this`](https://eslint.org/docs/rules/no-invalid-this) rule.
 It adds support for TypeScript's `this` parameters.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

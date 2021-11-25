@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-duplicate-imports`](https://eslint.org/docs/rules/no-duplicate-imports) rule.
 This version adds support for type-only import and export.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

@@ -92,7 +92,7 @@ class Foo {
 setTimeout(Foo.fn, 100);
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

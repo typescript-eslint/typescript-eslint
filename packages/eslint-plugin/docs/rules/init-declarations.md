@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/init-declarations`](https://eslint.org/docs/rules/init-declarations) rule.
 It adds support for TypeScript's `declare` variables.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

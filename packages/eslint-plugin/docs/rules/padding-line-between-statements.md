@@ -6,7 +6,7 @@ This rule extends the base [`eslint/padding-line-between-statements`](https://es
 
 **It adds support for TypeScript constructs such as `interface` and `type`.**
 
-## How to use
+## How to Use
 
 ```jsonc
 {

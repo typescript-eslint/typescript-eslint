@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
