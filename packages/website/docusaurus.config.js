@@ -32,6 +32,7 @@ const config = {
         customCss: require.resolve('./src/css/custom.css'),
       },
     ],
+    '@docusaurus/theme-search-algolia',
     [
       '@docusaurus/plugin-content-pages',
       {
@@ -67,7 +68,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/theme-common').UserThemeConfig} */
     ({
-      // sidebarCollapsible: false,
+      algolia: {
+        appId: 'BH4D9OD16A',
+        apiKey: '1ad6b47d4e742c4c0653877b5511c602',
+        indexName: 'typescript-eslint',
+      },
       metadatas: [
         { name: 'msapplication-TileColor', content: '#443fd4' },
         { name: 'theme-color', content: '#443fd4' },

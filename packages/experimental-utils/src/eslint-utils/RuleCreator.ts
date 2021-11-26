@@ -8,12 +8,12 @@ import {
 import { applyDefault } from './applyDefault';
 
 // we automatically add the url
-type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-type NamedCreateRuleMeta<TMessageIds extends string> = {
+export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
+export type NamedCreateRuleMeta<TMessageIds extends string> = {
   docs: NamedCreateRuleMetaDocs;
 } & Omit<RuleMetaData<TMessageIds>, 'docs'>;
 
-interface CreateAndOptions<
+export interface RuleCreateAndOptions<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
   TRuleListener extends RuleListener,
@@ -25,19 +25,19 @@ interface CreateAndOptions<
   defaultOptions: Readonly<TOptions>;
 }
 
-interface RuleWithMeta<
+export interface RuleWithMeta<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
   TRuleListener extends RuleListener,
-> extends CreateAndOptions<TOptions, TMessageIds, TRuleListener> {
+> extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
   meta: RuleMetaData<TMessageIds>;
 }
 
-interface RuleWithMetaAndName<
+export interface RuleWithMetaAndName<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
   TRuleListener extends RuleListener,
-> extends CreateAndOptions<TOptions, TMessageIds, TRuleListener> {
+> extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
   meta: NamedCreateRuleMeta<TMessageIds>;
   name: string;
 }
@@ -48,7 +48,7 @@ interface RuleWithMetaAndName<
  * @param urlCreator Creates a documentation URL for a given rule name.
  * @returns Function to create a rule with the docs URL format.
  */
-function RuleCreator(urlCreator: (ruleName: string) => string) {
+export function RuleCreator(urlCreator: (ruleName: string) => string) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
@@ -106,5 +106,3 @@ function createRule<
 }
 
 RuleCreator.withoutDocs = createRule;
-
-export { RuleCreator };

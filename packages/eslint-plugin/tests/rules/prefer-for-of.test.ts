@@ -180,6 +180,16 @@ for (var c = 0; c < arr.length; c++) {
     `
 for (var d = 0; d < arr.length; d++) doMath?.(d);
     `,
+    `
+for (let i = 0; i < test.length; ++i) {
+  this[i];
+}
+    `,
+    `
+for (let i = 0; i < this.length; ++i) {
+  yield this[i];
+}
+    `,
   ],
   invalid: [
     {
@@ -357,6 +367,30 @@ for (let i = 0; i < arr.length; i++) {
       code: `
 for (let i = 0; i < arr.length; i++) {
   ({ foo: obj[arr[i]] } = { foo: 1 });
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.item.length; ++i) {
+  this.item[i];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.array.length; ++i) {
+  yield this.array[i];
 }
       `,
       errors: [
