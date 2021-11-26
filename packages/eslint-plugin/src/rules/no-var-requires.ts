@@ -34,8 +34,8 @@ export default util.createRule<Options, MessageIds>({
             : node.parent;
 
         if (
-          !parent ||
-          ![
+          parent &&
+          [
             AST_NODE_TYPES.CallExpression,
             AST_NODE_TYPES.MemberExpression,
             AST_NODE_TYPES.NewExpression,
@@ -44,18 +44,15 @@ export default util.createRule<Options, MessageIds>({
             AST_NODE_TYPES.VariableDeclarator,
           ].includes(parent.type)
         ) {
-          return;
-        }
+          const variable = ASTUtils.findVariable(context.getScope(), 'require');
 
-        const variable = ASTUtils.findVariable(context.getScope(), 'require');
-        if (!variable?.identifiers.length) {
-          return;
+          if (!variable?.identifiers.length) {
+            context.report({
+              node,
+              messageId: 'noVarReqs',
+            });
+          }
         }
-
-        context.report({
-          node,
-          messageId: 'noVarReqs',
-        });
       },
     };
   },
