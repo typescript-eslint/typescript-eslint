@@ -394,10 +394,13 @@ let b: Foo<NS.Good>;
       code: noFormat`
 let foo: {} = {};
 let bar: {     } = {};
+let baz: {
+} = {};
       `,
       output: `
 let foo: object = {};
 let bar: object = {};
+let baz: object = {};
       `,
       options: [
         {
@@ -426,6 +429,15 @@ let bar: object = {};
             customMessage: ' Use object instead.',
           },
           line: 3,
+          column: 10,
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 4,
           column: 10,
         },
       ],
