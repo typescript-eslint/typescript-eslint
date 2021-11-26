@@ -33,25 +33,29 @@ export default util.createRule<Options, MessageIds>({
             ? node.parent.parent
             : node.parent;
 
-        const variable = ASTUtils.findVariable(context.getScope(), 'require');
-
         if (
-          parent &&
-          [
+          !parent ||
+          ![
             AST_NODE_TYPES.CallExpression,
             AST_NODE_TYPES.MemberExpression,
             AST_NODE_TYPES.NewExpression,
             AST_NODE_TYPES.TSAsExpression,
             AST_NODE_TYPES.TSTypeAssertion,
             AST_NODE_TYPES.VariableDeclarator,
-          ].includes(parent.type) &&
-          !variable?.identifiers.length
+          ].includes(parent.type)
         ) {
-          context.report({
-            node,
-            messageId: 'noVarReqs',
-          });
+          return;
         }
+
+        const variable = ASTUtils.findVariable(context.getScope(), 'require');
+        if (!variable?.identifiers.length) {
+          return;
+        }
+
+        context.report({
+          node,
+          messageId: 'noVarReqs',
+        });
       },
     };
   },
