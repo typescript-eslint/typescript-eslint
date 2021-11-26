@@ -36,11 +36,10 @@ function Playground(): JSX.Element {
   const updateSelectedNode = useCallback(
     (node: TSESTree.Node | null) => {
       if (
-        selectedNode !== node &&
-        (!node ||
-          !selectedNode ||
-          selectedNode.range[0] !== node.range[0] ||
-          selectedNode.range[1] !== node.range[1])
+        !node ||
+        !selectedNode ||
+        selectedNode.range[0] !== node.range[0] ||
+        selectedNode.range[1] !== node.range[1]
       ) {
         setSelectedNode(node);
       }

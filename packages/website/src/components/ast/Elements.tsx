@@ -15,6 +15,7 @@ import {
   filterRecord,
   hasChildInRange,
   isArrayInRange,
+  isEsNode,
   isInRange,
   isRecord,
 } from './selection';
@@ -99,21 +100,25 @@ export function ElementObject(
   );
   const listItem = useRef<HTMLDivElement | null>(null);
 
-  const onMouseEnter = useCallback((e: SyntheticEvent) => {
-    if ('type' in props.value && 'loc' in props.value) {
-      props.onSelectNode(props.value as TSESTree.Node);
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }, []);
+  const onMouseEnter = useCallback(
+    (e: SyntheticEvent) => {
+      if (isEsNode(props.value)) {
+        props.onSelectNode(props.value as TSESTree.Node);
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    },
+    [props.value],
+  );
 
-  const onMouseLeave = useCallback((e: SyntheticEvent) => {
-    if ('type' in props.value && 'loc' in props.value) {
-      props.onSelectNode(null);
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }, []);
+  const onMouseLeave = useCallback(
+    (_e: SyntheticEvent) => {
+      if (isEsNode(props.value)) {
+        props.onSelectNode(null);
+      }
+    },
+    [props.value],
+  );
 
   useEffect(() => {
     const selected = isInRange(props.selection, props.value);
@@ -143,7 +148,7 @@ export function ElementObject(
         isExpanded ? '' : styles.open,
         isSelected ? styles.selected : '',
       )}
-      onMouseMove={onMouseEnter}
+      onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <PropertyName
