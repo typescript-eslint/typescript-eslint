@@ -25,7 +25,7 @@ export type Options = [
 export type MessageIds = 'bannedTypeMessage';
 
 function removeSpaces(str: string): string {
-  return str.replace(/ /g, '');
+  return str.replace(/\s/g, '');
 }
 
 function stringifyNode(
