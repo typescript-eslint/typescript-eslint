@@ -20,6 +20,10 @@ export interface WebLinter {
   ): LintMessage[];
 }
 
+export interface LinterLoader {
+  loadLinter(): WebLinter;
+}
+
 export type { TSESTree } from '@typescript-eslint/types';
 
 export type {

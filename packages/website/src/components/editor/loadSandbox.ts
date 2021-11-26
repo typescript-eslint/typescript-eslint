@@ -1,6 +1,6 @@
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
-import type { WebLinter } from '@typescript-eslint/website-eslint';
+import type { LinterLoader } from '@typescript-eslint/website-eslint';
 
 type Monaco = typeof import('monaco-editor');
 type TS = typeof import('typescript');
@@ -10,9 +10,7 @@ declare global {
     main: Monaco,
     tsWorker: typeof TsWorker,
     sandboxFactory: typeof SandboxFactory,
-    linter: {
-      loadLinter(): WebLinter;
-    },
+    linter: LinterLoader,
   ) => void;
   interface WindowRequire {
     (files: string[], cb: WindowRequireCb): void;
@@ -26,10 +24,6 @@ declare global {
     ts: TS;
     require: WindowRequire;
   }
-}
-
-export interface LinterLoader {
-  loadLinter(): WebLinter;
 }
 
 export interface SandboxModel {

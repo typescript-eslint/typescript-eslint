@@ -13,10 +13,7 @@ import { LoadingEditor } from './editor/LoadingEditor';
 import { EditorEmbed } from './editor/EditorEmbed';
 import type { RuleDetails } from './types';
 
-import type {
-  ParseForESLintResult,
-  TSESTree,
-} from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/website-eslint';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
@@ -29,7 +26,7 @@ function Playground(): JSX.Element {
     tsConfig: {},
   });
   const { isDarkTheme } = useThemeContext();
-  const [ast, setAST] = useState<ParseForESLintResult['ast'] | string | null>();
+  const [ast, setAST] = useState<TSESTree.Program | string | null>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);

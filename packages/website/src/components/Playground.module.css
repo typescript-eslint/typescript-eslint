@@ -21,7 +21,7 @@
   width: calc(100vw - 20rem);
 }
 
-.astViewer, .config {
+.astViewer {
   height: 100%;
   width: 50%;
   border: 1px solid var(--ifm-color-emphasis-100);
@@ -29,6 +29,7 @@
   background: var(--ifm-background-surface-color);
   word-wrap: initial;
   white-space: nowrap;
+  background: var(--code-editor-bg);
 }
 
 .codeContainer {

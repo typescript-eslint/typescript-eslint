@@ -10,6 +10,10 @@ export default function PropertyValue(props: { value: unknown }): JSX.Element {
     return <span className={styles.propNumber}>{props.value}</span>;
   } else if (typeof props.value === 'bigint') {
     return <span className={styles.propNumber}>{String(props.value)}n</span>;
+  } else if (props.value instanceof RegExp) {
+    return <span className={styles.propRegExp}>{String(props.value)}</span>;
+  } else if (typeof props.value === 'undefined' || props.value === null) {
+    return <span className={styles.propEmpty}>{String(props.value)}</span>;
   } else if (typeof props.value === 'boolean') {
     return (
       <span className={styles.propBoolean}>

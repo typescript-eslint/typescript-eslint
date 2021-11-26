@@ -2,20 +2,20 @@
 .subList {
   cursor: default;
   box-sizing: border-box;
-  font-family: monospace;
   margin: 0;
-  padding-left: 0;
   list-style: none;
-}
-
-.subList {
-  padding-left: 1rem;
+  padding-left: 1.5rem;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 13px;
+  font-feature-settings: "liga" 0, "calt" 0;
+  line-height: 18px;
+  letter-spacing: 0px;
 }
 
 .nonExpand,
 .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
-  padding-left: 0.9rem;
 }
 
 .expand.open::before {
@@ -23,7 +23,7 @@
 }
 
 .selected {
-  background-color: var(--code-line-decoration);
+  background: var(--code-line-decoration);
 }
 
 .expand::before {
@@ -48,6 +48,14 @@
 
 .propNumber {
   color: #268bd2;
+}
+
+.propEmpty {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.propRegExp {
+  color: #b58900;
 }
 
 .propBoolean {
