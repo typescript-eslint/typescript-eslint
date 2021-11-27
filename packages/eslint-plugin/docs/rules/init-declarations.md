@@ -30,9 +30,3 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [init-declarations.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/init-declarations.ts)
-- Documentation: [init-declarations.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/init-declarations.md)
-- Tests: [init-declarations.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/init-declarations.test.ts)

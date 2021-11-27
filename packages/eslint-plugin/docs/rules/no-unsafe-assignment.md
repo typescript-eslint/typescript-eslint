@@ -82,9 +82,3 @@ const x: Set<unknown> = y as Set<any>;
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-unsafe-assignment.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unsafe-assignment.ts)
-- Documentation: [no-unsafe-assignment.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-assignment.md)
-- Tests: [no-unsafe-assignment.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unsafe-assignment.test.ts)

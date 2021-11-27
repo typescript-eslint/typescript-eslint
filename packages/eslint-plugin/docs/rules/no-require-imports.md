@@ -42,9 +42,3 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-require-imports.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-require-imports.ts)
-- Documentation: [no-require-imports.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-require-imports.md)
-- Tests: [no-require-imports.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-require-imports.test.ts)

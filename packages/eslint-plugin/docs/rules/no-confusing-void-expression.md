@@ -155,9 +155,3 @@ Also, if you prefer concise coding style then also don't use it.
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-confusing-void-expression.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-confusing-void-expression.ts)
-- Documentation: [no-confusing-void-expression.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-confusing-void-expression.md)
-- Tests: [no-confusing-void-expression.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-confusing-void-expression.test.ts)

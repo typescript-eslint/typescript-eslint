@@ -120,9 +120,3 @@ If you do not want to enforce consistent type assertions.
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [consistent-type-assertions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/consistent-type-assertions.ts)
-- Documentation: [consistent-type-assertions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-assertions.md)
-- Tests: [consistent-type-assertions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/consistent-type-assertions.test.ts)

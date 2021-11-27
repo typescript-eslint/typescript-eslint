@@ -41,9 +41,3 @@ This is generally not preferred, but can sometimes be useful for visual consiste
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [await-thenable.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/await-thenable.ts)
-- Documentation: [await-thenable.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/await-thenable.md)
-- Tests: [await-thenable.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/await-thenable.test.ts)

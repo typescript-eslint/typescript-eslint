@@ -43,9 +43,3 @@ If you don't care about strict null-checking, then you will not need this rule.
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-non-null-assertion.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-non-null-assertion.ts)
-- Documentation: [no-non-null-assertion.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-assertion.md)
-- Tests: [no-non-null-assertion.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-non-null-assertion.test.ts)

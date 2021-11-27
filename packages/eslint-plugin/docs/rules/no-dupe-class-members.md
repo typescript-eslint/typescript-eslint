@@ -30,9 +30,3 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-dupe-class-members.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-dupe-class-members.ts)
-- Documentation: [no-dupe-class-members.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-dupe-class-members.md)
-- Tests: [no-dupe-class-members.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts)

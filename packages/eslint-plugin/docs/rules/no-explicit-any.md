@@ -187,9 +187,3 @@ and you want to be able to specify `any`.
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-explicit-any.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-explicit-any.ts)
-- Documentation: [no-explicit-any.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.md)
-- Tests: [no-explicit-any.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-explicit-any.test.ts)

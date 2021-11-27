@@ -84,9 +84,3 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-implicit-any-catch.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-implicit-any-catch.ts)
-- Documentation: [no-implicit-any-catch.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-implicit-any-catch.md)
-- Tests: [no-implicit-any-catch.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-implicit-any-catch.test.ts)

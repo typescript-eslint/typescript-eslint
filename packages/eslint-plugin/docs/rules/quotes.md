@@ -30,9 +30,3 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [quotes.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/quotes.ts)
-- Documentation: [quotes.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/quotes.md)
-- Tests: [quotes.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/quotes.test.ts)

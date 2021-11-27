@@ -145,9 +145,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-nullish-coalescing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-nullish-coalescing.ts)
-- Documentation: [prefer-nullish-coalescing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-nullish-coalescing.md)
-- Tests: [prefer-nullish-coalescing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts)

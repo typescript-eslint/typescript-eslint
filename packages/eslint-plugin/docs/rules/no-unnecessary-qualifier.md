@@ -87,9 +87,3 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-unnecessary-qualifier.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-qualifier.ts)
-- Documentation: [no-unnecessary-qualifier.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md)
-- Tests: [no-unnecessary-qualifier.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-qualifier.test.ts)

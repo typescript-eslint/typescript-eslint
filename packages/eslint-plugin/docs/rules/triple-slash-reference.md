@@ -60,9 +60,3 @@ If you want to use all flavors of triple slash reference directives.
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [triple-slash-reference.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/triple-slash-reference.ts)
-- Documentation: [triple-slash-reference.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/triple-slash-reference.md)
-- Tests: [triple-slash-reference.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/triple-slash-reference.test.ts)

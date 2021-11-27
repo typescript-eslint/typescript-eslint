@@ -62,9 +62,3 @@ If you don't want to use typechecking in your linting, you can't use this rule.
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-reduce-type-parameter.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-reduce-type-parameter.ts)
-- Documentation: [prefer-reduce-type-parameter.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-reduce-type-parameter.md)
-- Tests: [prefer-reduce-type-parameter.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-reduce-type-parameter.test.ts)

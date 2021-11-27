@@ -72,9 +72,3 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-empty-interface.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-empty-interface.ts)
-- Documentation: [no-empty-interface.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-empty-interface.md)
-- Tests: [no-empty-interface.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-empty-interface.test.ts)

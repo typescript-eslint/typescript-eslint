@@ -281,9 +281,3 @@ function foo(arg: MyType) {}
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-readonly-parameter-types.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-readonly-parameter-types.ts)
-- Documentation: [prefer-readonly-parameter-types.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly-parameter-types.md)
-- Tests: [prefer-readonly-parameter-types.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-readonly-parameter-types.test.ts)

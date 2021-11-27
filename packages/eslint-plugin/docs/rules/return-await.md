@@ -224,9 +224,3 @@ async function validNever3() {
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [return-await.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/return-await.ts)
-- Documentation: [return-await.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/return-await.md)
-- Tests: [return-await.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/return-await.test.ts)

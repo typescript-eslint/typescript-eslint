@@ -108,9 +108,3 @@ for how literal values are exposed by your classes.
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [class-literal-property-style.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/class-literal-property-style.ts)
-- Documentation: [class-literal-property-style.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/class-literal-property-style.md)
-- Tests: [class-literal-property-style.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts)

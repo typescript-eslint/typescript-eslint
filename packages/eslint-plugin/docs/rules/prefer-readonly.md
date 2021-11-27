@@ -91,9 +91,3 @@ class Container {
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-readonly.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-readonly.ts)
-- Documentation: [prefer-readonly.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md)
-- Tests: [prefer-readonly.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-readonly.test.ts)

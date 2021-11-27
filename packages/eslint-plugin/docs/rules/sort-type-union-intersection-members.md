@@ -155,9 +155,3 @@ The ordering of groups is determined by this option.
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [sort-type-union-intersection-members.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/sort-type-union-intersection-members.ts)
-- Documentation: [sort-type-union-intersection-members.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/sort-type-union-intersection-members.md)
-- Tests: [sort-type-union-intersection-members.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/sort-type-union-intersection-members.test.ts)

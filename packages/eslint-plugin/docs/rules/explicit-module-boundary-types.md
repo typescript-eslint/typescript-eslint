@@ -289,9 +289,3 @@ If you wish to make sure all functions have explicit return types, as opposed to
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [explicit-module-boundary-types.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/explicit-module-boundary-types.ts)
-- Documentation: [explicit-module-boundary-types.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-module-boundary-types.md)
-- Tests: [explicit-module-boundary-types.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/explicit-module-boundary-types.test.ts)

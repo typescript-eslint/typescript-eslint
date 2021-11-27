@@ -56,9 +56,3 @@ String.raw`foo`;
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-unsafe-call.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unsafe-call.ts)
-- Documentation: [no-unsafe-call.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-call.md)
-- Tests: [no-unsafe-call.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unsafe-call.test.ts)

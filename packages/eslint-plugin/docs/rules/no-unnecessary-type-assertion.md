@@ -81,9 +81,3 @@ If you don't care about having no-op type assertions in your code, then you can 
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-unnecessary-type-assertion.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-type-assertion.ts)
-- Documentation: [no-unnecessary-type-assertion.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md)
-- Tests: [no-unnecessary-type-assertion.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-type-assertion.test.ts)

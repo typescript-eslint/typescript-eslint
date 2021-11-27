@@ -96,9 +96,3 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 - [x] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-empty-function.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-empty-function.ts)
-- Documentation: [no-empty-function.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-empty-function.md)
-- Tests: [no-empty-function.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-empty-function.test.ts)

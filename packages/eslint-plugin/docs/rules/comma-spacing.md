@@ -30,9 +30,3 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [comma-spacing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/comma-spacing.ts)
-- Documentation: [comma-spacing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/comma-spacing.md)
-- Tests: [comma-spacing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/comma-spacing.test.ts)

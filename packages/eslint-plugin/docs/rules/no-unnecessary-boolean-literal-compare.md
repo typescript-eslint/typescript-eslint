@@ -154,9 +154,3 @@ if (!(someNullCondition ?? true)) {
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [no-unnecessary-boolean-literal-compare.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-unnecessary-boolean-literal-compare.ts)
-- Documentation: [no-unnecessary-boolean-literal-compare.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-boolean-literal-compare.md)
-- Tests: [no-unnecessary-boolean-literal-compare.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-unnecessary-boolean-literal-compare.test.ts)

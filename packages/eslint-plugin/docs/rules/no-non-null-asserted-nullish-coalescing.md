@@ -57,9 +57,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [no-non-null-asserted-nullish-coalescing.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/no-non-null-asserted-nullish-coalescing.ts)
-- Documentation: [no-non-null-asserted-nullish-coalescing.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-asserted-nullish-coalescing.md)
-- Tests: [no-non-null-asserted-nullish-coalescing.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/no-non-null-asserted-nullish-coalescing.test.ts)

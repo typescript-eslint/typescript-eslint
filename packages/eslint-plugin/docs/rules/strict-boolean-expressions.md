@@ -201,9 +201,3 @@ This rule provides following fixes and suggestions for particular types in boole
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [strict-boolean-expressions.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/strict-boolean-expressions.ts)
-- Documentation: [strict-boolean-expressions.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md)
-- Tests: [strict-boolean-expressions.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/strict-boolean-expressions.test.ts)

@@ -26,9 +26,3 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 - [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-namespace-keyword.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-namespace-keyword.ts)
-- Documentation: [prefer-namespace-keyword.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md)
-- Tests: [prefer-namespace-keyword.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts)

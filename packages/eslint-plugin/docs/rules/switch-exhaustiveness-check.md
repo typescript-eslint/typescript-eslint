@@ -113,9 +113,3 @@ If program doesn't have union types with many parts. Downside of this rule is th
 - [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
-
-### Source
-
-- Rule: [switch-exhaustiveness-check.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/switch-exhaustiveness-check.ts)
-- Documentation: [switch-exhaustiveness-check.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/switch-exhaustiveness-check.md)
-- Tests: [switch-exhaustiveness-check.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/switch-exhaustiveness-check.test.ts)

@@ -73,9 +73,3 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 - [ ] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
-
-### Source
-
-- Rule: [prefer-ts-expect-error.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/prefer-ts-expect-error.ts)
-- Documentation: [prefer-ts-expect-error.md](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-ts-expect-error.md)
-- Tests: [prefer-ts-expect-error.test.ts](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/tests/rules/prefer-ts-expect-error.test.ts)
