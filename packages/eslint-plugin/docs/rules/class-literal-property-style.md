@@ -8,8 +8,12 @@ When writing TypeScript libraries that could be used by JavaScript users however
 This rule aims to ensure that literals exposed by classes are done so consistently, in one of the two style described above.
 By default this rule prefers the `fields` style as it means JS doesn't have to setup & teardown a function closure.
 
-Note that this rule only checks for constant _literal_ values (string, template string, number, bigint, boolean, regexp, null). It does not check objects or arrays, because a readonly field behaves differently to a getter in those cases. It also does not check functions, as it is a common pattern to use readonly fields with arrow function values as auto-bound methods.
+:::note
+
+This rule only checks for constant _literal_ values (string, template string, number, bigint, boolean, regexp, null). It does not check objects or arrays, because a readonly field behaves differently to a getter in those cases. It also does not check functions, as it is a common pattern to use readonly fields with arrow function values as auto-bound methods.
 This is because these types can be mutated and carry with them more complex implications about their usage.
+
+:::
 
 ### The `fields` style
 
