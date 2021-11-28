@@ -6,7 +6,7 @@ This rule extends the base [`eslint/no-loss-of-precision`](https://eslint.org/do
 It adds support for [numeric separators](https://github.com/tc39/proposal-numeric-separator).
 Note that this rule requires ESLint v7.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

@@ -145,7 +145,7 @@ if (!(someNullCondition ?? true)) {
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Related to
+## Related To
 
 - TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
 

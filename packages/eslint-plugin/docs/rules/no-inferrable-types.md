@@ -147,7 +147,7 @@ If you do not want to enforce inferred types.
 
 TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferrable-types/)
 

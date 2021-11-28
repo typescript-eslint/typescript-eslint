@@ -44,7 +44,7 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-## How to use
+## How to Use
 
 ```json
 {

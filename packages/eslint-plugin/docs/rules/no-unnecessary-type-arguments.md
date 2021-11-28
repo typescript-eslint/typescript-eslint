@@ -52,7 +52,7 @@ interface I<T = number> {}
 class Impl implements I<string> {}
 ```
 
-## Related to
+## Related To
 
 - TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
 

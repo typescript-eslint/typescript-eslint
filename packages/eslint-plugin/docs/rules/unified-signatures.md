@@ -32,7 +32,7 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
-## Related to
+## Related To
 
 - TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
 

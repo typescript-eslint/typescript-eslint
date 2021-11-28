@@ -137,7 +137,7 @@ If you want to use all of the TypeScript directives.
 
 - TypeScript [Type Checking JavaScript Files](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [ban-ts-ignore](https://palantir.github.io/tslint/rules/ban-ts-ignore/)
 

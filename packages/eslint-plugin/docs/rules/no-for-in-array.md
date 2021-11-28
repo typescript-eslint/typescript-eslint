@@ -43,7 +43,7 @@ for (const x in { a: 3, b: 4, c: 5 }) {
 
 If you want to iterate through a loop using the indices in an array as strings, you can turn off this rule.
 
-## Related to
+## Related To
 
 - TSLint: ['no-for-in-array'](https://palantir.github.io/tslint/rules/no-for-in-array/)
 

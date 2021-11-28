@@ -146,7 +146,7 @@ The return type of a function can be inspected by going to its definition or hov
 If you don't care about being explicit about the void type in actual code then don't use this rule.
 Also, if you prefer concise coding style then also don't use it.
 
-## Related to
+## Related To
 
 - TSLint: ['no-void-expression'](https://palantir.github.io/tslint/rules/no-void-expression/)
 

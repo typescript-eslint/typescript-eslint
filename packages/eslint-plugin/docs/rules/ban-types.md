@@ -181,7 +181,7 @@ const curly1: number = 1;
 const curly2: Record<'a', string> = { a: 'string' };
 ```
 
-## Compatibility
+## Related To
 
 - TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
 

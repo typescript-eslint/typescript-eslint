@@ -72,7 +72,7 @@ const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)

@@ -28,7 +28,7 @@ Array(500);
 new Array(someOtherArray.length);
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

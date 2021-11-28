@@ -46,7 +46,7 @@ new Map();
 String.raw`foo`;
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)

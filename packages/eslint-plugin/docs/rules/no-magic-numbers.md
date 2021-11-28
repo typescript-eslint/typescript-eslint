@@ -9,7 +9,7 @@ It adds support for:
 - `enum` members (`enum Foo { bar = 1 }`),
 - `readonly` class properties (`class Foo { readonly bar = 1 }`).
 
-## How to use
+## How to Use
 
 ```jsonc
 {

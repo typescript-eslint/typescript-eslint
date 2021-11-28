@@ -33,7 +33,7 @@ import lib10 from 'lib10';
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-require-imports](https://palantir.github.io/tslint/rules/no-require-imports/)
 

@@ -335,7 +335,7 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
 

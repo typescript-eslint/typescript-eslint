@@ -79,7 +79,7 @@ type T = { x: number };
 
 If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
 

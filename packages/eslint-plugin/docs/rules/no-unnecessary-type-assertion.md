@@ -72,7 +72,7 @@ const foo: Foo = 3;
 
 If you don't care about having no-op type assertions in your code, then you can turn off this rule.
 
-## Related to
+## Related To
 
 - TSLint: [`no-unnecessary-type-assertion`](https://palantir.github.io/tslint/rules/no-unnecessary-type-assertion/)
 

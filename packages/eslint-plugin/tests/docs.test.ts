@@ -3,6 +3,7 @@ import path from 'path';
 
 import marked from 'marked';
 import rules from '../src/rules';
+import { titleCase } from 'title-case';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
@@ -11,18 +12,20 @@ function createRuleLink(ruleName: string): string {
   return `[\`@typescript-eslint/${ruleName}\`](./docs/rules/${ruleName}.md)`;
 }
 
+function parseMarkdownFile(filePath: string): marked.TokensList {
+  const file = fs.readFileSync(filePath, 'utf-8');
+
+  return marked.lexer(file, {
+    gfm: true,
+    silent: false,
+  });
+}
+
 function parseReadme(): {
   base: marked.Tokens.Table;
   extension: marked.Tokens.Table;
 } {
-  const readmeRaw = fs.readFileSync(
-    path.resolve(__dirname, '../README.md'),
-    'utf8',
-  );
-  const readme = marked.lexer(readmeRaw, {
-    gfm: true,
-    silent: false,
-  });
+  const readme = parseMarkdownFile(path.resolve(__dirname, '../README.md'));
 
   // find the table
   const rulesTables = readme.filter(
@@ -56,11 +59,7 @@ describe('Validating rule docs', () => {
     const filePath = path.join(docsRoot, `${ruleName}.md`);
     it(`Description of ${ruleName}.md must match`, () => {
       // validate if description of rule is same as in docs
-      const file = fs.readFileSync(filePath, 'utf-8');
-      const tokens = marked.lexer(file, {
-        gfm: true,
-        silent: false,
-      });
+      const tokens = parseMarkdownFile(filePath);
 
       // Rule title not found.
       // Rule title does not match the rule metadata.
@@ -71,12 +70,21 @@ describe('Validating rule docs', () => {
       });
     });
 
-    it('Attributes in the docs must match the metadata', () => {
-      const file = fs.readFileSync(filePath, 'utf-8');
-      const tokens = marked.lexer(file, {
-        gfm: true,
-        silent: false,
-      });
+    it(`Headers in ${ruleName}.md must be title-cased`, () => {
+      const tokens = parseMarkdownFile(filePath);
+
+      // Get all H2 headers objects as the other levels are variable by design.
+      const headers = tokens.filter(
+        token => token.type === 'heading' && token.depth === 2,
+      ) as marked.Tokens.Heading[];
+
+      headers.forEach(header =>
+        expect(header.text).toBe(titleCase(header.text)),
+      );
+    });
+
+    it(`Attributes in ${ruleName}.md must match the metadata`, () => {
+      const tokens = parseMarkdownFile(filePath);
 
       // Verify attributes header exists
       const attributesHeaderIndex = tokens.findIndex(
