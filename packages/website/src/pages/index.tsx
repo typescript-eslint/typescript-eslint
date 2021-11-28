@@ -126,8 +126,6 @@ function Sponsors(props: {
   title: string;
   className?: string;
 }): JSX.Element {
-  // TODO this seems like a ts-eslint problem: JSON types are not resolved
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
   const tierSponsors = sponsors.filter(sponsor => sponsor.tier === props.tier);
   return (
     <div className={props.className}>
@@ -147,7 +145,6 @@ function Sponsors(props: {
       </ul>
     </div>
   );
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 }
 
 function Home(): JSX.Element {
