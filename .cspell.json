@@ -15,6 +15,7 @@
     "**/node_modules/**",
     "packages/website/.docusaurus/**",
     "packages/website/build/**",
+    "packages/website/src/vendor/**",
     "yarn.lock"
   ],
   "dictionaries": [
