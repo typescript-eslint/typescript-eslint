@@ -6,6 +6,8 @@ fixtures
 shared-fixtures
 coverage
 __snapshots__
+.docusaurus
+build
 
 packages/eslint-plugin-tslint/tests
 

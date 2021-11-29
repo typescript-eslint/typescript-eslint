@@ -1,3 +1,28 @@
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
 class AssertionError extends Error {
   constructor(options) {
     super(options);
@@ -12,22 +37,25 @@ class AssertionError extends Error {
       this.message = '';
       this.generatedMessage = true;
     }
-    var stackStartFunction = options.stackStartFunction || fail;
+    const stackStartFunction = options.stackStartFunction || fail;
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, stackStartFunction);
     } else {
       // non v8 browsers so we can have a stacktrace
-      var err = new Error();
+      const err = new Error();
       if (err.stack) {
-        var out = err.stack;
+        let out = err.stack;
 
         // try to strip useless frames
-        var fn_name = getName(stackStartFunction);
-        var idx = out.indexOf('\n' + fn_name);
+        const fn_name =
+          typeof stackStartFunction === 'function'
+            ? stackStartFunction.name
+            : stackStartFunction.toString();
+        const idx = out.indexOf('\n' + fn_name);
         if (idx >= 0) {
           // once we have located the function frame
           // we need to strip out everything before it (and its line)
-          var next_line = out.indexOf('\n', idx + 1);
+          const next_line = out.indexOf('\n', idx + 1);
           out = out.substring(next_line + 1);
         }
 

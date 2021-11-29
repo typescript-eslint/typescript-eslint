@@ -11,6 +11,7 @@ function parseAndGenerateServices(code, options) {
     { ...extra, code, jsx: options.jsx ?? false },
     true,
   );
+
   return {
     ast: estree,
     services: {
@@ -29,13 +30,13 @@ export function parseForESLint(code, parserOptions) {
     useJSXTextNode: true,
     projectFolderIgnoreList: [],
   });
+
   const scopeManager = analyze(ast, {
     ecmaVersion:
       parserOptions.ecmaVersion === 'latest' ? 1e8 : parserOptions.ecmaVersion,
     globalReturn: parserOptions.ecmaFeatures?.globalReturn ?? false,
     sourceType: parserOptions.sourceType ?? 'script',
-  }); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  });
 
   return {
     ast,
