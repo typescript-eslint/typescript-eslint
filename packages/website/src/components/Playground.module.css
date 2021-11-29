@@ -1,0 +1,43 @@
+.options {
+  width: 20rem;
+  background: var(--ifm-background-surface-color);
+  overflow: auto;
+}
+
+.sourceCode {
+  height: 100%;
+  width: 50%;
+  border: 1px solid var(--ifm-color-emphasis-100);
+}
+
+.sourceCodeStandalone {
+  width: 100%;
+}
+
+.codeBlocks {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: calc(100vw - 20rem);
+}
+
+.astViewer {
+  height: 100%;
+  width: 50%;
+  border: 1px solid var(--ifm-color-emphasis-100);
+  overflow: auto;
+  background: var(--ifm-background-surface-color);
+  word-wrap: initial;
+  white-space: nowrap;
+  background: var(--code-editor-bg);
+}
+
+.codeContainer {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  width: 100%;
+  height: calc(100% - var(--ifm-navbar-height));
+  top: var(--ifm-navbar-height);
+  z-index: var(--ifm-z-index-fixed);
+}

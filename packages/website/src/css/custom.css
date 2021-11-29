@@ -18,7 +18,8 @@
 
   --ifm-color-info: var(--ifm-color-primary-dark);
 
-  --code-line-decoration: rgba(0, 0, 0, 0.1);
+  --code-line-decoration: rgba(53, 120, 229, 0.1);
+  --code-editor-bg: #ffffff;
 }
 
 html[data-theme='dark'] {
@@ -38,6 +39,7 @@ html[data-theme='dark'] {
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
 
   --code-line-decoration: rgba(255, 255, 255, 0.1);
+  --code-editor-bg: #1e1e1e;
 
   scrollbar-color: #454a4d #202324;
 }

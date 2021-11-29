@@ -15,6 +15,7 @@
     "**/node_modules/**",
     "packages/website/.docusaurus/**",
     "packages/website/build/**",
+    "packages/website/src/vendor/**",
     "yarn.lock"
   ],
   "dictionaries": [
@@ -71,6 +72,7 @@
     "IIFEs",
     "linebreaks",
     "markdownlint",
+    "lzstring",
     "necroing",
     "nocheck",
     "nullish",
@@ -99,6 +101,7 @@
     "transpiled",
     "transpiles",
     "transpiling",
+    "tsvfs",
     "tsconfigs",
     "tsutils",
     "typedef",

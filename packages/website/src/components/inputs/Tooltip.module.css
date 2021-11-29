@@ -1,0 +1,33 @@
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltipText {
+  visibility: hidden;
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-900);
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.2rem 1rem;
+  margin-right: 0.3rem;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  right: 110%;
+}
+
+.tooltipText::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--ifm-color-emphasis-200);
+}
+
+.tooltip.tooltipActive .tooltipText {
+  visibility: visible;
+}

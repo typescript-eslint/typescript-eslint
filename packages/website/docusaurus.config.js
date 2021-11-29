@@ -25,6 +25,7 @@ const config = {
   projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
   plugins: [
+    require.resolve('./webpack.plugin'),
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',
@@ -99,6 +100,12 @@ const config = {
             activeBasePath: 'rules',
             label: 'Rules',
             position: 'left',
+          },
+          {
+            to: 'play',
+            activeBasePath: 'play',
+            position: 'right',
+            label: 'Playground',
           },
           {
             href: githubUrl,

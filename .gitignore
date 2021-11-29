@@ -9,6 +9,7 @@ yarn-error.log*
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
+packages/website/static/sandbox
 
 # Runtime data
 pids

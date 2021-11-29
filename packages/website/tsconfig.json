@@ -14,7 +14,11 @@
     "paths": {
       "@site/*": ["./*"]
     },
-    "types": ["node", "@docusaurus/module-type-aliases"]
+    "types": [
+      "node",
+      "@docusaurus/module-type-aliases",
+      "@docusaurus/theme-classic"
+    ]
   },
   "include": ["src/"]
 }

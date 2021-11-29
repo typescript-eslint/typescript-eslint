@@ -1,0 +1,78 @@
+.list,
+.subList {
+  cursor: default;
+  box-sizing: border-box;
+  margin: 0;
+  list-style: none;
+  padding-left: 1.5rem;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 13px;
+  font-feature-settings: "liga" 0, "calt" 0;
+  line-height: 18px;
+  letter-spacing: 0px;
+}
+
+.nonExpand,
+.expand {
+  border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
+}
+
+.expand.open::before {
+  content: '+';
+}
+
+.selected {
+  background: var(--code-line-decoration);
+}
+
+.expand::before {
+  content: '-';
+  margin-left: -1rem;
+  width: 1rem;
+  display: inline-block;
+}
+
+.valueBody {
+  min-width: 300px;
+  width: fit-content;
+}
+
+.tokenName {
+  color: #2aa198;
+}
+
+.propName {
+  color: #b58900;
+}
+
+.propNumber {
+  color: #268bd2;
+}
+
+.propEmpty {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.propRegExp {
+  color: #b58900;
+}
+
+.propBoolean {
+  color: #b58900;
+}
+
+.propString {
+  color: #15aa15;
+}
+
+.hidden {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  text-decoration: underline;
+}
