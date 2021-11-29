@@ -1,17 +1,8 @@
-const path = require('path');
-const config = require('./package.json');
-const globby = require('globby');
+const workspace = require('./workspace.json');
 
-const workspaces = config.workspaces.packages.map(ws =>
-  path.posix.join(ws, 'package.json'),
+const packages = Object.keys(workspace.projects).map(name =>
+  name.charAt(0) === '@' ? name.split('/')[1] : name,
 );
-
-const packages = globby
-  .sync(workspaces, {
-    cwd: __dirname,
-  })
-  .map(pJson => require(path.join(__dirname, pJson)).name)
-  .map(name => (name.charAt(0) === '@' ? name.split('/')[1] : name));
 
 module.exports = {
   extends: ['@commitlint/config-conventional'],
