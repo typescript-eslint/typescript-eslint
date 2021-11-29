@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.4.0...v5.5.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **scope-manager:** support static class blocks ([#4211](https://github.com/typescript-eslint/typescript-eslint/issues/4211)) ([f8e9125](https://github.com/typescript-eslint/typescript-eslint/commit/f8e91256e0a721aaa906a5c40a92784da9433b53))
+
+
+
+
+
 # [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
 
 

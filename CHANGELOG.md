@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.4.0...v5.5.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [member-ordering] order literal names correctly in ([#4054](https://github.com/typescript-eslint/typescript-eslint/issues/4054)) ([d57141a](https://github.com/typescript-eslint/typescript-eslint/commit/d57141a3d13fad30a93ed99a6a15f4b0b369246a))
+* **eslint-plugin:** [no-duplicate-imports] remove unnecessary type checking for `node.source` ([#4196](https://github.com/typescript-eslint/typescript-eslint/issues/4196)) ([637722a](https://github.com/typescript-eslint/typescript-eslint/commit/637722a77667f6ed1e0cf1f0e752d61622ae8546))
+* **eslint-plugin:** [no-var-requires] do not report require created from createRequire ([#4221](https://github.com/typescript-eslint/typescript-eslint/issues/4221)) ([0040186](https://github.com/typescript-eslint/typescript-eslint/commit/0040186aa23692724986df22a71926e8a7ff9e02))
+* **eslint-plugin:** [prefer-for-of] do nor error when iterating over this ([#4176](https://github.com/typescript-eslint/typescript-eslint/issues/4176)) ([258ddb0](https://github.com/typescript-eslint/typescript-eslint/commit/258ddb0708b7a44959bd3ac399cbde912c8021c8))
+* **eslint-plugin:** [require-await] treat yield* asynciterable as an await ([#4125](https://github.com/typescript-eslint/typescript-eslint/issues/4125)) ([5a4ce6a](https://github.com/typescript-eslint/typescript-eslint/commit/5a4ce6a241b1d6c6caad87cad85c3741f0953e39))
+* **eslint-plugin:** remove all whitespaces in comparison [#4220](https://github.com/typescript-eslint/typescript-eslint/issues/4220) ([#4223](https://github.com/typescript-eslint/typescript-eslint/issues/4223)) ([853d799](https://github.com/typescript-eslint/typescript-eslint/commit/853d799428a061d9bf6a2e74b01dc49a1e4f3134))
+* **experimental-utils:** export RuleCreator interfaces ([#4199](https://github.com/typescript-eslint/typescript-eslint/issues/4199)) ([7821e4c](https://github.com/typescript-eslint/typescript-eslint/commit/7821e4c515ca2f11a14dcfa94dc77370da0287c5))
+* **experimental-utils:** fix types for eslint-utils ([#4173](https://github.com/typescript-eslint/typescript-eslint/issues/4173)) ([7079de2](https://github.com/typescript-eslint/typescript-eslint/commit/7079de26877a2313a7019845d4c33d0fc4d4b4a9))
+* **scope-manager:** support static class blocks ([#4211](https://github.com/typescript-eslint/typescript-eslint/issues/4211)) ([f8e9125](https://github.com/typescript-eslint/typescript-eslint/commit/f8e91256e0a721aaa906a5c40a92784da9433b53))
+* **visitor-keys:** add missing import assertion keys ([#4178](https://github.com/typescript-eslint/typescript-eslint/issues/4178)) ([9c38b7f](https://github.com/typescript-eslint/typescript-eslint/commit/9c38b7f7fc3ce471a8f720c4a2fbce01f3ee12a4))
+
+
+### Features
+
+* **eslint-plugin:** [member-ordering] add option to sort case insensitive ([#3896](https://github.com/typescript-eslint/typescript-eslint/issues/3896)) ([e3533d5](https://github.com/typescript-eslint/typescript-eslint/commit/e3533d5a6293a358b5eb0a6ed17da961a09b0ed3))
+* **eslint-plugin:** `array-type` distinguish whether readonly or not ([#4066](https://github.com/typescript-eslint/typescript-eslint/issues/4066)) ([314af44](https://github.com/typescript-eslint/typescript-eslint/commit/314af44bde3ccbebc620625b2931d77688525976))
+
+
+
+
+
 # [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
 
 
