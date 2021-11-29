@@ -40,7 +40,7 @@ interface I {
 }
 ```
 
-## Compatibility
+## Related To
 
 - TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
 

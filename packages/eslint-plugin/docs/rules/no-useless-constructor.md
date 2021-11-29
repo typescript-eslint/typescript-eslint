@@ -9,7 +9,7 @@ It adds support for:
 - `public` constructors when there is no superclass,
 - constructors with only parameter properties.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

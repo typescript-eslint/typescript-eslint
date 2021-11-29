@@ -15,7 +15,7 @@ async function returnsPromise1() {
 const returnsPromise2 = () => returnsPromise1();
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

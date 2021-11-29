@@ -173,13 +173,13 @@ eventEmitter.on('some-event', () => {
 If you do not use Promises in your codebase or are not concerned with possible
 misuses of them outside of what the TypeScript compiler will check.
 
-## Related to
-
-- [`no-floating-promises`](./no-floating-promises.md)
-
 ## Further Reading
 
 - [TypeScript void function assignability](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
+## Related To
+
+- [`no-floating-promises`](./no-floating-promises.md)
 
 ## Attributes
 

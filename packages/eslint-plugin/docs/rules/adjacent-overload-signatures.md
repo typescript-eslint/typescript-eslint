@@ -86,7 +86,7 @@ export function foo(sn: string | number): void;
 
 If you don't care about the general structure of the code, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
 

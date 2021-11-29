@@ -591,7 +591,7 @@ callback, etc. that would cause the code to be unreadable or impractical.
 
 - [Advance Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
 
-## Related to
+## Related To
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
 

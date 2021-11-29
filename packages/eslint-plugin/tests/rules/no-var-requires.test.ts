@@ -10,6 +10,11 @@ ruleTester.run('no-var-requires', rule, {
     "import foo = require('foo');",
     "require('foo');",
     "require?.('foo');",
+    `
+import { createRequire } from 'module';
+const require = createRequire('foo');
+const json = require('./some.json');
+    `,
   ],
   invalid: [
     {

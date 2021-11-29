@@ -57,7 +57,7 @@ let bar = '';
 bar += 'test';
 ```
 
-## How to use
+## How to Use
 
 ```json
 {
@@ -65,7 +65,7 @@ bar += 'test';
 }
 ```
 
-## Compatibility
+## Related To
 
 - TSLint: [restrict-plus-operands](https://palantir.github.io/tslint/rules/restrict-plus-operands/)
 

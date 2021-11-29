@@ -78,7 +78,7 @@ namespace X {
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
 
-## Further Reading
+## Related To
 
 - TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)
 

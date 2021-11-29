@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars) rule.
 It adds support for TypeScript features, such as types.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

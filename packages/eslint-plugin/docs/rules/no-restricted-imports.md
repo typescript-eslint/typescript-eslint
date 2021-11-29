@@ -4,7 +4,7 @@
 
 This rule extends the base [`eslint/no-restricted-imports`](https://eslint.org/docs/rules/no-restricted-imports) rule.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

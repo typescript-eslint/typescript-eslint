@@ -1088,7 +1088,7 @@ Note: Wrong alphabetic order `B(): void` should come after `a: number`.
 
 If you don't care about the general structure of your classes and interfaces, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
 

@@ -63,7 +63,7 @@ This rule accepts a single object option with the following default configuratio
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)
 

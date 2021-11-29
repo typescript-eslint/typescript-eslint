@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members) rule.
 It adds support for TypeScript's method overload definitions.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

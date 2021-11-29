@@ -8,7 +8,7 @@ const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
 
-const beforeDefaultRemarkPlugins = [[require('./src/remark/tabs'), {}]];
+const beforeDefaultRemarkPlugins = [[require('remark-docusaurus-tabs'), {}]];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 

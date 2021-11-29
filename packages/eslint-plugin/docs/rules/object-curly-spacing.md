@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing) rule.
 It adds support for TypeScript's object types.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

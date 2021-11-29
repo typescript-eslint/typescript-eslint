@@ -98,7 +98,7 @@ const e: string[] = ['a', 'b'];
 const f: readonly string[] = ['a', 'b'];
 ```
 
-## Combination matrix
+## Combination Matrix
 
 This matrix lists all possible option combinations and their expected results for different types of Arrays.
 
@@ -117,7 +117,7 @@ This matrix lists all possible option combinations and their expected results fo
 | `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
 | `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
 
-## Related to
+## Related To
 
 - TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)
 

@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/comma-spacing`](https://eslint.org/docs/rules/comma-spacing) rule.
 It adds support for trailing comma in a types parameters list.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

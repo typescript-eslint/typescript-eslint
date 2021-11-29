@@ -1,4 +1,5 @@
 import {
+  ASTUtils,
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
@@ -43,10 +44,14 @@ export default util.createRule<Options, MessageIds>({
             AST_NODE_TYPES.VariableDeclarator,
           ].includes(parent.type)
         ) {
-          context.report({
-            node,
-            messageId: 'noVarReqs',
-          });
+          const variable = ASTUtils.findVariable(context.getScope(), 'require');
+
+          if (!variable?.identifiers.length) {
+            context.report({
+              node,
+              messageId: 'noVarReqs',
+            });
+          }
         }
       },
     };

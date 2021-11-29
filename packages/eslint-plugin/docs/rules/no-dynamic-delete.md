@@ -46,7 +46,7 @@ Some environments such as older browsers might not support `Map` and `Set`.
 Do not consider this rule as performance advice before profiling your code's bottlenecks.
 Even repeated minor performance slowdowns likely do not significantly affect your application's general perceived speed.
 
-## Related to
+## Related To
 
 - TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)
 

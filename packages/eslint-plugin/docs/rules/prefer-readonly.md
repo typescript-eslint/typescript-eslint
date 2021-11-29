@@ -82,7 +82,7 @@ class Container {
 }
 ```
 
-## Related to
+## Related To
 
 - TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
 

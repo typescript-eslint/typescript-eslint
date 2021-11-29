@@ -8,7 +8,7 @@ It adds:
 - Support for optionally ignoring computed `private` and/or `protected` member access.
 - Compatibility with TypeScript's `noPropertyAccessFromIndexSignature` option.
 
-## How to use
+## How to Use
 
 ```jsonc
 {

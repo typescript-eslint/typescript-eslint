@@ -29,7 +29,7 @@ For example:
 }
 ```
 
-## Rule details
+## Rule Details
 
 This rule enforces a consistent way to define records.
 

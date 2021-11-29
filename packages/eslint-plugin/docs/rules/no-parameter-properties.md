@@ -394,7 +394,7 @@ class Foo {
 
 If you don't care about the using parameter properties in constructors, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
 

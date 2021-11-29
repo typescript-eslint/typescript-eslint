@@ -83,7 +83,7 @@ class CustomError extends Error {
 throw new CustomError();
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {

@@ -178,7 +178,7 @@ and you want to be able to specify `any`.
 
 - TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
 
-## Compatibility
+## Related To
 
 - TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
 

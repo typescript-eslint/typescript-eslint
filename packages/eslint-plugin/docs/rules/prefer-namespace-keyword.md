@@ -17,7 +17,7 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
 
