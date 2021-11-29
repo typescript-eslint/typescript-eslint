@@ -17,7 +17,7 @@ module.exports = {
       // verbose: true,
       alias: [
         {
-          // those files should be omitted, we do not want them to be xposed to web
+          // those files should be omitted, we do not want them to be exposed to web
           match: [
             /eslint\/lib\/(rule-tester|eslint|cli-engine|init)\//u,
             /eslint\/lib\/cli\.js$/,
