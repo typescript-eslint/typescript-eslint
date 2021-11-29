@@ -1,6 +1,6 @@
 //// @sourceType = module
 
-import type { T } from 'foo';
+import { type T } from 'foo';
 
 type Ref = T;
 const unresolved = T;
