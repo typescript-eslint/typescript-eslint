@@ -3,16 +3,16 @@ import styles from './Expander.module.css';
 
 import ArrowIcon from '../icons/ArrowIcon';
 
-interface MyProps {
+export interface ExpanderProps {
   readonly children?: React.ReactNode;
   readonly className?: string;
   readonly label: string;
 }
 
-export default function Expander(props: MyProps): JSX.Element {
+function Expander(props: ExpanderProps): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
-  const handleToggle = () => {
+  const handleToggle = (): void => {
     setIsExpanded(!isExpanded);
   };
 
@@ -31,3 +31,5 @@ export default function Expander(props: MyProps): JSX.Element {
     </div>
   );
 }
+
+export default Expander;

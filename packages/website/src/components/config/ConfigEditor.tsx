@@ -87,6 +87,7 @@ function reducerObject(
           }
         }
       } catch {
+        // eslint-disable-next-line no-console
         console.error('ERROR parsing json');
       }
       return state;

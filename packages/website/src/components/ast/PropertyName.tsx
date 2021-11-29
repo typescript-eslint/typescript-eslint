@@ -9,6 +9,7 @@ export default function PropertyName(props: {
   onMouseEnter?: (e: SyntheticEvent) => void;
 }): JSX.Element {
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <span onClick={props.onClick} onMouseEnter={props.onMouseEnter}>
       {props.propName && (
         <span className={clsx(styles.propName, styles.clickable)}>

@@ -45,6 +45,7 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
         : undefined,
     };
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.warn(e);
   }
   return undefined;
@@ -69,6 +70,7 @@ const writeStateToUrl = (newState: ConfigModel): string => {
       .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
       .join('&');
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.warn(e);
   }
   return '';
@@ -141,6 +143,7 @@ function useHashState(
 
   const onHashChange = (): void => {
     const newHash = window.location.hash;
+    // eslint-disable-next-line no-console
     console.info('[State] hash change detected', newHash);
     setHash(newHash);
   };
@@ -153,6 +156,7 @@ function useHashState(
   }, []);
 
   const _setState = useCallback((cfg: Partial<ConfigModel>) => {
+    // eslint-disable-next-line no-console
     console.info('[State] updating config diff', cfg);
     setTmpState(cfg);
   }, []);

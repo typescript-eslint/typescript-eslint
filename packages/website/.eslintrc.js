@@ -8,7 +8,11 @@ module.exports = {
   plugins: ['jsx-a11y', 'react', 'react-hooks'],
   overrides: [
     {
-      files: ['./src/pages/*.tsx'],
+      files: [
+        './src/pages/*.tsx',
+        './src/components/**/*.tsx',
+        './src/components/hooks/*.ts',
+      ],
       rules: {
         'import/no-default-export': 'off',
       },
@@ -17,7 +21,8 @@ module.exports = {
   rules: {
     'react/jsx-no-target-blank': 'off',
     'react/no-unescaped-entities': 'off',
-    'react-hooks/exhaustive-deps': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+    'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
   },
   settings: {
     react: {

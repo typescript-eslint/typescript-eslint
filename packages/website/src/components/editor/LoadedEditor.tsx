@@ -37,6 +37,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(
     debounce(() => {
+      // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
       const [markers, fatalMessage, codeActions] = lintCode(
         webLinter,
@@ -78,6 +79,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         debounce(() => {
           const position = sandboxInstance.editor.getPosition();
           if (position) {
+            // eslint-disable-next-line no-console
             console.info('[Editor] updating cursor', position);
             onSelect(position);
           }
@@ -118,6 +120,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     if (modelValue === code) {
       return;
     }
+    // eslint-disable-next-line no-console
     console.info('[Editor] updating editor model');
     sandboxInstance.editor.executeEdits(modelValue, [
       {

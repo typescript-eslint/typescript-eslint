@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useCallback, useState } from 'react';
 
 import ConfigEslint from './config/ConfigEslint';
@@ -22,7 +23,7 @@ import type {
   RulesRecord,
 } from './types';
 
-interface OptionsSelectorParams {
+export interface OptionsSelectorParams {
   readonly ruleOptions: RuleDetails[];
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
@@ -148,38 +149,41 @@ function OptionsSelector({
             options={['script', 'module']}
           />
         </label>
-        <label
+        <button
           className={styles.optionLabel}
           onClick={(): void => setEslintModal(true)}
         >
           Eslint Config
           <EditIcon className={styles.clickableIcon} />
-        </label>
-        <label
+        </button>
+        <button
           className={styles.optionLabel}
           onClick={(): void => setTypeScriptModal(true)}
         >
           TypeScript Config
           <EditIcon className={styles.clickableIcon} />
-        </label>
+        </button>
       </Expander>
       <Expander label="Actions">
-        <label className={styles.optionLabel} onClick={copyLinkToClipboard}>
+        <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
           Copy Link
           <Tooltip open={copyLink} text="Copied" close={setCopyLink}>
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
-        </label>
-        <label className={styles.optionLabel} onClick={copyMarkdownToClipboard}>
+        </button>
+        <button
+          className={styles.optionLabel}
+          onClick={copyMarkdownToClipboard}
+        >
           Copy Markdown
           <Tooltip open={copyMarkdown} text="Copied" close={setCopyMarkdown}>
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
-        </label>
-        <label className={styles.optionLabel} onClick={openIssue}>
+        </button>
+        <button className={styles.optionLabel} onClick={openIssue}>
           Report Issue
           <CopyIcon className={styles.clickableIcon} />
-        </label>
+        </button>
       </Expander>
     </>
   );

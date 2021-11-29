@@ -8,6 +8,7 @@ export interface DropdownProps {
   readonly type?: 'text' | 'search';
 }
 
+// eslint-disable-next-line react/display-name
 const Text = React.forwardRef((props: DropdownProps, ref): JSX.Element => {
   return (
     <input

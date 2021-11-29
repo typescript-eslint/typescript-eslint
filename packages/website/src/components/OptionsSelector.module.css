@@ -16,6 +16,11 @@
     color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
   color: var(--ifm-font-color-secondary);
   justify-content: space-between;
+  border: none;
+  background: transparent;
+  font-family: var(--ifm-font-family-base);
+  box-sizing: border-box;
+  line-height: var(--ifm-line-height-base);
 }
 
 .optionLabel:hover {

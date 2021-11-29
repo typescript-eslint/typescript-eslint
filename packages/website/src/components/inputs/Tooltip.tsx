@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import styles from './Tooltip.module.css';
 import clsx from 'clsx';
 
-export interface CopyProps {
+export interface TooltipProps {
   readonly children: JSX.Element | (JSX.Element | false)[];
   readonly text: string;
   readonly open?: boolean;
   readonly close: (status: boolean) => void;
 }
 
-function Tooltip(props: CopyProps): JSX.Element {
+function Tooltip(props: TooltipProps): JSX.Element {
   useEffect(() => {
     if (props.open) {
       setTimeout(() => {
