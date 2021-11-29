@@ -12,7 +12,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.js"
+    "build": "rollup --config=rollup.config.js",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^5.4.0",
