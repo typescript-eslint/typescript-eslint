@@ -1222,7 +1222,7 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          private static abstract readonly some_name = 1;
+          private static abstract readonly some_name;
           IgnoredDueToModifiers = 1;
         }
       `,
@@ -2060,7 +2060,7 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          private static abstract readonly some_name = 1;
+          private static abstract readonly some_name;
           IgnoredDueToModifiers = 1;
         }
       `,
