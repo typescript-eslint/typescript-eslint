@@ -11,6 +11,51 @@ This rule aims to standardize the use of type exports style across a codebase.
 
 Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
+## Options
+
+```ts
+interface Options {
+  fixMixedExportsWithInlineTypeSpecifier?: boolean;
+}
+
+const defaultOptions: Options = {
+  fixMixedExportsWithInlineTypeSpecifier: false,
+};
+```
+
+### `fixMixedExportsWithInlineTypeSpecifier`
+
+When this is set to true, the rule will autofix "mixed" export cases using TS 4.5's "inline type specifier".
+If you are using a TypeScript version less than 4.5, then you will not be able to use this option.
+
+For example the following code:
+
+```ts
+const x = 1;
+type T = number;
+
+export { x, T };
+```
+
+With `{fixMixedExportsWithInlineTypeSpecifier: true}` will be fixed to:
+
+```ts
+const x = 1;
+type T = number;
+
+export { x, type T };
+```
+
+With `{fixMixedExportsWithInlineTypeSpecifier: false}` will be fixed to:
+
+```ts
+const x = 1;
+type T = number;
+
+export type { T };
+export { x };
+```
+
 <!--tabs-->
 
 ### ❌ Incorrect
@@ -23,7 +68,9 @@ export type { ButtonProps } from 'some-library';
 ### ✅ Correct
 
 ```ts
-export { Button, ButtonProps } from 'some-library';
+export { Button } from 'some-library';
+export type { ButtonProps } from 'some-library';
+export { Button, type ButtonProps } from 'some-library';
 ```
 
 ## When Not To Use It
