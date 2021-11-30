@@ -52,6 +52,7 @@ import { es2020_intl } from './es2020.intl';
 import { es2021_promise } from './es2021.promise';
 import { es2021_string } from './es2021.string';
 import { es2021_weakref } from './es2021.weakref';
+import { es2021_intl } from './es2021.intl';
 import { esnext_array } from './esnext.array';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -120,6 +121,7 @@ const lib = {
   'es2021.promise': es2021_promise,
   'es2021.string': es2021_string,
   'es2021.weakref': es2021_weakref,
+  'es2021.intl': es2021_intl,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,
