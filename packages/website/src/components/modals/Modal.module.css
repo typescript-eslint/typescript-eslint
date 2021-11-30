@@ -39,6 +39,8 @@
 
 .modalClose {
   cursor: pointer;
+  background: transparent;
+  border: none;
 }
 
 .modalClose:hover,

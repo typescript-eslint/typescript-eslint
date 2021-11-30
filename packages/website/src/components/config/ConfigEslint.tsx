@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import { RuleDetails } from '../types';
+import type { RuleDetails } from '../types';
+import { shallowEqual } from '../lib/shallowEqual';
 
 export interface ModalEslintProps {
   readonly isOpen: boolean;
-  readonly onClose: (rules: RulesRecord) => void;
+  readonly onClose: (value?: RulesRecord) => void;
   readonly ruleOptions: RuleDetails[];
   readonly rules: RulesRecord;
 }
@@ -55,19 +56,22 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
-      props.onClose(
-        Object.fromEntries(
-          Object.entries(newConfig)
-            .map<[string, unknown]>(([name, value]) =>
-              Array.isArray(value) && value.length === 1
-                ? [name, value[0]]
-                : [name, value],
-            )
-            .filter(checkOptions),
-        ),
+      const cfg = Object.fromEntries(
+        Object.entries(newConfig)
+          .map<[string, unknown]>(([name, value]) =>
+            Array.isArray(value) && value.length === 1
+              ? [name, value[0]]
+              : [name, value],
+          )
+          .filter(checkOptions),
       );
+      if (!shallowEqual(cfg, props.rules)) {
+        props.onClose(cfg);
+      } else {
+        props.onClose();
+      }
     },
-    [props.onClose],
+    [props.onClose, props.rules],
   );
 
   return (
