@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ASTViewer.module.css';
-import { objType } from './selection';
+import { objType } from './utils';
 
 export interface PropertyValueProps {
   readonly value: unknown;

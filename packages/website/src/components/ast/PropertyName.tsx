@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import styles from './ASTViewer.module.css';
 
 export interface PropertyNameProps {
-  readonly name?: string;
+  readonly typeName?: string;
   readonly propName?: string;
   readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   readonly onMouseEnter?: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -18,22 +18,23 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.propName, styles.clickable)}
+          className={clsx(styles.propName, props.onClick && styles.clickable)}
         >
           {props.propName}
         </button>
       )}
       {props.propName && <span>: </span>}
-      {props.name && (
+      {props.typeName && (
         <button
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.tokenName, styles.clickable)}
+          className={clsx(styles.tokenName, props.onClick && styles.clickable)}
         >
-          {props.name}
+          {props.typeName}
         </button>
       )}
+      {props.typeName && <span> </span>}
     </>
   );
 }

@@ -8,10 +8,12 @@ import Loader from './layout/Loader';
 
 import useHashState from './hooks/useHashState';
 import OptionsSelector from './OptionsSelector';
-import ASTViewer from './ast/ASTViewer';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { shallowEqual } from './lib/shallowEqual';
+
+import ASTEsViewer from './ASTEsViewer';
+import ASTTsViewer from './ASTTsViewer';
 
 import type { RuleDetails, SelectedRange } from './types';
 
@@ -95,9 +97,15 @@ function Playground(): JSX.Element {
         </div>
         {state.showAST && (
           <div className={styles.astViewer}>
-            {(tsAst && state.showAST === 'ts' && <ASTViewer ast={tsAst} />) ||
+            {(tsAst && state.showAST === 'ts' && (
+              <ASTTsViewer
+                ast={tsAst}
+                position={position}
+                onSelectNode={updateSelectedNode}
+              />
+            )) ||
               (esAst && (
-                <ASTViewer
+                <ASTEsViewer
                   ast={esAst}
                   position={position}
                   onSelectNode={updateSelectedNode}

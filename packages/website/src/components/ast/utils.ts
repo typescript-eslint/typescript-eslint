@@ -1,15 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import type { SelectedPosition } from '../types';
 
-export const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
-
-export function filterRecord(
-  values: Record<string, unknown>,
-): [string, unknown][] {
-  return Object.entries(values).filter(
-    item => !propsToFilter.includes(item[0]),
-  );
-}
+export const propsToFilter = [
+  'parent',
+  'comments',
+  'tokens',
+  // 'loc',
+  'jsDoc',
+  'lineMap',
+  'externalModuleIndicator',
+  'bindDiagnostics',
+  'modifierFlagsCache',
+  'transformFlags',
+  'resolvedModules',
+];
 
 export function isWithinNode(
   loc: SelectedPosition,
@@ -68,12 +72,11 @@ export function isArrayInRange(
 
 export function hasChildInRange(
   position: SelectedPosition | null | undefined,
-  value: unknown,
+  value: [string, unknown][],
 ): boolean {
   return Boolean(
     position &&
-      isEsNode(value) &&
-      filterRecord(value).some(
+      value.some(
         ([, item]) =>
           isInRange(position, item) || isArrayInRange(position, item),
       ),
