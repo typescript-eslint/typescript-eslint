@@ -65,6 +65,10 @@
   color: #b58900;
 }
 
+.propClass {
+  color: #b58900;
+}
+
 .propBoolean {
   color: #b58900;
 }
@@ -75,6 +79,12 @@
 
 .hidden {
   color: var(--ifm-color-emphasis-400);
+  max-width: 40%;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 
 .clickable {

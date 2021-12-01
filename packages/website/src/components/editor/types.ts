@@ -6,6 +6,7 @@ export interface CommonEditorProps extends ConfigModel {
   readonly darkTheme: boolean;
   readonly decoration: SelectedRange | null;
   readonly onChange: (value: string) => void;
-  readonly onASTChange: (value: string | TSESTree.Program) => void;
+  readonly onTsASTChange: (value: string | Record<string, unknown>) => void;
+  readonly onEsASTChange: (value: string | TSESTree.Program) => void;
   readonly onSelect: (position: Monaco.Position | null) => void;
 }

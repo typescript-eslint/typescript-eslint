@@ -94,13 +94,13 @@ export function ElementObject(
   const listItem = useRef<HTMLDivElement | null>(null);
 
   const onMouseEnter = useCallback(() => {
-    if (isEsNode(props.value)) {
+    if (props.onSelectNode && isEsNode(props.value)) {
       props.onSelectNode(props.value.loc);
     }
   }, [props.value]);
 
   const onMouseLeave = useCallback(() => {
-    if (isEsNode(props.value)) {
+    if (props.onSelectNode && isEsNode(props.value)) {
       props.onSelectNode(null);
     }
   }, [props.value]);
@@ -138,7 +138,12 @@ export function ElementObject(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         propName={props.propName}
-        name={props.value.type as string | undefined}
+        name={
+          // TODO: refactor this
+          ((props.value.type || String(props.value.kind)) as
+            | string
+            | undefined) ?? '_'
+        }
         onClick={(): void => setIsExpanded(!isExpanded)}
       />
       <span> {'{'}</span>

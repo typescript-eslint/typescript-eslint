@@ -15,6 +15,16 @@ function readQueryParam(value: string | null, fallback: string): string {
     : fallback;
 }
 
+function readShowAST(value: string | null): 'ts' | 'es' | boolean {
+  switch (value) {
+    case 'es':
+      return 'es';
+    case 'ts':
+      return 'ts';
+  }
+  return Boolean(value);
+}
+
 const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   if (!hash) {
     return;
@@ -25,7 +35,8 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
     return {
       ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
       jsx: searchParams.has('jsx'),
-      showAST: searchParams.has('showAST'),
+      showAST:
+        searchParams.has('showAST') && readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.has('sourceType') &&
         searchParams.get('sourceType') === 'script'

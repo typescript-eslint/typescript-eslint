@@ -24,10 +24,18 @@ export function isWithinNode(
   return canStart && canEnd;
 }
 
+export function objType(obj: unknown): string {
+  const type = Object.prototype.toString.call(obj).slice(8, -1);
+  // @ts-expect-error: this is correct check
+  if (type === 'Object' && obj && typeof obj[Symbol.iterator] === 'function') {
+    return 'Iterable';
+  }
+
+  return type;
+}
+
 export function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(
-    typeof value === 'object' && value && value.constructor === Object,
-  );
+  return objType(value) === 'Object';
 }
 
 export function isEsNode(

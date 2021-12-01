@@ -28,7 +28,8 @@ function Playground(): JSX.Element {
     tsConfig: {},
   });
   const { isDarkTheme } = useThemeContext();
-  const [ast, setAST] = useState<TSESTree.Program | string | null>();
+  const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
+  const [tsAst, setTsAST] = useState<Record<string, unknown> | string | null>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -80,7 +81,8 @@ function Playground(): JSX.Element {
             sourceType={state.sourceType}
             rules={state.rules}
             showAST={state.showAST}
-            onASTChange={setAST}
+            onEsASTChange={setEsAst}
+            onTsASTChange={setTsAST}
             decoration={selectedRange}
             onChange={(code): void => setState({ code: code })}
             onLoaded={(ruleNames, tsVersions): void => {
@@ -93,13 +95,14 @@ function Playground(): JSX.Element {
         </div>
         {state.showAST && (
           <div className={styles.astViewer}>
-            {ast && (
-              <ASTViewer
-                ast={ast}
-                position={position}
-                onSelectNode={updateSelectedNode}
-              />
-            )}
+            {(tsAst && state.showAST === 'ts' && <ASTViewer ast={tsAst} />) ||
+              (esAst && (
+                <ASTViewer
+                  ast={esAst}
+                  position={position}
+                  onSelectNode={updateSelectedNode}
+                />
+              ))}
           </div>
         )}
       </div>

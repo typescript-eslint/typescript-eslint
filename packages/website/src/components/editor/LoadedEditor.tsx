@@ -21,7 +21,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   decoration,
   jsx,
   main,
-  onASTChange,
+  onEsASTChange,
+  onTsASTChange,
   onChange,
   onSelect,
   rules,
@@ -62,7 +63,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         );
       }
 
-      onASTChange(fatalMessage ?? webLinter.getAst());
+      onEsASTChange(fatalMessage ?? webLinter.getAst());
+      onTsASTChange(fatalMessage ?? webLinter.getTsAst());
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
     [code, jsx, sandboxInstance, rules, sourceType, webLinter],

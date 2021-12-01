@@ -132,11 +132,20 @@ function OptionsSelector({
           />
         </label>
         <label className={styles.optionLabel}>
-          Show AST
+          Show Es AST
           <Checkbox
-            name="ast"
-            checked={state.showAST}
-            onChange={(e): void => setState({ showAST: e })}
+            name="es-ast"
+            checked={state.showAST === 'es' || state.showAST === true}
+            onChange={(e): void => setState({ showAST: e && 'es' })}
+            className={styles.optionCheckbox}
+          />
+        </label>
+        <label className={styles.optionLabel}>
+          Show Ts AST
+          <Checkbox
+            name="ts-ast"
+            checked={state.showAST === 'ts'}
+            onChange={(e): void => setState({ showAST: e && 'ts' })}
             className={styles.optionCheckbox}
           />
         </label>

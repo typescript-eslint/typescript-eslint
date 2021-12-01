@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ASTViewer.module.css';
+import { objType } from './selection';
 
 export interface PropertyValueProps {
   readonly value: unknown;
@@ -25,5 +26,5 @@ export default function PropertyValue(props: PropertyValueProps): JSX.Element {
       </span>
     );
   }
-  return <span>{String(props.value)}</span>;
+  return <span className={styles.propClass}>{objType(props.value)}</span>;
 }

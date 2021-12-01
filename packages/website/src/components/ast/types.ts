@@ -6,5 +6,5 @@ export interface GenericParams<V> {
   readonly value: V;
   readonly level: string;
   readonly selection?: SelectedPosition | null;
-  readonly onSelectNode: (node: SelectedRange | null) => void;
+  readonly onSelectNode?: (node: SelectedRange | null) => void;
 }

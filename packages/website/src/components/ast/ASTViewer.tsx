@@ -11,7 +11,7 @@ import { isRecord } from './selection';
 export interface ASTViewerProps {
   ast: Record<string, unknown> | TSESTree.Node | string;
   position?: Monaco.Position | null;
-  onSelectNode: (node: SelectedRange | null) => void;
+  onSelectNode?: (node: SelectedRange | null) => void;
 }
 
 function ASTViewer(props: ASTViewerProps): JSX.Element {
