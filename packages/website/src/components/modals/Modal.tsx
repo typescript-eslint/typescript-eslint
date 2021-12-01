@@ -46,7 +46,12 @@ function Modal(props: ModalProps): JSX.Element {
       >
         <div className={styles.modalHeader}>
           <h2>{props.header}</h2>
-          <button onClick={props.onClose} className={styles.modalClose}>
+          <button
+            aria-label="Close"
+            onClick={props.onClose}
+            className={clsx(styles.modalClose, 'clean-btn')}
+            type="button"
+          >
             <CloseIcon size={22} />
           </button>
         </div>
