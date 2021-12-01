@@ -11,7 +11,6 @@ import { createProvideCodeActions } from './createProvideCodeActions';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
-  readonly onSelect: (position: Monaco.Position | null) => void;
   readonly sandboxInstance: SandboxInstance;
   readonly webLinter: WebLinter;
 }
@@ -149,10 +148,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           ? [
               {
                 range: new sandboxInstance.monaco.Range(
-                  decoration.loc.start.line,
-                  decoration.loc.start.column + 1,
-                  decoration.loc.end.line,
-                  decoration.loc.end.column + 1,
+                  decoration.start.line,
+                  decoration.start.column + 1,
+                  decoration.end.line,
+                  decoration.end.column + 1,
                 ),
                 options: {
                   inlineClassName: 'myLineDecoration',

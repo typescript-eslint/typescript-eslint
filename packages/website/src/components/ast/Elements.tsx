@@ -1,13 +1,6 @@
-import React, {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
 import type { GenericParams } from './types';
 
 import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
@@ -89,7 +82,7 @@ export function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
 }
 
 export function ElementObject(
-  props: GenericParams<TSESTree.Node | Record<string, unknown>>,
+  props: GenericParams<Record<string, unknown>>,
 ): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(() => {
     return isInRange(props.selection, props.value);
@@ -100,25 +93,17 @@ export function ElementObject(
   );
   const listItem = useRef<HTMLDivElement | null>(null);
 
-  const onMouseEnter = useCallback(
-    (e: SyntheticEvent) => {
-      if (isEsNode(props.value)) {
-        props.onSelectNode(props.value as TSESTree.Node);
-        e.stopPropagation();
-        e.preventDefault();
-      }
-    },
-    [props.value],
-  );
+  const onMouseEnter = useCallback(() => {
+    if (isEsNode(props.value)) {
+      props.onSelectNode(props.value.loc);
+    }
+  }, [props.value]);
 
-  const onMouseLeave = useCallback(
-    (_e: SyntheticEvent) => {
-      if (isEsNode(props.value)) {
-        props.onSelectNode(null);
-      }
-    },
-    [props.value],
-  );
+  const onMouseLeave = useCallback(() => {
+    if (isEsNode(props.value)) {
+      props.onSelectNode(null);
+    }
+  }, [props.value]);
 
   useEffect(() => {
     const selected = isInRange(props.selection, props.value);
@@ -148,10 +133,10 @@ export function ElementObject(
         isExpanded ? '' : styles.open,
         isSelected ? styles.selected : '',
       )}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     >
       <PropertyName
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         propName={props.propName}
         name={props.value.type as string | undefined}
         onClick={(): void => setIsExpanded(!isExpanded)}
@@ -193,16 +178,12 @@ export function ElementItem(props: GenericParams<unknown>): JSX.Element {
         onSelectNode={props.onSelectNode}
       />
     );
-  } else if (
-    typeof props.value === 'object' &&
-    props.value &&
-    props.value.constructor === Object
-  ) {
+  } else if (isRecord(props.value)) {
     return (
       <ElementObject
         level={`${props.level}_${props.name}`}
         propName={props.name}
-        value={props.value as Record<string, unknown>}
+        value={props.value}
         selection={props.selection}
         onSelectNode={props.onSelectNode}
       />

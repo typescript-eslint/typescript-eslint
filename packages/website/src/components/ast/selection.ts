@@ -1,26 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/website-eslint';
-import type { Position } from './types';
+import type { SelectedPosition } from '../types';
 
 export const propsToFilter = ['parent', 'comments', 'tokens', 'loc'];
 
 export function filterRecord(
-  values: TSESTree.Node | Record<string, unknown>,
+  values: Record<string, unknown>,
 ): [string, unknown][] {
   return Object.entries(values).filter(
     item => !propsToFilter.includes(item[0]),
   );
 }
 
-export function isNode(node: unknown): node is TSESTree.Node {
-  return Boolean(
-    typeof node === 'object' && node && 'type' in node && 'loc' in node,
-  );
-}
-
 export function isWithinNode(
-  loc: Position,
-  start: Position,
-  end: Position,
+  loc: SelectedPosition,
+  start: SelectedPosition,
+  end: SelectedPosition,
 ): boolean {
   const canStart =
     start.line < loc.line ||
@@ -43,7 +37,7 @@ export function isEsNode(
 }
 
 export function isInRange(
-  position: Position | null | undefined,
+  position: SelectedPosition | null | undefined,
   value: unknown,
 ): boolean {
   return Boolean(
@@ -54,7 +48,7 @@ export function isInRange(
 }
 
 export function isArrayInRange(
-  position: Position | null | undefined,
+  position: SelectedPosition | null | undefined,
   value: unknown,
 ): boolean {
   return Boolean(
@@ -65,7 +59,7 @@ export function isArrayInRange(
 }
 
 export function hasChildInRange(
-  position: Position | null | undefined,
+  position: SelectedPosition | null | undefined,
   value: unknown,
 ): boolean {
   return Boolean(

@@ -1,15 +1,10 @@
-import type { TSESTree } from '@typescript-eslint/website-eslint';
-
-export interface Position {
-  line: number;
-  column: number;
-}
+import type { SelectedPosition, SelectedRange } from '../types';
 
 export interface GenericParams<V> {
   readonly propName?: string;
   readonly name?: string;
   readonly value: V;
   readonly level: string;
-  readonly selection?: Position | null;
-  readonly onSelectNode: (node: TSESTree.Node | null) => void;
+  readonly selection?: SelectedPosition | null;
+  readonly onSelectNode: (node: SelectedRange | null) => void;
 }

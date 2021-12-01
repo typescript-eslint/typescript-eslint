@@ -44,3 +44,13 @@ export interface ConfigModel {
   ts: string;
   showAST?: boolean;
 }
+
+export interface SelectedPosition {
+  line: number;
+  column: number;
+}
+
+export interface SelectedRange {
+  start: SelectedPosition;
+  end: SelectedPosition;
+}

@@ -11,7 +11,9 @@ import OptionsSelector from './OptionsSelector';
 import ASTViewer from './ast/ASTViewer';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { EditorEmbed } from './editor/EditorEmbed';
-import type { RuleDetails } from './types';
+import { shallowEqual } from './lib/shallowEqual';
+
+import type { RuleDetails, SelectedRange } from './types';
 
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 
@@ -30,21 +32,23 @@ function Playground(): JSX.Element {
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
-  const [selectedNode, setSelectedNode] = useState<TSESTree.Node | null>(null);
+  const [selectedRange, setSelectedRange] = useState<SelectedRange | null>(
+    null,
+  );
   const [position, setPosition] = useState<Monaco.Position | null>(null);
 
   const updateSelectedNode = useCallback(
-    (node: TSESTree.Node | null) => {
+    (value: SelectedRange | null) => {
       if (
-        !node ||
-        !selectedNode ||
-        selectedNode.range[0] !== node.range[0] ||
-        selectedNode.range[1] !== node.range[1]
+        !value ||
+        !selectedRange ||
+        !shallowEqual(selectedRange.start, value.start) ||
+        !shallowEqual(selectedRange.end, value.end)
       ) {
-        setSelectedNode(node);
+        setSelectedRange(value);
       }
     },
-    [selectedNode],
+    [selectedRange],
   );
 
   return (
@@ -77,7 +81,7 @@ function Playground(): JSX.Element {
             rules={state.rules}
             showAST={state.showAST}
             onASTChange={setAST}
-            decoration={selectedNode}
+            decoration={selectedRange}
             onChange={(code): void => setState({ code: code })}
             onLoaded={(ruleNames, tsVersions): void => {
               setRuleNames(ruleNames);
