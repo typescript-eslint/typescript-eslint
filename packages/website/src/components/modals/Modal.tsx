@@ -12,16 +12,13 @@ interface ModalProps {
 }
 
 function Modal(props: ModalProps): JSX.Element {
-  const closeOnEscapeKeyDown = useCallback(
-    (e: KeyboardEvent): void => {
+  useEffect(() => {
+    const closeOnEscapeKeyDown = (e: KeyboardEvent): void => {
       if (e.key === 'Escape' || e.keyCode === 27) {
         props.onClose();
       }
-    },
-    [props.onClose],
-  );
+    };
 
-  useEffect(() => {
     document.body.addEventListener('keydown', closeOnEscapeKeyDown);
     return (): void => {
       document.body.removeEventListener('keydown', closeOnEscapeKeyDown);
