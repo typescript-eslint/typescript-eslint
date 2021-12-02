@@ -7,13 +7,15 @@ import { TYPE } from './base-config';
 
 export const webworker_iterable = {
   Cache: TYPE,
-  CanvasPathDrawingStyles: TYPE,
   DOMStringList: TYPE,
   FileList: TYPE,
+  FontFaceSet: TYPE,
   FormData: TYPE,
   Headers: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
+  MessageEvent: TYPE,
+  SubtleCrypto: TYPE,
   URLSearchParams: TYPE,
   WEBGL_draw_buffers: TYPE,
   WebGL2RenderingContextBase: TYPE,
