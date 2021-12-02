@@ -10,6 +10,8 @@ import Tooltip from './inputs/Tooltip';
 import EditIcon from './icons/EditIcon';
 import CopyIcon from './icons/CopyIcon';
 
+import useDelayToggle from './hooks/useDelayToggle';
+
 import { createMarkdown } from './lib/markdown';
 
 import type { RuleDetails } from './types';
@@ -40,8 +42,8 @@ function OptionsSelector({
 }: OptionsSelectorParams): JSX.Element {
   const [eslintModal, setEslintModal] = useState<boolean>(false);
   const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
-  const [copyLink, setCopyLink] = useState<boolean>(false);
-  const [copyMarkdown, setCopyMarkdown] = useState<boolean>(false);
+  const [copyLink, setCopyLink] = useDelayToggle<boolean>(false);
+  const [copyMarkdown, setCopyMarkdown] = useDelayToggle<boolean>(false);
 
   const updateTS = useCallback((version: string) => {
     setState({ ts: version });
@@ -176,7 +178,7 @@ function OptionsSelector({
       <Expander label="Actions">
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
           Copy Link
-          <Tooltip open={copyLink} text="Copied" close={setCopyLink}>
+          <Tooltip open={copyLink} text="Copied">
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
         </button>
@@ -185,7 +187,7 @@ function OptionsSelector({
           onClick={copyMarkdownToClipboard}
         >
           Copy Markdown
-          <Tooltip open={copyMarkdown} text="Copied" close={setCopyMarkdown}>
+          <Tooltip open={copyMarkdown} text="Copied">
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
         </button>

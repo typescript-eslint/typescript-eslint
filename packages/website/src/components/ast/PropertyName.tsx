@@ -18,7 +18,11 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.propName, props.onClick && styles.clickable)}
+          className={clsx(
+            'clean-btn',
+            styles.propName,
+            props.onClick && styles.clickable,
+          )}
         >
           {props.propName}
         </button>
@@ -29,7 +33,11 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.tokenName, props.onClick && styles.clickable)}
+          className={clsx(
+            'clean-btn',
+            styles.tokenName,
+            props.onClick && styles.clickable,
+          )}
         >
           {props.typeName}
         </button>

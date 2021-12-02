@@ -10,13 +10,13 @@ const PropertyName = React.memo(PropertyNameComp);
 export interface ItemGroupProps {
   readonly propName?: string;
   readonly value: unknown;
-  readonly typeName: (data: unknown) => string | undefined;
+  readonly getTypeName: (data: unknown) => string | undefined;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
   readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   readonly onHover?: (e: boolean) => void;
-  readonly children: JSX.Element | (JSX.Element | false)[];
+  readonly children: JSX.Element | false | (JSX.Element | false)[];
 }
 
 export default function ItemGroup(props: ItemGroupProps): JSX.Element {
@@ -39,7 +39,7 @@ export default function ItemGroup(props: ItemGroupProps): JSX.Element {
     >
       <PropertyName
         propName={props.propName}
-        typeName={props.typeName(props.value)}
+        typeName={props.getTypeName(props.value)}
         onMouseEnter={(): void => props.onHover?.(true)}
         onMouseLeave={(): void => props.onHover?.(false)}
         onClick={props.onClick}

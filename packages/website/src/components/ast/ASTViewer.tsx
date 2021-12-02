@@ -16,6 +16,7 @@ export interface ASTViewerBaseProps {
 
 export interface ASTViewerProps extends ASTViewerBaseProps {
   readonly getTypeName: (data: unknown) => string | undefined;
+  readonly formatValue?: (key: string, data: unknown) => string | undefined;
 }
 
 function ASTViewer(props: ASTViewerProps): JSX.Element {
@@ -36,6 +37,7 @@ function ASTViewer(props: ASTViewerProps): JSX.Element {
     <div className={styles.list}>
       <ComplexItem
         getTypeName={props.getTypeName}
+        formatValue={props.formatValue}
         value={props.ast}
         level="ast"
         selection={selection}

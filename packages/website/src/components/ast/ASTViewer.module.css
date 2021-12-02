@@ -1,12 +1,8 @@
-.list,
-.subList,
-.clickable,
-.propName {
+.list {
   font-family: var(--ifm-font-family-monospace);
   background: transparent;
   border: none;
   padding: 0;
-  font-weight: normal;
   font-size: 13px;
   line-height: 18px;
   letter-spacing: 0;
@@ -15,7 +11,6 @@
 
 .list,
 .subList {
-  cursor: default;
   box-sizing: border-box;
   white-space: break-spaces;
   margin: 0;

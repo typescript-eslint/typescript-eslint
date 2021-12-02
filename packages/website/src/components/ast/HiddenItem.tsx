@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '@site/src/components/ast/ASTViewer.module.css';
-import { PropertyValue } from '@site/src/components/ast/Elements';
+import PropertyValue from '@site/src/components/ast/PropertyValue';
 
 export interface HiddenItemProps {
   readonly value: [string, unknown][];

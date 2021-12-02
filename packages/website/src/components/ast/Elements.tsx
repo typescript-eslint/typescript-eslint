@@ -11,13 +11,12 @@ import {
   propsToFilter,
 } from './utils';
 
-import PropertyValueComp from '@site/src/components/ast/PropertyValue';
-import ItemGroup from '@site/src/components/ast/ItemGroup';
-import HiddenItem from '@site/src/components/ast/HiddenItem';
-
 import styles from '@site/src/components/ast/ASTViewer.module.css';
 
-export const PropertyValue = React.memo(PropertyValueComp);
+import PropertyValue from '@site/src/components/ast/PropertyValue';
+import ItemGroup from '@site/src/components/ast/ItemGroup';
+import HiddenItem from '@site/src/components/ast/HiddenItem';
+import Tooltip from '@site/src/components/inputs/Tooltip';
 
 export function ComplexItem(
   props: GenericParams<Record<string, unknown> | unknown[]>,
@@ -70,7 +69,7 @@ export function ComplexItem(
       value={props.value}
       isExpanded={isExpanded}
       isSelected={isSelected}
-      typeName={props.getTypeName}
+      getTypeName={props.getTypeName}
       canExpand={true}
       onHover={onHover}
       onClick={(): void => setIsExpanded(!isExpanded)}
@@ -83,6 +82,7 @@ export function ComplexItem(
               level={`${props.level}_${item[0]}[${index}]`}
               key={`${props.level}_${item[0]}[${index}]`}
               getTypeName={props.getTypeName}
+              formatValue={props.formatValue}
               selection={props.selection}
               propName={item[0]}
               value={item[1]}
@@ -98,6 +98,30 @@ export function ComplexItem(
   );
 }
 
+export function SimpleItem(props: GenericParams<unknown>): JSX.Element {
+  const [tooltip, setTooltip] = useState<string | undefined>();
+
+  useEffect(() => {
+    setTooltip(props.formatValue?.(props.propName ?? '', props.value));
+  }, [props.formatValue, props.propName, props.value]);
+
+  return (
+    <ItemGroup
+      propName={props.propName}
+      value={props.value}
+      getTypeName={props.getTypeName}
+    >
+      {tooltip ? (
+        <Tooltip hover={true} position="right" text={tooltip}>
+          <PropertyValue value={props.value} />
+        </Tooltip>
+      ) : (
+        <PropertyValue value={props.value} />
+      )}
+    </ItemGroup>
+  );
+}
+
 export function ElementItem(props: GenericParams<unknown>): JSX.Element {
   const isArray = Array.isArray(props.value);
   if (isArray || isRecord(props.value)) {
@@ -107,19 +131,13 @@ export function ElementItem(props: GenericParams<unknown>): JSX.Element {
         level={`${props.level}_${props.propName}`}
         propName={props.propName}
         getTypeName={props.getTypeName}
+        formatValue={props.formatValue}
         value={props.value}
         selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
     );
+  } else {
+    return <SimpleItem {...props} />;
   }
-  return (
-    <ItemGroup
-      propName={props.propName}
-      value={props.value}
-      typeName={props.getTypeName}
-    >
-      <PropertyValue value={props.value} />
-    </ItemGroup>
-  );
 }
