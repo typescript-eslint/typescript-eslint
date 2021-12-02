@@ -132,7 +132,7 @@ function OptionsSelector({
           />
         </label>
         <label className={styles.optionLabel}>
-          Show Es AST
+          Show ESTree
           <Checkbox
             name="es-ast"
             checked={state.showAST === 'es' || state.showAST === true}
@@ -141,7 +141,7 @@ function OptionsSelector({
           />
         </label>
         <label className={styles.optionLabel}>
-          Show Ts AST
+          Show TS AST
           <Checkbox
             name="ts-ast"
             checked={state.showAST === 'ts'}
