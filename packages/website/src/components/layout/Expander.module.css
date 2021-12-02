@@ -9,7 +9,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  transition: background-color var(--ifm-transition-fast) var(--ifm-transition-timing-default), color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+  transition: background-color var(--ifm-transition-fast)
+      var(--ifm-transition-timing-default),
+    color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
   color: var(--ifm-color-emphasis-900);
   cursor: pointer;
   padding: 0.4rem 0.8rem;
@@ -18,7 +20,8 @@
   background: transparent;
   text-rendering: optimizelegibility;
   -webkit-text-size-adjust: 100%;
-  font: var(--ifm-font-size-base)/var(--ifm-line-height-base) var(--ifm-font-family-base);
+  font: var(--ifm-font-size-base) / var(--ifm-line-height-base)
+    var(--ifm-font-family-base);
   text-align: left;
 }
 
