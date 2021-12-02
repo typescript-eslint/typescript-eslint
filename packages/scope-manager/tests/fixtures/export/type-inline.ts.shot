@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`export default-type 1`] = `
+exports[`export type-inline 1`] = `
 ScopeManager {
   variables: Array [
     ImplicitGlobalConstTypeVariable,
@@ -31,7 +31,7 @@ ScopeManager {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
-          isValueReference: true,
+          isValueReference: false,
           isWrite: false,
           resolved: Variable$2,
         },
