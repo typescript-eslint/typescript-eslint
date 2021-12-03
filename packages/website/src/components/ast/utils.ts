@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/website-eslint';
-import type { SelectedPosition } from '../types';
+import type { SelectedPosition } from './types';
 
 export const propsToFilter = [
   'parent',

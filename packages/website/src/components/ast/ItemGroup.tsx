@@ -1,16 +1,18 @@
 import React, { MouseEvent, useEffect, useRef } from 'react';
 import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
 import clsx from 'clsx';
-import styles from '@site/src/components/ast/ASTViewer.module.css';
 
-import PropertyNameComp from '@site/src/components/ast/PropertyName';
+import styles from './ASTViewer.module.css';
+
+import PropertyNameComp from './PropertyName';
+import type { GetNodeNameFn } from './types';
 
 const PropertyName = React.memo(PropertyNameComp);
 
 export interface ItemGroupProps {
   readonly propName?: string;
   readonly value: unknown;
-  readonly getTypeName: (data: unknown) => string | undefined;
+  readonly getNodeName: GetNodeNameFn;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
@@ -39,7 +41,7 @@ export default function ItemGroup(props: ItemGroupProps): JSX.Element {
     >
       <PropertyName
         propName={props.propName}
-        typeName={props.getTypeName(props.value)}
+        typeName={props.getNodeName(props.value)}
         onMouseEnter={(): void => props.onHover?.(true)}
         onMouseLeave={(): void => props.onHover?.(false)}
         onClick={props.onClick}

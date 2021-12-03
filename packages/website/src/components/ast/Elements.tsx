@@ -69,7 +69,7 @@ export function ComplexItem(
       value={props.value}
       isExpanded={isExpanded}
       isSelected={isSelected}
-      getTypeName={props.getTypeName}
+      getNodeName={props.getNodeName}
       canExpand={true}
       onHover={onHover}
       onClick={(): void => setIsExpanded(!isExpanded)}
@@ -81,8 +81,8 @@ export function ComplexItem(
             <ElementItem
               level={`${props.level}_${item[0]}[${index}]`}
               key={`${props.level}_${item[0]}[${index}]`}
-              getTypeName={props.getTypeName}
-              formatValue={props.formatValue}
+              getNodeName={props.getNodeName}
+              getTooltip={props.getTooltip}
               selection={props.selection}
               propName={item[0]}
               value={item[1]}
@@ -102,14 +102,14 @@ export function SimpleItem(props: GenericParams<unknown>): JSX.Element {
   const [tooltip, setTooltip] = useState<string | undefined>();
 
   useEffect(() => {
-    setTooltip(props.formatValue?.(props.propName ?? '', props.value));
-  }, [props.formatValue, props.propName, props.value]);
+    setTooltip(props.getTooltip?.(props.propName ?? '', props.value));
+  }, [props.getTooltip, props.propName, props.value]);
 
   return (
     <ItemGroup
       propName={props.propName}
       value={props.value}
-      getTypeName={props.getTypeName}
+      getNodeName={props.getNodeName}
     >
       {tooltip ? (
         <Tooltip hover={true} position="right" text={tooltip}>
@@ -130,8 +130,8 @@ export function ElementItem(props: GenericParams<unknown>): JSX.Element {
         isArray={isArray}
         level={`${props.level}_${props.propName}`}
         propName={props.propName}
-        getTypeName={props.getTypeName}
-        formatValue={props.formatValue}
+        getNodeName={props.getNodeName}
+        getTooltip={props.getTooltip}
         value={props.value}
         selection={props.selection}
         onSelectNode={props.onSelectNode}

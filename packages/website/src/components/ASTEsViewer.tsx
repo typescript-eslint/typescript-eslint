@@ -1,9 +1,10 @@
 import React from 'react';
 
-import ASTViewer, { ASTViewerBaseProps } from './ast/ASTViewer';
+import ASTViewer from './ast/ASTViewer';
 import { isRecord } from './ast/utils';
+import type { ASTViewerBaseProps } from './ast/types';
 
-function getTypeName(value: unknown): string | undefined {
+function getNodeName(value: unknown): string | undefined {
   if (isRecord(value) && 'type' in value && value.type) {
     return String(value.type);
   }
@@ -11,5 +12,5 @@ function getTypeName(value: unknown): string | undefined {
 }
 
 export default function ASTEsViewer(props: ASTViewerBaseProps): JSX.Element {
-  return <ASTViewer getTypeName={getTypeName} {...props} />;
+  return <ASTViewer getNodeName={getNodeName} {...props} />;
 }

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import ASTViewer, { ASTViewerBaseProps } from './ast/ASTViewer';
+import ASTViewer from './ast/ASTViewer';
 import { isRecord } from './ast/utils';
+import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
   readonly version: string;
@@ -43,26 +44,33 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
     setTokenFlags(extractEnum(window.ts.TokenFlags));
   }, [props.version]);
 
+  const getTooltip = useCallback(
+    (key: string, value: unknown): string | undefined => {
+      if (key === 'flags' && typeof value === 'number') {
+        return getFlagNamesFromEnum(nodeFlags, value, 'NodeFlags').join('\n');
+      } else if (key === 'numericLiteralFlags' && typeof value === 'number') {
+        return getFlagNamesFromEnum(tokenFlags, value, 'TokenFlags').join('\n');
+      } else if (key === 'kind' && typeof value === 'number') {
+        return `SyntaxKind.${syntaxKind[value]}`;
+      }
+      return undefined;
+    },
+    [nodeFlags, tokenFlags, syntaxKind],
+  );
+
+  const getNodeName = useCallback(
+    (value): string | undefined =>
+      isRecord(value) && typeof value.kind === 'number'
+        ? syntaxKind[value.kind]
+        : undefined,
+    [syntaxKind],
+  );
+
   return (
     <ASTViewer
-      formatValue={(key, value): string | undefined => {
-        if (key === 'flags' && typeof value === 'number') {
-          return getFlagNamesFromEnum(nodeFlags, value, 'NodeFlags').join('\n');
-        } else if (key === 'numericLiteralFlags' && typeof value === 'number') {
-          return getFlagNamesFromEnum(tokenFlags, value, 'TokenFlags').join(
-            '\n',
-          );
-        } else if (key === 'kind' && typeof value === 'number') {
-          return `SyntaxKind.${syntaxKind[value]}`;
-        }
-        return undefined;
-      }}
-      getTypeName={(value): string | undefined =>
-        isRecord(value) && typeof value.kind === 'number'
-          ? syntaxKind[value.kind]
-          : undefined
-      }
-      ast={props.ast}
+      getTooltip={getTooltip}
+      getNodeName={getNodeName}
+      value={props.value}
     />
   );
 }

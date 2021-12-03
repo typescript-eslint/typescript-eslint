@@ -99,7 +99,7 @@ function Playground(): JSX.Element {
           <div className={styles.astViewer}>
             {(tsAst && state.showAST === 'ts' && (
               <ASTTsViewer
-                ast={tsAst}
+                value={tsAst}
                 position={position}
                 onSelectNode={updateSelectedNode}
                 version={state.ts}
@@ -107,7 +107,7 @@ function Playground(): JSX.Element {
             )) ||
               (esAst && (
                 <ASTEsViewer
-                  ast={esAst}
+                  value={esAst}
                   position={position}
                   onSelectNode={updateSelectedNode}
                 />
