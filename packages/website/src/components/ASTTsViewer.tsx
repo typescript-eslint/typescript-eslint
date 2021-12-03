@@ -4,7 +4,7 @@ import ASTViewer, { ASTViewerBaseProps } from './ast/ASTViewer';
 import { isRecord } from './ast/utils';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
-  readonly ts: string;
+  readonly version: string;
 }
 
 function extractEnum(
@@ -41,7 +41,7 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
     setSyntaxKind(extractEnum(window.ts.SyntaxKind));
     setNodeFlags(extractEnum(window.ts.NodeFlags));
     setTokenFlags(extractEnum(window.ts.TokenFlags));
-  }, [props.ts]);
+  }, [props.version]);
 
   return (
     <ASTViewer

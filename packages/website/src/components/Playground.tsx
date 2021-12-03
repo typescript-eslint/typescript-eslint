@@ -102,6 +102,7 @@ function Playground(): JSX.Element {
                 ast={tsAst}
                 position={position}
                 onSelectNode={updateSelectedNode}
+                version={state.ts}
               />
             )) ||
               (esAst && (

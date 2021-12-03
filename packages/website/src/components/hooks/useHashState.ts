@@ -92,14 +92,14 @@ function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const [hash, setHash] = useState<string>(window.location.hash.slice(1));
-  const [state, setState] = useState<ConfigModel>({
+  const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
-  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>({
+  }));
+  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
+  }));
 
   useEffect(() => {
     const newHash = window.location.hash.slice(1);

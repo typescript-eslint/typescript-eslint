@@ -18,12 +18,7 @@ import type { RuleDetails } from './types';
 
 import styles from './OptionsSelector.module.css';
 
-import type {
-  CompilerFlags,
-  ConfigModel,
-  SourceType,
-  RulesRecord,
-} from './types';
+import type { CompilerFlags, ConfigModel, RulesRecord } from './types';
 
 export interface OptionsSelectorParams {
   readonly ruleOptions: RuleDetails[];
@@ -32,6 +27,12 @@ export interface OptionsSelectorParams {
   readonly tsVersions: readonly string[];
   readonly isLoading: boolean;
 }
+
+const ASTOptions = [
+  { value: false, label: 'Disabled' },
+  { value: 'es', label: 'ESTree' },
+  { value: 'ts', label: 'TypeScript' },
+] as const;
 
 function OptionsSelector({
   ruleOptions,
@@ -134,21 +135,12 @@ function OptionsSelector({
           />
         </label>
         <label className={styles.optionLabel}>
-          Show ESTree
-          <Checkbox
-            name="es-ast"
-            checked={state.showAST === 'es' || state.showAST === true}
-            onChange={(e): void => setState({ showAST: e && 'es' })}
-            className={styles.optionCheckbox}
-          />
-        </label>
-        <label className={styles.optionLabel}>
-          Show TS AST
-          <Checkbox
-            name="ts-ast"
-            checked={state.showAST === 'ts'}
-            onChange={(e): void => setState({ showAST: e && 'ts' })}
-            className={styles.optionCheckbox}
+          AST Viewer
+          <Dropdown
+            name="showAST"
+            value={state.showAST}
+            onChange={(e): void => setState({ showAST: e })}
+            options={ASTOptions}
           />
         </label>
         <label className={styles.optionLabel}>
@@ -156,7 +148,7 @@ function OptionsSelector({
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState({ sourceType: e as SourceType })}
+            onChange={(e): void => setState({ sourceType: e })}
             options={['script', 'module']}
           />
         </label>
