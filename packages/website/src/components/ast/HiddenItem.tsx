@@ -18,7 +18,7 @@ export default function HiddenItem(props: HiddenItemProps): JSX.Element {
       setIsComplex(
         !filtered.some(item => typeof item[1] !== 'object' || item[1] === null),
       );
-      setLength(Number(filtered.length));
+      setLength(filtered.length);
     }
   }, [props.value, props.isArray]);
 
