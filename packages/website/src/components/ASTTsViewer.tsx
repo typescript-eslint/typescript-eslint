@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
 import { isRecord } from './ast/utils';
-import type { ASTViewerBaseProps } from './ast/types';
+import type {
+  ASTViewerBaseProps,
+  SelectedRange,
+  SelectedPosition,
+} from './ast/types';
+import type { Node, SourceFile } from 'typescript';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
   readonly version: string;
@@ -23,6 +28,10 @@ function extractEnum(
   return result;
 }
 
+function isTsNode(value: unknown): value is Node {
+  return isRecord(value) && typeof value.kind === 'number';
+}
+
 function getFlagNamesFromEnum(
   allFlags: Record<number, string>,
   flags: number,
@@ -31,6 +40,28 @@ function getFlagNamesFromEnum(
   return Object.entries(allFlags)
     .filter(([f, _]) => (Number(f) & flags) !== 0)
     .map(([_, name]) => `${prefix}.${name}`);
+}
+
+export function getLineAndCharacterFor(
+  pos: number,
+  ast: SourceFile,
+): SelectedPosition {
+  const loc = ast.getLineAndCharacterOfPosition(pos);
+  return {
+    line: loc.line + 1,
+    column: loc.character,
+  };
+}
+
+export function getLocFor(
+  start: number,
+  end: number,
+  ast: SourceFile,
+): SelectedRange {
+  return {
+    start: getLineAndCharacterFor(start, ast),
+    end: getLineAndCharacterFor(end, ast),
+  };
 }
 
 export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
@@ -59,18 +90,32 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
   );
 
   const getNodeName = useCallback(
-    (value): string | undefined =>
-      isRecord(value) && typeof value.kind === 'number'
-        ? syntaxKind[value.kind]
-        : undefined,
+    (value: unknown): string | undefined =>
+      isTsNode(value) ? syntaxKind[value.kind] : undefined,
     [syntaxKind],
+  );
+
+  const getRange = useCallback(
+    (value: unknown): SelectedRange | undefined => {
+      if (props.value && isTsNode(value)) {
+        return getLocFor(
+          value.pos,
+          value.end,
+          // @ts-expect-error: unsafe cast
+          props.value as SourceFile,
+        );
+      }
+      return undefined;
+    },
+    [props.value],
   );
 
   return (
     <ASTViewer
+      getRange={getRange}
       getTooltip={getTooltip}
       getNodeName={getNodeName}
-      value={props.value}
+      {...props}
     />
   );
 }

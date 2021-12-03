@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ASTViewer.module.css';
 
-import type {
-  ASTViewerBaseProps,
-  SelectedPosition,
-  GetNodeNameFn,
-  GetTooltipFn,
-} from './types';
+import type { SelectedPosition, ASTViewerProps } from './types';
 
 import { ComplexItem } from './Elements';
 import { isRecord } from './utils';
-
-export interface ASTViewerProps extends ASTViewerBaseProps {
-  readonly getNodeName: GetNodeNameFn;
-  readonly getTooltip?: GetTooltipFn;
-}
 
 function ASTViewer(props: ASTViewerProps): JSX.Element {
   const [selection, setSelection] = useState<SelectedPosition | null>(null);
@@ -35,6 +25,7 @@ function ASTViewer(props: ASTViewerProps): JSX.Element {
       <ComplexItem
         getNodeName={props.getNodeName}
         getTooltip={props.getTooltip}
+        getRange={props.getRange}
         value={props.value}
         level="ast"
         selection={selection}

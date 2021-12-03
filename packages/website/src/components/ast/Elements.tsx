@@ -5,7 +5,6 @@ import type { GenericParams } from './types';
 import {
   hasChildInRange,
   isArrayInRange,
-  isEsNode,
   isInRange,
   isRecord,
   propsToFilter,
@@ -40,28 +39,33 @@ export function ComplexItem(
 
   const onHover = useCallback(
     (state: boolean) => {
-      if (props.onSelectNode && isEsNode(props.value)) {
-        props.onSelectNode(state ? props.value.loc : null);
+      if (props.onSelectNode) {
+        const range = props.getRange(props.value);
+        if (range) {
+          props.onSelectNode(state ? range : null);
+        }
       }
     },
     [props.value],
   );
 
   useEffect(() => {
-    const selected = props.isArray
-      ? isArrayInRange(props.selection, props.value)
-      : isInRange(props.selection, props.value);
+    const selected = props.selection
+      ? props.isArray
+        ? isArrayInRange(props.selection, props.value, props.getRange)
+        : isInRange(props.selection, props.value, props.getRange)
+      : false;
 
     setIsSelected(
       props.level !== 'ast' &&
         selected &&
-        !hasChildInRange(props.selection, model),
+        !hasChildInRange(props.selection, model, props.getRange),
     );
 
     if (selected && !isExpanded) {
       setIsExpanded(selected);
     }
-  }, [model, props.selection, props.value, props.isArray]);
+  }, [model, props.selection, props.value, props.isArray, props.getRange]);
 
   return (
     <ItemGroup
@@ -83,6 +87,7 @@ export function ComplexItem(
               key={`${props.level}_${item[0]}[${index}]`}
               getNodeName={props.getNodeName}
               getTooltip={props.getTooltip}
+              getRange={props.getRange}
               selection={props.selection}
               propName={item[0]}
               value={item[1]}
@@ -132,6 +137,7 @@ export function ElementItem(props: GenericParams<unknown>): JSX.Element {
         propName={props.propName}
         getNodeName={props.getNodeName}
         getTooltip={props.getTooltip}
+        getRange={props.getRange}
         value={props.value}
         selection={props.selection}
         onSelectNode={props.onSelectNode}

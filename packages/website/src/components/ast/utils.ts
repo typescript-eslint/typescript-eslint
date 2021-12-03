@@ -1,5 +1,5 @@
-import type { TSESTree } from '@typescript-eslint/website-eslint';
-import type { SelectedPosition } from './types';
+import type { SelectedPosition, SelectedRange } from './types';
+import { GetRangeFn } from './types';
 
 export const propsToFilter = [
   'parent',
@@ -13,18 +13,19 @@ export const propsToFilter = [
   'modifierFlagsCache',
   'transformFlags',
   'resolvedModules',
+  'imports',
 ];
 
-export function isWithinNode(
+export function isWithinRange(
   loc: SelectedPosition,
-  start: SelectedPosition,
-  end: SelectedPosition,
+  range: SelectedRange,
 ): boolean {
   const canStart =
-    start.line < loc.line ||
-    (start.line === loc.line && start.column <= loc.column);
+    range.start.line < loc.line ||
+    (range.start.line === loc.line && range.start.column <= loc.column);
   const canEnd =
-    end.line > loc.line || (end.line === loc.line && end.column >= loc.column);
+    range.end.line > loc.line ||
+    (range.end.line === loc.line && range.end.column >= loc.column);
   return canStart && canEnd;
 }
 
@@ -42,43 +43,44 @@ export function isRecord(value: unknown): value is Record<string, unknown> {
   return objType(value) === 'Object';
 }
 
-export function isEsNode(
-  value: unknown,
-): value is Record<string, unknown> & TSESTree.BaseNode {
-  return isRecord(value) && 'type' in value && 'loc' in value;
-}
-
 export function isInRange(
   position: SelectedPosition | null | undefined,
   value: unknown,
+  getRange: GetRangeFn,
 ): boolean {
-  return Boolean(
-    position &&
-      isEsNode(value) &&
-      isWithinNode(position, value.loc.start, value.loc.end),
-  );
+  if (!position) {
+    return false;
+  }
+  const range = getRange(value);
+  if (!range) {
+    return false;
+  }
+  return isWithinRange(position, range);
 }
 
 export function isArrayInRange(
   position: SelectedPosition | null | undefined,
   value: unknown,
+  getRange: GetRangeFn,
 ): boolean {
   return Boolean(
     position &&
       Array.isArray(value) &&
-      value.some(item => isInRange(position, item)),
+      value.some(item => isInRange(position, item, getRange)),
   );
 }
 
 export function hasChildInRange(
   position: SelectedPosition | null | undefined,
   value: [string, unknown][],
+  getRange: GetRangeFn,
 ): boolean {
   return Boolean(
     position &&
       value.some(
         ([, item]) =>
-          isInRange(position, item) || isArrayInRange(position, item),
+          isInRange(position, item, getRange) ||
+          isArrayInRange(position, item, getRange),
       ),
   );
 }
