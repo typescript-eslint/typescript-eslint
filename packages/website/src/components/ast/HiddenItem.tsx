@@ -10,16 +10,16 @@ export interface HiddenItemProps {
 
 export default function HiddenItem(props: HiddenItemProps): JSX.Element {
   const [isComplex, setIsComplex] = useState<boolean>(true);
+  const [length, setLength] = useState<number>(0);
 
   useEffect(() => {
-    setIsComplex(
-      Boolean(
-        props.isArray &&
-          props.value.some(
-            item => typeof item[1] === 'object' && item[1] !== null,
-          ),
-      ),
-    );
+    if (props.isArray) {
+      const filtered = props.value.filter(item => !isNaN(Number(item[0])));
+      setIsComplex(
+        !filtered.some(item => typeof item[1] !== 'object' || item[1] === null),
+      );
+      setLength(Number(filtered.length));
+    }
   }, [props.value, props.isArray]);
 
   return (
@@ -33,7 +33,7 @@ export default function HiddenItem(props: HiddenItemProps): JSX.Element {
         ))
       ) : props.isArray ? (
         <>
-          {props.value.length} {props.value.length > 1 ? 'elements' : 'element'}
+          {length} {length === 1 ? 'element' : 'elements'}
         </>
       ) : (
         props.value.map((item, index) => (
