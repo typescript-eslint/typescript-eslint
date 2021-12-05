@@ -1,21 +1,6 @@
 import type { SelectedPosition, SelectedRange } from './types';
 import { GetRangeFn } from './types';
 
-export const propsToFilter = [
-  'parent',
-  'comments',
-  'tokens',
-  // 'loc',
-  'jsDoc',
-  'lineMap',
-  'externalModuleIndicator',
-  'bindDiagnostics',
-  'modifierFlagsCache',
-  'transformFlags',
-  'resolvedModules',
-  'imports',
-];
-
 export function isWithinRange(
   loc: SelectedPosition,
   range: SelectedRange,

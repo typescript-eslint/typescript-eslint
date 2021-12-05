@@ -26,6 +26,7 @@ function ASTViewer(props: ASTViewerProps): JSX.Element {
         getNodeName={props.getNodeName}
         getTooltip={props.getTooltip}
         getRange={props.getRange}
+        filterProps={props.filterProps}
         value={props.value}
         level="ast"
         selection={selection}

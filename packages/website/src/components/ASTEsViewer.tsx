@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
 import { isRecord } from './ast/utils';
@@ -11,23 +11,40 @@ function isEsNode(
   return isRecord(value) && 'type' in value && 'loc' in value;
 }
 
-function getNodeName(value: unknown): string | undefined {
-  if (isEsNode(value)) {
-    return String(value.type);
-  }
-  return undefined;
-}
-
-function getRange(value: unknown): SelectedRange | undefined {
-  if (isEsNode(value)) {
-    return {
-      start: value.loc.start,
-      end: value.loc.end,
-    };
-  }
-  return undefined;
-}
+export const propsToFilter = ['parent', 'comments', 'tokens'];
 
 export default function ASTEsViewer(props: ASTViewerBaseProps): JSX.Element {
-  return <ASTViewer getRange={getRange} getNodeName={getNodeName} {...props} />;
+  const filterProps = useCallback(
+    (item: [string, unknown]): boolean =>
+      !propsToFilter.includes(item[0]) &&
+      !item[0].startsWith('_') &&
+      item[1] !== undefined,
+    [],
+  );
+
+  const getRange = useCallback(
+    (value: unknown): SelectedRange | undefined =>
+      isEsNode(value)
+        ? {
+            start: value.loc.start,
+            end: value.loc.end,
+          }
+        : undefined,
+    [],
+  );
+
+  const getNodeName = useCallback(
+    (value: unknown): string | undefined =>
+      isEsNode(value) ? String(value.type) : undefined,
+    [],
+  );
+
+  return (
+    <ASTViewer
+      filterProps={filterProps}
+      getRange={getRange}
+      getNodeName={getNodeName}
+      {...props}
+    />
+  );
 }

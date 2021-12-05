@@ -64,15 +64,30 @@ export function getLocFor(
   };
 }
 
+export const propsToFilter = [
+  'parent',
+  'jsDoc',
+  'lineMap',
+  'externalModuleIndicator',
+  'bindDiagnostics',
+  'transformFlags',
+  'resolvedModules',
+  'imports',
+];
+
 export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
   const [syntaxKind, setSyntaxKind] = useState<Record<number, string>>({});
   const [nodeFlags, setNodeFlags] = useState<Record<number, string>>({});
   const [tokenFlags, setTokenFlags] = useState<Record<number, string>>({});
+  const [modifierFlags, setModifierFlags] = useState<Record<number, string>>(
+    {},
+  );
 
   useEffect(() => {
     setSyntaxKind(extractEnum(window.ts.SyntaxKind));
     setNodeFlags(extractEnum(window.ts.NodeFlags));
     setTokenFlags(extractEnum(window.ts.TokenFlags));
+    setModifierFlags(extractEnum(window.ts.ModifierFlags));
   }, [props.version]);
 
   const getTooltip = useCallback(
@@ -81,6 +96,10 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
         return getFlagNamesFromEnum(nodeFlags, value, 'NodeFlags').join('\n');
       } else if (key === 'numericLiteralFlags' && typeof value === 'number') {
         return getFlagNamesFromEnum(tokenFlags, value, 'TokenFlags').join('\n');
+      } else if (key === 'modifierFlagsCache' && typeof value === 'number') {
+        return getFlagNamesFromEnum(modifierFlags, value, 'ModifierFlags').join(
+          '\n',
+        );
       } else if (key === 'kind' && typeof value === 'number') {
         return `SyntaxKind.${syntaxKind[value]}`;
       }
@@ -93,6 +112,14 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
     (value: unknown): string | undefined =>
       isTsNode(value) ? syntaxKind[value.kind] : undefined,
     [syntaxKind],
+  );
+
+  const filterProps = useCallback(
+    (item: [string, unknown]): boolean =>
+      !propsToFilter.includes(item[0]) &&
+      !item[0].startsWith('_') &&
+      item[1] !== undefined,
+    [],
   );
 
   const getRange = useCallback(
@@ -112,6 +139,7 @@ export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
 
   return (
     <ASTViewer
+      filterProps={filterProps}
       getRange={getRange}
       getTooltip={getTooltip}
       getNodeName={getNodeName}

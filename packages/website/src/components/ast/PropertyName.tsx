@@ -5,42 +5,49 @@ import styles from './ASTViewer.module.css';
 export interface PropertyNameProps {
   readonly typeName?: string;
   readonly propName?: string;
-  readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  readonly onMouseEnter?: (e: MouseEvent<HTMLButtonElement>) => void;
-  readonly onMouseLeave?: (e: MouseEvent<HTMLButtonElement>) => void;
+  readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onMouseEnter?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onMouseLeave?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 export default function PropertyName(props: PropertyNameProps): JSX.Element {
-  return (
+  return props.onClick ? (
     <>
       {props.propName && (
-        <button
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <a
+          href="javascript:void(0)"
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(
-            'clean-btn',
-            styles.propName,
-            props.onClick && styles.clickable,
-          )}
+          className={clsx(styles.propName, styles.clickable)}
         >
           {props.propName}
-        </button>
+        </a>
       )}
       {props.propName && <span>: </span>}
       {props.typeName && (
-        <button
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <a
+          href="javascript:void(0)"
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(
-            'clean-btn',
-            styles.tokenName,
-            props.onClick && styles.clickable,
-          )}
+          className={clsx(styles.tokenName, styles.clickable)}
         >
           {props.typeName}
-        </button>
+        </a>
+      )}
+      {props.typeName && <span> </span>}
+    </>
+  ) : (
+    <>
+      {props.propName && (
+        <span className={styles.propName}>{props.propName}</span>
+      )}
+      {props.propName && <span>: </span>}
+      {props.typeName && (
+        <span className={styles.tokenName}>{props.typeName}</span>
       )}
       {props.typeName && <span> </span>}
     </>

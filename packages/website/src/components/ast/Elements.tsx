@@ -2,13 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import type { GenericParams } from './types';
 
-import {
-  hasChildInRange,
-  isArrayInRange,
-  isInRange,
-  isRecord,
-  propsToFilter,
-} from './utils';
+import { hasChildInRange, isArrayInRange, isInRange, isRecord } from './utils';
 
 import styles from '@site/src/components/ast/ASTViewer.module.css';
 
@@ -28,14 +22,9 @@ export function ComplexItem(
 
   useEffect(() => {
     setModel(
-      Object.entries(props.value).filter(
-        item =>
-          !propsToFilter.includes(item[0]) &&
-          !item[0].startsWith('_') &&
-          item[1] !== undefined,
-      ),
+      Object.entries(props.value).filter(item => props.filterProps(item)),
     );
-  }, [props.value]);
+  }, [props.value, props.filterProps]);
 
   const onHover = useCallback(
     (state: boolean) => {
@@ -88,6 +77,7 @@ export function ComplexItem(
               getNodeName={props.getNodeName}
               getTooltip={props.getTooltip}
               getRange={props.getRange}
+              filterProps={props.filterProps}
               selection={props.selection}
               propName={item[0]}
               value={item[1]}
@@ -138,6 +128,7 @@ export function ElementItem(props: GenericParams<unknown>): JSX.Element {
         getNodeName={props.getNodeName}
         getTooltip={props.getTooltip}
         getRange={props.getRange}
+        filterProps={props.filterProps}
         value={props.value}
         selection={props.selection}
         onSelectNode={props.onSelectNode}

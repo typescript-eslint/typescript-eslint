@@ -42,6 +42,17 @@
   width: fit-content;
 }
 
+.tokenName,
+.propName,
+.propNumber,
+.propEmpty,
+.propRegExp,
+.propClass,
+.propBoolean,
+.propString {
+  cursor: default;
+}
+
 .tokenName {
   color: #2aa198;
 }
