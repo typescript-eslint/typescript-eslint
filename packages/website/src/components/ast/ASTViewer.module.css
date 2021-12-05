@@ -5,10 +5,10 @@
   margin: 0;
   list-style: none;
   padding-left: 1.5rem;
-  font-family: Consolas, "Courier New", monospace;
+  font-family: Consolas, 'Courier New', monospace;
   font-weight: normal;
   font-size: 13px;
-  font-feature-settings: "liga" 0, "calt" 0;
+  font-feature-settings: 'liga' 0, 'calt' 0;
   line-height: 18px;
   letter-spacing: 0px;
 }
