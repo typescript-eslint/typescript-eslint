@@ -7,7 +7,7 @@ export function isWithinRange(
 ): boolean {
   const canStart =
     range.start.line < loc.line ||
-    (range.start.line === loc.line && range.start.column <= loc.column);
+    (range.start.line === loc.line && range.start.column < loc.column);
   const canEnd =
     range.end.line > loc.line ||
     (range.end.line === loc.line && range.end.column >= loc.column);
