@@ -400,6 +400,55 @@ new Foo(1, () => {});
       code: 'const log = (message: string) => void console.log(message);',
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
     },
+    {
+      filename: 'test.ts',
+      code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => (arg1) => (arg2) => 'foo';
+            `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+interface Foo {
+  foo: string;
+  arrowFn: () => string;
+}
+
+function foo(): Foo {
+  return {
+    foo: 'foo',
+    arrowFn: () => 'test',
+  };
+}
+           `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Foo = (arg1: string) => string;
+type Bar<T> = (arg2: string) => T;
+const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
+              `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
