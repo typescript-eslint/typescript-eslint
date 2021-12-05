@@ -1,5 +1,4 @@
 import React, { MouseEvent } from 'react';
-import clsx from 'clsx';
 import styles from './ASTViewer.module.css';
 
 export interface PropertyNameProps {
@@ -20,7 +19,7 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.propName, styles.clickable)}
+          className={styles.propName}
         >
           {props.propName}
         </a>
@@ -33,7 +32,7 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           onClick={props.onClick}
-          className={clsx(styles.tokenName, styles.clickable)}
+          className={styles.tokenName}
         >
           {props.typeName}
         </a>

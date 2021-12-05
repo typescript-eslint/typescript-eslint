@@ -42,17 +42,6 @@
   width: fit-content;
 }
 
-.tokenName,
-.propName,
-.propNumber,
-.propEmpty,
-.propRegExp,
-.propClass,
-.propBoolean,
-.propString {
-  cursor: default;
-}
-
 .tokenName {
   color: #2aa198;
 }
@@ -93,12 +82,4 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: bottom;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.clickable:hover {
-  text-decoration: underline;
 }
