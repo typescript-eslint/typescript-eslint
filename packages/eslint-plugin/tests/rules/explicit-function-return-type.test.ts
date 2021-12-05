@@ -404,8 +404,8 @@ new Foo(1, () => {});
       filename: 'test.ts',
       code: `
 type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
-const x: HigherOrderType = () => (arg1) => (arg2) => 'foo';
-            `,
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
       options: [
         {
           allowTypedFunctionExpressions: true,
@@ -427,7 +427,7 @@ function foo(): Foo {
     arrowFn: () => 'test',
   };
 }
-           `,
+      `,
       options: [
         {
           allowTypedFunctionExpressions: true,
@@ -441,7 +441,7 @@ function foo(): Foo {
 type Foo = (arg1: string) => string;
 type Bar<T> = (arg2: string) => T;
 const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
-              `,
+      `,
       options: [
         {
           allowTypedFunctionExpressions: true,
