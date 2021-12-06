@@ -23,7 +23,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/pluginutils": "^3.1.0",
+    "@rollup/pluginutils": "^4.1.1",
     "@typescript-eslint/eslint-plugin": "5.6.0",
     "@typescript-eslint/parser": "5.6.0",
     "@typescript-eslint/scope-manager": "5.6.0",
