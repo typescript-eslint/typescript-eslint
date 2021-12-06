@@ -15,7 +15,8 @@
   border-radius: 0.2rem;
 }
 
-.searchResult, .searchResultGroup {
+.searchResult,
+.searchResultGroup {
   align-items: center;
   display: flex;
   flex: 0 0 1.5rem;
@@ -38,7 +39,8 @@
   margin: 0.2rem 0;
 }
 
-.searchResult:nth-child(even), .searchResultGroup:nth-child(even) {
+.searchResult:nth-child(even),
+.searchResultGroup:nth-child(even) {
   background: var(--ifm-color-emphasis-100);
 }
 

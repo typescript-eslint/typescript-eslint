@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.4.0...v5.5.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **experimental-utils:** export RuleCreator interfaces ([#4199](https://github.com/typescript-eslint/typescript-eslint/issues/4199)) ([7821e4c](https://github.com/typescript-eslint/typescript-eslint/commit/7821e4c515ca2f11a14dcfa94dc77370da0287c5))
+* **experimental-utils:** fix types for eslint-utils ([#4173](https://github.com/typescript-eslint/typescript-eslint/issues/4173)) ([7079de2](https://github.com/typescript-eslint/typescript-eslint/commit/7079de26877a2313a7019845d4c33d0fc4d4b4a9))
+
+
+
+
+
 # [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
 
 

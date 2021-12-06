@@ -53,6 +53,7 @@ type Lib =
   | 'es2021.promise'
   | 'es2021.string'
   | 'es2021.weakref'
+  | 'es2021.intl'
   | 'esnext.array'
   | 'esnext.symbol'
   | 'esnext.asynciterable'
