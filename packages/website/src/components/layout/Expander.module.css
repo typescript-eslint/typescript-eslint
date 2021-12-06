@@ -49,10 +49,6 @@
   transform: rotateZ(0deg);
 }
 
-.path {
-  fill: currentColor;
-}
-
 .children {
   display: flex;
   flex-direction: column;

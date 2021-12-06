@@ -7,8 +7,8 @@ import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
 import Tooltip from './inputs/Tooltip';
-import EditIcon from './icons/EditIcon';
-import CopyIcon from './icons/CopyIcon';
+import EditIcon from '@site/src/icons/edit.svg';
+import CopyIcon from '@site/src/icons/copy.svg';
 
 import { createMarkdown } from './lib/markdown';
 
@@ -167,21 +167,21 @@ function OptionsSelector({
           onClick={(): void => setEslintModal(true)}
         >
           Eslint Config
-          <EditIcon className={styles.clickableIcon} />
+          <EditIcon />
         </button>
         <button
           className={styles.optionLabel}
           onClick={(): void => setTypeScriptModal(true)}
         >
           TypeScript Config
-          <EditIcon className={styles.clickableIcon} />
+          <EditIcon />
         </button>
       </Expander>
       <Expander label="Actions">
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
           Copy Link
           <Tooltip open={copyLink} text="Copied" close={setCopyLink}>
-            <CopyIcon className={styles.clickableIcon} />
+            <CopyIcon />
           </Tooltip>
         </button>
         <button
@@ -190,12 +190,12 @@ function OptionsSelector({
         >
           Copy Markdown
           <Tooltip open={copyMarkdown} text="Copied" close={setCopyMarkdown}>
-            <CopyIcon className={styles.clickableIcon} />
+            <CopyIcon />
           </Tooltip>
         </button>
         <button className={styles.optionLabel} onClick={openIssue}>
           Report Issue
-          <CopyIcon className={styles.clickableIcon} />
+          <CopyIcon />
         </button>
       </Expander>
     </>
