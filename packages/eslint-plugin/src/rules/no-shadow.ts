@@ -98,7 +98,9 @@ export default util.createRule<Options, MessageIds>({
     ): definition is ImportBindingDefinition {
       return (
         definition?.type === DefinitionType.ImportBinding &&
-        definition.parent.importKind === 'type'
+        (definition.parent.importKind === 'type' ||
+          (definition.node.type === AST_NODE_TYPES.ImportSpecifier &&
+            definition.node.importKind === 'type'))
       );
     }
 
