@@ -71,7 +71,6 @@ In those cases we suggest creating a new config called `tsconfig.eslint.json`, t
     "tools"
   ]
 }
-
 ```
 
 Ensure you update your `.eslintrc.js` to point at this new config file.
