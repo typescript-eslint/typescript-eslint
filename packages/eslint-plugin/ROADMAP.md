@@ -235,7 +235,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `function-name`                       | 🛑  | N/A                                                                    |
 | `import-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `informative-docs`                    | 🛑  | N/A                                                                    |
-| `insecure-random`                     | 🔌  | [custom implementation][insecure-random]                               |
 | `max-func-body-length`                | 🌟  | [`max-statements`][max-statements]                                     |
 | `no-banned-terms`                     | 🌟  | [`no-caller`][no-caller] & [`no-eval`][no-eval]                        |
 | `no-constant-condition`               | 🌟  | [`no-constant-condition`][no-constant-condition]                       |
@@ -270,39 +269,39 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
 <sup>[5]</sup> Does not check class fields.
 
-[insecure-random]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js
-
 ### Security
 
-| `tslint-microsoft-contrib` rule |     | ESLint rule                                        |
-| ------------------------------- | :-: | -------------------------------------------------- |
-| `no-disable-auto-sanitization`  | 🛑  | N/A                                                |
-| `no-document-domain`            | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-http-string`                | 🛑  | N/A                                                |
-| `no-inner-html`                 | 🛑  | N/A                                                |
-| `no-string-based-set-immediate` | 🛑  | N/A                                                |
-| `no-string-based-set-interval`  | 🛑  | N/A                                                |
-| `no-string-based-set-timeout`   | 🛑  | N/A                                                |
-| `react-iframe-missing-sandbox`  | 🛑  | N/A                                                |
-| `react-no-dangerous-html`       | 🔌  | [`react/no-danger`]                                |
-| `non-literal-fs-path`           | 🔌  | [`security/detect-non-literal-fs-filename`]        |
-| `non-literal-require`           | 🔌  | [`security/detect-non-literal-require`]            |
-| `possible-timing-attack`        | 🔌  | [`security/detect-possible-timing-attacks`]        |
+| `tslint-microsoft-contrib` rule |     | ESLint rule                                                                                 |
+| ------------------------------- | :-: | ------------------------------------------------------------------------------------------- |
+| `insecure-random`               | 🔌  | [`desktop/insecure-random`] or [`@microsoft/sdl/no-insecure-random`]                        |
+| `no-disable-auto-sanitization`  | 🔌  | [`@microsoft/sdl/no-msapp-exec-unsafe`] and [`@microsoft/sdl/no-winjs-html-unsafe`]         |
+| `no-document-domain`            | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-document-domain`] |
+| `no-http-string`                | 🔌  | [`@microsoft/sdl/no-insecure-url`]                                                          |
+| `no-inner-html`                 | 🔌  | [`@microsoft/sdl/no-inner-html`] and [`@microsoft/sdl/no-html-method`]                      |
+| `no-string-based-set-immediate` | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `no-string-based-set-interval`  | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `no-string-based-set-timeout`   | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `react-anchor-blank-noopener`   | 🔌  | [`react/jsx-no-target-blank`]                                                               |
+| `react-iframe-missing-sandbox`  | 🔌  | [`@microsoft/sdl/react-iframe-missing-sandbox`]                                             |
+| `react-no-dangerous-html`       | 🔌  | [`react/no-danger`]                                                                         |
+| `non-literal-fs-path`           | 🔌  | [`security/detect-non-literal-fs-filename`]                                                 |
+| `non-literal-require`           | 🔌  | [`security/detect-non-literal-require`]                                                     |
+| `possible-timing-attack`        | 🔌  | [`security/detect-possible-timing-attacks`]                                                 |
 
 ### Browser
 
-| `tslint-microsoft-contrib` rule     |     | ESLint rule                                        |
-| ----------------------------------- | :-: | -------------------------------------------------- |
-| `jquery-deferred-must-complete`     | 🛑  | N/A                                                |
-| `no-backbone-get-set-outside-model` | 🛑  | N/A                                                |
-| `no-cookies`                        | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-jquery-raw-elements`            | 🛑  | N/A                                                |
-| `no-unsupported-browser-code`       | 🛑  | N/A                                                |
-| `react-this-binding-issue`          | 🛑  | N/A                                                |
-| `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
-| `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
+| `tslint-microsoft-contrib` rule     |     | ESLint rule                                                                                  |
+| ----------------------------------- | :-: | -------------------------------------------------------------------------------------------- |
+| `jquery-deferred-must-complete`     | 🛑  | N/A                                                                                          |
+| `no-backbone-get-set-outside-model` | 🛑  | N/A                                                                                          |
+| `no-cookies`                        | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-cookies`]          |
+| `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-document-write`]   |
+| `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@typescript-eslint/no-implied-eval`] |
+| `no-jquery-raw-elements`            | 🛑  | N/A                                                                                          |
+| `no-unsupported-browser-code`       | 🛑  | N/A                                                                                          |
+| `react-this-binding-issue`          | 🛑  | N/A                                                                                          |
+| `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                                                                  |
+| `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                                                                    |
 
 ### React A11y
 
@@ -326,7 +325,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-role`                         | 🔌  | [`jsx-a11y/aria-role`]                                     |
 | `react-a11y-tabindex-no-positive`         | 🔌  | [`jsx-a11y/tabindex-no-positive`]                          |
 | `react-a11y-titles`                       | 🛑  | N/A                                                        |
-| `react-anchor-blank-noopener`             | 🛑  | N/A                                                        |
 
 <sup>[1]</sup> TSLint rule is more strict<br>
 <sup>[2]</sup> ESLint rule only reports for click handlers
@@ -605,6 +603,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/method-signature-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/method-signature-style.md
 [`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.md
 [`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-empty-interface.md
+[`@typescript-eslint/no-implied-eval`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-implied-eval.md
 [`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-inferrable-types.md
 [`@typescript-eslint/prefer-namespace-keyword`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md
 [`@typescript-eslint/promise-function-async`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/promise-function-async.md
@@ -667,6 +666,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 [`react/no-danger`]: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-danger.md
 [`react/jsx-curly-spacing`]: https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-curly-spacing.md
+[`react/jsx-no-target-blank`]: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-target-blank.md
 [`react/no-unused-state`]: https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unused-state.md
 
 <!-- eslint-plugin-react-a11y -->
@@ -697,6 +697,19 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jsdoc/require-jsdoc`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
 [`jsdoc/no-types`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-no-types
 
+<!-- @microsoft/eslint-plugin-sdl -->
+
+[`@microsoft/sdl/no-cookies`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-cookies.md
+[`@microsoft/sdl/no-document-domain`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-document-domain.md
+[`@microsoft/sdl/no-document-write`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-document-write.md
+[`@microsoft/sdl/no-html-method`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-html-method.md
+[`@microsoft/sdl/no-inner-html`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-inner-html.md
+[`@microsoft/sdl/no-insecure-random`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-insecure-random.md
+[`@microsoft/sdl/no-insecure-url`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-insecure-url.md
+[`@microsoft/sdl/no-msapp-exec-unsafe`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-msapp-exec-unsafe.md
+[`@microsoft/sdl/no-winjs-html-unsafe`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-winjs-html-unsafe.md
+[`@microsoft/sdl/react-iframe-missing-sandbox`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/react-iframe-missing-sandbox.md
+
 <!-- Miscellaneous plugins -->
 
 [`prefer-arrow/prefer-arrow-functions`]: https://github.com/TristonJ/eslint-plugin-prefer-arrow
@@ -710,3 +723,4 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jsx-a11y/heading-has-content`]: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/heading-has-content.md
 [`lodash/chaining`]: https://github.com/wix/eslint-plugin-lodash/blob/master/docs/rules/chaining.md
 [`deprecation/deprecation`]: https://github.com/gund/eslint-plugin-deprecation
+[`desktop/insecure-random`]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js
