@@ -240,7 +240,7 @@ export const rule: eslint.Rule.RuleModule = {
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(
           node.right,
         );
-        const nodeType = checker.getTypeAtLocation(node);
+        const nodeType = checker.getTypeAtLocation(originalNode);
 
         // 3. Check the TS node type using the TypeScript APIs
         if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
