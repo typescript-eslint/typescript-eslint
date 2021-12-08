@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-exports';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -106,8 +106,7 @@ export {
   CatchScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: `
+      output: noFormat`
 export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';
 export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
       `,
@@ -158,8 +157,7 @@ export {
   CatchScope as CScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      output: `
+      output: noFormat`
 export type { Definition as Foo } from '@typescript-eslint/scope-manager';
 export { BlockScope as BScope, CatchScope as CScope } from '@typescript-eslint/scope-manager';
       `,
@@ -255,6 +253,146 @@ export type { TypeNS };
         {
           messageId: 'typeOverValue',
           line: 6,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+export { type T, T };
+      `,
+      output: `
+type T = 1;
+export type { T, T };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type T = 1;
+export { type/* */T, type     /* */T, T };
+      `,
+      output: noFormat`
+type T = 1;
+export type { /* */T, /* */T, T };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+const x = 1;
+export { type T, T, x };
+      `,
+      output: `
+type T = 1;
+const x = 1;
+export type { T, T };
+export { x };
+      `,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 4,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+const x = 1;
+export { T, x };
+      `,
+      output: `
+type T = 1;
+const x = 1;
+export { type T, x };
+      `,
+      options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 4,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+export { type T, T };
+      `,
+      output: `
+type T = 1;
+export type { T, T };
+      `,
+      options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+export {
+  AnalyzeOptions,
+  Definition as Foo,
+  type BlockScope as BScope,
+  CatchScope as CScope,
+} from '@typescript-eslint/scope-manager';
+      `,
+      output: noFormat`
+export type { AnalyzeOptions, Definition as Foo, BlockScope as BScope } from '@typescript-eslint/scope-manager';
+export { CatchScope as CScope } from '@typescript-eslint/scope-manager';
+      `,
+      options: [{ fixMixedExportsWithInlineTypeSpecifier: false }],
+      errors: [
+        {
+          messageId: 'multipleExportsAreTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+export {
+  AnalyzeOptions,
+  Definition as Foo,
+  type BlockScope as BScope,
+  CatchScope as CScope,
+} from '@typescript-eslint/scope-manager';
+      `,
+      output: noFormat`
+export {
+  type AnalyzeOptions,
+  type Definition as Foo,
+  type BlockScope as BScope,
+  CatchScope as CScope,
+} from '@typescript-eslint/scope-manager';
+      `,
+      options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
+      errors: [
+        {
+          messageId: 'multipleExportsAreTypes',
+          line: 2,
           column: 1,
         },
       ],

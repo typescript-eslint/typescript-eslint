@@ -4,7 +4,7 @@ TypeScript 4.0 added support for adding an explicit `any` or `unknown` type anno
 
 By default, TypeScript will type a catch clause variable as `any`, so explicitly annotating it as `unknown` can add a lot of safety to your codebase.
 
-The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons.
+The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons, however you can use `useUnknownInCatchVariables` (part of `strict`) instead of this rule.
 
 ## Rule Details
 
