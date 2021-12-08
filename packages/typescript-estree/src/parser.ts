@@ -35,7 +35,7 @@ const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.6.0';
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
  */
-const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.5.0-beta', '4.5.1-rc'];
+const SUPPORTED_PRERELEASE_RANGES: string[] = [];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,

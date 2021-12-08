@@ -7,7 +7,11 @@ import {
 import { SymbolFlags } from 'typescript';
 import * as util from '../util';
 
-type Options = [];
+type Options = [
+  {
+    fixMixedExportsWithInlineTypeSpecifier: boolean;
+  },
+];
 
 interface SourceExports {
   source: string;
@@ -18,8 +22,9 @@ interface SourceExports {
 
 interface ReportValueExport {
   node: TSESTree.ExportNamedDeclaration;
-  typeSpecifiers: TSESTree.ExportSpecifier[];
+  typeBasedSpecifiers: TSESTree.ExportSpecifier[];
   valueSpecifiers: TSESTree.ExportSpecifier[];
+  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
 }
 
 type MessageIds =
@@ -29,7 +34,6 @@ type MessageIds =
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
-  defaultOptions: [],
   meta: {
     type: 'suggestion',
     docs: {
@@ -46,11 +50,26 @@ export default util.createRule<Options, MessageIds>({
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          fixMixedExportsWithInlineTypeSpecifier: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     fixable: 'code',
   },
+  defaultOptions: [
+    {
+      fixMixedExportsWithInlineTypeSpecifier: false,
+    },
+  ],
 
-  create(context) {
+  create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceCode = context.getSourceCode();
     const sourceExportsMap: { [key: string]: SourceExports } = {};
     const parserServices = util.getParserServices(context);
@@ -69,27 +88,33 @@ export default util.createRule<Options, MessageIds>({
         // Cache the first encountered exports for the package. We will need to come
         // back to these later when fixing the problems.
         if (node.exportKind === 'type') {
-          if (!sourceExports.typeOnlyNamedExport) {
+          if (sourceExports.typeOnlyNamedExport == null) {
             // The export is a type export
             sourceExports.typeOnlyNamedExport = node;
           }
-        } else if (!sourceExports.valueOnlyNamedExport) {
+        } else if (sourceExports.valueOnlyNamedExport == null) {
           // The export is a value export
           sourceExports.valueOnlyNamedExport = node;
         }
 
         // Next for the current export, we will separate type/value specifiers.
-        const typeSpecifiers: TSESTree.ExportSpecifier[] = [];
+        const typeBasedSpecifiers: TSESTree.ExportSpecifier[] = [];
+        const inlineTypeSpecifiers: TSESTree.ExportSpecifier[] = [];
         const valueSpecifiers: TSESTree.ExportSpecifier[] = [];
 
         // Note: it is valid to export values as types. We will avoid reporting errors
         // when this is encountered.
         if (node.exportKind !== 'type') {
           for (const specifier of node.specifiers) {
+            if (specifier.exportKind === 'type') {
+              inlineTypeSpecifiers.push(specifier);
+              continue;
+            }
+
             const isTypeBased = isSpecifierTypeBased(parserServices, specifier);
 
             if (isTypeBased === true) {
-              typeSpecifiers.push(specifier);
+              typeBasedSpecifiers.push(specifier);
             } else if (isTypeBased === false) {
               // When isTypeBased is undefined, we should avoid reporting them.
               valueSpecifiers.push(specifier);
@@ -98,13 +123,14 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (
-          (node.exportKind === 'value' && typeSpecifiers.length) ||
+          (node.exportKind === 'value' && typeBasedSpecifiers.length) ||
           (node.exportKind === 'type' && valueSpecifiers.length)
         ) {
           sourceExports.reportValueExports.push({
             node,
-            typeSpecifiers,
+            typeBasedSpecifiers,
             valueSpecifiers,
+            inlineTypeSpecifiers,
           });
         }
       },
@@ -117,8 +143,8 @@ export default util.createRule<Options, MessageIds>({
           }
 
           for (const report of sourceExports.reportValueExports) {
-            if (!report.valueSpecifiers.length) {
-              // Export is all type-only; convert the entire export to `export type`.
+            if (report.valueSpecifiers.length === 0) {
+              // Export is all type-only with no type specifiers; convert the entire export to `export type`.
               context.report({
                 node: report.node,
                 messageId: 'typeOverValue',
@@ -126,35 +152,44 @@ export default util.createRule<Options, MessageIds>({
                   yield* fixExportInsertType(fixer, sourceCode, report.node);
                 },
               });
+              continue;
+            }
+
+            // We have both type and value violations.
+            const allExportNames = report.typeBasedSpecifiers.map(
+              specifier => `${specifier.local.name}`,
+            );
+
+            if (allExportNames.length === 1) {
+              const exportNames = allExportNames[0];
+
+              context.report({
+                node: report.node,
+                messageId: 'singleExportIsType',
+                data: { exportNames },
+                *fix(fixer) {
+                  if (fixMixedExportsWithInlineTypeSpecifier) {
+                    yield* fixAddTypeSpecifierToNamedExports(fixer, report);
+                  } else {
+                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                  }
+                },
+              });
             } else {
-              // We have both type and value violations.
-              const allExportNames = report.typeSpecifiers.map(
-                specifier => `${specifier.local.name}`,
-              );
+              const exportNames = util.formatWordList(allExportNames);
 
-              if (allExportNames.length === 1) {
-                const exportNames = allExportNames[0];
-
-                context.report({
-                  node: report.node,
-                  messageId: 'singleExportIsType',
-                  data: { exportNames },
-                  *fix(fixer) {
+              context.report({
+                node: report.node,
+                messageId: 'multipleExportsAreTypes',
+                data: { exportNames },
+                *fix(fixer) {
+                  if (fixMixedExportsWithInlineTypeSpecifier) {
+                    yield* fixAddTypeSpecifierToNamedExports(fixer, report);
+                  } else {
                     yield* fixSeparateNamedExports(fixer, sourceCode, report);
-                  },
-                });
-              } else {
-                const exportNames = util.formatWordList(allExportNames);
-
-                context.report({
-                  node: report.node,
-                  messageId: 'multipleExportsAreTypes',
-                  data: { exportNames },
-                  *fix(fixer) {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
-                  },
-                });
-              }
+                  }
+                },
+              });
             }
           }
         }
@@ -205,6 +240,23 @@ function* fixExportInsertType(
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
+
+  for (const specifier of node.specifiers) {
+    if (specifier.exportKind === 'type') {
+      const kindToken = util.nullThrows(
+        sourceCode.getFirstToken(specifier),
+        util.NullThrowsReasons.MissingToken('export', specifier.type),
+      );
+      const firstTokenAfter = util.nullThrows(
+        sourceCode.getTokenAfter(kindToken, {
+          includeComments: true,
+        }),
+        'Missing token following the export kind.',
+      );
+
+      yield fixer.removeRange([kindToken.range[0], firstTokenAfter.range[0]]);
+    }
+  }
 }
 
 /**
@@ -217,11 +269,11 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { node, typeSpecifiers, valueSpecifiers } = report;
+  const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
+    report;
+  const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
   const source = getSourceFromExport(node);
-  const separateTypes = node.exportKind !== 'type';
-  const specifiersToSeparate = separateTypes ? typeSpecifiers : valueSpecifiers;
-  const specifierNames = specifiersToSeparate.map(getSpecifierText).join(', ');
+  const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 
   const exportToken = util.nullThrows(
     sourceCode.getFirstToken(node),
@@ -229,9 +281,7 @@ function* fixSeparateNamedExports(
   );
 
   // Filter the bad exports from the current line.
-  const filteredSpecifierNames = (
-    separateTypes ? valueSpecifiers : typeSpecifiers
-  )
+  const filteredSpecifierNames = valueSpecifiers
     .map(getSpecifierText)
     .join(', ');
   const openToken = util.nullThrows(
@@ -252,10 +302,21 @@ function* fixSeparateNamedExports(
   // Insert the bad exports into a new export line above.
   yield fixer.insertTextBefore(
     exportToken,
-    `export ${separateTypes ? 'type ' : ''}{ ${specifierNames} }${
-      source ? ` from '${source}'` : ''
-    };\n`,
+    `export type { ${specifierNames} }${source ? ` from '${source}'` : ''};\n`,
   );
+}
+
+function* fixAddTypeSpecifierToNamedExports(
+  fixer: TSESLint.RuleFixer,
+  report: ReportValueExport,
+): IterableIterator<TSESLint.RuleFix> {
+  if (report.node.exportKind === 'type') {
+    return;
+  }
+
+  for (const specifier of report.typeBasedSpecifiers) {
+    yield fixer.insertTextBefore(specifier, 'type ');
+  }
 }
 
 /**

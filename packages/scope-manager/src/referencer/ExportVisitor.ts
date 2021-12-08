@@ -24,6 +24,7 @@ class ExportVisitor extends Visitor {
 
   protected Identifier(node: TSESTree.Identifier): void {
     if (this.#exportNode.exportKind === 'type') {
+      // export type { T };
       // type exports can only reference types
       this.#referencer.currentScope().referenceType(node);
     } else {
@@ -65,7 +66,16 @@ class ExportVisitor extends Visitor {
   }
 
   protected ExportSpecifier(node: TSESTree.ExportSpecifier): void {
-    this.visit(node.local);
+    if (node.exportKind === 'type') {
+      // export { type T };
+      // type exports can only reference types
+      //
+      // we can't let this fall through to the Identifier selector because the exportKind is on this node
+      // and we don't have access to the `.parent` during scope analysis
+      this.#referencer.currentScope().referenceType(node.local);
+    } else {
+      this.visit(node.local);
+    }
   }
 }
 

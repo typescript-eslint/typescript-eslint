@@ -56,21 +56,21 @@ If you've only got one, you should inspect the `include` paths. If it doesn't in
 The former doesn't always work for everyone if they've got a complex build, as adding more paths (like test paths) to `include` could break the build.
 In those cases we suggest creating a new config called `tsconfig.eslint.json`, that looks something like this:
 
-```js title=".eslintrc.js"
-module.exports = {
+```jsonc title="tsconfig.eslint.json"
+{
   // extend your base config to share compilerOptions, etc
-  extends: './tsconfig.json',
-  compilerOptions: {
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
     // ensure that nobody can accidentally use this config for a build
-    noEmit: true,
+    "noEmit": true
   },
-  include: [
+  "include": [
     // whatever paths you intend to lint
-    'src',
-    'test',
-    'tools',
-  ],
-};
+    "src",
+    "test",
+    "tools"
+  ]
+}
 ```
 
 Ensure you update your `.eslintrc.js` to point at this new config file.

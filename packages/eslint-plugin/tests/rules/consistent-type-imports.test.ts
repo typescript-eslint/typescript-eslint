@@ -114,6 +114,11 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    `
+      import { type A, B } from 'foo';
+      type T = A;
+      const b = B;
+    `,
     // exports
     `
       import Type from 'foo';
@@ -1516,6 +1521,46 @@ const a: Default = '';
         },
       ],
       parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+import { type A, B } from 'foo';
+type T = A;
+const b = B;
+      `,
+      output: `
+import { A, B } from 'foo';
+type T = A;
+const b = B;
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+      errors: [
+        {
+          messageId: 'valueOverType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+import { A, B, type C } from 'foo';
+type T = A | C;
+const b = B;
+      `,
+      output: noFormat`
+import type { A} from 'foo';
+import { B, type C } from 'foo';
+type T = A | C;
+const b = B;
+      `,
+      options: [{ prefer: 'type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          data: { typeImports: '"A"' },
+          line: 2,
+        },
+      ],
     },
   ],
 });
