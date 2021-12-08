@@ -60,7 +60,7 @@ If you have some pure JavaScript code that you do not want to apply certain lint
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`.
-See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
+See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) for more information.
 
 ## How can I ban `<specific language feature>`?
 
