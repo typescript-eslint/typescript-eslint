@@ -193,6 +193,15 @@ function doThing(foo: number, bar: number) {}
       `,
       options: [{ ignoreTypeValueShadow: true }],
     },
+    {
+      code: `
+import { type foo } from './foo';
+
+// 'foo' is already declared in the upper scope
+function doThing(foo: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+    },
   ],
   invalid: [
     {
@@ -1422,7 +1431,23 @@ function foo(cb) {
     {
       code: `
 import type { foo } from './foo';
-function doThing(foo: number, bar: number) {}
+function doThing(foo: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+import { type foo } from './foo';
+function doThing(foo: number) {}
       `,
       options: [{ ignoreTypeValueShadow: false }],
       errors: [
@@ -1512,6 +1537,64 @@ declare module 'bar' {
     {
       code: `
 import type { Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
 
 declare module 'bar' {
   interface Foo {

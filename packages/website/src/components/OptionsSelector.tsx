@@ -46,19 +46,32 @@ function OptionsSelector({
   const [copyLink, setCopyLink] = useDelayToggle<boolean>(false);
   const [copyMarkdown, setCopyMarkdown] = useDelayToggle<boolean>(false);
 
-  const updateTS = useCallback((version: string) => {
-    setState({ ts: version });
-  }, []);
+  const updateTS = useCallback(
+    (version: string) => {
+      setState({ ts: version });
+    },
+    [setState],
+  );
 
-  const updateRules = useCallback((rules: RulesRecord) => {
-    setState({ rules: rules });
-    setEslintModal(false);
-  }, []);
+  const updateRules = useCallback(
+    (rules?: RulesRecord) => {
+      if (rules) {
+        setState({ rules: rules });
+      }
+      setEslintModal(false);
+    },
+    [setState],
+  );
 
-  const updateTsConfig = useCallback((config: CompilerFlags) => {
-    setState({ tsConfig: config });
-    setTypeScriptModal(false);
-  }, []);
+  const updateTsConfig = useCallback(
+    (config?: CompilerFlags) => {
+      if (config) {
+        setState({ tsConfig: config });
+      }
+      setTypeScriptModal(false);
+    },
+    [setState],
+  );
 
   const copyLinkToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(document.location.toString());

@@ -38,7 +38,8 @@
 }
 
 .modalClose {
-  cursor: pointer;
+  transition: color var(--ifm-transition-fast)
+    var(--ifm-transition-timing-default);
 }
 
 .modalClose:hover,
