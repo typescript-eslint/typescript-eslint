@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react';
 import tsConfigOptions from '../tsConfigOptions.json';
 
-import type { CompilerFlags } from '../types';
 import ConfigEditor from './ConfigEditor';
+import type { CompilerFlags } from '../types';
+import { shallowEqual } from '../lib/shallowEqual';
 
 interface ModalTypeScriptProps {
-  isOpen: boolean;
-  onClose: (config: CompilerFlags) => void;
-  config?: CompilerFlags;
+  readonly isOpen: boolean;
+  readonly onClose: (config?: CompilerFlags) => void;
+  readonly config?: CompilerFlags;
 }
 
 function checkOptions(item: [string, unknown]): item is [string, boolean] {
@@ -17,11 +18,16 @@ function checkOptions(item: [string, unknown]): item is [string, boolean] {
 function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
-      props.onClose(
-        Object.fromEntries(Object.entries(newConfig).filter(checkOptions)),
+      const cfg = Object.fromEntries(
+        Object.entries(newConfig).filter(checkOptions),
       );
+      if (!shallowEqual(cfg, props.config)) {
+        props.onClose(cfg);
+      } else {
+        props.onClose();
+      }
     },
-    [props.onClose],
+    [props.onClose, props.config],
   );
 
   return (

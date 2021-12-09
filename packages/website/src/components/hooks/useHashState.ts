@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
 
 import * as lz from 'lzstring.ts';
+import { shallowEqual } from '../lib/shallowEqual';
 
 function writeQueryParam(value: string): string {
   return lz.LZString.compressToEncodedURIComponent(value);
@@ -75,26 +76,6 @@ const writeStateToUrl = (newState: ConfigModel): string => {
   }
   return '';
 };
-
-function shallowEqual(
-  object1: Record<string, unknown> | ConfigModel | undefined,
-  object2: Record<string, unknown> | ConfigModel | undefined,
-): boolean {
-  if (object1 === object2) {
-    return true;
-  }
-  const keys1 = Object.keys(object1 ?? {});
-  const keys2 = Object.keys(object2 ?? {});
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-  for (const key of keys1) {
-    if (object1![key] !== object2![key]) {
-      return false;
-    }
-  }
-  return true;
-}
 
 function useHashState(
   initialState: ConfigModel,
