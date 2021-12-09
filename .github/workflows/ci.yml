@@ -140,9 +140,10 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/**/coverage/lcov.info
+          files: packages/**/coverage/lcov.info
           flags: unittest
           name: codecov
+          verbose: true
 
   linting_and_style:
     name: Code style and lint
