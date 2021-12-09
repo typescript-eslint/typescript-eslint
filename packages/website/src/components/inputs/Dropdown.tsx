@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from '../OptionsSelector.module.css';
 import clsx from 'clsx';
 
@@ -18,17 +18,11 @@ export interface DropdownProps<T> {
 function Dropdown<T extends boolean | string | number>(
   props: DropdownProps<T>,
 ): JSX.Element {
-  const [options, setOptions] = useState<DropdownOption<T>[]>([]);
-
-  useEffect(() => {
-    setOptions(
-      props.options.map(option =>
-        typeof option !== 'object'
-          ? { label: String(option), value: option }
-          : option,
-      ),
-    );
-  }, [props.options]);
+  const options: DropdownOption<T>[] = props.options.map(option =>
+    typeof option !== 'object'
+      ? { label: String(option), value: option }
+      : option,
+  );
 
   return (
     <select

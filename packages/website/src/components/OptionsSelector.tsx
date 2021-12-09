@@ -10,7 +10,7 @@ import Tooltip from './inputs/Tooltip';
 import EditIcon from './icons/EditIcon';
 import CopyIcon from './icons/CopyIcon';
 
-import useDelayToggle from './hooks/useDelayToggle';
+import useDebouncedToggle from './hooks/useDebouncedToggle';
 
 import { createMarkdown } from './lib/markdown';
 
@@ -43,8 +43,8 @@ function OptionsSelector({
 }: OptionsSelectorParams): JSX.Element {
   const [eslintModal, setEslintModal] = useState<boolean>(false);
   const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
-  const [copyLink, setCopyLink] = useDelayToggle<boolean>(false);
-  const [copyMarkdown, setCopyMarkdown] = useDelayToggle<boolean>(false);
+  const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
+  const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
 
   const updateTS = useCallback(
     (version: string) => {

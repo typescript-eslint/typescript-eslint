@@ -1,6 +1,6 @@
 import { useRef, useCallback, useState } from 'react';
 
-export default function useDelayToggle<T>(
+export default function useDebouncedToggle<T>(
   value: T,
   timeout = 1000,
 ): [T, (data: T) => void] {

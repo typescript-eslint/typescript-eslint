@@ -12,8 +12,8 @@ import { LoadingEditor } from './editor/LoadingEditor';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { shallowEqual } from './lib/shallowEqual';
 
-import ASTEsViewer from './ASTEsViewer';
-import ASTTsViewer from './ASTTsViewer';
+import ASTViewerESTree from './ASTViewerESTree';
+import ASTViewerTS from './ASTViewerTS';
 
 import type { RuleDetails, SelectedRange } from './types';
 
@@ -98,7 +98,7 @@ function Playground(): JSX.Element {
         {state.showAST && (
           <div className={styles.astViewer}>
             {(tsAst && state.showAST === 'ts' && (
-              <ASTTsViewer
+              <ASTViewerTS
                 value={tsAst}
                 position={position}
                 onSelectNode={updateSelectedNode}
@@ -106,7 +106,7 @@ function Playground(): JSX.Element {
               />
             )) ||
               (esAst && (
-                <ASTEsViewer
+                <ASTViewerESTree
                   value={esAst}
                   position={position}
                   onSelectNode={updateSelectedNode}

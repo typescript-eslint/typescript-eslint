@@ -75,7 +75,7 @@ export const propsToFilter = [
   'imports',
 ];
 
-export default function ASTTsViewer(props: ASTTsViewerProps): JSX.Element {
+export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
   const [syntaxKind, setSyntaxKind] = useState<Record<number, string>>({});
   const [nodeFlags, setNodeFlags] = useState<Record<number, string>>({});
   const [tokenFlags, setTokenFlags] = useState<Record<number, string>>({});
