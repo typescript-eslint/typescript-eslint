@@ -6,10 +6,11 @@
  */
 
 .hero {
-  background: linear-gradient(
-    90deg,
-    rgba(43, 43, 110, 1) 0%,
-    rgba(25, 25, 63, 1) 100%
+  background-color: var(--ifm-color-primary-darkest);
+  background-image: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-darker) 0%,
+    var(--ifm-color-primary-darkest) 100%
   );
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);

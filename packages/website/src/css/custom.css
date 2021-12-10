@@ -8,12 +8,12 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #3578e5;
-  --ifm-color-primary-dark: #1d68e1;
-  --ifm-color-primary-darker: #1b62d4;
-  --ifm-color-primary-darkest: #1751af;
-  --ifm-color-primary-light: #4e89e8;
-  --ifm-color-primary-lighter: #5a91ea;
-  --ifm-color-primary-lightest: #80aaef;
+  --ifm-color-primary-dark: #1b62d4;
+  --ifm-color-primary-darker: #1751af;
+  --ifm-color-primary-darkest: #123f89;
+  --ifm-color-primary-light: #1b62d4;
+  --ifm-color-primary-lighter: #80aaef;
+  --ifm-color-primary-lightest: #a5c3f3;
   --ifm-code-font-size: 95%;
 
   --ifm-color-info: var(--ifm-color-primary-dark);
@@ -25,9 +25,9 @@
 html[data-theme='dark'] {
   --ifm-color-feedback-background: #f0f8ff;
   --ifm-color-primary: #4e89e8;
-  --ifm-color-primary-dark: #3377e4;
-  --ifm-color-primary-darker: #256ee3;
-  --ifm-color-primary-darkest: #1959c0;
+  --ifm-color-primary-dark: #144697;
+  --ifm-color-primary-darker: #0e336e;
+  --ifm-color-primary-darkest: #0b2652;
   --ifm-color-primary-light: #699bec;
   --ifm-color-primary-lighter: #77a4ed;
   --ifm-color-primary-lightest: #a0c0f3;
@@ -40,6 +40,17 @@ html[data-theme='dark'] {
 
   --code-line-decoration: rgba(255, 255, 255, 0.1);
   --code-editor-bg: #1e1e1e;
+
+  --ifm-toc-border-color: var(--ifm-background-surface-color);
+  --ifm-footer-background-color: var(--ifm-background-surface-color);
+
+  --ifm-color-secondary-contrast-background: var(
+    --ifm-background-surface-color
+  );
+
+  --ifm-color-secondary-dark: #2c2d2f;
+  --ifm-color-secondary-darker: rgb(200, 201, 204);
+  --ifm-color-secondary-darkest: rgb(164, 166, 168);
 
   scrollbar-color: #454a4d #202324;
 }
@@ -72,19 +83,19 @@ html[data-theme='dark'] .header-github-link:before {
 }
 
 .theme-doc-sidebar-item-link-level-1 > a,
-.theme-doc-sidebar-item-category-level-1 > a {
-  font-size: 1rem;
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > a {
+  font-size: 1em;
   font-weight: var(--ifm-font-weight-bold);
 }
 
 .theme-doc-sidebar-item-link-level-2 > a,
-.theme-doc-sidebar-item-category-level-2 > a {
-  font-size: 0.9rem;
+.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > a {
+  font-size: 0.9em;
 }
 
 .theme-doc-sidebar-item-link-level-3 > a,
-.theme-doc-sidebar-item-category-level-3 > a {
-  font-size: 0.8rem;
+.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > a {
+  font-size: 0.8em;
 }
 
 h1,
@@ -94,13 +105,6 @@ h4,
 h5,
 h6 {
   font-weight: var(--ifm-font-weight-semibold);
-}
-
-html[data-theme='dark'] .alert--secondary {
-  --ra-admonition-icon-color: var(--ifm-color-emphasis-800);
-  --ifm-alert-color: var(--ifm-color-emphasis-800);
-  --ifm-alert-background-color: var(--ifm-color-emphasis-100);
-  --ifm-alert-border-color: var(--ifm-color-emphasis-100);
 }
 
 .myLineDecoration {
