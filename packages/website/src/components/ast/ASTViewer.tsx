@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ASTViewer.module.css';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
-import type { Position } from './types';
+import type { SelectedPosition, ASTViewerProps } from './types';
 
-import { ElementObject } from './Elements';
-import type Monaco from 'monaco-editor';
+import { ComplexItem } from './Elements';
+import { isRecord } from './utils';
 
-function ASTViewer(props: {
-  ast: TSESTree.Node | string;
-  position?: Monaco.Position | null;
-  onSelectNode: (node: TSESTree.Node | null) => void;
-}): JSX.Element {
-  const [selection, setSelection] = useState<Position | null>(() =>
-    props.position
-      ? {
-          line: props.position.lineNumber,
-          column: props.position.column - 1,
-        }
-      : null,
-  );
+function ASTViewer(props: ASTViewerProps): JSX.Element {
+  const [selection, setSelection] = useState<SelectedPosition | null>(null);
 
   useEffect(() => {
     setSelection(
@@ -32,17 +20,21 @@ function ASTViewer(props: {
     );
   }, [props.position]);
 
-  return typeof props.ast === 'string' ? (
-    <div>{props.ast}</div>
-  ) : (
+  return isRecord(props.value) ? (
     <div className={styles.list}>
-      <ElementObject
-        value={props.ast}
+      <ComplexItem
+        getNodeName={props.getNodeName}
+        getTooltip={props.getTooltip}
+        getRange={props.getRange}
+        filterProps={props.filterProps}
+        value={props.value}
         level="ast"
         selection={selection}
         onSelectNode={props.onSelectNode}
       />
     </div>
+  ) : (
+    <div>{props.value}</div>
   );
 }
 

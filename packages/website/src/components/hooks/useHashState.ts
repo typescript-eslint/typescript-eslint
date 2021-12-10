@@ -15,6 +15,16 @@ function readQueryParam(value: string | null, fallback: string): string {
     : fallback;
 }
 
+function readShowAST(value: string | null): 'ts' | 'es' | boolean {
+  switch (value) {
+    case 'es':
+      return 'es';
+    case 'ts':
+      return 'ts';
+  }
+  return Boolean(value);
+}
+
 const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   if (!hash) {
     return;
@@ -25,7 +35,8 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
     return {
       ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
       jsx: searchParams.has('jsx'),
-      showAST: searchParams.has('showAST'),
+      showAST:
+        searchParams.has('showAST') && readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.has('sourceType') &&
         searchParams.get('sourceType') === 'script'
@@ -81,14 +92,14 @@ function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const [hash, setHash] = useState<string>(window.location.hash.slice(1));
-  const [state, setState] = useState<ConfigModel>({
+  const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
-  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>({
+  }));
+  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
+  }));
 
   useEffect(() => {
     const newHash = window.location.hash.slice(1);

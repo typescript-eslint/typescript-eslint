@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Tooltip.module.css';
 import clsx from 'clsx';
 
 export interface TooltipProps {
   readonly children: JSX.Element | (JSX.Element | false)[];
   readonly text: string;
+  readonly position?: 'left' | 'right';
   readonly open?: boolean;
-  readonly close: (status: boolean) => void;
+  readonly hover?: boolean;
 }
 
 function Tooltip(props: TooltipProps): JSX.Element {
-  useEffect(() => {
-    if (props.open) {
-      setTimeout(() => {
-        props.close(false);
-      }, 1000);
-    }
-  }, [props.open]);
-
   return (
-    <div className={clsx(styles.tooltip, props.open && styles.tooltipActive)}>
+    <span
+      aria-label={((props.open || props.hover) && props.text) || undefined}
+      className={clsx(
+        styles.tooltip,
+        props.position === 'right' ? styles.tooltipRight : styles.tooltipLeft,
+        props.open && styles.visible,
+        props.hover && styles.hover,
+      )}
+    >
       {React.Children.map(props.children, child => child)}
-      <span className={styles.tooltipText}>{props.text}</span>
-    </div>
+    </span>
   );
 }
 

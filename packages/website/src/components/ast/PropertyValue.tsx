@@ -1,7 +1,12 @@
 import React from 'react';
 import styles from './ASTViewer.module.css';
+import { objType } from './utils';
 
-export default function PropertyValue(props: { value: unknown }): JSX.Element {
+export interface PropertyValueProps {
+  readonly value: unknown;
+}
+
+function PropertyValue(props: PropertyValueProps): JSX.Element {
   if (typeof props.value === 'string') {
     return (
       <span className={styles.propString}>{JSON.stringify(props.value)}</span>
@@ -21,5 +26,7 @@ export default function PropertyValue(props: { value: unknown }): JSX.Element {
       </span>
     );
   }
-  return <span>{String(props.value)}</span>;
+  return <span className={styles.propClass}>{objType(props.value)}</span>;
 }
+
+export default PropertyValue;
