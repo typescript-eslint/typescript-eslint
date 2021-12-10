@@ -1,8 +1,6 @@
-import type { ConfigModel } from '@site/src/components/types';
-
 export function shallowEqual(
-  object1: Record<string, unknown> | ConfigModel | undefined,
-  object2: Record<string, unknown> | ConfigModel | undefined,
+  object1: object | undefined | null,
+  object2: object | undefined | null,
 ): boolean {
   if (object1 === object2) {
     return true;

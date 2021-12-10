@@ -10,18 +10,15 @@ import Tooltip from './inputs/Tooltip';
 import EditIcon from './icons/EditIcon';
 import CopyIcon from './icons/CopyIcon';
 
+import useDebouncedToggle from './hooks/useDebouncedToggle';
+
 import { createMarkdown } from './lib/markdown';
 
 import type { RuleDetails } from './types';
 
 import styles from './OptionsSelector.module.css';
 
-import type {
-  CompilerFlags,
-  ConfigModel,
-  SourceType,
-  RulesRecord,
-} from './types';
+import type { CompilerFlags, ConfigModel, RulesRecord } from './types';
 
 export interface OptionsSelectorParams {
   readonly ruleOptions: RuleDetails[];
@@ -30,6 +27,12 @@ export interface OptionsSelectorParams {
   readonly tsVersions: readonly string[];
   readonly isLoading: boolean;
 }
+
+const ASTOptions = [
+  { value: false, label: 'Disabled' },
+  { value: 'es', label: 'ESTree' },
+  { value: 'ts', label: 'TypeScript' },
+] as const;
 
 function OptionsSelector({
   ruleOptions,
@@ -40,8 +43,8 @@ function OptionsSelector({
 }: OptionsSelectorParams): JSX.Element {
   const [eslintModal, setEslintModal] = useState<boolean>(false);
   const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
-  const [copyLink, setCopyLink] = useState<boolean>(false);
-  const [copyMarkdown, setCopyMarkdown] = useState<boolean>(false);
+  const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
+  const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
 
   const updateTS = useCallback(
     (version: string) => {
@@ -145,12 +148,12 @@ function OptionsSelector({
           />
         </label>
         <label className={styles.optionLabel}>
-          Show AST
-          <Checkbox
-            name="ast"
-            checked={state.showAST}
+          AST Viewer
+          <Dropdown
+            name="showAST"
+            value={state.showAST}
             onChange={(e): void => setState({ showAST: e })}
-            className={styles.optionCheckbox}
+            options={ASTOptions}
           />
         </label>
         <label className={styles.optionLabel}>
@@ -158,7 +161,7 @@ function OptionsSelector({
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState({ sourceType: e as SourceType })}
+            onChange={(e): void => setState({ sourceType: e })}
             options={['script', 'module']}
           />
         </label>
@@ -180,7 +183,7 @@ function OptionsSelector({
       <Expander label="Actions">
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
           Copy Link
-          <Tooltip open={copyLink} text="Copied" close={setCopyLink}>
+          <Tooltip open={copyLink} text="Copied">
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
         </button>
@@ -189,7 +192,7 @@ function OptionsSelector({
           onClick={copyMarkdownToClipboard}
         >
           Copy Markdown
-          <Tooltip open={copyMarkdown} text="Copied" close={setCopyMarkdown}>
+          <Tooltip open={copyMarkdown} text="Copied">
             <CopyIcon className={styles.clickableIcon} />
           </Tooltip>
         </button>

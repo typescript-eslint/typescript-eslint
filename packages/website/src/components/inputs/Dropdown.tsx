@@ -2,27 +2,45 @@ import React from 'react';
 import styles from '../OptionsSelector.module.css';
 import clsx from 'clsx';
 
-export interface DropdownProps {
-  readonly onChange: (value: string) => void;
-  readonly options: string[];
-  readonly value: string | undefined;
+export interface DropdownOption<T> {
+  readonly value: T;
+  readonly label: string;
+}
+
+export interface DropdownProps<T> {
+  readonly onChange: (value: T) => void;
+  readonly options: readonly (DropdownOption<T> | T)[];
+  readonly value: T | undefined;
   readonly name: string;
   readonly className?: string;
 }
 
-function Dropdown(props: DropdownProps): JSX.Element {
+function Dropdown<T extends boolean | string | number>(
+  props: DropdownProps<T>,
+): JSX.Element {
+  const options: DropdownOption<T>[] = props.options.map(option =>
+    typeof option !== 'object'
+      ? { label: String(option), value: option }
+      : option,
+  );
+
   return (
     <select
       name={props.name}
-      value={props.value}
+      value={String(props.value)}
       className={clsx(styles.optionSelect, props.className)}
       onChange={(e): void => {
-        props.onChange(e.target.value);
+        const selected = options.find(
+          item => String(item.value) === e.target.value,
+        );
+        if (selected) {
+          props.onChange(selected.value);
+        }
       }}
     >
-      {props.options.map(item => (
-        <option key={item} value={item}>
-          {item}
+      {options.map(item => (
+        <option key={String(item.value)} value={String(item.value)}>
+          {item.label}
         </option>
       ))}
     </select>
