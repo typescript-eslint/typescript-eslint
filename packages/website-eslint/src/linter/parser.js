@@ -14,6 +14,7 @@ function parseAndGenerateServices(code, options) {
 
   return {
     ast: estree,
+    tsAst: ast,
     services: {
       hasFullTypeInformation: true,
       program,
@@ -24,7 +25,7 @@ function parseAndGenerateServices(code, options) {
 }
 
 export function parseForESLint(code, parserOptions) {
-  const { ast, services } = parseAndGenerateServices(code, {
+  const { ast, tsAst, services } = parseAndGenerateServices(code, {
     ...parserOptions,
     jsx: parserOptions.ecmaFeatures?.jsx ?? false,
     useJSXTextNode: true,
@@ -40,6 +41,7 @@ export function parseForESLint(code, parserOptions) {
 
   return {
     ast,
+    tsAst,
     services,
     scopeManager,
     visitorKeys,
