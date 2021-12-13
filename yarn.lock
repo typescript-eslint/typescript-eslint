@@ -1773,11 +1773,12 @@
     prop-types "^15.6.2"
 
 "@docusaurus/remark-plugin-npm2yarn@^2.0.0-beta.9":
-  version "2.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@docusaurus/remark-plugin-npm2yarn/-/remark-plugin-npm2yarn-2.0.0-beta.9.tgz#f5f2a2ac0bc84e470642864c8515247f13dc722f"
-  integrity sha512-trHIWKrB15cUWTSAvXMTYnBrgBEldPFUOCo2pxDAYeEdEBIzIhSjG6JXpzhBnyOu6PwfAIAu7ziH+LbhPsN/ow==
+  version "2.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@docusaurus/remark-plugin-npm2yarn/-/remark-plugin-npm2yarn-2.0.0-beta.13.tgz#078005c91a7dc0e9617cf4bde6152df13745ba53"
+  integrity sha512-Y3jFfheBfWKPplGA9rrN9Ip0/N9TiCM6bqwLKDkUS25d1APZ+GiZ/8LMHMDFaSpfc+UXrcHhslxwwGQWsZ4VBA==
   dependencies:
     npm-to-yarn "^1.0.1"
+    unist-util-visit "^2.0.2"
 
 "@docusaurus/theme-classic@^2.0.0-beta.9":
   version "2.0.0-beta.9"
