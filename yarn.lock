@@ -1677,10 +1677,11 @@
     webpack "^5.61.0"
 
 "@docusaurus/module-type-aliases@^2.0.0-beta.9":
-  version "2.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@docusaurus/module-type-aliases/-/module-type-aliases-2.0.0-beta.9.tgz#71b9b240b033fcdc6e44bac3d9a83f56a429599b"
-  integrity sha512-H8keGRVrGSymmzI1r/9lHx62JVm/9eedja2eJr/eQPkXZlJjht0AEsWt/bwTVJ8qbPthG0G0FPuApJdt+8aK8Q==
+  version "2.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@docusaurus/module-type-aliases/-/module-type-aliases-2.0.0-beta.13.tgz#45e811739bec9b79dba07af040e574c9cd2cd04a"
+  integrity sha512-yYHWajhjx0IgMJkbPtoXQzC58em6emGFyl5w5b6OuFxG4qXHZQJp7dRaPQxUMCBvOcHrI9lIw9RYJssIwOcYAg==
   dependencies:
+    "@docusaurus/types" "2.0.0-beta.13"
     "@types/react" "*"
     "@types/react-helmet" "*"
     "@types/react-router-config" "*"
@@ -1840,6 +1841,18 @@
     clsx "^1.1.1"
     eta "^1.12.3"
     lodash "^4.17.20"
+
+"@docusaurus/types@2.0.0-beta.13":
+  version "2.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@docusaurus/types/-/types-2.0.0-beta.13.tgz#1a837bdd13e9384bdbdb301dd0c31f9c97ea8197"
+  integrity sha512-4kGninMm3uEcvN/KXBAmc4nR83jPC8h7bPY2MsioSAjL8T0i2f7dUqmVQuIT3vJ69VQaY9HtWhJcTPPYeY3B/w==
+  dependencies:
+    commander "^5.1.0"
+    joi "^17.4.2"
+    querystring "0.2.0"
+    utility-types "^3.10.0"
+    webpack "^5.61.0"
+    webpack-merge "^5.8.0"
 
 "@docusaurus/types@2.0.0-beta.9":
   version "2.0.0-beta.9"
