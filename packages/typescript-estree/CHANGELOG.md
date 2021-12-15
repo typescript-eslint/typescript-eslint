@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.6.0...v5.7.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* **typescript-estree:** type-only regression for consumers not yet on TS 4.5 ([#4272](https://github.com/typescript-eslint/typescript-eslint/issues/4272)) ([550b61e](https://github.com/typescript-eslint/typescript-eslint/commit/550b61ee1096113b234bf035dd267ba385809961))
+
+
+
+
+
 # [5.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.5.0...v5.6.0) (2021-12-06)
 
 

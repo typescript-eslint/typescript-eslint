@@ -25,8 +25,8 @@
   height: 100%;
   width: 50%;
   border: 1px solid var(--ifm-color-emphasis-100);
+  padding: 0;
   overflow: auto;
-  background: var(--ifm-background-surface-color);
   word-wrap: initial;
   white-space: nowrap;
   background: var(--code-editor-bg);

@@ -1,218 +1,140 @@
-import React, {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import clsx from 'clsx';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
 import type { GenericParams } from './types';
 
-import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
-import {
-  filterRecord,
-  hasChildInRange,
-  isArrayInRange,
-  isEsNode,
-  isInRange,
-  isRecord,
-} from './selection';
+import { hasChildInRange, isArrayInRange, isInRange, isRecord } from './utils';
 
-import PropertyNameComp from '@site/src/components/ast/PropertyName';
-import PropertyValueComp from '@site/src/components/ast/PropertyValue';
 import styles from '@site/src/components/ast/ASTViewer.module.css';
 
-export const PropertyName = React.memo(PropertyNameComp);
-export const PropertyValue = React.memo(PropertyValueComp);
+import PropertyValue from '@site/src/components/ast/PropertyValue';
+import ItemGroup from '@site/src/components/ast/ItemGroup';
+import HiddenItem from '@site/src/components/ast/HiddenItem';
+import Tooltip from '@site/src/components/inputs/Tooltip';
 
-export function ElementArray(props: GenericParams<unknown[]>): JSX.Element {
-  const [isComplex, setIsComplex] = useState<boolean>(() =>
-    isRecord(props.value),
-  );
-  const [isExpanded, setIsExpanded] = useState<boolean>(
-    () =>
-      isComplex || props.value.some(item => isInRange(props.selection, item)),
-  );
-
-  useEffect(() => {
-    setIsComplex(
-      props.value.some(item => typeof item === 'object' && item !== null),
-    );
-  }, [props.value]);
-
-  useEffect(() => {
-    if (isComplex && !isExpanded) {
-      setIsExpanded(isArrayInRange(props.selection, props.value));
-    }
-  }, [props.value, props.selection]);
-
-  return (
-    <div className={clsx(styles.expand, isExpanded ? '' : styles.open)}>
-      <PropertyName
-        propName={props.name}
-        onClick={(): void => setIsExpanded(!isExpanded)}
-      />
-      <span>[</span>
-      {isExpanded ? (
-        <div className={styles.subList}>
-          {props.value.map((item, index) => {
-            return (
-              <ElementItem
-                level={`${props.level}_${props.name}[${index}]`}
-                key={`${props.level}_${props.name}[${index}]`}
-                value={item}
-                selection={props.selection}
-                onSelectNode={props.onSelectNode}
-              />
-            );
-          })}
-        </div>
-      ) : !isComplex ? (
-        <span className={styles.hidden}>
-          {props.value.map((item, index) => (
-            <span key={`${props.level}_${props.name}|[${index}]`}>
-              {index > 0 && ', '}
-              <PropertyValue value={item} />
-            </span>
-          ))}
-        </span>
-      ) : (
-        <span className={styles.hidden}>
-          {props.value.length} {props.value.length > 1 ? 'elements' : 'element'}
-        </span>
-      )}
-      <span>]</span>
-    </div>
-  );
-}
-
-export function ElementObject(
-  props: GenericParams<TSESTree.Node | Record<string, unknown>>,
+export function ComplexItem(
+  props: GenericParams<Record<string, unknown> | unknown[]>,
 ): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(() => {
-    return isInRange(props.selection, props.value);
-  });
-  const [isSelected, setIsSelected] = useState<boolean>(
-    () =>
-      isInRange(props.selection, props.value) && props.value.type !== 'Program',
+  const [isExpanded, setIsExpanded] = useState<boolean>(
+    () => props.level === 'ast',
   );
-  const listItem = useRef<HTMLDivElement | null>(null);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [model, setModel] = useState<[string, unknown][]>([]);
 
-  const onMouseEnter = useCallback(
-    (e: SyntheticEvent) => {
-      if (isEsNode(props.value)) {
-        props.onSelectNode(props.value as TSESTree.Node);
-        e.stopPropagation();
-        e.preventDefault();
-      }
-    },
-    [props.value],
-  );
+  useEffect(() => {
+    setModel(
+      Object.entries(props.value).filter(item => props.filterProps(item)),
+    );
+  }, [props.value, props.filterProps]);
 
-  const onMouseLeave = useCallback(
-    (_e: SyntheticEvent) => {
-      if (isEsNode(props.value)) {
-        props.onSelectNode(null);
+  const onHover = useCallback(
+    (state: boolean) => {
+      if (props.onSelectNode) {
+        const range = props.getRange(props.value);
+        if (range) {
+          props.onSelectNode(state ? range : null);
+        }
       }
     },
     [props.value],
   );
 
   useEffect(() => {
-    const selected = isInRange(props.selection, props.value);
+    const selected = props.selection
+      ? props.isArray
+        ? isArrayInRange(props.selection, props.value, props.getRange)
+        : isInRange(props.selection, props.value, props.getRange)
+      : false;
 
     setIsSelected(
-      selected &&
-        props.value.type !== 'Program' &&
-        !hasChildInRange(props.selection, props.value),
+      props.level !== 'ast' &&
+        selected &&
+        !hasChildInRange(props.selection, model, props.getRange),
     );
 
     if (selected && !isExpanded) {
-      setIsExpanded(isInRange(props.selection, props.value));
+      setIsExpanded(selected);
     }
-  }, [props.selection, props.value]);
-
-  useEffect(() => {
-    if (listItem.current && isSelected) {
-      scrollIntoViewIfNeeded(listItem.current);
-    }
-  }, [isSelected, listItem]);
+  }, [model, props.selection, props.value, props.isArray, props.getRange]);
 
   return (
-    <div
-      ref={listItem}
-      className={clsx(
-        styles.expand,
-        isExpanded ? '' : styles.open,
-        isSelected ? styles.selected : '',
-      )}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+    <ItemGroup
+      propName={props.propName}
+      value={props.value}
+      isExpanded={isExpanded}
+      isSelected={isSelected}
+      getNodeName={props.getNodeName}
+      canExpand={true}
+      onHover={onHover}
+      onClick={(): void => setIsExpanded(!isExpanded)}
     >
-      <PropertyName
-        propName={props.propName}
-        name={props.value.type as string | undefined}
-        onClick={(): void => setIsExpanded(!isExpanded)}
-      />
-      <span> {'{'}</span>
+      <span>{props.isArray ? '[' : '{'}</span>
       {isExpanded ? (
         <div className={styles.subList}>
-          {filterRecord(props.value).map((item, index) => (
+          {model.map((item, index) => (
             <ElementItem
               level={`${props.level}_${item[0]}[${index}]`}
               key={`${props.level}_${item[0]}[${index}]`}
+              getNodeName={props.getNodeName}
+              getTooltip={props.getTooltip}
+              getRange={props.getRange}
+              filterProps={props.filterProps}
               selection={props.selection}
-              name={item[0]}
+              propName={item[0]}
               value={item[1]}
               onSelectNode={props.onSelectNode}
             />
           ))}
         </div>
       ) : (
-        <span className={styles.hidden}>
-          {filterRecord(props.value)
-            .map(item => item[0])
-            .join(', ')}
-        </span>
+        <HiddenItem level={props.level} isArray={props.isArray} value={model} />
       )}
-      <span>{'}'}</span>
-    </div>
+      <span>{props.isArray ? ']' : '}'}</span>
+    </ItemGroup>
+  );
+}
+
+export function SimpleItem(props: GenericParams<unknown>): JSX.Element {
+  const [tooltip, setTooltip] = useState<string | undefined>();
+
+  useEffect(() => {
+    setTooltip(props.getTooltip?.(props.propName ?? '', props.value));
+  }, [props.getTooltip, props.propName, props.value]);
+
+  return (
+    <ItemGroup
+      propName={props.propName}
+      value={props.value}
+      getNodeName={props.getNodeName}
+    >
+      {tooltip ? (
+        <Tooltip hover={true} position="right" text={tooltip}>
+          <PropertyValue value={props.value} />
+        </Tooltip>
+      ) : (
+        <PropertyValue value={props.value} />
+      )}
+    </ItemGroup>
   );
 }
 
 export function ElementItem(props: GenericParams<unknown>): JSX.Element {
-  if (Array.isArray(props.value)) {
+  const isArray = Array.isArray(props.value);
+  if (isArray || isRecord(props.value)) {
     return (
-      <ElementArray
-        name={props.name}
+      <ComplexItem
+        isArray={isArray}
+        level={`${props.level}_${props.propName}`}
+        propName={props.propName}
+        getNodeName={props.getNodeName}
+        getTooltip={props.getTooltip}
+        getRange={props.getRange}
+        filterProps={props.filterProps}
         value={props.value}
-        level={props.level}
         selection={props.selection}
         onSelectNode={props.onSelectNode}
       />
     );
-  } else if (
-    typeof props.value === 'object' &&
-    props.value &&
-    props.value.constructor === Object
-  ) {
-    return (
-      <ElementObject
-        level={`${props.level}_${props.name}`}
-        propName={props.name}
-        value={props.value as Record<string, unknown>}
-        selection={props.selection}
-        onSelectNode={props.onSelectNode}
-      />
-    );
+  } else {
+    return <SimpleItem {...props} />;
   }
-  return (
-    <div className={styles.nonExpand}>
-      {props.name && <span className={styles.propName}>{props.name}</span>}
-      {props.name && <span>: </span>}
-      <PropertyValue value={props.value} />
-    </div>
-  );
 }

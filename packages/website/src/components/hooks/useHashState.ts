@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
 
 import * as lz from 'lzstring.ts';
+import { shallowEqual } from '../lib/shallowEqual';
 
 function writeQueryParam(value: string): string {
   return lz.LZString.compressToEncodedURIComponent(value);
@@ -12,6 +13,16 @@ function readQueryParam(value: string | null, fallback: string): string {
   return value
     ? lz.LZString.decompressFromEncodedURIComponent(value) ?? fallback
     : fallback;
+}
+
+function readShowAST(value: string | null): 'ts' | 'es' | boolean {
+  switch (value) {
+    case 'es':
+      return 'es';
+    case 'ts':
+      return 'ts';
+  }
+  return Boolean(value);
 }
 
 const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
@@ -24,7 +35,8 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
     return {
       ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
       jsx: searchParams.has('jsx'),
-      showAST: searchParams.has('showAST'),
+      showAST:
+        searchParams.has('showAST') && readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.has('sourceType') &&
         searchParams.get('sourceType') === 'script'
@@ -76,38 +88,18 @@ const writeStateToUrl = (newState: ConfigModel): string => {
   return '';
 };
 
-function shallowEqual(
-  object1: Record<string, unknown> | ConfigModel | undefined,
-  object2: Record<string, unknown> | ConfigModel | undefined,
-): boolean {
-  if (object1 === object2) {
-    return true;
-  }
-  const keys1 = Object.keys(object1 ?? {});
-  const keys2 = Object.keys(object2 ?? {});
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-  for (const key of keys1) {
-    if (object1![key] !== object2![key]) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const [hash, setHash] = useState<string>(window.location.hash.slice(1));
-  const [state, setState] = useState<ConfigModel>({
+  const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
-  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>({
+  }));
+  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(() => ({
     ...initialState,
     ...parseStateFromUrl(window.location.hash.slice(1)),
-  });
+  }));
 
   useEffect(() => {
     const newHash = window.location.hash.slice(1);

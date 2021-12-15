@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.6.0...v5.7.0) (2021-12-13)
+
+
+### Features
+
+* **eslint-plugin:** [consistent-type-exports] support TS4.5 inline export specifiers ([#4236](https://github.com/typescript-eslint/typescript-eslint/issues/4236)) ([be4d976](https://github.com/typescript-eslint/typescript-eslint/commit/be4d976215614cc032730ae596d2f6e47df67730))
+* **eslint-plugin:** [consistent-type-imports] support TS4.5 inline import specifiers ([#4237](https://github.com/typescript-eslint/typescript-eslint/issues/4237)) ([f61af7c](https://github.com/typescript-eslint/typescript-eslint/commit/f61af7c53cca52f81e77b4334c7d6ad100609af6))
+* **eslint-plugin:** [no-shadow] support TS4.5 inline import specifiers ([#4239](https://github.com/typescript-eslint/typescript-eslint/issues/4239)) ([96b7e8e](https://github.com/typescript-eslint/typescript-eslint/commit/96b7e8ee0f5280cab50a7205ae592e1d983a111a))
+
+
+
+
+
 # [5.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.5.0...v5.6.0) (2021-12-06)
 
 
