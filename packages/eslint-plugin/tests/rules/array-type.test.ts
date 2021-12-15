@@ -202,6 +202,35 @@ ruleTester.run('array-type', rule, {
       code: 'let a: ReadonlyArray<string | number> = [];',
       options: [{ default: 'generic', readonly: 'array-simple' }],
     },
+    {
+      code: 'let a: Array<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly bigint[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | bigint)[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Array<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly bigint[] = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+
     // End of base cases
 
     {
@@ -1088,6 +1117,97 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         },
       ],
     },
+    {
+      code: 'let a: bigint[] = [];',
+      output: 'let a: Array<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { className: 'Array', readonlyPrefix: '', type: 'bigint' },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'let a: (string | bigint)[] = [];',
+      output: 'let a: Array<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'let a: ReadonlyArray<bigint> = [];',
+      output: 'let a: readonly bigint[] = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      errors: [
+        {
+          messageId: 'errorStringArraySimple',
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'bigint',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'let a: (string | bigint)[] = [];',
+      output: 'let a: Array<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'let a: readonly bigint[] = [];',
+      output: 'let a: ReadonlyArray<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'bigint',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: 'let a: readonly (string | bigint)[] = [];',
+      output: 'let a: ReadonlyArray<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+      errors: [
+        {
+          messageId: 'errorStringGeneric',
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+    },
+
     // End of base cases
 
     {
