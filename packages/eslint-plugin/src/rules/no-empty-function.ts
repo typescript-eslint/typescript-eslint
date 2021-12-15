@@ -11,6 +11,7 @@ type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const schema = util.deepMerge(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
   Array.isArray(baseRule.meta.schema)
     ? baseRule.meta.schema[0]
     : baseRule.meta.schema,
