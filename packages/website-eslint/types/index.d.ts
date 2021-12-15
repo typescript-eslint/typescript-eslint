@@ -13,6 +13,7 @@ export interface WebLinter {
 
   getAst(): ESLintAST;
   getTsAst(): Record<string, unknown>;
+  getScope(): Record<string, unknown>;
 
   lint(
     code: string,

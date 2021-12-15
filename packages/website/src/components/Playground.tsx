@@ -18,6 +18,7 @@ import ASTViewerTS from './ASTViewerTS';
 import type { RuleDetails, SelectedRange } from './types';
 
 import type { TSESTree } from '@typescript-eslint/website-eslint';
+import ASTViewerScope from '@site/src/components/ASTViewerScope';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
@@ -32,6 +33,7 @@ function Playground(): JSX.Element {
   const { isDarkTheme } = useThemeContext();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
   const [tsAst, setTsAST] = useState<Record<string, unknown> | string | null>();
+  const [scope, setScope] = useState<Record<string, unknown> | string | null>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -85,6 +87,7 @@ function Playground(): JSX.Element {
             showAST={state.showAST}
             onEsASTChange={setEsAst}
             onTsASTChange={setTsAST}
+            onScopeChange={setScope}
             decoration={selectedRange}
             onChange={(code): void => setState({ code: code })}
             onLoaded={(ruleNames, tsVersions): void => {
@@ -105,6 +108,13 @@ function Playground(): JSX.Element {
                 version={state.ts}
               />
             )) ||
+              (state.showAST === 'scope' && scope && (
+                <ASTViewerScope
+                  value={scope}
+                  position={position}
+                  onSelectNode={updateSelectedNode}
+                />
+              )) ||
               (esAst && (
                 <ASTViewerESTree
                   value={esAst}
