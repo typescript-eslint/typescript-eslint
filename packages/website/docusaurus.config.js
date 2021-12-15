@@ -125,6 +125,34 @@ const config = {
           src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
           href: 'https://www.netlify.com',
         },
+        links: [
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
+              },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/tseslint',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/typescript-eslint/typescript-eslint',
+              },
+              {
+                label: 'Report issue',
+                href: 'https://github.com/typescript-eslint/typescript-eslint/issues/new/choose',
+              },
+            ],
+          },
+        ],
         // style: 'primary',
         copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
       },
