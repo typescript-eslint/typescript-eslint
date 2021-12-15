@@ -15,6 +15,7 @@ function isSimpleType(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSBooleanKeyword:
     case AST_NODE_TYPES.TSNeverKeyword:
     case AST_NODE_TYPES.TSNumberKeyword:
+    case AST_NODE_TYPES.TSBigIntKeyword:
     case AST_NODE_TYPES.TSObjectKeyword:
     case AST_NODE_TYPES.TSStringKeyword:
     case AST_NODE_TYPES.TSSymbolKeyword:

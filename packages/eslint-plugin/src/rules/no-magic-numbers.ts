@@ -1,18 +1,32 @@
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-magic-numbers');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const baseRuleSchema = Array.isArray(baseRule.meta.schema)
-  ? baseRule.meta.schema[0]
-  : baseRule.meta.schema;
+// Extend base schema with additional property to ignore TS numeric literal types
+const schema = util.deepMerge(
+  { ...baseRule.meta.schema },
+  {
+    properties: {
+      ignoreNumericLiteralTypes: {
+        type: 'boolean',
+      },
+      ignoreEnums: {
+        type: 'boolean',
+      },
+      ignoreReadonlyClassProperties: {
+        type: 'boolean',
+      },
+    },
+  },
+);
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
@@ -23,25 +37,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    // Extend base schema with additional property to ignore TS numeric literal types
-    schema: [
-      {
-        ...baseRuleSchema,
-        properties: {
-          ...baseRuleSchema.properties,
-          ignoreNumericLiteralTypes: {
-            type: 'boolean',
-          },
-          ignoreEnums: {
-            type: 'boolean',
-          },
-          ignoreReadonlyClassProperties: {
-            type: 'boolean',
-          },
-        },
-      },
-    ],
+    schema: [schema],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [

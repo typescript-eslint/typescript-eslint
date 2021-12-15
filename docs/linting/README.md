@@ -39,10 +39,10 @@ This is about the smallest config file we recommend. There's a lot more you can 
 
 Explaining the important bits:
 
-- `parser: '@typescript-eslint/parser'` tells ESLint to use the parser package you installed ([`@typescript-eslint/parser`](../../../packages/parser)).
+- `parser: '@typescript-eslint/parser'` tells ESLint to use the parser package you installed ([`@typescript-eslint/parser`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser)).
   - This allows ESLint to understand TypeScript syntax.
   - This is required, or else ESLint will throw errors as it tries to parse TypeScript code as if it were regular JavaScript.
-- `plugins: ['@typescript-eslint']` tells ESLint to load the plugin package you installed ([`@typescript-eslint/eslint-plugin`](../../../packages/eslint-plugin)).
+- `plugins: ['@typescript-eslint']` tells ESLint to load the plugin package you installed ([`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin)).
   - This allows you to use the rules within your codebase.
 - `extends: [ ... ]` tells ESLint that your config extends the given configurations.
   - `eslint:recommended` is ESLint's inbuilt "recommended" config - it turns on a small, sensible set of rules which lint for well-known best-practices.
@@ -66,7 +66,7 @@ dist
 
 - You can read more about configuring ESLint [in their documentation on configuration](https://eslint.org/docs/user-guide/configuring).
 - You can read more about the rules provided by ESLint [in their documentation on their rules](https://eslint.org/docs/rules/).
-- You can read more about the rules provided by us in [our plugin documentation](../../../packages/eslint-plugin).
+- You can read more about the rules provided by us in [our plugin documentation](https://typescript-eslint.io/rules/).
 
 ## Running ESLint
 
@@ -172,7 +172,7 @@ A typical plugin might be used like:
 
 <!-- markdownlint-disable MD044 -->
 
-Search ["eslint-plugin" on npm](https://www.npmjs.com/search?q=eslint-config) for more.
+Search ["eslint-plugin" on npm](https://www.npmjs.com/search?q=eslint-plugin) for more.
 
 ## Troubleshooting
 

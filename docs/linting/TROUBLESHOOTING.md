@@ -8,7 +8,7 @@ sidebar_label: Troubleshooting & FAQs
 
 This happens because TypeScript adds new features that ESLint doesn't know about.
 
-The first step is to [check our list of "extension" rules here](../../../packages/eslint-plugin/README.md#extension-rules).
+The first step is to [check our list of "extension" rules here](https://typescript-eslint.io/rules/#extension-rules).
 An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
 If you find it in there, give it a go to see if it works for you.
 You can configure it by disabling the base rule, and turning on the extension rule.
@@ -24,10 +24,10 @@ Here's an example with the `semi` rule:
 ```
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
-[The contributing guide outlines the best way to raise an issue](../../../CONTRIBUTING.md#raising-issues).
+[The contributing guide outlines the best way to raise an issue](https://github.com/typescript-eslint/typescript-eslint/blob/main/CONTRIBUTING.md#raising-issues).
 
 > We release a new version our tooling every week.
-> _Please_ ensure that you [check our the latest list of "extension" rules](../../../packages/eslint-plugin/README.md#extension-rules) **_before_** filing an issue.
+> _Please_ ensure that you [check our the latest list of "extension" rules](https://typescript-eslint.io/rules/#extension-rules) **_before_** filing an issue.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -60,7 +60,7 @@ If you have some pure JavaScript code that you do not want to apply certain lint
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`.
-See https://github.com/typescript-eslint/typescript-eslint/issues/2041 for more information.
+See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) for more information.
 
 ## How can I ban `<specific language feature>`?
 

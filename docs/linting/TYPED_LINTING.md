@@ -63,8 +63,8 @@ Depending on what you want to achieve:
   - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
     - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/tsconfig.eslint.json)
-      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/.eslintrc.js)
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
 
 ## Troubleshooting
 

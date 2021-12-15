@@ -233,7 +233,7 @@ export default util.createRule<Options, MessageId>({
         wantedTypes.every(type => types.has(type));
 
       // boolean
-      if (is('boolean')) {
+      if (is('boolean') || is('truthy boolean')) {
         // boolean is always okay
         return;
       }
@@ -248,6 +248,11 @@ export default util.createRule<Options, MessageId>({
       if (is('nullish')) {
         // condition is always false
         context.report({ node, messageId: 'conditionErrorNullish' });
+        return;
+      }
+
+      // Known edge case: boolean `true` and nullish values are always valid boolean expressions
+      if (is('nullish', 'truthy boolean')) {
         return;
       }
 
@@ -708,6 +713,7 @@ export default util.createRule<Options, MessageId>({
     type VariantType =
       | 'nullish'
       | 'boolean'
+      | 'truthy boolean'
       | 'string'
       | 'truthy string'
       | 'number'
@@ -732,12 +738,19 @@ export default util.createRule<Options, MessageId>({
       ) {
         variantTypes.add('nullish');
       }
+      const booleans = types.filter(type =>
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+      );
 
-      if (
-        types.some(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-        )
-      ) {
+      // If incoming type is either "true" or "false", there will be one type
+      // object with intrinsicName set accordingly
+      // If incoming type is boolean, there will be two type objects with
+      // intrinsicName set "true" and "false" each because of tsutils.unionTypeParts()
+      if (booleans.length === 1) {
+        tsutils.isBooleanLiteralType(booleans[0], true)
+          ? variantTypes.add('truthy boolean')
+          : variantTypes.add('boolean');
+      } else if (booleans.length === 2) {
         variantTypes.add('boolean');
       }
 
