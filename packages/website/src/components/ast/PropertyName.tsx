@@ -5,18 +5,18 @@ export interface PropertyNameProps {
   readonly typeName?: string;
   readonly propName?: string;
   readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
-  readonly onMouseEnter?: (e: MouseEvent<HTMLElement>) => void;
-  readonly onMouseLeave?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onMouseEnter?: (e: boolean) => void;
+  readonly onMouseLeave?: (e: boolean) => void;
 }
 
 export default function PropertyName(props: PropertyNameProps): JSX.Element {
-  return props.onClick ? (
+  return props.onClick || props.onMouseEnter || props.onMouseLeave ? (
     <>
       {props.propName && (
         <a
           href={`#${props.propName}`}
-          onMouseEnter={props.onMouseEnter}
-          onMouseLeave={props.onMouseLeave}
+          onMouseEnter={(): void => props.onMouseEnter?.(true)}
+          onMouseLeave={(): void => props.onMouseLeave?.(false)}
           onClick={(e): void => {
             e.preventDefault();
             props.onClick?.(e);
@@ -30,8 +30,8 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
       {props.typeName && (
         <a
           href={`#${props.typeName}`}
-          onMouseEnter={props.onMouseEnter}
-          onMouseLeave={props.onMouseLeave}
+          onMouseEnter={(): void => props.onMouseEnter?.(true)}
+          onMouseLeave={(): void => props.onMouseLeave?.(false)}
           onClick={(e): void => {
             e.preventDefault();
             props.onClick?.(e);

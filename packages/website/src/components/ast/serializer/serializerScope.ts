@@ -25,7 +25,7 @@ export function getNodeName(data: Record<string, unknown>): string | undefined {
     constructorName = 'ImplicitGlobalConstTypeVariable';
   }
 
-  return `${constructorName}${id}${name}`;
+  return `${constructorName}${id}`;
 }
 
 export function getRange(
@@ -38,10 +38,20 @@ export function getRange(
     };
   } else if (isESTreeNode(value.identifier)) {
     return {
-      start: value.identifier.loc.start,
-      end: value.identifier.loc.end,
+      start: { ...value.identifier.loc.start },
+      end: { ...value.identifier.loc.end },
+    };
+  } else if (
+    Array.isArray(value.identifiers) &&
+    value.identifiers.length > 0 &&
+    isESTreeNode(value.identifiers[0])
+  ) {
+    return {
+      start: { ...value.identifiers[0].loc.start },
+      end: { ...value.identifiers[0].loc.end },
     };
   }
+
   return undefined;
 }
 
@@ -129,6 +139,10 @@ export function createScopeSerializer(): Serializer {
         return {
           type: 'ref',
           name: data.type,
+          range: {
+            start: { ...data.loc.start },
+            end: { ...data.loc.end },
+          },
           value: `<"${data.name}">`,
         };
       }

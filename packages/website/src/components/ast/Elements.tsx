@@ -112,6 +112,7 @@ export function ElementItem({
       <SimpleItem
         getTooltip={getTooltip}
         value={value as ASTViewerModelSimple}
+        onSelectNode={onSelectNode}
       />
     );
   }

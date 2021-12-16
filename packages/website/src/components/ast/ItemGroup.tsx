@@ -39,8 +39,8 @@ export default function ItemGroup(props: ItemGroupProps): JSX.Element {
       <PropertyName
         propName={props.propName}
         typeName={props.value.name}
-        onMouseEnter={(): void => props.onHover?.(true)}
-        onMouseLeave={(): void => props.onHover?.(false)}
+        onMouseEnter={props.onHover}
+        onMouseLeave={props.onHover}
         onClick={(props.canExpand && props.onClick) || undefined}
       />
       {React.Children.map(props.children, child => child)}
