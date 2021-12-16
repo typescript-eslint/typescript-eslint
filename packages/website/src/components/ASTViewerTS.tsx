@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import { isRecord } from './ast/utils';
 import type {
   ASTViewerBaseProps,
+  ASTViewerModel,
   SelectedRange,
   SelectedPosition,
 } from './ast/types';
-import type { Node, SourceFile } from 'typescript';
+import type { SourceFile } from 'typescript';
+import { serialize } from './ast/serializer/serializer';
+import { createTsSerializer } from './ast/serializer/serializerTS';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
   readonly version: string;
+  readonly value: Record<string, unknown> | string;
 }
 
 function extractEnum(
@@ -26,10 +29,6 @@ function extractEnum(
     }
   }
   return result;
-}
-
-function isTsNode(value: unknown): value is Node {
-  return isRecord(value) && typeof value.kind === 'number';
 }
 
 function getFlagNamesFromEnum(
@@ -64,18 +63,8 @@ export function getLocFor(
   };
 }
 
-export const propsToFilter = [
-  'parent',
-  'jsDoc',
-  'lineMap',
-  'externalModuleIndicator',
-  'bindDiagnostics',
-  'transformFlags',
-  'resolvedModules',
-  'imports',
-];
-
 export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
+  const [model, setModel] = useState<string | ASTViewerModel>('');
   const [syntaxKind, setSyntaxKind] = useState<Record<number, string>>({});
   const [nodeFlags, setNodeFlags] = useState<Record<number, string>>({});
   const [tokenFlags, setTokenFlags] = useState<Record<number, string>>({});
@@ -89,6 +78,19 @@ export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
     setTokenFlags(extractEnum(window.ts.TokenFlags));
     setModifierFlags(extractEnum(window.ts.ModifierFlags));
   }, [props.version]);
+
+  useEffect(() => {
+    if (typeof props.value === 'string') {
+      setModel(props.value);
+    } else {
+      const scopeSerializer = createTsSerializer(
+        // @ts-expect-error: unsafe cast
+        props.value as SourceFile,
+        syntaxKind,
+      );
+      setModel(serialize(props.value, scopeSerializer));
+    }
+  }, [props.value, syntaxKind]);
 
   const getTooltip = useCallback(
     (key: string, value: unknown): string | undefined => {
@@ -108,42 +110,12 @@ export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
     [nodeFlags, tokenFlags, syntaxKind],
   );
 
-  const getNodeName = useCallback(
-    (value: unknown): string | undefined =>
-      isTsNode(value) ? syntaxKind[value.kind] : undefined,
-    [syntaxKind],
-  );
-
-  const filterProps = useCallback(
-    (item: [string, unknown]): boolean =>
-      !propsToFilter.includes(item[0]) &&
-      !item[0].startsWith('_') &&
-      item[1] !== undefined,
-    [],
-  );
-
-  const getRange = useCallback(
-    (value: unknown): SelectedRange | undefined => {
-      if (props.value && isTsNode(value)) {
-        return getLocFor(
-          value.pos,
-          value.end,
-          // @ts-expect-error: unsafe cast
-          props.value as SourceFile,
-        );
-      }
-      return undefined;
-    },
-    [props.value],
-  );
-
   return (
     <ASTViewer
-      filterProps={filterProps}
-      getRange={getRange}
       getTooltip={getTooltip}
-      getNodeName={getNodeName}
-      {...props}
+      position={props.position}
+      onSelectNode={props.onSelectNode}
+      value={model}
     />
   );
 }

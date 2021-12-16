@@ -4,15 +4,12 @@ import clsx from 'clsx';
 
 import styles from './ASTViewer.module.css';
 
-import PropertyNameComp from './PropertyName';
-import type { GetNodeNameFn } from './types';
-
-const PropertyName = React.memo(PropertyNameComp);
+import PropertyName from './PropertyName';
+import type { ASTViewerModel } from './types';
 
 export interface ItemGroupProps {
   readonly propName?: string;
-  readonly value: unknown;
-  readonly getNodeName: GetNodeNameFn;
+  readonly value: ASTViewerModel;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
@@ -41,7 +38,7 @@ export default function ItemGroup(props: ItemGroupProps): JSX.Element {
     >
       <PropertyName
         propName={props.propName}
-        typeName={props.getNodeName(props.value)}
+        typeName={props.value.name}
         onMouseEnter={(): void => props.onHover?.(true)}
         onMouseLeave={(): void => props.onHover?.(false)}
         onClick={(props.canExpand && props.onClick) || undefined}

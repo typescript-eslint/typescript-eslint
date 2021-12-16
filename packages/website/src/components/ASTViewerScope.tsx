@@ -1,55 +1,34 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import type { ASTViewerBaseProps } from './ast/types';
+import type { ASTViewerBaseProps, ASTViewerModel } from './ast/types';
 
-import { isRecord } from './ast/utils';
+import { serialize } from './ast/serializer/serializer';
+import { createScopeSerializer } from './ast/serializer/serializerScope';
 
-export const propsToFilter = [
-  'parent',
-  'comments',
-  'tokens',
-  // 'block',
-  'upper',
-  '$id',
-];
-
-function isScopeNode(node: unknown): node is Record<string, unknown> & {
-  constructor: { name: string };
-} {
-  return (
-    isRecord(node) &&
-    'constructor' in node &&
-    node.constructor.name !== 'Object'
-  );
+export interface ASTScopeViewerProps extends ASTViewerBaseProps {
+  readonly value: Record<string, unknown> | string;
 }
 
-function getNodeName(value: unknown): string | undefined {
-  if (isScopeNode(value)) {
-    const name = String(value.constructor.name).replace(/\$[0-9]+$/, '');
-    if (value.$id) {
-      return `${name}$${String(value.$id)}`;
+export default function ASTViewerScope(
+  props: ASTScopeViewerProps,
+): JSX.Element {
+  const [model, setModel] = useState<string | ASTViewerModel>('');
+
+  useEffect(() => {
+    if (typeof props.value === 'string') {
+      setModel(props.value);
+    } else {
+      const scopeSerializer = createScopeSerializer();
+      setModel(serialize(props.value, scopeSerializer));
     }
-    return name;
-  }
-  return undefined;
-}
-
-export default function ASTViewerScope(props: ASTViewerBaseProps): JSX.Element {
-  const filterProps = useCallback(
-    (item: [string, unknown]): boolean =>
-      !propsToFilter.includes(item[0]) &&
-      !item[0].startsWith('_') &&
-      item[1] !== undefined,
-    [],
-  );
+  }, [props.value]);
 
   return (
     <ASTViewer
-      filterProps={filterProps}
-      getRange={(): undefined => undefined}
-      getNodeName={getNodeName}
-      {...props}
+      value={model}
+      position={props.position}
+      onSelectNode={props.onSelectNode}
     />
   );
 }

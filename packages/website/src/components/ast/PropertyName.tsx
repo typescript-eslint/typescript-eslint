@@ -13,12 +13,14 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
   return props.onClick ? (
     <>
       {props.propName && (
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a
-          href="javascript:void(0)"
+          href={`#${props.propName}`}
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
-          onClick={props.onClick}
+          onClick={(e): void => {
+            e.preventDefault();
+            props.onClick?.(e);
+          }}
           className={styles.propName}
         >
           {props.propName}
@@ -26,12 +28,14 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
       )}
       {props.propName && <span>: </span>}
       {props.typeName && (
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a
-          href="javascript:void(0)"
+          href={`#${props.typeName}`}
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
-          onClick={props.onClick}
+          onClick={(e): void => {
+            e.preventDefault();
+            props.onClick?.(e);
+          }}
           className={styles.tokenName}
         >
           {props.typeName}

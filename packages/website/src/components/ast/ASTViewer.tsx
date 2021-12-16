@@ -3,8 +3,7 @@ import styles from './ASTViewer.module.css';
 
 import type { SelectedPosition, ASTViewerProps } from './types';
 
-import { ComplexItem } from './Elements';
-import { isRecord } from './utils';
+import { ElementItem } from './Elements';
 
 function ASTViewer(props: ASTViewerProps): JSX.Element {
   const [selection, setSelection] = useState<SelectedPosition | null>(null);
@@ -20,21 +19,18 @@ function ASTViewer(props: ASTViewerProps): JSX.Element {
     );
   }, [props.position]);
 
-  return isRecord(props.value) ? (
+  return typeof props.value === 'string' ? (
+    <div>{props.value}</div>
+  ) : (
     <div className={styles.list}>
-      <ComplexItem
-        getNodeName={props.getNodeName}
+      <ElementItem
         getTooltip={props.getTooltip}
-        getRange={props.getRange}
-        filterProps={props.filterProps}
         value={props.value}
         level="ast"
         selection={selection}
         onSelectNode={props.onSelectNode}
       />
     </div>
-  ) : (
-    <div>{props.value}</div>
   );
 }
 
