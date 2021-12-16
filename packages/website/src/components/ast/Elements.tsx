@@ -1,14 +1,18 @@
-import React, { useCallback, /* useEffect, */ useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import type { GenericParams, ASTViewerModelComplex } from './types';
+import type {
+  GenericParams,
+  ASTViewerModelComplex,
+  ASTViewerModel,
+  ASTViewerModelSimple,
+} from './types';
 
-// import { hasChildInRange, isArrayInRange, isInRange } from './utils';
+import { hasChildInRange, isArrayInRange, isInRange } from './utils';
 
 import styles from './ASTViewer.module.css';
 
 import ItemGroup from './ItemGroup';
 import HiddenItem from './HiddenItem';
-import { ASTViewerModel, ASTViewerModelSimple } from './types';
 import { SimpleItem } from './SimpleItem';
 
 export function ComplexItem(
@@ -17,7 +21,7 @@ export function ComplexItem(
   const [isExpanded, setIsExpanded] = useState<boolean>(
     () => props.level === 'ast',
   );
-  const [isSelected /* setIsSelected */] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const onHover = useCallback(
     (state: boolean) => {
@@ -31,23 +35,23 @@ export function ComplexItem(
     [props.value],
   );
 
-  // useEffect(() => {
-  //   const selected = props.selection
-  //     ? props.value.type === 'array'
-  //       ? isArrayInRange(props.selection, props.value)
-  //       : isInRange(props.selection, props.value)
-  //     : false;
-  //
-  //   setIsSelected(
-  //     props.level !== 'ast' &&
-  //       selected &&
-  //       !hasChildInRange(props.selection, props.value),
-  //   );
-  //
-  //   if (selected && !isExpanded) {
-  //     setIsExpanded(selected);
-  //   }
-  // }, [props.selection, props.value]);
+  useEffect(() => {
+    const selected = props.selection
+      ? props.value.type === 'array'
+        ? isArrayInRange(props.selection, props.value)
+        : isInRange(props.selection, props.value)
+      : false;
+
+    setIsSelected(
+      props.level !== 'ast' &&
+        selected &&
+        !hasChildInRange(props.selection, props.value),
+    );
+
+    if (selected && !isExpanded) {
+      setIsExpanded(selected);
+    }
+  }, [props.selection, props.value]);
 
   return (
     <ItemGroup

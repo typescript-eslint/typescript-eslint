@@ -24,11 +24,5 @@ export default function ASTViewerScope(
     }
   }, [props.value]);
 
-  return (
-    <ASTViewer
-      value={model}
-      position={props.position}
-      onSelectNode={props.onSelectNode}
-    />
-  );
+  return <ASTViewer value={model} onSelectNode={props.onSelectNode} />;
 }

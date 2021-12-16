@@ -16,11 +16,7 @@ export default function HiddenItem(props: HiddenItemProps): JSX.Element {
   useEffect(() => {
     if (props.isArray) {
       const filtered = props.value.filter(item => !isNaN(Number(item.key)));
-      setIsComplex(
-        filtered.some(
-          item => typeof item.value === 'object' && item.value !== null,
-        ),
-      );
+      setIsComplex(filtered.some(item => item.type !== 'number'));
       setLength(filtered.length);
     }
   }, [props.value, props.isArray]);

@@ -17,7 +17,7 @@ export function SimpleItem({
   const [tooltip, setTooltip] = useState<string | undefined>();
 
   useEffect(() => {
-    setTooltip(getTooltip?.(value.key ?? '', value));
+    setTooltip(getTooltip?.(value));
   }, [getTooltip, value]);
 
   return (

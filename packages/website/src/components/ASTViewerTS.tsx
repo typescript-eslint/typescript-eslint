@@ -10,6 +10,7 @@ import type {
 import type { SourceFile } from 'typescript';
 import { serialize } from './ast/serializer/serializer';
 import { createTsSerializer } from './ast/serializer/serializerTS';
+import { ASTViewerModelSimple } from './ast/types';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
   readonly version: string;
@@ -93,17 +94,30 @@ export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
   }, [props.value, syntaxKind]);
 
   const getTooltip = useCallback(
-    (key: string, value: unknown): string | undefined => {
-      if (key === 'flags' && typeof value === 'number') {
-        return getFlagNamesFromEnum(nodeFlags, value, 'NodeFlags').join('\n');
-      } else if (key === 'numericLiteralFlags' && typeof value === 'number') {
-        return getFlagNamesFromEnum(tokenFlags, value, 'TokenFlags').join('\n');
-      } else if (key === 'modifierFlagsCache' && typeof value === 'number') {
-        return getFlagNamesFromEnum(modifierFlags, value, 'ModifierFlags').join(
-          '\n',
-        );
-      } else if (key === 'kind' && typeof value === 'number') {
-        return `SyntaxKind.${syntaxKind[value]}`;
+    (data: ASTViewerModelSimple): string | undefined => {
+      if (data.type === 'number') {
+        switch (data.key) {
+          case 'flags':
+            return getFlagNamesFromEnum(
+              nodeFlags,
+              Number(data.value),
+              'NodeFlags',
+            ).join('\n');
+          case 'numericLiteralFlags':
+            return getFlagNamesFromEnum(
+              tokenFlags,
+              Number(data.value),
+              'TokenFlags',
+            ).join('\n');
+          case 'modifierFlagsCache':
+            return getFlagNamesFromEnum(
+              modifierFlags,
+              Number(data.value),
+              'ModifierFlags',
+            ).join('\n');
+          case 'kind':
+            return `SyntaxKind.${syntaxKind[Number(data.value)]}`;
+        }
       }
       return undefined;
     },
